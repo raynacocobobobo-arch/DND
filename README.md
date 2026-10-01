@@ -82,3 +82,21 @@ SCENES/SXX-SCENE-NAME/
 ## Validation
 
 A repository validator will live at `scripts/validate_repo.py` after bootstrap Task 7.
+
+## Scene workspaces
+
+- [S01 — Baldur’s Gate: Basilisk Gate](SCENES/S01-BALDURS-GATE/README.md)
+- [S02 — Candlekeep: Court of Air / visitor interface](SCENES/S02-CANDLEKEEP/README.md)
+- [S03 — Calimport: high-magic market street](SCENES/S03-CALIMPORT/README.md)
+- [S04 — Myth Drannor: outer-ruins research camp](SCENES/S04-MYTH-DRANNOR/README.md)
+- [S05 — Icewind Dale: Bryn Shander gate market](SCENES/S05-ICEWIND-DALE/README.md)
+- [S06 — Port Nyanzaru: dinosaur-race market zone](SCENES/S06-PORT-NYANZARU/README.md)
+- [S07 — Vallaki: festival square](SCENES/S07-VALLAKI/README.md)
+- [S08 — Saltmarsh: main docks](SCENES/S08-SALTMARSH/README.md)
+- [S09 — Gracklstugh: Darklake District](SCENES/S09-GRACKLSTUGH/README.md)
+- [S10 — Maelstrom: storm-giant court](SCENES/S10-MAELSTROM/README.md)
+- [S11 — Avernus: Wandering Emporium](SCENES/S11-AVERNUS/README.md)
+- [S12 — Witchlight Carnival: giant snail race zone](SCENES/S12-WITCHLIGHT-CARNIVAL/README.md)
+- [S13 — Rock of Bral: Low City docks](SCENES/S13-ROCK-OF-BRAL/README.md)
+- [S14 — Radiant Citadel: Concord Jewel arrival plaza](SCENES/S14-RADIANT-CITADEL/README.md)
+- [S15 — Well of Dragons: allied forward assembly camp](SCENES/S15-WELL-OF-DRAGONS/README.md)
