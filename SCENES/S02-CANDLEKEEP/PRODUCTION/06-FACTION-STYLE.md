@@ -2,7 +2,7 @@
 
 > Stage 06  
 > Gate target: **G2 — Population Lock**  
-> Status: **READY FOR HUMAN REVIEW — NOT APPROVED**
+> Status: **APPROVED**
 
 ## Design objective
 The Court of Air scene should communicate:
@@ -149,9 +149,13 @@ Before Gate 3 character sheets:
 - [x] Species does not replace social-role design.
 
 ## Gate 2 visual-language verdict
-**Faction/cultural visual-language component: READY FOR HUMAN REVIEW.**
+**Faction/cultural visual-language component: APPROVED.**
 
 ### Combined Gate 2 status
 Population model + species scale + faction/cultural visual language are now drafted as one package.
 
-**GATE 2 REMAINS NOT APPROVED UNTIL HUMAN REVIEW.**
+**GATE 2 APPROVED BY HUMAN REVIEW ON 2026-10-01.**
+
+
+## Approval record
+Approved by human review on 2026-10-01 as part of S02 Candlekeep Gate 2 — Population Lock. Official-visual verification hold remains active before Gate 3 character sheets.
