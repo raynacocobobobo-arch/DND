@@ -3,7 +3,7 @@
   "coordinateSystem": "normalized-0-1",
   "answers": {
     "T01": {
-      "answerRef": "A-T01",
+      "answerRef": "T01",
       "bounds": {
         "x": 0.45,
         "y": 0.38,
