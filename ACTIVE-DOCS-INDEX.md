@@ -52,11 +52,13 @@ The following reusable interfaces are **canonical**:
 
 ## Active scene documents
 
-Candlekeep Gate 0–1 files are expected from bootstrap Task 6 and are not yet canonical until created:
+Candlekeep Gate 0–1 files are **canonical**:
 
-- `SCENES/S02-CANDLEKEEP/RESEARCH/01-LOCATION-RESEARCH.md`
-- `SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md`
-- `SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md`
+- `SCENES/S02-CANDLEKEEP/RESEARCH/01-LOCATION-RESEARCH.md` — Gate 0 approved location research
+- `SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md` — Gate 1 approved subscene decision
+- `SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md` — Gate 1 approved scene-state lock
+
+Gate 2 production files are next and are **not yet approved**.
 
 ## Scene workspaces
 
