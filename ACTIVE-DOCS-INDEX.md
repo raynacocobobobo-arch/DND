@@ -19,12 +19,12 @@ This file records authority. A path is marked **canonical** only after it exists
 
 ## Shared master docs
 
-These are expected from bootstrap Task 2 and are **not canonical until created**:
-
-- `MASTER/DND5E-MASTER-RESEARCH-AND-15-SCENES-V1.md`
-- `MASTER/PRODUCTION-STANDARD-V1.md`
-- `MASTER/GATE-SYSTEM-V1.md`
-- `MASTER/STYLE-LOCK-V1.md`
+| Path | Status | Role |
+|---|---|---|
+| `MASTER/DND5E-MASTER-RESEARCH-AND-15-SCENES-V1.md` | canonical | 5E/SRD + 15-location research substrate |
+| `MASTER/PRODUCTION-STANDARD-V1.md` | canonical | Global production rules |
+| `MASTER/GATE-SYSTEM-V1.md` | canonical | Gate 0–7 dependency and approval contract |
+| `MASTER/STYLE-LOCK-V1.md` | canonical | Global visual style and anti-drift rules |
 
 ## Workflow docs
 
