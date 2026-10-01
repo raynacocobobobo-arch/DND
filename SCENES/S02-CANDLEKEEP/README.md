@@ -4,26 +4,29 @@
 - **Official location:** Candlekeep
 - **Locked representative subscene:** Court of Air / visitor interface
 - **Status:** ACTIVE
-- **Current gate:** GATE 2 — Population Lock
-- **Last approved gate:** GATE 1 — Scene Lock
+- **Current gate:** GATE 3 — Asset Lock (**BLOCKED BY PV0**)
+- **Last approved gate:** GATE 2 — Population Lock
 
 ## Gate state
 - Gate 0 — Lore Lock: **APPROVED**
 - Gate 1 — Scene Lock: **APPROVED**
 - Gate 2 — Population Lock: **APPROVED**
-- Gates 3–7: BLOCKED BY UPSTREAM GATES
+- Gate 3 — Asset Lock: **BLOCKED BY PV0**
+- Gates 4–7: BLOCKED
 
 ## Approved research
 - [01 — Location Research](RESEARCH/01-LOCATION-RESEARCH.md)
 - [02 — Subscene Decision](RESEARCH/02-SUBSCENE-DECISION.md)
 - [03 — Scene State](RESEARCH/03-SCENE-STATE.md)
 
-## Gate 2 review package
-- [04 — Population Model](PRODUCTION/04-POPULATION-MODEL.md) — **READY FOR HUMAN REVIEW**
-- [05 — Species Scale](PRODUCTION/05-SPECIES-SCALE.md) — **READY FOR HUMAN REVIEW**
-- [06 — Faction / Cultural Visual Language](PRODUCTION/06-FACTION-STYLE.md) — **READY FOR HUMAN REVIEW**
+## Gate 2 approved package
+- [04 — Population Model](PRODUCTION/04-POPULATION-MODEL.md) — **APPROVED**
+- [05 — Species Scale](PRODUCTION/05-SPECIES-SCALE.md) — **APPROVED**
+- [06 — Faction / Cultural Visual Language](PRODUCTION/06-FACTION-STYLE.md) — **APPROVED**
 
-The combined proposal uses **60 readable figures**: 36 resident/institutional figures and 24 visitor/special figures. Gate 2 remains **NEXT / NOT APPROVED** until human review.
+The approved proposal uses **60 readable figures**: 36 resident/institutional figures and 24 visitor/special figures.
+
+Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
 
 ## Production structure
 - `RESEARCH/` — official location research and scene-state decisions.
