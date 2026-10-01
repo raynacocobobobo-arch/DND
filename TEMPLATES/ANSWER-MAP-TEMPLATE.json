@@ -1,0 +1,16 @@
+{
+  "levelId": "SXX-EXAMPLE",
+  "coordinateSystem": "normalized-0-1",
+  "answers": {
+    "T01": {
+      "answerRef": "A-T01",
+      "bounds": {
+        "x": 0.45,
+        "y": 0.38,
+        "width": 0.06,
+        "height": 0.08
+      },
+      "notes": "Representative box only. Final coordinates are authored from the approved scene image."
+    }
+  }
+}
