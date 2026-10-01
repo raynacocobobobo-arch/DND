@@ -10,7 +10,7 @@
 ## Gate state
 - Gate 0 — Lore Lock: **APPROVED**
 - Gate 1 — Scene Lock: **APPROVED**
-- Gate 2 — Population Lock: **NEXT**
+- Gate 2 — Population Lock: **APPROVED**
 - Gates 3–7: BLOCKED BY UPSTREAM GATES
 
 ## Approved research
@@ -35,3 +35,17 @@ Follow [Workflow 01 — Research](../../WORKFLOW/01-RESEARCH.md) through [Workfl
 
 ## Important warning
 Project staging choices remain `【PROJECT】` even after approval. Approval means “approved for this level,” not “official D&D lore.”
+
+
+## Gate 2 approval record
+
+**APPROVED by human review on 2026-10-01.**
+
+Approved package:
+- 60 readable figures
+- 36 resident/institutional + 24 visitor/special
+- 0 non-humanoid creatures
+- project casting species: Human 38, Elf 7, Dwarf 5, Halfling 4, Gnome 3, Tiefling 3
+- institutional/visitor visual language as defined in the Gate 2 production files
+
+Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
