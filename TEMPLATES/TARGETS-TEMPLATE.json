@@ -1,0 +1,18 @@
+{
+  "levelId": "SXX-EXAMPLE",
+  "version": "0.1.0",
+  "targets": [
+    {
+      "id": "T01",
+      "name": "Example target",
+      "type": "object",
+      "sceneRegion": "center-midground",
+      "answerRef": "A-T01",
+      "difficulty": "medium",
+      "eventIslandId": "E03",
+      "clue": "A concise diegetic clue.",
+      "thumbnail": "clues/T01.png",
+      "required": true
+    }
+  ]
+}
