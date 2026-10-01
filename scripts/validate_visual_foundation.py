@@ -23,6 +23,59 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+
+def _check_ui_and_generation(root: Path, errors: list[str], pv0_status: str | None) -> None:
+    vf = root / FOUNDATION_REL
+    ui = vf / "UI"
+    generation = vf / "GENERATION"
+
+    required_ui = [
+        "UI-SPEC-V1.md",
+        "UI-TOKENS-V1.json",
+        "UI-COMPONENTS-V1.svg",
+        "UI-COMPONENT-BOARD-V1.png",
+    ]
+    for name in required_ui:
+        if not (ui / name).is_file():
+            errors.append(f"missing deterministic UI source/review file: {FOUNDATION_REL / 'UI' / name}")
+
+    token_path = ui / "UI-TOKENS-V1.json"
+    if token_path.is_file():
+        try:
+            tokens = json.loads(token_path.read_text(encoding="utf-8"))
+            for key in ["version", "referenceCanvas", "layout", "geometry", "typography", "palette", "rules"]:
+                if key not in tokens:
+                    errors.append(f"UI tokens missing key: {key}")
+            rules = tokens.get("rules", {})
+            if rules.get("uiInSceneArt") is not False:
+                errors.append("UI tokens must set rules.uiInSceneArt to false")
+            layout = tokens.get("layout", {})
+            for key in ["safeMarginRatio", "bottomBarHeightRatio", "visibleTargetSlots", "targetSlotAspectRatio"]:
+                if key not in layout:
+                    errors.append(f"UI tokens layout missing key: {key}")
+        except Exception as exc:
+            errors.append(f"invalid UI-TOKENS-V1.json: {exc}")
+
+    profile_path = generation / "GENERATION-PROFILE-V1.json"
+    adapter_path = generation / "MODEL-ADAPTER-V1.md"
+    if not profile_path.is_file():
+        errors.append(f"missing Generation Profile: {FOUNDATION_REL / 'GENERATION/GENERATION-PROFILE-V1.json'}")
+    else:
+        try:
+            profile = json.loads(profile_path.read_text(encoding="utf-8"))
+            for key in ["profileVersion", "provider", "modelFamily", "modelVersion", "targetAspectRatio", "referenceRoles", "promptVersion", "seedPolicy", "uiInSceneArt"]:
+                if key not in profile:
+                    errors.append(f"Generation Profile missing key: {key}")
+            if profile.get("uiInSceneArt") is not False:
+                errors.append("Generation Profile uiInSceneArt must be false")
+        except Exception as exc:
+            errors.append(f"invalid GENERATION-PROFILE-V1.json: {exc}")
+    if not adapter_path.is_file():
+        errors.append(f"missing Model Adapter: {FOUNDATION_REL / 'GENERATION/MODEL-ADAPTER-V1.md'}")
+
+    if pv0_status == "LOCKED" and not (ui / "UI-FULL-MOCKUP-V1.png").is_file():
+        errors.append("PV0 LOCKED requires UI/UI-FULL-MOCKUP-V1.png")
+
 def validate(root: Path) -> list[str]:
     errors: list[str] = []
     vf = root / FOUNDATION_REL
@@ -95,6 +148,8 @@ def validate(root: Path) -> list[str]:
 
     # planned VA01–VA08 spec presence check is intentionally stricter than image presence:
     # specs must exist before image generation; images may remain DRAFT.
+    _check_ui_and_generation(root, errors, manifest.get("pv0Status"))
+
     if manifest.get("pv0Status") == "LOCKED":
         gp = vf / "GENERATION/GENERATION-PROFILE-V1.json"
         adapter = vf / "GENERATION/MODEL-ADAPTER-V1.md"
