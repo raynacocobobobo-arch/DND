@@ -7,7 +7,7 @@ This file records authority. A path is marked **canonical** only after it exists
 | Path | Status | Role |
 |---|---|---|
 | `docs/superpowers/specs/2026-10-01-dnd5e-hidden-object-production-system-design.md` | canonical | Approved architecture and product definition |
-| `docs/superpowers/plans/2026-10-01-dnd5e-hidden-object-repository-bootstrap.md` | active plan | Repository bootstrap execution plan |
+| `docs/superpowers/plans/2026-10-01-dnd5e-hidden-object-repository-bootstrap.md` | completed plan | Repository bootstrap execution record |
 
 ## Root operational docs
 
