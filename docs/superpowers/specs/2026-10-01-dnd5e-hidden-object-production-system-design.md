@@ -1,38 +1,65 @@
-# D&D 5E Hidden-Object Production System — Design Spec
+# D&D 5E Hidden-Object Level Production System — Design Spec
 
 **Date:** 2026-10-01  
 **Status:** Proposed / awaiting written-spec approval  
 **Repository:** `raynacocobobobo-arch/DND`  
 **Default branch:** `main`
 
-## 1. Purpose
+## 1. Final product mission
 
-This repository will be the canonical production workspace for a 15-scene D&D / 5E hidden-object illustration project.
+This project exists to build **15 complete, game-ready D&D / 5E Hidden-Object levels**.
 
-The repository must solve four problems:
+The final deliverable is **not** a lore archive, a collection of research notes, fifteen standalone illustrations, or sixty-character reference sheets by themselves. Those are production assets.
 
-1. Preserve a reliable distinction between official/open 5E material and project invention.
-2. Convert a large official location into one representative, drawable subscene.
-3. Standardize the path from research to a readable ~60-character ensemble illustration.
-4. Make every scene resumable by another agent or artist without re-deriving the method.
+The actual product is:
 
-The repository is not only an archive. It is a **gated production system**.
+> **A standardized D&D 5E Hidden-Object level-production system, used to deliver 15 visually coherent, lore-grounded, character-dense, playable hidden-object levels with complete target, clue, answer and UI data.**
+
+Every research document, species sheet, character board, event island, blocking pass and prompt exists only to improve the reliability and quality of those 15 final levels.
+
+### Product-level decision test
+
+Before adding work to the project, ask:
+
+> **Does this materially help us produce, validate, integrate or maintain one of the 15 final playable levels?**
+
+If not, it is out of scope.
 
 ---
 
-## 2. Canonical project goals
+## 2. Final deliverables
 
-Each final scene should:
+### 2.1 Project-level Definition of Done
+
+The project is complete only when all 15 scenes have become **complete level packages** that can be handed to a game implementation layer without re-deriving the art or gameplay design.
+
+Each level must contain:
+
+1. final large ensemble scene;
+2. final hidden-object target set;
+3. target answer locations;
+4. clue crops / target thumbnails;
+5. UI assets;
+6. level metadata;
+7. production source assets required for revision;
+8. evidence-backed research and approval history.
+
+### 2.2 Canonical scene goals
+
+Each final level should:
 
 - be grounded in official 5E / D&D setting material;
 - use SRD 5.1 and SRD 5.2.1 as the shared rules/asset substrate;
 - select one representative subscene rather than collapsing an entire region into one image;
-- use one scene-specific ~60-character casting sheet rather than one global actor library;
+- use a scene-specific casting population, generally about **55–70 readable figures**, rather than forcing an exact number where the location ecology says otherwise;
 - preserve recognizable species anatomy, faction/cultural visual language, class/NPC behavior, tools, equipment and purposeful magic;
 - organize the final crowd into 8–12 readable event islands;
-- keep people visually primary and the environment one detail level simpler;
+- keep characters visually primary and the environment one detail level simpler;
 - use weak/compressed perspective suitable for hidden-object gameplay;
-- add hidden-object targets and UI only after the scene itself passes visual QC.
+- remain visually coherent before any hidden-object UI is added;
+- expose structured target/clue/answer data so the level can be implemented rather than merely viewed.
+
+The working norm remains approximately 60 characters, but **scene logic outranks a rigid numeric quota**.
 
 ---
 
@@ -118,7 +145,10 @@ The repository root will use the following structure:
 │   ├── 09-EVENT-ISLANDS.md
 │   ├── 10-BLOCKING.md
 │   ├── 11-FINAL-SCENE.md
-│   └── 12-QA.md
+│   ├── 12-SCENE-QA.md
+│   ├── 13-HIDDEN-OBJECTS.md
+│   ├── 14-LEVEL-DATA-AND-UI.md
+│   └── 15-ARCHIVE.md
 │
 ├── TEMPLATES/
 │   ├── LOCATION-RESEARCH-TEMPLATE.md
@@ -132,6 +162,9 @@ The repository root will use the following structure:
 │   ├── EVENT-ISLANDS-TEMPLATE.md
 │   ├── ACTOR-BLOCKING-TEMPLATE.md
 │   ├── FINAL-PROMPT-TEMPLATE.md
+│   ├── TARGETS-TEMPLATE.json
+│   ├── ANSWER-MAP-TEMPLATE.json
+│   ├── LEVEL-METADATA-TEMPLATE.json
 │   └── QA-TEMPLATE.md
 │
 ├── SCENES/
@@ -181,7 +214,7 @@ A canonical index of current authoritative files and superseded versions.
 
 ---
 
-## 5. Four information layers
+## 5. Five information / production layers
 
 ### Level A — Master Rule Database
 
@@ -240,21 +273,35 @@ Contains:
 
 ### Level D — Production Pack
 
-Directly drives image production.
+Directly drives scene creation.
 
 Contains:
-- 60-character table;
+- character table;
 - species scale;
-- faction/culture clothing sheets;
+- faction/culture visual language;
 - props;
 - creature assets;
 - event islands;
 - actor blocking;
 - prompt;
-- hidden-object targets;
-- QA.
+- scene corrections.
 
-**Question answered:** “How is this exact image built?”
+**Question answered:** “How is this exact scene built reliably?”
+
+### Level E — Game Level Package
+
+Directly drives gameplay implementation.
+
+Contains:
+- final scene image;
+- target list;
+- answer positions;
+- clue images;
+- target icons;
+- UI;
+- level metadata.
+
+**Question answered:** “How does this scene become a playable hidden-object level?”
 
 ---
 
@@ -461,25 +508,50 @@ Local problems are fixed locally. Do not invent a new workflow version because o
 ### Stage 13 — Hidden-object design
 Only after the scene itself passes QC.
 
+Outputs:
+- target IDs;
+- target set;
+- proposed hiding logic;
+- difficulty;
+- clue concepts.
+
 Targets must:
 - fit the world;
 - be readable;
 - not rely on microscopic pixels;
 - be hidden by context, overlap or similarity rather than arbitrary blur.
 
-### Stage 14 — UI
-Bottom target strip is added after hidden-object targets are locked.
+### Stage 14 — Level data and UI
 
-UI must not:
-- cover important event islands;
-- introduce gibberish text;
-- expose the entire answer in clue crops.
+Outputs in each scene's `LEVEL/` package:
+- `scene-final.png`;
+- `targets.json`;
+- `answer-map.json`;
+- `level-metadata.json`;
+- clue crops;
+- target icons;
+- UI assets.
+
+Each target record must support at least:
+- ID;
+- name;
+- type: character / object / creature;
+- scene region;
+- answer location;
+- difficulty;
+- event-island relation;
+- clue;
+- thumbnail/icon;
+- whether it is required.
+
+The exact coordinate format is an implementation detail to be fixed in the implementation plan.
 
 ### Stage 15 — Archive / current-state update
 Update:
 - scene folder;
 - `CURRENT.md`;
 - `ACTIVE-DOCS-INDEX.md`;
+- gate status;
 - approval state.
 
 ---
@@ -635,26 +707,56 @@ A later stage must not start until its required gate is explicitly approved.
 
 ---
 
-### GATE 6 — Game Lock
+### GATE 6 — Hidden-Object Lock
 
 **Inputs**
-- hidden-object targets;
-- clue crops;
-- UI strip;
-- final scene.
+- target set;
+- target IDs;
+- proposed hiding locations;
+- clue concepts;
+- difficulty distribution.
 
 **Pass conditions**
-- targets are fair but not obvious;
+- target set is varied;
 - targets are diegetically plausible;
-- clues do not reveal full answers;
-- UI does not cover critical composition;
-- final image remains visually coherent without the UI.
+- hiding is fair but not obvious;
+- targets do not rely on tiny unreadable pixels;
+- target selection does not damage the scene;
+- difficulty spread is intentional.
 
 **Pass unlocks**
-- archive / scene complete.
+- level-data and UI packaging.
 
 **Fail returns to**
-- Stages 13–14 only unless a deeper scene problem is discovered.
+- Stage 13 unless the target problem exposes a deeper visual problem.
+
+---
+
+### GATE 7 — Level Lock
+
+**Inputs**
+- final scene;
+- `targets.json`;
+- `answer-map.json`;
+- clues;
+- target icons;
+- UI;
+- `level-metadata.json`.
+
+**Pass conditions**
+- every required target has a valid answer location;
+- every required target has its clue/thumbnail;
+- UI does not cover critical composition;
+- IDs are unique and consistent across files;
+- scene and game data agree;
+- metadata identifies level and version;
+- the package is self-contained enough for game implementation handoff.
+
+**Pass unlocks**
+- scene archive / level complete.
+
+**Fail returns to**
+- Stage 14 unless a deeper hidden-object or scene problem is discovered.
 
 ---
 
@@ -669,7 +771,8 @@ Human review is required at:
 3. **Gate 3** — 60-character assets.
 4. **Gate 4** — blocking.
 5. **Gate 5** — final scene.
-6. **Gate 6** — game/UI final.
+6. **Gate 6** — hidden-object design.
+7. **Gate 7** — final level package.
 
 A scene may pause indefinitely at any gate without losing state because `CURRENT.md` and the scene folder record the last approved state.
 
@@ -798,8 +901,9 @@ The first bootstrap does **not** generate final scene art or complete all 15 pro
 The repository bootstrap is complete when:
 
 - root navigation is understandable to a new contributor;
+- the final product mission is explicit: **15 complete game-ready Hidden-Object levels**;
 - every authoritative document is indexed;
-- the seven gates are documented with inputs/pass/fail/unlock behavior;
+- Gates 0–7 are documented with inputs/pass/fail/unlock behavior;
 - each workflow stage has one canonical file;
 - all scene folders exist;
 - the reusable templates exist;
@@ -809,3 +913,24 @@ The repository bootstrap is complete when:
 - internal Markdown links resolve;
 - `CURRENT.md` identifies the next actionable gate.
 
+
+
+---
+
+## 15. Final project Definition of Done
+
+The project is **not complete** when the research is complete, when all character sheets exist, or even when all fifteen final illustrations exist.
+
+It is complete only when:
+
+- all 15 levels have passed **GATE 7 — Level Lock**;
+- each level has a final scene;
+- each level has a validated target set;
+- each target has a valid answer location;
+- required clues / target thumbnails exist;
+- UI assets exist;
+- level metadata exists;
+- production source assets remain available for revision;
+- the repository clearly records the final approved state of all 15 levels.
+
+> **The final product is the set of 15 complete Hidden-Object game levels. Everything else in the repository is a means to produce and maintain them.**
