@@ -7,7 +7,7 @@
       "name": "Example target",
       "type": "object",
       "sceneRegion": "center-midground",
-      "answerRef": "A-T01",
+      "answerRef": "T01",
       "difficulty": "medium",
       "eventIslandId": "E03",
       "clue": "A concise diegetic clue.",
