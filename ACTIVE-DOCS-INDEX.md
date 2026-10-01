@@ -32,7 +32,23 @@ This file records authority. A path is marked **canonical** only after it exists
 
 ## Templates
 
-Expected from bootstrap Task 4 under `TEMPLATES/`.
+The following reusable interfaces are **canonical**:
+
+- `TEMPLATES/LOCATION-RESEARCH-TEMPLATE.md`
+- `TEMPLATES/SUBSCENE-DECISION-TEMPLATE.md`
+- `TEMPLATES/SCENE-STATE-TEMPLATE.md`
+- `TEMPLATES/POPULATION-MODEL-TEMPLATE.md`
+- `TEMPLATES/SPECIES-SCALE-TEMPLATE.md`
+- `TEMPLATES/FACTION-STYLE-TEMPLATE.md`
+- `TEMPLATES/60-CHARACTERS-TEMPLATE.csv` — 60 default rows; scene logic may justify 55–70 figures
+- `TEMPLATES/PROPS-CREATURES-TEMPLATE.md`
+- `TEMPLATES/EVENT-ISLANDS-TEMPLATE.md`
+- `TEMPLATES/ACTOR-BLOCKING-TEMPLATE.md`
+- `TEMPLATES/FINAL-PROMPT-TEMPLATE.md`
+- `TEMPLATES/TARGETS-TEMPLATE.json`
+- `TEMPLATES/ANSWER-MAP-TEMPLATE.json`
+- `TEMPLATES/LEVEL-METADATA-TEMPLATE.json`
+- `TEMPLATES/QA-TEMPLATE.md`
 
 ## Active scene documents
 
