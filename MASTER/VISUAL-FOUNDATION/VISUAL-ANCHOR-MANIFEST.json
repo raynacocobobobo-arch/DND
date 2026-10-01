@@ -293,5 +293,34 @@
       "provenance": "planned project visual standard",
       "supersedes": null
     }
-  ]
+  ],
+  "seedReferenceSet": {
+    "version": "V1",
+    "status": "APPROVED",
+    "approvedOn": "2026-10-01",
+    "selectionDoc": "00-SEED-REFERENCES/SEED-REFERENCE-SELECTION-V1.md",
+    "contactSheet": "00-SEED-REFERENCES/SEED-REFERENCE-CONTACT-SHEET-V1.jpg",
+    "contactSheetSha256": "6caf779dc3612ccb27329e3f9f2e3d9fb0c8f0997ef8e0bad3ac2192bf7c5ca6",
+    "references": [
+      {
+        "id": "SEED-A",
+        "sourceFileId": "file_000000007548821197d1fb3c20fed9a5",
+        "role": "character-rendering master seed"
+      },
+      {
+        "id": "SEED-D",
+        "sourceFileId": "file_000000008f8c82119802f01d6ca66bfd",
+        "role": "event-density and Hidden-Object ensemble seed"
+      },
+      {
+        "id": "SEED-E",
+        "sourceFileId": "file_00000000a7dc8211a4ac763254630978",
+        "role": "white-background asset-board organization seed"
+      }
+    ],
+    "excluded": [
+      "B — 30-person volcano expansion",
+      "C — D&D-strengthened 30-person version"
+    ]
+  }
 }
