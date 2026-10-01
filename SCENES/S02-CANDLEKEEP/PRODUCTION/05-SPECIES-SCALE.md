@@ -5,13 +5,15 @@
 > Status: **READY FOR HUMAN REVIEW — NOT APPROVED**
 
 ## Scope
-This file locks the relative body construction for the six species currently proposed in the Candlekeep population model.
+This file proposes the relative body construction for the six species currently proposed in the Candlekeep population model.
+
+If Gate 2 is approved, it locks the **scene-relative species set and scale relationships** for Candlekeep. Cross-project anatomy remains governed by the Global Visual Foundation Species Master before Gate 3, so this file must not become an independent competing anatomy bible.
 
 The percentages below are `【PROJECT】` production ratios anchored to a Human adult baseline of 100%. They are **not official population statistics or universal canonical heights**. Individual adults can vary inside a narrow band without breaking the species silhouette.
 
 ## Human baseline
 - Screen/lore construction baseline: **100%**
-- Adult anatomy: realistic adult head/body ratio
+- Adult anatomy: project stylization baseline from `MASTER/STYLE-LOCK-V1.md`, approximately **5–5.5 heads tall**
 - Use: reference for relative body height and mass
 - Do not standardize every Human to the same build.
 
@@ -19,7 +21,7 @@ The percentages below are `【PROJECT】` production ratios anchored to a Human 
 
 | Species | Production height ratio | Mass / skeleton | Head-body relation | Non-negotiable silhouette | Key rejection |
 |---|---:|---|---|---|---|
-| Human | 100% | baseline; broad body-type range | baseline adult | ordinary human adult | identical “hero body” repetition |
+| Human | 100% | baseline; broad body-type range | project adult stylization, ~5–5.5 heads | ordinary human adult | identical “hero body” repetition |
 | Elf | 100–103% | generally lighter/narrower build; longer visual line | adult, slightly finer facial structure | pointed ears; elegant but not fragile | anime-ear caricature; child-thin body |
 | Dwarf | ~80–83% | broad ribcage, dense torso, shorter powerful limbs | adult head; not oversized-child treatment | low, broad, heavy adult silhouette | “small Human child” proportions |
 | Halfling | ~56–60% | compact adult skeleton, lighter than Dwarf | adult face; head may read slightly larger proportionally | very short adult with compact limbs | toddler proportions or giant head |
