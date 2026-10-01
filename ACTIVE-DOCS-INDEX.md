@@ -58,7 +58,11 @@ Candlekeep Gate 0–1 files are **canonical**:
 - `SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md` — Gate 1 approved subscene decision
 - `SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md` — Gate 1 approved scene-state lock
 
-Gate 2 production files are next and are **not yet approved**.
+Gate 2 production review package is now active but **not yet approved**:
+
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md` — active draft / human review
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md` — active draft / human review
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md` — active draft / human review
 
 ## Scene workspaces
 
