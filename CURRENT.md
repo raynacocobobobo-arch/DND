@@ -54,3 +54,22 @@ Current proposal: **60 figures = 36 resident/institutional + 24 visitor/special;
 - [Scene state](SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md)
 
 Gate 2 is **not approved**. The next required files are `04-POPULATION-MODEL.md`, `05-SPECIES-SCALE.md`, and `06-FACTION-STYLE.md` under `SCENES/S02-CANDLEKEEP/PRODUCTION/`.
+\n\n## Gate 2 draft package
+
+The following Gate 2 production files now exist and are **READY FOR HUMAN REVIEW — NOT APPROVED**:
+
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md`
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md`
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md`
+
+Their existence does **not** mean Gate 2 has passed.
+
+## Next action
+
+Review the three Gate 2 drafts as one package:
+
+1. population ecology and proposed counts;
+2. Species Scale;
+3. Avowed / Seeker / institutional faction-cultural visual language.
+
+If approved, update Gate 2 to **APPROVED** and only then begin Gate 3 character-asset production.\n
