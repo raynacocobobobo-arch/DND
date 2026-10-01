@@ -4,8 +4,6 @@
 
 **Status: VERIFIED COMPLETE**
 
-Bootstrap Tasks 1–8 have been re-audited. The next production action is **S02 Candlekeep — Gate 2 Population Lock**.
-
 ## Active level
 
 **S02 — CANDLEKEEP**
@@ -14,8 +12,8 @@ Bootstrap Tasks 1–8 have been re-audited. The next production action is **S02 
 
 - Gate 0 — Lore Lock: **APPROVED**
 - Gate 1 — Scene Lock: **APPROVED**
-- Gate 2 — Population Lock: **NEXT**
-- Gate 3 — Asset Lock: BLOCKED BY GATE 2
+- Gate 2 — Population Lock: **NEXT / HUMAN REVIEW**
+- Gate 3 — Asset Lock: **BLOCKED BY GATE 2 + PV0**
 - Gate 4 — Blocking Lock: BLOCKED
 - Gate 5 — Scene Lock / Visual QC: BLOCKED
 - Gate 6 — Hidden-Object Lock: BLOCKED
@@ -29,47 +27,62 @@ Bootstrap Tasks 1–8 have been re-audited. The next production action is **S02 
 
 The project-defined time/weather treatment remains `【PROJECT】` until explicitly revised.
 
-## Known blockers / unresolved official detail
+## Global Visual Foundation
+
+- Branch work: **PV0 in progress**
+- Current Foundation status: **DRAFT**
+- PV1: **NOT STARTED**
+- Gate 3 cannot begin until both Candlekeep Gate 2 and PV0 are explicitly approved.
+
+## Candlekeep Gate 2 review findings
+
+Reviewed together:
+1. `04-POPULATION-MODEL.md`
+2. `05-SPECIES-SCALE.md`
+3. `06-FACTION-STYLE.md`
+
+### Checks that pass
+- Population arithmetic: **60 = 36 resident/institutional + 24 visitor/special**.
+- Layer arithmetic and species arithmetic are internally consistent.
+- The institution remains the structural base rather than a generic adventurer crowd.
+- Zero non-humanoid creatures is justified for this public visitor-interface slice.
+- Endless Chant is integrated as institutional behavior, not spectacle.
+- Species diversity is subordinate to role/institutional identity.
+- Faction/style language explicitly avoids invented Candlekeep crests, magic-school uniforms and unsupported official costume claims.
+- Magic is task-driven.
+
+### Corrections made during review
+- Clarified that Human/Elf/Dwarf/Halfling/Gnome/Tiefling counts are **project casting choices**, not an official Candlekeep species census.
+- Removed a visual contradiction: Species Scale previously said “realistic adult head/body ratio”; it now inherits the project’s **~5–5.5-head** stylization baseline from `MASTER/STYLE-LOCK-V1.md`.
+- Clarified that Candlekeep Gate 2 locks scene-relative species relationships only; cross-project anatomy is governed by the future PV0 Species Master before Gate 3.
+
+### Remaining holds
+- Exact Avowed costume details still require comparison against verified official Candlekeep visual references before Gate 3 character sheets.
+- Gate 2 itself still needs explicit human approval.
+- Even after Gate 2 approval, Gate 3 remains blocked until **PV0 — Global Visual Prelock** is approved.
+
+## Gate 2 proposal currently under review
+
+- Total readable figures: **60**
+- Resident/institutional: **36**
+- Visitor/special: **24**
+- Non-humanoid creatures: **0**
+- Proposed species: Human 38, Elf 7, Dwarf 5, Halfling 4, Gnome 3, Tiefling 3
+- Institutional visual principle: one old knowledge institution receiving many different visitors
+- Scene-specific visual language remains subordinate to the Global Visual Foundation
+
+## Known spatial blockers for later stages
 
 - Court of Air building orientation and exact public-facing sightlines require final map/body-text verification before Blocking.
 - Precise relationship among entrance spaces, the Emerald Door, and nearby service structures must not be invented.
 - Avowed costume specifics must remain tied to verified official visual references rather than generic wizard-robes assumptions.
 
-## Next action
+## Next human decision
 
-Review the drafted **Gate 2 — Population Lock** package:
+Decide whether the corrected Candlekeep Gate 2 package is approved.
 
-1. [Population model](SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md)
-2. [Species scale](SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md)
-3. [Faction / cultural visual language](SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md)
-
-Current proposal: **60 figures = 36 resident/institutional + 24 visitor/special; 0 non-humanoid creatures.**
-
-**Gate 2 remains NEXT / NOT APPROVED pending human review.**
-
-## Canonical Gate 0–1 files
-
-- [Location research](SCENES/S02-CANDLEKEEP/RESEARCH/01-LOCATION-RESEARCH.md)
-- [Subscene decision](SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md)
-- [Scene state](SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md)
-
-Gate 2 is **not approved**. The next required files are `04-POPULATION-MODEL.md`, `05-SPECIES-SCALE.md`, and `06-FACTION-STYLE.md` under `SCENES/S02-CANDLEKEEP/PRODUCTION/`.
-\n\n## Gate 2 draft package
-
-The following Gate 2 production files now exist and are **READY FOR HUMAN REVIEW — NOT APPROVED**:
-
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md`
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md`
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md`
-
-Their existence does **not** mean Gate 2 has passed.
-
-## Next action
-
-Review the three Gate 2 drafts as one package:
-
-1. population ecology and proposed counts;
-2. Species Scale;
-3. Avowed / Seeker / institutional faction-cultural visual language.
-
-If approved, update Gate 2 to **APPROVED** and only then begin Gate 3 character-asset production.\n
+If approved:
+1. mark Gate 2 APPROVED;
+2. derive the PV0 core species set from the approved package + 15-level inventory;
+3. continue Global Visual Foundation construction;
+4. **do not** start Candlekeep Gate 3 until PV0 is also LOCKED.
