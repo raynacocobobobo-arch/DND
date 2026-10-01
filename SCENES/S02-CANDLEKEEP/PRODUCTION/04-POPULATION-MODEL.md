@@ -81,6 +81,8 @@ These roles make the written-work admission rule readable without requiring UI t
 ## Species distribution — project casting proposal
 No official species percentages are claimed.
 
+The six species below are `【PROJECT】` casting choices drawn from the shared SRD substrate. Gate 0 establishes that Candlekeep is not human-only, but it does **not** establish these six species as an official Candlekeep census or percentage breakdown.
+
 ### Whole-scene count
 | Species | Count | Share | Casting logic |
 |---|---:|---:|---|
@@ -89,7 +91,7 @@ No official species percentages are claimed.
 | Dwarf | 5 | 8% | institutional and visiting roles |
 | Halfling | 4 | 7% | institutional and visiting roles |
 | Gnome | 3 | 5% | scholar/scribe/visitor roles |
-| Tiefling | 3 | 5% | official Candlekeep material supports nonhuman members/visitors; kept minority |
+| Tiefling | 3 | 5% | SRD-supported project casting choice; kept minority; no Tiefling-specific Candlekeep population claim |
 | **Total** | **60** | **100%** |  |
 
 ### Institution vs visitor distribution
