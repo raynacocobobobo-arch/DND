@@ -31,11 +31,15 @@ The project-defined time/weather treatment remains `【PROJECT】` until explici
 
 ## Next action
 
-Complete **Gate 2 — Population Lock**:
+Review the drafted **Gate 2 — Population Lock** package:
 
-1. population ecology;
-2. species scale;
-3. Avowed / Seeker / institutional faction-cultural visual language.
+1. [Population model](SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md)
+2. [Species scale](SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md)
+3. [Faction / cultural visual language](SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md)
+
+Current proposal: **60 figures = 36 resident/institutional + 24 visitor/special; 0 non-humanoid creatures.**
+
+**Gate 2 remains NEXT / NOT APPROVED pending human review.**
 
 ## Canonical Gate 0–1 files
 
