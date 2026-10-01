@@ -212,7 +212,7 @@
       "file": "UI/UI-COMPONENT-BOARD-V1.png",
       "spec": "UI/UI-SPEC-V1.md",
       "version": "V1",
-      "status": "DRAFT",
+      "status": "REVIEW",
       "priority": "MANDATORY",
       "appliesTo": [
         "ALL_LEVELS"
@@ -225,8 +225,8 @@
         "scene artwork",
         "target content"
       ],
-      "sha256": null,
-      "provenance": "planned project visual standard",
+      "sha256": "0cb198595da3140b74a1eea4e8403b8d2373cc206526a327d7d50614dea5a4d5",
+      "provenance": "deterministic UI review preview; canonical geometry lives in UI-TOKENS-V1.json + UI-COMPONENTS-V1.svg",
       "supersedes": null
     },
     {
@@ -322,5 +322,25 @@
       "B — 30-person volcano expansion",
       "C — D&D-strengthened 30-person version"
     ]
+  },
+  "uiSourcePackage": {
+    "version": "V1",
+    "status": "REVIEW",
+    "spec": "UI/UI-SPEC-V1.md",
+    "tokens": "UI/UI-TOKENS-V1.json",
+    "svg": "UI/UI-COMPONENTS-V1.svg",
+    "componentBoard": "UI/UI-COMPONENT-BOARD-V1.png",
+    "fullMockup": "UI/UI-FULL-MOCKUP-V1.png",
+    "fullMockupStatus": "DRAFT",
+    "sourceOfTruth": [
+      "UI/UI-TOKENS-V1.json",
+      "UI/UI-COMPONENTS-V1.svg"
+    ]
+  },
+  "generationProfile": {
+    "version": "V1",
+    "status": "REVIEW",
+    "profile": "GENERATION/GENERATION-PROFILE-V1.json",
+    "adapter": "GENERATION/MODEL-ADAPTER-V1.md"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "profileVersion": "V1",
+  "status": "REVIEW",
+  "provider": "OpenAI",
+  "modelFamily": "ChatGPT image generation runtime",
+  "modelVersion": "not exposed by current runtime",
+  "targetAspectRatio": "16:9",
+  "finalReferenceResolution": "3840x2160",
+  "workingResolutionPolicy": "use the nearest supported 16:9 generation size; upscale only after visual approval",
+  "referenceRoles": {
+    "primaryStyleSeed": "SEED-A",
+    "ensembleDensitySeed": "SEED-D",
+    "assetBoardLayoutSeed": "SEED-E",
+    "lockedVisualAnchors": "use applicable LOCKED VA01–VA08 anchors when available",
+    "sceneSpecificReferences": "use only approved Scene Visual Packet references"
+  },
+  "promptVersion": "GVF-PROMPT-V1",
+  "negativeConstraintVersion": "VA08-V1",
+  "seedPolicy": "seed control is not exposed by current runtime; no seed-level reproducibility claim",
+  "referenceSlotPolicy": "runtime-managed; if a mandatory visual reference cannot be supplied or inspected, stop rather than substitute from memory",
+  "editStrengthPolicy": "runtime-managed / not exposed",
+  "upscalePolicy": "no style-changing upscale; upscale only after scene/board approval",
+  "faceDetailCorrectionPolicy": "correct inside the same locked visual grammar; do not use a separate face style",
+  "uiInSceneArt": false,
+  "uiCompositionPolicy": "deterministic SVG/tokens compositing after Gate 5",
+  "outputNaming": "<ANCHOR-OR-SCENE-ID>-V<version>-<revision>.png"
+}

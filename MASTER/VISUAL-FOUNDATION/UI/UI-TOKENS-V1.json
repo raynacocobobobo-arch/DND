@@ -1,0 +1,75 @@
+{
+  "version": "V1",
+  "referenceCanvas": {
+    "width": 3840,
+    "height": 2160,
+    "aspectRatio": "16:9",
+    "unit": "px"
+  },
+  "layout": {
+    "safeMarginRatio": 0.025,
+    "bottomBarHeightRatio": 0.145,
+    "bottomBarWidthRatio": 0.92,
+    "visibleTargetSlots": 6,
+    "targetSlotAspectRatio": 1.333333,
+    "cluePanelWidthRatio": 0.44,
+    "titleCardWidthRatio": 0.26,
+    "overflowBehavior": "paginate-or-scroll-without-changing-slot-geometry"
+  },
+  "geometry": {
+    "outerPaddingPxAt3840": 36,
+    "slotGapPxAt3840": 24,
+    "borderWidthPxAt3840": 6,
+    "selectedBorderWidthPxAt3840": 10,
+    "cornerRadiusPxAt3840": 24,
+    "iconInsetRatio": 0.12,
+    "stateRingWidthPxAt3840": 9
+  },
+  "typography": {
+    "fontPolicy": "bundle-before-pv0-lock",
+    "previewFontFamily": "Arial/Georgia system preview only",
+    "levelTitlePxAt3840": 52,
+    "levelSubtitlePxAt3840": 28,
+    "targetLabelPxAt3840": 30,
+    "cluePxAt3840": 38,
+    "metaPxAt3840": 28,
+    "weightTitle": 700,
+    "weightBody": 600
+  },
+  "palette": {
+    "panel": "#211D1A",
+    "panelRaised": "#2D2926",
+    "border": "#B18A4F",
+    "borderMuted": "#5E4C34",
+    "parchment": "#F0E4C8",
+    "textPrimary": "#E5D2AC",
+    "textDark": "#302820",
+    "selected": "#D0A761",
+    "found": "#87936F",
+    "shadow": "#00000047"
+  },
+  "states": {
+    "default": {
+      "border": "border",
+      "opacity": 1
+    },
+    "selected": {
+      "border": "selected",
+      "opacity": 1
+    },
+    "found": {
+      "border": "found",
+      "opacity": 0.78,
+      "showCheck": true
+    }
+  },
+  "rules": {
+    "uiInSceneArt": false,
+    "overlayAfterGate5": true,
+    "generatedUiForbidden": true,
+    "sceneMayOverrideGeometry": false,
+    "sceneMayOverridePalette": false,
+    "textAndTargetContentMayChange": true,
+    "fullMockupRequiredForPv0Lock": true
+  }
+}
