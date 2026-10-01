@@ -12,8 +12,8 @@
 
 - Gate 0 — Lore Lock: **APPROVED**
 - Gate 1 — Scene Lock: **APPROVED**
-- Gate 2 — Population Lock: **NEXT / HUMAN REVIEW**
-- Gate 3 — Asset Lock: **BLOCKED BY GATE 2 + PV0**
+- Gate 2 — Population Lock: **APPROVED**
+- Gate 3 — Asset Lock: **BLOCKED BY PV0**
 - Gate 4 — Blocking Lock: BLOCKED
 - Gate 5 — Scene Lock / Visual QC: BLOCKED
 - Gate 6 — Hidden-Object Lock: BLOCKED
@@ -77,12 +77,16 @@ Reviewed together:
 - Precise relationship among entrance spaces, the Emerald Door, and nearby service structures must not be invented.
 - Avowed costume specifics must remain tied to verified official visual references rather than generic wizard-robes assumptions.
 
-## Next human decision
+## Next action
 
-Decide whether the corrected Candlekeep Gate 2 package is approved.
+Proceed with Global Visual Foundation PV0 construction.
 
-If approved:
-1. mark Gate 2 APPROVED;
-2. derive the PV0 core species set from the approved package + 15-level inventory;
-3. continue Global Visual Foundation construction;
-4. **do not** start Candlekeep Gate 3 until PV0 is also LOCKED.
+Candlekeep Gate 2 is now **APPROVED**. Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
+
+The approved pilot species set is:
+- Human
+- Elf
+- Dwarf
+- Halfling
+- Gnome
+- Tiefling
