@@ -56,3 +56,33 @@ Creature/scale systems such as dinosaurs, giant snails, dragons, infernal war ma
 ## UI finding
 
 No locked scene currently justifies a separate UI design. Different environments require contrast/safe-area testing, not different component geometry. The project should maintain one deterministic UI version unless a real implementation constraint proves otherwise.
+
+
+## PV0 core species decision
+
+**Status: APPROVED INPUT — derived after S02 Candlekeep Gate 2 approval on 2026-10-01.**
+
+### PV0 REQUIRED
+These six species are mandatory in the first locked Species Master because they are part of the approved Candlekeep pilot cast and recur naturally across the 15-level corpus:
+
+1. Human
+2. Elf
+3. Dwarf
+4. Halfling
+5. Gnome
+6. Tiefling
+
+### EXTENSION LATER
+These are intentionally deferred until the first level that actually needs them approaches Gate 3:
+
+- Tabaxi
+- Lizardfolk
+- Duergar
+- Derro
+- Storm Giant
+- Fairy
+- Harengon
+- Spelljammer-specific species
+- fiend families
+
+This prevents PV0 from becoming an all-D&D-species encyclopedia and keeps the first visual lock focused on the pilot and high-frequency recurring anatomy.
