@@ -81,7 +81,13 @@ SCENES/SXX-SCENE-NAME/
 
 ## Validation
 
-A repository validator will live at `scripts/validate_repo.py` after bootstrap Task 7.
+Run the repository validator with:
+
+```bash
+python3 scripts/validate_repo.py
+```
+
+A valid bootstrap prints `DND repository validation: PASS` and exits zero.
 
 ## Scene workspaces
 
