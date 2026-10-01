@@ -146,6 +146,27 @@ def check_json_templates() -> None:
     answers = a.get("answers")
     if not isinstance(answers, dict) or not answers:
         fail("ANSWER-MAP-TEMPLATE.json must contain example answers keyed by target ID")
+        return
+
+    required_target_fields = {
+        "id", "name", "type", "sceneRegion", "answerRef", "difficulty",
+        "eventIslandId", "clue", "thumbnail", "required",
+    }
+    for target in targets:
+        if not isinstance(target, dict):
+            fail("target entry must be an object")
+            continue
+        missing = sorted(required_target_fields - target.keys())
+        if missing:
+            fail(f"target {target.get('id')} missing fields: {missing}")
+        answer_ref = target.get("answerRef")
+        if answer_ref not in answers:
+            fail(f"target {target.get('id')} answerRef {answer_ref!r} does not resolve in answer-map")
+
+    if m.get("targetsFile") != "targets.json":
+        fail("LEVEL-METADATA-TEMPLATE.json targetsFile must be targets.json")
+    if m.get("answerMapFile") != "answer-map.json":
+        fail("LEVEL-METADATA-TEMPLATE.json answerMapFile must be answer-map.json")
 
 
 def check_character_template() -> None:
@@ -245,6 +266,7 @@ def main() -> int:
     check_character_template()
     check_scene_set()
     check_current_state()
+    check_master_integrity()
     check_markdown_links()
 
     if ERRORS:
