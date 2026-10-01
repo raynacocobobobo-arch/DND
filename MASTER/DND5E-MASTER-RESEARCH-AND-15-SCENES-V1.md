@@ -997,4 +997,1571 @@ Candlekeep不是“魔法学校”，首先是：
 - perfume / vial / potion / scroll
 - prestidigitation
 - mage hand
-- fabricate
+- fabricate- mending
+
+## 事件岛
+1. genie使团被让出一条路
+2. merchant用Prestidigitation清洁昂贵织物
+3. inventor修clockwork trolley
+4. apprentice用Mage Hand递瓶子
+5. Dao相关商人评估矿物
+6. caravaners给骆驼卸货
+7. noble retainer和摊主谈价
+8. glassblower检查药瓶
+9. treasure seeker展开地图
+10. city official维持人流
+
+## 60人板
+- 20 ordinary urban residents
+- 8 merchants/guild
+- 6 inventors/magic artisans
+- 6 caravan/nomad
+- 4 magnate/noble
+- 8 genie-affiliated entourage
+- 5 adventurers
+- 3 officials/guards
+
+大型Genie本体另做资产。
+
+## 禁止
+- 全员异域长袍
+- 全是Genie
+- 视觉变成现实历史城市复刻
+- 必须看得出**D&D高魔法商业社会**
+
+---
+
+# R. S04｜Myth Drannor — 外层遗迹研究营
+
+## 官方依据
+当前Forgotten Realms官方资料：
+- Dalelands
+- Cormanthor / Myth Drannor
+- 官方艺术文章 `Art of the Forgotten Realms: The Dalelands`
+
+官方定位：
+- classic heroic fantasy frontier
+- pastoral Dales与巨大精灵遗迹形成反差
+- Myth Drannor是fallen elven splendor的传奇megadungeon
+- ancient elven ruins + fading mythal magic
+
+## 子场景空间
+选择**外层遗迹研究营**而不是核心废墟：
+- 可以同时看到巨型精灵建筑
+- 可以聚集60人
+- 可以展示补给、研究、探险动作
+- Forest和ruins同时成立
+
+## 人群
+- Dalefolk
+- Cormanthor Elves
+- rangers
+- scholars
+- wizards
+- porters
+- crafters
+- adventurers
+- opportunists / Zhentarim / Sembian interests
+- hostile scouts
+
+## 环境
+- enormous ancient Elvish arches
+- broken towers
+- roots penetrating stone
+- moss
+- mist
+- dark forest edge
+- faded magical zones
+- collapsed paths
+- rope-marked danger area
+- study tents / crates
+
+## SRD映射
+- Ranger / Druid / Wizard / Rogue
+- Scout
+- Cartographer’s Tools
+- Mason’s Tools
+- Rope
+- Grappling Hook
+- Climber’s Kit
+- Map
+- Magnifying Glass
+- Detect Magic
+- Comprehend Languages
+- Mage Hand
+- Mending
+- Stone Shape
+- traps
+
+## 事件岛
+1. Elf guide辨认古代建筑纹样
+2. Wizard测量残余魔法
+3. Cartographer在画遗迹平面
+4. Rogue检查塌陷入口
+5. porter搬研究箱
+6. Druid发现树木被魔法影响
+7. two scholars争论铭文
+8. opportunist偷看地图
+9. Ranger发现Goblin踪迹
+10. Dryad远处观察营地
+
+## 60人板
+- 14 Dalefolk/logistics
+- 12 Elves
+- 10 adventurers
+- 8 scholars/mages
+- 6 crafters/surveyors
+- 6 opportunists
+- 4 hostile scouts
+
+## 相关生物
+官方地区生态可出现：
+- Goblin
+- Hobgoblin
+- Bugbear
+- Giant Spider
+- Green Hag
+- Grimlock
+- Green Dragon Wyrmling
+- Dryad
+
+不要全部放前景。
+
+## 禁止
+- 完整华丽精灵城
+- 纯“露营图”
+- Elf全员高贵长袍
+- 魔法遗迹做成霓虹科技
+
+---
+
+# S. S05｜Icewind Dale — Bryn Shander城门集市
+
+## 官方依据
+- *Icewind Dale: Rime of the Frostmaiden*
+  - Ten-Towns Overview
+  - Bryn Shander
+  - poster maps
+- 当前Forgotten Realms官方Icewind资料
+
+## 地点身份
+Bryn Shander：
+- Ten-Towns最大聚落之一/重要中心
+- 高地、风吹、贸易与进入冰原的门户性质强
+- Ten-Towns经济与生存感必须比“漂亮雪景”重要
+
+## 居民生态
+- Ten-Townsfolk
+- fishers
+- trappers
+- traders
+- guards
+- Dwarves of Kelvin’s Cairn
+- Reghed people
+- Goliaths
+- guides / adventurers
+
+## 风俗/生活
+- fishing economy
+- trade
+- sled traffic
+- fuel / food / fur
+- 在天气变坏前赶路
+- 旅行装备高度实用
+- 保暖优先于装饰
+
+## SRD环境映射
+2024：
+- Extreme Cold
+- Strong Wind
+- Slippery Ice
+- Frigid Water
+2014：
+- food/water
+- travel pace
+- difficult terrain
+
+## 装备
+- sled
+- rope
+- rations
+- hooded lantern
+- oil
+- bedroll
+- tent
+- climber’s kit
+- leatherworker gear
+- hunting trap
+- longbow
+- snow / ice travel gear（地方化视觉，非SRD特定商品）
+
+## 合理法术
+- Druidcraft：判断天气
+- Mending：修雪橇带
+- Goodberry：生存
+- Create Food and Water：高价值但不应普及
+- Light：暴雪/夜间
+- Guidance：复杂生存操作
+
+## 事件岛
+1. guards催赶车辆入城
+2. sled cargo卸货
+3. fish seller清点货
+4. dwarf miner交接矿物
+5. Reghed trader展示皮毛
+6. guide检查storm direction
+7. leatherworker修靴
+8. adventurers买oil/rations
+9. dog team tangled in harness
+10. 商贩开始收棚准备暴雪
+
+## 60人板
+- 22 Ten-Townsfolk
+- 7 fishers/trappers
+- 7 caravan/trade
+- 6 guards
+- 6 dwarves
+- 4 Reghed
+- 3 goliaths
+- 5 adventurers/guides
+
+## 相关怪物
+可作为远景/线索：
+- Yeti
+- Winter Wolf
+- Frost Giant
+- White Dragon
+- Ice Mephit
+- Polar Bear
+- Remorhaz
+
+## 禁止
+- 圣诞村
+- 过多纯白
+- 所有人穿同一款毛皮
+- 人物被暴雪遮掉
+
+---
+
+# T. S06｜Port Nyanzaru — 恐龙赛道周边
+
+## 官方依据
+*Tomb of Annihilation*：
+- Ch.1 Port Nyanzaru
+  - Locations in the City
+  - City Denizens
+  - Merchant Prince’s Villa
+  - Factions and Their Representatives
+  - Things to Do
+- Appendix B: Port Nyanzaru Encounters
+- Appendix C: Flora and Fauna
+- Appendix D: Monsters and NPCs
+- Chult poster map
+
+## 地点身份
+Port Nyanzaru是Chult的重要城市和远征集结点。  
+它不是“丛林村庄”。
+
+## 子场景选择
+恐龙赛道周边最有典型性，因为能同时把：
+- mature urban society
+- commercial crowd
+- dinosaur domestication/entertainment
+- foreign explorers
+- guides
+放进一张图。
+
+## 城市人群
+- Chultan locals
+- merchants
+- guides
+- porters
+- dinosaur riders/handlers
+- gamblers/spectators
+- city guards
+- sailors
+- faction representatives
+- foreign adventurers
+
+## 种族
+核心是本地城市居民，不应做“全世界奇异种族动物园”。
+可合理出现：
+- Humans为本地城市基底
+- Tabaxi（官方书有相关NPC/stat blocks）
+- Dwarves及其他常规冒险种族
+- 外来者混合
+
+## 官方生物库
+ToA公开stat block列表可用视觉资产：
+- Brontosaurus
+- Deinonychus
+- Hadrosaurus
+- Stegosaurus
+- Velociraptor
+- Quetzalcoatlus
+- Flying Monkey
+- Chwinga
+- Tabaxi Hunter
+- Tabaxi Minstrel
+等。
+
+不是所有生物都应该在城市出现。
+
+## SRD映射
+- Animal Handling
+- hirelings / porters
+- Herbalism Kit
+- Cartographer’s Tools
+- rope
+- waterskin
+- rations
+- Explorer’s Pack
+- mounts/cargo逻辑
+- Heavy Precipitation
+
+## 合理法术
+- Speak with Animals：少量训练者/德鲁伊
+- Druidcraft：天气
+- Mending：赛具
+- Mage Hand：摊位后勤
+- Guidance：骑手/handler
+- Minor Illusion：娱乐摊位
+
+## 事件岛
+1. riders绑护具
+2. handler检查恐龙口具
+3. spectators下注
+4. vendor利用人流卖货
+5. guide招募探险者
+6. outsider被恐龙吓到
+7. guard清赛道
+8. 小型恐龙/动物偷食
+9. porter急着穿过赛道
+10. wealthy sponsor与代理下注
+
+## 60人板
+- 20 locals/vendors
+- 8 riders/handlers
+- 6 merchant representatives
+- 8 guides/sellswords
+- 6 guards
+- 8 foreign adventurers
+- 4 performers/port workers
+
+另做6–8个恐龙资产。
+
+## 官方视觉参考
+- Port Nyanzaru map
+- ToA Chult poster map
+- official dinosaur stat art
+- official product gallery
+- Ch.1场景图
+
+## 禁止
+- 不要所有恐龙攻击人
+- 不要全员野外装备
+- 赛道周围首先还是城市生活
+- 具体Merchant Prince垄断与人物细节需以正版Ch.1正文为最终标准
+
+---
+
+# U. S07｜Vallaki — 强制节庆广场
+
+## 官方依据
+*Curse of Strahd*：
+- Ch.2 Barovians / Vistani / Areas
+- Ch.5 Town of Vallaki
+  - Approaching the Town
+  - Areas of Vallaki
+  - Special Events
+- 官方Barovia介绍文章
+
+## 地点/社会身份
+Vallaki不是吸血鬼宫廷，而是：
+> **普通人在Strahd长期阴影下试图维持秩序的城镇。**
+
+Barovians官方描述强调：
+- superstition
+- distrust
+- isolation
+- Morninglord宗教痕迹
+- wine的日常重要性
+
+## 强制节庆
+官方文章明确提到：
+- Baron持续办festival
+- 试图靠“欢乐”抵抗Strahd
+- 因而形成“装饰热闹、人却紧张”的独特社会视觉
+
+## 人口
+- Barovian commoners
+- guards
+- local authority
+- clergy
+- merchants
+- inn staff
+- Vistani
+- outsiders/adventurers
+
+### 种族
+应保持封闭地区感：
+- Human绝对主体
+- 外来冒险者才提供有限其他种族
+- 不做国际大都市式混排
+
+## 势力
+- Strahd统治阴影
+- Vallaki local authority
+- local church
+- Vistani
+- Keepers of the Feather等隐藏力量
+
+## SRD映射
+- Commoner
+- Guard
+- Priest / Acolyte
+- Spy
+- Brewer’s Supplies
+- wine / food / lodging
+- religious symbols
+- costume / banners
+- social interaction
+- fear / mental stress作为氛围参考
+
+## 法术
+尽量少：
+- Thaumaturgy：宗教仪式
+- Light：教会
+- Cure Wounds：神职角色
+怪物魔法不应在白天广场泛滥。
+
+## 事件岛
+1. residents挂festival装饰
+2. guard盯着人群要求“配合”
+3. 商人勉强继续营业
+4. child不安地看装饰
+5. priest观察
+6. outsiders交换眼神
+7. Vistani在边缘出现
+8. raven在屋顶
+9. 一个人被要求举起节庆标语
+10. inn worker搬wine
+
+## 60人板
+- 31 Barovians
+- 8 guards/authority
+- 5 clergy
+- 5 merchants/artisans
+- 5 Vistani
+- 6 adventurers/outsiders
+
+## 禁止
+- 吸血鬼舞会
+- 全员疯笑
+- 过度华丽哥特服装
+- 应是“普通社会被恐怖统治扭曲”
+
+---
+
+# V. S08｜Saltmarsh — 主码头货箱拦检
+
+## 官方依据
+*Ghosts of Saltmarsh*：
+- Ch.1 Politics and Factions
+- Saltmarsh Overview
+- Downtime Activities
+- Saltmarsh Region
+- Saltmarsh Backgrounds
+- Ch.2 The Sea Ghost
+- Ch.3 Roleplaying Lizardfolk
+- Ch.6 Council of War / Sahuagin Stronghold
+- Appendix A Of Ships and the Sea
+  - Ship Stat Blocks
+  - Officers and Crew
+  - Travel at Sea
+  - Ocean Environs
+
+## 地点身份
+Saltmarsh是小尺度海岸镇，不是Baldur’s Gate式繁华港区。
+
+重点：
+- fishing economy
+- local families
+- boat repair
+- small warehouses
+- smuggling
+- political tension
+- crown influence / outside development
+
+## 派系
+官方Ch.1明确存在`Politics and Factions`。
+传统已知结构包括：
+- Traditionalists
+- Loyalists
+- Scarlet Brotherhood
+- Town Council
+- dwarven mining interests
+- smugglers
+
+具体人物、人数与派系文本在最终出图前应以正版Ch.1正文复核。
+
+## 人口
+- fishers
+- sailors
+- dock workers
+- merchants
+- shipwrights
+- guards
+- smugglers
+- dwarf newcomers / mining-related workers
+- adventurers
+- Lizardfolk使者（剧情性来客）
+
+## 外部威胁
+- Sahuagin
+- pirates / bandits
+- sea creatures
+
+不应把Sahuagin作为普通镇民。
+
+## SRD映射
+- Pirate / Pirate Captain（5.2新增相关Monster角色）
+- Bandit / Bandit Captain
+- Guard
+- Commoner
+- Navigator’s Tools
+- Carpenter’s Tools
+- Weaver’s Tools
+- rope
+- net
+- barrel
+- lantern
+- ship crew
+- ship repair
+- sailing ship / rowboat / keelboat
+
+## 法术
+- Mending：修网/船具
+- Water Breathing：特殊冒险者
+- Water Walk：特殊施法
+- Light：码头夜间
+- Guidance：航海/工作
+
+## 事件岛
+1. guards打开可疑crate
+2. smuggler装作不认识货
+3. fisher继续卸鱼
+4. shipwright修船舷
+5. dwarf workers等矿业货物
+6. sailors系绳
+7. clerk核shipping record
+8. lizardfolk visitors被围观
+9. rogue观察inspection
+10. seagull抢鱼（环境幽默）
+
+## 60人板
+- 20 fishers/sailors
+- 8 dock/shipwright
+- 8 merchants
+- 7 authority/guards
+- 5 smugglers
+- 5 dwarven newcomers
+- 4 adventurers
+- 3 lizardfolk envoys
+
+## 禁止
+- 大型商业港
+- 海盗主题公园
+- Saltmarsh必须有地方社区和政治摩擦
+
+---
+
+# W. S09｜Gracklstugh — Darklake District
+
+## 官方依据
+*Out of the Abyss* Ch.4：
+- Going to Gracklstugh
+- Gracklstugh
+- Darklake District
+- Laduguer’s Furrow
+- West & East Cleft Districts
+- Halls of Sacred Spells
+- Cairngorm Cavern
+- Themberchaud’s Lair
+- Whorlstone Tunnels
+- Hold of the Deepking
+
+此外OotA提供：
+- Underdark Travel
+- Equipment
+- Madness
+- Fungi of the Underdark
+
+## 地点身份
+这是一座完整的**Duergar地下城市**。
+不是“洞穴+矮人铁匠”。
+
+选择Darklake District是因为：
+- water transport
+- trade
+- labor
+- guards
+- outsiders
+- industrial logistics
+可以同时成立。
+
+## 人口
+- Duergar绝对主体
+- Derro为重要地下人口
+- outsider traders少量
+- adventurers少量
+- 其他Underdark居民根据官方章节具体需要加入
+
+**不要自动塞大量Drow。**
+
+## 城市权力/文化
+- Deepking王权
+- Laduguer宗教
+- Halls of Sacred Spells
+- Themberchaud与城市权力/工业形成独特关系
+
+## 环境
+- enormous cavern
+- dark water
+- stone dock
+- basalt
+- black iron
+- chain / crane
+- mine cart
+- ore
+- furnace glow
+- smoke / steam
+- dim red-orange against black
+- heavy low architecture
+
+## SRD映射
+- Dwarf体型参考，但Duergar外观以OotA官方图为准
+- Darkvision
+- Smith’s Tools
+- Mason’s Tools
+- Carpenter’s Tools
+- chain
+- block and tackle
+- cart
+- heavy armor
+- Guard / Veteran / Commoner
+- Heat / darkness
+
+## 法术
+- Mending：工具维修
+- Light：外来人照明
+- Detect Magic：货物/城市异常
+- Stone Shape：少数施法角色
+不要全员魔法。
+
+## Themberchaud
+官方明确有独立`Themberchaud’s Lair`。
+作为本场景：
+- 远处炉火
+- 红龙纹章/警戒
+- heat
+- 影子
+比把龙直接摆在前景更好。
+
+## 事件岛
+1. barge靠岸
+2. ore被block-and-tackle吊起
+3. guards检查外商
+4. smith crew换班
+5. Derro搬运
+6. overseer清点
+7. cart jam造成短暂争吵
+8. outsider举灯适应黑暗
+9. priest/official经过
+10. 远处炉火骤亮，众人短暂停顿
+
+## 60人板
+- 34 Duergar
+- 8 Derro
+- 5 elite guards
+- 4 priest/official
+- 5 Underdark traders
+- 4 outsiders/adventurers
+
+## 禁止
+- 蓝紫霓虹Underdark
+- Duergar个个不同怪物脸
+- 大量Drow抢戏
+- 视觉核心：**纪律、工业、沉重、地下热量**
+
+---
+
+# X. S10｜Maelstrom — Storm Giant王庭
+
+## 官方依据
+*Storm King’s Thunder*：
+- Introduction
+  - The Ordning
+  - King Hekaton and His Daughters
+  - Iymrith
+  - Giant Lords
+- Ch.10 Hold of the Storm Giants
+  - Storm Giants
+  - Maelstrom
+  - General Features
+
+## 场景身份
+Maelstrom是Storm Giant王庭/要塞。
+战役背景：
+- Ordning发生危机
+- King Hekaton相关权力危机
+- royal family与Iymrith阴谋构成核心压力
+
+## 尺度
+这一关的第一原则不是“海底蓝色”，而是：
+> **Storm Giant文明的巨型尺度。**
+
+SRD/官方Monster信息：
+- Storm Giant是Huge Giant
+- 可游泳
+- 海岸/水下生态强
+
+## 空间
+- giant-scale hall
+- massive arches
+- reef / underwater architecture
+- pools / submerged passages
+- sea visible beyond openings
+- giant throne / table / weapon
+- coral / shell / marine ornament
+- smallfolk极小
+
+## 人口
+- Storm Giant royal/court
+- guards
+- attendants
+- messengers
+- giant envoys（若剧情需要）
+- smallfolk visitors
+- aquatic attendants（具体种族必须以Ch.10正文为准）
+
+## SRD映射
+- Storm Giant official monster size
+- Deep Water
+- Underwater Combat
+- Detect Magic / Control Weather（巨人能力语境）
+- giant-scale objects
+- guards / nobles / messengers类社会角色映射
+
+## 事件岛
+1. smallfolk party等待接见
+2. giant guard拦住入口
+3. messenger带来紧急消息
+4. two giant courtiers争论
+5. attendants搬巨型礼器
+6. giant weapon被放在架上
+7. aquatic servant/visitor穿过水道
+8. royal figure与使者谈话
+9. smallfolk仰头看巨大座椅
+10. 海外窗口有大型海洋生物掠过
+
+## 资产板
+不要单一60人同尺度。
+建议：
+- Giant sheet：20
+- Smallfolk sheet：30
+- aquatic/support：10
+
+## 禁止
+- Storm Giant画成2米多的人
+- Human尺寸家具
+- 全员战斗姿态
+- 场景应是“文明与宫廷”，不是Boss竞技场
+
+---
+
+# Y. S11｜Avernus — Wandering Emporium
+
+## 官方依据
+*Baldur’s Gate: Descent into Avernus*：
+- What Is Avernus?
+- Features of Avernus
+- Warlords of the Avernian Wastelands
+- Bel’s Forge
+- Stygian Dock
+- Styx Watchtowers
+- The Wandering Emporium
+- Zariel’s Flying Fortress
+- Appendix B Infernal War Machines
+- Story Concept Art
+
+官方Avernus文章强调：
+- blasted battlefield
+- River Styx
+- citadels / watchtowers
+- infernal war machines
+- crimson dust
+- Blood War
+- Zariel / Bel
+
+## 为什么选Wandering Emporium
+因为Avernus大量空间很空旷，难以自然放60人。
+Emporium则能合理容纳：
+- traders
+- fiends
+- mortals
+- mercenaries
+- mechanics
+- scavengers
+- war-machine crews
+
+## 社会习惯
+Avernus不仅有战争，还有：
+- contracts
+- barter
+- repair
+- fuel / vehicle logistics
+- mercenary negotiation
+- scavenging
+- information exchange
+
+## 人口/生物
+- Devils / fiends主体之一
+- mortals / cultists / travelers
+- yugoloth/mercenary型角色可依据官方具体场景
+- warlords
+- scavengers
+
+官方BGDiA附录可参考：
+- Amnizu
+- Bulezau
+- Hellwasp
+- Merregon
+- Narzugon
+- Nupperibo
+- White Abishai
+等。
+
+## SRD映射
+- Extreme Heat
+- vehicles（规则行为参考）
+- Smith’s / Tinker’s Tools
+- chain
+- repair tools
+- merchant/commoner/hireling逻辑
+- infernal种族/怪物则以BGDiA为主
+
+## 法术
+- Mending：设备
+- Detect Magic：交易物
+- Identify：魔法货物
+- Thaumaturgy：fiend/cult
+- Mage Hand：后勤
+
+## 事件岛
+1. mechanic钻在war machine下
+2. devil merchant谈价
+3. traveler买水/补给
+4. warlord crew排队
+5. scavenger卖scrap
+6. mercenary recruiter招人
+7. occult clerk写contract
+8. prisoner/servant搬货（谨慎处理，不做猎奇）
+9. adventurers检查路线
+10. 远景River Styx / flying fortress
+
+## 60人板
+- 18 fiend roles
+- 10 market staff
+- 8 mechanics/vehicle crew
+- 8 planar travelers
+- 6 mercenaries
+- 6 adventurers
+- 4 special infernal figures
+
+## 禁止
+- 全红
+- 全是战斗
+- 每个devil都独立怪物设计导致画风碎裂
+- 战争社会也需要后勤和交易
+
+---
+
+# Z. S12｜Witchlight Carnival — Giant Snail Race
+
+## 官方依据
+*The Wild Beyond the Witchlight*：
+- Witchlight Hand background
+- Fairy
+- Harengon
+- Ch.1 Carnival Owners
+- Witchlight Hands
+- Carnival Overview
+- Carnival Locations
+- Carnival Events
+- poster map
+
+官方文章明确：
+- Carnival会跨世界/位面旅行
+- Witchlight Hands从事大量幕后工作
+- Mister Witch / Mister Light经营Carnival
+- Giant Snail Racing是正式活动
+- Almiraj Ring Toss、Hall of Illusions等也是官方活动
+
+## 场景身份
+不是“普通游乐园换奇幻皮肤”，而是：
+> **跨位面移动的Fey-linked魔法嘉年华。**
+
+## 人口
+- Witchlight Hands
+- performers
+- vendors
+- game operators
+- visitors
+- Fairy
+- Harengon
+- wondrous beings
+
+## 环境
+- kaleidoscopic tents/wagons
+- twilight/night
+- lanterns
+- bunting
+- grass/mud path
+- hand-painted signs
+- magical but handmade feel
+- temporary wood structures
+- colorful without neon-tech
+
+## SRD映射
+- Bard
+- Entertainer’s Pack
+- Musical Instruments
+- Costume
+- Gaming Set
+- Painter’s Supplies
+- Animal Handling
+- Minor Illusion
+- Prestidigitation
+- Dancing Lights
+- Mending
+
+## 事件岛
+1. giant snails起跑
+2. crowd摇铃/旗
+3. handler追一只偏离方向的snail
+4. Harengon下注
+5. Fairy飞过计时区
+6. Witchlight Hand修装饰
+7. Almiraj game nearby
+8. musician准备下一场
+9. vendor忙卖食物
+10. visitor找丢失物品
+
+## 60人板
+- 18 Witchlight Hands
+- 10 performers
+- 8 vendors/game operators
+- 14 visitors
+- 5 Fairy
+- 5 Harengon
+
+## 禁止
+- 低幼Disney感
+- 全员笑脸
+- 现代主题公园设施
+- 仍然维持项目统一5–5.5头身
+
+---
+
+# AA. S13｜Rock of Bral — Low City Docks
+
+## 官方依据
+*Spelljammer: Astral Adventurer’s Guide*：
+- Ch.3 Rock of Bral
+- Life on the Rock
+- Keeping Order
+- Who’s Who
+- Prince Andru and His Court
+- Underbarons
+- High / Middle / Low City
+- Underside
+
+官方文章 `Welcome to Bral...` 提供非常具体社会结构。
+
+## 城市分层
+### High City
+- noble estates
+- fine inns
+- magical library
+- temples
+- Starhaven
+- Lake Bral
+### Middle City
+- economic heart
+- Great Market
+- star charts / trade
+- artifact recovery business
+- private security
+
+### Low City
+- working class
+- taverns
+- boarding houses
+- peddlers / thieves
+- docks
+- people + cargo arrival/departure
+
+### Underside
+- agriculture
+- military
+- gravity-plane相关空间
+
+## 城市风俗
+官方文章概括出的社会规则：
+- 少管别人闲事
+- 钱很重要
+
+秩序：
+- serious crimes → magistrates / Magistrate’s Watch
+- criminal groups提供保护/“保险”
+
+## 种族
+这是15关里**最适合高种族多样性**的地方。
+官方Spelljammer基础species：
+- Astral Elf
+- Autognome
+- Giff
+- Hadozee
+- Plasmoid
+- Thri-kreen
+
+Bral官方文章特别点名：
+- Giff
+- Thri-kreen
+- Hadozee
+- 以及众多其他intelligent species
+
+## SRD映射
+基础规则层：
+- sailor / hireling
+- navigator’s tools
+- rope / cargo / block and tackle
+- ship repair逻辑
+- maps
+- spyglass
+- merchant / thief / guard
+
+Spelljammer船、species、Wildspace环境必须以官方Spelljammer资料为主，不能拿普通SRD船直接替代。
+
+## 事件岛
+1. ship A卸货
+2. ship B下旅客
+3. ship C紧急修理
+4. Giff crew搬重货
+5. Hadozee在rigging上工作
+6. Thri-kreen trader同时处理多件货
+7. Watch调查dock accident
+8. thief盯上新人
+9. star-chart seller招揽客人
+10. boarding-house worker拉住旅客
+
+## 60人板
+- 8 Giff
+- 6 Thri-kreen
+- 6 Hadozee
+- 14 common humanoid travelers
+- 8 other Spelljammer species
+- 8 dock/trade workers
+- 5 Watch
+- 5 criminal associates
+
+## 官方视觉参考
+- Rock of Bral map
+- official asteroid city art
+- Spelljammer ships
+- species official art
+- Low City / Bral article imagery
+
+## 禁止
+- 金属科幻空间站
+- 激光武器
+- 现代宇航服
+- Spelljammer的核心是“奇幻航海+魔法宇宙”
+
+---
+
+# AB. S14｜Radiant Citadel — Concord Jewel抵达广场
+
+## 官方依据
+*Journeys Through the Radiant Citadel*：
+- Features
+- Noteworthy Sites
+- Concord Jewels
+- Life in the Citadel
+- Groups of the Citadel
+- Citadel Defenses
+- Entering the Citadel
+- Legends and Lore
+
+官方文章明确：
+- Citadel位于Ethereal Plane
+- 围绕Auroral Diamond
+- 巨大化石生物骨架环绕其周围
+- founding civilizations在化石中构筑城市
+- Concord Jewels连接物质位面文明
+
+## 社会核心
+不是“多种族”而是：
+> **多文明。**
+
+城市功能：
+- diplomacy
+- trade
+- history
+- knowledge
+- refuge
+- inter-civilization travel
+
+## 政治/精神结构
+- Speakers for the Ancestors
+- founding civilizations
+- Dawn Incarnates
+
+官方Dawn Incarnates文章说明：
+- spirit集合在Auroral Diamond周围形成gemstone beings
+- 强大的Dawn Incarnates代表founding cultures
+- 对Speakers具有监督/问责作用
+- citizens/adventurers可与其交流
+
+## 视觉
+- Ethereal mist
+- Auroral Diamond
+- fossil ribs / colossal bones
+- city carved into fossil
+- bridges / terraces
+- Concord Jewel transit
+- multiple coherent culture groups
+- soft luminous environment
+
+## 人口
+不要做：
+- 10 Human
+- 8 Elf
+- 6 Dwarf
+这种Species配额。
+
+要做：
+- Culture A group
+- Culture B group
+- Culture C group
+……
+每组内部服饰、纹样、货物和社交动作统一。
+
+## SRD映射
+- Diplomat-like pack
+- Sage
+- Acolyte
+- Calligrapher’s
+- Jeweler’s
+- maps
+- scrolls
+- holy symbols
+- languages
+- merchants/hirelings
+- Identify / Comprehend Languages / Detect Magic
+- Guidance / Mending
+
+## 事件岛
+1. Concord Jewel arrival
+2. delegation下船/离开传送载具
+3. Speaker代表迎接
+4. guides分流
+5. porters搬礼物
+6. trader观察新货
+7. scholar登记
+8. 不同文化代表交换礼仪
+9. healer帮助晕眩旅客
+10. Dawn Incarnate相关象征在高处/远处可见
+
+## 60人板
+- 5 coherent culture groups × 6 = 30
+- 8 diplomats/administration
+- 8 traders
+- 6 scholars/healers/artisans
+- 6 travelers/adventurers
+- 2 spiritual/special roles
+
+## 禁止
+- 白色科幻乌托邦
+- 全球民族服装随机拼贴
+- “种族多样性”压倒“文化分组”
+- 必须保留Auroral Diamond + fossil structure
+
+---
+
+# AC. S15｜Well of Dragons — 联军前沿总集结营
+
+## 官方依据
+*The Rise of Tiamat / Tyranny of Dragons*：
+- Council of Waterdeep
+- Gathering Allies
+- Metallic Dragons, Arise
+- Mission to Thay
+- Ch.17 Tiamat’s Return
+  - The Final Battle
+  - Approaching the Well
+  - The Well of Dragons
+  - Tiamat’s Temple
+  - Enemies and Allies
+  - Victory or Defeat
+- Appendix monsters/NPCs
+- Concept Gallery
+
+## 场景身份
+Well of Dragons不是普通“屠龙冒险营”。
+它是：
+- Cult of the Dragon最终计划
+- Tiamat召唤
+- Red Wizards参与
+- 多方联盟最终进攻
+- Metallic Dragons等高阶力量参与
+的终局战区。
+
+## 为什么选“总攻前最后一小时”
+如果直接画Boss战：
+- 大量人物会失去个人动作
+- hidden-object玩法变差
+- 画面会被龙/魔法占满
+
+战前一小时反而最能体现：
+- 联盟
+- 职业
+- 后勤
+- 焦虑
+- 战术
+- 祝福
+- 装备
+- faction diversity
+
+## 人群
+- adventuring strike teams
+- allied soldiers
+- scouts
+- engineers
+- clerics
+- wizards
+- healers
+- smiths
+- messengers
+- faction envoys
+- dragon hunters
+
+敌方：
+- Cult of the Dragon
+- Wyrmspeaker体系
+- Red Wizards
+- dragon-related forces
+
+## 官方怪物/NPC方向
+官方附录/章节可参考：
+- Dragonclaw
+- Dragonfang
+- Dragonwing
+- Dragonsoul
+- Guard Drake
+- Severin
+- Rath Modar
+- Tiamat
+等。
+
+## SRD映射
+- Soldier background
+- Veteran / Guard / Knight
+- Cleric / Wizard / Ranger / Fighter / Rogue
+- Smith’s Tools
+- Cartographer’s Tools
+- Healer’s Kit
+- rope
+- grappling hook
+- signal whistle
+- maps
+- heavy crossbows
+- tents
+- rations
+- potion
+- Mending
+- Bless
+- Guidance
+- Cure Wounds
+- Detect Magic
+- Minor Illusion（战术模拟）
+- Find Familiar（侦察）
+
+## 事件岛
+1. Cleric给一队人Bless
+2. Wizard用Minor Illusion模拟龙航线
+3. scout把地图摊在箱子上汇报
+4. smith修anti-dragon gear
+5. healer处理归来的伤员
+6. engineer固定重型弩具
+7. faction envoys争论攻击窗口
+8. Rogue检查grappling gear
+9. Bard安抚紧张队伍
+10. familiar偷吃补给形成小幽默
+11. dragon silhouette掠过远处
+12. cult spy混在后勤中
+
+## 60人板
+- 18 adventurers/elite teams
+- 10 allied soldiers
+- 8 cleric/wizard support
+- 8 scouts/engineers/dragon hunters
+- 5 faction envoys
+- 5 cult/intelligence roles
+- 6 logistics/healer/smith/messenger
+
+敌方大军、巨龙、Tiamat’s Temple不计入“白底人物60人”主体。
+
+## 禁止
+- 直接Boss战
+- 60个英雄排队
+- Dragonborn大量出现只因为“龙主题”
+- 无意义火山火光
+- 必须让Alliance / Cult / Temple / Dragon War身份明确
+
+---
+
+
+# AD. 15关 × SRD资产映射矩阵
+
+| 场景 | 最有用NPC | 最有用工具/装备 | 最有用规则/环境 | 最有用法术 |
+|---|---|---|---|---|
+| Baldur’s Gate | Guard, Commoner, Spy, Thug, Cultist, Noble | Forgery, Thieves’, manacles, ledgers, carts | Social / hirelings | Detect Magic, Mending |
+| Candlekeep | Mage, Archmage, Acolyte, Priest | Calligraphy, books, parchment, scrolls | Research | Detect Magic, Identify, Comprehend Languages |
+| Calimport | Commoner, Noble, Mage | Alchemy, Tinker, Jeweler, Glassblower, camel | Extreme Heat / trade | Prestidigitation, Mage Hand, Fabricate |
+| Myth Drannor | Scout, Druid, Mage | Cartography, Mason, rope, climber kit | Difficult terrain / traps | Detect Magic, Comprehend Languages, Stone Shape |
+| Icewind Dale | Scout, Guard, Commoner, Veteran | sled, rations, hunting trap, leather | Extreme Cold / wind / ice | Druidcraft, Mending, Goodberry |
+| Port Nyanzaru | Commoner, Scout, Guard | Herbalism, rope, cargo, Animal Handling | Heavy Precipitation | Speak with Animals, Guidance, Mending |
+| Vallaki | Commoner, Guard, Priest, Spy | Brewer, costume, wine, holy symbol | Social / fear atmosphere | Thaumaturgy, Light |
+| Saltmarsh | Commoner, Guard, Bandit/Pirate | Navigator, Carpenter, rope, net, ship tools | Sea travel | Mending, Water Breathing |
+| Gracklstugh | Guard, Veteran, Commoner | Smith, Mason, chains, carts | Darkness / industrial | Mending, Light |
+| Maelstrom | Noble/Guard analogues | giant objects | Deep Water / underwater | Detect Magic / setting-specific giant magic |
+| Avernus | mercenary/social analogues | Smith/Tinker, chains, repair | Extreme Heat | Mending, Identify |
+| Witchlight | Commoner/performer analogues | instruments, costume, gaming, painter | Social/event | Minor Illusion, Prestidigitation, Dancing Lights |
+| Rock of Bral | Guard, Spy, Commoner | Navigator, rope, block/tackle, spyglass | ship/crew logic | Mending, Mage Hand |
+| Radiant Citadel | Noble/Sage/Acolyte analogues | Calligraphy, Jeweler, maps, diplomat kit | Social/languages | Comprehend Languages, Detect Magic |
+| Well of Dragons | Veteran, Knight, Scout, Priest | Smith, Cartography, healer kit, rope | rest / warfare / logistics | Bless, Guidance, Cure Wounds, Mending |
+
+---
+
+# AE. Species比例不是“官方百分比”
+
+重要规则：
+
+## 不做
+> Human 40%  
+> Elf 15%  
+> Dwarf 10%  
+> Tiefling 8%……
+
+除非官方资料真的提供人口统计，否则这种数字都是假的。
+
+## 正确方式
+先判断：
+1. 地点
+2. 势力
+3. 常住 vs 外来
+4. 社会身份
+5. 特有种族
+6. 这一个具体事件谁会在场
+
+然后才做60人的**项目设计数量**。
+
+例如：
+- Gracklstugh → Duergar绝对主体
+- Bral → 多元宇宙species高多样性
+- Vallaki → Human-heavy封闭社会
+- Radiant Citadel → 先按civilization group，不按species
+- Well of Dragons → 先按faction / military role，不按居民种族
+
+---
+
+# AF. 60人白底资产板：统一制作规范
+
+## AF1. 一场景一套60人
+不再追求15场景共用同一批演员。
+
+## AF2. 20人 × 3张
+每张：
+- 纯白背景
+- 同一地面线
+- 全身
+- 正面/轻3/4
+- 不做透视
+- 编号
+- 身份标签
+
+## AF3. 每个角色至少定义
+- ID
+- Species
+- culture / faction
+- NPC role or class
+- height category
+- body type
+- age range
+- face/hair
+- clothing language
+- core equipment
+- tool
+- one readable action tendency
+- one baseline expression
+
+## AF4. 差异优先级
+1. Species核心骨架一致
+2. Faction / culture服装语言一致
+3. Social role差异
+4. Class / equipment差异
+5. Age / hair / facial features
+6. color micro-variation
+
+## AF5. 过度差异化禁止
+同一批Duergar不能出现：
+- 一个像儿童
+- 一个像普通Human
+- 一个像怪兽
+- 一个像Warcraft Orc
+
+同理：
+- Elf
+- Giff
+- Harengon
+- Tiefling
+都必须先锁族群模板。
+
+---
+
+# AG. 正式出图前每关仍要完成的最后一级资料
+
+这份Master已经完成：
+- SRD底层
+- 15个地点与子场景
+- 社会/种族/工具/法术映射
+- 事件逻辑
+- 60人高层配比
+
+真正开始某一关资产图时，还应再生成一个约10–20页等量的：
+`SXX_FINAL_SCENE_BIBLE.md`
+
+其中只做当前一关，并补：
+
+1. **官方地图空间转译**
+   - 左 / 中 / 右
+   - 前 / 中 / 后
+   - 入口
+   - 建筑边界
+   - 高台
+   - 人流方向
+
+2. **官方视觉图索引**
+   - 哪张图看建筑
+   - 哪张图看服装
+   - 哪张图看怪物
+   - 哪张图看材质
+   - 哪张图看色温
+
+3. **60人逐人清单**
+   - 不再只有群体数量
+
+4. **8–12事件岛详细blocking**
+
+5. **生物资产板**
+
+6. **重要道具板**
+
+7. **Species scale board**
+
+8. **最终画面人物layout**
+
+这一步不是重新研究世界，而是把本Master压成“该关可直接生成”的生产文件。
+
+---
+
+# AH. 资料可信度标记规则
+
+后续所有文件统一使用：
+
+### 【SRD-5.1】
+来自Wizards SRD 5.1开放内容。
+
+### 【SRD-5.2.1】
+来自Wizards SRD 5.2.1开放内容。
+
+### 【OFFICIAL-SETTING】
+来自Wizards / D&D Beyond正式冒险书、设定书或官方文章。
+
+### 【OFFICIAL-INDEX】
+官方Source目录能确认该章节存在，但公开网页没有完整正文；具体文本正式生产前应以正版书复核。
+
+### 【PROJECT】
+我们的美术/关卡设计选择，例如：
+- 60人具体数量
+- 一个事件发生在某个时间点
+- 隐藏目标位置
+- 某个NPC站左还是右
+
+---
+
+# AI. 官方/开放资料索引
+
+## SRD
+- D&D Beyond System Reference Document  
+  https://www.dndbeyond.com/srd
+- GitHub 2014 SRD Markdown  
+  https://github.com/oldmanumby/dnd.srd.5.1
+- GitHub 2024 SRD 5.2.1 Markdown  
+  https://github.com/oldmanumby/dnd.srd.5.2.1
+- Alternative 5.2.1 Markdown  
+  https://github.com/downfallx/dnd-5e-srd-markdown
+- Structured database  
+  https://github.com/5e-bits/5e-database
+- SRD API  
+  https://github.com/5e-bits/5e-srd-api
+
+## 场景官方核心书
+- Baldur’s Gate: Descent into Avernus
+- Candlekeep Mysteries
+- Forgotten Realms: Adventures in Faerûn
+- Icewind Dale: Rime of the Frostmaiden
+- Tomb of Annihilation
+- Curse of Strahd
+- Ghosts of Saltmarsh
+- Out of the Abyss
+- Storm King’s Thunder
+- The Wild Beyond the Witchlight
+- Spelljammer: Astral Adventurer’s Guide
+- Journeys Through the Radiant Citadel
+- The Rise of Tiamat / Tyranny of Dragons
+
+---
+
+# AJ. 最终锁定原则
+
+从这份文件开始，后续不再用“泛奇幻合理”作为主要判断依据。
+
+每个画面元素按以下顺序判断：
+
+1. **官方地点是否支持**
+2. **官方势力/居民是否支持**
+3. **SRD规则/装备/职业是否支持**
+4. **该元素是否符合当前子场景的事件**
+5. **是否有利于hidden-object可读性**
+
+如果：
+- 官方地点没有说
+- SRD也没有支持
+- 只是“看起来很奇幻”
+
+则默认不加入，除非明确标记为【PROJECT】设计。
+
+这就是后续15张大图共同的资料底线。
