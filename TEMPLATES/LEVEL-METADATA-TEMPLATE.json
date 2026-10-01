@@ -1,0 +1,22 @@
+{
+  "levelId": "SXX-EXAMPLE",
+  "title": "Example Level",
+  "scene": "Official location name",
+  "subscene": "Locked representative subscene",
+  "version": "0.1.0",
+  "gateStatus": {
+    "G0": "APPROVED",
+    "G1": "APPROVED",
+    "G2": "APPROVED",
+    "G3": "APPROVED",
+    "G4": "APPROVED",
+    "G5": "APPROVED",
+    "G6": "APPROVED",
+    "G7": "DRAFT"
+  },
+  "sceneImage": "scene-final.png",
+  "targetsFile": "targets.json",
+  "answerMapFile": "answer-map.json",
+  "targetCount": 1,
+  "notes": "Template only. Replace example values with approved level data."
+}
