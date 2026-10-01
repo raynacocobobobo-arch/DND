@@ -31,11 +31,12 @@
 
 ## Review Focus
 
-1. **Visual-role ambiguity:** each board must lock a narrow, declared visual responsibility and explicitly state what must not be inherited from it.
-2. **Generator drift:** the same boards used through a materially changed generator must trigger calibration, not silent continuation.
-3. **Species drift:** later scene-specific clothing or poses must never override locked species anatomy.
-4. **UI drift:** scene content may change, but component geometry/spacing/state language must stay identical within a UI version.
-5. **False lock state:** validators must reject missing files, broken hashes, or anchors marked `LOCKED` without required spec/image/profile dependencies.
+1. **Text-only bootstrap drift:** the first Style Board must be grounded in explicitly selected, user-approved prior visual references rather than invented from prose alone.
+2. **Visual-role ambiguity:** each board must lock a narrow, declared visual responsibility and explicitly state what must not be inherited from it.
+3. **Generator drift:** the same boards used through a materially changed generator must trigger calibration, not silent continuation.
+4. **Species drift:** later scene-specific clothing or poses must never override locked species anatomy.
+5. **UI drift:** scene content may change, but component geometry/spacing/state language must stay identical within a UI version.
+6. **False lock state:** validators must reject missing files, broken hashes, or anchors marked `LOCKED` without required spec/image/profile dependencies.
 
 ---
 
@@ -46,6 +47,9 @@
 ```text
 MASTER/VISUAL-FOUNDATION/
 ├── README.md
+├── 00-SEED-REFERENCES/
+│   ├── SEED-REFERENCE-SELECTION-V1.md
+│   └── selected approved reference images/crops
 ├── GLOBAL-VISUAL-FOUNDATION-V1.md
 ├── 15-LEVEL-VISUAL-INVENTORY-V1.md
 ├── VISUAL-ANCHOR-MANIFEST.json
@@ -150,6 +154,7 @@ Create `scripts/validate_visual_foundation.py` with checks for:
 - unique anchor IDs;
 - file/spec path existence when an anchor is present;
 - SHA-256 field required for `LOCKED` anchors;
+- `provenance` required for every anchor record;
 - `controls` and `doNotInherit` required and non-empty;
 - locked anchor file hash must match the manifest;
 - Generation Profile / Adapter required before PV0 can be declared locked.
@@ -261,20 +266,7 @@ Do not upgrade uncertain location-specific details to fact.
 
 The inventory's purpose is not to finalize each scene population. It identifies what the global visual system must be capable of representing.
 
-- [ ] **Step 3: Derive PV0 core species set**
-
-PV0 must include:
-- every species in the current Candlekeep Gate 2 proposal;
-- recurring species justified by the 15-level inventory.
-
-Record:
-- `PV0 REQUIRED`;
-- `EXTENSION LATER`;
-- evidence/source reason.
-
-Do not pre-build every D&D species.
-
-- [ ] **Step 4: Review Candlekeep Gate 2 as a package**
+- [ ] **Step 3: Review Candlekeep Gate 2 as a package**
 
 Check:
 - population arithmetic;
@@ -286,13 +278,26 @@ Check:
 
 Output the review in `CURRENT.md` under a temporary “Gate 2 review findings” section.
 
-**Human checkpoint:** do not change Candlekeep Gate 2 to APPROVED without explicit user approval.
+**Human checkpoint:** present the findings and obtain an explicit Gate 2 decision. If changes are requested, revise the Gate 2 package and re-review. Do not derive the pilot species lock from an unapproved proposal.
+
+- [ ] **Step 4: Derive PV0 core species set after Gate 2 decision**
+
+PV0 must include:
+- every species in the approved Candlekeep Gate 2 package;
+- recurring species justified by the 15-level inventory.
+
+Record:
+- `PV0 REQUIRED`;
+- `EXTENSION LATER`;
+- evidence/source reason.
+
+Do not pre-build every D&D species.
 
 - [ ] **Step 5: Verify inventory and Gate truthfulness**
 
 Expected:
 - all 15 scene IDs present;
-- Candlekeep still `Gate 2 NEXT / NOT APPROVED`;
+- Candlekeep Gate 2 state matches the explicit human decision;
 - exact PV0 species list can be read from the inventory.
 
 - [ ] **Step 6: Commit**
@@ -304,9 +309,11 @@ git commit -m "docs: audit visual requirements across 15 levels"
 
 ---
 
-# Task 3: Write the Eight Visual-Board Specifications
+# Task 3: Select Seed References and Write the Eight Visual-Board Specifications
 
 **Files:**
+- Create: `MASTER/VISUAL-FOUNDATION/00-SEED-REFERENCES/SEED-REFERENCE-SELECTION-V1.md`
+- Add: 2–4 selected user-approved prior images or diagnostic crops under `00-SEED-REFERENCES/`
 - Create all eight `*-SPEC-V1.md` files under `01-STYLE` through `08-ANTI-DRIFT`.
 - Modify: `VISUAL-ANCHOR-MANIFEST.json`
 
@@ -314,13 +321,26 @@ git commit -m "docs: audit visual requirements across 15 levels"
 - Consumes: Task 2 inventory.
 - Produces: exact briefs used by image generation in Tasks 5–6.
 
-- [ ] **Step 1: Write a failing spec-presence test**
+- [ ] **Step 1: Select visual seed references**
+
+Review previously user-approved project outputs and select only 2–4 references that genuinely represent the desired project style.
+
+For each selected source, record:
+- source/reference ID;
+- why the user approved it;
+- exact properties to inherit;
+- exact properties not to inherit;
+- whether the whole image or only a crop is authoritative.
+
+**Human checkpoint:** the user approves the seed set before VA01 generation. If prior approved images cannot be recovered at sufficient quality, stop and ask the user to re-upload the selected references rather than inventing replacements from memory.
+
+- [ ] **Step 2: Write a failing spec-presence test**
 
 Validator must require each planned VA01–VA08 spec path once its anchor record exists.
 
 Expected before creation: FAIL.
 
-- [ ] **Step 2: Write VA01–VA02 specs**
+- [ ] **Step 3: Write VA01–VA02 specs**
 
 VA01 exact sections:
 - controls;
@@ -339,7 +359,7 @@ VA02 exact sections:
 - full-body + face + hand required examples;
 - rejection conditions.
 
-- [ ] **Step 3: Write VA03 Species spec**
+- [ ] **Step 4: Write VA03 Species spec**
 
 Use the PV0 species list from Task 2.
 
@@ -352,7 +372,12 @@ For every PV0 species require:
 
 Explicitly state: anatomy is inherited; clothing is not.
 
-- [ ] **Step 4: Write VA04–VA05 specs**
+The Species spec must also encode the extension protocol:
+- later unrepresented species requires a new extension board;
+- compatible additions increment the Foundation minor version;
+- existing locked species are not redrawn by default.
+
+- [ ] **Step 5: Write VA04–VA05 specs**
 
 VA04: class/social-role equipment + task/action grammar.
 
@@ -360,7 +385,7 @@ VA05: expression intensity + interaction grammar.
 
 No reusable named actor library.
 
-- [ ] **Step 5: Write VA06–VA08 specs**
+- [ ] **Step 6: Write VA06–VA08 specs**
 
 VA06 must encode:
 - 105–110 / 100 / 85–90 scale bands;
@@ -371,11 +396,11 @@ VA07 must encode recurring material rendering.
 
 VA08 must require labeled rejection examples and failure category.
 
-- [ ] **Step 6: Update manifest spec paths and run validator**
+- [ ] **Step 7: Update manifest spec paths and run validator**
 
 Expected: PASS with images still DRAFT.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add MASTER/VISUAL-FOUNDATION
@@ -391,7 +416,7 @@ git commit -m "docs: define eight canonical visual board briefs"
 - Create: `UI/UI-TOKENS-V1.json`
 - Create: `UI/UI-COMPONENTS-V1.svg`
 - Create: `UI/UI-COMPONENT-BOARD-V1.png`
-- Create: `UI/UI-FULL-MOCKUP-V1.png`
+- Defer until Task 8: `UI/UI-FULL-MOCKUP-V1.png`
 - Create: `GENERATION/GENERATION-PROFILE-V1.json`
 - Create: `GENERATION/MODEL-ADAPTER-V1.md`
 - Modify: manifest
@@ -406,7 +431,8 @@ Require:
 - parseable tokens JSON;
 - stable token keys;
 - SVG source exists;
-- component board exists before UI anchor can lock;
+- component board exists before UI source package can advance to REVIEW;
+- UI Full Mockup is required only for final PV0 lock and is created in Task 8;
 - Generation Profile includes provider/model/aspect/referenceRoles/promptVersion/uiInSceneArt;
 - `uiInSceneArt` must be `false`.
 
@@ -436,13 +462,11 @@ Create `UI-COMPONENTS-V1.svg` with reusable groups/IDs:
 - `state-selected`;
 - `state-found`.
 
-- [ ] **Step 4: Render canonical UI PNG boards**
+- [ ] **Step 4: Render canonical UI component board**
 
-Render the SVG/tokens into:
-- component sheet;
-- representative full mockup.
+Render the SVG/tokens into the component sheet.
 
-Before PV1, the full mockup may use a calibration scene; it is not Gold Master.
+Do not create the final PV0 UI Full Mockup yet; it must be composited onto the Task 8 calibration scene so it tests the real scene/UI relationship.
 
 - [ ] **Step 5: Create Generation Profile and Model Adapter**
 
@@ -729,11 +753,18 @@ Record PASS/FAIL for:
 - composition;
 - background hierarchy.
 
-- [ ] **Step 3: Test UI separately**
+- [ ] **Step 3: Create the canonical UI Full Mockup**
 
-Apply deterministic UI to the calibration image without modifying the Gate 5 scene art.
+Apply deterministic UI to the calibration image without modifying the scene artwork and save:
+- `UI/UI-FULL-MOCKUP-V1.png`.
 
-- [ ] **Step 4: Create PV0 review document**
+The image must be generated by composition from the locked UI source, not by asking an image model to redraw the interface.
+
+- [ ] **Step 4: Test UI source/output consistency**
+
+Verify the Full Mockup uses the current `UI-TOKENS-V1.json` and `UI-COMPONENTS-V1.svg` versions.
+
+- [ ] **Step 5: Create PV0 review document**
 
 Summarize:
 - locked anchor list + hashes;
@@ -745,7 +776,7 @@ Summarize:
 
 Set manifest `pv0Status: "REVIEW"`.
 
-- [ ] **Step 5: Human PV0 checkpoint**
+- [ ] **Step 6: Human PV0 checkpoint**
 
 Present:
 - VA01–VA08 boards;
@@ -755,7 +786,7 @@ Present:
 
 Do **not** set PV0 to LOCKED without explicit user approval.
 
-- [ ] **Step 6: Commit review package**
+- [ ] **Step 7: Commit review package**
 
 ```bash
 git add MASTER/VISUAL-FOUNDATION CURRENT.md
