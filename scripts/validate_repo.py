@@ -218,6 +218,30 @@ def check_current_state() -> None:
             fail("CURRENT.md must identify Candlekeep with Gate 2 NEXT")
 
 
+def check_master_integrity() -> None:
+    research = ROOT / "MASTER/DND5E-MASTER-RESEARCH-AND-15-SCENES-V1.md"
+    production = ROOT / "MASTER/PRODUCTION-STANDARD-V1.md"
+
+    if research.is_file():
+        text = research.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        if len(lines) < 2500:
+            fail(f"master research appears truncated: {len(lines)} lines")
+        for required_marker in ["# AI.", "# AJ.", "15关 × SRD资产映射矩阵"]:
+            if required_marker not in text:
+                fail(f"master research missing integrity marker: {required_marker}")
+
+    if production.is_file():
+        text = production.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        if len(lines) < 800:
+            fail(f"production standard appears truncated: {len(lines)} lines")
+        if "# 21." not in text:
+            fail("production standard missing final section # 21")
+        if "GATE 7" not in text.upper():
+            fail("production standard must reflect approved Gate 0–7 system")
+
+
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 
 
