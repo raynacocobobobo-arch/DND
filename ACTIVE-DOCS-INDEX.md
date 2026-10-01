@@ -28,7 +28,7 @@ This file records authority. A path is marked **canonical** only after it exists
 
 ## Workflow docs
 
-Expected from bootstrap Task 3: `WORKFLOW/01-RESEARCH.md` through `WORKFLOW/15-ARCHIVE.md`.
+`WORKFLOW/01-RESEARCH.md` through `WORKFLOW/15-ARCHIVE.md` are **canonical** stage definitions.
 
 ## Templates
 

@@ -74,7 +74,7 @@ SCENES/SXX-SCENE-NAME/
 - [Production standard](MASTER/PRODUCTION-STANDARD-V1.md)
 - [Gate system](MASTER/GATE-SYSTEM-V1.md)
 - [Style lock](MASTER/STYLE-LOCK-V1.md)
-- `WORKFLOW/` — canonical 15-stage production workflow
+- [Workflow 01 — Research](WORKFLOW/01-RESEARCH.md) through [Workflow 15 — Archive](WORKFLOW/15-ARCHIVE.md) — canonical 15-stage production workflow
 - `TEMPLATES/` — reusable research, production, and level-data templates
 - `SCENES/` — one workspace per level
 - `docs/superpowers/` — approved design spec and implementation plans
