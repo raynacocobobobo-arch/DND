@@ -70,6 +70,12 @@ def validate(root: Path) -> list[str]:
         if not anchor.get("provenance"):
             errors.append(f"anchor {anchor_id} provenance is required")
 
+        # All planned VA01–VA08 anchors require their textual spec even while DRAFT.
+        if isinstance(anchor_id, str) and anchor_id.startswith(("VA01", "VA02", "VA03", "VA04", "VA05", "VA06", "VA07", "VA08")):
+            spec_rel = anchor.get("spec")
+            if not spec_rel or not (vf / spec_rel).is_file():
+                errors.append(f"planned VA01–VA08 spec missing for {anchor_id}: {spec_rel}")
+
         if status == "LOCKED":
             file_rel = anchor.get("file")
             spec_rel = anchor.get("spec")
@@ -87,6 +93,8 @@ def validate(root: Path) -> list[str]:
                         f"anchor {anchor_id} sha256 mismatch: expected {digest}, got {actual}"
                     )
 
+    # planned VA01–VA08 spec presence check is intentionally stricter than image presence:
+    # specs must exist before image generation; images may remain DRAFT.
     if manifest.get("pv0Status") == "LOCKED":
         gp = vf / "GENERATION/GENERATION-PROFILE-V1.json"
         adapter = vf / "GENERATION/MODEL-ADAPTER-V1.md"
