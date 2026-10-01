@@ -1,5 +1,11 @@
 # CURRENT
 
+## Repository bootstrap
+
+**Status: VERIFIED COMPLETE**
+
+Bootstrap Tasks 1–8 have been re-audited. The next production action is **S02 Candlekeep — Gate 2 Population Lock**.
+
 ## Active level
 
 **S02 — CANDLEKEEP**
