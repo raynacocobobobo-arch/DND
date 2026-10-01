@@ -1,0 +1,297 @@
+{
+  "foundationVersion": "V1",
+  "pv0Status": "DRAFT",
+  "pv1Status": "NOT_STARTED",
+  "anchors": [
+    {
+      "id": "VA01-STYLE",
+      "file": "01-STYLE/STYLE-CALIBRATION-BOARD-V1.png",
+      "spec": "01-STYLE/STYLE-CALIBRATION-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "line language",
+        "color and shading",
+        "detail hierarchy"
+      ],
+      "doNotInherit": [
+        "location clothing",
+        "species anatomy"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA02-HUMAN-FACE-HAND",
+      "file": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-BOARD-V1.png",
+      "spec": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "human proportion",
+        "face grammar",
+        "hand grammar"
+      ],
+      "doNotInherit": [
+        "species anatomy",
+        "faction clothing"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-SPECIES-CORE-A",
+      "file": "03-SPECIES/SPECIES-CORE-BOARD-A-V1.png",
+      "spec": "03-SPECIES/SPECIES-MASTER-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "scene lighting"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-SPECIES-CORE-B",
+      "file": "03-SPECIES/SPECIES-CORE-BOARD-B-V1.png",
+      "spec": "03-SPECIES/SPECIES-MASTER-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "scene lighting"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA04-ROLE-ACTION",
+      "file": "04-ROLE-ACTION/ROLE-ACTION-BOARD-V1.png",
+      "spec": "04-ROLE-ACTION/ROLE-ACTION-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "role equipment language",
+        "task/action grammar"
+      ],
+      "doNotInherit": [
+        "fixed class uniforms",
+        "species anatomy"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA05-EXPRESSION-INTERACTION",
+      "file": "05-EXPRESSION-INTERACTION/EXPRESSION-INTERACTION-BOARD-V1.png",
+      "spec": "05-EXPRESSION-INTERACTION/EXPRESSION-INTERACTION-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "expression intensity",
+        "interaction grammar"
+      ],
+      "doNotInherit": [
+        "named actor identity",
+        "faction clothing"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA06-CROWD-COMPOSITION",
+      "file": "06-COMPOSITION/CROWD-COMPOSITION-BOARD-V1.png",
+      "spec": "06-COMPOSITION/CROWD-COMPOSITION-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "crowd perspective",
+        "event-island grammar",
+        "scale compression"
+      ],
+      "doNotInherit": [
+        "location architecture",
+        "specific population"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA07-MATERIAL-PROP",
+      "file": "07-MATERIAL-PROP/MATERIAL-PROP-BOARD-V1.png",
+      "spec": "07-MATERIAL-PROP/MATERIAL-PROP-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "material rendering",
+        "prop rendering",
+        "purposeful magic rendering"
+      ],
+      "doNotInherit": [
+        "specific prop inventory",
+        "location palette"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "VA08-ANTI-DRIFT",
+      "file": "08-ANTI-DRIFT/ANTI-DRIFT-BOARD-V1.png",
+      "spec": "08-ANTI-DRIFT/ANTI-DRIFT-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "rejection examples",
+        "failure categories"
+      ],
+      "doNotInherit": [
+        "positive design details",
+        "scene content"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "UI-COMPONENT-BOARD",
+      "file": "UI/UI-COMPONENT-BOARD-V1.png",
+      "spec": "UI/UI-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "UI component appearance",
+        "state language"
+      ],
+      "doNotInherit": [
+        "scene artwork",
+        "target content"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "UI-FULL-MOCKUP",
+      "file": "UI/UI-FULL-MOCKUP-V1.png",
+      "spec": "UI/UI-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "scene/UI relationship",
+        "safe-area behavior"
+      ],
+      "doNotInherit": [
+        "Gold Master status",
+        "scene style source"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "GOLD-MASTER-SCENE",
+      "file": "GOLD-MASTER/GOLD-MASTER-SCENE-V1.png",
+      "spec": "GOLD-MASTER/GOLD-MASTER-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "integrated final-scene behavior"
+      ],
+      "doNotInherit": [
+        "specialized species rules",
+        "future scene content"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    },
+    {
+      "id": "GOLD-MASTER-LEVEL",
+      "file": "GOLD-MASTER/GOLD-MASTER-LEVEL-V1.png",
+      "spec": "GOLD-MASTER/GOLD-MASTER-SPEC-V1.md",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "integrated final-level behavior"
+      ],
+      "doNotInherit": [
+        "UI source geometry",
+        "future target content"
+      ],
+      "sha256": null,
+      "provenance": "planned project visual standard",
+      "supersedes": null
+    }
+  ]
+}

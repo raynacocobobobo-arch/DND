@@ -84,3 +84,11 @@ All 15 scene root `README.md` files are **canonical workspace status records**. 
 - [S14 — Radiant Citadel: Concord Jewel arrival plaza](SCENES/S14-RADIANT-CITADEL/README.md)
 - [S15 — Well of Dragons: allied forward assembly camp](SCENES/S15-WELL-OF-DRAGONS/README.md)
 \n## Validation\n\n| Path | Status | Role |\n|---|---|---|\n| `scripts/validate_repo.py` | canonical | Repository structure, interface, master-integrity and Markdown-link validation |\n
+## Global Visual Foundation
+
+| Path | Status | Role |
+|---|---|---|
+| `MASTER/VISUAL-FOUNDATION/README.md` | draft system root | Entry point for project-wide visual inheritance |
+| `MASTER/VISUAL-FOUNDATION/GLOBAL-VISUAL-FOUNDATION-V1.md` | draft | PV0/PV1 and visual inheritance rules |
+| `MASTER/VISUAL-FOUNDATION/VISUAL-ANCHOR-MANIFEST.json` | draft | Machine-readable visual-anchor authority map |
+| `scripts/validate_visual_foundation.py` | canonical validator | Visual-anchor status/path/hash/profile validation |

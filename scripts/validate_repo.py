@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+from validate_visual_foundation import validate as validate_visual_foundation
+
 ROOT = Path(__file__).resolve().parents[1]
 ERRORS: list[str] = []
 
@@ -242,6 +244,10 @@ def check_master_integrity() -> None:
             fail("production standard must reflect approved Gate 0–7 system")
 
 
+def check_visual_foundation() -> None:
+    ERRORS.extend(validate_visual_foundation(ROOT))
+
+
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 
 
@@ -291,6 +297,7 @@ def main() -> int:
     check_scene_set()
     check_current_state()
     check_master_integrity()
+    check_visual_foundation()
     check_markdown_links()
 
     if ERRORS:
