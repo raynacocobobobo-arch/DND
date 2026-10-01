@@ -32,11 +32,10 @@
 ## Review Focus
 
 1. **Text-only bootstrap drift:** the first Style Board must be grounded in explicitly selected, user-approved prior visual references rather than invented from prose alone.
-2. **Visual-role ambiguity:** each board must lock a narrow, declared visual responsibility and explicitly state what must not be inherited from it.
+2. **Visual-role / false-lock ambiguity:** each board must have a narrow declared responsibility, and validators must reject `LOCKED` anchors with missing files, hashes, specs, or profiles.
 3. **Generator drift:** the same boards used through a materially changed generator must trigger calibration, not silent continuation.
 4. **Species drift:** later scene-specific clothing or poses must never override locked species anatomy.
 5. **UI drift:** scene content may change, but component geometry/spacing/state language must stay identical within a UI version.
-6. **False lock state:** validators must reject missing files, broken hashes, or anchors marked `LOCKED` without required spec/image/profile dependencies.
 
 ---
 
@@ -905,6 +904,10 @@ At this point Candlekeep can legally begin Gate 3 asset production.
 
 **Files:**
 - Modify only if verification exposes defects.
+
+**Interfaces:**
+- Consumes: all Foundation, UI, manifest, validator, workflow, and Scene Visual Packet outputs from Tasks 1–10.
+- Produces: verified branch state ready for Superpowers finishing workflow.
 
 - [ ] **Step 1: Run full validation**
 
