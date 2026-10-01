@@ -79,3 +79,4 @@ All 15 scene root `README.md` files are **canonical workspace status records**. 
 - [S13 — Rock of Bral: Low City docks](SCENES/S13-ROCK-OF-BRAL/README.md)
 - [S14 — Radiant Citadel: Concord Jewel arrival plaza](SCENES/S14-RADIANT-CITADEL/README.md)
 - [S15 — Well of Dragons: allied forward assembly camp](SCENES/S15-WELL-OF-DRAGONS/README.md)
+\n## Validation\n\n| Path | Status | Role |\n|---|---|---|\n| `scripts/validate_repo.py` | canonical | Repository structure, interface, master-integrity and Markdown-link validation |\n
