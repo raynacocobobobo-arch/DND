@@ -2,7 +2,7 @@
 
 > Stage 04  
 > Gate target: **G2 — Population Lock**  
-> Status: **READY FOR HUMAN REVIEW — NOT APPROVED**
+> Status: **APPROVED**
 
 ## Scene being populated
 **Court of Air / visitor interface**, around 10:30 on a fair, coastal-windy morning. New Seekers are being registered and routed while normal Avowed work continues and an Endless Chant procession crosses the shared public space.
@@ -130,5 +130,9 @@ The later Event-Island stage will turn these into 8–12 interaction groups; thi
 - [x] 60 figures can resolve into readable action bands rather than a single line.
 
 ## Gate 2 population verdict
-**Population component: READY FOR HUMAN REVIEW.**  
+**Population component: APPROVED.**  
 This does **not** approve Gate 2 by itself. Species scale and faction/cultural visual language must be reviewed with it.
+
+
+## Approval record
+Approved by human review on 2026-10-01 as part of S02 Candlekeep Gate 2 — Population Lock.
