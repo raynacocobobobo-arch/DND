@@ -2,7 +2,7 @@
 
 > Stage 05  
 > Gate target: **G2 — Population Lock**  
-> Status: **READY FOR HUMAN REVIEW — NOT APPROVED**
+> Status: **APPROVED**
 
 ## Scope
 This file proposes the relative body construction for the six species currently proposed in the Candlekeep population model.
@@ -84,5 +84,9 @@ Use these checks on character sheets:
 - [x] No unsupported strong-silhouette species needs a scale definition yet.
 
 ## Gate 2 species-scale verdict
-**Species-scale component: READY FOR HUMAN REVIEW.**  
-Do not begin the 60-character asset sheets until Gate 2 is explicitly approved.
+**Species-scale component: APPROVED.**  
+Do not begin the 60-character asset sheets until PV0 is explicitly LOCKED.
+
+
+## Approval record
+Approved by human review on 2026-10-01 as part of S02 Candlekeep Gate 2 — Population Lock. Cross-project anatomy still defers to PV0 Species Master before Gate 3.
