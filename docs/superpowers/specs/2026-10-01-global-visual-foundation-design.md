@@ -136,6 +136,10 @@ MASTER/
     │   ├── UI-COMPONENT-BOARD-V1.png
     │   └── UI-FULL-MOCKUP-V1.png
     │
+    ├── GENERATION/
+    │   ├── GENERATION-PROFILE-V1.json
+    │   └── MODEL-ADAPTER-V1.md
+    │
     └── GOLD-MASTER/
         ├── GOLD-MASTER-SPEC-V1.md
         ├── GOLD-MASTER-SCENE-V1.png
@@ -190,15 +194,14 @@ The board must show variety inside one style. It must not create a reusable acto
 
 Locks recurring species anatomy across the project.
 
-PV0 core coverage must include species expected to recur across multiple locked levels, at minimum:
-- Human;
-- Elf;
-- Dwarf;
-- Halfling;
-- Gnome;
-- Tiefling;
-- Orc / Half-Orc treatment as applicable to the project's 5E source version;
-- Dragonborn.
+PV0 core coverage is selected from the locked 15-level project, not from an arbitrary “all D&D species” checklist.
+
+It must include:
+- every species required by the Candlekeep pilot after Gate 2 approval;
+- recurring species identified by a pre-PV0 inventory of the locked 15 levels;
+- enough high-frequency species to make early cross-scene consistency meaningful.
+
+Expected recurring candidates include Human, Elf, Dwarf, Halfling, Gnome, Tiefling, Orc/Half-Orc treatment as applicable to the project’s source version, and Dragonborn, but the final PV0 set is determined by the repository’s 15-level inventory rather than by guesswork.
 
 Additional species are introduced through the extension protocol before their first Gate 3 use.
 
@@ -342,7 +345,7 @@ The UI is then assembled from deterministic, locked components.
 
 `UI-COMPONENT-BOARD-V1.png` is the visual reference sheet.
 
-`UI-FULL-MOCKUP-V1.png` proves the components work on a representative hidden-object scene.
+`UI-FULL-MOCKUP-V1.png` proves the components work on a representative hidden-object scene. Before PV1, this may use a dedicated calibration scene/crop; it does not become the Gold Master merely by being used for UI testing.
 
 ### UI stability rule
 
@@ -380,6 +383,8 @@ Each anchor record contains at least:
   "appliesTo": ["ALL_LEVELS"],
   "controls": ["species anatomy", "relative scale", "silhouette"],
   "doNotInherit": ["faction clothing", "scene lighting"],
+  "sha256": "<computed from locked file>",
+  "provenance": "approved project-generated visual standard",
   "supersedes": null
 }
 ```
@@ -420,6 +425,7 @@ The packet records the exact global and scene-specific anchors used for that lev
 SCENES/SXX/PRODUCTION/VISUAL-PACKET/
 ├── VISUAL-PACKET.md
 ├── anchor-manifest-snapshot.json
+├── generation-profile-snapshot.json
 ├── scene-species-subset.md
 ├── scene-faction-board.*
 ├── character-board.*
@@ -430,6 +436,7 @@ SCENES/SXX/PRODUCTION/VISUAL-PACKET/
 `VISUAL-PACKET.md` must record:
 - Global Visual Foundation version;
 - UI version;
+- Generation Profile / Model Adapter version;
 - Gold Master version if PV1 has passed;
 - mandatory anchor IDs;
 - scene-specific anchor IDs;
@@ -444,14 +451,44 @@ The Global Visual Foundation describes visual outputs, not one image-generation 
 
 Model-specific prompt syntax and reference-image slot mapping are adapters, not canon.
 
-If the project changes image-generation models:
-- the locked boards remain authoritative;
-- only the adapter changes;
-- a test scene/crop must prove the new adapter still matches the locked anchors before production resumes.
+The project still freezes the exact production configuration used for a run so that “same visual canon” is not undermined by silent generator changes.
 
-This avoids tying 15-level consistency to one transient model version.
+## 12. Generation Profile and Model Adapter
 
-## 12. Species extension protocol
+`GENERATION-PROFILE-V1.json` records the reproducibility-critical production configuration:
+
+- provider / generator;
+- model family and exposed model version when available;
+- canvas aspect ratio;
+- working resolution;
+- reference-image roles and which anchor IDs occupy them;
+- prompt-template version;
+- negative-constraint version;
+- seed policy when the tool exposes seeds;
+- image-to-image / edit strength policy when exposed;
+- upscale policy;
+- face/detail correction policy;
+- output naming;
+- explicit rule: **UI is not generated into Gate 5 scene art**.
+
+`MODEL-ADAPTER-V1.md` explains how the canonical Foundation maps into the chosen generator:
+- which board is used as which reference;
+- which instructions belong in global style text;
+- which instructions belong in scene text;
+- reference priority when the generator has limited reference slots;
+- known generator failure modes.
+
+The Generation Profile is versioned independently from the visual canon.
+
+If the project changes image-generation models or a provider materially changes behavior:
+1. create a new Generation Profile / Adapter version;
+2. run a calibration test against the locked PV0 anchors;
+3. after PV1, also compare against the Gold Master;
+4. do not resume production until the new adapter passes the same visual-regression checks.
+
+The locked boards remain authoritative. The adapter changes; the visual canon does not.
+
+## 13. Species extension protocol
 
 PV0 does not need to pre-build every species that could possibly appear in all D&D material.
 
@@ -466,7 +503,7 @@ If a later scene requires a species absent from the locked master boards:
 
 Existing locked species are not redrawn merely because a new species is added.
 
-## 13. Gold Master
+## 14. Gold Master
 
 S02 Candlekeep is the pilot.
 
@@ -496,7 +533,7 @@ Locks integrated behavior for:
 
 PV1 passes only after both are approved.
 
-## 14. Cross-Scene Visual Regression
+## 15. Cross-Scene Visual Regression
 
 Gate 5 receives an additional consistency check.
 
@@ -536,7 +573,7 @@ Each level should create a side-by-side regression sheet containing representati
 
 The regression sheet is a QA artifact, not a new style reference.
 
-## 15. Visual versioning and freeze rules
+## 16. Visual versioning and freeze rules
 
 Visual canon uses:
 - `V1` — first locked usable foundation;
@@ -553,7 +590,7 @@ If a change is required:
 
 A completed level records its exact foundation versions for reproducibility.
 
-## 16. Image storage policy
+## 17. Image storage policy
 
 Canonical visual-foundation boards should be stored in the repository in practical review-sized PNG form so future agents can retrieve the exact reference.
 
@@ -563,7 +600,7 @@ The manifest must always point to a repository-accessible canonical preview/refe
 
 No anchor may exist only in chat history.
 
-## 17. PV0 pass criteria
+## 18. PV0 pass criteria
 
 PV0 passes only when all of the following are human-approved and `LOCKED` in the manifest:
 
@@ -580,11 +617,14 @@ PV0 passes only when all of the following are human-approved and `LOCKED` in the
 - UI Components;
 - UI Component Board;
 - UI Full Mockup;
-- Visual Anchor Manifest.
+- Visual Anchor Manifest;
+- Generation Profile;
+- Model Adapter;
+- successful calibration output showing the active adapter can reproduce the locked Foundation.
 
 At that point formal scene Gate 3 production may begin.
 
-## 18. PV1 pass criteria
+## 19. PV1 pass criteria
 
 PV1 passes only when:
 
@@ -596,7 +636,7 @@ PV1 passes only when:
 
 After PV1, all remaining levels use the locked Gold Master in Gate 5 regression.
 
-## 19. Changes to existing project behavior
+## 20. Changes to existing project behavior
 
 ### Existing behavior retained
 - G0–G7 remain unchanged.
@@ -608,31 +648,33 @@ After PV1, all remaining levels use the locked Gold Master in Gate 5 regression.
 - `LEVEL/` target/answer metadata contract remains unchanged.
 
 ### New behavior
-- Gate 3 is blocked until PV0 passes.
-- Every Gate 3+ level has a Scene Visual Packet.
+- Gate 3 is blocked until both the level's Gate 2 and PV0 pass.
+- Every Gate 3+ level has a Scene Visual Packet and generation-profile snapshot.
 - UI is composed from deterministic components rather than regenerated stylistically per level.
 - Gate 5 includes cross-scene visual regression.
 - After the pilot, PV1 Gold Master becomes a mandatory integrated reference.
 - Any new recurring species uses the extension protocol.
 
-## 20. Pilot sequence
+## 21. Pilot sequence
 
 The intended order is:
 
 1. approve this design;
 2. write implementation plan;
-3. build textual Visual Foundation specs and manifest schema;
-4. create/review the PV0 visual boards;
-5. lock deterministic UI assets;
-6. pass PV0;
-7. return to S02 Candlekeep Gate 2 review;
-8. once Gate 2 passes, produce Gate 3 character/prop assets using the locked Foundation;
+3. audit the locked 15 levels for recurring visual requirements and species coverage;
+4. review the existing S02 Candlekeep Gate 2 package so the pilot’s actual species/faction requirements are known;
+5. build the textual Visual Foundation specs, manifest schema, UI specification, and Generation Profile;
+6. create/review the PV0 visual boards and deterministic UI assets;
+7. run adapter calibration and pass PV0;
+8. only after both Candlekeep Gate 2 and PV0 are approved, begin Candlekeep Gate 3 character/prop asset production;
 9. complete Candlekeep through Gate 7;
 10. create and approve Gold Master Scene + Gold Master Level;
 11. pass PV1;
 12. produce the remaining 14 levels using Foundation + Gold Master regression.
 
-## 21. Definition of Done for this subsystem
+Gate 2 review and PV0 construction may overlap in time, but Gate 3 requires **both** approvals.
+
+## 22. Definition of Done for this subsystem
 
 The Global Visual Foundation V1 subsystem is complete when:
 
@@ -640,6 +682,7 @@ The Global Visual Foundation V1 subsystem is complete when:
 - all PV0 mandatory visual boards exist;
 - the Manifest validates and all required anchor records are LOCKED;
 - deterministic UI sources and mockup exist;
+- a locked Generation Profile / Model Adapter exists and passes calibration;
 - the repository documents anchor priority and inheritance scope;
 - Scene Visual Packet template exists;
 - cross-scene regression checklist/template exists;
