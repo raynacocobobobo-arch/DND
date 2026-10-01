@@ -36,3 +36,11 @@ Complete **Gate 2 — Population Lock**:
 1. population ecology;
 2. species scale;
 3. Avowed / Seeker / institutional faction-cultural visual language.
+
+## Canonical Gate 0–1 files
+
+- [Location research](SCENES/S02-CANDLEKEEP/RESEARCH/01-LOCATION-RESEARCH.md)
+- [Subscene decision](SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md)
+- [Scene state](SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md)
+
+Gate 2 is **not approved**. The next required files are `04-POPULATION-MODEL.md`, `05-SPECIES-SCALE.md`, and `06-FACTION-STYLE.md` under `SCENES/S02-CANDLEKEEP/PRODUCTION/`.
