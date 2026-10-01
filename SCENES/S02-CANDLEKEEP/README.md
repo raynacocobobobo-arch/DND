@@ -18,12 +18,12 @@
 - [02 — Subscene Decision](RESEARCH/02-SUBSCENE-DECISION.md)
 - [03 — Scene State](RESEARCH/03-SCENE-STATE.md)
 
-## Gate 2 next deliverables
-1. `PRODUCTION/04-POPULATION-MODEL.md`
-2. `PRODUCTION/05-SPECIES-SCALE.md`
-3. `PRODUCTION/06-FACTION-STYLE.md`
+## Gate 2 review package
+- [04 — Population Model](PRODUCTION/04-POPULATION-MODEL.md) — **READY FOR HUMAN REVIEW**
+- [05 — Species Scale](PRODUCTION/05-SPECIES-SCALE.md) — **READY FOR HUMAN REVIEW**
+- [06 — Faction / Cultural Visual Language](PRODUCTION/06-FACTION-STYLE.md) — **READY FOR HUMAN REVIEW**
 
-Gate 2 must not be marked approved until all three are coherent together and pass the Population Lock conditions.
+The combined proposal uses **60 readable figures**: 36 resident/institutional figures and 24 visitor/special figures. Gate 2 remains **NEXT / NOT APPROVED** until human review.
 
 ## Production structure
 - `RESEARCH/` — official location research and scene-state decisions.
