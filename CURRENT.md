@@ -334,3 +334,25 @@ New Dwarf route:
 - only after that sample preserves the exact cartoon line/color/face system may the full six-Dwarf board be attempted.
 
 All previously rejected Dwarf images are quarantined as negative references and must not be provided to the generator.
+
+
+## Species production order corrected
+
+A global sequencing error was identified during Dwarf work: the accepted Human Board had been treated too early in the generation chain, causing non-Human species to drift toward modified Human anatomy.
+
+All species now follow one mandatory order:
+1. official 5E/SRD description;
+2. matching approved VA01 Core Species Lineup figure;
+3. Species Anatomy Core;
+4. finite variation/chassis contract;
+5. Face Grammar + board/rendering grammar;
+6. one-sample preflight;
+7. full species board.
+
+For Dwarf specifically:
+- official: Medium, about 4–5 feet, squat/short-and-stout, broad/compact;
+- VA01: low broad adult silhouette, short legs, dense torso, heavy forearms/hands;
+- project visual ratio corrected from ~4.7 heads to **~4.0 heads** based on the approved VA01 exemplar;
+- the Human Board is now explicitly prohibited as Dwarf anatomy input.
+
+No new Dwarf image was generated in this correction step.

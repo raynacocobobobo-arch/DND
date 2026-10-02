@@ -9,6 +9,9 @@
 
 Lock a reusable Dwarf anatomy system for later character sheets and 55–70-character Hidden-Object scenes.
 
+This spec must be interpreted through `../SPECIES-VISUAL-DERIVATION-PROTOCOL-V1.md`:
+**official D&D facts first, then the approved VA01 Dwarf exemplar, then project variation.**
+
 The repository's existing Dwarf definition is authoritative:
 
 - adult height around **80–83% Human production baseline**;
@@ -21,6 +24,71 @@ The repository's existing Dwarf definition is authoritative:
 - not a uniformly scaled-down Human.
 
 The Dwarf board must prove that body density and limb construction are structural, not a simple scale transform.
+
+## Official 5E evidence
+
+### 2024 / current project rules source
+Official D&D 2024 Basic Rules / SRD 5.2.1:
+- Creature Type: Humanoid;
+- Size: Medium;
+- approximately 4–5 feet tall;
+- official species description characterizes Dwarves as squat and often bearded;
+- Stonecunning / resilience / underground association are lore-mechanical context, not mandatory costume.
+
+### 2014 visual-description support
+Official 2014 Basic Rules describes Dwarves as:
+- short and stout;
+- broad and compact enough that they can weigh as much as a Human nearly two feet taller;
+- 4–5 feet tall, about 150 pounds average.
+
+Project use:
+- height, compactness and mass distribution are anatomy evidence;
+- beard is common but not mandatory;
+- mining/smith stereotypes remain forbidden as species shorthand.
+
+## Approved VA01 Dwarf exemplar
+
+Visual source:
+`VA01 Style Calibration Board V3 → CORE SPECIES LINEUP → Dwarf`.
+
+The approved exemplar establishes the project's visual translation:
+- clearly shorter than adjacent Human/Elf;
+- broad, compact torso;
+- very low center of gravity;
+- short lower limbs;
+- thick upper arms / forearms;
+- substantial hands;
+- adult head and adult facial read;
+- rounded compact silhouette;
+- bold clean contour + flat color + restrained cel shading.
+
+Sample-specific and **not invariant**:
+- orange hair/beard;
+- full beard;
+- crossed arms;
+- leather outfit;
+- exact face;
+- exact expression.
+
+## Dwarf Anatomy Core
+
+Before body-chassis variation, every Dwarf must preserve:
+
+- relative adult height: project ~80–83% Human baseline;
+- project stylized head/body relation: **approximately 4.0 heads**, derived from the approved VA01 Dwarf exemplar rather than official rules;
+- broad ribcage and compact trunk;
+- pelvis/torso mass visibly denser than Human;
+- short but powerful thighs and lower legs;
+- forearms and hands visibly substantial;
+- low center of gravity;
+- adult face and mature posture;
+- no childlike head enlargement.
+
+The ~4.0-head value is a **project visual-control ratio**, not an official D&D measurement.
+
+Critical Human comparison:
+> A Dwarf is not a Human at 80% scale.  
+> At similar head size, the Dwarf has a shorter/denser body, broader trunk, shorter limbs and heavier hands/forearms.
 
 ## Species construction
 
@@ -79,7 +147,7 @@ Sex presentation does not determine chassis.
 
 Project production controls:
 - stature: approximately **0.80–0.83 Human baseline**;
-- all samples use one consistent Dwarf head/body construction around **~4.7 heads**;
+- all samples use one consistent Dwarf head/body construction around **~4.0 heads**;
 - this ratio is a project visual-control decision, not an official D&D measurement.
 
 The Dwarf head must read adult and proportionate to the dense frame. It must not be enlarged to create cuteness.
@@ -143,7 +211,7 @@ All six figures:
 - white/light neutral background;
 - orthographic-like full-body front/slight 3/4 presentation;
 - same relaxed standing stance family;
-- approximately 4.7 heads throughout;
+- approximately 4.0 heads throughout;
 - both hands visible;
 - fitted neutral fantasy clothing that reveals torso/limb mass;
 - no armor, long cloak, giant tools or props;

@@ -141,3 +141,21 @@ Gate 5 scene art remains UI-free. UI is composited from `UI-TOKENS-V1.json` and 
 ## Style-binding failure quarantine
 
 Rejected species images must not be reintroduced as visual inputs for later attempts. In particular, the rejected 2026-10-02 Dwarf concept-sheet outputs are negative diagnostics only and must never accompany a positive generation request.
+
+
+## Species derivation order
+
+For every VA03 species, do not begin from another species' body.
+
+Required order:
+1. official 5E/SRD species facts;
+2. matching species figure in approved VA01 Core Species Lineup;
+3. Species Anatomy Core;
+4. controlled chassis / variation spec;
+5. VA02 face grammar + accepted Human Board for board/rendering behavior only;
+6. one-sample anatomy + style preflight;
+7. full board.
+
+The accepted Human Board is never an anatomy authority for Dwarf, Elf, Halfling, Gnome or Tiefling.
+
+See `../03-SPECIES/SPECIES-VISUAL-DERIVATION-PROTOCOL-V1.md`.

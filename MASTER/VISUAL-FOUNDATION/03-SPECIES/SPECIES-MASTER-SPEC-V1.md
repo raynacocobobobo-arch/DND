@@ -18,6 +18,20 @@ It controls:
 
 It does **not** lock faction clothing, profession, personality, scene lighting or character identity.
 
+## Species derivation order
+
+All VA03 species must follow `SPECIES-VISUAL-DERIVATION-PROTOCOL-V1.md`:
+
+1. verify official 5E/SRD species facts;
+2. inspect the matching approved VA01 Core Species Lineup exemplar;
+3. derive a Species Anatomy Core;
+4. define controlled chassis/variation;
+5. apply VA01/VA02 rendering grammar and the accepted Human Board only as board/layout style;
+6. pass a one-sample anatomy + style preflight;
+7. generate the full species board.
+
+A non-Human species must never derive its skeleton from the Human Board.
+
 ## Production scale baselines
 These are project visual-control ratios, not universal canonical heights.
 

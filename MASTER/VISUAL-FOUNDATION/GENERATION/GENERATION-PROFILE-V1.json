@@ -76,8 +76,12 @@
   "styleBindingContract": "STYLE-BINDING-CONTRACT-V1.md",
   "speciesBoardPreflight": {
     "required": true,
-    "method": "edit one existing Human-board sample into the target species while leaving the rest of the accepted Human board unchanged",
-    "firstTargetForDwarf": "H02 -> D02 STANDARD DENSE female Dwarf",
+    "requiredChecks": [
+      "species_truth",
+      "project_style"
+    ],
+    "anatomyAuthority": "official 5E/SRD facts + matching VA01 species exemplar",
+    "renderingAuthority": "VA01 + VA02 Face Grammar + accepted Human Board board/rendering grammar",
     "passRequiredBeforeFullBoard": true
   },
   "styleDriftAbortConditions": [
@@ -89,5 +93,17 @@
     "fine portrait linework replacing bold hand-drawn contours",
     "anime style shift",
     "new infographic panels/turnarounds/headshot grids not present in the accepted Human Board"
-  ]
+  ],
+  "speciesDerivationProtocol": "03-SPECIES/SPECIES-VISUAL-DERIVATION-PROTOCOL-V1.md",
+  "speciesBoardSourceOrder": [
+    "official_5e_srd_species_facts",
+    "approved_va01_matching_species_exemplar",
+    "species_anatomy_core",
+    "species_spec_and_annotations",
+    "va02_face_grammar",
+    "accepted_human_board_for_layout_and_rendering_only",
+    "seed_a_rendering_regression",
+    "text_prompt"
+  ],
+  "nonHumanAnatomySourceRule": "Never derive non-Human anatomy from the accepted Human Board. The Human Board controls board/layout/rendering behavior only."
 }
