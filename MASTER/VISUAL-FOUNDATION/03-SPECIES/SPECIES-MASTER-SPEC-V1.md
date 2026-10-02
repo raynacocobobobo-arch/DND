@@ -23,7 +23,7 @@ These are project visual-control ratios, not universal canonical heights.
 
 | Species | Human-relative production height | Structural read | Non-negotiable |
 |---|---:|---|---|
-| Human | 100% | baseline adult, multiple body types | ~5–5.5-head project stylization |
+| Human | ~97–103% individual band around 100% baseline | four discrete Body Chassis; identity layered separately | ~5.3-head project stylization; no free height/body morphing |
 | Elf | 100–103% | lighter/narrower, longer visual line | pointed ears; adult, not fragile child-thin |
 | Dwarf | 80–83% | broad ribcage, dense torso, shorter powerful limbs | adult low/broad silhouette |
 | Halfling | 56–60% | compact small adult | unmistakably adult; not toddler |
@@ -53,7 +53,17 @@ Each single-species board needs:
 ## Species rules
 
 ### Human
-Baseline only; broad body variation. Do not make “default human” synonymous with heroic male fighter.
+Human uses a finite-chassis production model rather than unrestricted continuous body morphing.
+
+VA03-HUMAN V1 defines four reusable adult Body Chassis:
+- B01 STANDARD LIGHT;
+- B02 STANDARD MEDIUM;
+- B03 STRONG;
+- B04 BROAD / HEAVY.
+
+Individual stature varies only inside a narrow project band around Human baseline (approximately 97–103%) while preserving ~5.3 heads. Most visible NPC diversity should come from face, age, hair, skin, clothing, equipment, role and action rather than inventing new skeletons.
+
+Do not make “default Human” synonymous with heroic male fighter, and do not bind chassis to sex presentation.
 
 ### Elf
 Height near Human. Differentiate through finer build, posture, facial structure and pointed ears, not extreme height or exaggerated anime ears.
@@ -107,6 +117,6 @@ PV0 uses six separate mother assets:
 - VA03-GNOME
 - VA03-TIEFLING
 
-Each one must show meaningful within-species variation in height, body type, adult age and sex presentation. A species is not represented by one canonical mannequin.
+Each one must show meaningful within-species variation using a controlled species-specific construction system. For Human, this means finite B01–B04 Body Chassis plus narrow stature variation and identity-level diversity; it does not mean unrestricted continuous height/body morphing. A species is not represented by one canonical mannequin.
 
 Each asset follows the Visual Asset Annotation Contract and requires SPEC + PNG + annotations JSON before LOCK.

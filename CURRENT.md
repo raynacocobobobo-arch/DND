@@ -141,4 +141,26 @@ Human approved the third calibration iteration as the project's **mother-image a
 - Reduced-scale copies remain readable enough to support continued production testing.
 - This image is not yet a canonical repository asset and must not be treated as a reusable cast sheet.
 - VA02-FACE-GRAMMAR remains **DRAFT** pending an explicit approval decision and complete SPEC + PNG + annotations validation.
-- If production continues, the next downstream test is a regenerated **VA03-HUMAN** board that inherits this Face Grammar while holding Human body ratio near 5.3 heads and varying stature/body type/age/sex presentation without changing facial art system.
+- Production may now continue with a **DRAFT VA03-HUMAN regeneration diagnostic** using the current positive Face Grammar evidence; VA03-HUMAN still cannot become REVIEW/LOCKED until VA02 approval requirements are resolved.
+- Human anatomy now uses **four discrete Body Chassis (B01–B04)** rather than free short/average/tall × lean/heavy combinations.
+- Human stature is only a narrow secondary modifier around baseline (~0.97–1.03); all samples remain ~5.3 heads.
+- Most NPC variety should come from face, hair, skin, age, clothing, equipment, role and action rather than new skeletons.
+
+
+## VA03-HUMAN finite-chassis revision
+
+**Status:** DRAFT SPEC UPDATED — no image generated / no asset locked.
+
+Human production now follows:
+
+`B01 STANDARD LIGHT / B02 STANDARD MEDIUM / B03 STRONG / B04 BROAD-HEAVY`
+
+plus:
+- narrow stature variation only: approximately 0.97–1.03 Human baseline;
+- fixed ~5.3-head adult construction;
+- identity variation through Face Grammar, age, hair, skin, facial hair and later costume/role;
+- no SHORT / AVG / TALL mother-body assets;
+- no arbitrary continuous limb/body morphing;
+- sex presentation is independent from chassis.
+
+The next VA03-HUMAN image, when explicitly requested, must test these four chassis with six distinct Human identities and inherit the current positive VA02 Face Grammar diagnostic.

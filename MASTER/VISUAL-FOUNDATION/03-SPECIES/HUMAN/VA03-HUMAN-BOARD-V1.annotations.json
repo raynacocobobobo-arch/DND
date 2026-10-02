@@ -6,8 +6,9 @@
   "status": "DRAFT_REJECTED",
   "controls": [
     "Human adult anatomy",
-    "Human variation space",
-    "Human relative height/body-type sampling",
+    "four discrete Human Body Chassis",
+    "narrow Human stature band",
+    "adult identity variation on stable chassis",
     "adult silhouette diversity"
   ],
   "doNotInherit": [
@@ -17,207 +18,160 @@
     "profession",
     "faction"
   ],
+  "productionModel": {
+    "formula": "Body Chassis + narrow stature modifier + identity variables",
+    "chassisCount": 4,
+    "statureBaseline": 1,
+    "statureRange": [
+      0.97,
+      1.03
+    ],
+    "headBodyRatio": 5.3,
+    "continuousBodyMorphing": false
+  },
+  "bodyChassis": [
+    {
+      "id": "H-B01",
+      "name": "STANDARD LIGHT",
+      "structuralRead": "normal adult skeleton; narrower shoulders/torso; lighter limb volume",
+      "allowedSexPresentations": "any",
+      "forbiddenMisread": "childlike or enlarged-head small Human"
+    },
+    {
+      "id": "H-B02",
+      "name": "STANDARD MEDIUM",
+      "structuralRead": "baseline adult Human frame with moderate torso and limb mass",
+      "allowedSexPresentations": "any",
+      "forbiddenMisread": "default heroic male body"
+    },
+    {
+      "id": "H-B03",
+      "name": "STRONG",
+      "structuralRead": "broader shoulders/ribcage and thicker muscular limbs while preserving 5.3-head Human construction",
+      "allowedSexPresentations": "any",
+      "forbiddenMisread": "superhero anatomy or male-only chassis"
+    },
+    {
+      "id": "H-B04",
+      "name": "BROAD / HEAVY",
+      "structuralRead": "broader torso/pelvis with greater soft-tissue volume over stable adult skeleton",
+      "allowedSexPresentations": "any",
+      "forbiddenMisread": "caricature, scaled-up B02, or muscular B03"
+    }
+  ],
   "invariants": [
-    "all Human samples use the same 5.3-head body ratio",
-    "unmistakably adult",
+    "all Human samples use approximately 5.3-head body ratio",
+    "unmistakably adult Human",
+    "rounded Human ears",
     "functional adult limb proportions",
+    "stature remains within approximately 0.97–1.03 Human baseline",
     "VA01 line/color/shading grammar",
-    "VA02 face/hand rendering grammar"
+    "one shared VA02-compatible Face Grammar",
+    "body variation comes from B01–B04 chassis rather than arbitrary skeleton invention"
   ],
   "variables": [
-    "adult height",
-    "body type",
+    "Body Chassis selection",
+    "narrow stature modifier",
     "adult age",
     "skin tone",
-    "face family",
+    "face identity",
+    "face shape",
     "hair",
+    "facial hair",
     "neutral calibration clothing"
   ],
   "samples": [
     {
       "id": "H01",
       "species": "Human",
-      "sexPresentation": "female",
-      "ageBand": "young-adult",
-      "heightBand": "SHORT",
-      "relativeHeightToHuman": 0.95,
-      "bodyType": "LEAN",
+      "bodyChassis": "H-B01",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 0.98,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "warm-medium",
-      "hair": "dark brown, short wavy",
-      "pose": "relaxed standing, slight contrapposto",
-      "clothingScope": "neutral fantasy travel layers",
-      "skeletalRead": "small adult frame, narrow shoulders",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "short lean adult variation"
-      ],
-      "sampleDoNotInherit": [
-        "exact outfit",
-        "haircut",
-        "facial identity"
+        "STANDARD LIGHT adult Human",
+        "light frame without childlike anatomy"
       ]
     },
     {
       "id": "H02",
       "species": "Human",
-      "sexPresentation": "male",
+      "bodyChassis": "H-B02",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
-      "heightBand": "AVG",
-      "relativeHeightToHuman": 1,
-      "bodyType": "AVG",
+      "statureModifier": 1,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "light-medium",
-      "hair": "black, medium straight",
-      "pose": "neutral standing, one hand holding small book",
-      "clothingScope": "neutral scholarly/travel layers",
-      "skeletalRead": "average adult frame",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "average adult baseline"
-      ],
-      "sampleDoNotInherit": [
-        "book",
-        "outfit",
-        "haircut",
-        "facial identity"
+        "STANDARD MEDIUM baseline Human"
       ]
     },
     {
       "id": "H03",
       "species": "Human",
-      "sexPresentation": "female",
+      "bodyChassis": "H-B03",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
-      "heightBand": "TALL",
-      "relativeHeightToHuman": 1.07,
-      "bodyType": "LEAN",
+      "statureModifier": 1.01,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "deep-brown",
-      "hair": "black, long braided",
-      "pose": "upright relaxed standing",
-      "clothingScope": "neutral fantasy layers",
-      "skeletalRead": "tall adult frame, long visual line",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "tall lean adult variation"
-      ],
-      "sampleDoNotInherit": [
-        "braid",
-        "outfit",
-        "facial identity"
+        "STRONG female Human without changing anatomy system"
       ]
     },
     {
       "id": "H04",
       "species": "Human",
-      "sexPresentation": "male",
+      "bodyChassis": "H-B03",
+      "sexPresentation": "masculine",
       "ageBand": "adult",
-      "heightBand": "AVG",
-      "relativeHeightToHuman": 1.02,
-      "bodyType": "BROAD",
+      "statureModifier": 1.02,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "medium",
-      "hair": "dark auburn, cropped",
-      "pose": "stable standing, arms relaxed",
-      "clothingScope": "neutral sturdy fantasy layers",
-      "skeletalRead": "broad shoulders and torso, strong adult frame",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "broad/strong adult variation"
-      ],
-      "sampleDoNotInherit": [
-        "outfit",
-        "haircut",
-        "facial identity"
+        "same STRONG chassis with a different identity"
       ]
     },
     {
       "id": "H05",
       "species": "Human",
-      "sexPresentation": "female",
+      "bodyChassis": "H-B04",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
-      "heightBand": "AVG",
-      "relativeHeightToHuman": 0.98,
-      "bodyType": "HEAVY",
+      "statureModifier": 0.99,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "light",
-      "hair": "dark blonde, shoulder-length",
-      "pose": "comfortable balanced standing",
-      "clothingScope": "neutral layered fantasy clothing",
-      "skeletalRead": "soft heavy adult body, full torso and limbs",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "heavy/soft-bodied adult variation"
-      ],
-      "sampleDoNotInherit": [
-        "outfit",
-        "hair color",
-        "facial identity"
+        "BROAD / HEAVY female Human without caricature"
       ]
     },
     {
       "id": "H06",
       "species": "Human",
-      "sexPresentation": "male",
+      "bodyChassis": "H-B02",
+      "sexPresentation": "masculine",
       "ageBand": "older-adult",
-      "heightBand": "AVG",
-      "relativeHeightToHuman": 1,
-      "bodyType": "AVG",
+      "statureModifier": 0.99,
       "headBodyRatio": 5.3,
-      "skinToneFamily": "olive-medium",
-      "hair": "gray, swept back",
-      "pose": "slightly settled older posture, still upright",
-      "clothingScope": "neutral practical fantasy layers",
-      "skeletalRead": "older adult frame with age shown through posture/face",
-      "signatureAnatomy": [
-        "human baseline anatomy"
-      ],
       "sampleControls": [
-        "older adult variation"
-      ],
-      "sampleDoNotInherit": [
-        "outfit",
-        "hair style",
-        "facial identity"
+        "older identity on STANDARD MEDIUM chassis",
+        "age without facial-style change"
       ]
     }
   ],
   "forbiddenMisreads": [
+    "SHORT AVG TALL treated as separate Human body assets",
+    "arbitrary continuous body morphing",
+    "inventing additional chassis without review",
     "one figure is only a scaled copy of another",
     "height differences created by perspective",
-    "all women are small/lean and all men broad",
-    "duplicate orange-haired large/small pair",
+    "women always light and men always strong/heavy",
     "childlike proportions",
-    "7.5–8-head fashion anatomy",
-    "changing head/body ratio to express height or body type",
-    "short Human reading as Halfling or Gnome",
-    "enlarged head used to create a smaller Human"
+    "7.5–8-head fashion or superhero anatomy",
+    "changing head/body ratio to express stature or body type",
+    "Human reading as Halfling or Gnome",
+    "M03 or M04 face-system split"
   ],
   "rejection": {
     "date": "2026-10-02",
-    "reason": "mixed face grammar within one Human species board",
-    "observedGroups": {
-      "softerRounder": [
-        "H01",
-        "H02",
-        "H05"
-      ],
-      "matureAngular": [
-        "H03",
-        "H04",
-        "H06"
-      ]
-    },
-    "rule": "Variation may change identity, age and face shape but must preserve one facial construction grammar."
+    "reason": "mixed face grammar and overly prominent continuous height/body variation in earlier Human draft",
+    "replacementRule": "Use exactly four discrete Body Chassis, narrow 0.97–1.03 stature variation, and one Face Grammar across all Human identities."
   }
 }
