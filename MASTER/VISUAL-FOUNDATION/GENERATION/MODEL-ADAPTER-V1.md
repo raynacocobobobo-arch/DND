@@ -103,12 +103,25 @@ Use:
 
 ## VA03 generation mapping
 
-Use:
-- locked VA01/VA02 once available;
-- approved PV0 species ratios/spec;
-- SEED-E only for lineup organization.
+**VA03 now uses an EDIT-FIRST / IMAGE-BOUND route. Fresh text-to-image species boards are prohibited until explicitly revalidated.**
 
-Literal species from SEED-E are not copied unless separately required by the project.
+Mandatory image authorities:
+1. accepted VA03-HUMAN candidate board — direct base canvas / board template;
+2. locked VA01 — rendering regression authority;
+3. SEED-A — character-rendering regression authority.
+
+The target species spec controls anatomy only.
+
+Before a new species board:
+- actually load/inspect all three image authorities;
+- perform a one-sample species-conversion preflight on the accepted Human Board;
+- leave the rest of the Human Board unchanged during that preflight;
+- reject immediately if the runtime switches to semi-realistic / realistic / 3D / painterly concept-art rendering;
+- proceed to the six-sample board only after the preflight preserves the approved art family.
+
+SEED-E is only a fallback organization reference. The accepted Human Board supersedes it for current VA03 board appearance.
+
+See: `STYLE-BINDING-CONTRACT-V1.md`.
 
 ## Generator change protocol
 
@@ -123,3 +136,8 @@ If provider/model behavior materially changes:
 The runtime does not draw final UI.
 
 Gate 5 scene art remains UI-free. UI is composited from `UI-TOKENS-V1.json` and `UI-COMPONENTS-V1.svg`.
+
+
+## Style-binding failure quarantine
+
+Rejected species images must not be reintroduced as visual inputs for later attempts. In particular, the rejected 2026-10-02 Dwarf concept-sheet outputs are negative diagnostics only and must never accompany a positive generation request.

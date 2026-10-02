@@ -312,3 +312,25 @@ Failure category:
 The Dwarf anatomy contract itself remains DRAFT and usable as a structural specification, but no Dwarf PNG candidate is accepted.
 
 **Next requirement before any new Dwarf generation:** establish a reliable visual-reference binding method using the already accepted Human Board / VA01 / SEED-A as actual image authority rather than relying on prose restatement. Do not generate another Dwarf board until that style-binding step is explicitly resolved.
+
+
+## VA03 style-binding repair
+
+**Status:** IMPLEMENTED — no new Dwarf image generated in this step.
+
+Root cause confirmed: previous Dwarf attempts used the species anatomy contract but did not bind the actual accepted visual images strongly enough; prose restatement allowed the generator to switch into generic semi-realistic game-concept-sheet rendering.
+
+The generation path is now changed from fresh text-to-image to **EDIT-FIRST / IMAGE-BOUND** for VA03 species boards.
+
+Mandatory actual image authorities:
+1. accepted Human Board: `file_00000000c4148211a2f8d8691d32df8c`, SHA-256 `8a1f86030ca0e2388be6a54c17c0b44607834d39b5ff8a514e01f9a5e183a5a5`;
+2. locked VA01: `file_00000000b8048207a408bf22121bcf83`, SHA-256 `3ead1c8506bb415921d2cbbe971c149031ae17c177fe3691a99e8403e423a6e3`;
+3. SEED-A: `file_00000000f8988207b1b25b210f8231a7`, SHA-256 `3c60a705114a1b9d632ccad7ea13f9951bc6ca5cc21685e80b0e02a027d32b86`.
+
+New Dwarf route:
+- first edit only H02 on the accepted Human Board into D02 STANDARD DENSE female Dwarf;
+- leave the other five Human samples unchanged;
+- use this as a style-binding preflight;
+- only after that sample preserves the exact cartoon line/color/face system may the full six-Dwarf board be attempted.
+
+All previously rejected Dwarf images are quarantined as negative references and must not be provided to the generator.

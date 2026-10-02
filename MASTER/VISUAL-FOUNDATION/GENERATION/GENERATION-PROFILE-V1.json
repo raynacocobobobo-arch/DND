@@ -8,20 +8,86 @@
   "finalReferenceResolution": "3840x2160",
   "workingResolutionPolicy": "use the nearest supported 16:9 generation size; upscale only after visual approval",
   "referenceRoles": {
-    "primaryStyleSeed": "SEED-A",
-    "ensembleDensitySeed": "SEED-D",
-    "assetBoardLayoutSeed": "SEED-E",
-    "lockedVisualAnchors": "use applicable LOCKED VA01–VA08 anchors when available",
+    "primarySpeciesBoardTemplate": {
+      "id": "VA03-HUMAN-ACCEPTED-CANDIDATE",
+      "sourceFileId": "file_00000000c4148211a2f8d8691d32df8c",
+      "filename": "va03人类角色诊断图表.png",
+      "sha256": "8a1f86030ca0e2388be6a54c17c0b44607834d39b5ff8a514e01f9a5e183a5a5",
+      "dimensions": [
+        1448,
+        1086
+      ],
+      "controls": [
+        "white-background diagnostic-board composition",
+        "clean black hand-drawn contour family",
+        "flat local color",
+        "restrained cel shading",
+        "face rendering family",
+        "simple neutral calibration clothing",
+        "shared-ground-line lineup presentation"
+      ],
+      "doNotInherit": [
+        "Human anatomy",
+        "Human ears",
+        "Human chassis labels",
+        "Human stature",
+        "specific identities"
+      ]
+    },
+    "primaryStyleSeed": {
+      "id": "VA01-STYLE",
+      "sourceFileId": "file_00000000b8048207a408bf22121bcf83",
+      "canonicalLibraryFileId": "libfile_2019bdea6c3081918b8ea7fa717d959b",
+      "sha256": "3ead1c8506bb415921d2cbbe971c149031ae17c177fe3691a99e8403e423a6e3",
+      "controls": [
+        "line language",
+        "flat color",
+        "restrained cel shading",
+        "face and hand rendering family"
+      ]
+    },
+    "characterRenderingSeed": {
+      "id": "SEED-A",
+      "sourceFileId": "file_00000000f8988207b1b25b210f8231a7",
+      "canonicalLibraryFileId": "libfile_5c34112bb40881919aaa8bf29989f972",
+      "sha256": "3c60a705114a1b9d632ccad7ea13f9951bc6ca5cc21685e80b0e02a027d32b86",
+      "controls": [
+        "character rendering feel",
+        "adult fantasy readability",
+        "gesture/face clarity"
+      ]
+    },
+    "ensembleDensitySeed": "SEED-D — only for crowd/event density; never for VA03 lineup style",
+    "assetBoardLayoutSeed": "SEED-E — fallback layout logic only; accepted Human Board overrides it for VA03 lineup appearance",
     "sceneSpecificReferences": "use only approved Scene Visual Packet references"
   },
   "promptVersion": "GVF-PROMPT-V1",
   "negativeConstraintVersion": "VA08-V1",
   "seedPolicy": "seed control is not exposed by current runtime; no seed-level reproducibility claim",
-  "referenceSlotPolicy": "runtime-managed; if a mandatory visual reference cannot be supplied or inspected, stop rather than substitute from memory",
+  "referenceSlotPolicy": "For VA03 species boards, the accepted Human Board, locked VA01 and SEED-A must be actually loaded/visible in the generation context. The species anatomy spec is textual. If any mandatory image authority is unavailable, stop; do not substitute from prose or memory.",
   "editStrengthPolicy": "runtime-managed / not exposed",
   "upscalePolicy": "no style-changing upscale; upscale only after scene/board approval",
   "faceDetailCorrectionPolicy": "correct inside the same locked visual grammar; do not use a separate face style",
   "uiInSceneArt": false,
   "uiCompositionPolicy": "deterministic SVG/tokens compositing after Gate 5",
-  "outputNaming": "<ANCHOR-OR-SCENE-ID>-V<version>-<revision>.png"
+  "outputNaming": "<ANCHOR-OR-SCENE-ID>-V<version>-<revision>.png",
+  "speciesBoardGenerationMode": "EDIT_FIRST_IMAGE_BOUND",
+  "speciesBoardFreshGenerationAllowed": false,
+  "styleBindingContract": "STYLE-BINDING-CONTRACT-V1.md",
+  "speciesBoardPreflight": {
+    "required": true,
+    "method": "edit one existing Human-board sample into the target species while leaving the rest of the accepted Human board unchanged",
+    "firstTargetForDwarf": "H02 -> D02 STANDARD DENSE female Dwarf",
+    "passRequiredBeforeFullBoard": true
+  },
+  "styleDriftAbortConditions": [
+    "photoreal or semi-realistic skin/material rendering",
+    "3D/CGI rendering",
+    "painterly rendering",
+    "gray studio concept-sheet background replacing the accepted white board",
+    "high-detail armor/material concept art replacing simple calibration clothing",
+    "fine portrait linework replacing bold hand-drawn contours",
+    "anime style shift",
+    "new infographic panels/turnarounds/headshot grids not present in the accepted Human Board"
+  ]
 }

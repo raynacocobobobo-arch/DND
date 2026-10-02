@@ -525,7 +525,14 @@
     "version": "V1",
     "status": "REVIEW",
     "profile": "GENERATION/GENERATION-PROFILE-V1.json",
-    "adapter": "GENERATION/MODEL-ADAPTER-V1.md"
+    "adapter": "GENERATION/MODEL-ADAPTER-V1.md",
+    "styleBindingContract": "GENERATION/STYLE-BINDING-CONTRACT-V1.md",
+    "speciesBoardGenerationMode": "EDIT_FIRST_IMAGE_BOUND",
+    "primarySpeciesBoardTemplate": {
+      "id": "VA03-HUMAN-ACCEPTED-CANDIDATE",
+      "sourceFileId": "file_00000000c4148211a2f8d8691d32df8c",
+      "sha256": "8a1f86030ca0e2388be6a54c17c0b44607834d39b5ff8a514e01f9a5e183a5a5"
+    }
   },
   "annotationContract": "VISUAL-ASSET-ANNOTATION-CONTRACT-V1.md"
 }
