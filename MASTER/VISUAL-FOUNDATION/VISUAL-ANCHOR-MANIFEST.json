@@ -38,7 +38,7 @@
       "file": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-BOARD-V1.png",
       "spec": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-SPEC-V1.md",
       "version": "V1",
-      "status": "DRAFT",
+      "status": "RETIRED",
       "priority": "MANDATORY",
       "appliesTo": [
         "ALL_LEVELS"
@@ -53,8 +53,63 @@
         "faction clothing"
       ],
       "sha256": null,
-      "provenance": "VA02 calibration draft reopened on 2026-10-02 after cross-board review revealed inconsistent face grammar; must be reworked before use as canonical humanoid face/hand grammar.",
+      "provenance": "Retired on 2026-10-02 after Human-board testing showed face grammar drift. Replaced by separate VA02-FACE-GRAMMAR and VA02-HAND-GRAMMAR anchors.",
       "supersedes": null
+    },
+    {
+      "id": "VA02-FACE-GRAMMAR",
+      "file": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-BOARD-V1.png",
+      "spec": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-SPEC-V1.md",
+      "annotations": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_HUMANOID_LEVEL_ASSETS"
+      ],
+      "controls": [
+        "eye/nose/mouth/jaw drawing grammar",
+        "face-detail level",
+        "age rendering",
+        "facial-style consistency"
+      ],
+      "doNotInherit": [
+        "species anatomy",
+        "skin tone defaults",
+        "hair style",
+        "character identity",
+        "costume"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned humanoid face grammar mother asset",
+      "supersedes": "VA02-HUMAN-FACE-HAND"
+    },
+    {
+      "id": "VA02-HAND-GRAMMAR",
+      "file": "02-HUMAN-FACE-HAND/HAND-GRAMMAR-BOARD-V1.png",
+      "spec": "02-HUMAN-FACE-HAND/HAND-GRAMMAR-SPEC-V1.md",
+      "annotations": "02-HUMAN-FACE-HAND/HAND-GRAMMAR-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_HUMANOID_LEVEL_ASSETS"
+      ],
+      "controls": [
+        "hand construction",
+        "gesture readability",
+        "grip grammar"
+      ],
+      "doNotInherit": [
+        "species anatomy",
+        "prop identity",
+        "costume"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned humanoid hand grammar mother asset",
+      "supersedes": "VA02-HUMAN-FACE-HAND"
     },
     {
       "id": "VA03-HUMAN",
