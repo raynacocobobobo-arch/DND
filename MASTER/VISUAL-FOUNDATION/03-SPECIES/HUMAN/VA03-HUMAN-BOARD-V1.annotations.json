@@ -18,8 +18,8 @@
     "faction"
   ],
   "invariants": [
+    "all Human samples use the same 5.3-head body ratio",
     "unmistakably adult",
-    "approximately 5–5.5-head project stylization",
     "functional adult limb proportions",
     "VA01 line/color/shading grammar",
     "VA02 face/hand rendering grammar"
@@ -40,9 +40,9 @@
       "sexPresentation": "female",
       "ageBand": "young-adult",
       "heightBand": "SHORT",
-      "relativeHeightToHuman": 0.92,
+      "relativeHeightToHuman": 0.95,
       "bodyType": "LEAN",
-      "headBodyRatio": 5.15,
+      "headBodyRatio": 5.3,
       "skinToneFamily": "warm-medium",
       "hair": "dark brown, short wavy",
       "pose": "relaxed standing, slight contrapposto",
@@ -95,7 +95,7 @@
       "heightBand": "TALL",
       "relativeHeightToHuman": 1.07,
       "bodyType": "LEAN",
-      "headBodyRatio": 5.5,
+      "headBodyRatio": 5.3,
       "skinToneFamily": "deep-brown",
       "hair": "black, long braided",
       "pose": "upright relaxed standing",
@@ -121,7 +121,7 @@
       "heightBand": "AVG",
       "relativeHeightToHuman": 1.02,
       "bodyType": "BROAD",
-      "headBodyRatio": 5.25,
+      "headBodyRatio": 5.3,
       "skinToneFamily": "medium",
       "hair": "dark auburn, cropped",
       "pose": "stable standing, arms relaxed",
@@ -147,7 +147,7 @@
       "heightBand": "AVG",
       "relativeHeightToHuman": 0.98,
       "bodyType": "HEAVY",
-      "headBodyRatio": 5.1,
+      "headBodyRatio": 5.3,
       "skinToneFamily": "light",
       "hair": "dark blonde, shoulder-length",
       "pose": "comfortable balanced standing",
@@ -171,9 +171,9 @@
       "sexPresentation": "male",
       "ageBand": "older-adult",
       "heightBand": "AVG",
-      "relativeHeightToHuman": 0.96,
+      "relativeHeightToHuman": 1,
       "bodyType": "AVG",
-      "headBodyRatio": 5.2,
+      "headBodyRatio": 5.3,
       "skinToneFamily": "olive-medium",
       "hair": "gray, swept back",
       "pose": "slightly settled older posture, still upright",
@@ -198,6 +198,9 @@
     "all women are small/lean and all men broad",
     "duplicate orange-haired large/small pair",
     "childlike proportions",
-    "7.5–8-head fashion anatomy"
+    "7.5–8-head fashion anatomy",
+    "changing head/body ratio to express height or body type",
+    "short Human reading as Halfling or Gnome",
+    "enlarged head used to create a smaller Human"
   ]
 }
