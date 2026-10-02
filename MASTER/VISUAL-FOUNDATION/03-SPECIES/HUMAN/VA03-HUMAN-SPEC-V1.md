@@ -82,3 +82,16 @@ For VA03-HUMAN V1:
 - no Human may visually approach Halfling/Gnome construction.
 
 The minimum short-human sample must still read immediately as a normal adult Human when shown without labels.
+
+
+## Rejected draft record
+
+**2026-10-02 — Draft rejected.**
+
+Observed failure:
+- H01 / H02 / H05 used a softer, larger-eye, rounder facial grammar;
+- H03 / H04 / H06 used a narrower-eye, stronger-brow/jaw, more mature Western-comic facial grammar.
+
+This is a **style-system inconsistency**, not acceptable within one species board.
+
+Before regenerating VA03-HUMAN, VA02 must first establish one stable humanoid facial grammar. Human variation may change height, body mass, age, face shape and skin tone, but not the underlying eye/nose/mouth/jaw drawing system.
