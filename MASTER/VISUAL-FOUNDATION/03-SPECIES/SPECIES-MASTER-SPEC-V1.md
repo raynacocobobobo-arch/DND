@@ -33,7 +33,7 @@ These are project visual-control ratios, not universal canonical heights.
 Individual adults may vary inside a narrow band.
 
 ## Required board structure
-Use two boards if necessary, but both must share:
+The former mixed A/B board approach is retired. Each PV0 species receives its own single-species board. All species boards must share:
 - white/light neutral background;
 - exact shared ground line;
 - orthographic-like asset presentation;
@@ -43,7 +43,7 @@ Use two boards if necessary, but both must share:
 - one head/face inset per species;
 - clear labels outside figure silhouettes.
 
-Each species needs:
+Each single-species board needs:
 1. front or slight 3/4 full body;
 2. comparison-scale neighbor;
 3. face/head inset;
@@ -95,3 +95,18 @@ Existing locked species are not redrawn simply because a new species is added.
 - species difference shown only through skin color;
 - faction costume used as anatomy shorthand;
 - perspective differences mistaken for species height.
+
+
+## Single-species asset rule
+
+PV0 uses six separate mother assets:
+- VA03-HUMAN
+- VA03-ELF
+- VA03-DWARF
+- VA03-HALFLING
+- VA03-GNOME
+- VA03-TIEFLING
+
+Each one must show meaningful within-species variation in height, body type, adult age and sex presentation. A species is not represented by one canonical mannequin.
+
+Each asset follows the Visual Asset Annotation Contract and requires SPEC + PNG + annotations JSON before LOCK.
