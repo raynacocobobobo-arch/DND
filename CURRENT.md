@@ -130,3 +130,15 @@ Human approved the third calibration iteration as the project's **mother-image a
 - The test asks whether different people remain one drawing system, not whether one person can survive a turnaround.
 - Passing the diagnostic does **not** automatically LOCK VA02.
 - No visual asset may be marked `LOCKED` without explicit human approval and a valid SPEC + PNG + annotations package.
+
+
+## VA02 Human review note — Cross-Identity Transfer Test
+
+**Human review:** acceptable / positive diagnostic, but **not a formal approval and not LOCKED**.
+
+- HG01 adult feminine Human, HG02 adult masculine Human, and HG03 older Human read as different identities while remaining within one face-drawing family.
+- The earlier M03/M04 face-system split is not reproduced in this diagnostic.
+- Reduced-scale copies remain readable enough to support continued production testing.
+- This image is not yet a canonical repository asset and must not be treated as a reusable cast sheet.
+- VA02-FACE-GRAMMAR remains **DRAFT** pending an explicit approval decision and complete SPEC + PNG + annotations validation.
+- If production continues, the next downstream test is a regenerated **VA03-HUMAN** board that inherits this Face Grammar while holding Human body ratio near 5.3 heads and varying stature/body type/age/sex presentation without changing facial art system.
