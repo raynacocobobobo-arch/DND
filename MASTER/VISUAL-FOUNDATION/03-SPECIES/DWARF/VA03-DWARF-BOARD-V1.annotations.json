@@ -28,7 +28,7 @@
       0.8,
       0.83
     ],
-    "headBodyRatio": 4.7,
+    "headBodyRatio": 4,
     "continuousBodyMorphing": false
   },
   "bodyChassis": [
@@ -114,7 +114,7 @@
   ],
   "invariants": [
     "adult Dwarf",
-    "approximately 4.7 heads",
+    "approximately 4.0 heads",
     "80–83% Human-relative production stature",
     "compact broad torso",
     "short powerful limbs",
@@ -133,5 +133,18 @@
     "Human strong body at smaller scale",
     "mining/smith stereotype as anatomy",
     "different face system by age or sex"
+  ],
+  "anatomyAuthority": {
+    "official5e": "Dwarf is Medium, about 4–5 feet tall; current D&D description: squat and often bearded; 2014 support: short and stout / broad and compact",
+    "va01Exemplar": "VA01 Core Species Lineup Dwarf",
+    "humanBoardRole": "board/layout/rendering consistency only; explicitly not anatomy"
+  },
+  "signatureAnatomy": [
+    "broad compact ribcage/trunk",
+    "short powerful thighs and lower legs",
+    "substantial forearms and hands",
+    "low center of gravity",
+    "adult head and mature posture",
+    "not a uniformly scaled-down Human"
   ]
 }
