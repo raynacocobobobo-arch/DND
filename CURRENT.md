@@ -295,3 +295,20 @@ Board roster:
 - D06 DB02 older feminine adult.
 
 Project Dwarf body construction for this diagnostic: approximately 4.7 heads, held consistent across all six.
+
+
+## VA03-DWARF visual attempts — REJECTED
+
+**Status:** NO VALID VISUAL CANDIDATE.
+
+All Dwarf images generated in the current iteration are rejected and must not be used as positive references.
+
+Failure category:
+- rendering style drifted away from the approved SEED-A / VA01 / accepted Human-board art family;
+- outputs became semi-realistic / realistic game-concept sheets rather than the approved clean black hand-drawn contour + flat color + restrained cel-shading language;
+- text-only style instructions were insufficient to preserve the approved art family;
+- some attempts also reintroduced stereotype-heavy Dwarf costuming / beard emphasis that should not control species anatomy.
+
+The Dwarf anatomy contract itself remains DRAFT and usable as a structural specification, but no Dwarf PNG candidate is accepted.
+
+**Next requirement before any new Dwarf generation:** establish a reliable visual-reference binding method using the already accepted Human Board / VA01 / SEED-A as actual image authority rather than relying on prose restatement. Do not generate another Dwarf board until that style-binding step is explicitly resolved.
