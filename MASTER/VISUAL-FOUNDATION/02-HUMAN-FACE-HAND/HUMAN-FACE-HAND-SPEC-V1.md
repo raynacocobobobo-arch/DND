@@ -1,6 +1,6 @@
 # VA02 — Humanoid Rendering Grammar Spec V1
 
-**Status:** REVIEW  
+**Status:** DRAFT — REOPENED  
 **Seed authority:** SEED-A primary. SEED-E controls board organization only.
 
 ## Controls
@@ -82,3 +82,18 @@ Status remains **REVIEW**, not LOCKED. Final lock may occur after side-by-side r
 The Human figures shown in this board are calibration samples for face/hand/body rendering only. Their individual height, body type, skin tone, hairstyle and clothing must not be mistaken for the allowed variation space of every other species.
 
 All core species receive their own VA03 Variation Board with equivalent body-type, height, age and sex-presentation diversity.
+
+
+## Reopen reason
+
+**2026-10-02:** VA02 was reopened after VA03-HUMAN testing exposed a face-grammar split.
+
+The project must use one stable facial construction system across all humanoid samples:
+- consistent eye-size range relative to the face;
+- consistent iris/pupil simplification;
+- consistent nose construction;
+- consistent mouth/teeth simplification;
+- consistent jaw/chin line language;
+- consistent line weight and cel-shading treatment.
+
+Age, sex presentation, body type and face shape may vary, but they must not switch to a different illustration style.
