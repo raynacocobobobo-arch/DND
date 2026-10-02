@@ -1,6 +1,6 @@
 # VA01 — Style Calibration Spec V1
 
-**Status:** DRAFT SPEC  
+**Status:** APPROVED SPEC  
 **Seed authority:** SEED-A primary; SEED-D secondary for ensemble readability only. SEED-E is not a rendering-style authority.
 
 ## Controls
@@ -77,3 +77,18 @@ B and C are not positive references and must not influence VA01.
 
 ## Reject conditions
 Reject the entire board if one or more panels drift into a different art family. A “mostly correct” board with one painterly, 3D or anime panel is not lockable.
+
+
+## Approval record
+
+**Human approved on 2026-10-02.**
+
+The approved board is the third visual iteration produced in-chat, accepted by the user as a **mother-image asset** for the project.
+
+Canonical repository preview path:
+`01-STYLE/STYLE-CALIBRATION-BOARD-V1.png`
+
+Original approved full-resolution conversation file:
+`file_000000002cd082078e037bbbd4f14d13`
+
+The visible “V3” label inside the artwork records generation iteration history. In the repository, this image is locked as the first canonical Foundation version, **VA01 V1**.
