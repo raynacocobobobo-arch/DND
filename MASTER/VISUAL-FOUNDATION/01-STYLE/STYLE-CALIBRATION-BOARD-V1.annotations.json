@@ -1,0 +1,62 @@
+{
+  "assetId": "VA01-STYLE",
+  "assetVersion": "V1",
+  "boardFile": "01-STYLE/STYLE-CALIBRATION-BOARD-V1.png",
+  "specFile": "01-STYLE/STYLE-CALIBRATION-SPEC-V1.md",
+  "status": "LOCKED",
+  "controls": [
+    "line language",
+    "flat-color and restrained cel-shading grammar",
+    "detail hierarchy"
+  ],
+  "doNotInherit": [
+    "specific character identity",
+    "location clothing",
+    "species anatomy",
+    "scene content"
+  ],
+  "samples": [
+    {
+      "id": "VA01-MOTHER",
+      "subjectType": "style-calibration-board",
+      "species": "mixed calibration subjects",
+      "sexPresentation": "mixed",
+      "ageBand": "adult",
+      "heightBand": "varied",
+      "bodyType": "varied",
+      "headBodyRatio": "project range; species-specific values deferred to VA03",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "varied calibration poses",
+      "clothingScope": "calibration only",
+      "sampleControls": [
+        "rendering style",
+        "line/color/shading relationship"
+      ],
+      "sampleDoNotInherit": [
+        "individual outfits",
+        "individual faces",
+        "exact scene props"
+      ]
+    }
+  ],
+  "invariants": [
+    "clean hand-drawn black contour language",
+    "flat local color with restrained cel shading",
+    "clear face/hand readability",
+    "characters visually outrank background detail",
+    "no painterly/3D/photoreal drift"
+  ],
+  "variables": [
+    "character identity",
+    "species",
+    "costume",
+    "local palette",
+    "scene content"
+  ],
+  "forbiddenMisreads": [
+    "treating one sample outfit as project uniform",
+    "treating one sample anatomy as species canon",
+    "using the board's embedded text as UI style"
+  ]
+}
