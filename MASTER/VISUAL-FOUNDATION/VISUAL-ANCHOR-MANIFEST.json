@@ -29,7 +29,9 @@
       "canonicalLibraryPath": "/DND/Global Visual Foundation/VA01_STYLE_CALIBRATION_BOARD_V1.png",
       "sourceFileId": "file_00000000b8048207a408bf22121bcf83",
       "sourceSha256": "3ead1c8506bb415921d2cbbe971c149031ae17c177fe3691a99e8403e423a6e3",
-      "repositoryPreviewNote": "Repository PNG is a compact review preview; Library file above is the approved full-resolution mother asset."
+      "repositoryPreviewNote": "Repository PNG is a compact review preview; Library file above is the approved full-resolution mother asset.",
+      "annotations": "01-STYLE/STYLE-CALIBRATION-BOARD-V1.annotations.json",
+      "annotationsSha256": "e03dfceb5a76c12abe644f08bfd641cde4ca7226df963640b2abd2cf4743ffd8"
     },
     {
       "id": "VA02-HUMAN-FACE-HAND",
@@ -55,9 +57,10 @@
       "supersedes": null
     },
     {
-      "id": "VA03-SPECIES-CORE-A",
-      "file": "03-SPECIES/SPECIES-CORE-BOARD-A-V1.png",
-      "spec": "03-SPECIES/SPECIES-MASTER-SPEC-V1.md",
+      "id": "VA03-HUMAN",
+      "file": "03-SPECIES/HUMAN/VA03-HUMAN-BOARD-V1.png",
+      "spec": "03-SPECIES/HUMAN/VA03-HUMAN-SPEC-V1.md",
+      "annotations": "03-SPECIES/HUMAN/VA03-HUMAN-BOARD-V1.annotations.json",
       "version": "V1",
       "status": "DRAFT",
       "priority": "MANDATORY",
@@ -66,21 +69,26 @@
       ],
       "controls": [
         "species anatomy",
+        "species variation space",
         "relative scale",
         "silhouette"
       ],
       "doNotInherit": [
         "faction clothing",
-        "scene lighting"
+        "profession",
+        "scene lighting",
+        "character identity"
       ],
       "sha256": null,
-      "provenance": "planned project visual standard",
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
       "supersedes": null
     },
     {
-      "id": "VA03-SPECIES-CORE-B",
-      "file": "03-SPECIES/SPECIES-CORE-BOARD-B-V1.png",
-      "spec": "03-SPECIES/SPECIES-MASTER-SPEC-V1.md",
+      "id": "VA03-ELF",
+      "file": "03-SPECIES/ELF/VA03-ELF-BOARD-V1.png",
+      "spec": "03-SPECIES/ELF/VA03-ELF-SPEC-V1.md",
+      "annotations": "03-SPECIES/ELF/VA03-ELF-BOARD-V1.annotations.json",
       "version": "V1",
       "status": "DRAFT",
       "priority": "MANDATORY",
@@ -89,15 +97,131 @@
       ],
       "controls": [
         "species anatomy",
+        "species variation space",
         "relative scale",
         "silhouette"
       ],
       "doNotInherit": [
         "faction clothing",
-        "scene lighting"
+        "profession",
+        "scene lighting",
+        "character identity"
       ],
       "sha256": null,
-      "provenance": "planned project visual standard",
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-DWARF",
+      "file": "03-SPECIES/DWARF/VA03-DWARF-BOARD-V1.png",
+      "spec": "03-SPECIES/DWARF/VA03-DWARF-SPEC-V1.md",
+      "annotations": "03-SPECIES/DWARF/VA03-DWARF-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "species variation space",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "profession",
+        "scene lighting",
+        "character identity"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-HALFLING",
+      "file": "03-SPECIES/HALFLING/VA03-HALFLING-BOARD-V1.png",
+      "spec": "03-SPECIES/HALFLING/VA03-HALFLING-SPEC-V1.md",
+      "annotations": "03-SPECIES/HALFLING/VA03-HALFLING-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "species variation space",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "profession",
+        "scene lighting",
+        "character identity"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-GNOME",
+      "file": "03-SPECIES/GNOME/VA03-GNOME-BOARD-V1.png",
+      "spec": "03-SPECIES/GNOME/VA03-GNOME-SPEC-V1.md",
+      "annotations": "03-SPECIES/GNOME/VA03-GNOME-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "species variation space",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "profession",
+        "scene lighting",
+        "character identity"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
+      "supersedes": null
+    },
+    {
+      "id": "VA03-TIEFLING",
+      "file": "03-SPECIES/TIEFLING/VA03-TIEFLING-BOARD-V1.png",
+      "spec": "03-SPECIES/TIEFLING/VA03-TIEFLING-SPEC-V1.md",
+      "annotations": "03-SPECIES/TIEFLING/VA03-TIEFLING-BOARD-V1.annotations.json",
+      "version": "V1",
+      "status": "DRAFT",
+      "priority": "MANDATORY",
+      "appliesTo": [
+        "ALL_LEVELS"
+      ],
+      "controls": [
+        "species anatomy",
+        "species variation space",
+        "relative scale",
+        "silhouette"
+      ],
+      "doNotInherit": [
+        "faction clothing",
+        "profession",
+        "scene lighting",
+        "character identity"
+      ],
+      "sha256": null,
+      "annotationsSha256": null,
+      "provenance": "planned single-species visual mother asset",
       "supersedes": null
     },
     {
@@ -347,5 +471,6 @@
     "status": "REVIEW",
     "profile": "GENERATION/GENERATION-PROFILE-V1.json",
     "adapter": "GENERATION/MODEL-ADAPTER-V1.md"
-  }
+  },
+  "annotationContract": "VISUAL-ASSET-ANNOTATION-CONTRACT-V1.md"
 }
