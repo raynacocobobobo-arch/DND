@@ -7,7 +7,7 @@
   "controls": [
     "eye/nose/mouth/jaw drawing grammar",
     "face-detail level",
-    "age rendering",
+    "age rendering after core validation",
     "facial-style consistency"
   ],
   "doNotInherit": [
@@ -17,189 +17,203 @@
     "species anatomy",
     "costume"
   ],
+  "validationStage": {
+    "phase": "PHASE_A_SINGLE_IDENTITY_PREFLIGHT",
+    "purpose": "isolate and validate one Face Construction Core before identity diversity is introduced",
+    "humanApprovalRequired": true,
+    "mayLockOnPass": false,
+    "nextAllowedStageAfterHumanApproval": "PHASE_B_CROSS_IDENTITY_TRANSFER_VALIDATION",
+    "blockedUntilPhaseAApproval": [
+      "cross-identity face grammar test",
+      "VA03-HUMAN regeneration"
+    ]
+  },
+  "identityInvariant": {
+    "identity": "ONE_FIXED_ADULT_IDENTITY",
+    "ageBand": "adult",
+    "sexPresentation": "fixed; not varied",
+    "skinToneFamily": "fixed; not varied",
+    "hair": "fixed hairstyle and hairline",
+    "faceWidth": "fixed",
+    "jawWidth": "fixed",
+    "chinLength": "fixed",
+    "browDensity": "fixed",
+    "facialHairState": "fixed",
+    "headNeckProportion": "fixed",
+    "clothingScope": "same neutral collar",
+    "cropScale": "fixed",
+    "lighting": "fixed",
+    "background": "light neutral"
+  },
   "samples": [
     {
-      "id": "F01",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "feminine",
-      "ageBand": "young-adult",
-      "heightBand": "n/a",
-      "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
-      "sampleControls": [
-        "soft oval face within fixed grammar"
-      ],
-      "sampleDoNotInherit": [
-        "identity",
-        "hair"
-      ]
-    },
-    {
-      "id": "F02",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "feminine",
+      "id": "FC01",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "front head, neutral expression",
+      "clothingScope": "same neutral collar",
       "sampleControls": [
-        "longer face within fixed grammar"
+        "front-view baseline construction"
       ],
       "sampleDoNotInherit": [
-        "identity",
-        "hair"
+        "identity as reusable character",
+        "costume"
       ]
     },
     {
-      "id": "F03",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "feminine",
-      "ageBand": "older-adult",
-      "heightBand": "n/a",
-      "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
-      "sampleControls": [
-        "rounder older face within fixed grammar"
-      ],
-      "sampleDoNotInherit": [
-        "identity",
-        "hair"
-      ]
-    },
-    {
-      "id": "F04",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "masculine",
+      "id": "FC02",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "left 3/4 head, neutral expression",
+      "clothingScope": "same neutral collar",
       "sampleControls": [
-        "narrow angular face within fixed grammar"
+        "3/4 perspective preservation of the same construction"
       ],
       "sampleDoNotInherit": [
-        "identity",
-        "hair"
+        "identity as reusable character",
+        "costume"
       ]
     },
     {
-      "id": "F05",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "masculine",
-      "ageBand": "young-adult",
-      "heightBand": "n/a",
-      "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
-      "sampleControls": [
-        "soft square face within fixed grammar"
-      ],
-      "sampleDoNotInherit": [
-        "identity",
-        "hair"
-      ]
-    },
-    {
-      "id": "F06",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "masculine",
+      "id": "FC03",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "left profile head, neutral expression",
+      "clothingScope": "same neutral collar",
       "sampleControls": [
-        "broad face within fixed grammar"
+        "profile projection of the same nose/jaw/eye system"
       ],
       "sampleDoNotInherit": [
-        "identity",
-        "hair"
+        "identity as reusable character",
+        "costume"
       ]
     },
     {
-      "id": "F07",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "masculine",
-      "ageBand": "older-adult",
-      "heightBand": "n/a",
-      "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
-      "sampleControls": [
-        "mature angular older face within fixed grammar"
-      ],
-      "sampleDoNotInherit": [
-        "identity",
-        "hair"
-      ]
-    },
-    {
-      "id": "F08",
-      "subjectType": "humanoid-face",
-      "sexPresentation": "androgynous",
+      "id": "FC04",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "varied",
-      "hair": "varied",
-      "pose": "front or slight 3/4 head",
-      "clothingScope": "none/neutral collar",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "right 3/4 head, neutral expression",
+      "clothingScope": "same neutral collar",
       "sampleControls": [
-        "balanced face within fixed grammar"
+        "opposite 3/4 perspective preservation of the same construction"
       ],
       "sampleDoNotInherit": [
-        "identity",
-        "hair"
+        "identity as reusable character",
+        "costume"
+      ]
+    },
+    {
+      "id": "FC05",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "front head, mild closed-mouth smile",
+      "clothingScope": "same neutral collar",
+      "sampleControls": [
+        "mouth deformation without changing facial grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity as reusable character",
+        "costume"
+      ]
+    },
+    {
+      "id": "FC06",
+      "subjectType": "humanoid-face-single-identity",
+      "sexPresentation": "fixed-reference",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "fixed-reference",
+      "hair": "fixed-reference",
+      "pose": "front head, mild open-mouth expression with visible teeth",
+      "clothingScope": "same neutral collar",
+      "sampleControls": [
+        "mouth/teeth simplification under expression"
+      ],
+      "sampleDoNotInherit": [
+        "identity as reusable character",
+        "costume"
       ]
     }
   ],
   "invariants": [
-    "one eye-size family",
-    "one iris/pupil simplification",
-    "one nose-construction language",
-    "one mouth/teeth simplification",
-    "one jaw-line graphic system",
-    "one line/shading system"
+    "one fixed facial identity across all Phase A samples",
+    "one moderate adult eye-size family",
+    "upper eyelid primary and lower eyelid lighter/shorter",
+    "one simplified iris/pupil treatment",
+    "one eyebrow line family",
+    "one bridge-tip-minimal-nostril nose construction language",
+    "one mouth/lip simplification",
+    "visible teeth rendered as one simplified light mass rather than per-tooth realism",
+    "one recoverable jaw/chin/face-width structure across rotations",
+    "VA01 line-weight hierarchy",
+    "VA01 restrained cel-shading system"
   ],
   "variables": [
+    "camera angle",
+    "mild facial expression"
+  ],
+  "deferredVariables": [
     "age",
     "face width",
     "jaw width",
     "cheek fullness",
+    "sex presentation",
     "skin tone",
-    "hair",
-    "mild expression"
+    "hair family",
+    "different facial identity"
   ],
   "forbiddenMisreads": [
+    "treating perspective change as permission to redesign the face",
     "mixed anime and Western-comic face systems",
     "different eye-scale families",
+    "different iris/pupil complexity",
     "different nose-rendering systems",
-    "different jaw-line styles"
+    "different mouth/teeth systems",
+    "different jaw-line styles",
+    "M03 or M04 treated as positive reference"
+  ],
+  "failureReferences": [
+    {
+      "id": "M03",
+      "status": "NEGATIVE_DIAGNOSTIC_ONLY",
+      "failure": "Face Construction Core drift"
+    },
+    {
+      "id": "M04",
+      "status": "NEGATIVE_DIAGNOSTIC_ONLY",
+      "failure": "Face Construction Core drift"
+    }
   ]
 }

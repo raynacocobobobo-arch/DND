@@ -58,16 +58,15 @@ Reviewed together:
 
 ### Remaining holds
 - Exact Avowed costume details still require comparison against verified official Candlekeep visual references before Gate 3 character sheets.
-- Gate 2 itself still needs explicit human approval.
-- Even after Gate 2 approval, Gate 3 remains blocked until **PV0 — Global Visual Prelock** is approved.
+- Gate 3 remains blocked until **PV0 — Global Visual Prelock** is explicitly approved and LOCKED.
 
-## Gate 2 proposal currently under review
+## Gate 2 approved population lock
 
 - Total readable figures: **60**
 - Resident/institutional: **36**
 - Visitor/special: **24**
 - Non-humanoid creatures: **0**
-- Proposed species: Human 38, Elf 7, Dwarf 5, Halfling 4, Gnome 3, Tiefling 3
+- Approved species casting: Human 38, Elf 7, Dwarf 5, Halfling 4, Gnome 3, Tiefling 3
 - Institutional visual principle: one old knowledge institution receiving many different visitors
 - Scene-specific visual language remains subordinate to the Global Visual Foundation
 
@@ -79,9 +78,16 @@ Reviewed together:
 
 ## Next action
 
-Proceed with Global Visual Foundation PV0 construction.
+Proceed with Global Visual Foundation PV0 construction at the **VA02-FACE-GRAMMAR** layer.
 
-Candlekeep Gate 2 is now **APPROVED**. Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
+Immediate visual task:
+1. run the mandatory **single-identity Face Construction Core preflight**;
+2. vary only camera angle and mild expression;
+3. obtain explicit human approval of that preflight;
+4. only then run cross-identity Face Grammar validation;
+5. do not resume VA03-HUMAN until Face Grammar has passed the required review path.
+
+Candlekeep Gate 2 is **APPROVED**. Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
 
 The approved pilot species set is:
 - Human
@@ -102,4 +108,19 @@ Human approved the third calibration iteration as the project's **mother-image a
 - Full-resolution canonical Library asset: `/DND/Global Visual Foundation/VA01_STYLE_CALIBRATION_BOARD_V1.png`
 - Library file: `libfile_2019bdea6c3081918b8ea7fa717d959b`
 - General style now inherits from VA01, not directly from the bootstrap Seed images.
-- Next visual anchor: **VA02 — Human / Face / Hand Board**.
+- The former combined **VA02 — Human / Face / Hand** anchor is **RETIRED**.
+- Current next visual anchor: **VA02-FACE-GRAMMAR — DRAFT**.
+
+## VA02 Face Construction Core corrective state
+
+**VA02-FACE-GRAMMAR: DRAFT — SINGLE-IDENTITY PREFLIGHT REQUIRED**
+
+- VA03-HUMAN remains rejected/unusable and must not be regenerated yet.
+- Earlier M03 / M04 outputs are **negative diagnostic references only**; they are not positive mother assets.
+- Failure category: different samples switched eye, brow, nose, mouth and jaw construction systems.
+- The next image must contain one fixed adult identity only.
+- Required Phase A samples: `FC01`–`FC06` = front / 3Q-left / profile-left / 3Q-right / closed-mouth smile / mild open-mouth teeth.
+- Fixed across samples: identity, age, face shape, skin tone, hair, crop, collar, light and background.
+- Variable only: camera angle and mild expression.
+- A Phase A pass does **not** LOCK VA02. Human approval is required before cross-identity validation.
+- No visual asset may be marked `LOCKED` without explicit human approval and a valid SPEC + PNG + annotations package.

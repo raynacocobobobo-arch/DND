@@ -52,21 +52,21 @@ The following reusable interfaces are **canonical**:
 
 ## Active scene documents
 
-Candlekeep Gate 0–1 files are **canonical**:
+Candlekeep Gate 0–2 files are **canonical**:
 
 - `SCENES/S02-CANDLEKEEP/RESEARCH/01-LOCATION-RESEARCH.md` — Gate 0 approved location research
 - `SCENES/S02-CANDLEKEEP/RESEARCH/02-SUBSCENE-DECISION.md` — Gate 1 approved subscene decision
 - `SCENES/S02-CANDLEKEEP/RESEARCH/03-SCENE-STATE.md` — Gate 1 approved scene-state lock
 
-Gate 2 production review package is now active but **not yet approved**:
+Gate 2 production package is **APPROVED**:
 
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md` — active draft / human review
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md` — active draft / human review
-- `SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md` — active draft / human review
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/04-POPULATION-MODEL.md` — canonical / Gate 2 approved
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/05-SPECIES-SCALE.md` — canonical / Gate 2 approved
+- `SCENES/S02-CANDLEKEEP/PRODUCTION/06-FACTION-STYLE.md` — canonical / Gate 2 approved
 
 ## Scene workspaces
 
-All 15 scene root `README.md` files are **canonical workspace status records**. S02 Candlekeep is active at Gate 2 NEXT; S01 and S03–S15 remain NOT STARTED at Gate 0.
+All 15 scene root `README.md` files are **canonical workspace status records**. S02 Candlekeep has Gate 2 APPROVED and is blocked before Gate 3 by PV0; S01 and S03–S15 remain NOT STARTED at Gate 0.
 
 - [S01 — Baldur’s Gate: Basilisk Gate](SCENES/S01-BALDURS-GATE/README.md)
 - [S02 — Candlekeep: Court of Air / visitor interface](SCENES/S02-CANDLEKEEP/README.md)
@@ -91,4 +91,9 @@ All 15 scene root `README.md` files are **canonical workspace status records**. 
 | `MASTER/VISUAL-FOUNDATION/README.md` | draft system root | Entry point for project-wide visual inheritance |
 | `MASTER/VISUAL-FOUNDATION/GLOBAL-VISUAL-FOUNDATION-V1.md` | draft | PV0/PV1 and visual inheritance rules |
 | `MASTER/VISUAL-FOUNDATION/VISUAL-ANCHOR-MANIFEST.json` | draft | Machine-readable visual-anchor authority map |
+| `MASTER/VISUAL-FOUNDATION/VISUAL-ASSET-ANNOTATION-CONTRACT-V1.md` | active design rule | SPEC + PNG + annotations lock contract |
+| `MASTER/VISUAL-FOUNDATION/01-STYLE/STYLE-CALIBRATION-SPEC-V1.md` | approved spec / VA01 locked | General rendering grammar |
+| `MASTER/VISUAL-FOUNDATION/02-HUMAN-FACE-HAND/FACE-GRAMMAR-SPEC-V1.md` | draft | Single-identity Face Construction Core preflight, then cross-identity validation |
+| `MASTER/VISUAL-FOUNDATION/02-HUMAN-FACE-HAND/FACE-GRAMMAR-BOARD-V1.annotations.json` | draft | Machine-readable Face Grammar preflight invariants/variables |
+| `MASTER/VISUAL-FOUNDATION/03-SPECIES/HUMAN/VA03-HUMAN-SPEC-V1.md` | draft / image rejected | Human variation spec; regeneration blocked pending Face Grammar validation |
 | `scripts/validate_visual_foundation.py` | canonical validator | Visual-anchor status/path/hash/profile validation |
