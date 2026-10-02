@@ -75,47 +75,47 @@ SEED-A does not control species anatomy.
 
 ## 3. Binding priority
 
-For VA03 species boards:
+For VA03 non-Human species boards:
 
-1. **Accepted Human Board** — direct image/template behavior.
-2. **VA01** — art-family regression authority.
-3. **SEED-A** — character-rendering regression authority.
-4. **Target species SPEC + annotations** — anatomy changes only.
-5. Text prompt — last priority.
+1. **Official 5E/SRD facts** — species truth.
+2. **Matching VA01 species exemplar** — project anatomy/silhouette translation.
+3. **Target species SPEC + annotations** — controlled variation space.
+4. **VA01 + VA02 Face Grammar** — rendering grammar.
+5. **Accepted Human Board** — board layout / label density / simple calibration-clothing behavior only.
+6. **SEED-A** — general character-rendering regression.
+7. Text prompt — execution detail only.
 
-If text conflicts with the actual image authorities on rendering style, the images win.
+The Human Board is never a non-Human anatomy source.
 
 ## 4. Mandatory generation route
 
-### Forbidden route
-`species text spec → fresh text-to-image board`
+### Forbidden routes
+- `Human body → scale/morph into non-Human species`
+- `species prose only → fresh image with no visual species anchor`
 
 ### Required route
-`accepted Human Board image → image edit / transformation → target species anatomy`
+`official species facts + matching VA01 species exemplar → Species Anatomy Core → target species sample`
 
-The generator must treat the Human Board as the base canvas/template, not merely as an inspirational reference.
+Then apply:
+`VA01/VA02 rendering grammar + accepted Human Board board/layout grammar`.
 
-Only these categories should change:
-- species skeleton;
-- relative stature;
-- signature anatomy;
-- identity variables required by the target species contract;
-- sample IDs / chassis tags.
-
-Keep the rendering system and board system intact.
+The generator must build the target species anatomy from its own VA01 exemplar, while using the Human Board only to keep the diagnostic-board presentation consistent.
 
 ## 5. Single-sample preflight
 
-Before editing all six samples for any new species, run one small diagnostic edit.
+Before generating all six samples for any new species, run one isolated diagnostic sample.
 
 For Dwarf:
-- source sample: H02 / B02 adult feminine Human;
-- target: D02 / DB02 STANDARD DENSE adult feminine Dwarf;
-- keep all other Human-board samples unchanged during the preflight.
+- target: `D02 / DB02 STANDARD DENSE / adult feminine Dwarf`;
+- anatomy authority: official Dwarf facts + VA01 Dwarf exemplar;
+- style authority: VA01 + current Face Grammar;
+- board authority: accepted Human Board only for white background, ground line, label density and simple calibration clothing.
 
-The preflight checks whether the runtime can alter species anatomy **without changing drawing style**.
+The preflight must pass both:
+1. Species Truth;
+2. Project Style.
 
-Do not proceed to the six-Dwarf board until the preflight passes.
+Do not proceed to the six-Dwarf board until both pass.
 
 ## 6. Style-binding pass criteria
 
@@ -161,12 +161,14 @@ Their only valid use is to label the failure class:
 
 ## 9. Reference loading rule
 
-Before every VA03 generation:
-1. load/inspect the accepted Human Board;
-2. load/inspect VA01;
-3. load/inspect SEED-A;
-4. verify exact target species SPEC;
-5. only then invoke image editing.
+Before every VA03 non-Human generation:
+1. verify official 5E/SRD facts for the target species;
+2. load/inspect the matching VA01 species exemplar;
+3. verify the target Species Anatomy Core / SPEC;
+4. load/inspect VA01 and the current Face Grammar;
+5. load/inspect the accepted Human Board only for board/layout/rendering consistency;
+6. load/inspect SEED-A for character-rendering regression;
+7. only then invoke generation/editing.
 
 If the three images are not actually available in context, stop generation.
 
