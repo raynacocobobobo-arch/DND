@@ -6,7 +6,7 @@
 
 ## Controls
 This asset locks the Human variation space used across the project:
-- human adult anatomy under the ~5–5.5-head project stylization;
+- human adult anatomy under one fixed **5.3-head** project stylization;
 - allowed height variation;
 - allowed body-type variation;
 - age variation;
@@ -19,12 +19,12 @@ It does not lock occupation, faction clothing, character identity, hairstyle, we
 Use **six adults** on a white/light neutral background with one exact ground line.
 
 Required spread:
-- one shorter lean adult;
+- one shorter lean **adult Human with the same 5.3-head ratio**;
 - one average-height average-build adult;
 - one taller lean adult;
 - one broad/strong adult;
 - one heavy/soft-bodied adult;
-- one older adult whose age is visible through face, hair and posture rather than photoreal wrinkles.
+- one older adult whose age is visible through face, hair and posture rather than photoreal wrinkles; body ratio remains 5.3 heads.
 
 Across the six:
 - both male and female presentation;
@@ -44,7 +44,7 @@ No long paragraphs.
 
 ## Human invariants
 - unmistakably adult;
-- approximately 5–5.5-head project stylization;
+- **all Human samples use the same 5.3-head body ratio**;
 - functional adult limb proportions;
 - readable hands;
 - face grammar inherited from VA02;
@@ -67,3 +67,18 @@ No long paragraphs.
 - one figure is merely a scaled-up or scaled-down copy of another;
 - body-size differences created by perspective;
 - fashion-model 7.5–8-head anatomy.
+
+
+## Proportion lock
+
+**Body-type variation must never be implemented by changing head/body ratio.**
+
+For VA03-HUMAN V1:
+- every sample uses **5.3 heads**;
+- short / average / tall changes overall adult stature, not species scale;
+- lean / average / broad / heavy changes width, mass distribution and soft-tissue volume;
+- older changes face, hair and posture;
+- no sample may use an enlarged head or shortened-limb construction to imply “short”;
+- no Human may visually approach Halfling/Gnome construction.
+
+The minimum short-human sample must still read immediately as a normal adult Human when shown without labels.
