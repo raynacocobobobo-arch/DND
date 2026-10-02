@@ -90,3 +90,16 @@ The approved pilot species set is:
 - Halfling
 - Gnome
 - Tiefling
+
+
+## VA01 Style Lock
+
+**VA01 — Style Calibration: LOCKED**
+
+Human approved the third calibration iteration as the project's **mother-image asset**.
+
+- Repository preview: `MASTER/VISUAL-FOUNDATION/01-STYLE/STYLE-CALIBRATION-BOARD-V1.png`
+- Full-resolution canonical Library asset: `/DND/Global Visual Foundation/VA01_STYLE_CALIBRATION_BOARD_V1.png`
+- Library file: `libfile_2019bdea6c3081918b8ea7fa717d959b`
+- General style now inherits from VA01, not directly from the bootstrap Seed images.
+- Next visual anchor: **VA02 — Human / Face / Hand Board**.
