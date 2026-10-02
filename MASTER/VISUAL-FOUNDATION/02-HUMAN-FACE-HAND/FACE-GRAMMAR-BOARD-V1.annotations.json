@@ -1,0 +1,205 @@
+{
+  "assetId": "VA02-FACE-GRAMMAR",
+  "assetVersion": "V1",
+  "boardFile": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-BOARD-V1.png",
+  "specFile": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-SPEC-V1.md",
+  "status": "DRAFT",
+  "controls": [
+    "eye/nose/mouth/jaw drawing grammar",
+    "face-detail level",
+    "age rendering",
+    "facial-style consistency"
+  ],
+  "doNotInherit": [
+    "exact facial identity",
+    "hair style",
+    "skin tone",
+    "species anatomy",
+    "costume"
+  ],
+  "samples": [
+    {
+      "id": "F01",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "feminine",
+      "ageBand": "young-adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "soft oval face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F02",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "feminine",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "longer face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F03",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "feminine",
+      "ageBand": "older-adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "rounder older face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F04",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "narrow angular face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F05",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "masculine",
+      "ageBand": "young-adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "soft square face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F06",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "broad face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F07",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "masculine",
+      "ageBand": "older-adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "mature angular older face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    },
+    {
+      "id": "F08",
+      "subjectType": "humanoid-face",
+      "sexPresentation": "androgynous",
+      "ageBand": "adult",
+      "heightBand": "n/a",
+      "bodyType": "n/a",
+      "headBodyRatio": "n/a",
+      "skinToneFamily": "varied",
+      "hair": "varied",
+      "pose": "front or slight 3/4 head",
+      "clothingScope": "none/neutral collar",
+      "sampleControls": [
+        "balanced face within fixed grammar"
+      ],
+      "sampleDoNotInherit": [
+        "identity",
+        "hair"
+      ]
+    }
+  ],
+  "invariants": [
+    "one eye-size family",
+    "one iris/pupil simplification",
+    "one nose-construction language",
+    "one mouth/teeth simplification",
+    "one jaw-line graphic system",
+    "one line/shading system"
+  ],
+  "variables": [
+    "age",
+    "face width",
+    "jaw width",
+    "cheek fullness",
+    "skin tone",
+    "hair",
+    "mild expression"
+  ],
+  "forbiddenMisreads": [
+    "mixed anime and Western-comic face systems",
+    "different eye-scale families",
+    "different nose-rendering systems",
+    "different jaw-line styles"
+  ]
+}
