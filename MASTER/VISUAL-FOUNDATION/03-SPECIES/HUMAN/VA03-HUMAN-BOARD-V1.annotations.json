@@ -3,7 +3,7 @@
   "assetVersion": "V1",
   "boardFile": "03-SPECIES/HUMAN/VA03-HUMAN-BOARD-V1.png",
   "specFile": "03-SPECIES/HUMAN/VA03-HUMAN-SPEC-V1.md",
-  "status": "DRAFT",
+  "status": "DRAFT_REJECTED",
   "controls": [
     "Human adult anatomy",
     "Human variation space",
@@ -202,5 +202,22 @@
     "changing head/body ratio to express height or body type",
     "short Human reading as Halfling or Gnome",
     "enlarged head used to create a smaller Human"
-  ]
+  ],
+  "rejection": {
+    "date": "2026-10-02",
+    "reason": "mixed face grammar within one Human species board",
+    "observedGroups": {
+      "softerRounder": [
+        "H01",
+        "H02",
+        "H05"
+      ],
+      "matureAngular": [
+        "H03",
+        "H04",
+        "H06"
+      ]
+    },
+    "rule": "Variation may change identity, age and face shape but must preserve one facial construction grammar."
+  }
 }
