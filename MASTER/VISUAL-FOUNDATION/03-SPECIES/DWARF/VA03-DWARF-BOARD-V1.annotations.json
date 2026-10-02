@@ -1,0 +1,137 @@
+{
+  "assetId": "VA03-DWARF",
+  "assetVersion": "V1",
+  "boardFile": "03-SPECIES/DWARF/VA03-DWARF-BOARD-V1.png",
+  "specFile": "03-SPECIES/DWARF/VA03-DWARF-SPEC-V1.md",
+  "status": "DRAFT",
+  "controls": [
+    "Dwarf adult anatomy",
+    "80–83% Human-relative stature",
+    "compact broad torso",
+    "short powerful limbs",
+    "substantial hands/forearms",
+    "four reusable Dwarf Body Chassis"
+  ],
+  "doNotInherit": [
+    "mining stereotype",
+    "smith stereotype",
+    "beard as mandatory marker",
+    "exact clothing",
+    "profession",
+    "faction",
+    "character identity"
+  ],
+  "productionModel": {
+    "formula": "Dwarf Body Chassis + narrow stature modifier + identity variables",
+    "chassisCount": 4,
+    "statureRelativeToHumanRange": [
+      0.8,
+      0.83
+    ],
+    "headBodyRatio": 4.7,
+    "continuousBodyMorphing": false
+  },
+  "bodyChassis": [
+    {
+      "id": "D-B01",
+      "name": "COMPACT LEAN",
+      "structuralRead": "leanest allowed Dwarf while retaining broad ribcage and dense forearms/hands"
+    },
+    {
+      "id": "D-B02",
+      "name": "STANDARD DENSE",
+      "structuralRead": "baseline broad compact torso with dense limbs"
+    },
+    {
+      "id": "D-B03",
+      "name": "STRONG / POWERFUL",
+      "structuralRead": "greater shoulder/back/limb mass on the same low compact skeleton"
+    },
+    {
+      "id": "D-B04",
+      "name": "BROAD / HEAVY",
+      "structuralRead": "fuller torso/limbs and soft tissue over the same dense adult skeleton"
+    }
+  ],
+  "beardRule": {
+    "role": "identity variable only",
+    "requiredDistribution": "at least two clean-shaven/no-beard, one short beard, one fuller beard",
+    "forbidden": [
+      "every Dwarf bearded",
+      "giant braided beard gimmick",
+      "beard used as sole species identifier"
+    ]
+  },
+  "samples": [
+    {
+      "id": "D01",
+      "bodyChassis": "D-B01",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 0.8,
+      "beard": "none"
+    },
+    {
+      "id": "D02",
+      "bodyChassis": "D-B02",
+      "sexPresentation": "feminine",
+      "ageBand": "adult",
+      "statureModifier": 0.81,
+      "beard": "none"
+    },
+    {
+      "id": "D03",
+      "bodyChassis": "D-B03",
+      "sexPresentation": "feminine",
+      "ageBand": "adult",
+      "statureModifier": 0.82,
+      "beard": "none"
+    },
+    {
+      "id": "D04",
+      "bodyChassis": "D-B03",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 0.83,
+      "beard": "full"
+    },
+    {
+      "id": "D05",
+      "bodyChassis": "D-B04",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 0.81,
+      "beard": "short"
+    },
+    {
+      "id": "D06",
+      "bodyChassis": "D-B02",
+      "sexPresentation": "feminine",
+      "ageBand": "older-adult",
+      "statureModifier": 0.8,
+      "beard": "none"
+    }
+  ],
+  "invariants": [
+    "adult Dwarf",
+    "approximately 4.7 heads",
+    "80–83% Human-relative production stature",
+    "compact broad torso",
+    "short powerful limbs",
+    "substantial hands/forearms",
+    "one shared VA02-compatible Face Grammar",
+    "VA01 rendering grammar",
+    "species readability independent from beard and occupation"
+  ],
+  "forbiddenMisreads": [
+    "scaled-down Human",
+    "child body",
+    "enlarged cute head",
+    "Human-light hands/forearms",
+    "all bearded men",
+    "all obese",
+    "Human strong body at smaller scale",
+    "mining/smith stereotype as anatomy",
+    "different face system by age or sex"
+  ]
+}

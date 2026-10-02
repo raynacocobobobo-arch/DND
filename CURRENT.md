@@ -264,3 +264,34 @@ Corrective contract:
 - next six samples = 2 High Elf + 2 Wood Elf + 2 Drow;
 - hair remains subdued identity variation and may not dominate species read;
 - do not generate a corrected Elf board until explicitly requested.
+
+
+## Next Species — VA03-DWARF
+
+VA03-DWARF contract is now production-ready.
+
+Repository-derived Dwarf anchors:
+- height approximately 80–83% Human baseline;
+- broad ribcage / dense torso;
+- shorter powerful limbs;
+- substantial hands and forearms;
+- adult face and mature posture;
+- not a scaled-down Human;
+- beard is optional and must not be the species identifier;
+- mining/smith equipment is prohibited on the anatomy diagnostic board.
+
+Dwarf chassis:
+- DB01 COMPACT LEAN;
+- DB02 STANDARD DENSE;
+- DB03 STRONG / POWERFUL;
+- DB04 BROAD / HEAVY.
+
+Board roster:
+- D01 DB01 masculine adult / clean-shaven;
+- D02 DB02 feminine adult;
+- D03 DB03 feminine adult;
+- D04 DB03 masculine adult / full beard;
+- D05 DB04 masculine adult / short beard;
+- D06 DB02 older feminine adult.
+
+Project Dwarf body construction for this diagnostic: approximately 4.7 heads, held consistent across all six.
