@@ -3,7 +3,7 @@
   "assetVersion": "V1",
   "boardFile": "03-SPECIES/ELF/VA03-ELF-BOARD-V1.png",
   "specFile": "03-SPECIES/ELF/VA03-ELF-SPEC-V1.md",
-  "status": "DRAFT",
+  "status": "DRAFT_REJECTED",
   "controls": [
     "Elf adult anatomy",
     "four discrete Elf Body Chassis",
@@ -21,35 +21,30 @@
     "archer stereotype"
   ],
   "productionModel": {
-    "formula": "Elf Body Chassis + narrow stature modifier + identity variables",
-    "chassisCount": 4,
+    "formula": "three Elf chassis + narrow stature band + lineage + identity",
+    "chassisCount": 3,
     "statureRelativeToHumanRange": [
       1,
       1.03
     ],
-    "headBodyRatio": 5.4,
+    "headBodyRelation": "project adult ~5–5.5-head band; do not create a separate tall-Elf ratio",
     "continuousBodyMorphing": false
   },
   "bodyChassis": [
     {
       "id": "E-B01",
       "name": "SLENDER LIGHT",
-      "structuralRead": "narrow shoulders/torso, light limbs, adult long visual line"
+      "structuralRead": "narrow/light adult Elf with long visual line"
     },
     {
       "id": "E-B02",
       "name": "STANDARD ELVEN",
-      "structuralRead": "baseline Elf frame, moderate mass, lighter/narrower than Human B02"
+      "structuralRead": "baseline Elf frame; lighter/narrower than Human B02"
     },
     {
       "id": "E-B03",
-      "name": "ATHLETIC / STRONG",
-      "structuralRead": "athletic stronger shoulders/back/limbs without Human-bulk drift"
-    },
-    {
-      "id": "E-B04",
-      "name": "BROAD / SOFT",
-      "structuralRead": "broader/full relative to Elf baseline while remaining lighter than Human B04"
+      "name": "ATHLETIC",
+      "structuralRead": "trained/strong Elf while remaining lighter/narrower than Human B03"
     }
   ],
   "earGrammar": {
@@ -70,65 +65,116 @@
   "samples": [
     {
       "id": "E01",
-      "chassis": "E-B01",
+      "lineage": "High Elf",
+      "bodyChassis": "E-B01",
       "sexPresentation": "masculine",
       "ageBand": "adult",
       "statureModifier": 1
     },
     {
       "id": "E02",
-      "chassis": "E-B02",
+      "lineage": "High Elf",
+      "bodyChassis": "E-B02",
       "sexPresentation": "feminine",
       "ageBand": "adult",
       "statureModifier": 1.01
     },
     {
       "id": "E03",
-      "chassis": "E-B03",
+      "lineage": "Wood Elf",
+      "bodyChassis": "E-B03",
       "sexPresentation": "feminine",
       "ageBand": "adult",
       "statureModifier": 1.02
     },
     {
       "id": "E04",
-      "chassis": "E-B03",
+      "lineage": "Wood Elf",
+      "bodyChassis": "E-B02",
       "sexPresentation": "masculine",
       "ageBand": "adult",
-      "statureModifier": 1.03
+      "statureModifier": 1.01
     },
     {
       "id": "E05",
-      "chassis": "E-B04",
-      "sexPresentation": "masculine",
+      "lineage": "Drow",
+      "bodyChassis": "E-B01",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
-      "statureModifier": 1.01
+      "statureModifier": 1
     },
     {
       "id": "E06",
-      "chassis": "E-B02",
-      "sexPresentation": "feminine",
-      "ageBand": "older-adult",
-      "statureModifier": 1.01
+      "lineage": "Drow",
+      "bodyChassis": "E-B03",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 1.02
     }
   ],
   "invariants": [
     "adult Elf",
-    "approximately 5.4 heads",
-    "stature within 1.00–1.03 Human baseline",
+    "near-Human 1.00–1.03 stature band",
+    "longer visual line through lighter/narrower mass rather than head-size manipulation",
     "one restrained pointed-ear grammar",
-    "lighter/narrower species read than Human baseline",
+    "one shared Elf skeleton across High/Wood/Drow",
     "one shared VA02-compatible Face Grammar",
-    "VA01 line/color/shading grammar",
-    "no perspective height cheat"
+    "VA01 rendering grammar",
+    "hair subordinate to anatomy"
   ],
   "forbiddenMisreads": [
-    "childlike Elf",
-    "anime/fairy oversized ears",
-    "all Elves identical and extremely thin",
-    "Human B03 or B04 bodies with pointed ears",
-    "green clothes or bows used as species shorthand",
-    "SHORT AVG TALL body classes",
-    "sex presentation bound to chassis",
-    "different face system for older Elf"
-  ]
+    "Human + pointed ears",
+    "generic six-Elf board with no lineage coverage",
+    "Human B04 broad/heavy Elf",
+    "Human-bulky athletic Elf",
+    "Drow treated as another species",
+    "anime/fairy ears",
+    "high-volume salon/fantasy hair",
+    "green/bow/robe color stereotype used as lineage anatomy",
+    "different Face Grammar by lineage"
+  ],
+  "rejection": {
+    "date": "2026-10-02",
+    "imageCandidate": "first generated VA03-ELF Body Chassis Diagnostic",
+    "reasons": [
+      "board treated Elf too much as Human + pointed ears",
+      "no explicit Drow / High Elf / Wood Elf lineage coverage despite repository research requirement",
+      "E05 broad/soft mass drifted toward Human broad/heavy construction and violated Elf long-line/light-mass core",
+      "E03/E04 athletic construction drifted too close to Human strong chassis",
+      "hair diversity became over-styled and dominated species read",
+      "high-volume curls / buns were introduced by project prompt constraints, not by repository Elf canon"
+    ],
+    "rule": "Reject current image. Do not use it as a positive Elf reference."
+  },
+  "lineages": {
+    "required": [
+      "High Elf",
+      "Wood Elf",
+      "Drow"
+    ],
+    "rule": "all lineages share one Elf species skeleton; lineage must not create a new anatomy system",
+    "repositoryGuidance": {
+      "HighElf": "later behavior may express scholarly/magical identity; do not require ornate robes",
+      "WoodElf": "later behavior/environment may express outdoor identity; do not rely on green clothing or bows",
+      "Drow": "preserve Elf skeleton; do not render as another species"
+    }
+  },
+  "hairRule": {
+    "role": "identity variable only",
+    "preferred": [
+      "straight shoulder-length",
+      "straight/soft-wave long",
+      "simple low braid",
+      "simple low ponytail or half-tie",
+      "short swept",
+      "restrained older hair"
+    ],
+    "forbidden": [
+      "giant high buns",
+      "salon curled updos",
+      "excessive ringlets",
+      "high-volume fantasy hair",
+      "hair gimmicks designed only to expose ears"
+    ]
+  }
 }

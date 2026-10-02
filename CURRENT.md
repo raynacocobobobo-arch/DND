@@ -234,3 +234,33 @@ VA03-ELF now uses the same finite-chassis production philosophy:
 - six identities E01–E06 with E03/E04 sharing EB03 and E02/E06 sharing EB02.
 
 No Elf image should be generated until explicitly requested by the user.
+
+
+## VA03-ELF first visual candidate — REJECTED
+
+The first generated Elf chassis board is rejected and must not be used as a positive visual reference.
+
+Repository re-check found the following authoritative Elf requirements:
+- approximately Human-scale height (project 100–103%);
+- generally lighter/narrower build;
+- longer visual line;
+- pointed ears;
+- adult, slightly finer facial structure;
+- elegant but not fragile;
+- explicit 2024 lineage coverage: Drow / High Elf / Wood Elf;
+- Drow keeps the Elf skeleton;
+- High/Wood identity should later be expressed through behavior/context, not costume stereotypes.
+
+Failure causes in the rejected image:
+- six generic Elves with no lineage coverage;
+- E05 drifted toward Human broad/heavy anatomy;
+- E03/E04 were too close to Human strong-body construction;
+- the hair system was over-styled because the previous test contract over-emphasized hair-family diversity and ear exposure;
+- high buns / excessive curls are not project Elf canon.
+
+Corrective contract:
+- reduce Elf body chassis to three: EB01 SLENDER LIGHT / EB02 STANDARD ELVEN / EB03 ATHLETIC;
+- remove a dedicated broad/heavy Elf chassis;
+- next six samples = 2 High Elf + 2 Wood Elf + 2 Drow;
+- hair remains subdued identity variation and may not dominate species read;
+- do not generate a corrected Elf board until explicitly requested.
