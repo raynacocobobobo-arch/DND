@@ -80,12 +80,15 @@ Reviewed together:
 
 Proceed with Global Visual Foundation PV0 construction at the **VA02-FACE-GRAMMAR** layer.
 
+The previous single-identity six-view preflight is retired as an over-isolated diagnostic. It does not sufficiently test the project's real production need.
+
 Immediate visual task:
-1. run the mandatory **single-identity Face Construction Core preflight**;
-2. vary only camera angle and mild expression;
-3. obtain explicit human approval of that preflight;
-4. only then run cross-identity Face Grammar validation;
-5. do not resume VA03-HUMAN until Face Grammar has passed the required review path.
+1. derive the shared Face Grammar from the approved **SEED-A character-rendering master seed + LOCKED VA01**;
+2. generate a **three-identity Human Face Grammar Transfer & Scale Test**;
+3. use three different Human identities: adult feminine / adult masculine / older adult;
+4. show them at practical character-asset review scale, then repeat the same identities at ~25–35% face scale to simulate ensemble-scene readability;
+5. obtain explicit human approval;
+6. only then resume VA03-HUMAN.
 
 Candlekeep Gate 2 is **APPROVED**. Gate 3 remains blocked until **PV0 — Global Visual Prelock** is LOCKED.
 
@@ -111,16 +114,19 @@ Human approved the third calibration iteration as the project's **mother-image a
 - The former combined **VA02 — Human / Face / Hand** anchor is **RETIRED**.
 - Current next visual anchor: **VA02-FACE-GRAMMAR — DRAFT**.
 
-## VA02 Face Construction Core corrective state
+## VA02 Face Grammar corrective state
 
-**VA02-FACE-GRAMMAR: DRAFT — SINGLE-IDENTITY PREFLIGHT REQUIRED**
+**VA02-FACE-GRAMMAR: DRAFT — CROSS-IDENTITY + SCALE TEST REQUIRED**
 
 - VA03-HUMAN remains rejected/unusable and must not be regenerated yet.
-- Earlier M03 / M04 outputs are **negative diagnostic references only**; they are not positive mother assets.
-- Failure category: different samples switched eye, brow, nose, mouth and jaw construction systems.
-- The next image must contain one fixed adult identity only.
-- Required Phase A samples: `FC01`–`FC06` = front / 3Q-left / profile-left / 3Q-right / closed-mouth smile / mild open-mouth teeth.
-- Fixed across samples: identity, age, face shape, skin tone, hair, crop, collar, light and background.
-- Variable only: camera angle and mild expression.
-- A Phase A pass does **not** LOCK VA02. Human approval is required before cross-identity validation.
+- M03 / M04 remain **negative diagnostic references only**.
+- The earlier single-identity six-view test was too far removed from the final Hidden-Object production problem and is retired.
+- Primary facial rendering evidence is **SEED-A**, with LOCKED VA01 controlling line/color/shading hierarchy.
+- SEED-D is not a face authority; SEED-E is not a face authority.
+- The next image must contain three visibly different **Human** identities, not one standard actor.
+- Required diagnostic identities: adult feminine / adult masculine / older adult.
+- Top row: practical character-asset review scale.
+- Bottom row: the same three identities reduced to approximately 25–35% face size to test final-scene readability.
+- The test asks whether different people remain one drawing system, not whether one person can survive a turnaround.
+- Passing the diagnostic does **not** automatically LOCK VA02.
 - No visual asset may be marked `LOCKED` without explicit human approval and a valid SPEC + PNG + annotations package.

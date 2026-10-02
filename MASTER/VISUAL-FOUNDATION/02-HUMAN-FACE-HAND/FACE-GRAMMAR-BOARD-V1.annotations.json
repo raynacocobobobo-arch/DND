@@ -5,215 +5,205 @@
   "specFile": "02-HUMAN-FACE-HAND/FACE-GRAMMAR-SPEC-V1.md",
   "status": "DRAFT",
   "controls": [
-    "eye/nose/mouth/jaw drawing grammar",
-    "face-detail level",
-    "age rendering after core validation",
-    "facial-style consistency"
+    "shared humanoid face drawing grammar",
+    "facial detail budget at character-asset and ensemble-scene scale",
+    "cross-identity style consistency",
+    "age rendering within one facial art system"
   ],
   "doNotInherit": [
     "exact facial identity",
-    "hair style",
-    "skin tone",
-    "species anatomy",
-    "costume"
+    "specific hairstyle",
+    "specific skin tone",
+    "faction clothing",
+    "role/class",
+    "species anatomy beyond the Human diagnostic test"
   ],
+  "positiveAuthority": {
+    "primary": "SEED-A — character-rendering master seed",
+    "parent": "VA01-STYLE — LOCKED rendering grammar",
+    "notFaceAuthorities": [
+      "SEED-D",
+      "SEED-E"
+    ],
+    "negativeOnly": [
+      "M03",
+      "M04"
+    ]
+  },
   "validationStage": {
-    "phase": "PHASE_A_SINGLE_IDENTITY_PREFLIGHT",
-    "purpose": "isolate and validate one Face Construction Core before identity diversity is introduced",
+    "phase": "CROSS_IDENTITY_AND_SCALE_TEST",
+    "purpose": "prove that visibly different Human identities share one face grammar and remain readable at final-scene scale",
     "humanApprovalRequired": true,
     "mayLockOnPass": false,
-    "nextAllowedStageAfterHumanApproval": "PHASE_B_CROSS_IDENTITY_TRANSFER_VALIDATION",
-    "blockedUntilPhaseAApproval": [
-      "cross-identity face grammar test",
+    "blockedUntilApproval": [
       "VA03-HUMAN regeneration"
     ]
   },
-  "identityInvariant": {
-    "identity": "ONE_FIXED_ADULT_IDENTITY",
-    "ageBand": "adult",
-    "sexPresentation": "fixed; not varied",
-    "skinToneFamily": "fixed; not varied",
-    "hair": "fixed hairstyle and hairline",
-    "faceWidth": "fixed",
-    "jawWidth": "fixed",
-    "chinLength": "fixed",
-    "browDensity": "fixed",
-    "facialHairState": "fixed",
-    "headNeckProportion": "fixed",
-    "clothingScope": "same neutral collar",
-    "cropScale": "fixed",
-    "lighting": "fixed",
-    "background": "light neutral"
-  },
   "samples": [
     {
-      "id": "FC01",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
+      "id": "HG01-REVIEW",
+      "subjectType": "human-face-grammar-diagnostic",
+      "species": "Human",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "front head, neutral expression",
-      "clothingScope": "same neutral collar",
+      "headBodyRatio": "project Human system; body not controlled here",
+      "skinToneFamily": "identity-specific",
+      "hair": "identity-specific",
+      "pose": "chest-up, front/slight 3/4, mild natural expression",
+      "clothingScope": "neutral fantasy calibration clothing",
       "sampleControls": [
-        "front-view baseline construction"
+        "adult feminine Human identity at production review scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "identity",
+        "hair",
+        "clothing"
       ]
     },
     {
-      "id": "FC02",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
+      "id": "HG02-REVIEW",
+      "subjectType": "human-face-grammar-diagnostic",
+      "species": "Human",
+      "sexPresentation": "masculine",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "left 3/4 head, neutral expression",
-      "clothingScope": "same neutral collar",
+      "headBodyRatio": "project Human system; body not controlled here",
+      "skinToneFamily": "identity-specific",
+      "hair": "identity-specific",
+      "pose": "chest-up, front/slight 3/4, mild natural expression",
+      "clothingScope": "neutral fantasy calibration clothing",
       "sampleControls": [
-        "3/4 perspective preservation of the same construction"
+        "adult masculine Human identity at production review scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "identity",
+        "hair",
+        "clothing"
       ]
     },
     {
-      "id": "FC03",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
-      "ageBand": "adult",
+      "id": "HG03-REVIEW",
+      "subjectType": "human-face-grammar-diagnostic",
+      "species": "Human",
+      "sexPresentation": "varied but fixed within sample",
+      "ageBand": "older-adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
-      "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "left profile head, neutral expression",
-      "clothingScope": "same neutral collar",
+      "headBodyRatio": "project Human system; body not controlled here",
+      "skinToneFamily": "identity-specific",
+      "hair": "identity-specific with visible age cues",
+      "pose": "chest-up, front/slight 3/4, mild natural expression",
+      "clothingScope": "neutral fantasy calibration clothing",
       "sampleControls": [
-        "profile projection of the same nose/jaw/eye system"
+        "older Human identity at production review scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "identity",
+        "hair",
+        "clothing"
       ]
     },
     {
-      "id": "FC04",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
+      "id": "HG01-SCENE",
+      "subjectType": "human-face-grammar-scale-check",
+      "species": "Human",
+      "sexPresentation": "feminine",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "right 3/4 head, neutral expression",
-      "clothingScope": "same neutral collar",
+      "skinToneFamily": "same as HG01-REVIEW",
+      "hair": "same as HG01-REVIEW",
+      "pose": "reduced duplicate crop",
+      "clothingScope": "same as HG01-REVIEW",
       "sampleControls": [
-        "opposite 3/4 perspective preservation of the same construction"
+        "identity/style survival at 25–35% face scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "new identity",
+        "new facial detail"
       ]
     },
     {
-      "id": "FC05",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
+      "id": "HG02-SCENE",
+      "subjectType": "human-face-grammar-scale-check",
+      "species": "Human",
+      "sexPresentation": "masculine",
       "ageBand": "adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "front head, mild closed-mouth smile",
-      "clothingScope": "same neutral collar",
+      "skinToneFamily": "same as HG02-REVIEW",
+      "hair": "same as HG02-REVIEW",
+      "pose": "reduced duplicate crop",
+      "clothingScope": "same as HG02-REVIEW",
       "sampleControls": [
-        "mouth deformation without changing facial grammar"
+        "identity/style survival at 25–35% face scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "new identity",
+        "new facial detail"
       ]
     },
     {
-      "id": "FC06",
-      "subjectType": "humanoid-face-single-identity",
-      "sexPresentation": "fixed-reference",
-      "ageBand": "adult",
+      "id": "HG03-SCENE",
+      "subjectType": "human-face-grammar-scale-check",
+      "species": "Human",
+      "sexPresentation": "same as HG03-REVIEW",
+      "ageBand": "older-adult",
       "heightBand": "n/a",
       "bodyType": "n/a",
       "headBodyRatio": "n/a",
-      "skinToneFamily": "fixed-reference",
-      "hair": "fixed-reference",
-      "pose": "front head, mild open-mouth expression with visible teeth",
-      "clothingScope": "same neutral collar",
+      "skinToneFamily": "same as HG03-REVIEW",
+      "hair": "same as HG03-REVIEW",
+      "pose": "reduced duplicate crop",
+      "clothingScope": "same as HG03-REVIEW",
       "sampleControls": [
-        "mouth/teeth simplification under expression"
+        "identity/style survival at 25–35% face scale"
       ],
       "sampleDoNotInherit": [
-        "identity as reusable character",
-        "costume"
+        "new identity",
+        "new facial detail"
       ]
     }
   ],
   "invariants": [
-    "one fixed facial identity across all Phase A samples",
-    "one moderate adult eye-size family",
-    "upper eyelid primary and lower eyelid lighter/shorter",
-    "one simplified iris/pupil treatment",
-    "one eyebrow line family",
-    "one bridge-tip-minimal-nostril nose construction language",
-    "one mouth/lip simplification",
-    "visible teeth rendered as one simplified light mass rather than per-tooth realism",
-    "one recoverable jaw/chin/face-width structure across rotations",
-    "VA01 line-weight hierarchy",
-    "VA01 restrained cel-shading system"
+    "clean black hand-drawn contour family inherited from SEED-A and VA01",
+    "graphic readable adult comic eyes without anime or photoreal drift",
+    "low-complexity iris/pupil treatment",
+    "simplified nose construction with limited bridge/tip/nostril information",
+    "graphic mouth construction and simplified tooth mass",
+    "compact adult face construction",
+    "restrained hard-edged cel shading",
+    "same facial detail budget across age and sex presentation",
+    "Human rounded ears and no non-Human anatomy"
   ],
   "variables": [
-    "camera angle",
-    "mild facial expression"
-  ],
-  "deferredVariables": [
-    "age",
+    "identity",
     "face width",
     "jaw width",
     "cheek fullness",
+    "age",
     "sex presentation",
     "skin tone",
     "hair family",
-    "different facial identity"
+    "mild expression"
   ],
+  "scaleTest": {
+    "reviewScale": "top-row character-asset review scale",
+    "sceneScale": "same identities repeated at approximately 25–35% of review face size",
+    "rule": "reduction must not trigger a new facial drawing system or additional detail"
+  },
   "forbiddenMisreads": [
-    "treating perspective change as permission to redesign the face",
-    "mixed anime and Western-comic face systems",
-    "different eye-scale families",
-    "different iris/pupil complexity",
-    "different nose-rendering systems",
-    "different mouth/teeth systems",
-    "different jaw-line styles",
-    "M03 or M04 treated as positive reference"
-  ],
-  "failureReferences": [
-    {
-      "id": "M03",
-      "status": "NEGATIVE_DIAGNOSTIC_ONLY",
-      "failure": "Face Construction Core drift"
-    },
-    {
-      "id": "M04",
-      "status": "NEGATIVE_DIAGNOSTIC_ONLY",
-      "failure": "Face Construction Core drift"
-    }
+    "standard reusable actor",
+    "beauty portrait sheet",
+    "anime female versus Western-comic male split",
+    "photoreal older face",
+    "pointed Human ears",
+    "different nose or mouth rendering systems",
+    "M03 or M04 treated as positive references"
   ]
 }
