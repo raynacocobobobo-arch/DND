@@ -1,0 +1,203 @@
+{
+  "assetId": "VA03-HUMAN",
+  "assetVersion": "V1",
+  "boardFile": "03-SPECIES/HUMAN/VA03-HUMAN-BOARD-V1.png",
+  "specFile": "03-SPECIES/HUMAN/VA03-HUMAN-SPEC-V1.md",
+  "status": "DRAFT",
+  "controls": [
+    "Human adult anatomy",
+    "Human variation space",
+    "Human relative height/body-type sampling",
+    "adult silhouette diversity"
+  ],
+  "doNotInherit": [
+    "exact clothing",
+    "exact hairstyle",
+    "character identity",
+    "profession",
+    "faction"
+  ],
+  "invariants": [
+    "unmistakably adult",
+    "approximately 5–5.5-head project stylization",
+    "functional adult limb proportions",
+    "VA01 line/color/shading grammar",
+    "VA02 face/hand rendering grammar"
+  ],
+  "variables": [
+    "adult height",
+    "body type",
+    "adult age",
+    "skin tone",
+    "face family",
+    "hair",
+    "neutral calibration clothing"
+  ],
+  "samples": [
+    {
+      "id": "H01",
+      "species": "Human",
+      "sexPresentation": "female",
+      "ageBand": "young-adult",
+      "heightBand": "SHORT",
+      "relativeHeightToHuman": 0.92,
+      "bodyType": "LEAN",
+      "headBodyRatio": 5.15,
+      "skinToneFamily": "warm-medium",
+      "hair": "dark brown, short wavy",
+      "pose": "relaxed standing, slight contrapposto",
+      "clothingScope": "neutral fantasy travel layers",
+      "skeletalRead": "small adult frame, narrow shoulders",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "short lean adult variation"
+      ],
+      "sampleDoNotInherit": [
+        "exact outfit",
+        "haircut",
+        "facial identity"
+      ]
+    },
+    {
+      "id": "H02",
+      "species": "Human",
+      "sexPresentation": "male",
+      "ageBand": "adult",
+      "heightBand": "AVG",
+      "relativeHeightToHuman": 1,
+      "bodyType": "AVG",
+      "headBodyRatio": 5.3,
+      "skinToneFamily": "light-medium",
+      "hair": "black, medium straight",
+      "pose": "neutral standing, one hand holding small book",
+      "clothingScope": "neutral scholarly/travel layers",
+      "skeletalRead": "average adult frame",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "average adult baseline"
+      ],
+      "sampleDoNotInherit": [
+        "book",
+        "outfit",
+        "haircut",
+        "facial identity"
+      ]
+    },
+    {
+      "id": "H03",
+      "species": "Human",
+      "sexPresentation": "female",
+      "ageBand": "adult",
+      "heightBand": "TALL",
+      "relativeHeightToHuman": 1.07,
+      "bodyType": "LEAN",
+      "headBodyRatio": 5.5,
+      "skinToneFamily": "deep-brown",
+      "hair": "black, long braided",
+      "pose": "upright relaxed standing",
+      "clothingScope": "neutral fantasy layers",
+      "skeletalRead": "tall adult frame, long visual line",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "tall lean adult variation"
+      ],
+      "sampleDoNotInherit": [
+        "braid",
+        "outfit",
+        "facial identity"
+      ]
+    },
+    {
+      "id": "H04",
+      "species": "Human",
+      "sexPresentation": "male",
+      "ageBand": "adult",
+      "heightBand": "AVG",
+      "relativeHeightToHuman": 1.02,
+      "bodyType": "BROAD",
+      "headBodyRatio": 5.25,
+      "skinToneFamily": "medium",
+      "hair": "dark auburn, cropped",
+      "pose": "stable standing, arms relaxed",
+      "clothingScope": "neutral sturdy fantasy layers",
+      "skeletalRead": "broad shoulders and torso, strong adult frame",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "broad/strong adult variation"
+      ],
+      "sampleDoNotInherit": [
+        "outfit",
+        "haircut",
+        "facial identity"
+      ]
+    },
+    {
+      "id": "H05",
+      "species": "Human",
+      "sexPresentation": "female",
+      "ageBand": "adult",
+      "heightBand": "AVG",
+      "relativeHeightToHuman": 0.98,
+      "bodyType": "HEAVY",
+      "headBodyRatio": 5.1,
+      "skinToneFamily": "light",
+      "hair": "dark blonde, shoulder-length",
+      "pose": "comfortable balanced standing",
+      "clothingScope": "neutral layered fantasy clothing",
+      "skeletalRead": "soft heavy adult body, full torso and limbs",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "heavy/soft-bodied adult variation"
+      ],
+      "sampleDoNotInherit": [
+        "outfit",
+        "hair color",
+        "facial identity"
+      ]
+    },
+    {
+      "id": "H06",
+      "species": "Human",
+      "sexPresentation": "male",
+      "ageBand": "older-adult",
+      "heightBand": "AVG",
+      "relativeHeightToHuman": 0.96,
+      "bodyType": "AVG",
+      "headBodyRatio": 5.2,
+      "skinToneFamily": "olive-medium",
+      "hair": "gray, swept back",
+      "pose": "slightly settled older posture, still upright",
+      "clothingScope": "neutral practical fantasy layers",
+      "skeletalRead": "older adult frame with age shown through posture/face",
+      "signatureAnatomy": [
+        "human baseline anatomy"
+      ],
+      "sampleControls": [
+        "older adult variation"
+      ],
+      "sampleDoNotInherit": [
+        "outfit",
+        "hair style",
+        "facial identity"
+      ]
+    }
+  ],
+  "forbiddenMisreads": [
+    "one figure is only a scaled copy of another",
+    "height differences created by perspective",
+    "all women are small/lean and all men broad",
+    "duplicate orange-haired large/small pair",
+    "childlike proportions",
+    "7.5–8-head fashion anatomy"
+  ]
+}
