@@ -1,10 +1,10 @@
-# VA02 — Human / Face / Hand Spec V1
+# VA02 — Humanoid Rendering Grammar Spec V1
 
 **Status:** REVIEW  
 **Seed authority:** SEED-A primary. SEED-E controls board organization only.
 
 ## Controls
-VA02 locks the project’s human baseline:
+VA02 uses Human examples to lock the project’s **humanoid rendering grammar**:
 - adult body proportion;
 - face simplification/detail;
 - age variation;
@@ -12,7 +12,7 @@ VA02 locks the project’s human baseline:
 - hand construction and gesture readability;
 - readable facial acting at Hidden-Object scale.
 
-It does not create reusable named actors and does not define nonhuman species anatomy.
+It does not create reusable named actors and does not define any species' anatomy. Species-specific height, skeletal mass, ears, horns, tails and silhouette are controlled by VA03 single-species boards.
 
 ## Body proportion
 - Adult baseline: approximately **5–5.5 heads tall**.
@@ -75,3 +75,10 @@ Do not inherit SEED-E’s literal species roster or anatomy.
 
 **2026-10-02 — Human review:** direction accepted as generally okay.  
 Status remains **REVIEW**, not LOCKED. Final lock may occur after side-by-side review with VA03 Species Boards.
+
+
+## Interpretation rule
+
+The Human figures shown in this board are calibration samples for face/hand/body rendering only. Their individual height, body type, skin tone, hairstyle and clothing must not be mistaken for the allowed variation space of every other species.
+
+All core species receive their own VA03 Variation Board with equivalent body-type, height, age and sex-presentation diversity.
