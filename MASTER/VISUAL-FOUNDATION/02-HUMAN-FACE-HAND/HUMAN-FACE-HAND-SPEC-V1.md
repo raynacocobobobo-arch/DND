@@ -1,6 +1,6 @@
 # VA02 — Human / Face / Hand Spec V1
 
-**Status:** DRAFT SPEC  
+**Status:** REVIEW  
 **Seed authority:** SEED-A primary. SEED-E controls board organization only.
 
 ## Controls
@@ -69,3 +69,9 @@ Do not inherit SEED-E’s literal species roster or anatomy.
 - 3–4-head chibi anatomy;
 - mitten hands;
 - repeated identical face template.
+
+
+## Review record
+
+**2026-10-02 — Human review:** direction accepted as generally okay.  
+Status remains **REVIEW**, not LOCKED. Final lock may occur after side-by-side review with VA03 Species Boards.
