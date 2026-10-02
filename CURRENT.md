@@ -193,3 +193,44 @@ Board controls:
 - stature differences are subtle and must not become SHORT / AVG / TALL classes.
 
 The next image should be generated only after explicit user instruction to generate it.
+
+
+## VA03-HUMAN visual validation — accepted candidate
+
+**Human review:** image accepted by user on 2026-10-02.  
+**Internal visual QC:** PASS AS DRAFT CANDIDATE.
+
+Verified on the corrected board:
+- six adult Humans on one shared ground line: PASS;
+- rounded Human ears: PASS;
+- H01/H06 head-size inconsistency corrected: PASS;
+- H06 eye-size Face Grammar inconsistency corrected: PASS;
+- approximate shared ~5.3-head construction: PASS;
+- H03/H04 share B03 STRONG chassis while remaining different identities: PASS;
+- H02/H06 share B02 STANDARD MEDIUM across age/identity: PASS;
+- H05 B04 BROAD-HEAVY reads broad/heavy without caricature: PASS;
+- common neutral clothing family does not manufacture body-type differences: PASS;
+- no perspective-based height cheat: PASS.
+
+Candidate trace:
+- filename: `va03人类角色诊断图表.png`;
+- size: 1448×1086;
+- SHA-256: `8a1f86030ca0e2388be6a54c17c0b44607834d39b5ff8a514e01f9a5e183a5a5`.
+
+**Important:** the accepted candidate is not yet stored as the canonical repository PNG, and VA02-FACE-GRAMMAR is still DRAFT. Therefore VA03-HUMAN remains DRAFT and is not LOCKED.
+
+## Next Species — VA03-ELF
+
+Human body-chassis diagnostic is sufficiently validated to move to the next species design task without treating Human as LOCKED.
+
+VA03-ELF now uses the same finite-chassis production philosophy:
+- EB01 SLENDER LIGHT;
+- EB02 STANDARD ELVEN;
+- EB03 ATHLETIC / STRONG;
+- EB04 BROAD / SOFT;
+- stature limited to approximately 1.00–1.03 Human baseline;
+- fixed ~5.4-head Elf construction;
+- restrained pointed-ear grammar;
+- six identities E01–E06 with E03/E04 sharing EB03 and E02/E06 sharing EB02.
+
+No Elf image should be generated until explicitly requested by the user.

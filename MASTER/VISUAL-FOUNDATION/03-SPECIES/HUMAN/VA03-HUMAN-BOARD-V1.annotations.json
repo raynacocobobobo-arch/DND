@@ -3,7 +3,7 @@
   "assetVersion": "V1",
   "boardFile": "03-SPECIES/HUMAN/VA03-HUMAN-BOARD-V1.png",
   "specFile": "03-SPECIES/HUMAN/VA03-HUMAN-SPEC-V1.md",
-  "status": "DRAFT_REJECTED",
+  "status": "DRAFT",
   "controls": [
     "Human adult anatomy",
     "four discrete Human Body Chassis",
@@ -284,5 +284,40 @@
       "no body type is manufactured by clothing",
       "stature differences remain subtle and secondary to chassis"
     ]
+  },
+  "humanReview": {
+    "date": "2026-10-02",
+    "result": "APPROVED_VISUAL_CANDIDATE",
+    "note": "User accepted the corrected VA03-HUMAN Body Chassis Diagnostic image. This is a positive visual candidate, not yet a LOCKED repository asset."
+  },
+  "visualQc": {
+    "result": "PASS_AS_DRAFT_CANDIDATE",
+    "checks": {
+      "sixAdultHumans": "PASS",
+      "roundedHumanEars": "PASS",
+      "sharedGroundLine": "PASS",
+      "consistentApproxHeadBodyRatio": "PASS after H01/H06 correction",
+      "finiteChassisRead": "PASS",
+      "h03H04ShareB03": "PASS",
+      "h02H06ShareB02": "PASS",
+      "b04BroadHeavyWithoutCaricature": "PASS",
+      "sharedFaceGrammar": "PASS after H06 eye-size correction",
+      "clothingDoesNotCreateBodyType": "PASS",
+      "noPerspectiveHeightCheat": "PASS"
+    },
+    "caveats": [
+      "candidate PNG is not yet stored as the canonical repository board",
+      "VA02-FACE-GRAMMAR is still DRAFT, so VA03-HUMAN cannot be LOCKED yet"
+    ]
+  },
+  "candidateImage": {
+    "source": "chat-generated visual candidate",
+    "filename": "va03人类角色诊断图表.png",
+    "dimensionsPx": [
+      1448,
+      1086
+    ],
+    "sha256": "8a1f86030ca0e2388be6a54c17c0b44607834d39b5ff8a514e01f9a5e183a5a5",
+    "canonicalRepositoryStatus": "NOT_YET_STORED"
   }
 }

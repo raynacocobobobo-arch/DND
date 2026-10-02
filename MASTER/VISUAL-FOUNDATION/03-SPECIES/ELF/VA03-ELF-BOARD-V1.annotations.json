@@ -1,0 +1,134 @@
+{
+  "assetId": "VA03-ELF",
+  "assetVersion": "V1",
+  "boardFile": "03-SPECIES/ELF/VA03-ELF-BOARD-V1.png",
+  "specFile": "03-SPECIES/ELF/VA03-ELF-SPEC-V1.md",
+  "status": "DRAFT",
+  "controls": [
+    "Elf adult anatomy",
+    "four discrete Elf Body Chassis",
+    "near-Human narrow stature band",
+    "pointed-ear construction grammar",
+    "within-species adult variation"
+  ],
+  "doNotInherit": [
+    "exact clothing",
+    "exact hairstyle",
+    "character identity",
+    "profession",
+    "faction",
+    "green palette",
+    "archer stereotype"
+  ],
+  "productionModel": {
+    "formula": "Elf Body Chassis + narrow stature modifier + identity variables",
+    "chassisCount": 4,
+    "statureRelativeToHumanRange": [
+      1,
+      1.03
+    ],
+    "headBodyRatio": 5.4,
+    "continuousBodyMorphing": false
+  },
+  "bodyChassis": [
+    {
+      "id": "E-B01",
+      "name": "SLENDER LIGHT",
+      "structuralRead": "narrow shoulders/torso, light limbs, adult long visual line"
+    },
+    {
+      "id": "E-B02",
+      "name": "STANDARD ELVEN",
+      "structuralRead": "baseline Elf frame, moderate mass, lighter/narrower than Human B02"
+    },
+    {
+      "id": "E-B03",
+      "name": "ATHLETIC / STRONG",
+      "structuralRead": "athletic stronger shoulders/back/limbs without Human-bulk drift"
+    },
+    {
+      "id": "E-B04",
+      "name": "BROAD / SOFT",
+      "structuralRead": "broader/full relative to Elf baseline while remaining lighter than Human B04"
+    }
+  ],
+  "earGrammar": {
+    "required": true,
+    "read": "moderately pointed adult Elf ear",
+    "invariant": "one ear construction system across all samples",
+    "allowedVariation": [
+      "small angle variation",
+      "small taper variation",
+      "partial exposure due to hair"
+    ],
+    "forbidden": [
+      "extreme horizontal anime ears",
+      "oversized fairy ears",
+      "second ear drawing system"
+    ]
+  },
+  "samples": [
+    {
+      "id": "E01",
+      "chassis": "E-B01",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 1
+    },
+    {
+      "id": "E02",
+      "chassis": "E-B02",
+      "sexPresentation": "feminine",
+      "ageBand": "adult",
+      "statureModifier": 1.01
+    },
+    {
+      "id": "E03",
+      "chassis": "E-B03",
+      "sexPresentation": "feminine",
+      "ageBand": "adult",
+      "statureModifier": 1.02
+    },
+    {
+      "id": "E04",
+      "chassis": "E-B03",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 1.03
+    },
+    {
+      "id": "E05",
+      "chassis": "E-B04",
+      "sexPresentation": "masculine",
+      "ageBand": "adult",
+      "statureModifier": 1.01
+    },
+    {
+      "id": "E06",
+      "chassis": "E-B02",
+      "sexPresentation": "feminine",
+      "ageBand": "older-adult",
+      "statureModifier": 1.01
+    }
+  ],
+  "invariants": [
+    "adult Elf",
+    "approximately 5.4 heads",
+    "stature within 1.00–1.03 Human baseline",
+    "one restrained pointed-ear grammar",
+    "lighter/narrower species read than Human baseline",
+    "one shared VA02-compatible Face Grammar",
+    "VA01 line/color/shading grammar",
+    "no perspective height cheat"
+  ],
+  "forbiddenMisreads": [
+    "childlike Elf",
+    "anime/fairy oversized ears",
+    "all Elves identical and extremely thin",
+    "Human B03 or B04 bodies with pointed ears",
+    "green clothes or bows used as species shorthand",
+    "SHORT AVG TALL body classes",
+    "sex presentation bound to chassis",
+    "different face system for older Elf"
+  ]
+}
