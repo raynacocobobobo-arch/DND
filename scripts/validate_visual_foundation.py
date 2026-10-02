@@ -12,6 +12,7 @@ REQUIRED_ROOT_FILES = [
     "README.md",
     "GLOBAL-VISUAL-FOUNDATION-V1.md",
     "VISUAL-ANCHOR-MANIFEST.json",
+    "VISUAL-ASSET-ANNOTATION-CONTRACT-V1.md",
 ]
 
 
@@ -132,7 +133,9 @@ def validate(root: Path) -> list[str]:
         if status == "LOCKED":
             file_rel = anchor.get("file")
             spec_rel = anchor.get("spec")
+            annotations_rel = anchor.get("annotations")
             digest = anchor.get("sha256")
+            annotations_digest = anchor.get("annotationsSha256")
             if not digest:
                 errors.append(f"anchor {anchor_id} LOCKED requires sha256")
             if not file_rel or not (vf / file_rel).is_file():
@@ -144,6 +147,29 @@ def validate(root: Path) -> list[str]:
                 if actual != digest:
                     errors.append(
                         f"anchor {anchor_id} sha256 mismatch: expected {digest}, got {actual}"
+                    )
+            if not annotations_rel or not (vf / annotations_rel).is_file():
+                errors.append(f"missing annotations file for {anchor_id}: {annotations_rel}")
+            if not annotations_digest:
+                errors.append(f"anchor {anchor_id} LOCKED requires annotationsSha256")
+            if annotations_rel and (vf / annotations_rel).is_file():
+                try:
+                    annotations = json.loads((vf / annotations_rel).read_text(encoding="utf-8"))
+                    for key in ["assetId","assetVersion","boardFile","specFile","status","controls","doNotInherit","samples","invariants","variables","forbiddenMisreads"]:
+                        if key not in annotations:
+                            errors.append(f"annotations for {anchor_id} missing key: {key}")
+                    if annotations.get("assetId") != anchor_id:
+                        errors.append(f"annotations assetId mismatch for {anchor_id}: {annotations.get('assetId')}")
+                    for key in ["controls","doNotInherit","samples","invariants","variables","forbiddenMisreads"]:
+                        if not annotations.get(key):
+                            errors.append(f"annotations for {anchor_id} require non-empty {key}")
+                except Exception as exc:
+                    errors.append(f"invalid annotations JSON for {anchor_id}: {exc}")
+            if annotations_digest and annotations_rel and (vf / annotations_rel).is_file():
+                actual_annotations = _sha256(vf / annotations_rel)
+                if actual_annotations != annotations_digest:
+                    errors.append(
+                        f"anchor {anchor_id} annotationsSha256 mismatch: expected {annotations_digest}, got {actual_annotations}"
                     )
 
     # planned VA01–VA08 spec presence check is intentionally stricter than image presence:
