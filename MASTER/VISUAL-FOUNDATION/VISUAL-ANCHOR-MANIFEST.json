@@ -36,7 +36,7 @@
       "file": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-BOARD-V1.png",
       "spec": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-SPEC-V1.md",
       "version": "V1",
-      "status": "DRAFT",
+      "status": "REVIEW",
       "priority": "MANDATORY",
       "appliesTo": [
         "ALL_LEVELS"
@@ -51,7 +51,7 @@
         "faction clothing"
       ],
       "sha256": null,
-      "provenance": "planned project visual standard",
+      "provenance": "Generated VA02 Human / Face / Hand draft reviewed by user on 2026-10-02; direction accepted as generally okay, not yet LOCKED.",
       "supersedes": null
     },
     {
