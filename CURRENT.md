@@ -356,3 +356,10 @@ For Dwarf specifically:
 - the Human Board is now explicitly prohibited as Dwarf anatomy input.
 
 No new Dwarf image was generated in this correction step.
+
+
+## Dwarf preflight contract reconciled
+
+The old H02→Dwarf morph rule was removed because it made the Human skeleton the starting anatomy. Dwarf preflight now begins from official Dwarf facts + the approved VA01 Dwarf exemplar. The accepted Human Board controls only white-board presentation, line/color consistency, label density and simple calibration-clothing behavior.
+
+Dwarf annotations now use the project VA01-derived ~4.0-head construction and explicitly state that Human is not an anatomy source.
