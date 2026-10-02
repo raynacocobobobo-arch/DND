@@ -8,7 +8,7 @@
       "file": "01-STYLE/STYLE-CALIBRATION-BOARD-V1.png",
       "spec": "01-STYLE/STYLE-CALIBRATION-SPEC-V1.md",
       "version": "V1",
-      "status": "DRAFT",
+      "status": "LOCKED",
       "priority": "MANDATORY",
       "appliesTo": [
         "ALL_LEVELS"
@@ -22,9 +22,14 @@
         "location clothing",
         "species anatomy"
       ],
-      "sha256": null,
-      "provenance": "planned project visual standard",
-      "supersedes": null
+      "sha256": "e4117de6bcde17d3da8cdf5fbad7e7721f1abe94bdf43b284153c004f6cda778",
+      "provenance": "Human-approved VA01 Style Calibration Board; generated in-chat as iteration V3 and locked as Foundation V1. Full-resolution canonical source retained in ChatGPT Library.",
+      "supersedes": null,
+      "canonicalLibraryFileId": "libfile_2019bdea6c3081918b8ea7fa717d959b",
+      "canonicalLibraryPath": "/DND/Global Visual Foundation/VA01_STYLE_CALIBRATION_BOARD_V1.png",
+      "sourceFileId": "file_00000000b8048207a408bf22121bcf83",
+      "sourceSha256": "3ead1c8506bb415921d2cbbe971c149031ae17c177fe3691a99e8403e423a6e3",
+      "repositoryPreviewNote": "Repository PNG is a compact review preview; Library file above is the approved full-resolution mother asset."
     },
     {
       "id": "VA02-HUMAN-FACE-HAND",
