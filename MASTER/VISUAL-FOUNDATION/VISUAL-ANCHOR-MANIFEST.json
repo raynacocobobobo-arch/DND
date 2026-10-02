@@ -38,7 +38,7 @@
       "file": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-BOARD-V1.png",
       "spec": "02-HUMAN-FACE-HAND/HUMAN-FACE-HAND-SPEC-V1.md",
       "version": "V1",
-      "status": "REVIEW",
+      "status": "DRAFT",
       "priority": "MANDATORY",
       "appliesTo": [
         "ALL_LEVELS"
@@ -53,7 +53,7 @@
         "faction clothing"
       ],
       "sha256": null,
-      "provenance": "Generated VA02 Human / Face / Hand draft reviewed by user on 2026-10-02; direction accepted as generally okay, not yet LOCKED.",
+      "provenance": "VA02 calibration draft reopened on 2026-10-02 after cross-board review revealed inconsistent face grammar; must be reworked before use as canonical humanoid face/hand grammar.",
       "supersedes": null
     },
     {
@@ -81,7 +81,7 @@
       ],
       "sha256": null,
       "annotationsSha256": null,
-      "provenance": "planned single-species visual mother asset",
+      "provenance": "VA03-HUMAN image drafts rejected on 2026-10-02 due mixed face grammar and species-read inconsistency; no board locked or approved.",
       "supersedes": null
     },
     {
