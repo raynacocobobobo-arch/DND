@@ -135,6 +135,181 @@ Required mapping:
 
 This mapping is a **diagnostic board roster**, not a recurring actor cast.
 
+## H01–H06 generation test contract
+
+This is the execution contract for the next VA03-HUMAN draft board. It is intentionally narrow and exists to validate the four-chassis system before any Human asset can move toward review.
+
+### Shared board construction
+
+All six figures must:
+- stand on one exact shared ground line;
+- use the same orthographic-like camera and comparable full-body scale;
+- face front or slight 3/4 only;
+- use the same relaxed standing stance family;
+- keep both hands visible and separated enough from the torso to read;
+- wear simple fitted fantasy calibration clothing that reveals shoulder, torso, pelvis and limb volume;
+- avoid armor, long cloaks, oversized robes, large backpacks, weapons and props that hide the chassis;
+- use neutral lighting and a white/light neutral background;
+- remain approximately 5.3 heads;
+- use Human rounded ears only;
+- inherit the current positive VA02 Face Grammar diagnostic;
+- inherit VA01 line / flat color / restrained cel-shading grammar.
+
+### Clothing control
+
+Clothing must not create the body-type difference.
+
+Use one shared clothing family:
+- simple tunic or shirt;
+- narrow belt;
+- trousers;
+- low or mid boots;
+- optional short vest only if it does not obscure torso width.
+
+Allowed clothing variation is limited to small neckline, sleeve and fabric-color changes needed to prevent six literal clones.
+
+Do not use:
+- armor;
+- padded silhouettes;
+- corsets;
+- giant shoulder pieces;
+- robes;
+- capes covering the torso;
+- oversized belts or equipment.
+
+### Pose control
+
+Use the same basic stance family across all six:
+- feet planted naturally at similar spacing;
+- pelvis neutral;
+- shoulders relaxed;
+- arms slightly away from torso;
+- hands relaxed and visible;
+- no crossed arms;
+- no hands-on-hips pose;
+- no crouching;
+- no dramatic contrapposto;
+- no action pose.
+
+H06 may have a **very mild** age-related settling of posture, but may not become hunched or frail.
+
+### Sample contract
+
+#### H01 — B01 STANDARD LIGHT
+Purpose: prove that a light adult frame is not automatically feminine or childlike.
+
+- sex presentation: masculine;
+- age: adult;
+- stature modifier: 0.98;
+- build: narrow shoulder/torso mass, lighter limbs;
+- face: distinct adult masculine Human identity using the shared Face Grammar;
+- hair: short or medium, non-orange;
+- skin tone: one family not reused by adjacent sample;
+- forbidden: enlarged head, shortened limbs, adolescent read, Halfling/Gnome read.
+
+#### H02 — B02 STANDARD MEDIUM
+Purpose: establish the baseline Human chassis.
+
+- sex presentation: feminine;
+- age: adult;
+- stature modifier: 1.00;
+- build: moderate shoulder/torso/limb mass;
+- face: distinct adult feminine Human identity using the shared Face Grammar;
+- hair: clearly different family from H01;
+- skin tone: different family from H01;
+- forbidden: idealized fashion-model anatomy, tiny waist exaggeration, default “heroine” body.
+
+#### H03 — B03 STRONG
+Purpose: prove STRONG is a chassis, not a male-only archetype.
+
+- sex presentation: feminine;
+- age: adult;
+- stature modifier: 1.01;
+- build: broader shoulders/ribcage, visibly thicker arms and legs, athletic muscular mass;
+- face: distinct feminine Human identity using the same Face Grammar;
+- hair: tied back or otherwise kept clear of shoulder silhouette;
+- clothing: sleeves/torso fit must not hide upper-body mass;
+- forbidden: superhero proportions, bodybuilding exaggeration, masculine face-grammar switch.
+
+#### H04 — B03 STRONG
+Purpose: prove the same chassis can support another identity and sex presentation.
+
+- sex presentation: masculine;
+- age: adult;
+- stature modifier: 1.02;
+- build: same underlying B03 construction family as H03;
+- face: clearly different from H03 but same Face Grammar;
+- hair: different family from H03;
+- forbidden: simply scaling H03 up, changing to a second “male body system,” 7.5–8-head heroic anatomy.
+
+H03 and H04 should read as:
+> same chassis family, different people.
+
+They must not read as:
+> female body type versus male body type.
+
+#### H05 — B04 BROAD / HEAVY
+Purpose: establish a broad/heavy adult Human without caricature.
+
+- sex presentation: feminine;
+- age: adult;
+- stature modifier: 0.99;
+- build: broader torso/pelvis, fuller arms/legs, visible soft-tissue volume over stable adult skeleton;
+- face: fuller but not copied from the body shape; same Face Grammar;
+- hair: different from H01–H04;
+- forbidden: comedy obesity shorthand, spherical torso, tiny limbs, enlarged head, merely scaling B02 wider.
+
+#### H06 — B02 STANDARD MEDIUM / OLDER
+Purpose: prove age is an identity layer and does not require a new chassis or face-rendering system.
+
+- sex presentation: masculine;
+- age: older adult;
+- stature modifier: 0.99;
+- body: same B02 construction family as H02;
+- posture: only slightly settled, still upright and functional;
+- age cues: hairline/hair color, modest facial soft-tissue change, very limited age lines;
+- face: same project Face Grammar and detail budget;
+- forbidden: photoreal wrinkles, frail skeleton, hunched elderly stereotype, new “old-person” drawing style.
+
+H02 and H06 should read as:
+> same chassis family at different ages and identities.
+
+### Identity-distribution controls
+
+Across H01–H06:
+- all six facial identities must be different;
+- at least three skin-tone families;
+- at least four visibly different hair families;
+- no repeated “orange-haired project mascot” effect;
+- no two figures may differ only by hair or skin color;
+- sex presentation must not determine chassis;
+- facial identity must not alter the body chassis.
+
+### Stature interpretation
+
+The 0.98 / 1.00 / 1.01 / 1.02 / 0.99 values are subtle production modifiers.
+
+They are **not** intended to create six visibly tiered height classes.
+
+The viewer should primarily read:
+1. chassis;
+2. identity;
+3. age;
+
+and only secondarily notice small ordinary Human stature differences.
+
+### Visual pass test
+
+The board passes only if, with labels temporarily ignored:
+- B01, B02, B03 and B04 can be distinguished from silhouette/mass distribution;
+- all six still read as one Human species anatomy system;
+- H03/H04 visibly share B03 construction;
+- H02/H06 visibly share B02 construction;
+- no figure looks like a scaled copy;
+- no figure changes head/body ratio;
+- no figure uses a different Face Grammar;
+- clothing does not manufacture the apparent body type.
+
 ## Board requirements
 
 Across H01–H06:

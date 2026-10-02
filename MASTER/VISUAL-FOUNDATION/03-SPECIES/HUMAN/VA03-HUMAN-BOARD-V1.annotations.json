@@ -173,5 +173,116 @@
     "date": "2026-10-02",
     "reason": "mixed face grammar and overly prominent continuous height/body variation in earlier Human draft",
     "replacementRule": "Use exactly four discrete Body Chassis, narrow 0.97–1.03 stature variation, and one Face Grammar across all Human identities."
+  },
+  "generationTestContract": {
+    "boardPurpose": "validate four reusable Human Body Chassis under one Face Grammar before VA03-HUMAN review",
+    "sharedBoardRules": {
+      "groundLine": "one exact shared ground line",
+      "camera": "orthographic-like full-body front/slight 3/4",
+      "poseFamily": "same relaxed standing stance; arms slightly away from torso; hands visible",
+      "headBodyRatio": 5.3,
+      "background": "white/light neutral",
+      "clothingFamily": "simple fitted tunic/shirt + narrow belt + trousers + low/mid boots",
+      "prohibitedOcclusion": [
+        "armor",
+        "long cloak",
+        "oversized robe",
+        "large backpack",
+        "weapons/props hiding body",
+        "crossed arms"
+      ],
+      "styleAuthority": [
+        "VA01",
+        "current positive VA02 Face Grammar diagnostic"
+      ]
+    },
+    "samples": {
+      "H01": {
+        "chassis": "H-B01",
+        "sexPresentation": "masculine",
+        "ageBand": "adult",
+        "statureModifier": 0.98,
+        "purpose": "light adult frame without childlike or female-only coding",
+        "hairConstraint": "short/medium; non-orange",
+        "reject": [
+          "enlarged head",
+          "shortened childlike limbs",
+          "Halfling/Gnome read"
+        ]
+      },
+      "H02": {
+        "chassis": "H-B02",
+        "sexPresentation": "feminine",
+        "ageBand": "adult",
+        "statureModifier": 1,
+        "purpose": "baseline Human chassis",
+        "reject": [
+          "fashion-model anatomy",
+          "exaggerated tiny waist",
+          "default heroine body"
+        ]
+      },
+      "H03": {
+        "chassis": "H-B03",
+        "sexPresentation": "feminine",
+        "ageBand": "adult",
+        "statureModifier": 1.01,
+        "purpose": "strong female on shared B03 construction",
+        "hairConstraint": "shoulder silhouette remains readable",
+        "reject": [
+          "superhero anatomy",
+          "bodybuilding exaggeration",
+          "face-grammar masculinization"
+        ]
+      },
+      "H04": {
+        "chassis": "H-B03",
+        "sexPresentation": "masculine",
+        "ageBand": "adult",
+        "statureModifier": 1.02,
+        "purpose": "same B03 chassis with different identity/sex presentation",
+        "reject": [
+          "scaled H03 copy",
+          "second male-only body system",
+          "7.5–8-head heroic anatomy"
+        ]
+      },
+      "H05": {
+        "chassis": "H-B04",
+        "sexPresentation": "feminine",
+        "ageBand": "adult",
+        "statureModifier": 0.99,
+        "purpose": "broad/heavy adult without caricature",
+        "reject": [
+          "comedy obesity shorthand",
+          "spherical torso",
+          "tiny limbs",
+          "scaled-wide B02"
+        ]
+      },
+      "H06": {
+        "chassis": "H-B02",
+        "sexPresentation": "masculine",
+        "ageBand": "older-adult",
+        "statureModifier": 0.99,
+        "purpose": "age layer on B02 without new chassis or face style",
+        "posture": "slightly settled but upright and functional",
+        "reject": [
+          "photoreal wrinkles",
+          "frail skeleton",
+          "hunched stereotype",
+          "old-person drawing system"
+        ]
+      }
+    },
+    "crossSampleChecks": [
+      "H03 and H04 share B03 chassis while remaining different identities",
+      "H02 and H06 share B02 chassis while age/identity differ",
+      "all six facial identities differ while Face Grammar remains one system",
+      "at least three skin-tone families",
+      "at least four hair families",
+      "no body type is manufactured by clothing",
+      "stature differences remain subtle and secondary to chassis"
+    ]
   }
 }

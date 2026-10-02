@@ -164,3 +164,32 @@ plus:
 - sex presentation is independent from chassis.
 
 The next VA03-HUMAN image, when explicitly requested, must test these four chassis with six distinct Human identities and inherit the current positive VA02 Face Grammar diagnostic.
+
+
+## VA03-HUMAN H01–H06 test contract
+
+**Status:** EXECUTION CONTRACT DEFINED — no image generated.
+
+Next draft board must use:
+- H01 = B01 STANDARD LIGHT / masculine adult / 0.98;
+- H02 = B02 STANDARD MEDIUM / feminine adult / 1.00;
+- H03 = B03 STRONG / feminine adult / 1.01;
+- H04 = B03 STRONG / masculine adult / 1.02;
+- H05 = B04 BROAD-HEAVY / feminine adult / 0.99;
+- H06 = B02 STANDARD MEDIUM / older masculine adult / 0.99.
+
+Critical pair tests:
+- H03 ↔ H04: same B03 chassis, different identities/sex presentation;
+- H02 ↔ H06: same B02 chassis, different age/identity.
+
+Board controls:
+- one exact ground line;
+- same neutral standing pose family;
+- approximately 5.3 heads throughout;
+- simple fitted neutral clothing that does not hide anatomy;
+- no armor / long cloak / oversized robe / large props;
+- Human rounded ears only;
+- one Face Grammar across all six;
+- stature differences are subtle and must not become SHORT / AVG / TALL classes.
+
+The next image should be generated only after explicit user instruction to generate it.
