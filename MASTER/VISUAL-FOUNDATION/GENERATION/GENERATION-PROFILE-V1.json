@@ -64,14 +64,14 @@
   "promptVersion": "GVF-PROMPT-V1",
   "negativeConstraintVersion": "VA08-V1",
   "seedPolicy": "seed control is not exposed by current runtime; no seed-level reproducibility claim",
-  "referenceSlotPolicy": "For VA03 species boards, the accepted Human Board, locked VA01 and SEED-A must be actually loaded/visible in the generation context. The species anatomy spec is textual. If any mandatory image authority is unavailable, stop; do not substitute from prose or memory.",
+  "referenceSlotPolicy": "For every non-Human VA03 preflight, load the matching VA01 species exemplar as the anatomy image authority, plus locked VA01/VA02 rendering authorities and the accepted Human Board only for board/layout/rendering behavior. Never use the Human Board as the anatomical base canvas.",
   "editStrengthPolicy": "runtime-managed / not exposed",
   "upscalePolicy": "no style-changing upscale; upscale only after scene/board approval",
   "faceDetailCorrectionPolicy": "correct inside the same locked visual grammar; do not use a separate face style",
   "uiInSceneArt": false,
   "uiCompositionPolicy": "deterministic SVG/tokens compositing after Gate 5",
   "outputNaming": "<ANCHOR-OR-SCENE-ID>-V<version>-<revision>.png",
-  "speciesBoardGenerationMode": "EDIT_FIRST_IMAGE_BOUND",
+  "speciesBoardGenerationMode": "SPECIES_EXEMPLAR_FIRST_IMAGE_BOUND",
   "speciesBoardFreshGenerationAllowed": false,
   "styleBindingContract": "STYLE-BINDING-CONTRACT-V1.md",
   "speciesBoardPreflight": {
@@ -80,8 +80,10 @@
       "species_truth",
       "project_style"
     ],
+    "method": "generate/transform one isolated target-species sample from official species facts + the matching VA01 species exemplar; apply accepted Human Board only as board/layout/rendering grammar",
     "anatomyAuthority": "official 5E/SRD facts + matching VA01 species exemplar",
-    "renderingAuthority": "VA01 + VA02 Face Grammar + accepted Human Board board/rendering grammar",
+    "renderingAuthority": "VA01 + current VA02 Face Grammar + accepted Human Board board/rendering grammar",
+    "dwarfTarget": "D02 / DB02 STANDARD DENSE / adult feminine Dwarf",
     "passRequiredBeforeFullBoard": true
   },
   "styleDriftAbortConditions": [
@@ -105,5 +107,32 @@
     "seed_a_rendering_regression",
     "text_prompt"
   ],
-  "nonHumanAnatomySourceRule": "Never derive non-Human anatomy from the accepted Human Board. The Human Board controls board/layout/rendering behavior only."
+  "nonHumanAnatomySourceRule": "Never derive non-Human anatomy from the accepted Human Board. The Human Board controls board/layout/rendering behavior only.",
+  "speciesAnatomyReferencePolicy": {
+    "rule": "Each non-Human species requires its own matching VA01 exemplar loaded as an actual image reference before preflight.",
+    "Dwarf": {
+      "sourceFileId": "file_00000000b8048207a408bf22121bcf83",
+      "sourceAsset": "VA01-STYLE",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "exemplarCropPx": [
+        1165,
+        135,
+        1315,
+        515
+      ],
+      "actionConfirmation": {
+        "sourceFileId": "file_00000000f8988207b1b25b210f8231a7",
+        "sourceAsset": "SEED-A",
+        "cropPx": [
+          585,
+          275,
+          790,
+          540
+        ]
+      }
+    }
+  }
 }

@@ -146,5 +146,56 @@
     "low center of gravity",
     "adult head and mature posture",
     "not a uniformly scaled-down Human"
-  ]
+  ],
+  "positiveVisualReferences": {
+    "primary": {
+      "id": "VA01-DWARF-EXEMPLAR",
+      "sourceAsset": "VA01-STYLE",
+      "sourceFileId": "file_00000000b8048207a408bf22121bcf83",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "cropPx": [
+        1165,
+        135,
+        1315,
+        515
+      ],
+      "role": "primary Dwarf silhouette/anatomy translation",
+      "derivedCropSha256": "7bb3e2a4cf2ef4f52c71fcdd39f3ed49abdf81d271ba4eaf93c6d0a802a0ce7b"
+    },
+    "secondary": {
+      "id": "SEED-A-DWARF-ACTION",
+      "sourceAsset": "SEED-A",
+      "sourceFileId": "file_00000000f8988207b1b25b210f8231a7",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "cropPx": [
+        585,
+        275,
+        790,
+        540
+      ],
+      "role": "action/posture confirmation of torso and forearm/hand mass",
+      "derivedCropSha256": "697363dcdfb9dcc6f04658d93ad31e1e4b91964929f0f0bfbf8958f43999a3c6"
+    }
+  },
+  "diagnosticProportionGuides": {
+    "status": "project visual diagnostics; not official D&D measurements",
+    "totalHeadHeightsApprox": [
+      4,
+      4.2
+    ],
+    "shoulderWidthInHeadWidthsApprox": [
+      1.7,
+      1.9
+    ],
+    "lowerLimbRead": "crotch-to-ground region well under half of total standing height",
+    "forearmRule": "thick through wrist transition; no Human-light taper",
+    "handRule": "broad adult hands with visible mass",
+    "centerOfGravity": "low, grounded, torso-dominant silhouette"
+  }
 }

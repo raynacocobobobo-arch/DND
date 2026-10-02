@@ -103,25 +103,36 @@ Use:
 
 ## VA03 generation mapping
 
-**VA03 now uses an EDIT-FIRST / IMAGE-BOUND route. Fresh text-to-image species boards are prohibited until explicitly revalidated.**
+**VA03 non-Human generation is SPECIES-EXEMPLAR-FIRST / IMAGE-BOUND.**
 
-Mandatory image authorities:
-1. accepted VA03-HUMAN candidate board — direct base canvas / board template;
-2. locked VA01 — rendering regression authority;
-3. SEED-A — character-rendering regression authority.
+Do not use the accepted Human Board as a base anatomy canvas.
 
-The target species spec controls anatomy only.
+Mandatory authority split:
+1. official 5E/SRD facts — species truth;
+2. matching figure in the approved VA01 Core Species Lineup — species anatomy/silhouette image authority;
+3. target Species Anatomy Core + SPEC/annotations — controlled variation;
+4. VA01 + current VA02 Face Grammar — rendering grammar;
+5. accepted Human Board — white-board layout, label density, simple calibration-clothing and rendering-consistency reference only;
+6. SEED-A — character-rendering regression.
 
-Before a new species board:
-- actually load/inspect all three image authorities;
-- perform a one-sample species-conversion preflight on the accepted Human Board;
-- leave the rest of the Human Board unchanged during that preflight;
-- reject immediately if the runtime switches to semi-realistic / realistic / 3D / painterly concept-art rendering;
-- proceed to the six-sample board only after the preflight preserves the approved art family.
+Before a six-sample board:
+- load/inspect the matching VA01 species exemplar as an actual image reference;
+- generate one isolated target-species preflight sample;
+- test Species Truth and Project Style separately;
+- reject if the sample can be explained as a scaled/morphed Human;
+- reject if rendering becomes semi-realistic / realistic / 3D / painterly;
+- proceed only when both axes pass.
 
-SEED-E is only a fallback organization reference. The accepted Human Board supersedes it for current VA03 board appearance.
+For Dwarf, the first target is:
+`D02 / DB02 STANDARD DENSE / adult feminine Dwarf`.
 
-See: `STYLE-BINDING-CONTRACT-V1.md`.
+Its anatomy must derive from the approved VA01 Dwarf exemplar, not H02.
+
+SEED-E is only fallback organization logic. The accepted Human Board controls presentation only.
+
+See:
+- `STYLE-BINDING-CONTRACT-V1.md`
+- `../03-SPECIES/SPECIES-VISUAL-DERIVATION-PROTOCOL-V1.md`
 
 ## Generator change protocol
 

@@ -294,7 +294,7 @@ Board roster:
 - D05 DB04 masculine adult / short beard;
 - D06 DB02 older feminine adult.
 
-Project Dwarf body construction for this diagnostic: approximately 4.7 heads, held consistent across all six.
+Project Dwarf body construction for this diagnostic: approximately 4.0–4.2 heads, centered on ~4.0, derived from the approved VA01 Dwarf exemplar.
 
 
 ## VA03-DWARF visual attempts — REJECTED
@@ -328,10 +328,11 @@ Mandatory actual image authorities:
 3. SEED-A: `file_00000000f8988207b1b25b210f8231a7`, SHA-256 `3c60a705114a1b9d632ccad7ea13f9951bc6ca5cc21685e80b0e02a027d32b86`.
 
 New Dwarf route:
-- first edit only H02 on the accepted Human Board into D02 STANDARD DENSE female Dwarf;
-- leave the other five Human samples unchanged;
-- use this as a style-binding preflight;
-- only after that sample preserves the exact cartoon line/color/face system may the full six-Dwarf board be attempted.
+- do **not** use H02 or any Human figure as the anatomy base;
+- use the matching VA01 Dwarf exemplar as the primary anatomy-image authority;
+- generate one isolated D02 / DB02 STANDARD DENSE adult feminine Dwarf;
+- use the accepted Human Board only for white-board presentation and rendering consistency;
+- pass both Species Truth and Project Style before attempting the full six-Dwarf board.
 
 All previously rejected Dwarf images are quarantined as negative references and must not be provided to the generator.
 
@@ -363,3 +364,29 @@ No new Dwarf image was generated in this correction step.
 The old H02→Dwarf morph rule was removed because it made the Human skeleton the starting anatomy. Dwarf preflight now begins from official Dwarf facts + the approved VA01 Dwarf exemplar. The accepted Human Board controls only white-board presentation, line/color consistency, label density and simple calibration-clothing behavior.
 
 Dwarf annotations now use the project VA01-derived ~4.0-head construction and explicitly state that Human is not an anatomy source.
+
+
+## Dwarf Anatomy Core extraction — COMPLETE
+
+Positive visual anatomy was extracted from the already approved sources rather than invented from prompt text.
+
+Primary anatomy image:
+- VA01 Dwarf exemplar, source file ID `file_00000000b8048207a408bf22121bcf83`;
+- inspected source 1672×941;
+- diagnostic crop `[1165,135,1315,515]`.
+
+Secondary action confirmation:
+- SEED-A Dwarf, source file ID `file_00000000f8988207b1b25b210f8231a7`;
+- diagnostic crop `[585,275,790,540]`.
+
+Image-derived project guides:
+- ~4.0–4.2 heads total, centered on ~4.0;
+- shoulder span roughly 1.7–1.9 head widths;
+- torso-dominant / lower-limb region well under half of total height;
+- thick forearms through the wrist transition;
+- broad adult hands;
+- low, grounded center of gravity.
+
+These are visual regression guides, not official D&D measurements.
+
+The old Human-base species-conversion path is removed. The next legal Dwarf image is one isolated D02 preflight derived from the **VA01 Dwarf exemplar**, with the Human Board used only for board/rendering grammar.

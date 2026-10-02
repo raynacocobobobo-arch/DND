@@ -70,6 +70,35 @@ Sample-specific and **not invariant**:
 - exact face;
 - exact expression.
 
+## Image-derived Dwarf diagnostic guides
+
+These are **project visual diagnostics derived from the approved VA01 exemplar**, not official D&D measurements and not rigid rigging dimensions.
+
+Primary visual source:
+- full source: locked VA01, source file ID `file_00000000b8048207a408bf22121bcf83`;
+- source dimensions inspected: 1672×941;
+- Dwarf exemplar diagnostic crop: approximately `x=1165..1315, y=135..515`.
+
+Secondary action confirmation:
+- full source: SEED-A, source file ID `file_00000000f8988207b1b25b210f8231a7`;
+- source dimensions inspected: 1672×941;
+- Dwarf action diagnostic crop: approximately `x=585..790, y=275..540`.
+
+Observed project construction:
+- total standing silhouette reads at roughly **4.0–4.2 head heights**;
+- shoulder span reads roughly **1.7–1.9 head widths** rather than a narrow Human shoulder line;
+- trunk occupies a large share of total height;
+- crotch-to-ground / lower-limb region stays **well under half of total height**;
+- forearms remain thick almost to the wrist rather than tapering to a light Human wrist;
+- hands read broad and adult, not child-small;
+- feet are broad/grounded but are not enlarged cartoon feet;
+- when the Dwarf bends forward in SEED-A, the broad torso + heavy forearm/hand system remains visible, confirming that these are structural traits rather than a standing-pose illusion.
+
+Use these as a **silhouette regression band**, not as exact pixel geometry.
+
+Critical rule:
+> If a generated Dwarf can be converted back into a Human merely by scaling it taller, the anatomy is wrong.
+
 ## Dwarf Anatomy Core
 
 Before body-chassis variation, every Dwarf must preserve:
@@ -276,7 +305,7 @@ Only:
 - `D01`–`D06`;
 - `DB01 / DB02 / DB03 / DB04`;
 - optional `OLDER` for D06;
-- one shared `~4.7 HEADS` note.
+- one shared `~4.0 HEADS` note.
 
 No long explanatory text.
 

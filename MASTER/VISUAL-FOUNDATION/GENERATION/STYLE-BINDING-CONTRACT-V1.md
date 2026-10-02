@@ -117,6 +117,34 @@ The preflight must pass both:
 
 Do not proceed to the six-Dwarf board until both pass.
 
+## Dwarf anatomy-image binding
+
+For the current Dwarf preflight, the positive anatomy images are explicit:
+
+### Primary anatomy exemplar
+- source: locked VA01;
+- source file ID: `file_00000000b8048207a408bf22121bcf83`;
+- diagnostic crop on the inspected 1672×941 source: `[1165,135,1315,515]`;
+- controls: compact trunk, low broad silhouette, ~4.0-head project construction, short lower limbs, thick forearms/hands.
+
+### Action confirmation
+- source: SEED-A;
+- source file ID: `file_00000000f8988207b1b25b210f8231a7`;
+- diagnostic crop: `[585,275,790,540]`;
+- controls: anatomy remains dense/broad during active forward-reaching pose.
+
+### Dwarf preflight route
+Do **not** edit H02 into a shorter person.
+
+Generate/transform one isolated `D02 / DB02 STANDARD DENSE / adult feminine Dwarf` from the Dwarf exemplar anatomy, while borrowing the accepted Human Board only for:
+- white background;
+- simple tunic/trouser/boot presentation;
+- clean black line family;
+- flat color / cel shading;
+- label simplicity.
+
+If D02 has Human-length legs, Human-light forearms/hands, or becomes correct only after vertical scaling, reject as `SCALED_DOWN_HUMAN`.
+
 ## 6. Style-binding pass criteria
 
 The edited sample must preserve:
