@@ -188,8 +188,8 @@
 .progress-ring-center em {font:10px "PingFang SC",sans-serif;font-style:normal;color:#a99a82;letter-spacing:.09em;}
 .editorial-dashboard .progress-card > p { margin:0 0 10px; max-width:none;text-align:center;color:#ac9e86;font-size:10px; }
 .progress-stat-list {display:grid; grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border-top:1px solid #9874496e;padding-top:12px;}
-.progress-stat-list > div {display:grid;gap:5px; justify-items:center; border-right:1px solid #ae955b4e; }
-.progress-stat-list > div:last-child {border:0;}
+.progress-stat-list > article {display:grid;gap:5px; justify-items:center; border-right:1px solid #ae955b4e; }
+.progress-stat-list > article:last-child {border:0;}
 .progress-stat-list span {display:flex;align-items:center;gap:4px;color:#c6baa1;font-size:10px;white-space:nowrap;}
 .progress-stat-list svg {color:#c5a16c;}
 .progress-stat-list strong {font:17px Georgia,serif;color:#e4c28d;font-weight:500;}
@@ -315,3 +315,7 @@
 @media (prefers-reduced-motion:reduce) {
   .editorial-character {transform:none!important;}
 }
+
+.editorial-salutation {margin:0 0 3px;font:500 18px "Songti SC","Noto Serif CJK SC",serif;color:#e9d8b8;}
+.editorial-quote > span {display:block;}
+@media (max-width:760px) { .editorial-salutation {display:none;} }
