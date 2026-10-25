@@ -37,7 +37,7 @@ export function ContextsPage() {
   }
 
   async function copyContext(context: ContextRecord) {
-    const tasks = await apiRequest<Task[]>(`/api/tasks?contextId=${context.id}&sort=priority`);
+    const tasks = await apiRequest<Task[]>(`/api/tasks?contextId=${context.id}&sort=createdAt`);
     const lines = [`【${context.name}】`, ...tasks.map((task) => `${task.isCompleted ? "●" : "○"} ${task.title}`)];
     if (tasks.length === 0) lines.push("（暂无待办）");
     await navigator.clipboard.writeText(lines.join("\n"));
