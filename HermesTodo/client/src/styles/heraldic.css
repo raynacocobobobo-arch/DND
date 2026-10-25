@@ -411,3 +411,13 @@ button:disabled { opacity: .53; cursor: not-allowed; }
   .app-edition { letter-spacing:0; }
 }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
+
+
+/* Shared ornamental assets stay behind interactive elements */
+.login-page { position:relative; isolation:isolate; overflow:hidden; }
+.login-scene { position:absolute; inset:0; width:100%; height:100%; opacity:.44; }
+.login-card { z-index:1; }
+.login-divider { margin:12px 0; }
+.login-divider > span { width:58px; }
+.ai-ornament { margin:0 auto; opacity:.7; }
+.contexts-page > .ios-page-header > svg:first-child { color:#d5b574; justify-self:start; }
