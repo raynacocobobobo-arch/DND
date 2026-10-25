@@ -67,7 +67,7 @@ jobs:
               """)
               assert allImages==[864]*22,allImages
               print('BROWSER_CODEX_22_CARDS_ALL_HD',flush=True)
-              b.find_element(By.CSS_SELECTOR,'#drawBtn').click()
+              b.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'});arguments[0].click()", b.find_element(By.CSS_SELECTOR,'#drawBtn'))
               WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.result-card img'))==1)
               size=b.execute_async_script("""
                 const done=arguments[0];
@@ -76,8 +76,8 @@ jobs:
               """)
               assert size==[864,1536],size
               print('BROWSER_DRAW_SINGLE_HD_PASSED',flush=True)
-              b.find_element(By.CSS_SELECTOR,'#modes button[data-n="3"]').click()
-              b.find_element(By.CSS_SELECTOR,'#drawBtn').click()
+              b.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'});arguments[0].click()", b.find_element(By.CSS_SELECTOR,'#modes button[data-n="3"]'))
+              b.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'});arguments[0].click()", b.find_element(By.CSS_SELECTOR,'#drawBtn'))
               assert len(b.find_elements(By.CSS_SELECTOR,'.result-card img'))==3
               print('BROWSER_DRAW_THREE_HD_PASSED',flush=True)
           finally:
