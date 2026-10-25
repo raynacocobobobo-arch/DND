@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 
 import { useAuth } from "../auth/AuthProvider";
-import { CathedralScene, FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
+import { FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -25,7 +25,7 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <CathedralScene className="login-scene"/>
+      <img className="login-scene" src={`${import.meta.env.BASE_URL}art/hero-standard-bearer.webp`} alt="" decoding="async"/>
       <section className="login-card" aria-labelledby="login-title">
         <div className="brand-mark" aria-hidden="true"><FleurDeLis size={37}/></div>
         <p className="eyebrow">你的个人任务空间</p>
