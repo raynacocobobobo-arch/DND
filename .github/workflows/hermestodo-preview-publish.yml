@@ -60,6 +60,10 @@ jobs:
               wait=WebDriverWait(browser,20)
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
               assert '独立预览' in browser.find_element(By.TAG_NAME,'body').text
+              # The independent illustration must be a real image, not a flattened UI.
+              wait.until(lambda b: b.execute_script(
+                  "return !!document.querySelector('.dashboard-hero-art') && document.querySelector('.dashboard-hero-art').naturalWidth > 0"))
+              assert browser.execute_script("return getComputedStyle(document.querySelector('.dashboard-hero-art')).objectFit") == 'cover'
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
               browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
