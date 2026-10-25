@@ -115,7 +115,7 @@ export function HomePage() {
                 {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/contexts">创建第一个情境</Link> : null}
               </div>
             </section>
-            <Link className="ai-teaser v7-ai-note" to="/ai"><Sparkles size={18}/><div><strong>AI 任务规划</strong><span>把目标拆解成行动</span></div><ArrowUpRight size={17}/></Link>
+            <Link className="ai-teaser v7-ai-note" to="/ai"><Sparkles size={18}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><ArrowUpRight size={17}/></Link>
           </aside>
         </div>
         <footer className="editorial-footer">FINIS CORONAT OPUS <FleurDeLis size={13}/> HERMES TODO</footer>
