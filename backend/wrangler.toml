@@ -1,0 +1,16 @@
+name = "cthulhu-tarot-deepseek"
+main = "worker.js"
+compatibility_date = "2026-10-25"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGIN = "https://raynacocobobobo-arch.github.io"
+MODEL = "deepseek-flash"
+
+[[ratelimits]]
+name = "TAROT_RATE_LIMITER"
+namespace_id = "1001"
+
+[ratelimits.simple]
+limit = 3
+period = 60
