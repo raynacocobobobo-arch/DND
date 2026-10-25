@@ -9,6 +9,7 @@ import "./styles/heraldic.css";
 import "./styles/art-direction.css";
 import "./styles/editorial-home.css";
 import "./styles/final-art.css";
+import "./styles/v4-execution.css";
 
 async function bootstrap() {
   // A public preview uses a self-contained local demo API; production is unchanged.
