@@ -132,7 +132,7 @@ describe("home dashboard", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(await screen.findByLabelText("快速添加今日任务"), "买咖啡豆");
+    await user.type(await screen.findByLabelText("快速添加任务"), "买咖啡豆");
     await user.click(screen.getByRole("button", { name: "添加" }));
 
     await waitFor(() => {
