@@ -1,0 +1,26 @@
+import { ChevronRight, Copy, Pencil, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import type { ContextRecord } from "../hooks/useContexts";
+import { ContextIcon } from "./ContextIcon";
+
+export function ContextCard({ context, onEdit, onCopy, onDelete }: { context: ContextRecord; onEdit(): void; onCopy(): void; onDelete(): void }) {
+  return (
+    <li className="context-card" style={{ "--context-color": context.color } as React.CSSProperties}>
+      <Link className="context-card-link" to={`/contexts/${context.id}`}>
+        <span className="context-card-top">
+          <span className="context-icon"><ContextIcon name={context.icon} size={22} /></span>
+          <strong>{context.incompleteCount}</strong>
+        </span>
+        <span className="context-name">{context.name}</span>
+        <span className="context-count">未完成任务</span>
+      </Link>
+      <div className="context-card-actions">
+        <button type="button" aria-label={`编辑 ${context.name}`} onClick={onEdit}><Pencil aria-hidden="true" size={14} /></button>
+        <button type="button" aria-label={`复制 ${context.name}`} onClick={onCopy}><Copy aria-hidden="true" size={14} /></button>
+        <button type="button" aria-label={`删除 ${context.name}`} onClick={onDelete}><Trash2 aria-hidden="true" size={14} /></button>
+        <ChevronRight className="context-chevron" aria-hidden="true" size={16} />
+      </div>
+    </li>
+  );
+}

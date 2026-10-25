@@ -1,0 +1,24 @@
+[Unit]
+Description=HermesTodo dedicated HTTPS gateway on port 8443
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=notify
+User=caddy
+Group=caddy
+Environment=XDG_DATA_HOME=/var/lib/hermestodo-caddy
+Environment=XDG_CONFIG_HOME=/var/lib/hermestodo-caddy/config
+StateDirectory=hermestodo-caddy
+ExecStart=/usr/bin/caddy run --environ --config /home/ubuntu/hermestodo-web/deploy/Caddyfile --adapter caddyfile
+ExecReload=/usr/bin/caddy reload --config /home/ubuntu/hermestodo-web/deploy/Caddyfile --adapter caddyfile --force
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths=/home/ubuntu/hermestodo-web/deploy
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,55 @@
+{
+  "name": "hermestodo-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --import tsx --watch server/src/index.ts",
+    "build": "vite build && tsup server/src/index.ts server/src/cli/hashPassword.ts --format esm --out-dir dist/server --sourcemap",
+    "start": "node dist/server/index.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "password:hash": "tsx server/src/cli/hashPassword.ts",
+    "backup": "node scripts/backup.mjs",
+    "restore": "node scripts/restore.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "ports:check": "node scripts/check-port.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
+    "argon2": "^0.44.0",
+    "better-sqlite3": "^12.4.1",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "lucide-react": "^0.548.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.9.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@types/supertest": "^6.0.3",
+    "@vitejs/plugin-react": "^5.0.4",
+    "jsdom": "^27.0.1",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.6",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^4.0.3",
+    "yaml": "^2.8.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

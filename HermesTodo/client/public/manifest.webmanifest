@@ -1,0 +1,25 @@
+{
+  "name": "HermesTodo",
+  "short_name": "HermesTodo",
+  "description": "你的个人情境待办与 AI 任务规划器",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7F1E7",
+  "theme_color": "#F7F1E7",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

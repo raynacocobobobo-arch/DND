@@ -1,0 +1,51 @@
+import { useState, type FormEvent } from "react";
+
+import { useAuth } from "../auth/AuthProvider";
+
+export function LoginPage() {
+  const { login } = useAuth();
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    setSubmitting(true);
+    try {
+      await login(password);
+      setPassword("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "登录失败，请重试");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="login-page">
+      <section className="login-card" aria-labelledby="login-title">
+        <div className="brand-mark" aria-hidden="true">H</div>
+        <p className="eyebrow">你的个人任务空间</p>
+        <h1 id="login-title">HermesTodo</h1>
+        <p className="login-intro">在电脑和手机上，安静地把事情理清楚。</p>
+        <form onSubmit={submit} className="login-form">
+          <label htmlFor="password">个人密码</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+          {error ? <p role="alert" className="form-error">{error}</p> : null}
+          <button type="submit" className="primary-button" disabled={submitting || !password}>
+            {submitting ? "正在登录…" : "登录"}
+          </button>
+        </form>
+      </section>
+    </main>
+  );
+}
