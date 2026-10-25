@@ -1,0 +1,74 @@
+/* V6 — Editorial To-Do. Art stays expressive; work stays effortless. */
+:root {--v6-paper:#f8f1e6;--v6-ink:#302d2b;--v6-muted:#817b73;--v6-rule:#ded1bf;--v6-accent:#9b4738}
+.editorial-dashboard .editorial-main {max-width:1650px}
+.editorial-dashboard .editorial-toolbar {
+  border:1px solid #c6a57470; border-radius:11px; padding:7px;
+  background:#101e28e8; box-shadow:0 12px 30px #050e1850
+}
+.editorial-dashboard .editorial-toolbar .quick-add {
+  border:1px solid #aa956e99; border-radius:8px; background:#f8f1e6;
+  min-height:49px; box-shadow:none
+}
+.editorial-dashboard .editorial-toolbar .quick-add input {
+  color:#302d2b; font-size:15px; font-weight:500
+}
+.editorial-dashboard .editorial-toolbar .quick-add input::placeholder {color:#8b8379}
+.editorial-dashboard .editorial-toolbar .quick-add button {
+  background:#943e35; color:#fff3df; border-radius:7px
+}
+.editorial-dashboard .dashboard-task-board {
+  border-radius:9px; background:var(--v6-paper); border:1px solid #dfc9a9;
+  box-shadow:0 12px 38px #07111b40
+}
+.editorial-dashboard .dashboard-task-board .board-heading {border-bottom:1px solid var(--v6-rule);padding-bottom:18px}
+.editorial-dashboard .board-title > svg {display:none}
+.editorial-dashboard .board-title h2 {font-size:clamp(22px,2vw,28px);letter-spacing:.02em;color:var(--v6-ink)}
+.editorial-dashboard .board-total {border-radius:100px;background:#e8ddce;color:#5c4b3b;border:0}
+.editorial-dashboard .inbox-help {font-size:12px;color:#7b7268;line-height:1.7}
+.editorial-dashboard .dashboard-section-heading {margin-top:12px;padding-bottom:8px;border:0}
+.editorial-dashboard .dashboard-section-heading h2 {font-size:13px;font-weight:600;letter-spacing:.03em;color:#837466}
+.editorial-dashboard .dashboard-task-board .task-row {
+  border:0; border-bottom:1px solid #e6d9c8; border-radius:0;
+  padding:15px 6px; min-height:66px; background:transparent;
+  transition:background .15s ease
+}
+.editorial-dashboard .dashboard-task-board .task-row:hover {background:#f1e8db}
+.editorial-dashboard .dashboard-task-board .task-row:last-child {border-bottom:0}
+.editorial-dashboard .dashboard-task-board .task-check {
+  width:26px;height:26px;min-width:26px;min-height:26px;border:1.5px solid #b7a58d;
+  border-radius:50%;background:transparent;box-shadow:none
+}
+.editorial-dashboard .dashboard-task-board .task-check[aria-pressed="true"] {
+  background:#738773;border-color:#738773;color:white
+}
+.editorial-dashboard .dashboard-task-board .task-title-button {
+  font-family:"PingFang SC","Noto Sans CJK SC",system-ui,sans-serif;
+  color:#292c2d; font-size:15px;font-weight:550;letter-spacing:0
+}
+.editorial-dashboard .dashboard-task-board .task-meta {font-size:12px;color:#8c7e6d}
+.editorial-dashboard .dashboard-task-board .task-filters {border:0;background:#eee5d8;border-radius:9px}
+.editorial-dashboard .dashboard-task-board .task-filters button {border:0;border-radius:7px;color:#786d61}
+.editorial-dashboard .dashboard-task-board .task-filters .filter-active {
+  background:#fffaf0;color:#302d2b;box-shadow:0 1px 4px #2e241b1b
+}
+.editorial-dashboard .board-add-link {margin-top:14px;border:1px dashed #cdbda7;border-radius:8px;background:transparent;color:#6d5d4e}
+.editorial-dashboard .dashboard-side-column {gap:12px}
+.editorial-dashboard .contexts-mini {border:1px solid #b79b71a6;border-radius:9px;background:#101e2ce8}
+.editorial-dashboard .context-entry {border-radius:7px;min-height:48px}
+.editorial-dashboard .ai-teaser {border-radius:9px;box-shadow:none}
+.contexts-page .context-card,.context-detail-page .parchment-panel,.ai-page .ai-workspace {border-radius:10px}
+.contexts-page .ios-page-header,.context-detail-page .ios-page-header,.ai-page .ios-page-header {border-radius:9px}
+.form-dialog,.confirm-dialog {border-radius:12px}
+.form-dialog input,.form-dialog textarea,.form-dialog select {border-radius:8px}
+.editorial-dashboard .editorial-footer {opacity:.6}
+@media(max-width:760px){
+  .editorial-dashboard .editorial-main {padding-inline:12px}
+  .editorial-dashboard .editorial-toolbar {margin-top:8px;border-radius:9px}
+  .editorial-dashboard .editorial-toolbar .quick-add input {font-size:14px}
+  .editorial-dashboard .dashboard-task-board {padding:17px 15px 19px;border-radius:9px}
+  .editorial-dashboard .board-title h2 {font-size:21px}
+  .editorial-dashboard .dashboard-task-board .task-row {min-height:62px;padding:13px 3px}
+  .editorial-dashboard .dashboard-task-board .task-title-button {font-size:14px}
+  .editorial-dashboard .task-filters button {min-height:34px}
+}
+@media(prefers-reduced-motion:reduce){.editorial-dashboard .dashboard-task-board .task-row {transition:none}}
