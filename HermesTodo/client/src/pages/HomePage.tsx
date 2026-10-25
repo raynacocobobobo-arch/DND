@@ -1,5 +1,5 @@
 import { zhCN } from "date-fns/locale";
-import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { formatInTimeZone } from "date-fns-tz";
 import { ChevronRight, Sparkles, ArrowUpRight, Plus, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -18,26 +18,15 @@ export function HomePage() {
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<"all" | "active" | "done">("all");
   const contexts = useContexts();
-  const tasks = useTasks({ sort: "priority" });
+  const tasks = useTasks({ sort: "createdAt" });
   const allTasks = tasks.data ?? [];
   const selectedTask = allTasks.find((task) => task.id === selectedTaskId);
-  const today = formatInTimeZone(new Date(), "Asia/Shanghai", "yyyy-MM-dd");
-  const dueDate = (value: string | null) => value ? formatInTimeZone(value, "Asia/Shanghai", "yyyy-MM-dd") : null;
-  const todayTasks = allTasks.filter((task) => !task.isCompleted && dueDate(task.dueAt) === today);
-  const overdueTasks = allTasks
-    .filter((task) => !task.isCompleted && task.dueAt && dueDate(task.dueAt)! < today)
-    .sort((a, b) => (a.dueAt ?? "").localeCompare(b.dueAt ?? ""));
+  const pendingTasks = allTasks.filter((task) => !task.isCompleted);
   const doneTasks = allTasks.filter((task) => task.isCompleted);
-  const counts = {
-    today: todayTasks.length,
-    overdue: overdueTasks.length
-  };
   const hour = Number(formatInTimeZone(new Date(), "Asia/Shanghai", "H"));
   const greeting = hour < 11 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
-  const upcomingTasks = allTasks.filter((task) => !task.isCompleted && (!task.dueAt || dueDate(task.dueAt)! > today));
   const showActive = activeFilter !== "done";
   const showDone = activeFilter !== "active";
-  const todayDueAt = fromZonedTime(`${today}T09:00:00`, "Asia/Shanghai").toISOString();
 
   return (
     <section className="page-stack ios-dashboard editorial-dashboard" style={{
@@ -70,7 +59,7 @@ export function HomePage() {
           </div>
         </header>
         <section className="editorial-toolbar" aria-label="快速操作">
-          <QuickAdd dueToday onEmpty={() => setCreateTaskOpen(true)}/>
+          <QuickAdd onEmpty={() => setCreateTaskOpen(true)}/>
           <div className="editorial-toolbar-actions">
             <button type="button" className="toolbar-create" onClick={() => setCreateTaskOpen(true)}><Plus size={17} aria-hidden="true"/>详细添加</button>
             <Link to="/contexts"><CalendarDays size={16} aria-hidden="true"/>情境</Link>
@@ -82,13 +71,13 @@ export function HomePage() {
             <header className="board-heading">
               <div className="board-title">
                 <FleurDeLis size={21} aria-hidden="true"/>
-                <div><span className="board-eyebrow">TODAY'S ORDERS</span><h2>今日待办</h2></div>
-                <span className="board-total">{counts.today + counts.overdue}</span>
+                <div><span className="board-eyebrow">MY TO-DO LIST</span><h2>待办清单</h2></div>
+                <span className="board-total">{pendingTasks.length}</span>
               </div>
               <div className="task-filters" role="group" aria-label="任务状态筛选">
                 {([
                   ["all","全部"],
-                  ["active","进行中"],
+                  ["active","未完成"],
                   ["done","已完成"]
                 ] as const).map(([value,label]) => (
                   <button type="button" key={value} className={activeFilter === value ? "filter-active" : ""}
@@ -96,26 +85,14 @@ export function HomePage() {
                 ))}
               </div>
             </header>
-            {showActive && overdueTasks.length > 0 ? (
-              <section className="dashboard-section dashboard-overdue" aria-label="逾期待处理">
-                <div className="dashboard-section-heading"><h2>逾期待处理</h2><span>{counts.overdue} 件</span></div>
-                <TaskList tasks={overdueTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
-              </section>
-            ) : null}
             {showActive ? (
-              <section className="dashboard-section dashboard-focus">
-                <div className="dashboard-section-heading"><h2>今日重点</h2><span className="section-count">{todayTasks.length} 项</span></div>
+              <section className="dashboard-section dashboard-focus" aria-label="未完成任务">
+                <div className="dashboard-section-heading"><h2>未完成</h2><span className="section-count">{pendingTasks.length} 项</span></div>
                 {tasks.isError ? (
                   <div className="dashboard-empty" role="alert">任务加载失败。<button type="button" className="text-retry-button" onClick={() => void tasks.refetch()}>重试</button></div>
-                ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : todayTasks.length ? (
-                  <TaskList tasks={todayTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
-                ) : <p className="dashboard-empty">今天尚未安排任务。点击上方输入框添加第一件事。</p>}
-              </section>
-            ) : null}
-            {showActive && upcomingTasks.length ? (
-              <section className="dashboard-section dashboard-upcoming">
-                <div className="dashboard-section-heading"><h2>接下来</h2><span className="section-count">{upcomingTasks.length} 项</span></div>
-                <TaskList tasks={upcomingTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
+                ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : pendingTasks.length ? (
+                  <TaskList tasks={pendingTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
+                ) : <p className="dashboard-empty">待办已经清空。添加一件事，或者看看已完成清单。</p>}
               </section>
             ) : null}
             {showDone ? (
@@ -147,7 +124,7 @@ export function HomePage() {
         <footer className="editorial-footer">DISCIPLINE CREATES FREEDOM <FleurDeLis size={13}/> HERMES TODO</footer>
       </div>
       {selectedTask ? <TaskDetail task={selectedTask} contexts={contexts.data ?? []} onClose={() => setSelectedTaskId(undefined)}/> : null}
-      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} initialDueAt={todayDueAt} onClose={() => setCreateTaskOpen(false)}/> : null}
+      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} onClose={() => setCreateTaskOpen(false)}/> : null}
     </section>
   );
 }
