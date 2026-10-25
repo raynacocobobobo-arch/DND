@@ -68,6 +68,8 @@ jobs:
               assert browser.execute_script("return document.querySelector('.editorial-character').currentSrc.includes('hero-mobile.avif')")
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
               assert browser.execute_script("return !!document.querySelector('.editorial-toolbar .quick-add')")
+              assert not browser.find_elements(By.CSS_SELECTOR,'.progress-card'), 'Daily progress widget should be removed'
+              assert not browser.find_elements(By.CSS_SELECTOR,'.weekly-panel'), 'Last-seven-days widget should be removed'
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
               browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
