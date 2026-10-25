@@ -97,6 +97,35 @@ jobs:
             assert len(d.find_elements(By.CSS_SELECTOR,'.reading-card'))==3
             print('THREE-CARD READING OK',flush=True)
 
+            # The daily-card regression: repeated visits/draws must not reuse
+            # a date-seeded card, and cannot repeat the immediate previous draw.
+            d.get(SITE+'?qa=daily-random#/ritual')
+            seen_daily=[]
+            for i in range(5):
+              tap('button[data-spread="daily"]')
+              tap('#enterRitual')
+              tap('#dailyCard')
+              tap('#flippingCard')
+              tap('#nextDraw')
+              wait('.offline-reading')
+              card_id=d.execute_script("return ritual.picks[0].id")
+              seen_daily.append(card_id)
+              assert i==0 or seen_daily[-1]!=seen_daily[-2], 'Daily card repeated: '+str(seen_daily)
+              if i<4: tap('#restartAfter')
+            print('DAILY FRESH DRAWS',seen_daily,flush=True)
+            assert len(set(seen_daily))>=3, 'Daily draws do not vary'
+            # Ensure last-card exclusion persists after a full browser reload.
+            previous=seen_daily[-1]
+            d.refresh()
+            tap('#restartAfter')
+            tap('button[data-spread="daily"]')
+            tap('#enterRitual')
+            tap('#dailyCard')
+            refreshed=d.execute_script("return ritual.picks[0].id")
+            assert refreshed!=previous, 'Daily exclusion lost across reload'
+            print('DAILY FRESH AFTER RELOAD',previous,refreshed,flush=True)
+
+
             # Browser offline: ensure service worker activated and all 22 images cached.
             state=d.execute_async_script("""
               const done=arguments[0];
