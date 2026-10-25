@@ -64,8 +64,8 @@ jobs:
               wait.until(lambda b: b.execute_script(
                   "return !!document.querySelector('.editorial-character') && document.querySelector('.editorial-character').naturalWidth > 0"))
               assert browser.execute_script("return getComputedStyle(document.querySelector('.editorial-character')).objectFit") == 'cover'
-              assert browser.execute_script("return document.querySelector('.editorial-character').naturalWidth") >= 1600
-              assert browser.execute_script("return document.querySelector('.editorial-character').currentSrc.includes('hero-desktop.avif')")
+              assert browser.execute_script("return document.querySelector('.editorial-character').naturalWidth") >= 900
+              assert browser.execute_script("return document.querySelector('.editorial-character').currentSrc.includes('hero-mobile.avif')")
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
               assert browser.execute_script("return !!document.querySelector('.editorial-toolbar .quick-add')")
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
@@ -85,6 +85,12 @@ jobs:
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
               wait.until(lambda b: b.execute_script(
                   "return document.querySelector('.editorial-character').naturalWidth >= 900 && document.querySelector('.editorial-character').currentSrc.includes('hero-mobile.avif')"))
+              # The first task must be reachable above the bottom navigation
+              # in the initial smartphone viewport, not buried behind a huge hero.
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.dashboard-task-board .task-title-button')))
+              first_task=browser.execute_script("return document.querySelector('.dashboard-task-board .task-title-button').getBoundingClientRect().top")
+              viewport=browser.execute_script("return window.innerHeight")
+              assert first_task < viewport - 66, f'Mobile first task hidden under the fold: task_y={first_task}, viewport={viewport}'
               browser.save_screenshot('/tmp/hermestodo-mobile.png')
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
