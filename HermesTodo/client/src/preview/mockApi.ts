@@ -202,3 +202,5 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   }
   return error(`该功能未包含在演示版：${method} ${path}`, 404);
 };
+
+export {};
