@@ -6,6 +6,7 @@ import { registerServiceWorker } from "./pwa/registerServiceWorker";
 import "./styles/tokens.css";
 import "./styles/global.css";
 import "./styles/heraldic.css";
+import "./styles/art-direction.css";
 
 async function bootstrap() {
   // A public preview uses a self-contained local demo API; production is unchanged.
