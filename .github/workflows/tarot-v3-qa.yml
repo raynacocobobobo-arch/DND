@@ -69,6 +69,7 @@ jobs:
             assert '读牌者的提醒' in elem('.reader-synthesis').text
             print('SINGLE: direct reveal PASSED',flush=True)
             print('RESULT CARD SIZE',d.execute_script("const e=document.querySelector('.oracle-art img');const r=e.getBoundingClientRect();return {natural:e.naturalWidth,height:e.naturalHeight,displayWidth:r.width,displayHeight:r.height};"),flush=True)
+            assert d.execute_script("return document.querySelector('.oracle-art img').getBoundingClientRect().width")>=500, 'card art does not dominate desktop reading'
             shoot('desktop-result-single')
             tap('#drawAgain')
             elem('.drawing-room')
@@ -135,14 +136,18 @@ jobs:
             d.get(URL+'?v=tarot-v3-mobile')
             elem('.new-home')
             fit('mobile home')
+            assert d.execute_script("return getComputedStyle(document.querySelector('.home-mobile-cta')).display")!='none', 'mobile CTA not visible'
             shoot('mobile-home')
             route('#/ritual')
             elem('.consultation-form')
             fit('mobile consultation')
+            formTop=d.execute_script("return document.querySelector('.consultation-form').getBoundingClientRect().top")
+            assert formTop<380, 'form hidden under hero art on mobile'
             shoot('mobile-consultation')
             tap('#enterRitual')
             elem('.reading-fan')
             fit('mobile draw fan')
+            assert d.execute_script("return scrollY")<=2, 'draw fan unexpectedly opens scrolled down'
             shoot('mobile-fan')
             tap('[data-slot="1"]')
             elem('.oracle-gallery.oracle-single')
