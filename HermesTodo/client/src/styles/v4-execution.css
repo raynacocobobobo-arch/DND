@@ -1,0 +1,332 @@
+/* HermesTodo / The Standard — V4 implementation, 2026-10-26.
+ *
+ * An editorial artwork with two independent imagery planes:
+ * (1) full-width banner and architectural panorama
+ * (2) high-resolution portrait painting at the left.
+ * All typography, task controls and information remain real HTML.
+ *
+ * Typography over imagery has a dark opaque safe zone. On narrow phones
+ * the illustration is intentionally short enough to reveal the first task.
+ */
+:root {
+  --nav-width: 152px;
+  --painting-width: clamp(310px, 24vw, 388px);
+  --v4-night: #111e29;
+  --v4-cream: #f5eadd;
+  --v4-red: #8e302e;
+  --v4-gold: #c3a06a;
+}
+
+/* A single human protagonist, not duplicate motifs in every card. */
+.hermes-sidebar {
+  width: var(--nav-width);
+  background: linear-gradient(180deg,#0e1821 0%,#111920 100%);
+}
+.hermes-sidebar .hermes-brand { margin-top:27px; }
+.hermes-sidebar .sidebar-divider,
+.hermes-sidebar .sidebar-motto .heraldic-divider { opacity:.65; }
+.hermes-sidebar .sidebar-art { display:none; }
+.hermes-sidebar .sidebar-motto { margin-top:auto; }
+.hermes-sidebar .nav-link-active { background:linear-gradient(90deg,#83302d,#602927); }
+.hermes-main-frame {
+  width: calc(100% - var(--nav-width));
+  margin-left:var(--nav-width);
+}
+
+/* The wide painting runs behind the editorial surface.
+   Keep its painterly details: do not add blur or desaturation filters. */
+.editorial-dashboard {
+  background:#11222b;
+}
+.editorial-dashboard::before {
+  background-image:
+    linear-gradient(90deg, #0b172118 0%, #0b17211f 25%, #0b192380 60%, #0c1924d6 100%),
+    linear-gradient(180deg, #0c19260b 0%, #0c192630 57%, #0d1722b6 100%),
+    var(--art-desktop);
+  background-position:center top, center top, 52% top;
+  background-size: cover,cover,cover;
+  opacity:1;
+}
+.editorial-backdrop {
+  width:var(--painting-width);
+  background:#14212a;
+  border-right:1px solid #c1a46d75;
+  box-shadow:16px 0 35px #0e172577;
+}
+.editorial-backdrop::after {
+  inset:12px;
+  border-color:#efd29b54;
+}
+.editorial-art-picture {
+  inset:0;
+  background:linear-gradient(165deg,#1d303f 0%,#101c26 100%);
+}
+.editorial-character {
+  width:100%;height:100%;
+  object-fit:cover;
+  /* Portrait master, not the 16:9 asset squeezed into 1:3. */
+  object-position:49% 30%;
+  filter:none!important;
+  image-rendering:auto;
+}
+.editorial-backdrop::before {
+  background:
+    linear-gradient(90deg, #0b1c2600 0%, transparent 80%, #0c1a26a6 100%),
+    linear-gradient(180deg, #0b1b2500 0%, transparent 70%, #0a1521b4 100%);
+}
+.editorial-art-credit {
+  bottom:21px;
+  font-size:8px;
+  color:#e7cea1;
+  letter-spacing:.2em;
+}
+.editorial-main {
+  margin-left:var(--painting-width);
+  padding:0 clamp(15px,1.5vw,27px) 34px;
+}
+
+/* The poster is not a boxed widget: remove the extra title and large
+   shield/card emphasis. Give the art a continuous visual edge instead. */
+.editorial-heading {
+  min-height:186px;
+  grid-template-columns:minmax(0,.75fr) minmax(220px,1.3fr) minmax(115px,.7fr);
+  gap:12px;
+  padding:19px 47px 17px 10px;
+  background:linear-gradient(90deg,#0d1b27a0,#121c28c8 65%,#0f1a25e0 100%);
+  border-bottom-color:#bd935f75;
+}
+.editorial-brandline { align-self:start; padding-top:17px; }
+.editorial-brandline .hero-overline {
+  font: 10px/1.6 Georgia,serif;
+  letter-spacing:.16em;
+}
+.editorial-brandline h1 {
+  margin-top:17px;
+  font-size:14px;
+  color:#ecdaa9;
+  opacity:.65;
+  letter-spacing:.18em;
+}
+.editorial-quote > span { font-size:clamp(16px,1.48vw,22px); color:#edd19a; }
+.editorial-quote p { font:11px Georgia,serif;letter-spacing:.04em; }
+.editorial-quote .heraldic-divider { opacity:.5; }
+.editorial-date > strong { font-size:clamp(38px,3vw,52px);font-weight:400; }
+.editorial-date .page-date { color:#d6c7ab; }
+
+/* Thin editorial rails: no faux metal plating on the functional UI. */
+.editorial-toolbar {
+  min-height:64px;
+  margin:14px 0 14px;
+  padding:8px 9px;
+  border-color:#b29b71;
+  box-shadow:none;
+  background:#111e29e8;
+}
+.editorial-toolbar .quick-add {
+  border-color:#746d5b;
+  background:#172732;
+}
+.editorial-toolbar .quick-add input { font-size:14px; }
+.editorial-toolbar-actions a,
+.editorial-toolbar-actions button { border-color:#967a50; font-size:12px; }
+.editorial-dashboard .dashboard-layout {
+  grid-template-columns:minmax(0,1fr) minmax(225px,29%);
+  gap:14px;
+}
+.editorial-dashboard .dashboard-task-board {
+  padding:23px clamp(15px,1.6vw,25px) 24px;
+  border:1px solid #c3a57b;
+  background:#f4eadb;
+  box-shadow:0 12px 26px #03101d45;
+}
+.editorial-dashboard .dashboard-task-board::before { display:none; }
+.board-title .board-eyebrow { letter-spacing:.1em; }
+.board-title h2 { font-size:23px; }
+.editorial-dashboard .dashboard-section-heading {padding-top:4px;}
+.editorial-dashboard .dashboard-task-board .task-row {
+  border-bottom:1px solid #d9c9b2;
+  background:transparent;
+}
+.editorial-dashboard .dashboard-overdue .task-row {
+  background:#f3e5daa3;
+  border-left:2px solid #a34740;
+}
+.editorial-dashboard .task-title-button { font-size:14px; }
+.editorial-dashboard .progress-card,
+.weekly-panel,.contexts-mini {
+  border-color:#b69768;
+  background:#111f2bed;
+  box-shadow:0 9px 21px #030c1866;
+}
+.editorial-dashboard .progress-card { min-height:240px; }
+.editorial-dashboard .progress-ring {width:108px;height:108px;}
+.editorial-dashboard .ai-teaser { background:#f3e8d5; }
+
+/* Separate workspaces share the paint/material palette; the protagonist
+   never becomes a repeated clip-art stamp behind form fields. */
+.contexts-page>.ios-page-header,
+.context-detail-page>.ios-page-header,
+.ai-page>.ios-page-header {
+  background-image:linear-gradient(90deg,#10212cf5 3%,#10212ce0 55%,#10212ccb),var(--art-skyline);
+}
+.context-grid .context-card { box-shadow:0 6px 17px #070e1b30; }
+.dialog-backdrop {backdrop-filter:blur(4px);}
+.form-dialog,.confirm-dialog {border-radius:5px;}
+.form-dialog .dialog-heading,
+.confirm-dialog .dialog-heading {border-bottom-color:#ceb995;}
+
+/* Narrow desktops: side information becomes a second row before the
+   task list gets below an acceptable reading width. */
+@media (min-width:761px) and (max-width:1279px) {
+  :root {--painting-width:clamp(258px,22vw,315px);--nav-width:144px;}
+  .editorial-main {padding-inline:13px;}
+  .editorial-heading {
+    min-height:153px;
+    grid-template-columns:minmax(0,.6fr) minmax(0,1.2fr) minmax(0,.6fr);
+    padding-right:43px;
+  }
+  .editorial-quote > span {font-size:15px;}
+  .editorial-dashboard .dashboard-layout {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .editorial-dashboard .dashboard-side-column {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .editorial-dashboard .contexts-mini,
+  .editorial-dashboard .ai-teaser {grid-column:auto;}
+}
+@media (min-width:761px) and (max-width:990px) {
+  :root {--painting-width:210px;--nav-width:135px;}
+  .editorial-heading {
+    grid-template-columns:1fr 1.3fr;
+    padding-right:45px;
+  }
+  .editorial-date {display:none;}
+  .editorial-toolbar-actions a {display:none;}
+}
+
+/* Tablet and phone: independent portrait poster, immediately followed by
+   input and actionable task rows. Avoid first-screen art domination. */
+@media (max-width:760px) {
+  :root { --nav-width:0px; --painting-width:100%; }
+  .hermes-sidebar { display:contents; }
+  .hermes-main-frame {width:100%;margin-left:0;}
+  .editorial-dashboard {
+    display:flex;
+    flex-direction:column;
+    background:linear-gradient(180deg,#12212b,#1c2c33);
+  }
+  .editorial-dashboard::before {
+    background-image:linear-gradient(180deg,#13222ac8,#0c1a25e2),var(--art-skyline);
+    background-size:cover,auto 650px;
+    background-position:center top;
+  }
+  .editorial-backdrop {
+    height:258px;min-height:258px;
+    width:100%;
+    border-right:0;
+    border-bottom:1px solid #c0a06c79;
+    box-shadow:none;
+  }
+  .editorial-character {
+    object-fit:cover;
+    object-position:50% 25%;
+    filter:none!important;
+  }
+  .editorial-backdrop::after {inset:8px;}
+  .editorial-backdrop::before {
+    background:linear-gradient(180deg,#0d17210a 0%,transparent 24%,#0b16255d 65%,#101d2ae0 100%);
+  }
+  .editorial-art-credit {display:none;}
+  .editorial-main {margin:0;padding:0 11px 18px;}
+  .editorial-heading {
+    margin-top:-55px;
+    min-height:79px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:8px;
+    padding:11px 13px 12px;
+    background:linear-gradient(180deg,#0c1a27aa,#0d1c29f5);
+    border:0;
+    box-shadow:none;
+  }
+  .editorial-brandline {align-self:center;padding:0;}
+  .editorial-brandline .hero-overline {font-size:9px;letter-spacing:.06em;}
+  .editorial-brandline h1 {font-size:0;margin:0;height:0;overflow:hidden;}
+  .editorial-quote {display:none;}
+  .editorial-date {
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .editorial-date > strong {font-size:32px;}
+  .editorial-date>div {display:grid;gap:2px;}
+  .editorial-date .page-date {font-size:10px;}
+  .editorial-toolbar {
+    display:flex;flex-wrap:nowrap;align-items:center;
+    min-height:55px;
+    margin:5px 0 10px;
+    padding:5px;
+    gap:6px;
+  }
+  .editorial-toolbar .quick-add {
+    flex:1 1 0;min-width:0;min-height:44px;
+    width:auto;max-width:none;padding:4px 5px 4px 11px;
+    margin:0;
+  }
+  .editorial-toolbar .quick-add input {min-width:0;font-size:12.5px;}
+  .editorial-toolbar .quick-add button {min-width:34px;width:34px;height:34px;}
+  .editorial-toolbar-actions {display:flex;flex:0 0 auto;gap:0;width:auto;}
+  .editorial-toolbar-actions a {display:none!important;}
+  .editorial-toolbar-actions .toolbar-create {
+    display:grid;place-items:center;
+    width:42px;height:44px;min-height:44px;padding:0;
+    font-size:0;color:#f2d8a6;
+  }
+  .editorial-toolbar-actions .toolbar-create svg {width:20px;height:20px;}
+  .editorial-dashboard .dashboard-layout {
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .editorial-dashboard .dashboard-task-board {
+    width:100%;min-height:300px;
+    padding:15px 12px 17px;
+    border-radius:4px;
+  }
+  .editorial-dashboard .board-heading {
+    padding-bottom:10px;gap:7px;flex-wrap:nowrap;
+  }
+  .board-title {gap:7px;}
+  .board-title > svg {width:15px;height:15px;}
+  .board-title h2 {font-size:18px;white-space:nowrap;}
+  .board-title .board-eyebrow {font-size:7px;}
+  .board-total {width:23px;min-width:23px;height:23px;font-size:11px;}
+  .task-filters {gap:1px;padding:2px;}
+  .task-filters button {min-height:29px;padding:0 6px;font-size:10px;}
+  .editorial-dashboard .dashboard-task-board .task-row {
+    min-height:54px;
+    padding:10px 4px;
+  }
+  .editorial-dashboard .task-title-button {font-size:13px;}
+  .editorial-dashboard .dashboard-side-column {
+    display:grid;grid-template-columns:1fr;gap:10px;width:100%;
+  }
+  .editorial-dashboard .progress-card {min-height:206px;}
+  .editorial-dashboard .progress-ring {width:96px;height:96px;margin:9px auto;}
+  .editorial-dashboard .ai-teaser {grid-column:auto;}
+  .app-utility-row {top:50px;right:22px;}
+}
+@media (max-width:375px) {
+  .editorial-backdrop {height:232px;min-height:232px;}
+  .editorial-heading {margin-top:-49px;min-height:70px;padding:7px 11px;}
+  .editorial-toolbar {margin:3px 0 8px;}
+  .board-title h2 {font-size:16px;}
+  .task-filters button {padding:0 4px;}
+}
+@media (max-width:335px) {
+  .editorial-toolbar-actions .toolbar-create {width:38px;}
+  .editorial-brandline .hero-overline {font-size:8px;}
+  .editorial-date .page-date {display:none;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .editorial-character,.editorial-backdrop {transition:none!important;}
+}
