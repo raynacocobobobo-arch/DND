@@ -10,6 +10,7 @@ import "./styles/art-direction.css";
 import "./styles/editorial-home.css";
 import "./styles/final-art.css";
 import "./styles/v4-execution.css";
+import "./styles/v6-ui.css";
 
 async function bootstrap() {
   // A public preview uses a self-contained local demo API; production is unchanged.
