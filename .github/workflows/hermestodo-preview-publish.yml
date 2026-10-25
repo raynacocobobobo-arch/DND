@@ -80,17 +80,19 @@ jobs:
         run: |
           mkdir -p /tmp/hermestodo-preview
           cp -a HermesTodo/dist/client/. /tmp/hermestodo-preview/
-          git fetch origin main
-          git checkout -B main origin/main
-          mkdir -p docs/hermestodo
-          rsync -a --delete /tmp/hermestodo-preview/ docs/hermestodo/
-          touch docs/hermestodo/.nojekyll
+          # GitHub Pages for this repository publishes from gh-pages root,
+          # not main/docs. Preserve all existing Tarot root assets.
+          git fetch origin gh-pages
+          git checkout -B gh-pages origin/gh-pages
+          mkdir -p hermestodo
+          rsync -a --delete /tmp/hermestodo-preview/ hermestodo/
+          touch hermestodo/.nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/hermestodo
+          git add hermestodo
           if git diff --staged --quiet; then
             echo "Preview unchanged"
           else
             git commit -m "build(hermestodo): publish current interactive preview"
-            git push origin HEAD:main
+            git push origin HEAD:gh-pages
           fi
