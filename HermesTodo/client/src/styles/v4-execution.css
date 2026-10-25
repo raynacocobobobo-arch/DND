@@ -330,3 +330,29 @@
 @media (prefers-reduced-motion: reduce) {
   .editorial-character,.editorial-backdrop {transition:none!important;}
 }
+
+/* V4 focus refinement: task execution takes precedence over statistical panels.
+   A lighter side rail retains only contexts and AI, without wasted chart chrome. */
+@media (min-width:1280px) {
+  .editorial-dashboard .dashboard-layout {
+    grid-template-columns:minmax(0,1fr) minmax(215px,24%);
+    gap:16px;
+  }
+}
+.editorial-dashboard .dashboard-side-column {
+  align-content:start;
+}
+.editorial-dashboard .contexts-mini {
+  padding:20px 18px;
+}
+.editorial-dashboard .contexts-mini .context-strip {
+  gap:8px;
+}
+.editorial-dashboard .contexts-mini .context-entry {
+  min-height:46px;
+}
+@media (max-width:760px) {
+  .editorial-dashboard .contexts-mini {
+    padding:16px;
+  }
+}
