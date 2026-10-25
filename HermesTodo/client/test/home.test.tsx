@@ -93,7 +93,7 @@ describe("home dashboard", () => {
     vi.stubGlobal("fetch", createFetch(tasks));
     render(<App />);
     expect(await screen.findByRole("button", { name: "今天任务7" })).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /今天任务/ })).toHaveLength(7);
+    expect(screen.getAllByRole("button", { name: /^今天任务\d+$/ })).toHaveLength(7);
   });
 
   test("keeps quick-add input and reports a failed create request", async () => {
