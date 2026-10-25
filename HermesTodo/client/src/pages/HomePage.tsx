@@ -98,7 +98,7 @@ export function HomePage() {
             {showDone ? (
               <section className="dashboard-section dashboard-done">
                 <div className="dashboard-section-heading"><h2>已完成</h2><span className="section-count">{doneTasks.length} 项</span></div>
-                {doneTasks.length ? <TaskList tasks={doneTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/> :
+                {doneTasks.length ? <TaskList tasks={doneTasks} contexts={contexts.data ?? []} expandCompleted onOpen={(task) => setSelectedTaskId(task.id)}/> :
                   <p className="dashboard-empty">完成任务后，它们会记录在这里。</p>}
               </section>
             ) : null}
