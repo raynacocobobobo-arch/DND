@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 
-import { formatInTimeZone } from "date-fns-tz";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
@@ -55,7 +54,7 @@ afterEach(() => {
 });
 
 describe("home dashboard", () => {
-  test("keeps today, overdue, upcoming and completed tasks without redundant statistics panels", async () => {
+  test("shows all pending tasks in a single to-do list regardless of due date", async () => {
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = [
       { ...baseTask, id: "today", title: "今天完成", dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false },
@@ -69,14 +68,16 @@ describe("home dashboard", () => {
     expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
     expect(screen.getByText("10月25日 星期日")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "下午好" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "今日重点" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "待办清单" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "情境入口" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.getByRole("heading", { name: "逾期待处理" })).toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: "逾期待处理" })).not.toBeInTheDocument();
+      expect(screen.queryByText("高优先级")).not.toBeInTheDocument();
       expect(screen.getByRole("button", { name: "已经逾期" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "今天完成" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "没有日期" })).toBeInTheDocument();
@@ -111,13 +112,13 @@ describe("home dashboard", () => {
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     render(<App />);
-    await user.type(await screen.findByLabelText("快速添加今日任务"), "保留这条草稿");
+    await user.type(await screen.findByLabelText("快速添加任务"), "保留这条草稿");
     await user.click(screen.getByRole("button", { name: "添加" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("网络暂时不可用");
-    expect(screen.getByLabelText("快速添加今日任务")).toHaveValue("保留这条草稿");
+    expect(screen.getByLabelText("快速添加任务")).toHaveValue("保留这条草稿");
   });
 
-  test("quick-add sends a task due today in Asia/Shanghai", async () => {
+  test("quick-add creates a simple task without assigning a due date or priority", async () => {
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const fetchMock = createFetch([]);
     fetchMock.mockImplementationOnce(async () => jsonResponse({ authenticated: true }));
@@ -139,7 +140,8 @@ describe("home dashboard", () => {
       expect(call).toBeTruthy();
       const body = JSON.parse(String(call?.[1]?.body));
       expect(body.title).toBe("买咖啡豆");
-      expect(formatInTimeZone(body.dueAt, "Asia/Shanghai", "yyyy-MM-dd")).toBe("2026-10-25");
+      expect(body.dueAt).toBeNull();
+      expect(body.priority).toBeUndefined();
     });
   });
 
