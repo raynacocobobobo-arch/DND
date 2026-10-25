@@ -42,7 +42,14 @@ function createFetch(tasks: Array<Record<string, unknown>>) {
     const path = String(input);
     if (path === "/api/session") return jsonResponse({ authenticated: true });
     if (path === "/api/contexts") return jsonResponse([context]);
-    if (path.startsWith("/api/tasks") && (!init?.method || init.method === "GET")) return jsonResponse(tasks);
+    if (path.startsWith("/api/tasks") && (!init?.method || init.method === "GET")) {
+      const query = new URL(path, "http://localhost").searchParams;
+      return jsonResponse(tasks.filter((t) =>
+        query.get("scope") === "inbox" ? t.contextId === null
+          : query.has("contextId") ? t.contextId === query.get("contextId")
+          : true
+      ));
+    }
     throw new Error(`Unexpected request: ${init?.method ?? "GET"} ${path}`);
   });
 }
@@ -68,9 +75,10 @@ describe("home dashboard", () => {
     expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
     expect(screen.getByText("10月25日 星期日")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "下午好" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "待办清单" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "收集箱" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "情境入口" })).toBeInTheDocument();
+    expect(screen.getByText(/只显示未归入情境的待办/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "我的情境" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
@@ -155,36 +163,40 @@ describe("home dashboard", () => {
     await user.click(add);
     expect(await screen.findByRole("dialog", { name: "新建任务" })).toBeInTheDocument();
     expect(screen.getByLabelText("任务标题")).toBeInTheDocument();
+    expect(screen.queryByLabelText("任务归属")).not.toBeInTheDocument();
   });
 
-  test("completes a task and links its context", async () => {
+  test("home never lists or edits a context's nested tasks; clicking its context opens them", async () => {
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = [
-      { ...baseTask, id: "context-task", title: "确认航班", dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false, contextId: context.id }
+      { ...baseTask, id: "inbox", title: "收集箱灵感", dueAt: null, isCompleted: false },
+      { ...baseTask, id: "context-task", title: "确认航班", dueAt: null, isCompleted: false, contextId: context.id,
+        subtasks: [{ ...baseTask, id: "child", title: "获取登机牌", parentTaskId: "context-task", isCompleted: false, dueAt: null }] }
     ];
     const fetchMock = createFetch(tasks);
-    fetchMock.mockImplementation(async (input, init) => {
-      const path = String(input);
-      if (path === "/api/session") return jsonResponse({ authenticated: true });
-      if (path === "/api/contexts") return jsonResponse([context]);
-      if (path === "/api/tasks/context-task/toggle" && init?.method === "POST") {
-        tasks[0] = { ...tasks[0], isCompleted: true };
-        return jsonResponse(tasks[0]);
-      }
-      if (path.startsWith("/api/tasks")) return jsonResponse(tasks);
-      throw new Error(`Unexpected request: ${path}`);
-    });
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     render(<App />);
+    expect(await screen.findByRole("button", { name: "收集箱灵感" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "确认航班" })).not.toBeInTheDocument();
+    expect(screen.queryByText("获取登机牌")).not.toBeInTheDocument();
+    expect(fetchMock.mock.calls.some(([path]) => String(path).includes("scope=inbox"))).toBe(true);
+    expect(fetchMock.mock.calls.some(([path, init]) => String(path).includes("toggle") && init?.method === "POST")).toBe(false);
 
-    await user.click(await screen.findByRole("button", { name: "完成 确认航班" }));
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
-      "/api/tasks/context-task/toggle",
-      expect.objectContaining({ method: "POST" })
-    ));
-    // A context is reachable both from task metadata and the dashboard's context rail.
     await user.click(screen.getAllByRole("link", { name: /旅行/ })[0]);
     expect(window.location.pathname).toBe("/contexts/travel-id");
+    expect(await screen.findByRole("button", { name: "确认航班" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "收集箱灵感" })).not.toBeInTheDocument();
   });
+
+  test("the inbox remains empty when only scene tasks exist", async () => {
+    vi.stubGlobal("fetch", createFetch([
+      { ...baseTask, id: "scene-only", title: "情境私有任务", dueAt: null, isCompleted: false, contextId: context.id }
+    ]));
+    render(<App />);
+    expect(await screen.findByText(/收集箱是空的/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "情境私有任务" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /旅行/ })).toBeInTheDocument();
+  });
+
 });
