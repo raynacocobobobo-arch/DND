@@ -77,7 +77,7 @@ afterEach(() => {
 });
 
 describe("task interactions", () => {
-  test("edits title, note, priority, date/time, repeat, and context", async () => {
+  test("edits title, note, date/time, repeat, and context without changing legacy priority", async () => {
     window.history.replaceState({}, "", "/contexts/travel-id");
     const { fetchMock } = statefulFetch([task()]);
     vi.stubGlobal("fetch", fetchMock);
@@ -92,7 +92,7 @@ describe("task interactions", () => {
     const notes = screen.getByLabelText("备注");
     await user.clear(notes);
     await user.type(notes, "核对登机口和时间");
-    await user.selectOptions(screen.getByLabelText("优先级"), "high");
+    expect(screen.queryByLabelText("优先级")).not.toBeInTheDocument();
     await user.selectOptions(screen.getByLabelText("所属情境"), "work-id");
     await user.clear(screen.getByLabelText("截止日期"));
     await user.type(screen.getByLabelText("截止日期"), "2026-11-03");
@@ -107,11 +107,11 @@ describe("task interactions", () => {
       expect(body).toMatchObject({
         title: "确认返程航班",
         notes: "核对登机口和时间",
-        priority: "high",
         contextId: "work-id",
         repeatInterval: "weekly"
       });
       expect(body.dueAt).toBe("2026-11-03T06:20:00.000Z");
+      expect(body.priority).toBeUndefined();
     });
   });
 
@@ -169,7 +169,7 @@ describe("task interactions", () => {
     expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/tasks/child-id/toggle" && init?.method === "POST")).toHaveLength(2);
   });
 
-  test("supports search, all three sort modes, and a completed section", async () => {
+  test("supports search, simple date/newest sorting, and a completed section", async () => {
     window.history.replaceState({}, "", "/contexts/travel-id");
     const done = task({ id: "done-id", title: "预订酒店", isCompleted: true, completedAt: stamp });
     const { fetchMock } = statefulFetch([task(), done]);
@@ -178,7 +178,7 @@ describe("task interactions", () => {
     render(<App />);
 
     const sort = await screen.findByLabelText("任务排序");
-    expect(Array.from((sort as HTMLSelectElement).options).map((option) => option.value)).toEqual(["priority", "dueDate", "createdAt"]);
+    expect(Array.from((sort as HTMLSelectElement).options).map((option) => option.value)).toEqual(["createdAt", "dueDate"]);
     await user.selectOptions(sort, "dueDate");
     await waitFor(() => expect(fetchMock.mock.calls.some(([path]) => String(path).includes("sort=dueDate"))).toBe(true));
     await user.type(screen.getByLabelText("搜索任务"), "航班");
