@@ -38,6 +38,9 @@ jobs:
       - name: Browser smoke test - local latest preview
         run: |
           python3 -m pip install --quiet selenium
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-wqy-microhei
+          fc-cache -f
           mkdir -p /tmp/hermestodo-site/DND/hermestodo
           cp -a HermesTodo/dist/client/. /tmp/hermestodo-site/DND/hermestodo/
           nohup python3 -m http.server 8090 --bind 127.0.0.1 --directory /tmp/hermestodo-site >/tmp/hermestodo-http.log 2>&1 &
