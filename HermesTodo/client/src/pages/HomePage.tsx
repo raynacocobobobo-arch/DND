@@ -72,7 +72,7 @@ export function HomePage() {
             <h1>首页</h1>
           </div>
           <div className="editorial-quote">
-            <span>专注是对理想的忠诚。</span>
+            <h2 className="editorial-salutation">{greeting}</h2><span>专注是对理想的忠诚。</span>
             <p>Discipline today, a greater tomorrow.</p>
             <HeraldicDivider/>
           </div>
@@ -149,9 +149,9 @@ export function HomePage() {
               <progress className="sr-only" max="100" value={progress}>{progress}%</progress>
               <p>{tip}</p>
               <div className="progress-stat-list" role="region" aria-label="任务概览">
-                <div><span><Sun size={14}/>今日待办</span><strong>{counts.today}</strong></div>
-                <div><span><CircleCheck size={14}/>已完成</span><strong>{counts.done}</strong></div>
-                <div><span><CircleAlert size={14}/>逾期</span><strong>{counts.overdue}</strong></div>
+                <article><span><Sun size={14}/>今日待办</span><strong>{counts.today}</strong></article>
+                <article><span><CircleCheck size={14}/>已完成</span><strong>{counts.done}</strong></article>
+                <article><span><CircleAlert size={14}/>逾期</span><strong>{counts.overdue}</strong></article>
               </div>
             </section>
             <section className="weekly-panel" aria-label="本周完成统计">
