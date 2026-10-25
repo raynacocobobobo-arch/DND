@@ -181,7 +181,8 @@ describe("home dashboard", () => {
       "/api/tasks/context-task/toggle",
       expect.objectContaining({ method: "POST" })
     ));
-    await user.click(screen.getByRole("link", { name: /旅行/ }));
+    // A context is reachable both from task metadata and the dashboard's context rail.
+    await user.click(screen.getAllByRole("link", { name: /旅行/ })[0]);
     expect(window.location.pathname).toBe("/contexts/travel-id");
   });
 });
