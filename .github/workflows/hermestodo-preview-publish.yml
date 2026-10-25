@@ -1,0 +1,55 @@
+name: Publish HermesTodo latest preview
+
+on:
+  push:
+    branches:
+      - feature/hermestodo-dashboard-subtasks-20261025
+    paths:
+      - "HermesTodo/**"
+      - ".github/workflows/hermestodo-preview-publish.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hermestodo-preview-publish
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: HermesTodo/package-lock.json
+      - name: Install dependencies
+        working-directory: HermesTodo
+        run: npm ci
+      - name: Build latest branch as local-data demo
+        working-directory: HermesTodo
+        env:
+          VITE_STATIC_PREVIEW: "true"
+          HERMESTODO_PREVIEW: "true"
+        run: npx vite build
+      - name: Publish preview under existing docs folder
+        run: |
+          mkdir -p /tmp/hermestodo-preview
+          cp -a HermesTodo/dist/client/. /tmp/hermestodo-preview/
+          git fetch origin main
+          git checkout -B main origin/main
+          mkdir -p docs/hermestodo
+          rsync -a --delete /tmp/hermestodo-preview/ docs/hermestodo/
+          touch docs/hermestodo/.nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/hermestodo
+          if git diff --staged --quiet; then
+            echo "Preview unchanged"
+          else
+            git commit -m "build(hermestodo): publish current interactive preview"
+            git push origin HEAD:main
+          fi
