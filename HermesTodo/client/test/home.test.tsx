@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { formatInTimeZone } from "date-fns-tz";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
@@ -55,7 +55,7 @@ afterEach(() => {
 });
 
 describe("home dashboard", () => {
-  test("shows today, overdue, open, and completed counts", async () => {
+  test("keeps today, overdue, upcoming and completed tasks without redundant statistics panels", async () => {
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = [
       { ...baseTask, id: "today", title: "今天完成", dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false },
@@ -66,21 +66,21 @@ describe("home dashboard", () => {
     vi.stubGlobal("fetch", createFetch(tasks));
     render(<App />);
 
-    const summary = await screen.findByRole("region", { name: "任务概览" });
+    expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
     expect(screen.getByText("10月25日 星期日")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "下午好" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "今日进度" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "今日重点" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "情境入口" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
     await waitFor(() => {
-      expect(within(summary).getByText("今日待办").closest("article")).toHaveTextContent("1");
-      expect(within(summary).getByText("逾期").closest("article")).toHaveTextContent("1");
-      expect(within(summary).getByText("已完成").closest("article")).toHaveTextContent("1");
-      expect(screen.queryByText("未完成")).not.toBeInTheDocument();
-      expect(screen.getByRole("progressbar")).toHaveAttribute("value", "50");
-      expect(screen.getByText("今日已完成 1 / 2 件到期任务。")).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "逾期待处理" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "已经逾期" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "今天完成" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "没有日期" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "已经完成" })).toBeInTheDocument();
     });
   });
 
