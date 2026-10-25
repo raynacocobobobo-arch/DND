@@ -72,6 +72,8 @@ jobs:
               assert not browser.find_elements(By.CSS_SELECTOR, '.priority-badge'), 'Priority labels must not appear in a simple to-do list'
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
               assert browser.execute_script("return !!document.querySelector('.editorial-toolbar .quick-add')")
+              assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
+              assert '检查 HermesTodo 新版交互' not in browser.find_element(By.TAG_NAME,'body').text, 'Context child leaked into home'
               assert not browser.find_elements(By.CSS_SELECTOR,'.progress-card'), 'Daily progress widget should be removed'
               assert not browser.find_elements(By.CSS_SELECTOR,'.weekly-panel'), 'Last-seven-days widget should be removed'
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
@@ -85,6 +87,9 @@ jobs:
               wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
               browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.contexts-page')))
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts/work"]').click()
+              wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
+              assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
               browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
               browser.set_window_size(390,844)
