@@ -6,6 +6,7 @@ import type { AIPlanResult, AISuggestion } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
 import { AIConversation, type ConversationTurn } from "../components/AIConversation";
 import { AISuggestionList } from "../components/AISuggestionList";
+import { HeraldicDivider } from "../components/HeraldicArt";
 import { ImportListDialog } from "../components/ImportListDialog";
 
 function suggestionKey(title: string): string {
@@ -114,6 +115,7 @@ export function AIPage() {
         <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><Upload aria-hidden="true" size={18} /></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><RotateCcw aria-hidden="true" size={18} /></button></div>
       </header>
       <section className="ai-workspace">
+        {messages.length === 0 ? <HeraldicDivider className="ai-ornament"/> : null}
         <AIConversation messages={messages} options={options} loading={loading} onOption={(option) => void send(option)} />
         <AISuggestionList suggestions={suggestions} />
         {commitMessage ? <p className="success-message" role="status">{commitMessage}</p> : null}
