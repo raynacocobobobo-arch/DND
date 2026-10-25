@@ -14,8 +14,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     steps:
-      - name: Install Selenium
-        run: python -m pip install --quiet selenium
+      - name: Install browser and Chinese font dependencies
+        run: |
+          python -m pip install --quiet selenium
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-wqy-microhei
+          fc-cache -f
       - name: Browser check - story, reading, mobile, offline
         run: |
           cat > /tmp/tarot_v2_qa.py <<'PY'
@@ -112,7 +116,7 @@ jobs:
             WebDriverWait(d,15).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.codex-card'))==22)
             imgs=d.execute_async_script("""
               const done=arguments[0];let list=[...document.querySelectorAll('.codex-card img')];
-              Promise.all(list.map(im=>im.complete?Promise.resolve():new Promise(r=>{im.onload=r;im.onerror=r;setTimeout(r,4000)})))
+              Promise.all(list.map(im=>{im.loading='eager';return im.decode().catch(()=>{});}))
                 .then(()=>done(list.map(im=>!!im.naturalWidth).filter(Boolean).length));
             """)
             print('OFFLINE CARD IMAGES',imgs,'/22',flush=True)
