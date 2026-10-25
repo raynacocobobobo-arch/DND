@@ -26,10 +26,10 @@ export function TaskRow({ task, contexts, onOpen }: TaskRowProps) {
       </button>
       <div className="task-row-main">
         <button type="button" className="task-title-button" onClick={() => onOpen?.(task)}>{task.title}</button>
-        <div className="task-meta">
+        {task.dueAt || context ? <div className="task-meta">
           {task.dueAt ? <time dateTime={task.dueAt}>{formatInTimeZone(task.dueAt, "Asia/Shanghai", "M月d日 HH:mm")}</time> : null}
           {context ? <Link to={`/contexts/${context.id}`}>{context.name}</Link> : null}
-        </div>
+        </div> : null}
       </div>
     </li>
   );
