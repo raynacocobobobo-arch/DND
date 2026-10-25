@@ -136,3 +136,18 @@
   .editorial-backdrop {height:355px;min-height:355px;}
   .editorial-heading {margin-top:-59px;}
 }
+
+/* Identity lockup & restraint: the giant painted heroine is the only character portrait. */
+.hermes-brand .brand-name {
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  color:#edd3a4; font:500 24px/1.06 Georgia,"Times New Roman",serif;
+  white-space:nowrap;letter-spacing:.075em;
+}
+.hermes-brand .brand-name span:last-child {letter-spacing:.16em;}
+.hermes-brand .brand-subtitle {margin-top:10px;font-size:7px;letter-spacing:.12em;}
+.hermes-sidebar .sidebar-art {background:none;opacity:0;pointer-events:none;}
+.hermes-sidebar .sidebar-motto {margin-top:auto;}
+@media (max-width:760px) {
+  .editorial-dashboard .editorial-date > div {text-align:left;}
+  .editorial-dashboard .editorial-date .page-date {white-space:nowrap;}
+}
