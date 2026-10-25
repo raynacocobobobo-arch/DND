@@ -1,0 +1,25 @@
+name: Tarot binary transfer smoke
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/tarot-transfer-smoke.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download art through image relay
+        env:
+          ART_URL: "https://docs.google.com/docs-images-rt/ALKuztbCZvgSmOPQErXUPQn-hR3p1ZOV_LMFby9AoOpFMKiNh4B7itHoAOBHcUpV_c2bkzpBpUo-vhC6eQoURHLiQfcAvxVCMklC5ysaT-pw7jmSOHAGeAAedJBAL9iHjK3XqNkewWGYObedsDyoyo9lefRvrRSQDLpLkpbpak4biQCFDE5TUIk=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+        run: |
+          curl -fLsS --retry 3 --max-time 60 "$ART_URL" -o /tmp/card.png
+          file /tmp/card.png
+          python - <<'PY'
+          from PIL import Image
+          import os
+          im=Image.open('/tmp/card.png')
+          print('TRANSFER_OK',im.size,im.format,os.path.getsize('/tmp/card.png'))
+          assert im.width>=800 and im.height>=1400
+          PY
