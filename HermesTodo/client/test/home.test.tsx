@@ -77,8 +77,44 @@ describe("home dashboard", () => {
       expect(within(summary).getByText("逾期").closest("article")).toHaveTextContent("1");
       expect(within(summary).getByText("已完成").closest("article")).toHaveTextContent("1");
       expect(screen.queryByText("未完成")).not.toBeInTheDocument();
-      expect(screen.getByRole("progressbar")).toHaveAttribute("value", "25");
+      expect(screen.getByRole("progressbar")).toHaveAttribute("value", "50");
+      expect(screen.getByText("今日已完成 1 / 2 件到期任务。")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "逾期待处理" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "已经逾期" })).toBeInTheDocument();
     });
+  });
+
+  test("shows every due-today task without silently dropping items after the fifth", async () => {
+    vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
+    const tasks = Array.from({ length: 7 }, (_, index) => ({
+      ...baseTask, id: `task-${index}`, title: `今天任务${index + 1}`,
+      dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false
+    }));
+    vi.stubGlobal("fetch", createFetch(tasks));
+    render(<App />);
+    expect(await screen.findByRole("button", { name: "今天任务7" })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /今天任务/ })).toHaveLength(7);
+  });
+
+  test("keeps quick-add input and reports a failed create request", async () => {
+    const fetchMock = createFetch([]);
+    fetchMock.mockImplementation(async (input, init) => {
+      const path = String(input);
+      if (path === "/api/tasks" && init?.method === "POST") {
+        return jsonResponse({ error: { code: "UNAVAILABLE", message: "网络暂时不可用" } }, 503);
+      }
+      if (path === "/api/session") return jsonResponse({ authenticated: true });
+      if (path === "/api/contexts") return jsonResponse([context]);
+      if (path.startsWith("/api/tasks")) return jsonResponse([]);
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    render(<App />);
+    await user.type(await screen.findByLabelText("快速添加今日任务"), "保留这条草稿");
+    await user.click(screen.getByRole("button", { name: "添加" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("网络暂时不可用");
+    expect(screen.getByLabelText("快速添加今日任务")).toHaveValue("保留这条草稿");
   });
 
   test("quick-add sends a task due today in Asia/Shanghai", async () => {
