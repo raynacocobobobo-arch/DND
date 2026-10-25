@@ -59,10 +59,16 @@ export function HomePage() {
   const todayDueAt = fromZonedTime(`${today}T09:00:00`, "Asia/Shanghai").toISOString();
 
   return (
-    <section className="page-stack ios-dashboard editorial-dashboard">
+    <section className="page-stack ios-dashboard editorial-dashboard" style={{
+      "--art-desktop": `url("${import.meta.env.BASE_URL}art/hero-desktop.avif")`,
+      "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`
+    } as React.CSSProperties}>
       <section className="editorial-backdrop" aria-label="中世纪旗手主题美术背景">
-        <img className="editorial-character" src={`${import.meta.env.BASE_URL}art/hero-standard-bearer.webp`}
-          alt="" loading="eager" decoding="async" />
+        <picture className="editorial-art-picture">
+          <source media="(max-width: 760px)" srcSet={`${import.meta.env.BASE_URL}art/hero-mobile.avif`} type="image/avif"/>
+          <img className="editorial-character" src={`${import.meta.env.BASE_URL}art/hero-desktop.avif`}
+            alt="" loading="eager" decoding="async" fetchPriority="high" />
+        </picture>
         <span className="editorial-art-credit" aria-hidden="true">FORTITUDE · FOCUS · FORWARD</span>
       </section>
       <div className="editorial-main">
