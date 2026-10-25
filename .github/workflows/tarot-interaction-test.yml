@@ -42,7 +42,19 @@ jobs:
             print('PHASE FAN',len(d.find_elements(By.CSS_SELECTOR,'[data-slot]')))
             WebDriverWait(d,10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'[data-slot="0"]'))).click()
             print('PHASE REVEAL',len(d.find_elements(By.ID,'revealBtn')))
-            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'revealBtn'))).click()
+            btn=WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'revealBtn')))
+            def describe(el):
+              return d.execute_script("const r=arguments[0].getBoundingClientRect();const cx=r.x+r.width/2, cy=r.y+r.height/2;const hit=document.elementFromPoint(cx,cy);return {r:{x:r.x,y:r.y,width:r.width,height:r.height},center:{cx,cy},hit:hit?.outerHTML?.slice(0,350),scrollY:window.scrollY,innerHeight:window.innerHeight}", el)
+            print('REVEAL GEOMETRY',describe(btn))
+            try:
+              btn.click()
+            except Exception as ex:
+              print('REVEAL CLICK FAILED',str(ex)[:180])
+              print('REVEAL GEOMETRY AFTER',describe(btn))
+              d.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'})",btn)
+              time.sleep(0.4)
+              print('REVEAL AFTER SCROLL',describe(btn))
+              btn.click()
             WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'nextDraw'))).click()
             print('RESULT VISIBLE',len(d.find_elements(By.CSS_SELECTOR,'.reading-card')))
             assert len(d.find_elements(By.CSS_SELECTOR,'.reading-card'))==1
