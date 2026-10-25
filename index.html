@@ -1096,7 +1096,7 @@ const cardImg=(card,opts={})=>`<img src="${card.artFile}" alt="${htmlName(card)}
 const backImg=()=>'<img src="./assets/card-back.svg" alt="统一牌背" draggable="false" />';
 const SPREAD_LABELS={daily:'每日一牌',single:'单牌提问',three:'三牌牌阵'};
 const STAGES=['选择','洗牌','切牌','抽取','揭示'];
-const positions={daily:['今日启示'],single:['本次启示'],three:['过去','现在','未来']};
+const positions={daily:['今日启示'],single:['眼前的事'],three:['现状','阻力','建议']};
 let chosenSpread='single',draftQuestion='',ritual=null,enteredQuestion='',recorded=false,saveWarning='',searchQuery='';
 let pendingToast=null,sessionPreferences=null;
 function storage(){try{return window.localStorage;}catch{return {getItem(){throw Error('blocked')},setItem(){throw Error('blocked')}};}}
@@ -1149,22 +1149,84 @@ function detail(id){const card=getCard(id);if(!card){root.innerHTML=sectionIntro
   </article>
 </section>
 <nav class="story-pager"><a href="#/codex/${prev.id}"><small>PREVIOUS</small><strong>← ${escapeHtml(prev.titleZh)}</strong></a><a href="#/codex/${next.id}"><small>NEXT</small><strong>${escapeHtml(next.titleZh)} →</strong></a></nav>`}
-function ritualStart(){ritual=null;recorded=false;saveWarning='';root.innerHTML=sectionIntro('THE RITUAL / ENTER THE UNKNOWN','命运仪式','请先选择牌阵。你可以提出一个问题，也可以让卡牌自由指引思绪。')+`<div class="ritual-screen"><div class="ritual-modes">${[['daily','☼','每日一牌','每次抽取均随机生成，连续两次不会重复'],['single','✧','单牌提问','针对一个具体问题进行抽取'],['three','⚝','三牌牌阵','以过去、现在、未来展开叙事']].map(([id,icon,name,desc])=>`<button type="button" class="mode-card ${chosenSpread===id?'chosen':''}" data-spread="${id}" aria-pressed="${chosenSpread===id}"><span class="mode-icon">${icon}</span><strong>${name}</strong><small>${desc}</small></button>`).join('')}</div><label class="question-label" for="question">写下你的疑问 <span class="muted">/ 可留空</span></label><textarea class="question-input" id="question" maxlength="500" placeholder="例如：我正在面对怎样的选择？">${escapeHtml(draftQuestion)}</textarea><div class="btn-row"><button class="btn wide" id="enterRitual">进入仪式 <span>↗</span></button></div><p class="note">基础解读不依赖 AI，可在页面缓存后离线使用。只有主动配置并调用 AI 服务时才会联网发送提问。</p></div>`;
-  root.querySelectorAll('[data-spread]').forEach(btn=>btn.addEventListener('click',()=>{chosenSpread=btn.dataset.spread;draftQuestion=root.querySelector('#question').value;ritualStart();}));
-  root.querySelector('#enterRitual').addEventListener('click',()=>{enteredQuestion=root.querySelector('#question').value.trim();draftQuestion=enteredQuestion;ritual=createRitual(chosenSpread,enteredQuestion);if(chosenSpread==='daily'){ritual={...ritual,phase:'dailyReady',deck:[],picks:[],dateKey:dateKeyLocal()};}renderRitual();});
+function ritualStart(){
+  ritual=null;recorded=false;saveWarning='';
+  root.innerHTML=`<section class="consultation-intro">
+    <div class="overline">THE READING ROOM · 向未知发问</div>
+    <h1>请落座，<em>说出你的问题。</em></h1>
+    <p>深渊无声，牌会替它开口。</p>
+  </section>
+  <section class="consultation-layout">
+    <div class="consultation-image">
+      <img src="./assets/cards/img-21.webp" loading="eager" alt="世界 · 犹格·索托斯">
+      <span>THE GATE / XXⅠ</span>
+    </div>
+    <div class="consultation-form">
+      <div class="consultation-heading"><span>01 · 选择牌阵</span><div class="consultation-rule"></div></div>
+      <div class="spread-options" role="group" aria-label="选择牌阵">
+        <button type="button" data-spread="single" class="spread-option ${chosenSpread==='single'?'chosen':''}" aria-pressed="${chosenSpread==='single'}"><span class="spread-symbol">Ⅰ</span><span><strong>一张牌</strong><small>眼前的问题</small></span></button>
+        <button type="button" data-spread="three" class="spread-option ${chosenSpread==='three'?'chosen':''}" aria-pressed="${chosenSpread==='three'}"><span class="spread-symbol">Ⅲ</span><span><strong>三张牌</strong><small>现状 · 阻力 · 建议</small></span></button>
+        <button type="button" data-spread="daily" class="spread-option ${chosenSpread==='daily'?'chosen':''}" aria-pressed="${chosenSpread==='daily'}"><span class="spread-symbol">✧</span><span><strong>今日一牌</strong><small>此刻的启示</small></span></button>
+      </div>
+      <label class="consultation-heading question-heading" for="question"><span>02 · 问题</span><div class="consultation-rule"></div><small>可留空</small></label>
+      <textarea class="question-input" id="question" maxlength="500" placeholder="例如：这段关系里，我真正需要看清什么？">${escapeHtml(draftQuestion)}</textarea>
+      <button class="btn enter-reading" id="enterRitual">${chosenSpread==='daily'?'抽取今日之牌':'洗牌，展开牌阵'} <span aria-hidden="true">↗</span></button>
+    </div>
+  </section>`;
+  root.querySelectorAll('[data-spread]').forEach(button=>button.addEventListener('click',()=>{
+    chosenSpread=button.dataset.spread;
+    root.querySelectorAll('[data-spread]').forEach(b=>{b.classList.toggle('chosen',b===button);b.setAttribute('aria-pressed',b===button?'true':'false');});
+    root.querySelector('#enterRitual').innerHTML=(chosenSpread==='daily'?'抽取今日之牌':'洗牌，展开牌阵')+' <span aria-hidden="true">↗</span>';
+  }));
+  root.querySelector('#enterRitual').addEventListener('click',()=>{
+    draftQuestion=root.querySelector('#question').value.trim();
+    launchNewReading(chosenSpread,draftQuestion);
+  });
+}
+function launchNewReading(spreadType,question){
+  recorded=false;saveWarning='';
+  const next=createRitual(spreadType,question);
+  if(spreadType==='daily'){
+    ritual={...next,phase:'result',deck:[],picks:getDailyDraw().cards,slots:[0],revealed:true};
+    recordSession();
+  }else{
+    ritual={...next,phase:'fan',deck:shuffledIds(ARCANA_IDS,cryptoRandom),picks:[],slots:[],revealed:false};
+  }
+  renderRitual();
 }
 function progress(active){return `<div class="progress-track" aria-label="仪式步骤">${STAGES.map((s,i)=>`<span class="${i===active?'here':''}">${String(i+1).padStart(2,'0')} ${s}</span>`).join('')}</div>`;}
 function stageTop(text,desc,index){return progress(index)+`<div class="eyebrow">${SPREAD_LABELS[ritual.spreadType]} / ${ritual.picks.length} ${ritual.spreadType==='three'?'/ 3':''}</div><h2 class="stage-heading">${text}</h2><p class="stage-desc">${desc}</p>`;}
-function fan(){const used=new Set(ritual.slots);const slots=Array.from({length:11},(_,i)=>i);return `<div class="fan-scroll" role="group" aria-label="展开的卡背，选择卡牌">${slots.map(i=>`<button class="fan-card" style="--rot:${(i-5)*2.1}deg;z-index:${i+1}" data-slot="${i}" aria-label="选择第${i+1}个牌位" ${used.has(i)?'disabled':''}>${backImg()}</button>`).join('')}</div>`;}
-function renderRitual(){if(!ritual){ritualStart();return;}
-  const phase=ritual.phase;
-  const inner=phase==='shuffle'?stageTop('聆听未写下的命运','洗牌会随机重排全部22张大阿卡纳，翻牌前不会提前展示正面。',1)+`<div class="ritual-altar"><div class="altar-card" id="shuffleAnim" aria-label="点击牌背洗牌"></div></div><button class="btn wide" id="shuffleBtn">洗牌</button>`:
-  phase==='cut'?stageTop('切开命运的脉络','选择切牌位置，完成仪式后，11个可选卡背将展开。',2)+`<div class="cut-cards">${[['left','从左侧切牌',7],['middle','从中间切牌',11],['right','从右侧切牌',16]].map(([s,label,n])=>`<button class="cut-button" data-cut="${n}" aria-label="${label}">${backImg()}<span>${label}</span></button>`).join('')}</div>`:
-  phase==='fan'?stageTop('选取命运之牌',`请点击你想选择的卡背。${ritual.spreadType==='three'?'三张牌将依次揭开过去、现在与未来。':''}`,3)+`<p class="picked-progress">${ritual.picks.length?'已抽取 '+ritual.picks.length+' 张 · ':''} ${ritual.spreadType==='three'?'还需 '+(3-ritual.picks.length)+' 张':'请选择一张'}</p>${fan()}<p class="note">手机上可以横向滑动牌组，点击任意尚未选择的牌背。</p>`:
-  phase==='dailyReady'?stageTop('今日之牌','点击卡背或按钮，每次都会随机抽取一张新牌；连续两次不会重复。',3)+`<div class="ritual-altar"><div class="altar-card" id="dailyCard" aria-label="点击牌背抽取今日之牌"></div></div><button class="btn" id="dailyDraw">抽取今日之牌</button>`:
-  phase==='reveal'?renderReveal():renderResult();
-  root.innerHTML=`<section class="page-intro ritual-screen" style="padding-bottom:0"><div class="eyebrow">THE RITUAL / THE VEIL</div></section><div class="ritual-screen"><section class="ritual-stage">${inner}</section><div class="hairline"></div><div style="text-align:center"><button class="text-btn" id="resetRitual">← 放弃本次仪式，重新选择</button></div></div>`;
-  bindRitual();}
+function fan(){
+  // A visual spread of eleven backs. Its slots address one unbiased
+  // freshly shuffled 22-card deck; selecting a slot is tactile, not seeded.
+  const used=new Set(ritual.slots);
+  return `<div class="reading-fan" role="group" aria-label="点击任意牌背选牌">${Array.from({length:11},(_,i)=>`<button type="button" class="draw-fan-card" data-slot="${i}" aria-label="抽取第${i+1}张位置的牌" ${used.has(i)?'disabled aria-disabled="true"':''}>${backImg()}<span>${String(i+1).padStart(2,'0')}</span></button>`).join('')}</div>`;
+}
+function renderRitual(){
+  if(!ritual){ritualStart();return;}
+  if(ritual.phase==='result'){
+    root.innerHTML=renderResult();
+    bindRitual();
+    window.scrollTo({top:0,behavior:'instant'});
+    return;
+  }
+  const total=ritual.spreadType==='three'?3:1;
+  const taken=ritual.picks.length;
+  const cards=ritual.picks.map((p,i)=>{
+    const c=getCard(p.id);
+    return `<div class="picked-card"><img src="${c.artFile}" class="${p.orientation==='reversed'?'reversed':''}" alt="${htmlName(c)}" loading="eager"><span>${escapeHtml(positions[ritual.spreadType][i])}</span></div>`;
+  }).join('');
+  root.innerHTML=`<section class="drawing-room">
+      <div class="drawing-header"><a href="#/ritual" id="resetRitual">← 修改问题</a><span>${escapeHtml(SPREAD_LABELS[ritual.spreadType])}</span></div>
+      <h1>${taken===0?'凭直觉，<em>选择一张牌。</em>':`再选择 ${total-taken} 张牌。`}</h1>
+      ${ritual.question?`<p class="drawing-question">「${escapeHtml(ritual.question)}」</p>`:''}
+      <div class="drawing-counter"><span>${taken} / ${total}</span><span>✧</span></div>
+      ${taken?`<section class="picked-display" aria-label="已揭示的卡牌">${cards}</section>`:''}
+      ${fan()}
+      <p class="drawing-hint">${taken===0?'点开一张牌，直接进入解读。':'已翻开的牌会保留在上方。选择下一张即可继续。'}</p>
+    </section>`;
+  bindRitual();
+}
 function renderReveal(){const p=ritual.picks.at(-1),card=getCard(p.id),idx=ritual.picks.length-1;return stageTop(ritual.revealed?'面纱已经揭开':'揭示隐藏的符号',`第 ${idx+1} 张 / ${positions[ritual.spreadType][idx]} · ${ritual.revealed?card.titleZh:'请亲自翻开牌背'}`,4)+`<div class="reveal-area"><div class="flip-card ${ritual.revealed?'flipped':''}" id="flippingCard" aria-label="${ritual.revealed?htmlName(card):'未翻开的卡牌'}"><div class="flip-inner"><div class="flip-side flip-back">${backImg()}</div><div class="flip-side flip-front ${p.orientation==='reversed'?'is-reversed':''}">${ritual.revealed?cardImg(card,{loading:'loading="eager"'}):''}</div></div></div></div><p class="status-chip">${ritual.revealed?`${card.titleZh} · ${p.orientation==='upright'?'正位':'逆位'}`:'等待翻牌'}</p><div class="btn-row" style="justify-content:center">${ritual.revealed?`<button class="btn" id="nextDraw">${ritual.picks.length===(ritual.spreadType==='three'?3:1)?'查看命运解读':'继续抽取'} →</button>`:'<button class="btn" id="revealBtn">翻开此牌</button>'}</div>`;}
 function summaryCard(p,i){const c=getCard(p.id);return `<article class="reading-card">${cardImg(c,{className:p.orientation==='reversed'?'reversed':''})}<h3>${positions[ritual.spreadType][i]} · ${c.titleZh}</h3><p>${p.orientation==='upright'?'正位':'逆位'} / ${c.mythEntity}</p></article>`;}
 function getAiEndpoint(){try{const u=localStorage.getItem('cthulhu-tarot:api-endpoint')||'';return /^https:\/\/[a-z0-9.-]+(?:\:[0-9]+)?(?:\/[^\s]*)?$/i.test(u)?u:'';}catch{return '';}}
@@ -1219,29 +1281,33 @@ async function runAiReading(){
 }
 function recordSession(){if(recorded)return;recorded=true;const request=ritual.picks.map((p,i)=>({id:p.id,orientation:p.orientation,position:positions[ritual.spreadType][i]}));const entry={entryId:(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')?crypto.randomUUID():`${Date.now()}-${Math.round(Math.random()*1e6)}`,createdAt:new Date().toISOString(),spreadType:ritual.spreadType,question:ritual.question,cards:request};const result=saveEntry(storage(),entry);saveWarning=result.ok?'':result.warning||'本次记录无法写入。';}
 function bindRitual(){
-  // Card backs can be tapped or activated via keyboard, not just their separate buttons.
-  function bindCardTap(cardSelector,buttonSelector){
-    const card=root.querySelector(cardSelector);
-    if(!card)return;
-    card.setAttribute('role','button');card.tabIndex=0;
-    const activate=()=>root.querySelector(buttonSelector)?.click();
-    card.addEventListener('click',activate);
-    card.addEventListener('keydown',event=>{
-      if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}
-    });
-  }
-  bindCardTap('#shuffleAnim','#shuffleBtn');
-  bindCardTap('#dailyCard','#dailyDraw');
-  if(ritual?.phase==='reveal'&&!ritual.revealed)bindCardTap('#flippingCard','#revealBtn');
+  root.querySelectorAll('.draw-fan-card:not([disabled])').forEach(button=>button.addEventListener('click',()=>{
+    if(!ritual||ritual.phase!=='fan')return;
+    const slot=Number(button.dataset.slot);
+    if(!Number.isInteger(slot)||ritual.slots.includes(slot)||slot<0||slot>=ritual.deck.length)return;
+    button.disabled=true;
+    const orientation=cryptoRandom()<.5?'upright':'reversed';
+    const newPicks=[...ritual.picks,{id:ritual.deck[slot],orientation}];
+    const done=newPicks.length>=(ritual.spreadType==='three'?3:1);
+    ritual={...ritual,slots:[...ritual.slots,slot],picks:newPicks,phase:done?'result':'fan'};
+    if(done)recordSession();
+    renderRitual();
+  }));
+  root.querySelector('#resetRitual')?.addEventListener('click',e=>{
+    e.preventDefault();
+    if(ritual){chosenSpread=ritual.spreadType;draftQuestion=ritual.question;}
+    ritualStart();
+  });
+  root.querySelector('#drawAgain')?.addEventListener('click',()=>{
+    if(!ritual)return;
+    launchNewReading(ritual.spreadType,ritual.question);
+  });
+  root.querySelector('#restartAfter')?.addEventListener('click',()=>{
+    if(ritual){chosenSpread=ritual.spreadType;draftQuestion=ritual.question;}
+    ritualStart();
+    window.scrollTo({top:0,behavior:'instant'});
+  });
   root.querySelector('#aiInterpretButton')?.addEventListener('click',runAiReading);
-  root.querySelector('#resetRitual')?.addEventListener('click',()=>{draftQuestion='';ritualStart();});
-  root.querySelector('#shuffleBtn')?.addEventListener('click',e=>{const button=e.currentTarget;button.disabled=true;root.querySelector('#shuffleAnim')?.classList.add('shuffle-animation');const activeRitual=ritual;const doIt=()=>{if(ritual!==activeRitual||ritual?.phase!=='shuffle')return;ritual=reduceRitual(ritual,{type:'SHUFFLE',deck:shuffledIds(ARCANA_IDS,cryptoRandom)});renderRitual();};reducedMotion()?doIt():setTimeout(doIt,580);});
-  root.querySelectorAll('[data-cut]').forEach(btn=>btn.addEventListener('click',()=>{ritual=reduceRitual(ritual,{type:'CUT',at:Number(btn.dataset.cut)});renderRitual();}));
-  root.querySelectorAll('[data-slot]').forEach(btn=>btn.addEventListener('click',()=>{ritual=reduceRitual(ritual,{type:'PICK',slot:Number(btn.dataset.slot),orientation:cryptoRandom()<0.5?'upright':'reversed'});renderRitual();}));
-  root.querySelector('#dailyDraw')?.addEventListener('click',()=>{const d=getDailyDraw();ritual={...ritual,phase:'reveal',picks:d.cards.map(c=>({...c})),slots:[0],revealed:false};renderRitual();});
-  root.querySelector('#revealBtn')?.addEventListener('click',e=>{e.currentTarget.disabled=true;ritual=reduceRitual(ritual,{type:'REVEAL'});const p=ritual.picks.at(-1),c=getCard(p.id);const flip=root.querySelector('#flippingCard');flip.removeAttribute('role');flip.removeAttribute('tabindex');flip.querySelector('.flip-front').innerHTML=cardImg(c,{loading:'loading="eager"'});requestAnimationFrame(()=>{flip.classList.add('flipped');flip.setAttribute('aria-label',htmlName(c));});const nextLabel=ritual.picks.length===(ritual.spreadType==='three'?3:1)?'查看命运解读':'继续抽取';const row=e.currentTarget.parentElement;e.currentTarget.remove();row.insertAdjacentHTML('beforeend',`<button class="btn" id="nextDraw">${nextLabel} →</button>`);root.querySelector('#nextDraw').addEventListener('click',onNext);root.querySelector('.status-chip').textContent=`${c.titleZh} · ${p.orientation==='upright'?'正位':'逆位'}`;});
-  root.querySelector('#nextDraw')?.addEventListener('click',onNext);
-  root.querySelector('#restartAfter')?.addEventListener('click',()=>{ritualStart();});
 }
 function onNext(){ritual=reduceRitual(ritual,{type:'NEXT'});if(ritual.phase==='result')recordSession();renderRitual();}
 function journal(){const result=loadJournal(storage());const list=result.entries;root.innerHTML=sectionIntro('INVESTIGATION LOG / PERSONAL ARCHIVE','调查日志','每一次翻牌都留下一份卷宗。所有记录仅保存在你当前浏览器的本地存储中。')+`<div class="stats-strip"><span>已收录 <b>${list.length}</b> 条</span><span>不云端同步 · 可随时删除</span></div><div class="hairline"></div>${result.warning?`<div class="ai-offline">${escapeHtml(result.warning)}</div>`:''}<div class="journal-list">${list.length?list.map(entry=>`<article class="journal-item"><img src="${getCard(entry.cards[0].id).artFile}" alt="${getCard(entry.cards[0].id).titleZh}"/><div><span class="date">${new Date(entry.createdAt).toLocaleString('zh-CN')}</span><h3>${SPREAD_LABELS[entry.spreadType]}</h3><p>${escapeHtml(entry.question||'自由探索')}</p><p>${entry.cards.map(p=>`${getCard(p.id).titleZh} · ${p.orientation==='upright'?'正位':'逆位'}`).join(' / ')}</p></div><div class="journal-actions"><button class="outline-btn small open-entry" data-id="${escapeHtml(entry.entryId)}">打开卷宗</button><button class="text-btn small delete-entry" data-id="${escapeHtml(entry.entryId)}">删除</button></div></article>`).join(''):empty('暂无调查记录。打开“开始占卜”，完成一次翻牌后将在这里看到记录。')}</div>${list.length?'<button id="clearAll" class="outline-btn small">清空所有记录</button>':''}`;
