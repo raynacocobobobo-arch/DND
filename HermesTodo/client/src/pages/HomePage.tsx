@@ -1,6 +1,6 @@
 import { zhCN } from "date-fns/locale";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-import { CircleAlert, CircleCheck, ChevronRight, Sparkles, Sun, ArrowUpRight, Plus, CalendarDays } from "lucide-react";
+import { ChevronRight, Sparkles, ArrowUpRight, Plus, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { ContextIcon } from "../components/ContextIcon";
@@ -23,37 +23,18 @@ export function HomePage() {
   const selectedTask = allTasks.find((task) => task.id === selectedTaskId);
   const today = formatInTimeZone(new Date(), "Asia/Shanghai", "yyyy-MM-dd");
   const dueDate = (value: string | null) => value ? formatInTimeZone(value, "Asia/Shanghai", "yyyy-MM-dd") : null;
-  const todayAllTasks = allTasks.filter((task) => dueDate(task.dueAt) === today);
-  const todayTasks = todayAllTasks.filter((task) => !task.isCompleted);
-  const todayCompletedCount = todayAllTasks.length - todayTasks.length;
+  const todayTasks = allTasks.filter((task) => !task.isCompleted && dueDate(task.dueAt) === today);
   const overdueTasks = allTasks
     .filter((task) => !task.isCompleted && task.dueAt && dueDate(task.dueAt)! < today)
     .sort((a, b) => (a.dueAt ?? "").localeCompare(b.dueAt ?? ""));
   const doneTasks = allTasks.filter((task) => task.isCompleted);
   const counts = {
     today: todayTasks.length,
-    overdue: overdueTasks.length,
-    done: doneTasks.length
+    overdue: overdueTasks.length
   };
-  const progress = todayAllTasks.length ? Math.round((todayCompletedCount / todayAllTasks.length) * 100) : 0;
   const hour = Number(formatInTimeZone(new Date(), "Asia/Shanghai", "H"));
   const greeting = hour < 11 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
-  const tip = todayAllTasks.length
-    ? `今日已完成 ${todayCompletedCount} / ${todayAllTasks.length} 件到期任务。`
-    : "今天还没有安排到期任务。";
   const upcomingTasks = allTasks.filter((task) => !task.isCompleted && (!task.dueAt || dueDate(task.dueAt)! > today));
-  const weeklyDates = Array.from({ length: 7 }, (_, index) => {
-    const day = new Date(Date.now() - (6 - index) * 86400000);
-    return {
-      key: formatInTimeZone(day, "Asia/Shanghai", "yyyy-MM-dd"),
-      name: ["日","一","二","三","四","五","六"][Number(formatInTimeZone(day, "Asia/Shanghai", "i")) % 7] || "日"
-    };
-  });
-  const weeklyCounts = weeklyDates.map((day) =>
-    allTasks.filter((task) => task.isCompleted && task.completedAt && dueDate(task.completedAt) === day.key).length
-  );
-  const weeklyScale = Math.max(1, ...weeklyCounts);
-  const completedThisWeek = weeklyCounts.reduce((sum, count) => sum + count, 0);
   const showActive = activeFilter !== "done";
   const showDone = activeFilter !== "active";
   const todayDueAt = fromZonedTime(`${today}T09:00:00`, "Asia/Shanghai").toISOString();
@@ -147,33 +128,6 @@ export function HomePage() {
             <button type="button" className="board-add-link" onClick={() => setCreateTaskOpen(true)}><Plus size={19}/> 添加详细任务</button>
           </section>
           <aside className="dashboard-side-column">
-            <section className="progress-card" aria-labelledby="daily-progress-title">
-              <div className="progress-heading"><h2 id="daily-progress-title">今日进度</h2><span className="ornament">✦</span></div>
-              <div className="progress-ring" style={{ "--progress-angle": `${progress * 3.6}deg` } as React.CSSProperties}>
-                <span className="progress-ring-center"><strong>{todayCompletedCount}<small> / {todayAllTasks.length}</small></strong><em>已完成</em></span>
-              </div>
-              <progress className="sr-only" max="100" value={progress}>{progress}%</progress>
-              <p>{tip}</p>
-              <div className="progress-stat-list" role="region" aria-label="任务概览">
-                <article><span><Sun size={14}/>今日待办</span><strong>{counts.today}</strong></article>
-                <article><span><CircleCheck size={14}/>已完成</span><strong>{counts.done}</strong></article>
-                <article><span><CircleAlert size={14}/>逾期</span><strong>{counts.overdue}</strong></article>
-              </div>
-            </section>
-            <section className="weekly-panel" aria-label="本周完成统计">
-              <header className="side-card-heading"><h2>最近七日</h2><span>COMPLETED</span></header>
-              <div className="weekly-chart" role="img" aria-label={`最近七日分别完成 ${weeklyCounts.join("、")} 件任务`}>
-                {weeklyDates.map((day, index) => (
-                  <div className="weekly-bar-column" key={day.key}>
-                    <div className="weekly-bar-track">
-                      <div className="weekly-bar" style={{ height:`${Math.max(3, weeklyCounts[index]/weeklyScale*100)}%` }}/>
-                    </div>
-                    <span>{day.name}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="weekly-total"><strong>{completedThisWeek}</strong><span>本周已完成</span><strong>{progress}%</strong><span>今日达成率</span></div>
-            </section>
             <section className="contexts-mini">
               <div className="side-card-heading"><h2>情境入口</h2><Link to="/contexts">全部 <ChevronRight size={13}/></Link></div>
               <div className="context-strip">
