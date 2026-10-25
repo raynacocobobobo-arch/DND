@@ -1,9 +1,10 @@
 import { zhCN } from "date-fns/locale";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-import { CircleAlert, CircleCheck, ChevronRight, Sun } from "lucide-react";
+import { CircleAlert, CircleCheck, ChevronRight, Sparkles, Sun, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { ContextIcon } from "../components/ContextIcon";
+import { CathedralScene, FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
 import { QuickAdd } from "../components/QuickAdd";
 import { TaskList } from "../components/TaskList";
 import { TaskDetail } from "../components/TaskDetail";
@@ -39,60 +40,92 @@ export function HomePage() {
   const tip = todayAllTasks.length
     ? `今日已完成 ${todayCompletedCount} / ${todayAllTasks.length} 件到期任务。`
     : "今天还没有安排到期任务。";
+  const upcomingTasks = allTasks.filter((task) => !task.isCompleted && (!task.dueAt || dueDate(task.dueAt)! > today));
   const todayDueAt = fromZonedTime(`${today}T09:00:00`, "Asia/Shanghai").toISOString();
 
   return (
     <section className="page-stack ios-dashboard">
-      <header className="ios-page-header">
-        <span aria-hidden="true" />
-        <h1>首页</h1>
-        <p className="page-date">{formatInTimeZone(new Date(), "Asia/Shanghai", "M月d日 EEEE", { locale: zhCN })}</p>
-      </header>
-      <div className="dashboard-greeting">
-        <h2>{greeting}</h2>
-        <p>今天咱就抓重点，别被小事拽跑。</p>
-      </div>
-      <section className="summary-grid" aria-label="任务概览">
-        <article className="summary-card"><Sun className="stat-mustard" aria-hidden="true" size={19} /><strong>{counts.today}</strong><span>今日待办</span></article>
-        <article className="summary-card"><CircleCheck className="stat-sage" aria-hidden="true" size={19} /><strong>{counts.done}</strong><span>已完成</span></article>
-        <article className="summary-card"><CircleAlert className="stat-coral" aria-hidden="true" size={19} /><strong>{counts.overdue}</strong><span>逾期</span></article>
-      </section>
-      <section className="progress-card">
-        <div className="progress-heading"><h2>今日进度</h2><strong>{progress}%</strong></div>
-        <progress max="100" value={progress}>{progress}%</progress>
-        <p>{tip}</p>
-      </section>
-      {overdueTasks.length ? (
-        <section className="dashboard-section dashboard-overdue" aria-label="逾期待处理">
-          <div className="dashboard-section-heading"><h2>逾期待处理</h2><span>{counts.overdue} 件</span></div>
-          <TaskList tasks={overdueTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)} />
-        </section>
-      ) : null}
-      <section className="dashboard-section">
-        <h2>今日重点</h2>
-        {tasks.isError ? (
-          <div className="dashboard-empty" role="alert">任务加载失败。<button type="button" className="text-retry-button" onClick={() => void tasks.refetch()}>重试</button></div>
-        ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : todayTasks.length ? (
-          <TaskList tasks={todayTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)} />
-        ) : <p className="dashboard-empty">今天还没排事儿，可以在下方快速添加。</p>}
-      </section>
-      <section className="dashboard-section contexts-entry-section">
-        <div className="dashboard-section-heading"><h2>情境入口</h2><Link to="/contexts">全部</Link></div>
-        <div className="context-strip">
-          {(contexts.data ?? []).slice(0, 8).map((context) => (
-            <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
-              <span style={{ color: context.color }}><ContextIcon name={context.icon} size={20} /></span>
-              <strong>{context.name}</strong>
-              <small>{context.incompleteCount} 个未完成</small>
-              <ChevronRight aria-hidden="true" size={14} />
-            </Link>
-          ))}
-          {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/contexts">创建第一个情境</Link> : null}
+      <section className="dashboard-hero">
+        <CathedralScene className="dashboard-hero-art"/>
+        <div className="hero-content">
+          <header className="ios-page-header">
+            <span className="hero-overline"><FleurDeLis size={19}/> YOUR DAILY CHAPTER</span>
+            <h1>首页</h1>
+            <p className="page-date">{formatInTimeZone(new Date(), "Asia/Shanghai", "M月d日 EEEE", { locale: zhCN })}</p>
+          </header>
+          <div className="dashboard-greeting">
+            <h2>{greeting}</h2>
+            <p>将重要的事，做得从容而坚定。</p>
+            <HeraldicDivider className="hero-divider"/>
+          </div>
         </div>
       </section>
-      <QuickAdd dueToday onEmpty={() => setCreateTaskOpen(true)} />
-      {selectedTask ? <TaskDetail task={selectedTask} contexts={contexts.data ?? []} onClose={() => setSelectedTaskId(undefined)} /> : null}
-      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} initialDueAt={todayDueAt} onClose={() => setCreateTaskOpen(false)} /> : null}
+      <section className="summary-grid" aria-label="任务概览">
+        <article className="summary-card"><span className="summary-symbol"><Sun className="stat-mustard" aria-hidden="true" size={22}/></span><span>今日待办</span><strong>{counts.today}<small> 件待完成</small></strong></article>
+        <article className="summary-card"><span className="summary-symbol"><CircleCheck className="stat-sage" aria-hidden="true" size={22}/></span><span>已完成</span><strong>{counts.done}<small> 件任务</small></strong></article>
+        <article className="summary-card"><span className="summary-symbol"><CircleAlert className="stat-coral" aria-hidden="true" size={22}/></span><span>逾期</span><strong>{counts.overdue}<small> 件待处理</small></strong></article>
+      </section>
+      <div className="dashboard-layout">
+        <div className="dashboard-main-column">
+          <section className="parchment-panel dashboard-task-board">
+            <div className="board-heading">
+              <div><span className="board-eyebrow"><FleurDeLis size={15}/> THE QUEST LIST</span><h2>我的任务</h2></div>
+              <span className="board-today">{formatInTimeZone(new Date(), "Asia/Shanghai", "yyyy.MM.dd")}</span>
+            </div>
+            <div className="dashboard-quick-add"><QuickAdd dueToday onEmpty={() => setCreateTaskOpen(true)} /></div>
+            {overdueTasks.length ? (
+              <section className="dashboard-section dashboard-overdue" aria-label="逾期待处理">
+                <div className="dashboard-section-heading"><h2>逾期待处理</h2><span>{counts.overdue} 件</span></div>
+                <TaskList tasks={overdueTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
+              </section>
+            ) : null}
+            <section className="dashboard-section dashboard-focus">
+              <div className="dashboard-section-heading"><h2>今日重点</h2><span className="section-count">{todayTasks.length} 项</span></div>
+              {tasks.isError ? (
+                <div className="dashboard-empty" role="alert">任务加载失败。<button type="button" className="text-retry-button" onClick={() => void tasks.refetch()}>重试</button></div>
+              ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : todayTasks.length ? (
+                <TaskList tasks={todayTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
+              ) : <p className="dashboard-empty">今天尚未安排任务。添加一件最重要的事，开启今天。</p>}
+            </section>
+            {upcomingTasks.length ? (
+              <section className="dashboard-section dashboard-upcoming">
+                <div className="dashboard-section-heading"><h2>接下来</h2><span className="section-count">{upcomingTasks.length} 项</span></div>
+                <TaskList tasks={upcomingTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
+              </section>
+            ) : null}
+          </section>
+        </div>
+        <aside className="dashboard-side-column">
+          <section className="progress-card">
+            <div className="progress-heading"><h2>今日进度</h2><strong>{progress}%</strong></div>
+            <progress max="100" value={progress}>{progress}%</progress>
+            <p>{tip}</p>
+            <div className="progress-ornament" aria-hidden="true"><FleurDeLis size={30}/></div>
+          </section>
+          <section className="parchment-panel dashboard-section contexts-entry-section">
+            <div className="dashboard-section-heading"><h2><FleurDeLis size={18}/> 情境入口</h2><Link to="/contexts">全部 <ChevronRight aria-hidden="true" size={15}/></Link></div>
+            <div className="context-strip">
+              {(contexts.data ?? []).slice(0, 8).map((context) => (
+                <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
+                  <span className="context-entry-icon" style={{ color: context.color }}><ContextIcon name={context.icon} size={21}/></span>
+                  <strong>{context.name}</strong>
+                  <small>{context.incompleteCount} 个未完成</small>
+                  <ChevronRight aria-hidden="true" size={16}/>
+                </Link>
+              ))}
+              {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/contexts">创建第一个情境 <ChevronRight size={16}/></Link> : null}
+            </div>
+          </section>
+          <Link className="ai-teaser" to="/ai">
+            <div className="ai-teaser-top"><Sparkles size={20}/><span>HERMES INTELLIGENCE</span><ArrowUpRight size={18}/></div>
+            <h2>AI 任务规划器</h2>
+            <p>将一个目标，拆成可以执行的每一步。</p>
+            <span className="ai-teaser-action">开启规划 <ArrowUpRight size={16}/></span>
+          </Link>
+        </aside>
+      </div>
+      {selectedTask ? <TaskDetail task={selectedTask} contexts={contexts.data ?? []} onClose={() => setSelectedTaskId(undefined)}/> : null}
+      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} initialDueAt={todayDueAt} onClose={() => setCreateTaskOpen(false)}/> : null}
     </section>
   );
 }
