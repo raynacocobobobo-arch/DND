@@ -13,7 +13,8 @@ export function TaskForm({
   pending,
   onSave,
   initialContextId = null,
-  initialDueAt = null
+  initialDueAt = null,
+  allowContextSelection = true
 }: {
   task?: TaskRecord;
   contexts: ContextRecord[];
@@ -21,6 +22,7 @@ export function TaskForm({
   onSave(input: TaskInput): void;
   initialContextId?: string | null;
   initialDueAt?: string | null;
+  allowContextSelection?: boolean;
 }) {
   const dueAt = task?.dueAt ?? initialDueAt;
   const [title, setTitle] = useState(task?.title ?? "");
@@ -53,7 +55,7 @@ export function TaskForm({
     <form className="stacked-form task-form" onSubmit={submit}>
       <label>任务标题<input value={title} onChange={(event) => setTitle(event.target.value)} maxLength={200} required /></label>
       <div className="form-grid">
-        <label>所属情境<select value={contextId} onChange={(event) => setContextId(event.target.value)}><option value="">无情境</option>{contexts.map((context) => <option key={context.id} value={context.id}>{context.name}</option>)}</select></label>
+        {allowContextSelection ? <label>任务归属<select value={contextId} onChange={(event) => setContextId(event.target.value)}><option value="">首页收集箱</option>{contexts.map((context) => <option key={context.id} value={context.id}>{context.name}</option>)}</select>{task ? <small className="context-move-hint">修改归属后，任务会移到对应情境，不会生成副本。</small> : null}</label> : null}
         <label>截止日期<input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} /></label>
         <label>截止时间<input type="time" value={dueTime} onChange={(event) => setDueTime(event.target.value)} disabled={!dueDate} /></label>
       </div>
