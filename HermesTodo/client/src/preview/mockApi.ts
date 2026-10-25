@@ -37,6 +37,8 @@ const makeTask = (title: string, contextId: string | null, dueAt: string | null,
 const seed: DemoStore = {
   contexts: demoContexts,
   tasks: [
+    makeTask("记下一个临时想法", null, null),
+    makeTask("买咖啡豆", null, null),
     makeTask("检查 HermesTodo 新版交互", "work", isoDue(0), "high"),
     makeTask("整理下一阶段产品需求", "work", isoDue(0), "medium"),
     makeTask("记录一个新创作想法", "creative", isoDue(0), "low"),
@@ -63,6 +65,7 @@ persist();
 function getTasks(search: URLSearchParams) {
   let records = store.tasks.filter(t => t.parentTaskId === null);
   if (search.has("contextId")) records = records.filter(t => t.contextId === search.get("contextId"));
+  if (search.get("scope") === "inbox") records = records.filter(t => t.contextId === null);
   const keyword = search.get("search")?.trim().toLocaleLowerCase() ?? "";
   if (keyword) records = records.filter(t => (t.title + " " + t.notes).toLocaleLowerCase().includes(keyword));
   const weight = { high: 0, medium: 1, low: 2 };
