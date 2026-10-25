@@ -72,13 +72,13 @@ describe("home dashboard", () => {
     vi.stubGlobal("fetch", createFetch(tasks));
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /早上好|下午好|晚上好/ })).toBeInTheDocument();
     expect(screen.getByText("10月25日 星期日")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "下午好" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "收集箱" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "我的待办" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
     expect(screen.getByText(/只显示未归入情境的待办/)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "我的情境" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "情境目录" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
