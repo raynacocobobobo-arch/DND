@@ -66,7 +66,11 @@ jobs:
             assert len(d.find_elements(By.CSS_SELECTOR,'.journal-item'))>0
             print('SINGLE TEST PASSED')
             d.get(os.environ['SITE']+'#/ritual')
-            d.find_element(By.CSS_SELECTOR,'button[data-spread="daily"]').click()
+            restart=WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'restartAfter')))
+            d.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'})",restart)
+            time.sleep(0.25)
+            restart.click()
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'button[data-spread="daily"]'))).click()
             d.find_element(By.ID,'enterRitual').click()
             daily=d.find_element(By.ID,'dailyDraw')
             d.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'})",daily)
