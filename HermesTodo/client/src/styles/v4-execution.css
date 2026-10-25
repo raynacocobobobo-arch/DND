@@ -413,3 +413,17 @@
 .editorial-dashboard .editorial-main {
   z-index: 3;
 }
+
+/* Separate the unassigned inbox from task lists owned by individual contexts. */
+.editorial-dashboard .inbox-help {
+  margin: 12px 0 17px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #d8c6a7;
+  color: #85735e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.context-move-hint { display:block; margin-top:6px; color:#8a755a; font-size:12px; line-height:1.5; }
+@media (max-width:760px) {
+  .editorial-dashboard .inbox-help { margin:9px 0 10px; padding-bottom:9px; font-size:11px; }
+}
