@@ -206,3 +206,4 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .subtask-item { display: flex; align-items: center; gap: 12px; min-height: 36px; color: var(--ink-900); font-size: .9rem; }
 .subtask-item .task-check { flex-shrink: 0; }
 .subtask-completed > span { color: var(--ink-500); text-decoration: line-through; }
+.preview-banner { position: sticky; z-index: 25; top: 0; width: 100%; padding: 9px 14px; background: #2b2118; color: #fff9ef; text-align: center; font-size: .75rem; line-height: 1.45; }
