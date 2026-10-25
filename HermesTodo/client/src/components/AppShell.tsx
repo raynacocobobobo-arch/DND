@@ -26,7 +26,7 @@ export function AppShell() {
       <aside className="hermes-sidebar">
         <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回首页">
           <FleurDeLis className="brand-fleur" size={38}/>
-          <span className="brand-name">HermesTodo</span>
+          <span className="brand-name"><span>HERMES</span><span>TODO</span></span>
           <span className="brand-subtitle">PERSONAL COMMAND DESK</span>
         </Link>
         <HeraldicDivider className="sidebar-divider"/>
