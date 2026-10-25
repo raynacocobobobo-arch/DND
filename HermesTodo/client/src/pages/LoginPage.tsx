@@ -25,7 +25,10 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <img className="login-scene" src={`${import.meta.env.BASE_URL}art/hero-standard-bearer.webp`} alt="" decoding="async"/>
+      <picture className="login-art-picture">
+        <source media="(max-width: 760px)" srcSet={`${import.meta.env.BASE_URL}art/hero-mobile.avif`} type="image/avif"/>
+        <img className="login-scene" src={`${import.meta.env.BASE_URL}art/hero-desktop.avif`} alt="" decoding="async"/>
+      </picture>
       <section className="login-card" aria-labelledby="login-title">
         <div className="brand-mark" aria-hidden="true"><FleurDeLis size={37}/></div>
         <p className="eyebrow">你的个人任务空间</p>
