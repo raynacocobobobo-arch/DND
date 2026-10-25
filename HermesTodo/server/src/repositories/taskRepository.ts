@@ -85,7 +85,7 @@ export function createTaskRepository(db: Database.Database) {
     return mapRow(row, children);
   }
 
-  function list(filters: { search?: string; contextId?: string; sort: TaskSort }): TaskRecord[] {
+  function list(filters: { search?: string; contextId?: string; scope?: "inbox"; sort: TaskSort }): TaskRecord[] {
     const clauses = ["parent_task_id IS NULL"];
     const parameters: string[] = [];
     if (filters.search) {
@@ -96,6 +96,9 @@ export function createTaskRepository(db: Database.Database) {
     if (filters.contextId) {
       clauses.push("context_id = ?");
       parameters.push(filters.contextId);
+    }
+    if (filters.scope === "inbox") {
+      clauses.push("context_id IS NULL");
     }
 
     const orderBy: Record<TaskSort, string> = {
