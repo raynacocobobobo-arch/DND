@@ -21,7 +21,7 @@ export function useTasks(filters: { search?: string; contextId?: string; sort?: 
   const query = new URLSearchParams();
   if (filters.search) query.set("search", filters.search);
   if (filters.contextId) query.set("contextId", filters.contextId);
-  query.set("sort", filters.sort ?? "priority");
+  query.set("sort", filters.sort ?? "createdAt");
   return useQuery({
     queryKey: ["tasks", filters],
     queryFn: () => apiRequest<TaskRecord[]>(`/api/tasks?${query.toString()}`)
