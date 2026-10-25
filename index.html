@@ -547,6 +547,33 @@ a:hover,button:hover{transition-duration:.22s}
   .reader-index{letter-spacing:.01em}
 }
 
+
+/* V3.1 — first-screen action, immediate card visibility, mobile reading speed */
+@media(min-width:721px){
+  .home-manifesto h1{font-size:clamp(46px,4.35vw,65px)}
+}
+.home-mobile-cta{display:none}
+.oracle-card-visual{animation:none!important;opacity:1!important}
+@media(max-width:720px){
+  .home-mobile-cta{display:flex;position:fixed;bottom:74px;left:18px;right:18px;z-index:49;
+    align-items:center;justify-content:space-between;padding:15px 23px;min-height:48px;
+    background:linear-gradient(110deg,#e5c995,#b39160);color:#091e22;
+    border:1px solid #e3c892;font-weight:700;letter-spacing:.1em;
+    box-shadow:0 -9px 44px #061014cf}
+  .consultation-layout{gap:16px}
+  .consultation-form{order:0;padding-bottom:7px}
+  .consultation-image{order:1;max-width:340px;margin-top:25px}
+  .consultation-image img{max-width:min(78vw,320px)}
+  .consultation-intro{padding:25px 0 16px}
+  .consultation-intro h1{font-size:clamp(29px,8vw,42px);line-height:1.45;margin:12px 0 6px}
+  .spread-option{min-height:107px;padding:12px 10px;gap:9px}
+  .spread-option strong{font-size:15px}
+  .question-heading{margin-top:17px;margin-bottom:10px}
+  .consultation-form .question-input{min-height:84px;padding:14px}
+  .enter-reading{margin-top:14px;min-height:52px;padding:12px 18px}
+  .drawing-room h1{margin:32px 0 6px}
+}
+
 </style>
   
 </head>
@@ -1325,9 +1352,9 @@ function home(){root.innerHTML=`
   </div>
   <div class="home-manifesto">
     <p class="overline">THE ORACLE · MISKATONIC 1926</p>
-    <h1>你所寻求的答案<br><em>也许藏在梦的背面。</em></h1>
+    <h1>你所寻求的答案<br><em>就在梦的背面。</em></h1>
     <p>二十二张牌，二十二道通往未知的门。收起确定的答案，先听一张牌想说什么。</p>
-    <div class="home-cta"><a class="btn" href="#/ritual">开始问卜 <span>↗</span></a><a class="outline-btn" href="#/codex">翻阅禁忌之书</a></div>
+    <div class="home-cta"><a class="btn" href="#/ritual">开始问卜 <span>↗</span></a><a class="outline-btn" href="#/codex">翻阅禁忌之书</a></div><a class="home-mobile-cta" href="#/ritual">开始问卜 <span>↗</span></a>
   </div>
   <div class="home-footnote"><span>22 MAJOR ARCANA</span><span>THE VEIL IS THIN</span></div>
 </section>`}
@@ -1434,6 +1461,7 @@ function renderRitual(){
       <p class="drawing-hint">${taken===0?'点开一张牌，直接进入解读。':'已翻开的牌会保留在上方。选择下一张即可继续。'}</p>
     </section>`;
   bindRitual();
+  window.scrollTo({top:0,behavior:'instant'});
 }
 function renderReveal(){const p=ritual.picks.at(-1),card=getCard(p.id),idx=ritual.picks.length-1;return stageTop(ritual.revealed?'面纱已经揭开':'揭示隐藏的符号',`第 ${idx+1} 张 / ${positions[ritual.spreadType][idx]} · ${ritual.revealed?card.titleZh:'请亲自翻开牌背'}`,4)+`<div class="reveal-area"><div class="flip-card ${ritual.revealed?'flipped':''}" id="flippingCard" aria-label="${ritual.revealed?htmlName(card):'未翻开的卡牌'}"><div class="flip-inner"><div class="flip-side flip-back">${backImg()}</div><div class="flip-side flip-front ${p.orientation==='reversed'?'is-reversed':''}">${ritual.revealed?cardImg(card,{loading:'loading="eager"'}):''}</div></div></div></div><p class="status-chip">${ritual.revealed?`${card.titleZh} · ${p.orientation==='upright'?'正位':'逆位'}`:'等待翻牌'}</p><div class="btn-row" style="justify-content:center">${ritual.revealed?`<button class="btn" id="nextDraw">${ritual.picks.length===(ritual.spreadType==='three'?3:1)?'查看命运解读':'继续抽取'} →</button>`:'<button class="btn" id="revealBtn">翻开此牌</button>'}</div>`;}
 function summaryCard(p,i){const c=getCard(p.id);return `<article class="reading-card">${cardImg(c,{className:p.orientation==='reversed'?'reversed':''})}<h3>${positions[ritual.spreadType][i]} · ${c.titleZh}</h3><p>${p.orientation==='upright'?'正位':'逆位'} / ${c.mythEntity}</p></article>`;}
