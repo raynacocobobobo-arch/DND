@@ -8,11 +8,13 @@ export function TaskCreateDialog({
   contexts,
   initialContextId,
   initialDueAt,
+  allowContextSelection = true,
   onClose
 }: {
   contexts: ContextRecord[];
   initialContextId?: string | null;
   initialDueAt?: string | null;
+  allowContextSelection?: boolean;
   onClose(): void;
 }) {
   const create = useCreateTask();
@@ -29,7 +31,7 @@ export function TaskCreateDialog({
     <div className="dialog-backdrop task-detail-backdrop" role="presentation">
       <section className="form-dialog task-detail" role="dialog" aria-modal="true" aria-labelledby="task-create-title">
         <div className="dialog-heading"><h2 id="task-create-title">新建任务</h2><button type="button" aria-label="关闭" onClick={onClose}>×</button></div>
-        <TaskForm contexts={contexts} pending={create.isPending} onSave={save} initialContextId={initialContextId} initialDueAt={initialDueAt} />
+        <TaskForm contexts={contexts} pending={create.isPending} onSave={save} initialContextId={initialContextId} initialDueAt={initialDueAt} allowContextSelection={allowContextSelection} />
         {error ? <p className="form-error action-error" role="alert">{error}</p> : null}
       </section>
     </div>
