@@ -72,3 +72,45 @@
   .editorial-dashboard .task-filters button {min-height:34px}
 }
 @media(prefers-reduced-motion:reduce){.editorial-dashboard .dashboard-task-board .task-row {transition:none}}
+
+
+/* V6 Chronicle: architectural composition, manuscript hierarchy, not dashboard cards. */
+:root{--v6-paper:#f1e4cc;--v6-ink:#292923;--v6-rule:#c3a77b}
+.editorial-dashboard{--painting-width:clamp(310px,29vw,470px);background:#17202a}
+.editorial-dashboard .editorial-backdrop{border-right:5px double #c4a36c;box-shadow:15px 0 0 #101c26,19px 0 0 #b9965e6b}
+.editorial-dashboard .editorial-backdrop::after{inset:18px;border:1px solid #c8a66d9e;outline:1px solid #c8a66d45;outline-offset:5px;pointer-events:none}
+.editorial-dashboard .editorial-main{padding:0 clamp(20px,2.2vw,42px) 40px}
+.editorial-dashboard .editorial-heading{min-height:238px;grid-template-columns:minmax(120px,.8fr) minmax(210px,1.5fr) minmax(80px,.55fr);align-items:center;border-bottom:3px double #bd9860;background:linear-gradient(90deg,#101c28c8,#111e2be6);padding:26px 28px}
+.editorial-dashboard .editorial-brandline h1{font-family:Georgia,"Noto Serif CJK SC",serif;font-size:clamp(25px,2.6vw,38px);color:#f0dbb2;opacity:1;letter-spacing:.12em;margin-top:24px;white-space:nowrap}
+.v6-heading-cross{color:#bb9061;font-size:16px;vertical-align:top}
+.editorial-dashboard .editorial-quote>span{font-family:Georgia,"Noto Serif CJK SC",serif;font-size:clamp(19px,2vw,29px);line-height:1.5}
+.editorial-dashboard .editorial-quote p{letter-spacing:.21em;color:#bc9f77}
+.editorial-dashboard .editorial-toolbar{margin:24px 0 19px;background:#1b2930;border-radius:0;border:1px solid #c6a574;outline:1px solid #c6a57455;outline-offset:4px;padding:11px}
+.editorial-dashboard .editorial-toolbar .quick-add{border-radius:0;border:1px solid #bca47b;background:#f6ead6}
+.editorial-dashboard .editorial-toolbar .quick-add button{border-radius:0;background:#74342f}
+.editorial-dashboard .dashboard-layout{grid-template-columns:minmax(0,1fr) minmax(200px,26%);gap:19px}
+.editorial-dashboard .dashboard-task-board{border-radius:0;border:1px solid #ac8855;background:linear-gradient(90deg,#dbc39b2a 0 2%,transparent 2% 98%,#dbc39b2a 98%),#f5e9d5;box-shadow:inset 0 0 0 5px #f5e9d5,inset 0 0 0 6px #c6ad86,0 18px 40px #09131d66;padding:31px clamp(19px,2vw,38px)}
+.editorial-dashboard .dashboard-task-board .board-heading{padding:0 0 23px;border-bottom:3px double #bd9b6b;align-items:center}
+.editorial-dashboard .board-title .board-eyebrow{font-family:Georgia,serif;letter-spacing:.19em;color:#8b6142}
+.editorial-dashboard .board-title h2{font-family:Georgia,"Noto Serif CJK SC",serif;font-size:clamp(28px,2.5vw,37px);letter-spacing:.08em;color:#342c27}
+.editorial-dashboard .board-title>svg{display:block;color:#8f6844}
+.editorial-dashboard .board-total{background:#e4d2b5;color:#654b37}
+.editorial-dashboard .inbox-help{font-family:Georgia,"Noto Serif CJK SC",serif;font-size:12px;color:#7b6553}
+.editorial-dashboard .dashboard-section-heading{border-bottom:1px solid #d7c3a4;margin-top:20px}
+.editorial-dashboard .dashboard-section-heading h2{font-family:Georgia,"Noto Serif CJK SC",serif;letter-spacing:.12em;color:#765840}
+.editorial-dashboard .dashboard-task-board .task-row{min-height:71px;padding:17px 7px;border-bottom:1px solid #dbc8a9}
+.editorial-dashboard .dashboard-task-board .task-row:hover{background:#ead6b8a3}
+.editorial-dashboard .dashboard-task-board .task-check{border-radius:3px;transform:rotate(45deg);width:22px;height:22px;min-width:22px;min-height:22px;border-color:#987955}
+.editorial-dashboard .dashboard-task-board .task-check svg{transform:rotate(-45deg)}
+.editorial-dashboard .dashboard-task-board .task-title-button{font-size:15px;color:#302d2a}
+.editorial-dashboard .dashboard-task-board .task-filters{background:transparent;border-radius:0;border:1px solid #d2bb98}
+.editorial-dashboard .dashboard-task-board .task-filters button{border-radius:0;font-family:Georgia,"Noto Serif CJK SC",serif}
+.editorial-dashboard .dashboard-task-board .task-filters .filter-active{background:#7e3e37;color:#fff1db;box-shadow:none}
+.editorial-dashboard .board-add-link{border-radius:0;border:1px solid #c6a778;color:#684a32;font-family:Georgia,"Noto Serif CJK SC",serif}
+.editorial-dashboard .contexts-mini{border-radius:0;border:1px solid #bd9966;background:#182630;box-shadow:inset 0 0 0 4px #182630,inset 0 0 0 5px #b18b5977}
+.editorial-dashboard .context-entry{border-radius:0}
+.editorial-dashboard .ai-teaser{border-radius:0;background:#e8d7b8;border:1px solid #ad8e61}
+.editorial-dashboard .editorial-footer{letter-spacing:.24em;color:#d1b789}
+.contexts-page .context-card,.context-detail-page .parchment-panel,.ai-page .ai-workspace,.form-dialog,.confirm-dialog{border-radius:0}
+@media(min-width:761px) and (max-width:1279px){.editorial-dashboard{--painting-width:clamp(235px,23vw,330px)}.editorial-dashboard .editorial-heading{min-height:190px;padding:18px 13px}.editorial-dashboard .editorial-brandline h1{font-size:24px}.editorial-dashboard .dashboard-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){.editorial-dashboard{--painting-width:100%}.editorial-dashboard .editorial-backdrop{height:240px;min-height:240px;border-right:0;border-bottom:4px double #c4a36c;box-shadow:none}.editorial-dashboard .editorial-backdrop::after{inset:10px}.editorial-dashboard .editorial-main{padding:0 12px 25px}.editorial-dashboard .editorial-heading{margin-top:-49px;min-height:78px;grid-template-columns:1fr auto;padding:12px 15px;background:#12212eea}.editorial-dashboard .editorial-brandline h1{font-size:19px;margin-top:4px;letter-spacing:.06em}.editorial-dashboard .editorial-toolbar{margin:13px 4px 17px;padding:6px}.editorial-dashboard .dashboard-task-board{padding:22px 19px}.editorial-dashboard .board-title h2{font-size:26px}.editorial-dashboard .dashboard-task-board .task-row{min-height:62px;padding:13px 4px}.editorial-dashboard .dashboard-task-board .task-filters button{font-size:11px}}
