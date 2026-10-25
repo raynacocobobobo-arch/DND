@@ -19,7 +19,7 @@ export function AppShell() {
     } as React.CSSProperties}>
       {import.meta.env.VITE_STATIC_PREVIEW === "true" ? (
         <aside className="preview-banner" role="status">
-          <FleurDeLis size={14}/> 独立预览 · 演示任务仅保存在本浏览器
+          <FleurDeLis size={14}/> 演示模式 · 任务仅保存在本浏览器
         </aside>
       ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
@@ -27,10 +27,10 @@ export function AppShell() {
         <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回首页">
           <FleurDeLis className="brand-fleur" size={38}/>
           <span className="brand-name"><span>HERMES</span><span>TODO</span></span>
-          <span className="brand-subtitle">PERSONAL COMMAND DESK</span>
+          <span className="brand-subtitle">THE DAILY CHRONICLE</span>
         </Link>
         <HeraldicDivider className="sidebar-divider"/>
-        <span className="sidebar-nav-caption">工作台 / WORKSPACE</span>
+        <span className="sidebar-nav-caption">目录 / INDEX</span>
         <nav className="main-navigation floating-tab-bar" aria-label="主导航">
           {links.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end}
@@ -41,13 +41,13 @@ export function AppShell() {
           ))}
         </nav>
         <div className="sidebar-art" aria-hidden="true"><span className="sidebar-art-sigil">FORTITUDO</span></div>
-        <div className="sidebar-motto"><HeraldicDivider/><p>井然有序，方能从容前行。</p><span>AD MAIORA · 向更高之处</span></div>
+        <div className="sidebar-motto"><HeraldicDivider/><p>每一个微小行动，都值得被记下。</p><span>AD ASTRA · 走向星辰</span></div>
       </aside>
       <div className="hermes-main-frame">
         <div className="mobile-brand"><FleurDeLis size={22}/><span>HermesTodo</span></div>
         <main className="app-content" id="main-content" tabIndex={-1}>
           <div className="app-utility-row">
-            <span className="app-edition"><span className="edition-dot"/> HERALDIC EDITION <span className="edition-separator">/</span> 你的个人任务空间</span>
+            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>
             <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
               onClick={() => void logout()}><LogOut aria-hidden="true" size={17}/></button>
           </div>
