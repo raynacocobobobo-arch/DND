@@ -13,6 +13,7 @@ export function AppShell() {
   const { logout } = useAuth();
   return (
     <div className="app-shell">
+      {import.meta.env.VITE_STATIC_PREVIEW === "true" ? <aside className="preview-banner" role="status">最新版交互预览 · 演示数据仅保存在此浏览器，不连接正式服务器</aside> : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
       <main className="app-content" id="main-content" tabIndex={-1}>
         <div className="app-utility-row">
