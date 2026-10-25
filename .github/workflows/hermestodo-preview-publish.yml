@@ -35,6 +35,47 @@ jobs:
           VITE_STATIC_PREVIEW: "true"
           HERMESTODO_PREVIEW: "true"
         run: npx vite build
+      - name: Browser smoke test - local latest preview
+        run: |
+          python3 -m pip install --quiet selenium
+          mkdir -p /tmp/hermestodo-site/DND/hermestodo
+          cp -a HermesTodo/dist/client/. /tmp/hermestodo-site/DND/hermestodo/
+          nohup python3 -m http.server 8090 --bind 127.0.0.1 --directory /tmp/hermestodo-site >/tmp/hermestodo-http.log 2>&1 &
+          cat >/tmp/hermestodo-smoke.py <<'PY'
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+
+          options=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1280,1000']:
+              options.add_argument(arg)
+          browser=webdriver.Chrome(options=options)
+          try:
+              browser.get('http://127.0.0.1:8090/DND/hermestodo/')
+              wait=WebDriverWait(browser,20)
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
+              assert '最新版交互预览' in browser.find_element(By.TAG_NAME,'body').text
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
+              browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
+              browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
+              field=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.quick-add input')))
+              field.send_keys('浏览器交互验收任务')
+              browser.find_element(By.CSS_SELECTOR,'.quick-add button').click()
+              wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.contexts-page')))
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
+              print('BROWSER SMOKE PASSED: home, task details, create, contexts, AI',flush=True)
+          finally:
+              try: print('VISIBLE URL',browser.current_url,flush=True)
+              except Exception: pass
+              browser.quit()
+          PY
+          python3 /tmp/hermestodo-smoke.py
       - name: Publish preview under existing docs folder
         run: |
           mkdir -p /tmp/hermestodo-preview
