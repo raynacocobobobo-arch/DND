@@ -93,7 +93,7 @@ describe("task interactions", () => {
     await user.clear(notes);
     await user.type(notes, "核对登机口和时间");
     expect(screen.queryByLabelText("优先级")).not.toBeInTheDocument();
-    await user.selectOptions(screen.getByLabelText("所属情境"), "work-id");
+    await user.selectOptions(screen.getByLabelText("任务归属"), "work-id");
     await user.clear(screen.getByLabelText("截止日期"));
     await user.type(screen.getByLabelText("截止日期"), "2026-11-03");
     await user.clear(screen.getByLabelText("截止时间"));
