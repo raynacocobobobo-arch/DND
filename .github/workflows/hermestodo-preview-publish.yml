@@ -56,8 +56,9 @@ jobs:
               browser.get('http://127.0.0.1:8090/DND/hermestodo/')
               wait=WebDriverWait(browser,20)
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
-              assert '最新版交互预览' in browser.find_element(By.TAG_NAME,'body').text
+              assert '独立预览' in browser.find_element(By.TAG_NAME,'body').text
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
+              browser.save_screenshot('/tmp/hermestodo-desktop.png')
               browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
               browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
@@ -69,13 +70,27 @@ jobs:
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.contexts-page')))
               browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
-              print('BROWSER SMOKE PASSED: home, task details, create, contexts, AI',flush=True)
+              browser.set_window_size(390,844)
+              browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
+              browser.save_screenshot('/tmp/hermestodo-mobile.png')
+              measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
+              assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
+              print('BROWSER SMOKE PASSED: desktop, create, task details, contexts, AI, mobile no-overflow',flush=True)
           finally:
               try: print('VISIBLE URL',browser.current_url,flush=True)
               except Exception: pass
               browser.quit()
           PY
           python3 /tmp/hermestodo-smoke.py
+      - name: Save browser captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermestodo-heraldic-preview
+          path: |
+            /tmp/hermestodo-desktop.png
+            /tmp/hermestodo-mobile.png
       - name: Publish preview under existing docs folder
         run: |
           mkdir -p /tmp/hermestodo-preview
