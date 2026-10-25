@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 
 import type { Task } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
+import { FleurDeLis } from "../components/HeraldicArt";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ContextCard } from "../components/ContextCard";
 import { ContextForm } from "../components/ContextForm";
@@ -46,7 +47,7 @@ export function ContextsPage() {
   return (
     <section className="page-stack contexts-page">
       <header className="ios-page-header">
-        <span aria-hidden="true" />
+        <FleurDeLis size={24}/>
         <h1>情境</h1>
         <span aria-hidden="true" />
       </header>
