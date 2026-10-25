@@ -1,0 +1,235 @@
+name: Deploy 22 HD Tarot Images
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tarot-hd-transfer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tarot-hd-images-deployment
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Checkout live GitHub Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          persist-credentials: true
+      - name: Install image processing library
+        run: python -m pip install --quiet Pillow
+      - name: Download and validate 22 original HD cards, create WebP files
+        shell: bash
+        run: |
+          cat > /tmp/tarot-source.json <<'IMAGE_MANIFEST_END'
+          [
+            {
+              "id": 0,
+              "name": "THE FOOL",
+              "old_path": "assets/cards/img-02.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbCZvgSmOPQErXUPQn-hR3p1ZOV_LMFby9AoOpFMKiNh4B7itHoAOBHcUpV_c2bkzpBpUo-vhC6eQoURHLiQfcAvxVCMklC5ysaT-pw7jmSOHAGeAAedJBAL9iHjK3XqNkewWGYObedsDyoyo9lefRvrRSQDLpLkpbpak4biQCFDE5TUIk=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 1,
+              "name": "THE MAGICIAN",
+              "old_path": "assets/cards/img-03.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZ8mNeyPvRqnzRgHmPD_sNAjhTouNj2ajpO5ZSxyvVVLwV05B-3pvqpPIBUOMe7UuBrUvslXT995svBucQSWhvw6Pt0_7iGAd9l4TEXQTQ_QIzzpXWmOBDqhub_WmVKLvKL91_HhgNcP02gEQCJWckxayygTpP64MwRrC48GCHGZh2i92E=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 2,
+              "name": "THE HIGH PRIESTESS",
+              "old_path": "assets/cards/img-04.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbuj5FgnixD_L-7y_Z1fn6iP8VcjKCeRVWd_GB5vUYL3DXoBkUci0l1n2LY7xlJI21i_gryeBM5dJt17dmnffeq10AcVUILW2a0OUtVDmrSyBSUHwJVcUD-aWmUUYjpzbhrf99ag7Nl0B6wz1rzO-R2yDsd9qYphkz7DGwzkl9qLLL4RXo=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 3,
+              "name": "THE EMPRESS",
+              "old_path": "assets/cards/img-05.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztaU06U4vaZs0Vrsje4GS1rFSVcvAskM6prvhHnNFuvFvSRCMcERs5H2Udqf_Ky2M6gvCDSiVupnNLlS9ew56d5ppYsnEjoFRBa-SWjeQDE5bP03h6Ci9FzTc4C0WnaCjMpciRET70DkkE9dgCWb-pKpH5S_oC3HCW3v0uQQgbwPzCmzMZY=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 4,
+              "name": "THE EMPEROR",
+              "old_path": "assets/cards/img-01.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztY3RhuhtUt-dCpQ8LbgY13-hcC68WLHCHH34hldlAXTTycvKBwCroiIgMHt1zSw0_LLi5E07XSLCA4NB_GgqIQ-JeBgi6ZsJjiP5NQPkmP3GO1YmbzFjUJH7SXq7YbMoQ1OsNZubEJf4bnoNHzQ_TAXHS1CLayaz7iLpyGAtXaH5YoJ-jE=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 5,
+              "name": "THE HIEROPHANT",
+              "old_path": "assets/cards/img-06.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztaWJ1Gwg5yI7gaoKaQo2LFOS8TUYn4SZhqBu6OnxonvJAk-fKmIDGnd62BOMTvHO2P4OtmtrTG7lytpMQTdB4gMLL10SSwb9VyAA-e2Q2a1qt9dJbHgI4UANHRFyCkmnzxRx3GUTTFrwzJlhRUic4z3ncTSbS7AE1Ws7i8ZaS6C37dPOH0=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 6,
+              "name": "THE LOVERS",
+              "old_path": "assets/cards/img-07.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztY1QiAf3rWcCdauX80_qeny1neQriNnKS2XRHoqSpnStL5GQ8op9shmUbrUQDtQxe8cdNtN8xOu-VLil04Wp1cLnTmvbjRRSG5agwzIHvK-kMXKYHADPLaj8gGfoYKYi6tVH8xxDuqDjjA3wDr0BIpzZh5MLY9x0V5mQh508LT36W4Cto8=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 7,
+              "name": "THE CHARIOT",
+              "old_path": "assets/cards/img-08.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztYpXG2_pRMahBwgeiYxcw1HGvKN6iO05pUW9OURM4IZhZFNiKZkXBynoH9OjobJU5DHKic8hEmFW8Q-U_iSRgt3jq9DVfxwiQ8JSiTRG_Qolr3BMHsK4Bi6cV-OO95mjv-nD2nWFjkaZJQUpXeivVJ9H6qnzoPk8xb_j5e0wmwEAE794oI=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 8,
+              "name": "STRENGTH",
+              "old_path": "assets/cards/img-09.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztY5iyfoPk2Ot8J4zxsQzEpQr9Onog5rBCnyYL2fYkCpBmDR-OVVWnmWD1TS51YRnOtmBILlDUsvssLMTAjsr5sZAq1aiXuXz8HnteFDSAv4HmlV9MkHMu1AMGaUKM1rQOf4kCPPf0FfBOug5R7XJa5DfpS3-GLOKrjzegzIwoYxUJj1=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 9,
+              "name": "THE HERMIT",
+              "old_path": "assets/cards/img-10.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztYUEFxmceJGS-jOMBtd3r6gm2SnpD4KeJG8-1N6JOT6RezemS_TmSY5aWNRqrd7CI4szj0r0tCEAsyCwcVzAokmzatSznSsser9LBrL1J8MeFYjarw7CfcDNPc2gU5B8Ey2HZG_hduKFvn9JtfFLsrZXDPseS9JNcW7dNkBuQ_4ctHTvVs=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 10,
+              "name": "WHEEL OF FORTUNE",
+              "old_path": "assets/cards/img-11.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztaiGFzKodOh4x2Lm4Ck1-F00nBk8lE0gtshGQNczlFSVbpM5y4hO9Aaix_wxDuPOPqCygdOk_3zGtj1PCegUsHYZx98pQAmjAQcEj0Y3Ohyd-lh7-bXI9Lrqwief8lqp9E9ZrP54y0qyg1s2I3PnHkET1Po1_n5oSIe18LtycXpkm31Ljw=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 11,
+              "name": "JUSTICE",
+              "old_path": "assets/cards/img-12.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZkJs17BqVMAiWt7tp9gr9FL9Bc0Tkh3WWfT5JYb5B1PoxdC_SpdBjz24Ti0zOSA8ZTWGvsNt01lqm1uquk-Ujh-AM8GSQxiB5GVgpRqeHA-Y0ro5celACJ5ujN0i9wNGNYoO4UmXRnsI0aktmZQhwFAzgn6Mw9Kb0DFf4bC-UedKfWq80=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 12,
+              "name": "THE HANGED MAN",
+              "old_path": "assets/cards/img-13.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbJ7bi5wT-_Y9imq4r-YVRab2gvjjrcK5PYva6lqDrJlV12lqQV31L472yveeuE1cJ5fYkWmiUWekABoJYnj-wtjV-lSZl6c3fWgaTDNt9nKgLDvVVMPD895ZHKZ4Mok-oLVY-2urTPVX0PJH4OUg6lmScrM7tDSQQambHAlFsmMjkphpY=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 13,
+              "name": "DEATH",
+              "old_path": "assets/cards/img-14.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZVYxBJ16jM1q7xswyuDKy2dQcU0cvDU6ZersLstAQsJrwaPZdJR3uFxjScBRn5hlRJLXQHMLEr3OkDyYcnGW2cgEOFLq9sbMk4_cXXCD4f2IQRhWD_lqlLvWl7FsnhooUjnMQ739ZD1BiFLjNfJ86TiD78hxfqwdym-OCUxcFgeqRN2lo=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 14,
+              "name": "TEMPERANCE",
+              "old_path": "assets/cards/img-15.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztb1FzDqdxN2Mv_eD5M03Mbi3szru-mNqnu8IjlgLvBvkaAVkEH4bbvef4Ksy97unS1oUPYMPGFDDbcMuWzCpIC0WYNja08AFZugWh2i_zoJpriPRu13A1nh1VbgHCwLCQSVwmYsXYqy7_hYC4kaLrP1-IrZ4ewUrCUJ5Nc2NeLZmqnX=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 15,
+              "name": "THE DEVIL",
+              "old_path": "assets/cards/img-16.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZt1jf3YYbiPmrJBQn_gracCSxKvdkjqS7-crQsZx8MTPVgKFyQWAPpWVw_UXtNYntIxZF1tNjZ7uqQSN78QDzjUVfnY5B-1lKKZCHC8CmmEc5ucJHWzmKSVoI-Hqo7G1UeHQwlLVCL4h090I0SSq1BtM3sGb7OePTAvJ1tbdduPzt83IU=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 16,
+              "name": "THE TOWER",
+              "old_path": "assets/cards/img-17.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuzta-sg4mi2O3AG8S2Sq3BtnFOciezDfW7RE_JL8yMm1HW8bEsLem9TJBudK6_MlA4FEHWjv96Kd0116i_3pUJxlUptbGVeb3UdZgxdEz2GaAX3qpiZeiU47fpKKJMHlnjXIpC1gK4MRexU4sxKYBnM2kw4WhChq8e6QoTrnKT_WcQG7BCxc=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 17,
+              "name": "THE STAR",
+              "old_path": "assets/cards/img-18.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztapBbqKSu5PXcn8uE8HRa4xPlDO4HaFW13WjFdylDhbvXz8fG8XCfW1-kDbrJ8vs1Tps8A99nNyJZvjFKonTnw8sOUqUoktqK9e7EPaWuj0PwxMXHL0r0phu91bYBpypg8GauVjxBR7L76E18xrqWJVrjjG1mrx1NAQmVxA-HV5DylTfI0=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 18,
+              "name": "THE MOON",
+              "old_path": "assets/cards/img-00.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztax1n2zkDHuDGS2BwscioeCpsuGtsav8V0r_hKC7iAhCmzTZOLKuW04-3lQTzuAnDJCu3AzMKcE3IYdzLAHX2hPCnvAAgRi6-1gjBiob2zT3_SleTXfiNI5l2aLscc90JDv34_CovIQ1xhQlcH6ZLToNQM3W1vkj2nK_aPr9I99hUtC=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 19,
+              "name": "THE SUN",
+              "old_path": "assets/cards/img-19.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbNFPwYVFipFZN2MUsMYhhBS9_ELE4R_hDPeor4e-IhAAoJ48wvV45Z7xy_8I7EaN_j4JJ3Muny3s4QMMA9m5HxpLma1CMrwzzda4nNMCvzsYGdkc3uG5fgBEo7zmVjZ452VsV4XZVZqgW7V2RC3P-NYDpqr4_BdMMdZO8pq_1OqNNOF2o=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 20,
+              "name": "JUDGEMENT",
+              "old_path": "assets/cards/img-20.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZ5vRNo9CDIiY2OFMkpYHWlD6AcUQ5DmMDpIu3MhztyZl1HKOU-WcjK36RBeVu_LYDkTCdmddJLUo_XENHthxbpLHqJuUGQewBFwrV935a_o10C67Hv_MymtBkNk-oavcY7FL58Vyhlfs3IPF420MpkAl2YeF7cehY6tWpYEOVjZB3ZEuE=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            },
+            {
+              "id": 21,
+              "name": "THE WORLD",
+              "old_path": "assets/cards/img-21.webp",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbgV3INrP4PzlhGtClYUSU8E1i1iWiWsTvIhr4RfjJ4wiwzMFpYKE2ZWh6iUNzPTjqxK9wo3JLJ2ukwyZFjamw2NozO1EDJGYTqvEUAekK29_rUaXrcKTF-OTVQS_TQSYqIGTIvHJkvrB0qYaIJiaFp26IGcNher3XUlgsvT4CQhwIV58w=s2048?key=iHJRqR8mkdcTKGam5yicQA"
+            }
+          ]
+          IMAGE_MANIFEST_END
+          cat > /tmp/process_tarot.py <<'PYTHON_END'
+          import io, json, hashlib, os, shutil, urllib.request, time
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          from PIL import Image, ImageOps
+
+          data=json.load(open('/tmp/tarot-source.json',encoding='utf8'))
+          assert len(data)==22 and set(x['id'] for x in data)==set(range(22))
+          assert len({x['old_path'] for x in data})==22
+          for folder in ['assets/cards','assets/cards-hd','assets/cards-thumb']:
+              os.makedirs(folder,exist_ok=True)
+
+          def process(item):
+              last=None
+              for attempt in range(4):
+                  try:
+                      request=urllib.request.Request(item['url'],headers={'User-Agent':'TarotHDTransfer/1.0'})
+                      with urllib.request.urlopen(request,timeout=45) as r:
+                          raw=r.read()
+                      if len(raw)<200_000: raise ValueError('Unexpected small original')
+                      with Image.open(io.BytesIO(raw)) as img:
+                          img=ImageOps.exif_transpose(img).convert('RGB')
+                          if img.width<800 or img.height<1400:
+                              raise ValueError('Not HD '+str(img.size))
+                          original_size=img.size
+                          buff=io.BytesIO();img.save(buff,'WEBP',quality=93,method=6)
+                          hd_bytes=buff.getvalue()
+                          thumb=img.copy();thumb.thumbnail((360,640),Image.Resampling.LANCZOS)
+                          tb=io.BytesIO();thumb.save(tb,'WEBP',quality=83,method=5)
+                          thumb_bytes=tb.getvalue()
+                      i=item['id']
+                      hd=f'assets/cards-hd/arcana-{i:02d}.webp'
+                      old=item['old_path']
+                      small=f'assets/cards-thumb/arcana-{i:02d}.webp'
+                      for path,bytes_ in [(hd,hd_bytes),(old,hd_bytes),(small,thumb_bytes)]:
+                          with open(path,'wb') as f:f.write(bytes_)
+                      return {'id':i,'name':item['name'],'hd':hd,'old':old,'thumbnail':small,
+                              'original_size':list(original_size),'hd_bytes':len(hd_bytes),
+                              'thumb_bytes':len(thumb_bytes),'sha256':hashlib.sha256(hd_bytes).hexdigest()}
+                  except Exception as exc:
+                      last=exc
+                      time.sleep(attempt*2+1)
+              raise RuntimeError('Unable to download card '+str(item['id'])+': '+repr(last))
+
+          outputs=[]
+          with ThreadPoolExecutor(max_workers=6) as pool:
+              jobs=[pool.submit(process,item) for item in data]
+              for job in as_completed(jobs):
+                  v=job.result(); outputs.append(v)
+                  print('OK',f"{v['id']:02}",v['name'],v['original_size'],v['hd_bytes'],flush=True)
+          outputs.sort(key=lambda x:x['id'])
+          assert len(outputs)==22 and len({x['sha256'] for x in outputs})==22
+          for entry in outputs:
+              path=entry['hd']
+              with Image.open(path) as im:
+                  assert im.format=='WEBP' and im.size==tuple(entry['original_size'])
+          with open('assets/cards-hd/manifest.json','w',encoding='utf8') as f:
+              json.dump(outputs,f,ensure_ascii=False,indent=2)
+          print('VERIFIED_22_HIGH_RESOLUTION_CARDS',sum(x['hd_bytes'] for x in outputs),flush=True)
+          PYTHON_END
+          python /tmp/process_tarot.py
+      - name: Commit actual image binaries to live branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/cards assets/cards-hd assets/cards-thumb
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "No changes in image files"; exit 1; }
+          git commit -m "assets(tarot): replace all 22 images with verified original HD art"
+          git push origin HEAD:gh-pages
