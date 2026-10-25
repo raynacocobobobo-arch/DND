@@ -18,7 +18,8 @@ export function HomePage() {
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<"all" | "active" | "done">("all");
   const contexts = useContexts();
-  const tasks = useTasks({ sort: "createdAt" });
+  // Home is an inbox; tasks assigned to a context belong only to that context.
+  const tasks = useTasks({ scope: "inbox", sort: "createdAt" });
   const allTasks = tasks.data ?? [];
   const selectedTask = allTasks.find((task) => task.id === selectedTaskId);
   const pendingTasks = allTasks.filter((task) => !task.isCompleted);
@@ -71,7 +72,7 @@ export function HomePage() {
             <header className="board-heading">
               <div className="board-title">
                 <FleurDeLis size={21} aria-hidden="true"/>
-                <div><span className="board-eyebrow">MY TO-DO LIST</span><h2>待办清单</h2></div>
+                <div><span className="board-eyebrow">PERSONAL INBOX</span><h2>收集箱</h2></div>
                 <span className="board-total">{pendingTasks.length}</span>
               </div>
               <div className="task-filters" role="group" aria-label="任务状态筛选">
@@ -85,6 +86,7 @@ export function HomePage() {
                 ))}
               </div>
             </header>
+            <p className="inbox-help">只显示未归入情境的待办；情境里的任务在各自页面管理。</p>
             {showActive ? (
               <section className="dashboard-section dashboard-focus" aria-label="未完成任务">
                 <div className="dashboard-section-heading"><h2>未完成</h2><span className="section-count">{pendingTasks.length} 项</span></div>
@@ -92,7 +94,7 @@ export function HomePage() {
                   <div className="dashboard-empty" role="alert">任务加载失败。<button type="button" className="text-retry-button" onClick={() => void tasks.refetch()}>重试</button></div>
                 ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : pendingTasks.length ? (
                   <TaskList tasks={pendingTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
-                ) : <p className="dashboard-empty">待办已经清空。添加一件事，或者看看已完成清单。</p>}
+                ) : <p className="dashboard-empty">收集箱是空的。直接记下一件事，或者进入情境查看分类任务。</p>}
               </section>
             ) : null}
             {showDone ? (
@@ -106,7 +108,7 @@ export function HomePage() {
           </section>
           <aside className="dashboard-side-column">
             <section className="contexts-mini">
-              <div className="side-card-heading"><h2>情境入口</h2><Link to="/contexts">全部 <ChevronRight size={13}/></Link></div>
+              <div className="side-card-heading"><h2>我的情境</h2><Link to="/contexts">全部 <ChevronRight size={13}/></Link></div>
               <div className="context-strip">
                 {(contexts.data ?? []).slice(0, 4).map((context) => (
                   <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
@@ -124,7 +126,7 @@ export function HomePage() {
         <footer className="editorial-footer">DISCIPLINE CREATES FREEDOM <FleurDeLis size={13}/> HERMES TODO</footer>
       </div>
       {selectedTask ? <TaskDetail task={selectedTask} contexts={contexts.data ?? []} onClose={() => setSelectedTaskId(undefined)}/> : null}
-      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} onClose={() => setCreateTaskOpen(false)}/> : null}
+      {createTaskOpen ? <TaskCreateDialog contexts={contexts.data ?? []} allowContextSelection={false} onClose={() => setCreateTaskOpen(false)}/> : null}
     </section>
   );
 }
