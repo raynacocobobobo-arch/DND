@@ -404,3 +404,12 @@
   .task-more-options summary { min-height: 44px; display: flex; align-items: center; }
   .editorial-dashboard .task-filters button { min-height: 35px; }
 }
+
+/* Prevent the full-height painted heroine from disappearing behind the
+   dashboard background on desktop; the separate image plane must stay visible. */
+.editorial-dashboard .editorial-backdrop {
+  z-index: 0;
+}
+.editorial-dashboard .editorial-main {
+  z-index: 3;
+}
