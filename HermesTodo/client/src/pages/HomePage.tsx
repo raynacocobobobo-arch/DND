@@ -4,7 +4,7 @@ import { CircleAlert, CircleCheck, ChevronRight, Sparkles, Sun, ArrowUpRight } f
 import { Link } from "react-router-dom";
 
 import { ContextIcon } from "../components/ContextIcon";
-import { CathedralScene, FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
+import { FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
 import { QuickAdd } from "../components/QuickAdd";
 import { TaskList } from "../components/TaskList";
 import { TaskDetail } from "../components/TaskDetail";
@@ -46,7 +46,7 @@ export function HomePage() {
   return (
     <section className="page-stack ios-dashboard">
       <section className="dashboard-hero">
-        <CathedralScene className="dashboard-hero-art"/>
+        <img className="dashboard-hero-art" src={`${import.meta.env.BASE_URL}art/hero-standard-bearer.webp`} alt="" loading="eager" decoding="async"/>
         <div className="hero-content">
           <header className="ios-page-header">
             <span className="hero-overline"><FleurDeLis size={19}/> YOUR DAILY CHAPTER</span>
@@ -55,7 +55,7 @@ export function HomePage() {
           </header>
           <div className="dashboard-greeting">
             <h2>{greeting}</h2>
-            <p>将重要的事，做得从容而坚定。</p>
+            <p>重要的事，值得全心以赴。</p>
             <HeraldicDivider className="hero-divider"/>
           </div>
         </div>
