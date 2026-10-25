@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 
 import { useAuth } from "../auth/AuthProvider";
+import { CathedralScene, FleurDeLis, HeraldicDivider } from "../components/HeraldicArt";
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -24,10 +25,12 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
+      <CathedralScene className="login-scene"/>
       <section className="login-card" aria-labelledby="login-title">
-        <div className="brand-mark" aria-hidden="true">H</div>
+        <div className="brand-mark" aria-hidden="true"><FleurDeLis size={37}/></div>
         <p className="eyebrow">你的个人任务空间</p>
         <h1 id="login-title">HermesTodo</h1>
+        <HeraldicDivider className="login-divider"/>
         <p className="login-intro">在电脑和手机上，安静地把事情理清楚。</p>
         <form onSubmit={submit} className="login-form">
           <label htmlFor="password">个人密码</label>
