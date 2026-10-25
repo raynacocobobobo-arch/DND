@@ -1,0 +1,86 @@
+name: Verify HD Tarot Site
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/tarot-hd-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Install image and browser checks
+        run: |
+          python -m pip install --quiet Pillow requests selenium
+          sudo apt-get update -qq && sudo apt-get install -qq -y fonts-wqy-microhei
+      - name: Verify all 22 live HD card URLs
+        run: |
+          cat > /tmp/verify_tarot.py <<'PY'
+          import requests,time,hashlib,io
+          from concurrent.futures import ThreadPoolExecutor
+          from PIL import Image
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          session=requests.Session()
+          for attempt in range(30):
+              r=session.get(base+'?hd-check='+str(attempt),timeout=20,headers={'Cache-Control':'no-cache'})
+              if r.ok and 'assets/cards-hd/arcana-00.webp' in r.text:
+                  break
+              print('Waiting for GitHub Pages publish',attempt,r.status_code,flush=True)
+              time.sleep(6)
+          else:
+              raise RuntimeError('The published HTML still does not reference HD cards')
+          print('LIVE HTML references HD image directory',flush=True)
+          def verify(id):
+              path=f'assets/cards-hd/arcana-{id:02d}.webp?v=hd-20261026'
+              url=base+path
+              response=requests.get(url,timeout=35)
+              response.raise_for_status()
+              with Image.open(io.BytesIO(response.content)) as img:
+                  img.load()
+                  assert img.size==(864,1536), f'{id} size: {img.size}'
+                  assert img.format=='WEBP', f'{id} format: {img.format}'
+              return (id,len(response.content),hashlib.sha256(response.content).hexdigest())
+          with ThreadPoolExecutor(max_workers=8) as pool:
+              rows=list(pool.map(verify,range(22)))
+          assert len(set(x[2] for x in rows))==22
+          for id,n,sha in rows: print('LIVE_HD_CARD',id,n,sha[:12],flush=True)
+          print('ALL_22_LIVE_HIGH_RESOLUTION_CARDS_PASSED',flush=True)
+
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          opts=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1280,940']:opts.add_argument(a)
+          b=webdriver.Chrome(options=opts)
+          try:
+              b.get(base+'?fresh=hd-verification')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#grid .card'))==22)
+              assert b.execute_script("return C.length") == 22
+              assert all('assets/cards-hd/' in x for x in b.execute_script("return C.map(x=>x.img)"))
+              allImages=b.execute_async_script("""
+                const done=arguments[0];
+                Promise.all([...document.querySelectorAll('#grid img')].map(i=>(i.loading='eager',i.decode().catch(()=>null))))
+                  .then(()=>done([...document.querySelectorAll('#grid img')].map(i=>i.naturalWidth)));
+              """)
+              assert allImages==[864]*22,allImages
+              print('BROWSER_CODEX_22_CARDS_ALL_HD',flush=True)
+              b.find_element(By.CSS_SELECTOR,'#drawBtn').click()
+              WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.result-card img'))==1)
+              size=b.execute_async_script("""
+                const done=arguments[0];
+                const img=document.querySelector('.result-card img');
+                img.decode().then(()=>done([img.naturalWidth,img.naturalHeight])).catch(e=>done(['ERROR',e.message]));
+              """)
+              assert size==[864,1536],size
+              print('BROWSER_DRAW_SINGLE_HD_PASSED',flush=True)
+              b.find_element(By.CSS_SELECTOR,'#modes button[data-n="3"]').click()
+              b.find_element(By.CSS_SELECTOR,'#drawBtn').click()
+              assert len(b.find_elements(By.CSS_SELECTOR,'.result-card img'))==3
+              print('BROWSER_DRAW_THREE_HD_PASSED',flush=True)
+          finally:
+              b.quit()
+          PY
+          python /tmp/verify_tarot.py
