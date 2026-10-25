@@ -13,7 +13,10 @@ const links = [
 export function AppShell() {
   const { logout } = useAuth();
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{
+      "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
+      "--art-figure": `url("${import.meta.env.BASE_URL}art/standard-bearer-foreground.webp")`
+    } as React.CSSProperties}>
       {import.meta.env.VITE_STATIC_PREVIEW === "true" ? (
         <aside className="preview-banner" role="status">
           <FleurDeLis size={14}/> 独立预览 · 演示任务仅保存在本浏览器
