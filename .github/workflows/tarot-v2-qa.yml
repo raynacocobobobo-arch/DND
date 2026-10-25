@@ -1,0 +1,163 @@
+name: Tarot V2 Browser QA
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/tarot-v2-qa.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - name: Install Selenium
+        run: python -m pip install --quiet selenium
+      - name: Browser check - story, reading, mobile, offline
+        run: |
+          cat > /tmp/tarot_v2_qa.py <<'PY'
+          import time,os,traceback
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+
+          SITE='https://raynacocobobobo-arch.github.io/DND/'
+          o=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1440,1000']: o.add_argument(a)
+          d=webdriver.Chrome(options=o)
+          d.set_script_timeout(40)
+          os.makedirs('/tmp/tarot-shots',exist_ok=True)
+          def wait(css):
+            return WebDriverWait(d,18).until(EC.presence_of_element_located((By.CSS_SELECTOR,css)))
+          def tap(css):
+            e=wait(css)
+            d.execute_script("arguments[0].scrollIntoView({block:'center',behavior:'instant'})",e)
+            time.sleep(.16)
+            e.click()
+            return e
+          def check_width(label):
+            q=d.execute_script("return {width:window.innerWidth,scroll:document.documentElement.scrollWidth,body:document.body.scrollWidth};")
+            print('WIDTH '+label, q,flush=True)
+            assert q['scroll']<=q['width']+2, 'Horizontal page overflow: '+label+str(q)
+          try:
+            d.get(SITE)
+            wait('#app')
+            print('TITLE',d.title,flush=True)
+            assert '克苏鲁塔罗' in d.title
+            tap('#agreeWelcome')
+            wait('.editorial-hero')
+            assert '读懂命运' in d.find_element(By.CSS_SELECTOR,'.editorial-hero').text
+            check_width('desktop home')
+            d.save_screenshot('/tmp/tarot-shots/desktop-home.png')
+            d.execute_script("location.hash='#/codex'")
+            WebDriverWait(d,10).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.codex-card'))==22)
+            print('CODEX 22 CONFIRMED',flush=True)
+            tap('.codex-card[href="#/codex/0"]')
+            text=wait('.story-prose').text
+            assert len(text)>450, 'Story too short'
+            for title in ['神话故事','从画面读象征','正位','逆位','原著依据']: assert title in text,title
+            print('NARRATIVE PAGE',len(text),'characters',flush=True)
+            d.save_screenshot('/tmp/tarot-shots/desktop-story.png')
+            d.execute_script("location.hash='#/ritual'")
+            tap('#enterRitual')
+            tap('#shuffleAnim')
+            wait('[data-cut="11"]')
+            tap('[data-cut="11"]')
+            tap('[data-slot="0"]')
+            tap('#flippingCard')
+            tap('#nextDraw')
+            wait('.offline-reading')
+            assert len(d.find_elements(By.CSS_SELECTOR,'.offline-card-story'))==1
+            assert len(d.find_element(By.CSS_SELECTOR,'.offline-reading').text)>450
+            assert '本地解读' in d.find_element(By.CSS_SELECTOR,'.offline-reading').text
+            print('OFFLINE SINGLE TEXT OK',flush=True)
+            d.save_screenshot('/tmp/tarot-shots/desktop-reading.png')
+            d.refresh()
+            wait('button[data-spread="three"]')
+            tap('button[data-spread="three"]')
+            tap('#enterRitual')
+            tap('#shuffleAnim')
+            tap('[data-cut="11"]')
+            for i in range(3):
+              tap('[data-slot="'+str(i)+'"]')
+              tap('#flippingCard')
+              tap('#nextDraw')
+            wait('.offline-reading')
+            assert len(d.find_elements(By.CSS_SELECTOR,'.offline-card-story'))==3
+            assert '牌阵合读' in d.find_element(By.CSS_SELECTOR,'.offline-synthesis').text
+            assert len(d.find_elements(By.CSS_SELECTOR,'.reading-card'))==3
+            print('THREE-CARD READING OK',flush=True)
+
+            # Browser offline: ensure service worker activated and all 22 images cached.
+            state=d.execute_async_script("""
+              const done=arguments[0];
+              if(!('serviceWorker' in navigator)){done('no service worker');return;}
+              navigator.serviceWorker.ready.then(async reg=>{
+                const cache=await caches.open('forbidden-arcana-v2-20261025');
+                const keys=await cache.keys();done(JSON.stringify({active:reg.active?.state,cached:keys.length,scope:reg.scope}));
+              }).catch(e=>done('ERROR '+e.message));
+            """)
+            print('SERVICE WORKER',state,flush=True)
+            assert 'cached' in state and 'active' in state, state
+            d.refresh()
+            WebDriverWait(d,15).until(lambda b:b.execute_script("return !!navigator.serviceWorker.controller"))
+            d.execute_cdp_cmd('Network.enable',{})
+            d.execute_cdp_cmd('Network.emulateNetworkConditions',{'offline':True,'latency':0,'downloadThroughput':0,'uploadThroughput':0})
+            d.get(SITE+'?qa-offline=1#/codex')
+            WebDriverWait(d,15).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.codex-card'))==22)
+            imgs=d.execute_async_script("""
+              const done=arguments[0];let list=[...document.querySelectorAll('.codex-card img')];
+              Promise.all(list.map(im=>im.complete?Promise.resolve():new Promise(r=>{im.onload=r;im.onerror=r;setTimeout(r,4000)})))
+                .then(()=>done(list.map(im=>!!im.naturalWidth).filter(Boolean).length));
+            """)
+            print('OFFLINE CARD IMAGES',imgs,'/22',flush=True)
+            assert imgs>=22, 'Offline image caching failed'
+            tap('.codex-card[href="#/codex/13"]')
+            assert '蜕变' in wait('.story-prose').text
+            d.execute_script("location.hash='#/ritual'")
+            tap('#enterRitual')
+            tap('#shuffleAnim')
+            tap('[data-cut="11"]')
+            tap('[data-slot="1"]')
+            tap('#flippingCard')
+            tap('#nextDraw')
+            assert len(wait('.offline-reading').text)>450
+            print('NETWORK DISCONNECTED: drawing + story explanation PASSED',flush=True)
+            d.execute_cdp_cmd('Network.emulateNetworkConditions',{'offline':False,'latency':0,'downloadThroughput':-1,'uploadThroughput':-1})
+
+            d.set_window_size(390,844)
+            d.get(SITE+'?v=mobileQA#/codex')
+            WebDriverWait(d,12).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.codex-card'))==22)
+            check_width('mobile codex')
+            d.save_screenshot('/tmp/tarot-shots/mobile-codex.png')
+            tap('.codex-card[href="#/codex/5"]')
+            check_width('mobile story')
+            d.save_screenshot('/tmp/tarot-shots/mobile-story.png')
+            d.execute_script("location.hash='#/'")
+            wait('.editorial-hero')
+            check_width('mobile home')
+            d.save_screenshot('/tmp/tarot-shots/mobile-home.png')
+            print('ALL QA CHECKS PASSED',flush=True)
+          except Exception:
+            print('FAIL',traceback.format_exc(),flush=True)
+            print('CURRENT URL',d.current_url,flush=True)
+            print('TEXT',d.find_element(By.TAG_NAME,'body').text[:2000],flush=True)
+            d.save_screenshot('/tmp/tarot-shots/failed.png')
+            raise
+          finally:
+            try:print('BROWSER LOGS',d.get_log('browser'),flush=True)
+            except Exception: pass
+            d.quit()
+          PY
+          python /tmp/tarot_v2_qa.py
+      - name: Save QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarot-v2-browser-screenshots
+          path: /tmp/tarot-shots
