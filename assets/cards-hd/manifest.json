@@ -1,0 +1,310 @@
+[
+  {
+    "id": 0,
+    "name": "THE FOOL",
+    "hd": "assets/cards-hd/arcana-00.webp",
+    "old": "assets/cards/img-02.webp",
+    "thumbnail": "assets/cards-thumb/arcana-00.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 431148,
+    "thumb_bytes": 66592,
+    "sha256": "39287a303288d73312381f09931e72673ed6a6d3edcc851754eeda362446667b"
+  },
+  {
+    "id": 1,
+    "name": "THE MAGICIAN",
+    "hd": "assets/cards-hd/arcana-01.webp",
+    "old": "assets/cards/img-03.webp",
+    "thumbnail": "assets/cards-thumb/arcana-01.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 378950,
+    "thumb_bytes": 61358,
+    "sha256": "d4903f515974343e0c66ec614fd1b0e9147720f4a0ee3259f66154d7a969881a"
+  },
+  {
+    "id": 2,
+    "name": "THE HIGH PRIESTESS",
+    "hd": "assets/cards-hd/arcana-02.webp",
+    "old": "assets/cards/img-04.webp",
+    "thumbnail": "assets/cards-thumb/arcana-02.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 454660,
+    "thumb_bytes": 70506,
+    "sha256": "2e5145fe0e56fb0601298e22e9ac39fb78edd03abdd836cc1b703c498bd51513"
+  },
+  {
+    "id": 3,
+    "name": "THE EMPRESS",
+    "hd": "assets/cards-hd/arcana-03.webp",
+    "old": "assets/cards/img-05.webp",
+    "thumbnail": "assets/cards-thumb/arcana-03.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 580678,
+    "thumb_bytes": 97520,
+    "sha256": "861f4786ffe02c060800e3eef986f1f52953a2f048fb593ff43aaf45366bbf71"
+  },
+  {
+    "id": 4,
+    "name": "THE EMPEROR",
+    "hd": "assets/cards-hd/arcana-04.webp",
+    "old": "assets/cards/img-01.webp",
+    "thumbnail": "assets/cards-thumb/arcana-04.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 479676,
+    "thumb_bytes": 72318,
+    "sha256": "b992a63e9e5afdf3139616faf1ac38100b5c47a2ea0c4194bc31169417c0337d"
+  },
+  {
+    "id": 5,
+    "name": "THE HIEROPHANT",
+    "hd": "assets/cards-hd/arcana-05.webp",
+    "old": "assets/cards/img-06.webp",
+    "thumbnail": "assets/cards-thumb/arcana-05.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 484178,
+    "thumb_bytes": 78132,
+    "sha256": "f1df578cab3eec802a63d395b16bb95ea0037f05b8f385eb6a7cc78c8623b288"
+  },
+  {
+    "id": 6,
+    "name": "THE LOVERS",
+    "hd": "assets/cards-hd/arcana-06.webp",
+    "old": "assets/cards/img-07.webp",
+    "thumbnail": "assets/cards-thumb/arcana-06.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 375022,
+    "thumb_bytes": 57686,
+    "sha256": "bd05cbb581be5273fad38da0be27b3a1e84a3f4478d2eb06175bb21824911f3c"
+  },
+  {
+    "id": 7,
+    "name": "THE CHARIOT",
+    "hd": "assets/cards-hd/arcana-07.webp",
+    "old": "assets/cards/img-08.webp",
+    "thumbnail": "assets/cards-thumb/arcana-07.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 479290,
+    "thumb_bytes": 75506,
+    "sha256": "3cec7c0756a29451182fcf27b64de755ac6b67abacee382b65ff6f32dbf6a5d2"
+  },
+  {
+    "id": 8,
+    "name": "STRENGTH",
+    "hd": "assets/cards-hd/arcana-08.webp",
+    "old": "assets/cards/img-09.webp",
+    "thumbnail": "assets/cards-thumb/arcana-08.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 413908,
+    "thumb_bytes": 64826,
+    "sha256": "2f43087fdde7d9662988b14c2f2a20baf9c742d8aeaf9ac2fbdd008a36eb9a3b"
+  },
+  {
+    "id": 9,
+    "name": "THE HERMIT",
+    "hd": "assets/cards-hd/arcana-09.webp",
+    "old": "assets/cards/img-10.webp",
+    "thumbnail": "assets/cards-thumb/arcana-09.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 369156,
+    "thumb_bytes": 58148,
+    "sha256": "e91c8670c0b51a37ff908622472175316adcb865a62ef35582c810589b6e2c22"
+  },
+  {
+    "id": 10,
+    "name": "WHEEL OF FORTUNE",
+    "hd": "assets/cards-hd/arcana-10.webp",
+    "old": "assets/cards/img-11.webp",
+    "thumbnail": "assets/cards-thumb/arcana-10.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 528998,
+    "thumb_bytes": 80270,
+    "sha256": "05f70e19520adf82a8ab654b412e10b7777b76a29f06648bb9df7b4a454d4d9f"
+  },
+  {
+    "id": 11,
+    "name": "JUSTICE",
+    "hd": "assets/cards-hd/arcana-11.webp",
+    "old": "assets/cards/img-12.webp",
+    "thumbnail": "assets/cards-thumb/arcana-11.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 514442,
+    "thumb_bytes": 80418,
+    "sha256": "ee8d4b7c2ddeb3cec73a4faf5f5b115a11072e36180801236453c06e71036127"
+  },
+  {
+    "id": 12,
+    "name": "THE HANGED MAN",
+    "hd": "assets/cards-hd/arcana-12.webp",
+    "old": "assets/cards/img-13.webp",
+    "thumbnail": "assets/cards-thumb/arcana-12.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 529874,
+    "thumb_bytes": 82162,
+    "sha256": "c7761afa6026ae6d29de818700b18268ede3926f76212a330e2fd78e73a09ef9"
+  },
+  {
+    "id": 13,
+    "name": "DEATH",
+    "hd": "assets/cards-hd/arcana-13.webp",
+    "old": "assets/cards/img-14.webp",
+    "thumbnail": "assets/cards-thumb/arcana-13.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 457210,
+    "thumb_bytes": 72810,
+    "sha256": "e1cbb8ecea3ddb31f8ab055511ed91dfc702b05fdcee5115194ec3845b852fc3"
+  },
+  {
+    "id": 14,
+    "name": "TEMPERANCE",
+    "hd": "assets/cards-hd/arcana-14.webp",
+    "old": "assets/cards/img-15.webp",
+    "thumbnail": "assets/cards-thumb/arcana-14.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 540504,
+    "thumb_bytes": 84754,
+    "sha256": "bd227333ef6dbcbd51a5c342e0a7293c97b9ab8fcd71161c445b63858c86a846"
+  },
+  {
+    "id": 15,
+    "name": "THE DEVIL",
+    "hd": "assets/cards-hd/arcana-15.webp",
+    "old": "assets/cards/img-16.webp",
+    "thumbnail": "assets/cards-thumb/arcana-15.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 493676,
+    "thumb_bytes": 79516,
+    "sha256": "b7a8444c85f0b7ee563bd454ad9b38ae35885f90d93ddba15b5f07e5ac7c0314"
+  },
+  {
+    "id": 16,
+    "name": "THE TOWER",
+    "hd": "assets/cards-hd/arcana-16.webp",
+    "old": "assets/cards/img-17.webp",
+    "thumbnail": "assets/cards-thumb/arcana-16.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 546970,
+    "thumb_bytes": 86174,
+    "sha256": "06cef18929fe50f4facfacb8f0c95128cfb00d6a41a2eaa03cd8b5e60018a8f7"
+  },
+  {
+    "id": 17,
+    "name": "THE STAR",
+    "hd": "assets/cards-hd/arcana-17.webp",
+    "old": "assets/cards/img-18.webp",
+    "thumbnail": "assets/cards-thumb/arcana-17.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 570140,
+    "thumb_bytes": 88630,
+    "sha256": "8528602448009d789ff0ccfa86f93c808dc440634250c80b276e5f9201eb05dd"
+  },
+  {
+    "id": 18,
+    "name": "THE MOON",
+    "hd": "assets/cards-hd/arcana-18.webp",
+    "old": "assets/cards/img-00.webp",
+    "thumbnail": "assets/cards-thumb/arcana-18.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 447066,
+    "thumb_bytes": 69324,
+    "sha256": "ae4d85caea967e61ef472bbc031c13b5e5c7abbb17d98315919ae9144647a026"
+  },
+  {
+    "id": 19,
+    "name": "THE SUN",
+    "hd": "assets/cards-hd/arcana-19.webp",
+    "old": "assets/cards/img-19.webp",
+    "thumbnail": "assets/cards-thumb/arcana-19.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 532970,
+    "thumb_bytes": 84606,
+    "sha256": "3e4bed431c44ad09e47ad9c29a945ad77b002b9687cc7c995c98a95addb12c6b"
+  },
+  {
+    "id": 20,
+    "name": "JUDGEMENT",
+    "hd": "assets/cards-hd/arcana-20.webp",
+    "old": "assets/cards/img-20.webp",
+    "thumbnail": "assets/cards-thumb/arcana-20.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 498708,
+    "thumb_bytes": 77390,
+    "sha256": "369e8948dd0e1de1ceb0d8f169a7885a0123099fd546e90f4a2ee904398d7491"
+  },
+  {
+    "id": 21,
+    "name": "THE WORLD",
+    "hd": "assets/cards-hd/arcana-21.webp",
+    "old": "assets/cards/img-21.webp",
+    "thumbnail": "assets/cards-thumb/arcana-21.webp",
+    "original_size": [
+      864,
+      1536
+    ],
+    "hd_bytes": 617652,
+    "thumb_bytes": 98946,
+    "sha256": "352c5b8da46a2b24154c63a523631bb26771c73e9c25aa9c3ab9178a186097b9"
+  }
+]
