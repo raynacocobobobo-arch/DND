@@ -19,7 +19,7 @@ export function QuickAdd({ contextId, dueToday = false, onEmpty }: QuickAddProps
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
   const createTask = useCreateTask();
-  const label = dueToday ? "快速添加今日任务" : "快速添加情境任务";
+  const label = dueToday ? "快速添加今日任务" : contextId ? "快速添加情境任务" : "快速添加任务";
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,7 +49,7 @@ export function QuickAdd({ contextId, dueToday = false, onEmpty }: QuickAddProps
         id={`quick-add-${contextId ?? "home"}`}
         value={title}
         onChange={(event) => { setTitle(event.target.value); setError(""); }}
-        placeholder={dueToday ? "今天要完成什么？" : "在这个情境里加一件事…"}
+        placeholder={dueToday ? "今天要完成什么？" : contextId ? "在这个情境里加一件事…" : "添加一件待办…"}
       />
       <button type="submit" aria-label="添加" disabled={createTask.isPending || (!title.trim() && !onEmpty)}><CirclePlus aria-hidden="true" size={25} /></button>
     </form>
