@@ -66,7 +66,7 @@ export function HomePage() {
       <section className="editorial-backdrop" aria-label="中世纪旗手主题美术背景">
         <picture className="editorial-art-picture">
           <source media="(max-width: 760px)" srcSet={`${import.meta.env.BASE_URL}art/hero-mobile.avif`} type="image/avif"/>
-          <img className="editorial-character" src={`${import.meta.env.BASE_URL}art/hero-desktop.avif`}
+          <img className="editorial-character" src={`${import.meta.env.BASE_URL}art/hero-mobile.avif`}
             alt="" loading="eager" decoding="async" fetchPriority="high" />
         </picture>
         <span className="editorial-art-credit" aria-hidden="true">FORTITUDE · FOCUS · FORWARD</span>
