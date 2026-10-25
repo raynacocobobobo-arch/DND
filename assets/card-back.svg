@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" width="540" height="960">
+<defs>
+  <radialGradient id="bg"><stop stop-color="#183641"/><stop offset=".65" stop-color="#0b1d27"/><stop offset="1" stop-color="#070e16"/></radialGradient>
+  <radialGradient id="orb"><stop stop-color="#bcd6c7"/><stop offset=".2" stop-color="#6b9c9e"/><stop offset=".6" stop-color="#214853"/><stop offset="1" stop-color="#112532"/></radialGradient>
+  <pattern id="stars" width="70" height="84" patternUnits="userSpaceOnUse"><path d="M35 15v11m-5-5h10" stroke="#98784d" stroke-width="1" opacity=".45"/><circle cx="10" cy="55" r="1" fill="#d0b57e" opacity=".5"/></pattern>
+</defs>
+<rect x="1" y="1" width="538" height="958" rx="24" fill="url(#bg)" stroke="#ba9b68" stroke-width="2"/>
+<rect x="11" y="11" width="518" height="938" rx="18" fill="url(#stars)" stroke="#90734e" stroke-width="3"/>
+<rect x="25" y="25" width="490" height="910" rx="7" fill="none" stroke="#b9a078" stroke-width="2"/>
+<path d="M66 90h408M66 870h408" stroke="#af9061" stroke-width="2"/>
+<g fill="none" stroke="#b29a6a" stroke-width="2.4" opacity=".9">
+  <path d="M270 128 C430 210 430 335 270 480 C110 335 110 210 270 128Z"/>
+  <path d="M270 832 C430 750 430 625 270 480 C110 625 110 750 270 832Z"/>
+  <circle cx="270" cy="480" r="174"/><circle cx="270" cy="480" r="147"/>
+  <path d="M270 290V670M80 480H460M142 352L398 608M398 352L142 608" opacity=".44"/>
+</g>
+<g fill="none" stroke="#d6b579" stroke-width="4">
+  <path d="M96 102 C96 48 152 49 152 102 C152 152 100 150 104 111 M444 102 C444 48 388 49 388 102 C388 152 440 150 436 111"/>
+  <path d="M96 858 C96 912 152 911 152 858 C152 808 100 810 104 849 M444 858 C444 912 388 911 388 858 C388 808 440 810 436 849"/>
+</g>
+<g fill="#ccad72" opacity=".85">
+  <path d="M270 65l10 26 26 10-26 10-10 26-10-26-26-10 26-10z"/><path d="M270 825l10 26 26 10-26 10-10 26-10-26-26-10 26-10z"/>
+  <circle cx="78" cy="480" r="6"/><circle cx="462" cy="480" r="6"/>
+</g>
+<g transform="translate(270 480)">
+  <circle r="109" fill="#0a202a" stroke="#c4a873" stroke-width="4"/>
+  <circle r="87" fill="url(#orb)" stroke="#d6b579" stroke-width="2"/>
+  <path d="M-86 0Q0-112 86 0Q0 112-86 0Z" fill="none" stroke="#edd5a5" stroke-width="5"/>
+  <circle r="32" fill="#071822" stroke="#f0d49d" stroke-width="5"/>
+  <circle r="10" fill="#cbb992"/>
+  <path d="M0-142v-14M0 142v14M-142 0h-14M142 0h14" stroke="#dec38d" stroke-width="3"/>
+</g>
+<text x="270" y="237" font-family="Georgia,serif" fill="#c8b080" font-size="16" letter-spacing="8" text-anchor="middle">ARCANA</text>
+<text x="270" y="740" font-family="Georgia,serif" fill="#c8b080" font-size="15" letter-spacing="7" text-anchor="middle">MISKATONIC</text>
+</svg>
