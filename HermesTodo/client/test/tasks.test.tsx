@@ -46,6 +46,12 @@ function statefulFetch(initialTasks: Array<ReturnType<typeof task>>) {
     if (path === "/api/session") return jsonResponse({ authenticated: true });
     if (path === "/api/contexts") return jsonResponse(contexts);
     if (path.startsWith("/api/tasks") && (!init?.method || init.method === "GET")) return jsonResponse(tasks);
+    if (path === "/api/tasks/child-id/toggle" && init?.method === "POST") {
+      const child = tasks[0]?.subtasks[0];
+      if (!child) throw new Error("Missing subtask");
+      child.isCompleted = !child.isCompleted;
+      return jsonResponse(child);
+    }
     if (path === "/api/tasks/task-id" && init?.method === "PATCH") {
       Object.assign(tasks[0]!, JSON.parse(String(init.body)));
       return jsonResponse(tasks[0]);
@@ -145,6 +151,22 @@ describe("task interactions", () => {
     expect(screen.getByRole("alertdialog", { name: "删除任务？" })).toHaveTextContent("子任务也会一并删除");
     await user.click(screen.getByRole("button", { name: "确认删除" }));
     await waitFor(() => expect(fetchMock.mock.calls.some(([path, init]) => path === "/api/tasks/task-id" && init?.method === "DELETE")).toBe(true));
+  });
+
+  test("lets users complete and reopen a subtask in task details", async () => {
+    window.history.replaceState({}, "", "/contexts/travel-id");
+    const subtask = task({ id: "child-id", title: "下载登机牌", parentTaskId: "task-id", dueAt: null, contextId: null });
+    const { fetchMock } = statefulFetch([task({ subtasks: [subtask] })]);
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(await screen.findByRole("button", { name: "确认航班" }));
+    await user.click(screen.getByRole("button", { name: "完成子任务 下载登机牌" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "重新打开子任务 下载登机牌" })).toBeInTheDocument());
+    await user.click(screen.getByRole("button", { name: "重新打开子任务 下载登机牌" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "完成子任务 下载登机牌" })).toBeInTheDocument());
+    expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/tasks/child-id/toggle" && init?.method === "POST")).toHaveLength(2);
   });
 
   test("supports search, all three sort modes, and a completed section", async () => {
