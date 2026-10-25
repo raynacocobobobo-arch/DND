@@ -1,0 +1,138 @@
+/* FINAL VISUAL ART PASS — no task state, API, or interaction changes.
+   Master paintings are served as modern AVIF assets. Foreground + skyline remain optional art layers. */
+.editorial-dashboard {
+  background:#11222a;
+  min-height:100vh;
+}
+.editorial-dashboard::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    linear-gradient(90deg,#06121b30 0%,#0b18242a 23%,#0b1725b2 60%,#0b1825d1 100%),
+    linear-gradient(180deg,#09172219 0%,#15233205 40%,#101c28cb 93%,#0b1821 100%),
+    var(--art-desktop);
+  background-position:center top,center top,50% top;
+  background-size:cover,cover,cover;
+  background-repeat:no-repeat;
+}
+.editorial-backdrop {
+  isolation:isolate;
+  background:#101f2b;
+  border-right:1px solid #af915f78;
+  box-shadow:inset -16px 0 22px #0c15227a;
+}
+.editorial-art-picture {
+  position:absolute;inset:0;display:block;
+  overflow:hidden;
+}
+.editorial-character {
+  width:100%;height:100%;display:block;
+  object-fit:cover;
+  object-position:18% 44%;
+  image-rendering:auto;
+  filter:none!important;opacity:1;
+}
+.editorial-backdrop::before {
+  z-index:2;
+  background:
+    linear-gradient(90deg,#0c15221c 0%,transparent 25%,transparent 70%,#0b1923b8 100%),
+    linear-gradient(180deg, #0d172150 0%, transparent 20%, transparent 67%, #091620c7 100%);
+}
+.editorial-backdrop::after {
+  border:1px solid #e5c79450;
+  box-shadow:none;
+}
+.editorial-art-credit {font-size:9px;letter-spacing:.18em;color:#f4d99d;text-shadow:0 2px 10px #050d14;}
+.editorial-heading {
+  background:linear-gradient(90deg,#10212dba,#0c1924db);
+  border-color:#c49c616a;
+}
+.editorial-quote > span {color:#f1d29d;letter-spacing:.08em;}
+.editorial-date>strong {color:#efcb90;}
+.editorial-toolbar { background:#12212bf0; border-color:#bb9b6c9c; }
+.editorial-dashboard .dashboard-task-board {
+  background:linear-gradient(125deg,#fbf3e5,#f0e4d1);
+  box-shadow:0 14px 48px #0005,inset 0 0 0 1px #fff9ee;
+  border:1px solid #d5b993;
+}
+.editorial-dashboard .dashboard-task-board .task-row { border-color:#d7c9b5;}
+.editorial-dashboard .dashboard-task-board .task-title-button {color:#2b2927;font-size:13.5px;}
+.editorial-dashboard .progress-card,
+.weekly-panel,.contexts-mini {
+  background:linear-gradient(135deg,#13222ded,#0d1923f5);
+  border:1px solid #ad8955b0;
+}
+.editorial-dashboard .ai-teaser {
+  background:linear-gradient(120deg,#f9edd9,#e5d3b9);
+  border:1px solid #c9a577;
+}
+.editorial-dashboard .ai-teaser:hover {background:#fdf5e7;}
+.editorial-toolbar-actions a:hover {background:#26323c;}
+.sidebar-art {
+  opacity:.43;
+  background:
+    linear-gradient(0deg,#111c26a8,#111c2633),
+    var(--art-figure) 42% 19% / cover no-repeat;
+}
+.login-art-picture {
+  position:absolute;inset:0;display:block;
+}
+.login-scene {
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:36% center;
+  opacity:1;
+}
+.login-page::after {background:linear-gradient(90deg,#08172202 0%,#0d1b25af 57%,#101c26f5 100%);}
+.contexts-page > .ios-page-header,
+.context-detail-page > .ios-page-header,
+.ai-page > .ios-page-header {
+  background-image:
+    linear-gradient(90deg,#11202bf5 10%,#12232ce4 45%,#12222db0 100%),
+    var(--art-skyline);
+  background-size:cover;
+  background-position:center,center 55%;
+  border-color:#b89a6e70;
+}
+/* Narrow desktops: prioritise subject before the content column. */
+@media (min-width:761px) and (max-width:1500px) {
+  .editorial-character {object-position:18% center;}
+  .editorial-dashboard::before {
+    background-position:center top,center top,44% top;
+  }
+}
+@media (min-width:761px) and (max-height:760px) {
+  .editorial-character {object-position:16% 30%;}
+}
+/* Phone visual is an independent portrait painting, never a crop of the desktop wide. */
+@media (max-width:760px) {
+  .editorial-dashboard {
+    background:linear-gradient(180deg,#0f1c28,#14242e);
+  }
+  .editorial-dashboard::before {
+    background-image:
+      linear-gradient(180deg,#111c265e,#101e28ee),
+      var(--art-skyline);
+    background-position:center top,center top;
+    background-size:cover,auto 600px;
+  }
+  .editorial-backdrop {height:396px;min-height:396px;border-right:0;border-bottom:1px solid #c5a57691;}
+  .editorial-character {
+    object-position:50% 24%;
+    filter:none!important;
+  }
+  .editorial-backdrop::before {
+    background:linear-gradient(180deg,transparent 4%,transparent 43%,#0d1c2895 73%,#0d1b26f8 100%);
+  }
+  .editorial-art-credit {bottom:8px;opacity:.88;}
+  .editorial-heading {margin-top:-67px;background:linear-gradient(180deg,#15242b47,#0d1b28f3);}
+  .editorial-dashboard .dashboard-task-board {background:#f4eadb;}
+  .login-scene {object-position:42% 25%;opacity:.78;}
+  .login-page::after {background:linear-gradient(180deg,#07172427,#071724d1);}
+}
+@media (max-width:380px) {
+  .editorial-backdrop {height:355px;min-height:355px;}
+  .editorial-heading {margin-top:-59px;}
+}
