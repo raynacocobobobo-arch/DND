@@ -1,0 +1,71 @@
+name: Tarot interaction regression
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tarot-interaction-test.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  interaction:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install browser test dependencies
+        run: python -m pip install --quiet selenium
+      - name: Exercise published site
+        env:
+          SITE: https://raynacocobobobo-arch.github.io/DND/
+        run: |
+          cat > /tmp/test_tarot.py <<'PY'
+          import os,time,traceback
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+          o=Options();o.add_argument('--headless=new');o.add_argument('--no-sandbox');o.add_argument('--disable-dev-shm-usage');o.add_argument('--window-size=1365,960')
+          d=webdriver.Chrome(options=o)
+          errors=[]
+          try:
+            d.get(os.environ["SITE"])
+            d.execute_script("localStorage.clear()");d.refresh()
+            print('PAGE TITLE',d.title)
+            print('PAGE URL',d.current_url)
+            WebDriverWait(d,20).until(EC.element_to_be_clickable((By.ID,'agreeWelcome'))).click()
+            print('WELCOME DISMISSED')
+            d.find_element(By.CSS_SELECTOR,'a[href="#/ritual"]').click()
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'enterRitual'))).click()
+            print('PHASE SHUFFLE',d.find_elements(By.ID,'shuffleBtn')!=[])
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'shuffleBtn'))).click()
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'[data-cut="11"]'))).click()
+            print('PHASE FAN',len(d.find_elements(By.CSS_SELECTOR,'[data-slot]')))
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'[data-slot="0"]'))).click()
+            print('PHASE REVEAL',len(d.find_elements(By.ID,'revealBtn')))
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'revealBtn'))).click()
+            WebDriverWait(d,10).until(EC.element_to_be_clickable((By.ID,'nextDraw'))).click()
+            print('RESULT VISIBLE',len(d.find_elements(By.CSS_SELECTOR,'.reading-card')))
+            assert len(d.find_elements(By.CSS_SELECTOR,'.reading-card'))==1
+            d.find_element(By.CSS_SELECTOR,'a[href="#/journal"]').click()
+            print('JOURNAL RECORD',len(d.find_elements(By.CSS_SELECTOR,'.journal-item')))
+            assert len(d.find_elements(By.CSS_SELECTOR,'.journal-item'))>0
+            print('SINGLE TEST PASSED')
+            d.get(os.environ['SITE']+'#/ritual')
+            d.find_element(By.CSS_SELECTOR,'button[data-spread="daily"]').click()
+            d.find_element(By.ID,'enterRitual').click()
+            d.find_element(By.ID,'dailyDraw').click()
+            print('DAILY CLICKED',len(d.find_elements(By.ID,'revealBtn')))
+            assert len(d.find_elements(By.ID,'revealBtn'))==1
+            print('DAILY TEST PASSED')
+          except Exception:
+            print('TEST ERROR:',traceback.format_exc())
+            print('URL',d.current_url,'BODY:',d.find_element(By.TAG_NAME,'body').text[:1400])
+            raise
+          finally:
+            print('CHROME BROWSER LOGS:')
+            try:
+              for e in d.get_log('browser'): print(e)
+            except Exception as e: print(str(e))
+            d.quit()
+          PY
+          python /tmp/test_tarot.py
