@@ -17,10 +17,11 @@ export interface TaskInput {
   repeatRule?: string;
 }
 
-export function useTasks(filters: { search?: string; contextId?: string; sort?: TaskSort } = {}) {
+export function useTasks(filters: { search?: string; contextId?: string; scope?: "inbox"; sort?: TaskSort } = {}) {
   const query = new URLSearchParams();
   if (filters.search) query.set("search", filters.search);
   if (filters.contextId) query.set("contextId", filters.contextId);
+  if (filters.scope === "inbox") query.set("scope", "inbox");
   query.set("sort", filters.sort ?? "createdAt");
   return useQuery({
     queryKey: ["tasks", filters],
