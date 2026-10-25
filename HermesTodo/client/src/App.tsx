@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { queryClient } from "./api/queryClient";
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
@@ -32,13 +32,14 @@ function AuthenticatedApp() {
 }
 
 export function App() {
+  const Router = import.meta.env.VITE_STATIC_PREVIEW === "true" ? HashRouter : BrowserRouter;
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <Router>
         <AuthProvider>
           <AuthenticatedApp />
         </AuthProvider>
-      </BrowserRouter>
+      </Router>
     </QueryClientProvider>
   );
 }
