@@ -122,6 +122,38 @@ describe("task API", () => {
     ]);
   });
 
+  test("keeps inbox separate from each scene and moves tasks without making duplicates", async () => {
+    const sceneId = await createContext("归属隔离测试");
+    const inboxTask = await agent.post("/api/tasks").send({ title: "归属隔离-收集箱" }).expect(201);
+    const sceneTask = await agent.post("/api/tasks").send({
+      title: "归属隔离-情境任务", contextId: sceneId
+    }).expect(201);
+    const child = await agent.post("/api/tasks").send({
+      title: "归属隔离-子任务", parentTaskId: sceneTask.body.id
+    }).expect(201);
+
+    const home = await agent.get("/api/tasks?scope=inbox&sort=createdAt").expect(200);
+    expect(home.body.some((t: { id: string }) => t.id === inboxTask.body.id)).toBe(true);
+    expect(home.body.some((t: { id: string }) => t.id === sceneTask.body.id)).toBe(false);
+    expect(home.body.some((t: { id: string }) => t.id === child.body.id)).toBe(false);
+
+    const scene = await agent.get(`/api/tasks?contextId=${sceneId}&sort=createdAt`).expect(200);
+    expect(scene.body).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: sceneTask.body.id, subtasks: [
+        expect.objectContaining({ id: child.body.id })
+      ] })
+    ]));
+    expect(scene.body.some((t: { id: string }) => t.id === inboxTask.body.id)).toBe(false);
+
+    await agent.patch(`/api/tasks/${inboxTask.body.id}`).send({ contextId: sceneId }).expect(200);
+    const movedHome = await agent.get("/api/tasks?scope=inbox").expect(200);
+    const movedScene = await agent.get(`/api/tasks?contextId=${sceneId}`).expect(200);
+    expect(movedHome.body.some((t: { id: string }) => t.id === inboxTask.body.id)).toBe(false);
+    expect(movedScene.body.filter((t: { id: string }) => t.id === inboxTask.body.id)).toHaveLength(1);
+
+    await agent.get(`/api/tasks?scope=inbox&contextId=${sceneId}`).expect(400);
+  });
+
   test("rejects grandchildren", async () => {
     const parent = await agent.post("/api/tasks").send({ title: "一层父" }).expect(201);
     const child = await agent
