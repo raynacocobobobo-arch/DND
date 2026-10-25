@@ -2,7 +2,7 @@ import { Grid2X2, House, LogOut, Sparkles, type LucideIcon } from "lucide-react"
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
-import { CathedralScene, FleurDeLis, HeraldicDivider } from "./HeraldicArt";
+import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 
 const links = [
   { to: "/", label: "首页", end: true, icon: House },
@@ -37,7 +37,7 @@ export function AppShell() {
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar-art" aria-hidden="true"><CathedralScene className="sidebar-engraving"/></div>
+        <div className="sidebar-art" aria-hidden="true"><span className="sidebar-art-sigil">FORTITUDO</span></div>
         <div className="sidebar-motto"><HeraldicDivider/><p>井然有序，方能从容前行。</p><span>AD MAIORA · 向更高之处</span></div>
       </aside>
       <div className="hermes-main-frame">
