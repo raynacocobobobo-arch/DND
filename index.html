@@ -1147,7 +1147,7 @@ function detail(id){const card=getCard(id);if(!card){root.innerHTML=sectionIntro
     </article>
   </section>
   <nav class="story-pager"><a href="#/codex/${prev.id}"><small>PREVIOUS · 上一篇</small><strong>← ${escapeHtml(prev.titleZh)}</strong></a><a href="#/codex/${next.id}"><small>NEXT · 下一篇</small><strong>${escapeHtml(next.titleZh)} →</strong></a></nav>`;}
-function ritualStart(){ritual=null;recorded=false;saveWarning='';root.innerHTML=sectionIntro('THE RITUAL / ENTER THE UNKNOWN','命运仪式','请先选择牌阵。你可以提出一个问题，也可以让卡牌自由指引思绪。')+`<div class="ritual-screen"><div class="ritual-modes">${[['daily','☼','每日一牌','每天在本机日期内固定的一张启示'],['single','✧','单牌提问','针对一个具体问题进行抽取'],['three','⚝','三牌牌阵','以过去、现在、未来展开叙事']].map(([id,icon,name,desc])=>`<button type="button" class="mode-card ${chosenSpread===id?'chosen':''}" data-spread="${id}" aria-pressed="${chosenSpread===id}"><span class="mode-icon">${icon}</span><strong>${name}</strong><small>${desc}</small></button>`).join('')}</div><label class="question-label" for="question">写下你的疑问 <span class="muted">/ 可留空</span></label><textarea class="question-input" id="question" maxlength="500" placeholder="例如：我正在面对怎样的选择？">${escapeHtml(draftQuestion)}</textarea><div class="btn-row"><button class="btn wide" id="enterRitual">进入仪式 <span>↗</span></button></div><p class="note">目前暂未连接 DeepSeek，不会上传任何问题。牌面、图鉴与本地日志可以完整使用。</p></div>`;
+function ritualStart(){ritual=null;recorded=false;saveWarning='';root.innerHTML=sectionIntro('THE RITUAL / ENTER THE UNKNOWN','命运仪式','请先选择牌阵。你可以提出一个问题，也可以让卡牌自由指引思绪。')+`<div class="ritual-screen"><div class="ritual-modes">${[['daily','☼','每日一牌','每天在本机日期内固定的一张启示'],['single','✧','单牌提问','针对一个具体问题进行抽取'],['three','⚝','三牌牌阵','以过去、现在、未来展开叙事']].map(([id,icon,name,desc])=>`<button type="button" class="mode-card ${chosenSpread===id?'chosen':''}" data-spread="${id}" aria-pressed="${chosenSpread===id}"><span class="mode-icon">${icon}</span><strong>${name}</strong><small>${desc}</small></button>`).join('')}</div><label class="question-label" for="question">写下你的疑问 <span class="muted">/ 可留空</span></label><textarea class="question-input" id="question" maxlength="500" placeholder="例如：我正在面对怎样的选择？">${escapeHtml(draftQuestion)}</textarea><div class="btn-row"><button class="btn wide" id="enterRitual">进入仪式 <span>↗</span></button></div><p class="note">基础解读不依赖 AI，可在页面缓存后离线使用。只有主动配置并调用 AI 服务时才会联网发送提问。</p></div>`;
   root.querySelectorAll('[data-spread]').forEach(btn=>btn.addEventListener('click',()=>{chosenSpread=btn.dataset.spread;draftQuestion=root.querySelector('#question').value;ritualStart();}));
   root.querySelector('#enterRitual').addEventListener('click',()=>{enteredQuestion=root.querySelector('#question').value.trim();draftQuestion=enteredQuestion;ritual=createRitual(chosenSpread,enteredQuestion);if(chosenSpread==='daily'){const d=getDailyDraw();ritual={...ritual,phase:'dailyReady',deck:[d.cards[0].id],picks:[],dateKey:d.dateKey};}renderRitual();});
 }
@@ -1262,11 +1262,18 @@ function settings(){const s=prefs();root.innerHTML=sectionIntro('CONFIGURATION /
   root.querySelector('#reduceMotion').addEventListener('change',e=>{sessionPreferences={...s,reducedMotion:e.target.checked};const saved=savePreferences(storage(),sessionPreferences);applyMotion();toast(saved?'偏好已保存在本设备':'已在当前会话生效；浏览器未允许保存此偏好。');});
 }
 function showWelcome(){let seen=false;try{seen=storage().getItem('cthulhu-tarot:welcome-seen:v1')==='yes';}catch{}if(seen)return;
-  overlay.innerHTML=`<div class="welcome-shade" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle"><div class="welcome-box"><div class="symbol">✦ ◇ ✦</div><p class="eyebrow">A NOTICE FROM THE ARCHIVES</p><h2 id="welcomeTitle">踏入门槛之前</h2><p>这里收藏22张以洛夫克拉夫特作品为灵感的大阿卡纳。抽牌属于文学娱乐与自我反思，不是对未来的确定性预测。</p><p>本预览版<strong>不连接AI</strong>，你的问题和调查日志不会自动上传到服务器，仅存于本设备。</p><button class="btn" id="agreeWelcome">同意并进入 →</button></div></div>`;
+  overlay.innerHTML=`<div class="welcome-shade" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle"><div class="welcome-box"><div class="symbol">✦ ◇ ✦</div><p class="eyebrow">A NOTICE FROM THE ARCHIVES</p><h2 id="welcomeTitle">踏入门槛之前</h2><p>这里收藏22张以洛夫克拉夫特作品为灵感的大阿卡纳。抽牌属于文学娱乐与自我反思，不是对未来的确定性预测。</p><p>基础解读和图鉴都可以离线阅读；首次打开需联网缓存完整卡牌。AI 扩展是可选功能，你的问题和日志默认保存在本设备。</p><button class="btn" id="agreeWelcome">同意并进入 →</button></div></div>`;
   overlay.querySelector('#agreeWelcome').addEventListener('click',()=>{try{storage().setItem('cthulhu-tarot:welcome-seen:v1','yes');}catch{}overlay.replaceChildren();});
 }
 function route(){applyMotion();const parts=(location.hash||'#/').replace(/^#\/?/,'').split('/');const view=parts[0]||'home';linksActive();if(view==='codex'){parts.length>1?detail(parts[1]):codex();}else if(view==='ritual'){ritual?renderRitual():ritualStart();}else if(view==='journal'){parts.length>1?journalDetail(decodeURIComponent(parts[1])):journal();}else if(view==='settings'){settings();}else{home();}window.scrollTo({top:0,behavior:'instant'});}
 window.addEventListener('hashchange',route);
 root.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement&&e.target.getAttribute('src')?.includes('/cards/')){e.target.outerHTML='<div class="missing-art" role="img" aria-label="图片暂时不可用">卡面加载失败<br>可重新打开档案</div>';}} ,true);
 route();showWelcome();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(error => {
+      console.warn('Offline cache unavailable:', error);
+    });
+  });
+}
 </script></body></html>
