@@ -13,6 +13,7 @@ import "./styles/v4-execution.css";
 import "./styles/v6-ui.css";
 import "./styles/manuscript-v7.css";
 import "./styles/scene-home.css";
+import "./styles/heraldic-ui.css";
 
 async function bootstrap() {
   // A public preview uses a self-contained local demo API; production is unchanged.
