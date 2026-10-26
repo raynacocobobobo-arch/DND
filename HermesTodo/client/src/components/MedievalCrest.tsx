@@ -1,6 +1,6 @@
 /** Approved medieval coats of arms.
  * List crests stay on the original 8-frame AVIF sprite.
- * Functional actions use individual fantasy-relief WebP crests for robust browser rendering.
+ * Functional actions render as real image elements so transparent WebP assets cannot be lost by background-image clipping/caching.
  */
 const crests = ["lion","fleur","compass","tree","book","swords","crown","scroll"] as const;
 type Crest = typeof crests[number];
@@ -25,6 +25,11 @@ const actionAliases: Record<string,string> = {
   send:"send"
 };
 
+const actionFiles: Record<string,string> = {
+  copy:"crest-copy-v2.webp",
+  delete:"crest-delete-v2.webp"
+};
+
 export function canonicalCrestName(name: string): Crest {
   return aliases[name] ?? "fleur";
 }
@@ -34,20 +39,25 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
 }) {
   const action = actionAliases[name];
   if (action) {
-    return <span
+    const file = actionFiles[action] ?? `crest-${action}.webp`;
+    return <img
       className={`medieval-crest medieval-action-crest ${className}`}
       data-crest={action}
       aria-hidden="true"
+      alt=""
+      src={`${import.meta.env.BASE_URL}art/${file}`}
+      width={size}
+      height={size}
+      draggable={false}
       style={{
-        display: "inline-block",
+        display: "block",
         verticalAlign: "middle",
         flexShrink: 0,
         width: size,
         height: size,
-        backgroundImage: `url("${import.meta.env.BASE_URL}art/crest-${action}.webp")`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        backgroundPosition: "center"
+        objectFit: "contain",
+        objectPosition: "center",
+        opacity: 1
       }}
     />;
   }
