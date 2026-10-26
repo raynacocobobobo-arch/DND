@@ -74,6 +74,39 @@ async function accessToken(config: CloudConfig): Promise<Session> {
 }
 let fetchDirect: typeof window.fetch;
 
+/** Parse a verified Supabase user from an existing bearer token, never from untrusted link claims. */
+async function persistLinkSession(config: CloudConfig, tokens: JsonObject): Promise<void> {
+  const bearer = String(tokens.access_token ?? "");
+  const refresh = String(tokens.refresh_token ?? "");
+  if (!bearer || !refresh) throw new Error("邮件链接中没有有效的登录凭证");
+  const userResponse = await fetchDirect(config.url + "/auth/v1/user", {
+    headers: { apikey: config.publishableKey, Authorization: "Bearer " + bearer }
+  });
+  if (!userResponse.ok) throw new Error("邮件登录凭证无效或已过期，请重新发送登录邮件");
+  const user = await userResponse.json() as { id?: string };
+  if (!user.id) throw new Error("无法确认当前登录账户");
+  saveSession(config, { ...tokens, user, expires_in: Number(tokens.expires_in ?? 3600) });
+}
+
+/** Handle a real hosted magic-link callback before React's HashRouter starts. */
+export async function acceptCloudRedirect(): Promise<void> {
+  const config = readCloudConfig();
+  if (!config) return;
+  const hash = new URLSearchParams(location.hash.replace(/^#/, ""));
+  if (!hash.has("access_token") || !hash.has("refresh_token")) return;
+  const data: JsonObject = {
+    access_token: hash.get("access_token"),
+    refresh_token: hash.get("refresh_token"),
+    expires_in: Number(hash.get("expires_in") ?? 3600)
+  };
+  try {
+    await persistLinkSession(config, data);
+  } finally {
+    // Remove sensitive authentication tokens from the URL even on failure.
+    history.replaceState(null, "", location.pathname + location.search + "#/");
+  }
+}
+
 /** Supabase REST call; RLS is the authorization boundary, NOT this browser code. */
 async function rest<T>(config: CloudConfig, endpoint: string, init: RequestInit = {}): Promise<T> {
   const session = await accessToken(config);
@@ -244,6 +277,36 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
       return jsonResponse({ authenticated: true, confirmationRequired: false });
     }
     return jsonResponse({ authenticated: false, confirmationRequired: true });
+  }
+  if (endpoint === "/api/auth/magic-send" && method === "POST") {
+    const email = String(data.email ?? "").trim();
+    if (!email || !email.includes("@")) throw new Error("请输入有效的邮箱地址");
+    // An existing account is required: no duplicate accounts or insecure shared logins.
+    const redirect = location.origin + String(import.meta.env.BASE_URL);
+    await publicAuth(config, "otp?redirect_to=" + encodeURIComponent(redirect), {
+      email, create_user: false
+    });
+    return jsonResponse({ sent: true });
+  }
+  if (endpoint === "/api/auth/magic-accept" && method === "POST") {
+    const inputUrl = String(data.link ?? "").trim();
+    if (!inputUrl || inputUrl.length > 5000) throw new Error("请粘贴完整的登录邮件链接");
+    let url: URL;
+    try { url = new URL(inputUrl); } catch { throw new Error("邮件链接不是有效的网址"); }
+    if (url.protocol !== "https:" || url.origin !== config.url || url.pathname !== "/auth/v1/verify") {
+      throw new Error("只能使用当前 Supabase 项目发出的原始验证链接");
+    }
+    const type = url.searchParams.get("type");
+    if (type !== "magiclink" && type !== "email") throw new Error("这不是可用于登录的邮件链接");
+    const hash = url.searchParams.get("token") ?? url.searchParams.get("token_hash");
+    if (!hash || hash.length < 20) throw new Error("邮件链接缺少有效的验证令牌");
+    // Verification consumes the one-time link without following its localhost redirect.
+    const token = await publicAuth(config, "verify", {
+      token_hash: hash,
+      type
+    });
+    saveSession(config, token);
+    return jsonResponse({ authenticated: true });
   }
   if (endpoint === "/api/auth/logout" && method === "POST") {
     const token = readSession(config);
