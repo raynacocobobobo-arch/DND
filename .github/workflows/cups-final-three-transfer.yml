@@ -1,0 +1,80 @@
+name: Publish Approved Final Three Cups
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-final-three-transfer.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - run: python -m pip install --quiet Pillow
+      - name: Transfer the approved 3 actual individual card originals
+        shell: bash
+        run: |
+          cat >/tmp/final_cups.json <<'MANIFEST_END'
+          [
+            {
+              "slug": "five",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztb5mbKXYNUnkt22Tl16cptjqmTjPdwDwudCvRuyn56cppb91ziOmlxd8kW_1En7utUiSFZdaGSQmRryB7hWFuzMyrQdsmYe2sl8yQHdUdTjryoZQXjNWZNj9ttXn4GgVLSu3YizrEM3PfEJ9aoAiliyRovvbyQlZr8sNBCWrnYizUoFeDc=s2048?key=6oHO0Aw4626frkZSH5S1xg"
+            },
+            {
+              "slug": "knight",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztacqFAhFbDo4KzM0InKZfrc3-kdb_UPqwNuyxsA6O5j0bW_aN5Cf71CrvQmulsxqBTF-FvpLaI-CjUmR8h5SGVD_WjAL7LvB1b1oTSzuPA71wj7WzRyptgJe-dh87YIMDKMZXSfp1MUy-kVZZyJD1MMO77ohxq41DDqM9wXZ31Jq78Cdeo=s2048?key=6oHO0Aw4626frkZSH5S1xg"
+            },
+            {
+              "slug": "queen",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbZNVWdATA_aymfiwGGRv8JlArV0cyZEdV_isExeMi28I154P9DO8HlgcjL1rejpeI3Fc0X7UXOfBDa34lyFe20EpDtd4P83bWy4lCNi1s858Acg_6Zq_g5x506edc_4JBy5p5mXaIMNx_PMAovlWAv3Q5jekl8v634mnmNdOaEJVyLs2k=s2048?key=6oHO0Aw4626frkZSH5S1xg"
+            }
+          ]
+          MANIFEST_END
+          cat >/tmp/transfer_cups.py <<'PYTHON_END'
+          import urllib.request,io,os,time,hashlib,json
+          from PIL import Image
+          from concurrent.futures import ThreadPoolExecutor,as_completed
+          data=json.load(open('/tmp/final_cups.json'))
+          assert sorted(x['slug'] for x in data)==['five','knight','queen']
+          os.makedirs('minor-arcana/cups/final',exist_ok=True)
+          os.makedirs('minor-arcana/cups/thumbs',exist_ok=True)
+          def upload(x):
+              slug=x['slug']
+              for attempt in range(3):
+                  try:
+                      req=urllib.request.Request(x['url'],headers={'User-Agent':'ApprovedCupsTarot/2.0'})
+                      with urllib.request.urlopen(req,timeout=60) as r: raw=r.read()
+                      with Image.open(io.BytesIO(raw)) as img:
+                          img.load(); rgb=img.convert('RGB')
+                      assert rgb.size==(941,1672),(slug,rgb.size)
+                      final=f'minor-arcana/cups/final/{slug}-of-cups-v1.webp'
+                      rgb.save(final,format='WEBP',lossless=True,method=6)
+                      with Image.open(final) as test:
+                          test.load()
+                          assert test.size==rgb.size and test.convert('RGB').tobytes()==rgb.tobytes()
+                      small=rgb.copy();small.thumbnail((360,640),Image.Resampling.LANCZOS)
+                      small.save(f'minor-arcana/cups/thumbs/{slug}-of-cups.webp',format='WEBP',quality=90,method=5)
+                      return {'slug':slug,'width':rgb.width,'height':rgb.height,'bytes':os.path.getsize(final),'sha256':hashlib.sha256(open(final,'rb').read()).hexdigest()}
+                  except Exception as e:
+                      if attempt==2:raise
+                      time.sleep(attempt+1)
+          with ThreadPoolExecutor(max_workers=3) as executor:
+              rows=list(executor.map(upload,data))
+          assert len(rows)==3 and len({r['sha256'] for r in rows})==3
+          for row in rows: print('APPROVED_CARD_READY',row,flush=True)
+          with open('minor-arcana/cups/final/approved-trio-v1.json','w') as f:json.dump(rows,f,indent=2)
+          PYTHON_END
+          python /tmp/transfer_cups.py
+      - name: Commit approved originals to live Pages branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add minor-arcana/cups/final minor-arcana/cups/thumbs
+          git diff --cached --stat
+          git commit -m "art(cups): upload approved Five, Knight, Queen originals as HD images"
+          git push origin HEAD:gh-pages
