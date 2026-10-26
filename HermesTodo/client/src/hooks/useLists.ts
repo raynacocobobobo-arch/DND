@@ -46,3 +46,33 @@ export function useReorderLists() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["lists"] })
   });
 }
+
+export function useDeleteList() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiRequest<void>(`/api/lists/${id}`, { method: "DELETE" }),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["lists"] }),
+        queryClient.invalidateQueries({ queryKey: ["contexts"] }),
+        queryClient.invalidateQueries({ queryKey: ["tasks"] })
+      ]);
+    }
+  });
+}
+
+export function useCompleteList() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiRequest<{ updatedCount: number }>(`/api/lists/${id}/complete`, { method: "POST" }),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["lists"] }),
+        queryClient.invalidateQueries({ queryKey: ["contexts"] }),
+        queryClient.invalidateQueries({ queryKey: ["tasks"] })
+      ]);
+    }
+  });
+}
