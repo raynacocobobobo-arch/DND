@@ -9,6 +9,7 @@ interface AuthContextValue {
   signup(email: string, password: string): Promise<boolean>;
   sendMagicLink(email: string): Promise<void>;
   acceptMagicLink(link: string): Promise<void>;
+  recoverRedirect(redirectedUrl: string): Promise<void>;
   logout(): Promise<void>;
 }
 
@@ -61,6 +62,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async acceptMagicLink(link: string) {
         await apiRequest<{ authenticated: true }>("/api/auth/magic-accept", {
           method: "POST", body: JSON.stringify({ link })
+        });
+        setAuthenticated(true);
+      },
+      async recoverRedirect(redirectedUrl: string) {
+        await apiRequest<{ authenticated: true }>("/api/auth/recover-redirect", {
+          method: "POST", body: JSON.stringify({ redirectedUrl })
         });
         setAuthenticated(true);
       },
