@@ -1,4 +1,4 @@
-import { ChevronRight, Copy, Pencil, Trash2 } from "lucide-react";
+import { HeraldicIcon } from "./HeraldicIcon";
 import { Link } from "react-router-dom";
 
 import type { ContextRecord } from "../hooks/useContexts";
@@ -16,10 +16,10 @@ export function ContextCard({ context, onEdit, onCopy, onDelete }: { context: Co
         <span className="context-count">未完成任务</span>
       </Link>
       <div className="context-card-actions">
-        <button type="button" aria-label={`编辑 ${context.name}`} onClick={onEdit}><Pencil aria-hidden="true" size={14} /></button>
-        <button type="button" aria-label={`复制 ${context.name}`} onClick={onCopy}><Copy aria-hidden="true" size={14} /></button>
-        <button type="button" aria-label={`删除 ${context.name}`} onClick={onDelete}><Trash2 aria-hidden="true" size={14} /></button>
-        <ChevronRight className="context-chevron" aria-hidden="true" size={16} />
+        <button type="button" aria-label={`编辑 ${context.name}`} onClick={onEdit}><HeraldicIcon name="edit" size={23}/></button>
+        <button type="button" aria-label={`复制 ${context.name}`} onClick={onCopy}><HeraldicIcon name="copy" size={23}/></button>
+        <button type="button" aria-label={`删除 ${context.name}`} onClick={onDelete}><HeraldicIcon name="trash" size={23}/></button>
+        <span className="context-chevron" aria-hidden="true"><HeraldicIcon name="arrow" size={19}/></span>
       </div>
     </li>
   );
