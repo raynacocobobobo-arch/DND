@@ -58,6 +58,8 @@ export function ContextsPage() {
   return (
     <section className="page-stack contexts-page scene-home">
       <header className="scene-home-hero">
+        <img className="scene-home-art" src={`${import.meta.env.BASE_URL}art/joan-dragon-scene.avif`}
+          alt="" aria-hidden="true" loading="eager" decoding="async"/>
         <div className="scene-home-hero-copy">
           <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · THE BOOK OF LISTS</span>
           <h1>我的清单<span aria-hidden="true">。</span></h1>
