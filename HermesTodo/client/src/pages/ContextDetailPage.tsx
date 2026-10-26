@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, Copy } from "lucide-react";
+import { HeraldicIcon } from "../components/HeraldicIcon";
 import { Link, Navigate, useParams } from "react-router-dom";
 
 import { QuickAdd } from "../components/QuickAdd";
@@ -36,9 +36,9 @@ export function ContextDetailPage() {
   return (
     <section className="page-stack context-detail-page">
       <header className="ios-page-header context-detail-header">
-        <Link className="back-link" to="/contexts"><ChevronLeft aria-hidden="true" size={18} />清单</Link>
+        <Link className="back-link" to="/contexts"><HeraldicIcon name="scroll" size={21} />清单</Link>
         <div><h1>{context.name}</h1><p>{context.incompleteCount} 件未完成</p></div>
-        <button type="button" className="icon-button" aria-label="复制待办" onClick={() => void copyList()}><Copy aria-hidden="true" size={18} /></button>
+        <button type="button" className="icon-button" aria-label="复制待办" onClick={() => void copyList()}><HeraldicIcon name="copy" size={22} /></button>
       </header>
       {copied ? <p className="copy-toast" role="status">已复制待办</p> : null}
       <label className="search-control"><span className="sr-only">搜索任务</span><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="搜索任务…" /></label>
