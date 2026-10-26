@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "status": "design development — NOT completed images",
   "suit": "Cups",
   "major_reference": "Existing 22 HD Major Arcana are the visual master",
@@ -234,7 +234,14 @@
       "symbol": "1只完整圣杯被端平，外围汹涌海水和中心平静形成对照",
       "source": "传统圣杯国王与洛氏海港审美的原创融合，不把角色直接指认为克苏鲁",
       "avoid": "禁止巨神统治者、触手头颅或复制大阿卡纳《皇帝》",
-      "status": "priority"
+      "status": "approved",
+      "approved_art": "./final/king-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认定版。画面定稿不再调整：圣杯国王端坐海崖，单人占据视觉中心，以一只圣杯和风暴海面形成情绪稳定对照；原画已上传并用无损 WebP 保存。"
     }
-  ]
+  ],
+  "approved_count": 1
 }
