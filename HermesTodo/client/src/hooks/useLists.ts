@@ -11,6 +11,7 @@ export interface ListRecord {
   updatedAt: string;
   sceneCount: number;
   incompleteCount: number;
+  taskCount: number;
 }
 
 export function useLists() {
@@ -66,7 +67,7 @@ export function useCompleteList() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) =>
-      apiRequest<{ updatedCount: number }>(`/api/lists/${id}/complete`, { method: "POST" }),
+      apiRequest<{ updatedCount: number; completed: boolean }>(`/api/lists/${id}/complete`, { method: "POST" }),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["lists"] }),
