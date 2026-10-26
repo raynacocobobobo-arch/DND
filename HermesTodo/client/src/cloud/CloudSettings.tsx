@@ -5,8 +5,12 @@ import { clearCloudConfig, isCloudMode, readCloudConfig, saveCloudConfig } from 
 export function CloudSettings({ onLogin = false }: { onLogin?: boolean }) {
   const current = readCloudConfig();
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState(current?.url ?? "");
-  const [key, setKey] = useState(current?.publishableKey ?? "");
+  // Public project configuration: publishable key is intended for browser use.
+  // Never place secret/service_role credentials here.
+  const defaultUrl = "https://arnrlepjuqdmvbipswci.supabase.co";
+  const defaultKey = "sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt";
+  const [url, setUrl] = useState(current?.url ?? defaultUrl);
+  const [key, setKey] = useState(current?.publishableKey ?? defaultKey);
   const [error, setError] = useState("");
   if (import.meta.env.VITE_STATIC_PREVIEW !== "true") return null;
 
