@@ -4,6 +4,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import type { Task } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
 import { ContextCard } from "../components/ContextCard";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ContextForm } from "../components/ContextForm";
 import { FleurDeLis } from "../components/HeraldicArt";
 import { HeraldicIcon } from "../components/HeraldicIcon";
@@ -22,6 +23,7 @@ export function ListDetailPage() {
   const [quickName,setQuickName]=useState("");
   const [error,setError]=useState("");
   const [copiedId,setCopiedId]=useState<string>();
+  const [deleting,setDeleting]=useState<ContextRecord>();
   const list=lists.data?.find(item=>item.id===id);
 
   if(!lists.isLoading && !list) return <Navigate to="/" replace/>;
@@ -83,10 +85,13 @@ export function ListDetailPage() {
         {contexts.data.map(context=><ContextCard key={context.id} context={context}
           onEdit={()=>{setEditing(context);setFormOpen(true);}}
           onCopy={()=>void copyContext(context)}
-          onDelete={()=>void remove.mutateAsync(context.id)}/>)}
+          onDelete={()=>setDeleting(context)}/>)}
       </ul>:<p className="empty-state dashboard-empty">这份清单还没有场景。创建第一个场景后，再往里面添加任务。</p>}
     </section>
 
+    {deleting?<ConfirmDialog title="删除场景？" message="场景内的任务不会被删除，将返回收集箱。"
+      pending={remove.isPending} onCancel={()=>setDeleting(undefined)}
+      onConfirm={()=>void remove.mutateAsync(deleting.id).then(()=>setDeleting(undefined))}/>:null}
     {formOpen?<ContextForm context={editing} entityLabel="场景" pending={create.isPending||update.isPending}
       onCancel={()=>setFormOpen(false)}
       onSubmit={(input)=>{
