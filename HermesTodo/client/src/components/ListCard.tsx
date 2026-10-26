@@ -38,7 +38,7 @@ export function ListCard({
         <button type="button" className="list-text-action list-delete-action" aria-label={`删除 ${list.name}`} onClick={onDelete}>删除</button>
         <button type="button" className="list-text-action" aria-label={`复制 ${list.name}`} onClick={onCopy}>复制</button>
         <button type="button" className="list-text-action list-complete-action" aria-label={`一键勾选 ${list.name}`}
-          disabled={list.incompleteCount === 0} onClick={onComplete}>一键勾选</button>
+          disabled={list.taskCount === 0} onClick={onComplete}>一键勾选</button>
       </div>
     </li>
   );
