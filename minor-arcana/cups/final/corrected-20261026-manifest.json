@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "six",
+    "version": "v2",
+    "path": "minor-arcana/cups/final/six-of-cups-v2.webp",
+    "size": [
+      941,
+      1672
+    ],
+    "bytes": 2375752,
+    "sha256": "d64c7cb1158d0181e4dcefd52f455ce5ddd59297db97aaed59b8f74064dea07a"
+  },
+  {
+    "slug": "knight",
+    "version": "v1",
+    "path": "minor-arcana/cups/final/knight-of-cups-v1.webp",
+    "size": [
+      941,
+      1672
+    ],
+    "bytes": 2330064,
+    "sha256": "e6085723e84e45197fc47b5f0356241bcb8a04332ef50026a32e954bc04f96f9"
+  },
+  {
+    "slug": "five",
+    "version": "v2",
+    "path": "minor-arcana/cups/final/five-of-cups-v2.webp",
+    "size": [
+      941,
+      1672
+    ],
+    "bytes": 2173682,
+    "sha256": "e7811dd6bd28f345e3012ccac67199f030ff7ed47dcf459638d3a5de80c88ecb"
+  },
+  {
+    "slug": "queen",
+    "version": "v1",
+    "path": "minor-arcana/cups/final/queen-of-cups-v1.webp",
+    "size": [
+      941,
+      1672
+    ],
+    "bytes": 2252662,
+    "sha256": "9079a34bf96b6bbcd27cc672e3e122c56a30863b8fa7a843e9dd0ee179fecf97"
+  }
+]
