@@ -1,0 +1,94 @@
+name: Cups Clean UI and Four Image Live QA
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-clean-ui-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Install live browser and image verification
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Validate Pages: 4 updated cards and Major-standard Cups gallery
+        run: |
+          cat >/tmp/qa.py <<'PY'
+          import io,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          root='https://raynacocobobobo-arch.github.io/DND/'
+          slugs=['four','six','nine','ten']
+          for attempt in range(35):
+            h=requests.get(root+'?verify=v3-'+str(attempt),timeout=30,headers={'Cache-Control':'no-cache'})
+            if h.ok and 'cups-ui-clean-20261026' in h.text:break
+            print('WAITING_FOR_SITE_DEPLOY',attempt,h.status_code,flush=True)
+            time.sleep(6)
+          else:raise RuntimeError('Published HTML does not reference new version')
+          js=requests.get(root+'assets/cups-approved-v1.js?v=cups-ui-clean-20261026',timeout=30)
+          js.raise_for_status()
+          for slug in slugs:
+            assert f'{slug}-of-cups-v3.webp' in js.text,slug
+            image=requests.get(root+f'minor-arcana/cups/final/{slug}-of-cups-v3.webp',timeout=40)
+            image.raise_for_status()
+            im=Image.open(io.BytesIO(image.content));im.load()
+            assert im.format=='WEBP' and im.size==(941,1672),(slug,im.size,im.format)
+            print('NEW_PAINTING_LIVE',slug,im.size,len(image.content),flush=True)
+          landing=requests.get(root+'minor-arcana/cups/',timeout=30,allow_redirects=False)
+          landing.raise_for_status()
+          assert 'window.location.replace' in landing.text and '制作台账' not in landing.text
+          print('OLD_LEDGER_PAGE_REMOVED',flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1380,960']:opts.add_argument(arg)
+          browser=webdriver.Chrome(options=opts)
+          browser.set_script_timeout(40)
+          try:
+            browser.get(root+'?v=v3-clean#/library/1')
+            WebDriverWait(browser,15).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            major_cls=browser.find_element(By.CSS_SELECTOR,'.library-grid').get_attribute('class')
+            assert major_cls=='library-grid',major_cls
+            browser.get(root+'?v=v3-clean#/library/cups')
+            WebDriverWait(browser,15).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            cups_cls=browser.find_element(By.CSS_SELECTOR,'.library-grid').get_attribute('class')
+            assert major_cls==cups_cls,(major_cls,cups_cls)
+            txt=browser.find_element(By.ID,'app').text
+            assert '制作台账' not in txt and '已审核' not in txt and '正式定稿' not in txt,txt[:1500]
+            browser.get(root+'?v=v3-clean#/library/cups/2')
+            WebDriverWait(browser,10).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            browser.get(root+'?v=v3-clean#/library/cups/3')
+            WebDriverWait(browser,10).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==2)
+            print('SAME_LIBRARY_GRID_MAJOR_CUPS_6_6_2',flush=True)
+            for slug in slugs+['king']:
+              browser.get(root+'?v=v3-clean#/card/cups/'+slug)
+              WebDriverWait(browser,12).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+              text=browser.find_element(By.ID,'app').text
+              assert '制作台账' not in text and '审核' not in text and '正式定稿' not in text,slug
+              for label in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影']:
+                assert label in text,(slug,label)
+              img=browser.execute_async_script("""
+                const done=arguments[0], i=document.querySelector('.detail-art img');
+                i.decode().then(()=>done([i.naturalWidth,i.naturalHeight])).catch(()=>done([0,0]));
+              """)
+              assert img==[941,1672],(slug,img)
+              print('DEDICATED_ART_AND_INTERPRETATION_OK',slug,flush=True)
+            browser.get(root+'?v=v3-clean#/draw')
+            WebDriverWait(browser,10).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+            browser.execute_script("document.querySelector('#go-draw').click()")
+            assert len(browser.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+            print('ORIGINAL_DRAW_FUNCTIONAL',flush=True)
+            browser.set_window_size(390,844)
+            browser.get(root+'?v=v3-clean#/library/cups')
+            WebDriverWait(browser,10).until(lambda b:len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            width=browser.execute_script('return [document.documentElement.scrollWidth,window.innerWidth]')
+            assert width[0]<=width[1]+2,width
+            print('MOBILE_GALLERY_OK',width,flush=True)
+            print('ALL_FOUR_CORRECTED_IMAGES_AND_UNIFIED_UI_LIVE_PASS',flush=True)
+          finally:
+            browser.quit()
+          PY
+          python /tmp/qa.py
