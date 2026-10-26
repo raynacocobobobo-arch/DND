@@ -5,6 +5,18 @@
   'use strict';
   const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH;
   const root=document.querySelector('#app');
+  // The approved Minor Arcana artwork is a separate suit entry; do not silently
+  // mix a single minor card into the original 22-card Major Arcana draw.
+  const CUP_KING={
+    zh:'圣杯国王',en:'KING OF CUPS',title:'风暴中的平静',
+    img:'./minor-arcana/cups/final/king-of-cups-v1.webp?v=approved-20261026',
+    story:'在风暴撕扯海岸的傍晚，一位久经风浪的海上领袖端坐于临海的石座。他手中的圣杯平稳，身下的潮水却从未安静。远处的灯塔仍在闪烁，驶向港口的船只需要一个清醒的决定。他没有试图命令大海平息，只是先确认尚未归来的船员，再准备发出下一道指令。成熟的情感力量并不抹去恐惧，而是在恐惧存在时仍保有责任和体恤。',
+    visual:'人物坐姿占据主要画面，金冠与圣杯共同形成视觉中心；冷蓝色长袍、乌云和海浪塑造持续冲击，杯口和眼神则保持稳定。远景建筑只交代环境，不让神祇或城市规模抢走人物的情感主题。',
+    upright:'正位强调情绪成熟、在压力中保持自我调节、认真倾听他人的需求，以及在承担责任时保有温度。可以做出艰难决定，但不必用冷漠证明权威。它也提醒你成为一个能够容纳复杂感受的人。',
+    reversed:'逆位警惕情绪压抑、表面镇定之下的失控，或以善解人意为名回避边界。另一种表现是利用别人的依赖获得控制权。你需要区分真正的稳定与不肯承认自身需要。',
+    canon:'这张牌采用洛夫克拉夫特式海港、海雾和异质文明纹样，但国王与这段故事属于本系列原创角色。它没有将克苏鲁或其他外神直接描绘为人类国王，也不是任何一篇小说的原文插图。',
+    question:'面对别人的情绪与自己的压力，你能否同时保持同理心和清晰的界限？'
+  };
   if(!Array.isArray(C)||!Array.isArray(D)||C.length!==22||D.length!==22||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
@@ -24,6 +36,9 @@
     if(!parts.length) return {screen:'home'};
     if(parts[0]==='home')return {screen:'home'};
     if(parts[0]==='draw')return {screen:'draw'};
+    if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups'};
+    if(parts[0]==='cups')return {screen:'cups'};
+    if(parts[0]==='card'&&parts[1]==='cups'&&parts[2]==='king')return {screen:'cups-king'};
     if(parts[0]==='library') {
       const p=Number(parts[1]||1);
       return {screen:'library',page:Number.isInteger(p)?Math.max(1,Math.min(4,p)):1};
@@ -36,7 +51,7 @@
   }
   function updateNav(screen){
     navs.forEach(a=>{
-      const active=a.dataset.routeNav === (screen==='card'?'library':screen);
+      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-king'?'cups':screen);
       a.classList.toggle('active',active);
       if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
@@ -54,7 +69,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><span>22 幅独立高清原画 / 22 篇原创视觉叙事</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 1 张小阿卡纳已定稿</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -76,6 +91,9 @@
          ${page>1?`<a class="btn outline mini" href="#/library/${page-1}">← 上一页</a>`:'<button class="btn outline mini" disabled>← 上一页</button>'}
          <span class="page-number">${page} / 4</span>
          ${page<4?`<a class="btn outline mini" href="#/library/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
+      </div>
+      <div style="margin-top:34px;border-top:1px solid var(--line);padding-top:25px">
+        <a class="btn outline mini" href="#/library/cups">小阿卡纳专区：查看已定稿的圣杯国王 →</a>
       </div>
     </section>`;
   }
@@ -109,6 +127,51 @@
          </article>
        </div>
      </section>`;
+  }
+  function cupsLibrary(){
+    return `<section class="page library cups-library">
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
+      <div class="lib-heading"><div>
+        ${banner('MINOR ARCANA / CUPS','圣杯组 · 已定稿牌面','这一组共14张，目前仅《圣杯国王》通过审核。这里只展示正式定稿，不用未批准的草图冒充成品。')}
+      </div><div class="library-count">已定稿 1 / 14 张</div></div>
+      <div class="library-panel"><div class="library-grid cups-approved-grid">
+         <a href="#/card/cups/king" class="library-card cups-approved-card" aria-label="打开圣杯国王正式高清卡牌和完整解读">
+           <img src="${CUP_KING.img}" fetchpriority="high" alt="圣杯国王正式定稿高清原画">
+           <div class="roman">K / KING OF CUPS · 已定稿</div>
+           <h2 class="card-title">圣杯国王</h2>
+           <div class="caption">风暴中的平静</div>
+         </a>
+      </div></div>
+      <p class="lead" style="margin-top:30px">其余13张保留制作状态，不进入正式牌库。已定稿原画可点击打开独立牌面详情，或单独查看原始高清文件。</p>
+      <div class="actions">
+        <a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯组设计台账 →</a>
+        <a class="btn outline mini" href="#/library/1">返回22张大阿卡纳 →</a>
+      </div>
+    </section>`;
+  }
+  function cupsDetail(){
+    const d=CUP_KING;
+    return `<section class="page detail">
+       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups">小阿卡纳 · 圣杯组</a><span>/</span>圣杯国王</div>
+       <div class="detail-layout">
+         <div class="detail-art">
+           <img src="${d.img}" fetchpriority="high" alt="用户确认定稿的圣杯国王高清原画，941 × 1672">
+           <a class="zoom" href="${d.img}" target="_blank" rel="noopener">单独查看高清原画 · 941 × 1672 ↗</a>
+         </div>
+         <article class="detail-copy">
+           <div class="eyebrow">MINOR ARCANA / CUPS / KING · 已定稿</div>
+           <h1>${d.zh}</h1><div class="subtitle">${d.title} · ${d.en}</div>
+           <div class="character">以已确认的美术原画为准 · 不修改构图或细节</div>
+           ${section('01 / ORIGINAL STORY','牌面的故事',d.story,'story')}
+           ${section('02 / VISUAL STORYTELLING','画面在讲什么',d.visual)}
+           ${section('03 / UPRIGHT','正位 · 启示',d.upright)}
+           ${section('04 / REVERSED','逆位 · 阴影',d.reversed)}
+           ${section('05 / THE MYTHOS','原著背景与艺术改编',d.canon)}
+           <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${d.question}</p></section>
+           <div class="detail-arrows"><a class="btn outline mini" href="#/library/cups">← 返回圣杯组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
+         </article>
+       </div>
+    </section>`;
   }
   function seed32(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;}
   function pickCards(n,daily){
@@ -187,6 +250,8 @@
     else if(key==='library'){root.innerHTML=library(route.page);document.title='二十二张牌库 · '+docTitle;}
     else if(key==='card'){root.innerHTML=detail(route.id);document.title=C[route.id].zh+' · '+docTitle;}
     else if(key==='draw'){root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
+    else if(key==='cups'){root.innerHTML=cupsLibrary();document.title='圣杯组 · 小阿卡纳 · '+docTitle;}
+    else if(key==='cups-king'){root.innerHTML=cupsDetail();document.title='圣杯国王 · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
