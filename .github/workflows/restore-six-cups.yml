@@ -1,0 +1,55 @@
+name: Restore Verified Six Cups
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/restore-six-cups.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+      - run: python -m pip install --quiet Pillow
+      - name: Restore previous verified six-cup artwork from Git history
+        run: |
+          cat >/tmp/restore.py <<'PY'
+          import subprocess,hashlib,io,os
+          from PIL import Image
+          path='minor-arcana/cups/final/six-of-cups-v2.webp'
+          expected='d64c7cb1158d0181e4dcefd52f455ce5ddd59297db97aaed59b8f74064dea07a'
+          commits=subprocess.check_output(['git','log','--format=%H','--',path],text=True).splitlines()
+          print('FILE_HISTORY',len(commits),flush=True)
+          assert len(commits)>=2, 'Expected original corrected file in git history'
+          found=None
+          for commit in commits:
+              raw=subprocess.check_output(['git','show',commit+':'+path])
+              actual=hashlib.sha256(raw).hexdigest()
+              print('VERSION',commit[:10],actual,flush=True)
+              if actual==expected:
+                  found=raw;break
+          assert found is not None,'Exact validated six-cup source is not in history; refuse to overwrite'
+          with Image.open(io.BytesIO(found)) as im:
+              im.load()
+              assert im.size==(941,1672) and im.format=='WEBP'
+              im=im.convert('RGB')
+          with open(path,'wb') as f:f.write(found)
+          thumb=im.copy();thumb.thumbnail((360,640),Image.Resampling.LANCZOS)
+          thumb.save('minor-arcana/cups/thumbs/six-of-cups.webp','WEBP',quality=88,method=5)
+          print('RESTORED_CORRECT_SIX_CUPS',len(found),hashlib.sha256(found).hexdigest(),flush=True)
+          PY
+          python /tmp/restore.py
+      - name: Commit restored original art
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add minor-arcana/cups/final/six-of-cups-v2.webp minor-arcana/cups/thumbs/six-of-cups.webp
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "Already correct"; exit 0; }
+          git commit -m "fix(cups): restore verified clean six-cup final, remove overwritten variant"
+          git push origin HEAD:gh-pages
