@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { MedievalCrest } from "./MedievalCrest";
-import { HeraldicIcon } from "./HeraldicIcon";
 import type { ListRecord } from "../hooks/useLists";
 
 export function ListCard({
-  list, dragging, onEdit, onDragStart, onDragOver, onDrop, onDragEnd
+  list, dragging, onEdit, onDelete, onCopy, onComplete, onDragStart, onDragOver, onDrop, onDragEnd
 }: {
   list: ListRecord;
   dragging?: boolean;
   onEdit(): void;
+  onDelete(): void;
+  onCopy(): void;
+  onComplete(): void;
   onDragStart(): void;
   onDragOver(): void;
   onDrop(): void;
@@ -27,14 +29,16 @@ export function ListCard({
         <span className="context-name">{list.name}</span>
         <span className="context-count">{list.sceneCount} 个场景 · {list.incompleteCount} 件待办</span>
       </Link>
-      <div className="context-card-actions list-card-actions">
-        <button type="button" className="list-drag-handle" draggable
-          aria-label={`拖动排序 ${list.name}`}
-          title="拖动排序"
+      <div className="context-card-actions list-card-actions" aria-label={`${list.name} 清单操作`}>
+        <button type="button" className="list-text-action list-drag-handle" draggable
+          aria-label={`移动 ${list.name}`} title="按住拖动排序"
           onDragStart={(event)=>{event.stopPropagation(); onDragStart();}}
-          onDragEnd={(event)=>{event.stopPropagation(); onDragEnd();}}><HeraldicIcon name="drag" size={21}/></button>
-        <button type="button" aria-label={`编辑 ${list.name}`} onClick={onEdit}><HeraldicIcon name="edit" size={23}/></button>
-        <span className="context-chevron" aria-hidden="true"><HeraldicIcon name="arrow" size={19}/></span>
+          onDragEnd={(event)=>{event.stopPropagation(); onDragEnd();}}>移动</button>
+        <button type="button" className="list-text-action" aria-label={`编辑 ${list.name}`} onClick={onEdit}>编辑</button>
+        <button type="button" className="list-text-action list-delete-action" aria-label={`删除 ${list.name}`} onClick={onDelete}>删除</button>
+        <button type="button" className="list-text-action" aria-label={`复制 ${list.name}`} onClick={onCopy}>复制</button>
+        <button type="button" className="list-text-action list-complete-action" aria-label={`一键勾选 ${list.name}`}
+          disabled={list.incompleteCount === 0} onClick={onComplete}>一键勾选</button>
       </div>
     </li>
   );
