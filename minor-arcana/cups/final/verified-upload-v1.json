@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "ace",
+    "path": "minor-arcana/cups/final/ace-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/ace-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2374476,
+    "sha256": "22c7183bc0169c5c4008ce51b442ebda8b6d981c592d4ea6ba9c3e58f8ee3aa3"
+  },
+  {
+    "slug": "two",
+    "path": "minor-arcana/cups/final/two-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/two-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2198752,
+    "sha256": "c0fcad11683e09fb4fe080b7eb7e87374f054fd046b8dc2395c98d697a129639"
+  },
+  {
+    "slug": "three",
+    "path": "minor-arcana/cups/final/three-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/three-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2224556,
+    "sha256": "fd84eea1eb08c7f7bcab773d961421329eb9988a847ddbe134f5fb781eef3b68"
+  },
+  {
+    "slug": "four",
+    "path": "minor-arcana/cups/final/four-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/four-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2192908,
+    "sha256": "971decadf1a672b3013baaac5711b5f72d7bba0059e1ac514e4227186c99f6da"
+  },
+  {
+    "slug": "six",
+    "path": "minor-arcana/cups/final/six-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/six-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2362998,
+    "sha256": "34c3530d40d7d0adb448bb537d5a119bdf96b3c40c04d04c13f048d7f3a506d1"
+  },
+  {
+    "slug": "seven",
+    "path": "minor-arcana/cups/final/seven-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/seven-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2204728,
+    "sha256": "fc0f4ad099482d4fe34d3c56a9a0928ffc6d2395ff2f6101b59aa95c2d4b6390"
+  },
+  {
+    "slug": "eight",
+    "path": "minor-arcana/cups/final/eight-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/eight-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2219556,
+    "sha256": "7d6c101bc31d808d14020722f809a2ea8aabf23e437af8a054e03d280ea1d54b"
+  },
+  {
+    "slug": "nine",
+    "path": "minor-arcana/cups/final/nine-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/nine-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2201824,
+    "sha256": "2b412dfaab3f9a50ac615a8fabe48ca7db56df9a8e5a7604a08a0bff93b69c65"
+  },
+  {
+    "slug": "ten",
+    "path": "minor-arcana/cups/final/ten-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/ten-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2275638,
+    "sha256": "410303bd8819f4fa43f5a620a22e1f9c25645bd818493a6fa1b8c4bf64db60ef"
+  },
+  {
+    "slug": "page",
+    "path": "minor-arcana/cups/final/page-of-cups-v1.webp",
+    "thumbnail": "minor-arcana/cups/thumbs/page-of-cups.webp",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2171326,
+    "sha256": "1cc3a1f7f96bced33af0d268ad69f853fd6633f04a2766ea1c5ff640db00b9e9"
+  }
+]
