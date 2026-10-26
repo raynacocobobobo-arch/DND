@@ -7,6 +7,7 @@ import { apiRequest } from "../api/client";
 import { AIConversation, type ConversationTurn } from "../components/AIConversation";
 import { AISuggestionList } from "../components/AISuggestionList";
 import { HeraldicDivider } from "../components/HeraldicArt";
+import { AILogo } from "../components/AILogo";
 import { ImportListDialog } from "../components/ImportListDialog";
 
 function suggestionKey(title: string): string {
@@ -110,7 +111,7 @@ export function AIPage() {
   return (
     <section className="page-stack ai-page">
       <header className="ios-page-header">
-        <HeraldicIcon className="ai-title-icon" name="star" size={25}/>
+        <AILogo className="ai-title-logo" size={32}/>
         <h1>AI 规划器</h1>
         <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><HeraldicIcon name="upload" size={22}/></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><HeraldicIcon name="reset" size={22}/></button></div>
       </header>

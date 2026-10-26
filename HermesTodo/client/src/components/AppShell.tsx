@@ -5,11 +5,12 @@ import { isCloudMode } from "../cloud/config";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 import { HeraldicIcon } from "./HeraldicIcon";
 import { MedievalCrest } from "./MedievalCrest";
+import { AILogo } from "./AILogo";
 
 const links = [
   { to: "/", label: "清单", end: true, glyph: "fleur" },
   { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
-  { to: "/ai", label: "AI", end: false, glyph: "crown" }
+  { to: "/ai", label: "AI", end: false, glyph: "ai" }
 ] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
 export function AppShell() {
@@ -44,14 +45,14 @@ export function AppShell() {
               <Link key={link.to} to={link.to}
                 aria-current={active ? "page" : undefined}
                 className={`nav-link${active ? " nav-link-active" : ""}`}>
-                <MedievalCrest name={link.glyph} size={29}/>
+                {link.glyph === "ai" ? <AILogo size={29}/> : <MedievalCrest name={link.glyph} size={29}/>}
                 <span>{link.label}</span>
               </Link>
             );
           })}
         </nav>
         <div className="sidebar-art" aria-hidden="true"><span className="sidebar-art-sigil">FORTITUDO</span></div>
-        <div className="sidebar-motto"><HeraldicDivider/><p>每一个微小行动，都值得被记下。</p><span>AD ASTRA · 走向星辰</span></div>
+        <div className="sidebar-motto"><HeraldicDivider/><p>每一个微小行动，都值得被记下。</p><span>逐项完成 · 清晰前行</span></div>
       </aside>
       <div className="hermes-main-frame">
         <div className="mobile-brand"><FleurDeLis size={22}/><span>HermesTodo</span></div>
