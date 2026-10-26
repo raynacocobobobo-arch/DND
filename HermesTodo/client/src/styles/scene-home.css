@@ -295,3 +295,20 @@
 @media (prefers-reduced-motion: reduce) {
   .scene-home .context-card, .scene-home-inbox { transition: none; }
 }
+
+/* Top-level list hierarchy */
+.list-card{position:relative}
+.list-card-dragging{opacity:.56;transform:scale(.985)!important;border-color:#8c623d!important}
+.list-card-actions{align-items:center}
+.list-drag-handle{
+  display:grid;place-items:center;width:35px;height:35px;padding:0;
+  border:1px solid #cbb18a;background:#f5e9d6;color:#7d6248;
+  font:700 16px/1 Georgia,serif;letter-spacing:-.12em;cursor:grab;
+}
+.list-drag-handle:active{cursor:grabbing}
+.list-order-help{margin:13px 2px 0;color:#876f56;font-size:11px}
+.list-detail-page .scene-home-hero-copy h1{letter-spacing:.04em}
+@media(max-width:760px){
+  .list-drag-handle{width:32px;height:32px}
+  .list-order-help{font-size:10px}
+}
