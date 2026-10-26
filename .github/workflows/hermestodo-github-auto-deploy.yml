@@ -51,7 +51,6 @@ jobs:
     name: Deploy on Tencent Cloud runner (no inbound SSH)
     needs: verify
     if: false # Prevent Docker/self-hosted deployment until the actual systemd unit is verified.
-    if: github.repository == 'raynacocobobobo-arch/DND'
     runs-on: [self-hosted, linux, x64, hermestodo-prod]
     timeout-minutes: 45
     steps:
