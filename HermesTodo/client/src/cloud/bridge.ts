@@ -318,7 +318,18 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     const isLocal = url.protocol === "http:" && url.hostname === "localhost" && url.port === "3000";
     const isOurSite = url.protocol === "https:" && url.origin === location.origin &&
       url.pathname.startsWith(String(import.meta.env.BASE_URL));
-    if (!isLocal && !isOurSite) throw new Error("只能使用上次 localhost:3000 或 HermesTodo 网页的跳转地址");
+    const isSupabaseLink = url.protocol === "https:" && url.origin === config.url && url.pathname === "/auth/v1/verify";
+    if (isSupabaseLink) {
+      const type = url.searchParams.get("type");
+      const hash = url.searchParams.get("token") ?? url.searchParams.get("token_hash");
+      if ((type !== "magiclink" && type !== "email") || !hash || hash.length < 20) {
+        throw new Error("邮件链接缺少有效的验证令牌");
+      }
+      const token = await publicAuth(config, "verify", { token_hash: hash, type });
+      saveSession(config, token);
+      return jsonResponse({ authenticated: true });
+    }
+    if (!isLocal && !isOurSite) throw new Error("只能使用上次 localhost:3000、HermesTodo 或当前 Supabase 的登录链接");
     const fragment = url.hash.replace(/^#\/?/, "");
     const params = new URLSearchParams(fragment);
     const access = params.get("access_token");
