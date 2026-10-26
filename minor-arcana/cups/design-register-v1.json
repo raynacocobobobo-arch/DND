@@ -1,6 +1,6 @@
 {
-  "version": "1.1",
-  "status": "design development — NOT completed images",
+  "version": "1.2",
+  "status": "11 officially approved original paintings; 3 remaining",
   "suit": "Cups",
   "major_reference": "Existing 22 HD Major Arcana are the visual master",
   "rules": [
@@ -25,8 +25,13 @@
       "symbol": "1只圣杯，水沿杯沿形成通往异界的细小光路",
       "source": "《大衮》《印斯茅斯之影》的海潮意象；独立改编，不是原著具体器物",
       "avoid": "避免照搬大阿卡纳《月亮》的海碑或《皇帝》的巨神构图",
-      "status": "sample",
-      "review": "已有V0.1样张；需要降低背景巨神戏份并调整顶部编号系统"
+      "status": "approved",
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。",
+      "approved_art": "./final/ace-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ]
     },
     {
       "no": "II",
@@ -42,7 +47,13 @@
       "symbol": "2只杯口相对，连成一条细水弧",
       "source": "《印斯茅斯之影》的血缘秘密气氛；双人盟誓为原创",
       "avoid": "避免重复大阿卡纳《恋人》的拥抱和镜中人",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/two-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "III",
@@ -58,7 +69,13 @@
       "symbol": "3只相碰的杯，三人情绪各不相同",
       "source": "洛氏港镇日常的艺术延展；非原著某次仪式",
       "avoid": "不用宗教集会与大衮密教祭台，避开大阿卡纳《教皇》",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/three-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "IV",
@@ -74,7 +91,13 @@
       "symbol": "3只旧杯已在桌面，第4杯从窗外进入",
       "source": "洛氏梦境与海港氛围的原创日常寓言",
       "avoid": "不把所有杯子悬浮在空中，不靠巨神制造奇观",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/four-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "V",
@@ -106,7 +129,13 @@
       "symbol": "6只插花的小杯，恰好构成两组回忆",
       "source": "洛氏对童年与梦中故乡的反复书写，原创家庭场景",
       "avoid": "避开大阿卡纳《太阳》的宏大金色梦城",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/six-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "VII",
@@ -122,7 +151,13 @@
       "symbol": "7只杯分别呈现七种具体而不重复的欲望",
       "source": "《梦寻秘境卡达斯》的梦境想象延展，具体愿望为原创",
       "avoid": "避免复用大阿卡纳《命运之轮》的巨型同心圆机械",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/seven-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "VIII",
@@ -138,7 +173,13 @@
       "symbol": "8只杯留在岸边，主角不再携杯",
       "source": "《白船》的远航寓意，场面原创",
       "avoid": "避免复制大阿卡纳《愚者》的雨夜进城背影",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/eight-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "IX",
@@ -154,7 +195,13 @@
       "symbol": "9杯有自然陈列逻辑，满足感来自面部和空间",
       "source": "海洋调查者的原创人生寓言；借洛氏神话的海上主题",
       "avoid": "不要金色王座，避免和圣杯国王形象重复",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/nine-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "X",
@@ -170,7 +217,13 @@
       "symbol": "10杯嵌入共同用餐和纪念的自然空间",
       "source": "洛氏作品中归乡与血脉母题的反向、温暖艺术重述",
       "avoid": "不要直接复制传统塔罗彩虹或大阿卡纳《太阳》的金城",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/ten-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "P",
@@ -186,7 +239,13 @@
       "symbol": "仅1杯，杯内带小型不可能倒影",
       "source": "洛氏书信体与海港气氛的艺术重述",
       "avoid": "不是王室肖像，不能穿夸张王冠、不能借用大阿卡纳《女祭司》姿态",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/page-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
     },
     {
       "no": "N",
@@ -243,5 +302,5 @@
       "review": "2026-10-26 用户确认定版。画面定稿不再调整：圣杯国王端坐海崖，单人占据视觉中心，以一只圣杯和风暴海面形成情绪稳定对照；原画已上传并用无损 WebP 保存。"
     }
   ],
-  "approved_count": 1
+  "approved_count": 11
 }
