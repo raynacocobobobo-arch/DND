@@ -1,9 +1,12 @@
 /** Approved medieval coats of arms.
  * List crests stay on the original 8-frame AVIF sprite.
- * Functional actions render as real image elements so transparent WebP assets cannot be lost by background-image clipping/caching.
+ * Functional actions use a versioned 8-frame fantasy-relief WebP sprite rebuilt from the approved source art.
  */
 const crests = ["lion","fleur","compass","tree","book","swords","crown","scroll"] as const;
 type Crest = typeof crests[number];
+
+const actionCrests = ["inbox","add","edit","copy","delete","import","reset","send"] as const;
+type ActionCrest = typeof actionCrests[number];
 
 const aliases: Record<string,Crest> = {
   lion:"lion",fleur:"fleur",compass:"compass",tree:"tree",book:"book",swords:"swords",crown:"crown",scroll:"scroll",
@@ -14,7 +17,7 @@ const aliases: Record<string,Crest> = {
   gamepad:"swords","gamepad-2":"swords"
 };
 
-const actionAliases: Record<string,string> = {
+const actionAliases: Record<string,ActionCrest> = {
   inbox:"inbox",
   add:"add",plus:"add",
   edit:"edit",quill:"edit",feather:"edit",
@@ -23,11 +26,6 @@ const actionAliases: Record<string,string> = {
   upload:"import",import:"import",
   reset:"reset",
   send:"send"
-};
-
-const actionFiles: Record<string,string> = {
-  copy:"crest-copy-v2.webp",
-  delete:"crest-delete-v2.webp"
 };
 
 export function canonicalCrestName(name: string): Crest {
@@ -39,25 +37,22 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
 }) {
   const action = actionAliases[name];
   if (action) {
-    const file = actionFiles[action] ?? `crest-${action}.webp`;
-    return <img
+    const index = actionCrests.indexOf(action);
+    return <span
       className={`medieval-crest medieval-action-crest ${className}`}
       data-crest={action}
       aria-hidden="true"
-      alt=""
-      src={`${import.meta.env.BASE_URL}art/${file}`}
-      width={size}
-      height={size}
-      draggable={false}
       style={{
-        display: "block",
+        display: "inline-block",
         verticalAlign: "middle",
         flexShrink: 0,
         width: size,
         height: size,
-        objectFit: "contain",
-        objectPosition: "center",
-        opacity: 1
+        opacity: 1,
+        backgroundImage: `url("${import.meta.env.BASE_URL}art/action-crests-v4.webp")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: `${size * actionCrests.length}px ${size}px`,
+        backgroundPosition: `-${index * size}px 0`
       }}
     />;
   }
