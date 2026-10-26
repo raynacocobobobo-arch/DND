@@ -1,0 +1,55 @@
+name: Publish Approved King of Cups Art
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-king-art-transfer.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upload:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout published site
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          persist-credentials: true
+      - name: Install image tools
+        run: python -m pip install --quiet Pillow
+      - name: Download approved painting and verify full resolution
+        env:
+          ART_URL: "https://docs.google.com/docs-images-rt/ALKuztZB_7zMg2x7Ptm5cu3qszL39yPDgdT00UmOf4bngYFvOd6fAzOK0uDOtfR-1vDA0PfTRzRFMjWdtPCbHhzKqtUASIKW8HLFz5ystO-Yy56rFgJaf9Mp56_0_kZhOMCTyTtFm-AgGVSVjAnNWIo-ZW6Sj8AEHDnl26Ca-VL9PJiacvfvsUI=s2048?key=B7OMVCjTclWn-vjvhbWI4g"
+        shell: bash
+        run: |
+          curl -fLsS --retry 3 --max-time 90 "$ART_URL" -o /tmp/king-source
+          file /tmp/king-source
+          python - <<'PY'
+          import io,os,hashlib
+          from PIL import Image
+          src='/tmp/king-source'
+          with Image.open(src) as loaded:
+            loaded.load()
+            im=loaded.convert('RGB')
+          print('KING_OF_CUPS_SOURCE', im.size, 'bytes', os.path.getsize(src))
+          assert im.size==(941,1672), ('source resolution changed', im.size)
+          path='minor-arcana/cups/final/king-of-cups-v1.webp'
+          os.makedirs(os.path.dirname(path),exist_ok=True)
+          im.save(path,format='WEBP',lossless=True,method=6)
+          with Image.open(path) as test:
+            test.load()
+            assert test.format=='WEBP' and test.size==(941,1672)
+            assert test.convert('RGB').tobytes()==im.tobytes(), 'lossless pixel mismatch'
+          print('APPROVED_KING_OF_CUPS_BINARY_READY',path,os.path.getsize(path),hashlib.sha256(open(path,'rb').read()).hexdigest(),flush=True)
+          PY
+      - name: Commit approved card image to GitHub Pages
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add minor-arcana/cups/final/king-of-cups-v1.webp
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "Binary unchanged (already published)"; exit 0; }
+          git commit -m "art(cups): publish user-approved King of Cups final painting"
+          git push origin HEAD:gh-pages
