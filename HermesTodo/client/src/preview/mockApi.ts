@@ -160,16 +160,38 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     ids.forEach((listId:string,index:number)=>{const item=store.lists.find(x=>x.id===listId);if(item)item.sortOrder=index;});
     persist(); return reply({ok:true});
   }
+  const lcm=/^\/api\/lists\/([^/]+)\/complete$/.exec(path);
+  if(lcm && method==="POST"){
+    const sceneIds=new Set(store.contexts.filter(x=>x.listId===lcm[1]).map(x=>x.id));
+    const rootIds=new Set(store.tasks.filter(t=>t.contextId&&sceneIds.has(t.contextId)).map(t=>t.id));
+    let updatedCount=0;
+    for(const task of store.tasks){
+      const belongs=(task.contextId&&sceneIds.has(task.contextId))||(task.parentTaskId&&rootIds.has(task.parentTaskId));
+      if(belongs&&!task.isCompleted){
+        task.isCompleted=true;task.completedAt=nowISO();task.updatedAt=nowISO();updatedCount++;
+      }
+    }
+    persist();return reply({updatedCount});
+  }
   const lm=/^\/api\/lists\/([^/]+)$/.exec(path);
-  if(lm && method==="PATCH"){
+  if(lm){
     const item=store.lists.find(x=>x.id===lm[1]);
     if(!item) return error("清单不存在",404);
-    if(typeof data.name==="string"&&data.name.trim()) item.name=data.name.trim();
-    if(typeof data.icon==="string") item.icon=data.icon;
-    if(typeof data.color==="string") item.color=data.color;
-    item.updatedAt=nowISO(); persist();
-    const view=getLists().find(x=>x.id===item.id);
-    return reply(view);
+    if(method==="PATCH"){
+      if(typeof data.name==="string"&&data.name.trim()) item.name=data.name.trim();
+      if(typeof data.icon==="string") item.icon=data.icon;
+      if(typeof data.color==="string") item.color=data.color;
+      item.updatedAt=nowISO(); persist();
+      const view=getLists().find(x=>x.id===item.id);
+      return reply(view);
+    }
+    if(method==="DELETE"){
+      const sceneIds=new Set(store.contexts.filter(x=>x.listId===item.id).map(x=>x.id));
+      store.lists=store.lists.filter(x=>x.id!==item.id);
+      store.contexts=store.contexts.filter(x=>x.listId!==item.id);
+      for(const task of store.tasks) if(task.contextId&&sceneIds.has(task.contextId)) task.contextId=null;
+      persist();return reply(null,204);
+    }
   }
   if (path === "/api/contexts" && method === "GET") return reply(getContexts(url.searchParams));
   if (path === "/api/contexts" && method === "POST") {
