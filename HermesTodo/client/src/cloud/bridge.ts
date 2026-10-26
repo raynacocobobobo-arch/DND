@@ -550,18 +550,47 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     }
     return jsonResponse({ ok: true });
   }
-  const lm = /^\/api\/lists\/([^/]+)$/.exec(endpoint);
-  if (lm && method === "PATCH") {
-    const id = encodeURIComponent(lm[1]!);
-    const changed = await rest<DbList[]>(config, "hermes_lists?id=eq." + id, {
-      method: "PATCH", body: JSON.stringify({ ...fields(data, listFields), updated_at: new Date().toISOString() })
-    });
-    if (!changed[0]) throw new Error("清单不存在");
+  const lcm = /^\/api\/lists\/([^/]+)\/complete$/.exec(endpoint);
+  if (lcm && method === "POST") {
+    const listId = lcm[1]!;
     const [contexts, tasks] = await Promise.all([
-      rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc"),
+      rest<DbContext[]>(config, "hermes_contexts?select=*&list_id=eq." + encodeURIComponent(listId)),
       allTasks(config)
     ]);
-    return jsonResponse(toList(changed[0], contexts, tasks));
+    const sceneIds = new Set(contexts.map(item => item.id));
+    const rootIds = new Set(tasks.filter(task => task.context_id && sceneIds.has(task.context_id)).map(task => task.id));
+    const ids = tasks
+      .filter(task => !task.is_completed && (
+        (task.context_id && sceneIds.has(task.context_id)) ||
+        (task.parent_task_id && rootIds.has(task.parent_task_id))
+      ))
+      .map(task => task.id);
+    if (ids.length) {
+      await rest<DbTask[]>(config, "hermes_tasks?id=in.(" + ids.join(",") + ")", {
+        method: "PATCH",
+        body: JSON.stringify({ is_completed: true, completed_at: new Date().toISOString() })
+      });
+    }
+    return jsonResponse({ updatedCount: ids.length });
+  }
+  const lm = /^\/api\/lists\/([^/]+)$/.exec(endpoint);
+  if (lm) {
+    const id = encodeURIComponent(lm[1]!);
+    if (method === "PATCH") {
+      const changed = await rest<DbList[]>(config, "hermes_lists?id=eq." + id, {
+        method: "PATCH", body: JSON.stringify({ ...fields(data, listFields), updated_at: new Date().toISOString() })
+      });
+      if (!changed[0]) throw new Error("清单不存在");
+      const [contexts, tasks] = await Promise.all([
+        rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc"),
+        allTasks(config)
+      ]);
+      return jsonResponse(toList(changed[0], contexts, tasks));
+    }
+    if (method === "DELETE") {
+      await rest(config, "hermes_lists?id=eq." + id, { method: "DELETE" });
+      return jsonResponse(null, 204);
+    }
   }
   if (endpoint === "/api/contexts" && method === "GET") {
     const url = new URL(input instanceof Request ? input.url : String(input), location.href);
