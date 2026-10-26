@@ -1,4 +1,4 @@
-name: HermesTodo legacy Docker deploy (disabled: server uses systemd)
+name: "HermesTodo legacy Docker deploy (disabled; server uses systemd)"
 
 on:
   workflow_dispatch:
