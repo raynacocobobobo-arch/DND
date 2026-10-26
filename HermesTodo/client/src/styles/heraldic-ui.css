@@ -112,7 +112,7 @@
 .ai-orb .ai-logo{width:70px!important;height:70px!important}
 .editorial-dashboard .ai-teaser>.ai-logo{width:36px!important;height:36px!important}
 @media(max-width:760px){
-  .main-navigation .nav-link .ai-logo{width:24px!important;height:24px!important}
+  .main-navigation .nav-link .ai-logo{width:20px!important;height:20px!important}
   .ai-orb{width:82px!important;height:82px!important}
   .ai-orb .ai-logo{width:62px!important;height:62px!important}
 }
