@@ -1,0 +1,80 @@
+name: Transfer 3 verified Cups artworks
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-three-real-art-transfer.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          persist-credentials: true
+      - run: python -m pip install --quiet Pillow
+      - name: Fetch original source and verify lossless image
+        run: |
+          cat >/tmp/sources.json <<'END_MANIFEST'
+          [
+            {
+              "slug": "knight",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbvPC-5Mcr_zvrF5piLVJ1vtXdDWEw75t7V_iYyE4e61JkAwvAG4fnx64gicawX0X99n-CMFoBN7eQkegStZFxbYd2OrkJCaVoEJXqejRI20vjTX4MidhkC-7DpppLNiUW77ZMyma-1d_FUb6H5bYDjgaDVdQuwsKDiFVY1bh59qh20=s2048?key=WgGgK8t1Wm_w-1EedZXXGw"
+            },
+            {
+              "slug": "queen",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztZtUawXWGWSIme-TsaLNpkIPu2I7dWhvIiBlWglsepCrAFk4oVBFu8fzxoC06oQ1qzs2cVpNrLD9CwI25d_p8jlHkTDzkkVdhs3ahWavkD2QGtA6Orn3SrpFwsIZ8aap32h3LsPrc6XjA5OEpcUrSQqIJTkGa8QqM4I0mRnuJm0CbUf7bs=s2048?key=WgGgK8t1Wm_w-1EedZXXGw"
+            },
+            {
+              "slug": "six",
+              "url": "https://docs.google.com/docs-images-rt/ALKuztbRic2BqzKzFaMRY0YYMh-44iD-HY3scz0eC9dHWyYDPztR0gF5juJH1AByBPUU_Un82M4gQMW273w7pfr5wW90Ighf7stJQs625Ee5AHdccfkvdxYD50au-Kr5X7qE2-X3wWSm_ReI6-EMis-ozKrArLncmZQ4vofvTvDJVVyOV4Fza1I=s2048?key=WgGgK8t1Wm_w-1EedZXXGw"
+            }
+          ]
+          END_MANIFEST
+          cat >/tmp/transfer.py <<'END_PY'
+          import urllib.request,time,os,io,json,hashlib
+          from PIL import Image
+          items=json.load(open('/tmp/sources.json'))
+          assert len(items)==3
+          for entry in items:
+            last=None
+            for a in range(4):
+              try:
+                with urllib.request.urlopen(urllib.request.Request(entry['url'],headers={'User-Agent':'TarotAssetTransfer/1.0'}),timeout=65) as r:
+                  raw=r.read()
+                assert len(raw)>200000
+                with Image.open(io.BytesIO(raw)) as image:
+                  image.load()
+                  rgb=image.convert('RGB')
+                assert rgb.size==(941,1672),('bad resolution',entry['slug'],rgb.size)
+                slug=entry['slug']
+                path=f'minor-arcana/cups/final/{slug}-of-cups-v2.webp' if slug=='six' else f'minor-arcana/cups/final/{slug}-of-cups-v1.webp'
+                os.makedirs(os.path.dirname(path),exist_ok=True)
+                rgb.save(path,'WEBP',lossless=True,method=5)
+                with Image.open(path) as test:
+                  test.load()
+                  assert test.format=='WEBP' and test.size==(941,1672) and test.convert('RGB').tobytes()==rgb.tobytes()
+                tpath=f'minor-arcana/cups/thumbs/{slug}-of-cups.webp'
+                os.makedirs(os.path.dirname(tpath),exist_ok=True)
+                thumb=rgb.copy()
+                thumb.thumbnail((360,640),Image.Resampling.LANCZOS)
+                thumb.save(tpath,'WEBP',quality=90,method=5)
+                print('VERIFIED_UPLOADED_CUP',slug,path,os.path.getsize(path),hashlib.sha256(open(path,'rb').read()).hexdigest(),flush=True)
+                break
+              except Exception as e:
+                last=e;time.sleep(a*2+1)
+            else:
+              raise RuntimeError(str((entry['slug'],last)))
+          END_PY
+          python /tmp/transfer.py
+      - name: Publish verified binaries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add minor-arcana/cups/final minor-arcana/cups/thumbs
+          git diff --cached --quiet && exit 0
+          git commit -m "art(cups): publish Knight Queen and six-cup corrected original"
+          git push origin HEAD:gh-pages
