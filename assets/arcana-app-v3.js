@@ -119,26 +119,26 @@
      </section>`;
   }
   function cupsLibrary(page=1){
-    const start=(page-1)*6, items=CU.slice(start,start+6);
-    return `<section class="page library cups-library">
-      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">大阿卡纳牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
-      <div class="lib-heading"><div>
-      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','圣杯14张原画均已收录，并提供独立故事与正逆位解读。圣杯五、圣杯六已按牌义修正杯数，14张均已正式入库。')}
-      </div><div class="library-count">圣杯组14张已收录 · 14张通过 · 第 ${page} / 3 页</div></div>
-      <div class="library-panel"><div class="library-grid cups-approved-grid">
-        ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card cups-approved-card" aria-label="打开${clean(c.zh)}原画和完整解读">
-          <img src="${c.thumb}" loading="lazy" alt="${clean(c.zh)}高清塔罗原画">
-          <div class="roman">CUPS / ${clean(c.en)} · ${c.status==="approved"?"已定稿":"待修正"}</div>
-          <h2 class="card-title">${clean(c.zh)}</h2><div class="caption">${clean(c.title)}</div>
-        </a>`).join('')}
+    const start=(page-1)*6, end=Math.min(14,start+6), items=CU.slice(start,end);
+    return `<section class="page library">
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span>圣杯组</div>
+      <div class="lib-heading">
+        <div>${banner('THE GRIMOIRE / SUIT OF CUPS','圣杯 · 十四张牌','十四幅独立原画。选择一张进入它的故事，阅读画面解析、原著线索与正逆位解读。')}</div>
+        <div class="library-count">第 ${page} / 3 页 · 显示 ${start+1}—${end} / 共 14 张</div>
+      </div>
+      <div class="library-panel"><div class="library-grid">
+       ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="打开${clean(c.zh)}的完整故事">
+           <img src="${c.img}" loading="lazy" alt="${clean(c.zh)}高清原画">
+           <div class="roman">${clean(c.en)}</div>
+           <h2 class="card-title">${clean(c.zh)}</h2>
+           <div class="caption">${clean(c.title)}</div>
+         </a>`).join('')}
       </div></div>
       <div class="paginator">
-       ${page>1?'<a class="btn outline mini" href="#/library/cups/1">← 上一页</a>':'<button class="btn outline mini" disabled>← 上一页</button>'}
-       <span class="page-number">${page} / 3</span>
-       ${page<3?`<a class="btn outline mini" href="#/library/cups/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
+        ${page>1?`<a class="btn outline mini" href="#/library/cups/${page-1}">← 上一页</a>`:'<button class="btn outline mini" disabled>← 上一页</button>'}
+        <span class="page-number">${page} / 3</span>
+        ${page<3?`<a class="btn outline mini" href="#/library/cups/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
       </div>
-      <p class="lead">圣杯组14张正式入库。圣杯五已修正为三只倾倒、两只直立；圣杯六已补足第六只。抽牌现支持22张大阿卡纳或包含所有14张圣杯的36张。</p>
-      <div class="actions"><a class="btn outline mini" href="#/draw">用已入库牌面抽牌 →</a><a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯制作台账 →</a></div>
     </section>`;
   }
   function cupsDetail(slug){
@@ -149,13 +149,13 @@
       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups/${Math.floor(index/6)+1}">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
       <div class="detail-layout">
         <div class="detail-art">
-          <img src="${d.img}" fetchpriority="high" alt="${clean(d.zh)}941 × 1672已确认高清原画">
-          <a class="zoom" target="_blank" rel="noopener" href="${d.img}">打开 941 × 1672 高清原画 ↗</a>
+          <img src="${d.img}" fetchpriority="high" alt="${clean(d.zh)} 高清原画">
+          <a class="zoom" target="_blank" rel="noopener" href="${d.img}">单独查看高清原画 ↗</a>
         </div>
         <article class="detail-copy">
-          <div class="eyebrow">MINOR ARCANA / SUIT OF CUPS · ${d.status==="approved"?"正式定稿":"杯数待修正 · 暂不参与抽牌"}</div>
+          <div class="eyebrow">MINOR ARCANA / SUIT OF CUPS · ${clean(d.en)}</div>
           <h1>${clean(d.zh)}</h1><div class="subtitle">${clean(d.title)} · ${clean(d.en)}</div>
-          <div class="character">传统牌义 / ${clean(d.suitMeaning)}</div>
+          <div class="character">象征主题 / ${clean(d.suitMeaning)}</div>
           ${section('01 / ORIGINAL NARRATIVE','牌面的故事',d.story,'story')}
           ${section('02 / VISUAL LANGUAGE','画面在讲什么',d.visual)}
           ${section('03 / UPRIGHT','正位 · 启示',d.up)}
@@ -265,5 +265,5 @@
   }
   window.addEventListener('hashchange',render);
   render();
-  console.info('Forbidden Arcana V3: 22 major cards, 14 visible Cups images, 13 approved for random draws');
+  console.info('Forbidden Arcana: Major Arcana 22 + Cups 14, unified gallery and interpretation');
 })();
