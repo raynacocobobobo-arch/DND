@@ -81,6 +81,15 @@ describe("lists and scenes interface", () => {
 
     const list = await screen.findByRole("list", { name: "清单列表" });
     expect(list).toHaveClass("context-grid");
+    expect(screen.getByRole("button", { name: "移动 出国旅行" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "编辑 出国旅行" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "删除 出国旅行" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "复制 出国旅行" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "一键勾选 出国旅行" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "删除 出国旅行" }));
+    expect(screen.getByRole("alertdialog", { name: "删除清单？" })).toHaveTextContent("任务不会删除");
+    await user.click(screen.getByRole("button", { name: "取消" }));
 
     const quickName = screen.getByLabelText("快速新建清单");
     expect(quickName).toHaveAttribute("placeholder", "新建清单，例如：国内旅行、工作项目…");
