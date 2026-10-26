@@ -1,0 +1,101 @@
+name: Verify 11 Approved Cups On Site
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-11-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Install test libraries
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Check 11 live originals, card routing, drawing and mobile
+        shell: bash
+        run: |
+          cat >/tmp/live_cups_11.py <<'CUPS_LIVE_QA_END'
+          import requests,time,io
+          from PIL import Image
+          from concurrent.futures import ThreadPoolExecutor
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          cups=base+'minor-arcana/cups/'
+          slugs=['ace','two','three','four','six','seven','eight','nine','ten','page','king']
+          for trial in range(40):
+              html=requests.get(base+'?status=cups11-'+str(trial),timeout=25,headers={'Cache-Control':'no-cache'})
+              preview=requests.get(cups+'?status=cups11-'+str(trial),timeout=25,headers={'Cache-Control':'no-cache'})
+              if html.ok and 'approved-cups-11-20261026' in html.text and 'id="artgrid"' in preview.text:
+                  break
+              print('WAIT_PAGES',trial,html.status_code,preview.status_code,flush=True)
+              time.sleep(6)
+          else:
+              raise RuntimeError('Site did not publish latest Cups entry')
+          print('LIVE_MAIN_AND_PREVIEW_PUBLISHED',flush=True)
+          def check(slug):
+              link=cups+f'final/{slug}-of-cups-v1.webp?v=cups-20261026'
+              r=requests.get(link,timeout=45);r.raise_for_status()
+              with Image.open(io.BytesIO(r.content)) as im:
+                  im.load()
+                  assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+              return slug,len(r.content)
+          with ThreadPoolExecutor(max_workers=7) as ex:
+              results=list(ex.map(check,slugs))
+          assert len(results)==11
+          for s,n in results:print('LIVE_APPROVED_CARD',s,n,flush=True)
+          reg=requests.get(cups+'design-register-v1.json',timeout=25).json()
+          assert len(reg['cards'])==14 and sum(c['status']=='approved' for c in reg['cards'])==11
+          assert [c['slug'] for c in reg['cards'] if c['status']!='approved']==['five','knight','queen']
+          print('REGISTER_APPROVED_11_PENDING_3',flush=True)
+          opt=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1370,940']:opt.add_argument(arg)
+          b=webdriver.Chrome(options=opt)
+          b.set_script_timeout(50)
+          try:
+              b.get(base+'?v=approved11#/library/cups')
+              WebDriverWait(b,25).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==6)
+              assert '11 / 14' in b.find_element(By.CSS_SELECTOR,'.library-count').text
+              b.execute_script("document.querySelector('.paginator a[href=\"#/library/cups/2\"]').click()")
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==5)
+              assert b.find_elements(By.CSS_SELECTOR,'.cups-approved-card')[-1].text.find('圣杯国王')>=0
+              print('MAIN_CARD_LIBRARY_PAGINATES_6_PLUS_5',flush=True)
+              for slug in slugs:
+                  b.get(base+'?v=approved11#/card/cups/'+slug)
+                  WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-art img'))==1)
+                  h=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  assert all(k in h for k in ['牌面的故事','正位 · 启示','逆位 · 阴影','原著背景与艺术改编','留给你的问题']),slug
+              print('ELEVEN_DEDICATED_CARD_PAGES_WITH_STORIES',flush=True)
+              b.get(base+'?v=approved11#/draw')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
+              assert '33张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+              b.execute_script("Math.random=()=>0.9999;document.querySelector('#go-draw').click()")
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1)
+              assert '圣杯国王' in b.find_element(By.CSS_SELECTOR,'.drawn-card').text
+              assert '牌面故事' in b.find_element(By.CSS_SELECTOR,'.reading-sections').text
+              print('CUPS_IN_RANDOM_DRAW_POOL',flush=True)
+              b.execute_script("document.querySelector('[data-pool=major]').click();document.querySelector('#go-draw').click()")
+              assert '世界' in b.find_element(By.CSS_SELECTOR,'.drawn-card').text
+              print('ORIGINAL_22_CARD_DRAW_MODE',flush=True)
+              b.get(cups+'?v=approved11')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.approved-art-card'))==11)
+              print('STANDALONE_APPROVED_11_GALLERY',flush=True)
+              b.set_window_size(390,844)
+              b.get(base+'?v=approved11#/library/cups')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==6)
+              w=b.execute_script("return [document.documentElement.scrollWidth,window.innerWidth]")
+              assert w[0]<=w[1]+2,w
+              b.get(base+'?v=approved11#/card/cups/ace')
+              WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-art img'))==1)
+              w=b.execute_script("return [document.documentElement.scrollWidth,window.innerWidth]")
+              assert w[0]<=w[1]+2,w
+              print('MOBILE_GALLERY_AND_DETAIL_NO_OVERFLOW',flush=True)
+              print('ALL_11_CUPS_LIVE_WEBSITE_TESTS_PASSED',flush=True)
+          finally:
+              b.quit()
+          CUPS_LIVE_QA_END
+          python /tmp/live_cups_11.py
