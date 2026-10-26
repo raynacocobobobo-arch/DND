@@ -2,7 +2,7 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { App } from "../src/App";
 
@@ -60,7 +60,9 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("home dashboard", () => {
+beforeEach(() => window.history.replaceState({}, "", "/inbox"));
+
+describe("inbox dashboard", () => {
   test("shows all pending tasks in a single to-do list regardless of due date", async () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
@@ -79,7 +81,7 @@ describe("home dashboard", () => {
     expect(screen.getByRole("heading", { name: "我的待办" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
     expect(screen.getByText(/这里收集尚未分类的待办/)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "情境目录" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "清单目录" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
