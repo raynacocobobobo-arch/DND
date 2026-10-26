@@ -3,8 +3,13 @@
  * Does not call the production API or handle real credentials.
  * The regular app build excludes this module.
  */
+type ListItem = {
+  id: string; name: string; icon: string; color: string; sortOrder: number;
+  createdAt: string; updatedAt: string;
+};
 type ContextItem = {
   id: string; name: string; icon: string; color: string; sortOrder: number;
+  listId: string | null;
   createdAt: string; updatedAt: string;
 };
 type TaskItem = {
@@ -14,7 +19,7 @@ type TaskItem = {
   repeatInterval: "none" | "daily" | "weekly" | "monthly" | "yearly" | "custom";
   repeatRule: string; createdAt: string; updatedAt: string;
 };
-type DemoStore = { contexts: ContextItem[]; tasks: TaskItem[] };
+type DemoStore = { lists: ListItem[]; contexts: ContextItem[]; tasks: TaskItem[] };
 const STORAGE_KEY = "hermestodo-public-preview-v1";
 const nowISO = () => new Date().toISOString();
 const id = () => crypto.randomUUID();
@@ -24,10 +29,13 @@ const shanghaiDate = () => new Intl.DateTimeFormat("en-CA", {
 const today = shanghaiDate();
 const due = (offset: number) => new Date(`${today}T09:00:00+08:00`).getTime() + offset * 86400000;
 const isoDue = (offset: number) => new Date(due(offset)).toISOString();
+const demoLists: ListItem[] = [
+  { id: "travel-list", name: "出国旅行", icon: "compass", color: "#8CAABA", sortOrder: 0, createdAt: nowISO(), updatedAt: nowISO() }
+];
 const demoContexts: ContextItem[] = [
-  { id: "work", name: "工作项目", icon: "briefcase", color: "#8CAABA", sortOrder: 0, createdAt: nowISO(), updatedAt: nowISO() },
-  { id: "life", name: "个人生活", icon: "house", color: "#9AB898", sortOrder: 1, createdAt: nowISO(), updatedAt: nowISO() },
-  { id: "creative", name: "创作灵感", icon: "book-open", color: "#C0A8C8", sortOrder: 2, createdAt: nowISO(), updatedAt: nowISO() }
+  { id: "work", name: "工作项目", icon: "briefcase", color: "#8CAABA", sortOrder: 0, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
+  { id: "life", name: "个人生活", icon: "house", color: "#9AB898", sortOrder: 1, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
+  { id: "creative", name: "创作灵感", icon: "book-open", color: "#C0A8C8", sortOrder: 2, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() }
 ];
 const makeTask = (title: string, contextId: string | null, dueAt: string | null, priority: TaskItem["priority"] = "medium"): TaskItem => ({
   id: id(), title, notes: "", priority, dueAt, isCompleted: false, completedAt: null,
@@ -35,6 +43,7 @@ const makeTask = (title: string, contextId: string | null, dueAt: string | null,
   createdAt: nowISO(), updatedAt: nowISO()
 });
 const seed: DemoStore = {
+  lists: demoLists,
   contexts: demoContexts,
   tasks: [
     makeTask("记下一个临时想法", null, null),
@@ -49,8 +58,13 @@ function read(): DemoStore {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as DemoStore;
-      if (Array.isArray(parsed.contexts) && Array.isArray(parsed.tasks)) return parsed;
+      const parsed = JSON.parse(raw) as Partial<DemoStore>;
+      if (Array.isArray(parsed.contexts) && Array.isArray(parsed.tasks)) {
+        const lists = Array.isArray(parsed.lists) && parsed.lists.length ? parsed.lists : demoLists;
+        const defaultListId = lists[0]?.id ?? "travel-list";
+        const contexts = parsed.contexts.map((item) => ({ ...item, listId: item.listId ?? defaultListId }));
+        return { lists, contexts, tasks: parsed.tasks };
+      }
     }
   } catch {
     // Private browsing can deny localStorage. The demo still works in memory.
@@ -80,11 +94,24 @@ function getTasks(search: URLSearchParams) {
     subtasks: store.tasks.filter(child => child.parentTaskId === t.id).sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map(child => ({ ...child, subtasks: [] }))
   }));
 }
-function getContexts() {
-  return [...store.contexts].sort((a, b) => a.sortOrder - b.sortOrder).map(c => ({
-    ...c,
-    incompleteCount: store.tasks.filter(t => t.contextId === c.id && !t.isCompleted).length
-  }));
+function getContexts(search = new URLSearchParams()) {
+  const listId = search.get("listId");
+  return store.contexts.filter(c => !listId || c.listId === listId)
+    .sort((a, b) => a.sortOrder - b.sortOrder).map(c => ({
+      ...c,
+      incompleteCount: store.tasks.filter(t => t.contextId === c.id && !t.isCompleted).length
+    }));
+}
+function getLists() {
+  return [...store.lists].sort((a,b)=>a.sortOrder-b.sortOrder).map(list => {
+    const scenes=store.contexts.filter(c=>c.listId===list.id);
+    const sceneIds=new Set(scenes.map(c=>c.id));
+    return {
+      ...list,
+      sceneCount:scenes.length,
+      incompleteCount:store.tasks.filter(t=>t.contextId && sceneIds.has(t.contextId) && !t.isCompleted).length
+    };
+  });
 }
 function taskRecord(task: TaskItem) {
   return { ...task, subtasks: store.tasks.filter(t => t.parentTaskId === task.id).map(t => ({ ...t, subtasks: [] })) };
@@ -118,12 +145,39 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   if (path === "/api/session") return reply({ authenticated: true });
   if (path === "/api/auth/login") return reply({ authenticated: true });
   if (path === "/api/auth/logout") return reply(null, 204);
-  if (path === "/api/contexts" && method === "GET") return reply(getContexts());
+  if (path === "/api/lists" && method === "GET") return reply(getLists());
+  if (path === "/api/lists" && method === "POST") {
+    const name=String(data.name ?? "").trim();
+    if(!name) return error("请输入清单名称");
+    const item: ListItem = { id:id(), name, icon:String(data.icon||"compass"), color:String(data.color||"#8CAABA"),
+      sortOrder:store.lists.length, createdAt:nowISO(), updatedAt:nowISO() };
+    store.lists.push(item); persist();
+    return reply({ ...item, sceneCount:0, incompleteCount:0 },201);
+  }
+  if (path === "/api/lists/reorder" && method === "POST") {
+    const ids=Array.isArray(data.orderedIds)?data.orderedIds.map(String):[];
+    if(ids.length!==store.lists.length) return error("清单排序数据无效");
+    ids.forEach((listId:string,index:number)=>{const item=store.lists.find(x=>x.id===listId);if(item)item.sortOrder=index;});
+    persist(); return reply({ok:true});
+  }
+  const lm=/^\/api\/lists\/([^/]+)$/.exec(path);
+  if(lm && method==="PATCH"){
+    const item=store.lists.find(x=>x.id===lm[1]);
+    if(!item) return error("清单不存在",404);
+    if(typeof data.name==="string"&&data.name.trim()) item.name=data.name.trim();
+    if(typeof data.icon==="string") item.icon=data.icon;
+    if(typeof data.color==="string") item.color=data.color;
+    item.updatedAt=nowISO(); persist();
+    const view=getLists().find(x=>x.id===item.id);
+    return reply(view);
+  }
+  if (path === "/api/contexts" && method === "GET") return reply(getContexts(url.searchParams));
   if (path === "/api/contexts" && method === "POST") {
     if (!String(data.name ?? "").trim()) return error("请输入情境名称");
+    const listId=String(data.listId || store.lists[0]?.id || "");
     const item: ContextItem = { id: id(), name: data.name.trim(), icon: data.icon || "folder",
-      color: data.color || "#8CAABA", sortOrder: store.contexts.length,
-      createdAt: nowISO(), updatedAt: nowISO() };
+      color: data.color || "#8CAABA", sortOrder: store.contexts.filter(x=>x.listId===listId).length,
+      listId: listId || null, createdAt: nowISO(), updatedAt: nowISO() };
     store.contexts.push(item); persist(); return reply({ ...item, incompleteCount: 0 }, 201);
   }
   const cm = /^\/api\/contexts\/([^/]+)$/.exec(path);
@@ -195,7 +249,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
       if (!context) {
         context = { id: id(), name: String(item.context || "AI 任务").slice(0, 40),
           icon: "folder", color: "#8CAABA", sortOrder: store.contexts.length,
-          createdAt: nowISO(), updatedAt: nowISO() };
+          listId: store.lists[0]?.id ?? null, createdAt: nowISO(), updatedAt: nowISO() };
         store.contexts.push(context);
       }
       if (store.tasks.some(t => t.contextId === context!.id && t.title === item.title)) { skippedCount++; continue; }
