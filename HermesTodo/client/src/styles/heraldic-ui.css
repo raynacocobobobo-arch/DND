@@ -39,3 +39,56 @@
   .context-crest-field .heraldic-icon-choice .medieval-crest{max-width:100%}
   .main-navigation .nav-link .medieval-crest{transform:scale(.96);transform-origin:center}
 }
+
+/* Cohesion pass: carry the list-manuscript language into secondary screens. */
+.context-detail-page>.ios-page-header,
+.ai-page>.ios-page-header{
+  background:linear-gradient(135deg,#f8efdf 0%,#efe0c8 100%);
+  border:1px solid #b89a6e!important;
+  box-shadow:inset 0 0 0 4px #fff8e965,0 9px 24px #1d17102b;
+}
+.context-detail-page>.ios-page-header h1,
+.ai-page>.ios-page-header h1{color:#342d28}
+.context-detail-page .back-link{gap:7px;color:#704a36;font-weight:650}
+.context-detail-page .search-control input{
+  border:1px solid #c5ae87;border-radius:2px;background:#fbf3e5;
+  box-shadow:inset 0 1px 3px #4e37200b;color:#332f2a;
+}
+.context-detail-page .task-section{
+  padding:20px 22px;border:1px solid #c8b089;background:#f7eddb;
+  box-shadow:0 8px 24px #15100b16;
+}
+.context-detail-page .task-row{
+  padding:14px 5px;border-bottom:1px solid #d6c4a7;background:transparent;
+}
+.context-detail-page .task-row:last-child{border-bottom:0}
+.context-detail-page .section-heading{padding-bottom:11px;border-bottom:3px double #c2a87f}
+.context-detail-page .section-heading h2{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:18px;color:#45392f}
+.context-detail-page .inline-control select{
+  border:1px solid #c6ae86;border-radius:2px;background:#efe1ca;color:#635440;
+}
+.context-detail-page .icon-button,
+.ai-page .icon-button{
+  border:1px solid #b99b70;border-radius:2px;background:#f0e1ca;
+  box-shadow:inset 0 0 0 2px #faf1e3;color:#70493a;
+}
+.context-detail-page .icon-button:hover,
+.ai-page .icon-button:hover{background:#e5d2b4;border-color:#9d7448}
+.form-dialog .dialog-heading>button{
+  display:grid;width:34px;height:34px;place-items:center;padding:0;
+  border:1px solid #bca178;border-radius:2px;background:#efe0c8;
+  color:#684b3c;font-size:22px;line-height:1;
+}
+.form-dialog .primary-button,
+.form-dialog .secondary-button,
+.confirm-dialog .primary-button,
+.confirm-dialog .secondary-button{
+  border-radius:2px;
+}
+.form-dialog .primary-button{background:#18303b;color:#f5e4c5;border:1px solid #aa895d}
+.form-dialog .secondary-button{background:#efe2cc;border-color:#c2a77e;color:#594a3a}
+@media(max-width:760px){
+  .context-detail-page .task-section{padding:16px 13px}
+  .context-detail-page>.ios-page-header,
+  .ai-page>.ios-page-header{padding:18px 14px!important;min-height:100px!important}
+}
