@@ -1,0 +1,100 @@
+name: Verify 14 Cups Final Corrected Cards
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-final-14-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Install browser and image verification
+        run: python -m pip install --quiet selenium requests pillow
+      - name: Check published 14 images, corrected routes and 36-card draw
+        shell: bash
+        run: |
+          cat >/tmp/qa.py <<'PY'
+          import requests,time,io,json
+          from concurrent.futures import ThreadPoolExecutor
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          folder=base+'minor-arcana/cups/'
+          for n in range(35):
+            home=requests.get(base+'?qa=14-cups-'+str(n),timeout=25,headers={'Cache-Control':'no-cache'})
+            prev=requests.get(folder+'?qa=14-cups-'+str(n),timeout=25,headers={'Cache-Control':'no-cache'})
+            if home.ok and prev.ok and 'count-fixed-14-20261026' in home.text and '<b>14 / 14</b> 张正式定稿' in prev.text:break
+            print('WAITING_PUBLICATION',n,flush=True)
+            time.sleep(6)
+          else:raise RuntimeError('Updated site not yet published')
+
+          slugs=['ace','two','three','four','five','six','seven','eight','nine','ten','page','knight','queen','king']
+          def check(slug):
+            ver='v2' if slug in ('five','six') else 'v1'
+            r=requests.get(folder+f'final/{slug}-of-cups-{ver}.webp?v=fix-20261026',timeout=40)
+            r.raise_for_status()
+            with Image.open(io.BytesIO(r.content)) as im:
+              im.load()
+              assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+            return slug,len(r.content)
+          with ThreadPoolExecutor(max_workers=8) as pool:
+            images=list(pool.map(check,slugs))
+          for slug,size in images:print('HD_LIVE_PASS',slug,size,flush=True)
+          register=requests.get(folder+'design-register-v1.json?v=fixed',timeout=25).json()
+          assert len(register['cards'])==14 and all(c['status']=='approved' for c in register['cards'])
+          for slug in ('five','six'):
+            c=next(c for c in register['cards'] if c['slug']==slug)
+            assert c['approved_art'].endswith('-v2.webp')
+          print('REGISTER_14_APPROVED_AND_FIXED_PATHS_PASS',flush=True)
+
+          options=Options()
+          for flag in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1365,960']:options.add_argument(flag)
+          b=webdriver.Chrome(options=options);b.set_script_timeout(35)
+          try:
+            b.get(base+'?v=14-cups-qa#/library/cups')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==6)
+            assert '14张通过' in b.find_element(By.CSS_SELECTOR,'.library-count').text
+            b.get(base+'?v=14-cups-qa#/library/cups/3')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==2)
+            print('MAIN_LIBRARY_PAGINATION_6_6_2_PASS',flush=True)
+            for slug in slugs:
+              b.get(base+'?v=14-cups-qa#/card/cups/'+slug)
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-art img'))==1)
+              text=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+              assert all(x in text for x in ['牌面的故事','正位 · 启示','逆位 · 阴影','留给你的问题']),slug
+              if slug in ('five','six'):
+                img=b.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+                assert img.find('-v2.webp')>=0,slug+' did not switch to corrected'
+                size=b.execute_async_script("""
+                   let done=arguments[0],img=document.querySelector('.detail-art img');
+                   img.decode().then(()=>done([img.naturalWidth,img.naturalHeight])).catch(()=>done([0,0]));
+                """)
+                assert size==[941,1672],(slug,size)
+            print('ALL_14_CARD_DETAIL_PAGES_PASS',flush=True)
+            b.get(base+'?v=14-cups-qa#/draw')
+            WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+            assert '36张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+            b.execute_script("Math.random=()=>0.9999;document.querySelector('#go-draw').click()")
+            assert len(b.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+            print('ALL_36_RANDOM_DRAW_MODE_PASS',flush=True)
+            b.get(folder+'?v=14-cups-qa')
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.approved-art-card'))==14)
+            print('STANDALONE_14_IMAGE_GALLERY_PASS',flush=True)
+            b.set_window_size(390,844)
+            b.get(base+'?v=14-cups-qa#/card/cups/six')
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-art img'))==1)
+            w=b.execute_script('return [document.documentElement.scrollWidth,window.innerWidth]')
+            assert w[0]<=w[1]+2,w
+            print('MOBILE_FINAL_DETAIL_PASS',flush=True)
+            print('CUPS_ALL_14_FINAL_SITE_QA_SUCCESS',flush=True)
+          finally:
+            b.quit()
+          PY
+          python /tmp/qa.py
