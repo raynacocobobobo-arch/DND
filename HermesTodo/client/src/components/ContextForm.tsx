@@ -40,7 +40,7 @@ export function ContextForm({
           <div className="context-crest-field"><div className="context-crest-label" id="crest-picker-label">选择清单纹章</div>
   <div className="heraldic-icon-picker" role="group" aria-labelledby="crest-picker-label">
     {icons.map(({value,label}) => <button type="button" className="heraldic-icon-choice"
-      key={value} aria-label={label} aria-pressed={icon===value} onClick={() => setIcon(value)}>
+      key={value} aria-label={label} aria-pressed={icon===value} onClick={() => setIcon(canonicalCrestName(value))}>
       <MedievalCrest name={value} size={45}/><span>{label}</span>
     </button>)}
   </div>
