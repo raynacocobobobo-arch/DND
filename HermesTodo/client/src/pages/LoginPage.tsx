@@ -142,8 +142,8 @@ export function LoginPage() {
             </button>
             {rescueOpen ? (
               <form className="cloud-rescue-form" onSubmit={resumeLastLogin}>
-                <p>如果此前点击邮件链接后打开过 localhost 错误页，并且该页面还在浏览器标签中，请复制<strong>那一页地址栏的完整网址</strong>粘贴到这里。无需再次发送邮件。</p>
-                <label htmlFor="cloud-redirected-url">之前 localhost 页面地址栏的网址
+                <p>可以使用<strong>之前收到但还未点击的登录邮件链接</strong>；或如果此前打开过 localhost 错误页、标签还在，请复制<strong>那一页地址栏的完整网址</strong>。直接在下方粘贴，无需再次发送邮件。</p>
+                <label htmlFor="cloud-redirected-url">之前的邮件链接，或 localhost 页面完整网址
                   <textarea id="cloud-redirected-url" className="cloud-magic-link-input"
                     placeholder="http://localhost:3000/#access_token=..."
                     value={redirectedUrl} onChange={event => setRedirectedUrl(event.target.value)} rows={3} required />
@@ -151,7 +151,7 @@ export function LoginPage() {
                 <button type="submit" className="primary-button" disabled={submitting || !redirectedUrl.trim()}>
                   恢复云端登录
                 </button>
-                <p>如果那个标签页已关闭或地址不含 #access_token，则无法从旧链接恢复；不要把任何登录网址发到聊天中。</p>
+                <p>已点击过的邮件链接不能重复使用。如果原链接已失效，只有包含 #access_token 的旧 localhost 地址能恢复。不要把登录网址发到聊天中。</p>
               </form>
             ) : null}
           </section>
