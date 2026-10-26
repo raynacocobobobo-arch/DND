@@ -1,5 +1,5 @@
 import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
-import { CirclePlus } from "lucide-react";
+import { HeraldicIcon } from "./HeraldicIcon";
 import { useState, type FormEvent } from "react";
 
 import { useCreateTask } from "../hooks/useTasks";
@@ -51,7 +51,7 @@ export function QuickAdd({ contextId, dueToday = false, onEmpty }: QuickAddProps
         onChange={(event) => { setTitle(event.target.value); setError(""); }}
         placeholder={dueToday ? "今天要完成什么？" : contextId ? "在这个清单里加一件事…" : "添加一件待办…"}
       />
-      <button type="submit" aria-label="添加" disabled={createTask.isPending || (!title.trim() && !onEmpty)}><CirclePlus aria-hidden="true" size={25} /></button>
+      <button type="submit" aria-label="添加" disabled={createTask.isPending || (!title.trim() && !onEmpty)}><HeraldicIcon name="add" size={26} /></button>
     </form>
   );
 }
