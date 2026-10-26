@@ -8,15 +8,18 @@ const PRIVATE_ACCOUNT_NAME = "rui";
 const PRIVATE_ACCOUNT_EMAIL = "raynacocobobobo@gmail.com";
 
 export function LoginPage() {
-  const { login } = useAuth();
+  const { login, sendMagicLink } = useAuth();
   const cloudMode = isCloudMode();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [sendingLink, setSendingLink] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setNotice("");
     setSubmitting(true);
     try {
       await login(password, cloudMode ? PRIVATE_ACCOUNT_EMAIL : undefined);
@@ -25,11 +28,25 @@ export function LoginPage() {
       const message = reason instanceof Error ? reason.message : "登录失败，请重试";
       setError(
         cloudMode && /Invalid login credentials|invalid.*credentials/i.test(message)
-          ? "密码不正确，请重试"
+          ? "密码不正确。可以使用下方“邮件登录”进入一次，之后会自动保持登录。"
           : message
       );
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function emailLogin() {
+    setError("");
+    setNotice("");
+    setSendingLink(true);
+    try {
+      await sendMagicLink(PRIVATE_ACCOUNT_EMAIL);
+      setNotice("登录邮件已发送。打开邮件并点一下登录链接即可；返回 HermesTodo 后会自动保持登录。");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "登录邮件发送失败，请稍后重试");
+    } finally {
+      setSendingLink(false);
     }
   }
 
@@ -73,14 +90,25 @@ export function LoginPage() {
             />
           </label>
           {error ? <p role="alert" className="form-error">{error}</p> : null}
+          {notice ? <p role="status" className="cloud-notice">{notice}</p> : null}
           <button type="submit" className="primary-button" disabled={submitting || !password}>
             {submitting ? "正在登录…" : cloudMode ? "进入 HermesTodo" : "登录"}
           </button>
         </form>
         {cloudMode ? (
-          <p className="login-persist-note">
-            除非主动退出此设备或清除浏览器站点数据，否则无需重复登录。
-          </p>
+          <>
+            <button
+              type="button"
+              className="login-recovery-link"
+              disabled={sendingLink}
+              onClick={() => void emailLogin()}
+            >
+              {sendingLink ? "正在发送…" : "首次登录 / 忘记密码？用邮件登录一次"}
+            </button>
+            <p className="login-persist-note">
+              除非主动退出此设备或清除浏览器站点数据，否则无需重复登录。
+            </p>
+          </>
         ) : null}
       </section>
     </main>
