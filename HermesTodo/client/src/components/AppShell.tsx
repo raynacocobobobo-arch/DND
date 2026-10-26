@@ -1,5 +1,5 @@
 import { Grid2X2, Inbox, LogOut, Sparkles, type LucideIcon } from "lucide-react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
@@ -12,6 +12,7 @@ const links = [
 
 export function AppShell() {
   const { logout } = useAuth();
+  const { pathname } = useLocation();
   return (
     <div className="app-shell" style={{
       "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
@@ -32,13 +33,19 @@ export function AppShell() {
         <HeraldicDivider className="sidebar-divider"/>
         <span className="sidebar-nav-caption">目录 / INDEX</span>
         <nav className="main-navigation floating-tab-bar" aria-label="主导航">
-          {links.map((link) => (
-            <NavLink key={link.to} to={link.to} end={link.end}
-              className={({ isActive }) => `nav-link${isActive ? " nav-link-active" : ""}`}>
-              <link.icon aria-hidden="true" size={19} strokeWidth={1.85}/>
-              <span>{link.label}</span>
-            </NavLink>
-          ))}
+          {links.map((link) => {
+            const active = link.to === "/"
+              ? pathname === "/" || pathname === "/contexts" || pathname.startsWith("/contexts/")
+              : pathname === link.to;
+            return (
+              <Link key={link.to} to={link.to}
+                aria-current={active ? "page" : undefined}
+                className={`nav-link${active ? " nav-link-active" : ""}`}>
+                <link.icon aria-hidden="true" size={19} strokeWidth={1.85}/>
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
         </nav>
         <div className="sidebar-art" aria-hidden="true"><span className="sidebar-art-sigil">FORTITUDO</span></div>
         <div className="sidebar-motto"><HeraldicDivider/><p>每一个微小行动，都值得被记下。</p><span>AD ASTRA · 走向星辰</span></div>
