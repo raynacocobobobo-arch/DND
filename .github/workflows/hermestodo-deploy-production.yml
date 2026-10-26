@@ -1,4 +1,4 @@
-name: HermesTodo deploy to Tencent Cloud
+name: HermesTodo legacy Docker deploy (disabled: server uses systemd)
 
 on:
   workflow_dispatch:
@@ -72,9 +72,9 @@ jobs:
 
   deploy:
     name: Back up and deploy same-origin React + Node + SQLite
+    if: false # Prevent Docker/self-hosted deployment until the actual systemd unit is verified.
     needs: validate
     # Production changes are explicit. Never deploy from a mere preview update.
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: hermestodo-production
     env:
