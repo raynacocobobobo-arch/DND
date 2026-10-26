@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from "react";
-import { HeraldicIcon } from "./HeraldicIcon";
+import { MedievalCrest, canonicalCrestName } from "./MedievalCrest";
 
 import type { ContextRecord } from "../hooks/useContexts";
 
 const icons = [
-  {value:"folder",label:"卷轴"}, {value:"briefcase",label:"双剑"}, {value:"suitcase",label:"罗盘"},
-  {value:"house",label:"城堡"}, {value:"shopping-cart",label:"钱袋"}, {value:"book-open",label:"典籍"},
-  {value:"dumbbell",label:"战斧"}, {value:"film",label:"竖琴"}, {value:"heart",label:"誓约"},
-  {value:"sparkles",label:"星辉"}
+  {value:"lion",label:"金狮"}, {value:"fleur",label:"百合花"},
+  {value:"compass",label:"罗盘"}, {value:"tree",label:"生命树"},
+  {value:"book",label:"典籍"}, {value:"swords",label:"双剑"},
+  {value:"crown",label:"王冠"}, {value:"scroll",label:"羽笔卷轴"}
 ];
 const colors = ["#E09890", "#CEB068", "#9AB898", "#8CAABA", "#C0A8C8", "#C89870", "#E8B898", "#90B8A8"];
 
@@ -23,7 +23,7 @@ export function ContextForm({
   onCancel(): void;
 }) {
   const [name, setName] = useState(context?.name ?? "");
-  const [icon, setIcon] = useState(context?.icon ?? icons[0]!.value);
+  const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? icons[0]!.value));
   const [color, setColor] = useState(context?.color ?? "#8CAABA");
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -41,7 +41,7 @@ export function ContextForm({
   <div className="heraldic-icon-picker" role="group" aria-labelledby="crest-picker-label">
     {icons.map(({value,label}) => <button type="button" className="heraldic-icon-choice"
       key={value} aria-label={label} aria-pressed={icon===value} onClick={() => setIcon(value)}>
-      <HeraldicIcon name={value} size={35}/><span>{label}</span>
+      <MedievalCrest name={value} size={45}/><span>{label}</span>
     </button>)}
   </div>
 </div>

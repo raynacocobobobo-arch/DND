@@ -63,6 +63,15 @@ jobs:
               assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
+              crest=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .context-card .medieval-crest')
+              assert crest.get_attribute('data-crest') in ('lion','fleur','compass','tree','book','swords','crown','scroll')
+              decoded=browser.execute_async_script("""
+                const cb=arguments[arguments.length-1],img=new Image();
+                img.onload=()=>cb([img.naturalWidth,img.naturalHeight]);
+                img.onerror=()=>cb(null);
+                img.src='/DND/hermestodo/art/medieval-crests.avif';
+              """)
+              assert decoded == [1024,128], f'Heraldic sprite missing or undecodable: {decoded}'
               # Reject tiny/compressed hero images when publishing the live URL.
               picture=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
               wait.until(lambda b: b.execute_script('return arguments[0].complete && arguments[0].naturalWidth >= 1600',picture))

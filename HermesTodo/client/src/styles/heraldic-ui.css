@@ -18,3 +18,24 @@
 .context-crest-label{margin-top:2px;color:#604c39;font-weight:600;font-size:13px}
 .scene-home-art{filter:saturate(.97) contrast(1.01)!important}
 @media(max-width:760px){.heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.heraldic-icon-choice{min-height:75px;padding:7px 3px}.heraldic-icon-choice .heraldic-sigil{width:30px;height:34px}.scene-home .context-icon{width:42px;height:47px}.scene-home .context-icon .heraldic-sigil{width:29px;height:33px}.main-navigation .nav-link .heraldic-sigil{width:22px;height:24px}}
+
+/* Approved hand-painted manuscript shields: no layout or palette redesign. */
+.medieval-crest { display:inline-block;vertical-align:middle;image-rendering:auto; }
+.context-card .context-icon,.scene-home .context-icon{
+  display:inline-grid;place-items:center;
+  width:61px;height:61px;padding:0;
+  border:0!important;background:transparent!important;box-shadow:none!important;
+}
+.context-crest-field .heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.context-crest-field .heraldic-icon-choice{min-height:96px;padding:8px 4px}
+.context-crest-field .heraldic-icon-choice .medieval-crest{margin-bottom:4px}
+.nav-link .medieval-crest{filter:drop-shadow(0 1px 2px #050f17a8)}
+.nav-link-active .medieval-crest{filter:drop-shadow(0 1px 3px #070d17)}
+@media(max-width:760px){
+  .scene-home .context-icon{width:51px;height:51px}
+  .scene-home .context-icon .medieval-crest{transform:scale(.875);transform-origin:center}
+  .context-crest-field .heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .context-crest-field .heraldic-icon-choice{min-height:84px;padding:5px 2px}
+  .context-crest-field .heraldic-icon-choice .medieval-crest{max-width:100%}
+  .main-navigation .nav-link .medieval-crest{transform:scale(.96);transform-origin:center}
+}

@@ -1,13 +1,14 @@
 import { HeraldicIcon } from "./HeraldicIcon";
+import { MedievalCrest } from "./MedievalCrest";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 
 const links = [
-  { to: "/", label: "清单", end: true, glyph: "grid" },
-  { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
-  { to: "/ai", label: "AI", end: false, glyph: "star" }
+  { to: "/", label: "清单", end: true, glyph: "fleur" },
+  { to: "/inbox", label: "收集箱", end: true, glyph: "scroll" },
+  { to: "/ai", label: "AI", end: false, glyph: "crown" }
 ] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
 export function AppShell() {
@@ -41,7 +42,7 @@ export function AppShell() {
               <Link key={link.to} to={link.to}
                 aria-current={active ? "page" : undefined}
                 className={`nav-link${active ? " nav-link-active" : ""}`}>
-                <HeraldicIcon name={link.glyph} size={24}/>
+                <MedievalCrest name={link.glyph} size={29}/>
                 <span>{link.label}</span>
               </Link>
             );

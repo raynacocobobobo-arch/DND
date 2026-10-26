@@ -107,7 +107,7 @@ export function HomePage() {
               <div className="context-strip">
                 {(contexts.data ?? []).slice(0, 4).map((context) => (
                   <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
-                    <span className="context-entry-icon" style={{ color: context.color }}><ContextIcon name={context.icon} size={17}/></span>
+                    <span className="context-entry-icon" style={{ color: context.color }}><ContextIcon name={context.icon} size={28}/></span>
                     <strong>{context.name}</strong><small>{context.incompleteCount} 项</small>
                     <HeraldicIcon name="arrow" size={18}/>
                   </Link>

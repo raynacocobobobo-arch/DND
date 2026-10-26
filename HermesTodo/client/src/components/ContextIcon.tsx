@@ -1,4 +1,4 @@
-import { HeraldicIcon } from "./HeraldicIcon";
-export function ContextIcon({ name, size=32 }: { name:string; size?:number }) {
- return <HeraldicIcon name={name} size={size}/>;
+import { MedievalCrest } from "./MedievalCrest";
+export function ContextIcon({ name, size = 44 }: { name: string; size?: number }) {
+  return <MedievalCrest name={name} size={size} />;
 }

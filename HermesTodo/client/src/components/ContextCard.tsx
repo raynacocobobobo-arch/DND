@@ -9,7 +9,7 @@ export function ContextCard({ context, onEdit, onCopy, onDelete }: { context: Co
     <li className="context-card" style={{ "--context-color": context.color } as React.CSSProperties}>
       <Link className="context-card-link" to={`/contexts/${context.id}`}>
         <span className="context-card-top">
-          <span className="context-icon"><ContextIcon name={context.icon} size={22} /></span>
+          <span className="context-icon"><ContextIcon name={context.icon} size={48} /></span>
           <strong>{context.incompleteCount}</strong>
         </span>
         <span className="context-name">{context.name}</span>

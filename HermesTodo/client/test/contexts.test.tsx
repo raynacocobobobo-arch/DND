@@ -77,6 +77,8 @@ describe("contexts interface", () => {
     await user.click(screen.getByRole("button", { name: "添加清单" }));
     expect(await screen.findByRole("dialog", { name: "新建清单" })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "#8CAABA" })).toBeChecked();
+    expect(screen.getAllByRole("button", { name: /^(金狮|百合花|罗盘|生命树|典籍|双剑|王冠|羽笔卷轴)$/ })).toHaveLength(8);
+    expect(screen.getByRole("button", { name: "百合花" })).toHaveAttribute("aria-pressed","true");
     await user.click(screen.getByRole("button", { name: "取消" }));
 
     await user.type(quickName, "工作");
