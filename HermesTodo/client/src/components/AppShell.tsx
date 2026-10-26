@@ -1,14 +1,14 @@
-import { Grid2X2, Inbox, LogOut, Sparkles, type LucideIcon } from "lucide-react";
+import { HeraldicIcon } from "./HeraldicIcon";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 
 const links = [
-  { to: "/", label: "清单", end: true, icon: Grid2X2 },
-  { to: "/inbox", label: "收集箱", end: true, icon: Inbox },
-  { to: "/ai", label: "AI", end: false, icon: Sparkles }
-] satisfies Array<{ to: string; label: string; end: boolean; icon: LucideIcon }>;
+  { to: "/", label: "清单", end: true, glyph: "grid" },
+  { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
+  { to: "/ai", label: "AI", end: false, glyph: "star" }
+] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
 export function AppShell() {
   const { logout } = useAuth();
@@ -41,7 +41,7 @@ export function AppShell() {
               <Link key={link.to} to={link.to}
                 aria-current={active ? "page" : undefined}
                 className={`nav-link${active ? " nav-link-active" : ""}`}>
-                <link.icon aria-hidden="true" size={19} strokeWidth={1.85}/>
+                <HeraldicIcon name={link.glyph} size={24}/>
                 <span>{link.label}</span>
               </Link>
             );
@@ -56,7 +56,7 @@ export function AppShell() {
           <div className="app-utility-row">
             <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>
             <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
-              onClick={() => void logout()}><LogOut aria-hidden="true" size={17}/></button>
+              onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
           </div>
           <Outlet/>
         </main>
