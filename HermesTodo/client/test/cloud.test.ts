@@ -77,3 +77,66 @@ describe("browser cloud bridge", () => {
     expect(network).not.toHaveBeenCalled();
   });
 });
+
+describe("passwordless email login", () => {
+  it("requests login for existing account only, without sending a password", async () => {
+    saveCloudConfig(project, publishable);
+    const network = vi.fn(async (_url: string, _init?: RequestInit) =>
+      new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } })
+    );
+    vi.stubGlobal("fetch", network);
+    installCloudBridge();
+    const response = await fetch("/api/auth/magic-send", {
+      method: "POST", body: JSON.stringify({ email: "existing@example.org" })
+    });
+    expect(response.status).toBe(200);
+    const args = network.mock.calls[0] as [string, RequestInit];
+    expect(args[0]).toContain(project + "/auth/v1/otp?");
+    expect(JSON.parse(String(args[1].body))).toMatchObject({
+      email: "existing@example.org", create_user: false
+    });
+    expect(String(args[1].body)).not.toContain("password");
+  });
+
+  it("verifies an original email link without visiting localhost and persists session", async () => {
+    saveCloudConfig(project, publishable);
+    const tokenHash = "a".repeat(64);
+    const link = project + "/auth/v1/verify?token=" + tokenHash +
+      "&type=magiclink&redirect_to=http%3A%2F%2Flocalhost%3A3000";
+    const network = vi.fn(async (url: string, init?: RequestInit) => {
+      expect(url).toBe(project + "/auth/v1/verify");
+      expect(init?.method).toBe("POST");
+      expect(JSON.parse(String(init?.body))).toEqual({ token_hash: tokenHash, type: "magiclink" });
+      return new Response(JSON.stringify({
+        access_token: "private-user-jwt", refresh_token: "private-refresh-token",
+        expires_in: 3600, user: { id: "a-correct-user-id" }
+      }), { status: 200, headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", network);
+    installCloudBridge();
+    const response = await fetch("/api/auth/magic-accept", {
+      method: "POST", body: JSON.stringify({ link })
+    });
+    expect(response.status).toBe(200);
+    expect(network).toHaveBeenCalledTimes(1);
+    const session = JSON.parse(localStorage.getItem("hermestodo-supabase-session-v1") ?? "null");
+    expect(session).toMatchObject({
+      access_token: "private-user-jwt", user_id: "a-correct-user-id", project_url: project
+    });
+    expect(session.expires_at).toBeGreaterThan(now);
+  });
+
+  it("rejects copied links from untrusted or unrelated domains", async () => {
+    saveCloudConfig(project, publishable);
+    const network = vi.fn(async () => { throw new Error("Network access must not happen"); });
+    vi.stubGlobal("fetch", network);
+    installCloudBridge();
+    const response = await fetch("/api/auth/magic-accept", {
+      method: "POST", body: JSON.stringify({
+        link: "https://malicious.example.org/auth/v1/verify?token=" + "a".repeat(64) + "&type=magiclink"
+      })
+    });
+    expect(response.status).toBe(400);
+    expect(network).not.toHaveBeenCalled();
+  });
+});
