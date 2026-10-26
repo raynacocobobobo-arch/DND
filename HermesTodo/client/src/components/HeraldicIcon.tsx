@@ -1,4 +1,4 @@
-/** Hand-drawn, scalable medieval escutcheons. Legacy icon keys are preserved. */
+import { MedievalCrest } from "./MedievalCrest";\n\n/** Hand-drawn, scalable medieval escutcheons. Legacy icon keys are preserved. */
 const alias: Record<string,string> = {
  folder:"scroll",briefcase:"swords",suitcase:"compass",house:"tower",home:"tower",
  "shopping-cart":"coins","shopping-bag":"coins","book-open":"book",book:"book",
