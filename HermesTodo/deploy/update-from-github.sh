@@ -60,7 +60,7 @@ echo "Rebuilding only the HermesTodo application container..."
   docker compose up -d --no-deps app
   ready=0
   for attempt in $(seq 1 24); do
-    if node scripts/smoke.mjs http://127.0.0.1:3020/api/health >/dev/null 2>&1; then
+    if curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3020/api/health 2>/dev/null | grep -q '"status":"ok"'; then
       ready=1
       break
     fi
