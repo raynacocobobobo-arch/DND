@@ -44,3 +44,46 @@
 .cloud-rescue-form label{font-size:12px;color:#584536}
 .cloud-rescue-form .primary-button{display:block;width:100%;margin-top:9px}
 .cloud-rescue-form .cloud-magic-link-input{background:#fffaf1}
+
+
+/* Single-user hosted login: keep routine auth simple and destructive actions secondary. */
+.login-persist-note{
+  max-width:350px;margin:13px auto 0;text-align:center;
+  color:#736b5e;font-size:11px;line-height:1.55;
+}
+.login-form input[readonly]{
+  cursor:default;background:#f1e8d8;color:#55493c;font-weight:650;
+}
+.account-control{position:relative;margin-left:auto}
+.account-chip{
+  display:inline-flex;align-items:center;gap:7px;min-height:34px;
+  border:1px solid #ad956e66;border-radius:999px;padding:6px 10px;
+  background:#f5ead7;color:#514536;cursor:pointer;
+  font:600 11px/1 "PingFang SC",sans-serif;
+}
+.account-chip:hover,.account-chip[aria-expanded="true"]{background:#eadbc3}
+.account-status-dot{
+  width:7px;height:7px;border-radius:50%;background:#668668;
+  box-shadow:0 0 0 2px #66866822;
+}
+.account-sync-label{color:#80725f;font-weight:400}
+.account-menu{
+  position:absolute;z-index:260;right:0;top:calc(100% + 8px);
+  width:210px;padding:13px 14px;border:1px solid #bca47d;
+  background:#fff8eb;box-shadow:0 12px 30px #1b17112e;
+  text-align:left;
+}
+.account-menu strong{display:block;color:#3f382e;font-size:13px}
+.account-menu p{margin:5px 0 10px;color:#746959;font-size:11px;line-height:1.5}
+.account-logout-link{
+  width:100%;border:0;border-top:1px solid #d9c6a8;background:transparent;
+  padding:10px 2px 2px;text-align:left;color:#88483e;cursor:pointer;
+  font-size:11px;
+}
+.account-logout-link:hover{text-decoration:underline}
+
+@media(max-width:760px){
+  .account-chip{min-height:31px;padding:5px 8px}
+  .account-sync-label{display:none}
+  .account-menu{right:0;width:190px}
+}
