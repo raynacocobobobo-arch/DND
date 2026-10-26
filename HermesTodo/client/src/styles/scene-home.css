@@ -1,98 +1,125 @@
-/* HermesTodo · scene/list-first homepage.
-   Real React controls and API data; the dashboard remains at /inbox.
-   This sheet is loaded last to avoid historical dashboard selectors. */
+/* HermesTodo · Jeanne d'Arc and the Dragon / list-first home.
+   The accepted illustration is a real AVIF asset, NOT a screenshot of a fake UI.
+   All copy, list cards and controls are interactive React components. */
 .scene-home {
   --scene-ink: #25313a;
   --scene-gold: #c6a471;
   --scene-paper: #f4ead7;
-  gap: 22px;
+  gap: 18px;
   padding-bottom: 35px;
 }
 .scene-home-hero {
   position: relative;
   isolation: isolate;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 25px;
-  min-height: 286px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+  min-height: clamp(370px, 34vw, 455px);
   overflow: hidden;
-  padding: clamp(24px, 3.2vw, 46px);
-  border: 1px solid #b89560;
-  background: #122331;
+  padding: 0;
+  border: 1px solid #bb9763;
+  border-radius: 2px;
+  background: #172a34;
   color: #f5e4c4;
   box-shadow: 0 18px 35px #08131d5c;
 }
 .scene-home-hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 11px;
+  z-index: 2;
+  border: 1px solid #efd29c54;
+  pointer-events: none;
+}
+.scene-home-art {
+  position: absolute;
   z-index: -2;
-  background: var(--art-skyline) center 53% / cover no-repeat;
-  opacity: .83;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 48% 48%;
+  filter: saturate(.93) contrast(1.025);
 }
 .scene-home-hero::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(90deg,#0e202bf7 0%,#0f222bd9 40%,#0e202b43 100%),
-              linear-gradient(0deg,#101c27a8,transparent 66%);
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #0c1d2700 0%, #0c1d2704 37%, #0c1d2785 57%, #0b1b27e9 75%, #0b1b27f8 100%),
+    linear-gradient(0deg, #0b172763 0%, transparent 26%, transparent 75%, #0b172721 100%);
 }
-.scene-home-hero-copy { position: relative; z-index: 1; max-width: 630px; }
+.scene-home-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: min(44%, 470px);
+  min-width: 310px;
+  min-height: inherit;
+  padding: 34px clamp(24px, 3.1vw, 45px) 86px 12px;
+  margin-left: auto;
+}
 .scene-home-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #e5c994;
-  font: 11px/1.4 Georgia,serif;
+  color: #e9cb95;
+  font: 11px/1.4 Georgia, serif;
   letter-spacing: .18em;
 }
 .scene-home-hero h1 {
-  margin: 20px 0 11px;
-  color: #f8ebd2;
-  font: 500 clamp(38px, 4.3vw, 67px)/1.12 "Songti SC","Noto Serif CJK SC",Georgia,serif;
-  letter-spacing: .1em;
+  margin: 21px 0 14px;
+  color: #fff0d3;
+  font: 500 clamp(38px, 3.9vw, 58px)/1.15 "Songti SC","Noto Serif CJK SC",Georgia,serif;
+  letter-spacing: .085em;
   text-shadow: 0 3px 18px #08111b;
 }
 .scene-home-hero h1 span { color: #d1ab71; }
 .scene-home-hero p {
   margin: 0;
-  color: #e7d7bd;
-  font: 14px/1.85 "PingFang SC","Noto Sans CJK SC",sans-serif;
+  color: #f0e2cb;
+  font: 13px/1.9 "PingFang SC","Noto Sans CJK SC",sans-serif;
   letter-spacing: .055em;
+  text-shadow: 0 2px 8px #0a131c;
 }
 .scene-home-stats {
   display: flex;
   gap: 26px;
-  margin-top: 23px;
+  margin-top: 24px;
   padding-top: 14px;
   border-top: 1px solid #dfc39470;
-  color: #d5c09d;
+  color: #e2ccaa;
   font-size: 12px;
 }
 .scene-home-stats strong {
   margin-right: 6px;
   color: #f6e4bf;
-  font: 23px/1 Georgia,serif;
+  font: 24px/1 Georgia,serif;
 }
 .scene-home-inbox {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 3;
+  right: clamp(24px, 3.1vw, 45px);
+  bottom: 29px;
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  flex: 0 0 auto;
-  min-height: 46px;
+  min-height: 43px;
   padding: 0 14px;
-  border: 1px solid #e3c591a6;
-  background: #142632d9;
+  border: 1px solid #e3c591c2;
+  background: #142632e8;
   color: #f7e4c2;
   font-size: 12px;
   text-decoration: none;
   transition: background .15s ease;
 }
-.scene-home-inbox:hover { background: #283e4b; }
+.scene-home-inbox:hover { background: #30424b; }
 .scene-home-inbox:focus-visible,
 .scene-home .context-card-link:focus-visible,
 .scene-home .context-card-actions button:focus-visible {
@@ -192,19 +219,52 @@
   padding: 22px 8px;
   color: #6d5a43;
 }
-@media (max-width: 1080px) {
+@media (max-width: 1100px) {
+  .scene-home-hero { min-height: 360px; }
+  .scene-home-hero-copy { width: 47%; min-width: 270px; }
   .scene-home .scene-home-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 760px) {
   .scene-home { gap: 11px; padding-bottom: 12px; }
-  .scene-home-hero { min-height: 222px; padding: 18px 18px 20px; flex-direction: column; align-items: stretch; gap: 13px; }
-  .scene-home-hero::after { background: linear-gradient(90deg,#10212aee,#11212ab2 70%,#0e1b27a0); }
-  .scene-home-eyebrow { font-size: 9px; letter-spacing: .11em; }
-  .scene-home-hero h1 { font-size: 38px; margin: 11px 0 7px; }
-  .scene-home-hero p { font-size: 11px; line-height: 1.6; }
-  .scene-home-stats { margin-top: 12px; padding-top: 9px; gap: 17px; }
-  .scene-home-stats strong { font-size: 18px; }
-  .scene-home-inbox { align-self: flex-start; min-height: 37px; padding: 0 11px; }
+  .scene-home-hero {
+    min-height: 355px;
+    height: 355px;
+    display: block;
+    padding: 0;
+  }
+  .scene-home-hero::before { inset: 7px; }
+  .scene-home-art { object-position: 41% 44%; }
+  .scene-home-hero::after {
+    background:
+      linear-gradient(180deg, #0b1b2605 0%, #0b1b2607 35%, #0b1b268c 56%, #0b1b27f0 79%, #0b1b27f9 100%);
+  }
+  .scene-home-hero-copy {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 53px;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 0 22px;
+    margin: 0;
+    display: block;
+  }
+  .scene-home-eyebrow { font-size: 9px; letter-spacing: .1em; gap: 7px; }
+  .scene-home-eyebrow svg { width: 13px; }
+  .scene-home-hero h1 { font-size: 34px; margin: 9px 0 5px; }
+  .scene-home-hero p { font-size: 11px; line-height: 1.5; }
+  .scene-home-stats { margin-top: 9px; padding-top: 7px; gap: 18px; font-size: 10px; }
+  .scene-home-stats strong { font-size: 17px; }
+  .scene-home-inbox {
+    left: 22px;
+    right: auto;
+    bottom: 13px;
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+  .scene-home-inbox svg { width: 13px; height: 13px; }
   .scene-home-index { padding: 15px 12px 18px; }
   .scene-home-index-heading { margin-bottom: 13px; }
   .scene-home-index-heading h2 { font-size: 24px; }
