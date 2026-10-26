@@ -8,51 +8,66 @@ permissions:
   contents: read
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     steps:
       - name: Install packages
         run: python -m pip install --quiet selenium requests pillow
-      - name: Verify live sample image and interactive 14-card register
+      - name: Verify approved King card, gallery and site integration
+        shell: bash
         run: |
-          cat > /tmp/check.py <<'PY'
-          import io,requests
+          cat >/tmp/check.py <<'PY'
+          import io,time,requests
           from PIL import Image
           from selenium import webdriver
           from selenium.webdriver.chrome.options import Options
           from selenium.webdriver.common.by import By
-          base='https://raynacocobobobo-arch.github.io/DND/minor-arcana/cups/'
-          page=requests.get(base,timeout=30)
-          print('PAGE_STATUS',page.status_code,len(page.content),flush=True)
-          page.raise_for_status()
-          assert '14 张制作台账' in page.text
-          r=requests.get(base+'drafts/ace-of-cups-v01.webp',timeout=45)
-          r.raise_for_status()
-          im=Image.open(io.BytesIO(r.content))
-          print('ACE_ART',im.format,im.size,len(r.content),flush=True)
-          assert im.format=='WEBP' and im.width>=900 and im.height>=1500
-          reg=requests.get(base+'design-register-v1.json',timeout=30).json()
-          assert len(reg['cards'])==14
-          assert reg['cards'][0]['status']=='sample'
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          cups=base+'minor-arcana/cups/'
+          for n in range(36):
+            page=requests.get(cups+'?v=king-approved-'+str(n),timeout=25,headers={'Cache-Control':'no-cache'})
+            homepage=requests.get(base+'?v=king-approved-'+str(n),timeout=25,headers={'Cache-Control':'no-cache'})
+            if page.ok and 'id="king-approved"' in page.text and 'data-route-nav="cups"' in homepage.text:break
+            print('waiting pages publish',n,page.status_code,homepage.status_code,flush=True)
+            time.sleep(5)
+          else:raise RuntimeError('New King page/nav not published')
+          image=requests.get(cups+'final/king-of-cups-v1.webp?v=approved-20261026',timeout=35)
+          image.raise_for_status()
+          im=Image.open(io.BytesIO(image.content));im.load()
+          assert im.format=='WEBP' and im.size==(941,1672),(im.format,im.size)
+          print('KING_LIVE_IMAGE_OK',im.size,len(image.content),flush=True)
+          reg=requests.get(cups+'design-register-v1.json?v=approved-20261026',timeout=25).json()
+          assert len(reg['cards'])==14 and reg['cards'][13]['slug']=='king'
+          assert reg['cards'][13]['status']=='approved'
+          assert reg['approved_count']==1
+          print('KING_APPROVED_IN_SOURCE_REGISTER',flush=True)
           opt=Options()
-          for x in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1300,900']:opt.add_argument(x)
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1300,900']:opt.add_argument(arg)
           b=webdriver.Chrome(options=opt)
           try:
-            b.get(base+'?v=sample1')
-            from selenium.webdriver.support.ui import WebDriverWait
+            b.get(cups+'?v=approved-king-20261026')
             WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.tile'))==14)
-            assert b.find_element(By.ID,'ace-photo').get_attribute('naturalWidth') is not None
-            b.execute_script("document.querySelectorAll('.tile')[4].click()")
-            assert '失物之港' in b.find_element(By.ID,'sheet').text
-            assert '3只倒杯' in b.find_element(By.ID,'sheet').text
-            print('DESKTOP_14_SCENES_AND_DETAIL_PASS',flush=True)
-            b.set_window_size(390,844)
-            b.refresh()
+            photo=b.find_element(By.CSS_SELECTOR,'#king-approved img')
+            dimensions=b.execute_async_script("""
+              const done=arguments[0],im=document.querySelector('#king-approved img');
+              im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));
+            """)
+            assert dimensions==[941,1672],dimensions
+            assert len(b.find_elements(By.CSS_SELECTOR,'.tile.approved'))==1
+            assert 'KING OF CUPS' in b.find_element(By.ID,'king-approved').text
+            b.execute_script("document.querySelectorAll('.tile')[13].click()")
+            assert '风暴之中的平静' in b.find_element(By.ID,'sheet').text
+            print('KING_FEATURE_AND_DESIGN_DETAIL_UI_OK',flush=True)
+            b.set_window_size(390,844); b.refresh()
             WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.tile'))==14)
-            sw=b.execute_script('return document.documentElement.scrollWidth')
-            assert sw<=390,sw
-            print('MOBILE_NO_OVERFLOW_PASS',sw,flush=True)
-            print('ALL_CUPS_PREVIEW_CHECKS_PASS',flush=True)
-          finally:
-            b.quit()
+            assert b.execute_script('return document.documentElement.scrollWidth')<=390
+            print('KING_MOBILE_GALLERY_OK',flush=True)
+            b.get(base+'?v=king-nav-20261026#/home')
+            el=WebDriverWait(b,12).until(lambda d:d.find_element(By.CSS_SELECTOR,'[data-route-nav="cups"]'))
+            assert el.get_attribute('href').endswith('/DND/minor-arcana/cups/')
+            print('MAIN_SITE_CUPS_NAV_OK',flush=True)
+            print('ALL_APPROVED_KING_SITE_CHECKS_PASS',flush=True)
+          finally:b.quit()
           PY
           python /tmp/check.py
