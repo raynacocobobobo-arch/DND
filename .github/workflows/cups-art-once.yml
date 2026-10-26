@@ -1,0 +1,39 @@
+name: Transfer Cups Ace sample art
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-art-once.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Download source, validate and publish draft
+        env:
+          ART_URL: "https://docs.google.com/docs-images-rt/ALKuztbW6mDHGN4y9pkMs-sLeUJ0qaW-v38S64P9n1xE5syfRXXapQZkff66PDkg3Lyv6HrlBM3OimtDsYRFbQ5MttB7IhABXP-wULWqEg9yudRPHIa6bd6pwSb1D_K4SuomFOUvN-kK13JL1pJvTGA626NhoSJbAmagvEORbb_ry-g0sxwW=s2048?key=d1OronxobZt_it4ygdeANg"
+        run: |
+          curl -fLsS --retry 3 --max-time 90 "$ART_URL" -o /tmp/cups_ace_source
+          file /tmp/cups_ace_source
+          python - <<'PY'
+          from PIL import Image
+          import os
+          im=Image.open('/tmp/cups_ace_source').convert('RGB')
+          assert im.width>=900 and im.height>=1500, im.size
+          os.makedirs('minor-arcana/cups/drafts',exist_ok=True)
+          im.save('minor-arcana/cups/drafts/ace-of-cups-v01.webp','WEBP',quality=94,method=6)
+          out='minor-arcana/cups/drafts/ace-of-cups-v01.webp'
+          assert os.path.getsize(out)>300000
+          print('CUPS_ACE_SAMPLE_TRANSFERRED',im.size,os.path.getsize(out))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add minor-arcana/cups/drafts/ace-of-cups-v01.webp
+          git commit -m "art: publish Cups Ace first visual draft for review"
+          git push origin HEAD:gh-pages
