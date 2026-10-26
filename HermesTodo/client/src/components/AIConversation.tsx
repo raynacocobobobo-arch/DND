@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { HeraldicIcon } from "./HeraldicIcon";
 
 export interface ConversationTurn {
   role: "user" | "assistant";
@@ -19,7 +19,7 @@ export function AIConversation({
   if (messages.length === 0) {
     return (
       <div className="ai-empty-state">
-        <span className="ai-orb"><Sparkles aria-hidden="true" size={40} /></span>
+        <span className="ai-orb"><HeraldicIcon name="star" size={50}/></span>
         <h2>AI 任务规划器</h2>
         <p>说个目标，我来帮你拆成小步。</p>
         <button type="button" className="ai-example" onClick={() => onOption("罗马必打卡景点")}>罗马必打卡景点</button>
