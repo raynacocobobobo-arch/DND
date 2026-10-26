@@ -45,7 +45,7 @@ export function AppShell() {
               <Link key={link.to} to={link.to}
                 aria-current={active ? "page" : undefined}
                 className={`nav-link${active ? " nav-link-active" : ""}`}>
-                {link.glyph === "ai" ? <AILogo size={29}/> : <MedievalCrest name={link.glyph} size={29}/>}
+                {link.glyph === "ai" ? <AILogo size={24}/> : <MedievalCrest name={link.glyph} size={29}/>}
                 <span>{link.label}</span>
               </Link>
             );
