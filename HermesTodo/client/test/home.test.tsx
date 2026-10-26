@@ -78,7 +78,7 @@ describe("home dashboard", () => {
     expect(screen.getByRole("heading", { name: /^下午好/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "我的待办" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
-    expect(screen.getByText(/只显示未归入情境的待办/)).toBeInTheDocument();
+    expect(screen.getByText(/这里收集尚未分类的待办/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "情境目录" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
