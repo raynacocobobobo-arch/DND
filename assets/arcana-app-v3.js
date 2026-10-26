@@ -7,7 +7,7 @@
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==11||!root) {
+  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
@@ -26,7 +26,7 @@
     if(!parts.length) return {screen:'home'};
     if(parts[0]==='home')return {screen:'home'};
     if(parts[0]==='draw')return {screen:'draw'};
-    if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups',page:parts[2]==='2'?2:1};
+    if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups',page:Math.max(1,Math.min(3,Number(parts[2]||1)||1))};
     if(parts[0]==='cups')return {screen:'cups'};
     if(parts[0]==='card'&&parts[1]==='cups'&&CU.some(c=>c.slug===parts[2]))return {screen:'cups-card',slug:parts[2]};
     if(parts[0]==='library') {
@@ -59,7 +59,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 11 张圣杯已定稿</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 圣杯组14张原画已收录</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -123,21 +123,21 @@
     return `<section class="page library cups-library">
       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">大阿卡纳牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
       <div class="lib-heading"><div>
-      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','已按你确认的《圣杯国王》美术标准入库。每张牌都有独立原画、故事、图像解析及正逆位解读；未通过审核的牌不会混入正式牌库。')}
-      </div><div class="library-count">正式定稿 11 / 14 · 第 ${page} / 2 页</div></div>
+      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','圣杯14张原画均已收录，并提供独立故事与正逆位解读。其中圣杯六存在杯数待修正问题，在正式校验完成前不进入抽牌池。')}
+      </div><div class="library-count">圣杯组14张已收录 · 13张通过 · 第 ${page} / 3 页</div></div>
       <div class="library-panel"><div class="library-grid cups-approved-grid">
-        ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card cups-approved-card" aria-label="打开${clean(c.zh)}已定稿原画和完整解读">
+        ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card cups-approved-card" aria-label="打开${clean(c.zh)}原画和完整解读">
           <img src="${c.thumb}" loading="lazy" alt="${clean(c.zh)}高清塔罗原画">
-          <div class="roman">CUPS / ${clean(c.en)} · 已定稿</div>
+          <div class="roman">CUPS / ${clean(c.en)} · ${c.status==="approved"?"已定稿":"待修正"}</div>
           <h2 class="card-title">${clean(c.zh)}</h2><div class="caption">${clean(c.title)}</div>
         </a>`).join('')}
       </div></div>
       <div class="paginator">
        ${page>1?'<a class="btn outline mini" href="#/library/cups/1">← 上一页</a>':'<button class="btn outline mini" disabled>← 上一页</button>'}
-       <span class="page-number">${page} / 2</span>
-       ${page===1?'<a class="btn outline mini" href="#/library/cups/2">下一页 →</a>':'<button class="btn outline mini" disabled>下一页 →</button>'}
+       <span class="page-number">${page} / 3</span>
+       ${page<3?`<a class="btn outline mini" href="#/library/cups/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
       </div>
-      <p class="lead">尚未定稿的三张：圣杯五、圣杯骑士、圣杯王后。其余11张已正式纳入网站；在「抽牌」页可选择全部已入库的33张，或仅使用原有22张大阿卡纳。</p>
+      <p class="lead">本次新增《圣杯五》《圣杯骑士》《圣杯王后》均已入库。圣杯组14张图片全部可看，但圣杯六杯数仍待修正，不参与随机抽牌；当前可抽取22张大阿卡纳＋13张已审核圣杯，共35张。</p>
       <div class="actions"><a class="btn outline mini" href="#/draw">用已入库牌面抽牌 →</a><a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯制作台账 →</a></div>
     </section>`;
   }
@@ -146,14 +146,14 @@
     if(index<0) return '<section class="page notfound"><h1>未找到该牌</h1></section>';
     const d=CU[index],prev=CU[(index+CU.length-1)%CU.length],next=CU[(index+1)%CU.length];
     return `<section class="page detail">
-      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups/${index<6?1:2}">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups/${Math.floor(index/6)+1}">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
       <div class="detail-layout">
         <div class="detail-art">
           <img src="${d.img}" fetchpriority="high" alt="${clean(d.zh)}941 × 1672已确认高清原画">
           <a class="zoom" target="_blank" rel="noopener" href="${d.img}">打开 941 × 1672 高清原画 ↗</a>
         </div>
         <article class="detail-copy">
-          <div class="eyebrow">MINOR ARCANA / SUIT OF CUPS · 正式定稿</div>
+          <div class="eyebrow">MINOR ARCANA / SUIT OF CUPS · ${d.status==="approved"?"正式定稿":"杯数待修正 · 暂不参与抽牌"}</div>
           <h1>${clean(d.zh)}</h1><div class="subtitle">${clean(d.title)} · ${clean(d.en)}</div>
           <div class="character">传统牌义 / ${clean(d.suitMeaning)}</div>
           ${section('01 / ORIGINAL NARRATIVE','牌面的故事',d.story,'story')}
@@ -172,7 +172,7 @@
   function pickCards(n,daily){
     let random=Math.random;
     if(daily){let s=seed32(new Date().toLocaleDateString('en-CA'));random=()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296;};}
-    const pool=(drawPool==='major'?C:C.concat(CU)).slice(),out=[];
+    const pool=(drawPool==='major'?C:C.concat(CU.filter(c=>c.status==='approved'))).slice(),out=[];
     for(let i=0;i<n;i++){const j=Math.floor(random()*pool.length);out.push({c:pool.splice(j,1)[0],rev:random()<.3});}
     return out;
   }
@@ -186,7 +186,7 @@
          <div class="spread-select">${modeOptions.map(o=>`<button type="button" data-n="${o.n}" data-daily="${o.d?1:0}" class="${currentSpread===o.n&&isDaily===o.d?'active':''}">${o.title}<small style="display:block;margin-top:5px;opacity:.7">${o.desc}</small></button>`).join('')}</div>
          <label>抽取范围</label>
          <div class="spread-select pool-select" role="group" aria-label="抽牌范围">
-           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已入库 · 33张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 已定稿11张圣杯</small></button>
+           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已审核 · 35张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 已定稿13张圣杯</small></button>
            <button type="button" data-pool="major" class="${drawPool==='major'?'active':''}">仅大阿卡纳 · 22张</button>
          </div>
          <label for="question">此刻的问题（可选）</label>
@@ -265,5 +265,5 @@
   }
   window.addEventListener('hashchange',render);
   render();
-  console.info('Forbidden Arcana V3: 4 separate routed screens, 22 dedicated card pages, HD originals');
+  console.info('Forbidden Arcana V3: 22 major cards, 14 visible Cups images, 13 approved for random draws');
 })();
