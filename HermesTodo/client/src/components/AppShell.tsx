@@ -8,7 +8,7 @@ import { MedievalCrest } from "./MedievalCrest";
 
 const links = [
   { to: "/", label: "清单", end: true, glyph: "fleur" },
-  { to: "/inbox", label: "收集箱", end: true, glyph: "scroll" },
+  { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
   { to: "/ai", label: "AI", end: false, glyph: "crown" }
 ] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
@@ -57,7 +57,7 @@ export function AppShell() {
         <div className="mobile-brand"><FleurDeLis size={22}/><span>HermesTodo</span></div>
         <main className="app-content" id="main-content" tabIndex={-1}>
           <div className="app-utility-row">
-            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>            {!cloudMode ? (
+            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>\n            {!cloudMode ? (
               <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
                 onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
             ) : null}
