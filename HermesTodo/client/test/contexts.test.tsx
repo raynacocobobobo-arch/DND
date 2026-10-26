@@ -112,7 +112,7 @@ describe("contexts interface", () => {
 
     await user.click(await screen.findByRole("button", { name: "删除 旅行" }));
     const dialog = screen.getByRole("alertdialog", { name: "删除清单？" });
-    expect(dialog).toHaveTextContent("任务不会被删除，但会变为收集箱");
+    expect(dialog).toHaveTextContent("清单内的任务不会被删除，将返回收集箱");
     await user.click(screen.getByRole("button", { name: "确认删除" }));
     await waitFor(() => expect(screen.queryByRole("link", { name: /旅行/ })).not.toBeInTheDocument());
   });
@@ -167,7 +167,7 @@ describe("contexts interface", () => {
       throw new Error(`Unexpected request: ${path}`);
     }));
     render(<App />);
-    expect(await screen.findByRole("heading", { name: "我的清单。" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "我的清单" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "场景目录" })).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "清单列表" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /进入收集箱/ })).toHaveAttribute("href", "/inbox");
