@@ -1,12 +1,6 @@
 name: HermesTodo production container image
 
 on:
-  push:
-    branches:
-      - feature/hermestodo-dashboard-subtasks-20261025
-    paths:
-      - "HermesTodo/**"
-      - ".github/workflows/hermestodo-production-image.yml"
   workflow_dispatch:
 
 permissions:
