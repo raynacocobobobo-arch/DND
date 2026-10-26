@@ -21,6 +21,7 @@ const travelList = {
   color: "#8CAABA",
   sortOrder: 0,
   sceneCount: 1,
+  taskCount: 1,
   incompleteCount: 1,
   createdAt: stamp,
   updatedAt: stamp
@@ -65,7 +66,7 @@ describe("lists and scenes interface", () => {
       if (path === "/api/lists" && (!init?.method || init.method === "GET")) return jsonResponse(lists);
       if (path === "/api/lists" && init?.method === "POST") {
         const body = JSON.parse(String(init.body));
-        const created = { ...travelList, ...body, id: "work-list", sortOrder: 1, sceneCount: 0, incompleteCount: 0 };
+        const created = { ...travelList, ...body, id: "work-list", sortOrder: 1, sceneCount: 0, taskCount: 0, incompleteCount: 0 };
         lists.push(created);
         return jsonResponse(created, 201);
       }
@@ -111,6 +112,41 @@ describe("lists and scenes interface", () => {
     await user.type(name, "客户项目");
     await user.click(screen.getByRole("button", { name: "保存" }));
     expect(await screen.findByRole("link", { name: /客户项目/ })).toBeInTheDocument();
+  });
+
+  test("confirms bulk completion and toggles the whole list back to incomplete", async () => {
+    window.history.replaceState({}, "", "/");
+    const state = { ...travelList, taskCount: 2, incompleteCount: 2 };
+    let completed = false;
+    const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const path = String(input);
+      if (path === "/api/session") return jsonResponse({ authenticated: true });
+      if (path === "/api/lists" && (!init?.method || init.method === "GET")) return jsonResponse([{ ...state }]);
+      if (path === "/api/lists/travel-list/complete" && init?.method === "POST") {
+        completed = !completed;
+        state.incompleteCount = completed ? 0 : state.taskCount;
+        return jsonResponse({ updatedCount: state.taskCount, completed });
+      }
+      throw new Error(`Unexpected request: ${init?.method ?? "GET"} ${path}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    render(<App />);
+
+    const toggle = await screen.findByRole("button", { name: "一键勾选 出国旅行" });
+    await user.click(toggle);
+    expect(screen.getByRole("alertdialog", { name: "一键勾选全部待办？" })).toHaveTextContent("全部待办标记为完成");
+    expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/lists/travel-list/complete" && init?.method === "POST")).toHaveLength(0);
+
+    await user.click(screen.getByRole("button", { name: "确认全部完成" }));
+    await waitFor(() => expect(screen.getByText("1 个场景 · 0 件待办")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: "一键勾选 出国旅行" }));
+    expect(screen.getByRole("alertdialog", { name: "全部恢复为未完成？" })).toHaveTextContent("恢复为未完成");
+    await user.click(screen.getByRole("button", { name: "确认恢复未完成" }));
+    await waitFor(() => expect(screen.getByText("1 个场景 · 2 件待办")).toBeInTheDocument());
+
+    expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/lists/travel-list/complete" && init?.method === "POST")).toHaveLength(2);
   });
 
   test("keeps scene deletion behind confirmation and returns its tasks to inbox", async () => {
