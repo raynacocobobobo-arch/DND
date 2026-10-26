@@ -15,7 +15,7 @@ export function ImportListDialog({ loading, onImport, onCancel }: { loading: boo
         <form className="stacked-form" onSubmit={submit}>
           <label>情境名称（可选）<input value={contextHint} onChange={(event) => setContextHint(event.target.value)} maxLength={40} placeholder="例如：欧洲旅行（可留空让 DeepSeek 判断）" /></label>
           <label>粘贴清单<textarea value={raw} onChange={(event) => setRaw(event.target.value)} rows={12} /></label>
-          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button compact-button" disabled={loading || !raw.trim()}>{loading ? "DeepSeek 解析中…" : "交给 DeepSeek 解析"}</button></div>
+          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button compact-button" aria-label="解析清单" disabled={loading || !raw.trim()}>{loading ? "DeepSeek 解析中…" : "交给 DeepSeek 解析"}</button></div>
         </form>
       </section>
     </div>
