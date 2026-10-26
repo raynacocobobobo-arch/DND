@@ -85,13 +85,9 @@ jobs:
               assert 'joan-dragon-scene-hq.avif' in artwork.get_attribute('src')
               assert artwork.get_attribute('naturalWidth') == '1672'
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input').is_displayed()
-              # Cloud setup is available without affecting this local-data demo.
-              browser.find_element(By.CSS_SELECTOR,'.cloud-settings-trigger').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.cloud-setup-dialog')))
-              assert 'Supabase 云端保存' in browser.find_element(By.CSS_SELECTOR,'.cloud-setup-dialog').text
-              assert browser.find_element(By.CSS_SELECTOR,'.cloud-setup-dialog input[type="url"]').is_displayed()
-              browser.find_element(By.CSS_SELECTOR,'.cloud-setup-dialog button[aria-label="关闭云端设置"]').click()
-              wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR,'.cloud-setup-dialog')))
+              # Routine UI must not expose cloud configuration or an easy-to-misclick cloud exit.
+              assert not browser.find_elements(By.CSS_SELECTOR,'.cloud-settings-trigger')
+              assert '云端设置' not in browser.find_element(By.TAG_NAME,'body').text
               assert not browser.find_elements(By.CSS_SELECTOR,'.dashboard-task-board'), 'Old dashboard must not be the homepage'
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
 
@@ -139,17 +135,26 @@ jobs:
               first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
               viewport=browser.execute_script("return window.innerHeight")
               assert first < viewport - 45, f'First scene card below fold: top={first}, viewport={viewport}'
-              # New cloud mode must show the real email login UI instead of a blank screen.
+              # Cloud mode must stay intentionally simple: fixed username + password only.
               browser.execute_script('''localStorage.setItem('hermestodo-supabase-public-v1',
                 JSON.stringify({url:'https://arnrlepjuqdmvbipswci.supabase.co',
                   publishableKey:'sb_publishable_ci_only_test_public_key'}))''')
               browser.refresh()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.login-page')))
-              assert browser.find_element(By.CSS_SELECTOR,'#cloud-email').is_displayed()
-              assert '发送免密码登录邮件' in browser.find_element(By.TAG_NAME,'body').text
+              username=browser.find_element(By.CSS_SELECTOR,'#username')
+              password=browser.find_element(By.CSS_SELECTOR,'#password')
+              assert username.is_displayed() and username.get_attribute('value') == 'rui'
+              assert username.get_attribute('readonly') is not None
+              assert password.is_displayed()
+              cloud_body=browser.find_element(By.TAG_NAME,'body').text
+              assert '进入 HermesTodo' in cloud_body
+              assert '发送免密码登录邮件' not in cloud_body
+              assert 'localhost' not in cloud_body
+              assert '云端设置' not in cloud_body
+              assert not browser.find_elements(By.CSS_SELECTOR,'#cloud-email')
               browser.save_screenshot('/tmp/hermestodo-cloud-login.png')
               browser.execute_script("localStorage.removeItem('hermestodo-supabase-public-v1')")
-              print('CLOUD LOGIN BOOT PASSED: public Pages cloud auth screen renders normally',flush=True)
+              print('CLOUD LOGIN BOOT PASSED: fixed single-user password screen renders normally',flush=True)
               print('BROWSER SMOKE PASSED: scene homepage, create list, list details, inbox tasks, AI, mobile',flush=True)
           finally:
               try: print('VISIBLE URL',browser.current_url,flush=True)
