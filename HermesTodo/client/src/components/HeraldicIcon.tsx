@@ -7,7 +7,7 @@ const alias: Record<string,string> = {
  dumbbell:"axes",plane:"compass",film:"lyre",heart:"heart",sparkles:"star",
  calendar:"hourglass",grid:"quarter",inbox:"chest",ai:"star",
  add:"star",plus:"star",edit:"quill",copy:"scroll",trash:"torch",
- arrow:"arrow",logout:"key",upload:"scroll",reset:"hourglass",send:"arrow",
+ arrow:"arrow",drag:"drag",logout:"key",upload:"scroll",reset:"hourglass",send:"arrow",
  feather:"quill",gamepad:"dragon","gamepad-2":"dragon"
 };
 function device(key:string) {
@@ -28,6 +28,10 @@ function device(key:string) {
  case "quill": return <g><path d="M19 49 48 16C35 15 22 28 20 42l-1 7Z" strokeWidth="2.5"/><path d="m18 53 22-26m-13 7 9 2M15 54h21" strokeWidth="2"/></g>;
  case "torch": return <g><path d="M32 34v20m-8-17h16M28 54h8" strokeWidth="3"/><path d="M32 13c7 8 11 14 7 20-3 4-10 5-14 0-5-7 1-12 7-20Z" strokeWidth="2.8"/></g>;
  case "key": return <g><circle cx="27" cy="25" r="10" strokeWidth="2.8"/><path d="M34 32 48 46v8h-7v-5h-6v-6l-7-8" strokeWidth="3"/></g>;
+ case "drag": return <g>
+   <path d="M21 25h22M21 34h22M21 43h22" strokeWidth="2.5"/>
+   <path d="M18 25h.1M18 34h.1M18 43h.1M46 25h.1M46 34h.1M46 43h.1" strokeWidth="3.5"/>
+ </g>;
  case "arrow": return <path d="M18 44 45 20M28 20h17v17" strokeWidth="3.5"/>;
  default: return <g><path d="M20 24c8-4 16-4 24 0v21c-8-4-16-4-24 0V24Z" strokeWidth="2.7"/><path d="M25 30h14m-14 7h14" strokeWidth="2"/></g>;
  }
