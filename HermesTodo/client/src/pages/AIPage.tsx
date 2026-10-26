@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowUpCircle, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { HeraldicIcon } from "../components/HeraldicIcon";
 import { useState, type FormEvent } from "react";
 
 import type { AIPlanResult, AISuggestion } from "../../../shared/contracts";
@@ -110,9 +110,9 @@ export function AIPage() {
   return (
     <section className="page-stack ai-page">
       <header className="ios-page-header">
-        <Sparkles className="ai-title-icon" aria-hidden="true" size={19} />
+        <HeraldicIcon className="ai-title-icon" name="star" size={25}/>
         <h1>AI 规划器</h1>
-        <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><Upload aria-hidden="true" size={18} /></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><RotateCcw aria-hidden="true" size={18} /></button></div>
+        <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><HeraldicIcon name="upload" size={22}/></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><HeraldicIcon name="reset" size={22}/></button></div>
       </header>
       <section className="ai-workspace">
         {messages.length === 0 ? <HeraldicDivider className="ai-ornament"/> : null}
@@ -123,7 +123,7 @@ export function AIPage() {
         <form className="ai-composer" onSubmit={submit}>
           <label className="sr-only" htmlFor="ai-input">告诉 AI 你的目标</label>
           <textarea id="ai-input" value={input} onChange={(event) => setInput(event.target.value)} disabled={loading} rows={1} placeholder="我想完成什么？" />
-          <button type="submit" aria-label={loading ? "规划中…" : "发送"} disabled={loading || !input.trim()}><ArrowUpCircle aria-hidden="true" size={27} /></button>
+          <button type="submit" aria-label={loading ? "规划中…" : "发送"} disabled={loading || !input.trim()}><HeraldicIcon name="send" size={27}/></button>
         </form>
       </section>
       {importOpen ? <ImportListDialog loading={loading} onCancel={() => setImportOpen(false)} onImport={(raw, contextHint) => void importList(raw, contextHint)} /> : null}
