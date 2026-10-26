@@ -13,8 +13,13 @@ type Session = {
   user_id: string;
   project_url: string;
 };
+type DbList = {
+  id: string; name: string; icon: string; color: string; sort_order: number;
+  created_at: string; updated_at: string;
+};
 type DbContext = {
   id: string; name: string; icon: string; color: string; sort_order: number;
+  list_id: string | null;
   created_at: string; updated_at: string;
 };
 type DbTask = {
@@ -149,6 +154,7 @@ function fields(data: JsonObject, map: Record<string, string>): JsonObject {
 function toContext(c: DbContext, tasks: DbTask[]) {
   return {
     id: c.id, name: c.name, icon: c.icon, color: c.color, sortOrder: c.sort_order,
+    listId: c.list_id,
     createdAt: c.created_at, updatedAt: c.updated_at,
     incompleteCount: tasks.filter(t => t.context_id === c.id && !t.is_completed).length
   };
@@ -171,7 +177,8 @@ const taskFields = {
   contextId: "context_id", parentTaskId: "parent_task_id",
   repeatInterval: "repeat_interval", repeatRule: "repeat_rule"
 };
-const contextFields = { name: "name", icon: "icon", color: "color", sortOrder: "sort_order" };
+const contextFields = { name: "name", icon: "icon", color: "color", sortOrder: "sort_order", listId: "list_id" };
+const listFields = { name: "name", icon: "icon", color: "color", sortOrder: "sort_order" };
 function jsonResponse(value: unknown, status = 200): Response {
   return new Response(status === 204 ? null : JSON.stringify(value), {
     status, headers: status === 204 ? undefined : { "content-type": "application/json" }
@@ -182,6 +189,32 @@ function requestBody(init?: RequestInit): JsonObject {
 }
 async function allTasks(config: CloudConfig): Promise<DbTask[]> {
   return rest<DbTask[]>(config, "hermes_tasks?select=*&order=created_at.desc");
+}
+async function allLists(config: CloudConfig): Promise<DbList[]> {
+  return rest<DbList[]>(config, "hermes_lists?select=*&order=sort_order.asc,created_at.asc");
+}
+function toList(list: DbList, contexts: DbContext[], tasks: DbTask[]) {
+  const sceneIds = new Set(contexts.filter(c => c.list_id === list.id).map(c => c.id));
+  return {
+    id: list.id, name: list.name, icon: list.icon, color: list.color, sortOrder: list.sort_order,
+    createdAt: list.created_at, updatedAt: list.updated_at,
+    sceneCount: sceneIds.size,
+    incompleteCount: tasks.filter(t => t.context_id && sceneIds.has(t.context_id) && !t.is_completed).length
+  };
+}
+async function createList(config: CloudConfig, value: JsonObject): Promise<JsonObject> {
+  const session = await accessToken(config);
+  const existing = await allLists(config);
+  const row = {
+    user_id: session.user_id,
+    name: String(value.name ?? "").trim(),
+    icon: String(value.icon ?? "compass"),
+    color: String(value.color ?? "#8CAABA"),
+    sort_order: existing.length
+  };
+  if (!row.name) throw new Error("请输入清单名称");
+  const inserted = await rest<DbList[]>(config, "hermes_lists", { method: "POST", body: JSON.stringify(row) });
+  return toList(inserted[0]!, [], []);
 }
 
 const LEGACY_MIGRATION_PREFIX = "hermestodo-legacy-cloud-migrated-v1:";
@@ -239,6 +272,7 @@ async function migrateLegacyLocalData(config: CloudConfig): Promise<void> {
       target = {
         id: String(created.id), name, icon: String(created.icon), color: String(created.color),
         sort_order: Number(created.sortOrder ?? contextByName.size),
+        list_id: created.listId ? String(created.listId) : null,
         created_at: String(created.createdAt), updated_at: String(created.updatedAt)
       };
       contextByName.set(name,target);
@@ -316,21 +350,34 @@ async function oneTask(config: CloudConfig, id: string): Promise<DbTask> {
   if (!found[0]) throw new Error("任务不存在");
   return found[0];
 }
-async function contextCount(config: CloudConfig): Promise<number> {
-  const contexts = await rest<DbContext[]>(config, "hermes_contexts?select=id");
+async function contextCount(config: CloudConfig, listId?: string | null): Promise<number> {
+  const endpoint = listId
+    ? "hermes_contexts?select=id&list_id=eq." + encodeURIComponent(listId)
+    : "hermes_contexts?select=id";
+  const contexts = await rest<DbContext[]>(config, endpoint);
   return contexts.length;
 }
 async function createContext(config: CloudConfig, value: JsonObject): Promise<JsonObject> {
   const session = await accessToken(config);
-  const count = await contextCount(config);
+  let listId = value.listId ? String(value.listId) : "";
+  if (!listId) {
+    const lists = await allLists(config);
+    if (lists[0]) listId = lists[0].id;
+    else {
+      const created = await createList(config, { name: "默认清单", icon: "compass", color: "#8CAABA" });
+      listId = String(created.id);
+    }
+  }
+  const count = await contextCount(config, listId);
   const row = {
     user_id: session.user_id,
+    list_id: listId,
     name: String(value.name ?? "").trim(),
     icon: String(value.icon ?? "folder"),
     color: String(value.color ?? "#8CAABA"),
     sort_order: count
   };
-  if (!row.name) throw new Error("请输入清单名称");
+  if (!row.name) throw new Error("请输入场景名称");
   const inserted = await rest<DbContext[]>(config, "hermes_contexts", { method: "POST", body: JSON.stringify(row) });
   return toContext(inserted[0]!, []);
 }
@@ -366,7 +413,8 @@ async function commitAiSuggestions(config: CloudConfig, data: JsonObject): Promi
       const added = await createContext(config, { name: contextName, icon: "folder", color: "#8CAABA" });
       context = {
         id: String(added.id), name: contextName, icon: "folder", color: "#8CAABA",
-        sort_order: existing.length, created_at: String(added.createdAt), updated_at: String(added.updatedAt)
+        sort_order: existing.length, list_id: added.listId ? String(added.listId) : null,
+        created_at: String(added.createdAt), updated_at: String(added.updatedAt)
       };
       existing.push(context);
     }
@@ -480,12 +528,52 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     }
     return jsonResponse(null, 204);
   }
-  if (endpoint === "/api/contexts" && method === "GET") {
+  if (endpoint === "/api/lists" && method === "GET") {
+    const [lists, contexts, tasks] = await Promise.all([
+      allLists(config),
+      rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc"),
+      allTasks(config)
+    ]);
+    return jsonResponse(lists.map(item => toList(item, contexts, tasks)));
+  }
+  if (endpoint === "/api/lists" && method === "POST") {
+    return jsonResponse(await createList(config, data), 201);
+  }
+  if (endpoint === "/api/lists/reorder" && method === "POST") {
+    const ids = Array.isArray(data.orderedIds) ? data.orderedIds.map(String) : [];
+    const known = new Set((await allLists(config)).map(item => item.id));
+    if (ids.length !== known.size || ids.some(id => !known.has(id))) throw new Error("清单排序数据无效");
+    for (let index = 0; index < ids.length; index += 1) {
+      await rest<DbList[]>(config, "hermes_lists?id=eq." + encodeURIComponent(ids[index]!), {
+        method: "PATCH", body: JSON.stringify({ sort_order: index, updated_at: new Date().toISOString() })
+      });
+    }
+    return jsonResponse({ ok: true });
+  }
+  const lm = /^\/api\/lists\/([^/]+)$/.exec(endpoint);
+  if (lm && method === "PATCH") {
+    const id = encodeURIComponent(lm[1]!);
+    const changed = await rest<DbList[]>(config, "hermes_lists?id=eq." + id, {
+      method: "PATCH", body: JSON.stringify({ ...fields(data, listFields), updated_at: new Date().toISOString() })
+    });
+    if (!changed[0]) throw new Error("清单不存在");
     const [contexts, tasks] = await Promise.all([
       rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc"),
       allTasks(config)
     ]);
-    return jsonResponse(contexts.map(c => toContext(c, tasks)));
+    return jsonResponse(toList(changed[0], contexts, tasks));
+  }
+  if (endpoint === "/api/contexts" && method === "GET") {
+    const url = new URL(input instanceof Request ? input.url : String(input), location.href);
+    const listId = url.searchParams.get("listId");
+    const contextEndpoint = listId
+      ? "hermes_contexts?select=*&list_id=eq." + encodeURIComponent(listId) + "&order=sort_order.asc"
+      : "hermes_contexts?select=*&order=sort_order.asc";
+    const [contexts, tasks] = await Promise.all([
+      rest<DbContext[]>(config, contextEndpoint),
+      allTasks(config)
+    ]);
+    return jsonResponse(contexts.map(item => toContext(item, tasks)));
   }
   if (endpoint === "/api/contexts" && method === "POST") return jsonResponse(await createContext(config, data), 201);
   const cm = /^\/api\/contexts\/([^/]+)$/.exec(endpoint);
