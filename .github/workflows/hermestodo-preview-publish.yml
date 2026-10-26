@@ -63,6 +63,13 @@ jobs:
               assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
+              # Verify the approved Jeanne d'Arc dragon artwork is the real loaded asset,
+              # not a generated UI screenshot or a broken background URL.
+              artwork=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script(
+                  'return arguments[0].complete && arguments[0].naturalWidth >= 1000', artwork))
+              assert 'joan-dragon-scene.avif' in artwork.get_attribute('src')
+              assert artwork.get_attribute('naturalWidth') == '1200'
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input').is_displayed()
               assert not browser.find_elements(By.CSS_SELECTOR,'.dashboard-task-board'), 'Old dashboard must not be the homepage'
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
@@ -97,6 +104,9 @@ jobs:
               browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
+              mobile_art=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script(
+                  'return arguments[0].complete && arguments[0].naturalWidth >= 1000', mobile_art))
               browser.save_screenshot('/tmp/hermestodo-mobile.png')
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
