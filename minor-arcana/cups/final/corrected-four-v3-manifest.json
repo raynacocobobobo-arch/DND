@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "four",
+    "path": "minor-arcana/cups/final/four-of-cups-v3.webp",
+    "thumb": "minor-arcana/cups/thumbs/four-of-cups-v3.webp",
+    "sha256": "bbfa164a744b3fbca401a20cbe531663213f316f96dc9a4631e504cba99501af",
+    "bytes": 2230524,
+    "resolution": [
+      941,
+      1672
+    ]
+  },
+  {
+    "slug": "six",
+    "path": "minor-arcana/cups/final/six-of-cups-v3.webp",
+    "thumb": "minor-arcana/cups/thumbs/six-of-cups-v3.webp",
+    "sha256": "149e3cc7399c342b915c358c3c6f18750d700bd0d66040a3ed1aa0c8601e3670",
+    "bytes": 2494602,
+    "resolution": [
+      941,
+      1672
+    ]
+  },
+  {
+    "slug": "nine",
+    "path": "minor-arcana/cups/final/nine-of-cups-v3.webp",
+    "thumb": "minor-arcana/cups/thumbs/nine-of-cups-v3.webp",
+    "sha256": "7a7802f4b3aa5f128535de3f381847f7c428b7195f104c738a56cd4477e20e93",
+    "bytes": 2335028,
+    "resolution": [
+      941,
+      1672
+    ]
+  },
+  {
+    "slug": "ten",
+    "path": "minor-arcana/cups/final/ten-of-cups-v3.webp",
+    "thumb": "minor-arcana/cups/thumbs/ten-of-cups-v3.webp",
+    "sha256": "12352a14b958c6d42da1125624529e4ea04a1e5d30f3c6fae612152826fa4ee1",
+    "bytes": 2361742,
+    "resolution": [
+      941,
+      1672
+    ]
+  }
+]
