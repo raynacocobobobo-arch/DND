@@ -48,7 +48,7 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
         flexShrink: 0,
         width: size,
         height: size,
-        backgroundImage: `url("${import.meta.env.BASE_URL}art/action-crests.avif")`,
+        backgroundImage: `url("${import.meta.env.BASE_URL}art/action-crests.webp")`,
         backgroundRepeat: "no-repeat",
         backgroundSize: `${size * actionCrests.length}px ${size}px`,
         backgroundPosition: `-${index * size}px 0`
