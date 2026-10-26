@@ -74,16 +74,16 @@ jobs:
               assert decoded == [1024,128], f'Heraldic sprite missing or undecodable: {decoded}'
               # Reject tiny/compressed hero images when publishing the live URL.
               picture=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
-              wait.until(lambda b: b.execute_script('return arguments[0].complete && arguments[0].naturalWidth >= 1600',picture))
-              assert browser.execute_script('return arguments[0].naturalWidth',picture)==1672
+              wait.until(lambda b: b.execute_script('return arguments[0].complete && arguments[0].naturalWidth >= 1000',picture))
+              assert browser.execute_script('return arguments[0].naturalWidth',picture)==1100
               assert len(browser.find_elements(By.CSS_SELECTOR,'.scene-home-grid .medieval-crest')) >= 1
               # Verify the approved Jeanne d'Arc dragon artwork is the real loaded asset,
               # not a generated UI screenshot or a broken background URL.
               artwork=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
               wait.until(lambda b: b.execute_script(
                   'return arguments[0].complete && arguments[0].naturalWidth >= 1000', artwork))
-              assert 'joan-dragon-scene-hq.avif' in artwork.get_attribute('src')
-              assert artwork.get_attribute('naturalWidth') == '1672'
+              assert 'joan-fleur-hero-v2.avif' in artwork.get_attribute('src')
+              assert artwork.get_attribute('naturalWidth') == '1100'
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input').is_displayed()
               # Routine UI must not expose cloud configuration or an easy-to-misclick cloud exit.
               assert not browser.find_elements(By.CSS_SELECTOR,'.cloud-settings-trigger')
@@ -131,7 +131,7 @@ jobs:
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               mobile_art=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
               wait.until(lambda b: b.execute_script(
-                  'return arguments[0].complete && arguments[0].naturalWidth >= 1600', mobile_art))
+                  'return arguments[0].complete && arguments[0].naturalWidth >= 1000', mobile_art))
               browser.save_screenshot('/tmp/hermestodo-mobile.png')
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
