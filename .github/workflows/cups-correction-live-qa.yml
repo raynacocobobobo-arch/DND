@@ -1,0 +1,67 @@
+name: Cups corrected live QA
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-correction-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - run: python -m pip install --quiet selenium requests Pillow
+      - name: Verify published corrected five and six and all court cards
+        run: |
+          cat >/tmp/verify.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base="https://raynacocobobobo-arch.github.io/DND/"
+          expect={"five":("v2","e7811dd6bd28f345e3012ccac67199f030ff7ed47dcf459638d3a5de80c88ecb"),"six":("v2","d64c7cb1158d0181e4dcefd52f455ce5ddd59297db97aaed59b8f74064dea07a")}
+          for slug,(v,sha) in expect.items():
+            u=base+f"minor-arcana/cups/final/{slug}-of-cups-{v}.webp?verify=20261026"
+            r=requests.get(u,timeout=35);r.raise_for_status()
+            assert hashlib.sha256(r.content).hexdigest()==sha,(slug,"Wrong source image")
+            im=Image.open(io.BytesIO(r.content));im.load()
+            assert im.format=="WEBP" and im.size==(941,1672),slug
+            print("PUBLISHED_CORRECTED_IMAGE",slug,im.size,flush=True)
+          for slug in ("knight","queen"):
+            r=requests.get(base+f"minor-arcana/cups/final/{slug}-of-cups-v1.webp",timeout=35)
+            r.raise_for_status()
+            im=Image.open(io.BytesIO(r.content));im.load()
+            assert im.size==(941,1672)
+            print("PUBLISHED_COURT_IMAGE",slug,flush=True)
+          opt=Options()
+          for arg in ('--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1370,940'):opt.add_argument(arg)
+          b=webdriver.Chrome(options=opt)
+          try:
+            for i in range(25):
+              b.get(base+"?verify=20261026-"+str(i)+"#/library/cups")
+              try:
+                WebDriverWait(b,6).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.cups-approved-card'))==6)
+                if "14" in b.find_element(By.CSS_SELECTOR,'.library-count').text:break
+              except Exception:pass
+              time.sleep(6)
+            else:raise Exception("14-card library not deployed")
+            assert '14 / 14' in b.find_element(By.CSS_SELECTOR,'.library-count').text
+            for slug in ("five","six","knight","queen"):
+              b.get(base+"?verify=20261026#/card/cups/"+slug)
+              WebDriverWait(b,9).until(lambda d:d.find_element(By.CSS_SELECTOR,'.detail-art img'))
+              src=b.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+              assert f"/{slug}-of-cups-" in src,(slug,src)
+              if slug in expect:assert "-v2.webp" in src,(slug,src)
+              h=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+              assert '正位' in h and '逆位' in h and '牌面的故事' in h
+              print("CARD_PAGE_OK",slug,flush=True)
+            b.get(base+"?verify=20261026#/draw")
+            WebDriverWait(b,10).until(lambda d:d.find_element(By.CSS_SELECTOR,'.pool-select'))
+            assert '36' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+            print("ALL_14_CUPS_PUBLISHED_AND_DRAW_READY",flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/verify.py
