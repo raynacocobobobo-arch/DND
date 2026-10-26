@@ -1,95 +1,12 @@
-<!doctype html><html lang="zh-CN"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>圣杯组 · 14张艺术资产与制作台账 — 禁忌之书</title>
-<style>
-:root{color-scheme:dark;--bg:#070b10;--g:#d2b683;--line:#b599673c;--text:#f0e7d7;--muted:#b2a99b}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 88% 650px at 60% -200px,#29323c,#0d141b 50%,#080b10);color:var(--text);font-family:Georgia,"Songti SC",serif}
-a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}.wrap{max-width:1420px;margin:auto;padding:0 clamp(16px,4vw,55px)}
-header{border-bottom:1px solid var(--line);padding:22px 0;background:#0a1118e8}.head{display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{letter-spacing:.16em;color:var(--g);font-size:16px}.small{font-size:12px;color:var(--muted)}.back{padding:11px 16px;border:1px solid var(--line);color:#c7b08b}
-.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--g)}h1{font-size:clamp(38px,5vw,70px);font-weight:400;line-height:1.23;letter-spacing:.025em;margin:18px 0}
-p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:760px;color:#bfb5a6;font-size:15px}
-.metric{display:flex;flex-wrap:wrap;gap:13px;margin:25px 0}.metric span{border:1px solid var(--line);padding:8px 14px;color:#b9ad99;font-size:12px}.metric b{color:var(--g)}
-.preview{display:grid;grid-template-columns:minmax(0,440px) 1fr;gap:clamp(22px,5vw,70px);align-items:center;padding:38px;border:1px solid var(--line);background:linear-gradient(120deg,#0f1821,#141a20)}
-.preview img{max-width:100%;width:100%;height:auto;max-height:710px;object-fit:contain;filter:drop-shadow(0 24px 38px #000b)}
-.preview h2{font-size:38px;font-weight:400;margin:12px 0}.preview h3{font-size:21px;font-weight:400;color:#dcc391}.preview p{color:#c3b9ac;font-size:14px}.warn{padding:16px 20px;border-left:2px solid #b99b61;background:#baa27012;color:#d3c8b8;margin:22px 0;font-size:13px;line-height:1.85}.preview .tag{font-size:12px;color:#d2bc91;letter-spacing:.15em}
-.gallery{padding:73px 0 110px}.gallery h2{font-size:40px;font-weight:400;margin:13px 0 6px}.gallery .sub{color:var(--muted);margin:0 0 35px;font-size:14px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.tile{background:#111820;border:1px solid #a58c5a45;padding:25px 25px 21px;min-height:260px;text-align:left;transition:.25s}.tile:hover,.tile.active{transform:translateY(-3px);border-color:#d7bb84;background:#19212a}.tile .number{font-size:24px;color:#ccb582;font-family:Georgia,serif}.tile .en{font-size:11px;letter-spacing:.15em;color:#b6a17c;margin:12px 0}.tile h3{font-weight:400;font-size:24px;margin:12px 0}.tile .concept{color:#cfbf9f;font-size:15px;line-height:1.7}.tile .status{display:inline-block;margin-top:15px;color:#939b9b;font-size:12px}.tile .status.sample{color:#e3be78}
-.sheet{border:1px solid var(--line);background:#101820;display:none;margin-top:20px;padding:clamp(24px,3.5vw,50px);scroll-margin-top:25px}.sheet.open{display:block}.sheet-head{display:flex;justify-content:space-between;align-items:start;gap:20px}.sheet h3{font-size:clamp(27px,3.2vw,43px);font-weight:400;margin:8px 0}.sheet .close{background:transparent;border:1px solid var(--line);color:#d7c6a8;padding:10px 15px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px 35px;margin-top:27px}.fact{border-top:1px solid var(--line);padding:18px 0}.fact .label{font-size:11px;letter-spacing:.14em;color:#bca571}.fact p{font-size:14px;line-height:1.95;color:#d7c9b9;margin:12px 0 0}.break{color:#bea475}
-.footer{border-top:1px solid var(--line);text-align:center;padding:35px 20px;font-size:12px;color:#857f74}
-@media(max-width:920px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.preview{grid-template-columns:40% 1fr;padding:26px}.facts{grid-template-columns:1fr}}
-@media(max-width:640px){.head{flex-direction:column;align-items:start}.intro{padding:40px 0 35px}.preview{grid-template-columns:1fr}.preview img{max-height:570px;max-width:390px;margin:auto}.grid{grid-template-columns:1fr}.tile{min-height:200px}.gallery{padding:50px 0 80px}.sheet-head{flex-direction:column}}
-
-.approved-preview{border-color:#d2b68391;background:linear-gradient(122deg,#18232a,#121a21)}
-.approved-preview img{max-height:800px}
-.approved-preview h2{font-size:clamp(36px,4vw,55px)}
-.approved-preview .tag{color:#e5c88f}
-.approved-preview .feature-note{color:#e0d3c1;line-height:1.95}
-.approved-preview .feature-actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0 0}
-.approved-preview .feature-actions a{padding:13px 18px;border:1px solid #b99d66a8;color:#f0d6a3;font-size:13px}
-.approved-preview .feature-actions a:hover{background:#b99d6623}
-.tile.approved .status{color:#e6c78e}
-.art-library{padding:60px 0 22px}.art-library h2{font-size:clamp(30px,3.6vw,45px);font-weight:400;margin:16px 0 8px}
-.artgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,25px)}
-.approved-art-card{display:block;padding:11px;border:1px solid var(--line);background:#121a22;text-align:center;transition:transform .2s,border-color .2s}
-.approved-art-card:hover{transform:translateY(-5px);border-color:#d2b683}
-.approved-art-card img{display:block;aspect-ratio:941/1672;width:100%;height:auto;object-fit:contain}
-.approved-name{font-size:13px;line-height:1.6;color:#e3ceb0;padding:14px 0 3px}
-@media(max-width:850px){.artgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:540px){.artgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.approved-art-card{padding:7px}.approved-name{font-size:11px}}
-</style></head><body>
-<header><div class="wrap head"><div class="logo">禁忌之书 / THE FORBIDDEN ARCANA</div><a class="back" href="../../index.html#/home">返回现有22张大阿卡纳 ↗</a></div></header>
-<main class="wrap">
-<section class="intro">
-<div class="eyebrow">MINOR ARCANA / SUIT 01 / CUPS</div>
-<h1>圣杯组<br>十四张视觉方案</h1>
-<p>圣杯组14张牌已全部完成并正式入库。圣杯五修正为前景3只倾倒、后方2只直立；圣杯六已补足第6只杯，二者均换用校正后的高清版本。</p>
-<div class="metric"><span><b>14 / 14</b> 张完整设计方案</span><span><b>14 / 14</b> 张原画已收录</span><span><b>14 / 14</b> 张正式定稿</span></div>
-</section>
-<section class="preview approved-preview" id="king-approved">
-<img src="./final/king-of-cups-v1.webp?v=approved-20261026" fetchpriority="high" alt="圣杯国王 King of Cups 正式定稿高清原画，941乘1672像素">
-<div>
-<div class="tag">USER APPROVED / FINAL ARTWORK 01</div>
-<h2>KING OF CUPS</h2><h3>圣杯国王 · 风暴中的平静</h3>
-<p class="feature-note">圣杯组第一张<strong>正式审核通过</strong>的牌面。风暴海面与冷色天幕围绕王座，人物与手中的金色圣杯成为清晰的视觉焦点。延续既有塔罗牌的古金边框，同时保留适度丰富而不显脏乱的细节。</p>
-<p class="feature-note">按照已确认的画面完整保存，不再擅自重绘。<strong>941 × 1672 无损高清 WebP</strong>，可直接用于展示和后续整套卡牌的美术对齐。</p>
-<div class="feature-actions"><a href="./final/king-of-cups-v1.webp?v=approved-20261026" target="_blank" rel="noopener">打开高清定稿原画 ↗</a><a href="#king-approved" onclick="document.querySelectorAll('.tile')[13]?.click();return false">查看国王牌设计档案 ↓</a></div>
-</div></section>
-
-<section class="art-library" id="approved-art">
-<div class="eyebrow">SUIT OF CUPS / ALL 14 ORIGINAL PAINTINGS</div>
-<h2>圣杯组 · 14张完整原画</h2>
-<p class="small" style="margin-bottom:25px">均为已生成、已上传的真实原画；圣杯五、圣杯六的杯数已校正，骑士与王后已验证可在线访问。点击每张牌可进入主站独立详情。</p>
-<div id="artgrid" class="artgrid"></div>
-</section>
-<section class="gallery"><div class="eyebrow">EDITORIAL & VISUAL PRODUCTION REGISTER</div><h2>14 张制作台账</h2>
-<p class="sub">点击任意一张，展开它的完整故事、美术构图和避免与22张大阿卡纳重复的规则。</p>
-<div class="grid" id="grid"></div><article class="sheet" id="sheet"></article></section>
-</main><footer class="footer">THE FORBIDDEN ARCANA · SUIT OF CUPS · DESIGN REGISTER V1 · 14张原画全部入库 · 14张正式定稿 · 五、六修正版</footer>
-<script>
-fetch('./design-register-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).then(({cards})=>{
- const grid=document.getElementById('grid'),sheet=document.getElementById('sheet'),artgrid=document.getElementById('artgrid');
- const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const detail=(c)=>{const lines=[
- ['传统塔罗含义',c.suitMeaning],['完整画面故事',c.story],['主要场景',c.scene],['构图与视觉中心',c.framing],
- ['色彩与照明',c.light],['花色符号',c.symbol],['洛氏神话来源 / 艺术创作',c.source],
- ['与22张大阿卡纳避重',c.avoid],['当前进度',c.review||'已完成文字与视觉设定，图片尚未生成']
- ];sheet.innerHTML='<div class="sheet-head"><div><div class="eyebrow">'+safe(c.en)+'</div><h3>'+safe(c.zh)+' · '+safe(c.concept)+'</h3></div><button class="close" type="button" id="close">收起 ×</button></div><div class="facts">'+lines.map(([a,b])=>'<div class="fact"><div class="label">'+safe(a)+'</div><p>'+safe(b)+'</p></div>').join('')+'</div>';
- sheet.classList.add('open');document.getElementById('close').onclick=()=>sheet.classList.remove('open');sheet.scrollIntoView({behavior:'smooth',block:'start'});};
- const published=cards.filter(c=>c.approved_art);
- published.forEach(c=>{
-   const link=document.createElement('a');
-   link.className='approved-art-card';
-   link.href='../../index.html#/card/cups/'+c.slug;
-   const im=document.createElement('img');
-   im.loading='lazy';
-   im.alt=c.zh+(c.status==='approved'?'已定稿原画':'待修正原画');
-   im.src=['king','five','knight','queen'].includes(c.slug)?'./final/'+c.slug+'-of-cups-v1.webp?v=cups14-20261026':'./thumbs/'+c.slug+'-of-cups.webp?v=cups14-20261026';
-   const name=document.createElement('div');
-   name.className='approved-name';
-   name.textContent=c.zh+' · '+c.en+(c.status==='approved'?'':' · 待修正');
-   link.append(im,name);
-   artgrid.appendChild(link);
- });
- cards.forEach((c,i)=>{let el=document.createElement('button');el.className='tile'+(c.status==='approved'?' approved':'');el.type='button';el.innerHTML='<div class="number">'+safe(c.no)+'</div><div class="en">'+safe(c.en)+'</div><h3>'+safe(c.zh)+'</h3><div class="concept">'+safe(c.concept)+'</div><span class="status '+(c.status==='approved'?'approved':c.status==='requires-correction'?'sample':c.status==='sample'?'sample':'')+'">'+(c.status==='approved'?'◆ 已审核定稿 · 高清原画':c.status==='requires-correction'?'△ 已收录原画 · 杯数待修正':c.status==='sample'?'● 已有实际视觉样张':'○ 已完成设计 / 待出图')+'</span>';el.onclick=()=>{[...grid.children].forEach(x=>x.classList.remove('active'));el.classList.add('active');detail(c);};grid.append(el);});
-}).catch(e=>{document.getElementById('grid').textContent='读取制作台账失败：'+e.message;});
-</script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="0;url=../../index.html#/library/cups">
+<meta name="theme-color" content="#070b11">
+<title>圣杯组 · 禁忌之书</title>
+<style>:root{color-scheme:dark}body{margin:0;min-height:100vh;display:grid;place-content:center;background:#090e15;color:#e8d7b9;text-align:center;font:17px/1.8 Georgia,serif}a{color:#d6ba83}</style>
+<script>window.location.replace('../../index.html#/library/cups');</script>
+</head><body><main><p>圣杯组现已统一收录于正式牌库。</p><p><a href="../../index.html#/library/cups">进入圣杯组 →</a></p></main></body>
+</html>
