@@ -21,8 +21,10 @@ async function bootstrap() {
   if (import.meta.env.VITE_STATIC_PREVIEW === "true") {
     // Keep local demo intact. Cloud mode overrides only its API while offline AI remains available.
     await import("./preview/mockApi");
-    const { installCloudBridge } = await import("./cloud/bridge");
+    const { installCloudBridge, acceptCloudRedirect } = await import("./cloud/bridge");
     installCloudBridge();
+    // If a magic-link redirected here, save the user-bound session before mounting React.
+    await acceptCloudRedirect().catch(() => undefined);
   }
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
