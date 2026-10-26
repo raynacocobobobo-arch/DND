@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "five",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2221728,
+    "sha256": "25e2605979e5d5801e836f9780f85eaffaa4f8af3ac5568534243fb1968e1a72"
+  },
+  {
+    "slug": "knight",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2330064,
+    "sha256": "e6085723e84e45197fc47b5f0356241bcb8a04332ef50026a32e954bc04f96f9"
+  },
+  {
+    "slug": "queen",
+    "width": 941,
+    "height": 1672,
+    "bytes": 2252662,
+    "sha256": "9079a34bf96b6bbcd27cc672e3e122c56a30863b8fa7a843e9dd0ee179fecf97"
+  }
+]
