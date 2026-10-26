@@ -17,3 +17,12 @@ main{min-height:calc(100dvh - 150px)}footer{border-top:1px solid var(--line);tex
 @media(max-width:800px){.top-inner{min-height:65px;padding:7px 16px}.logo{font-size:15px;letter-spacing:.11em}.logo small{font-size:8px;letter-spacing:.06em}.nav{gap:1px}.nav a{padding:10px 9px;font-size:12px}.page{padding:25px 18px 60px}.home{grid-template-columns:1fr;min-height:0;gap:0;padding-top:12px;text-align:center}.home-visual{order:-1;min-height:min(57svh,560px)}.home-visual img{max-height:min(56svh,540px);max-width:min(83vw,350px)}.home-visual:before{width:64vw;height:64vw}.home-copy{padding:25px 0 45px}.home .title{font-size:clamp(46px,10vw,77px);margin:20px 0}.home .sub{margin:auto}.home .actions{justify-content:center}.home-visual .art-caption{left:5%}.library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.library-card{padding:10px}.library-card img{max-height:310px}.detail-layout{display:block}.detail-art{height:auto;min-height:0;position:static;top:auto;padding:20px 10px;background:radial-gradient(ellipse,#26313c,#0d141c 72%)}.detail-art img{max-height:min(69svh,670px);max-width:min(92%,380px)}.detail-copy{padding:28px 24px 38px}.detail-copy h1{font-size:43px}.draw-layout{grid-template-columns:1fr}.draw-controls{position:static}.draw-head .title{margin-top:14px}.reading-result{min-height:430px}}
 @media(max-width:500px){.library-card .card-title{font-size:18px}.library-card .caption{font-size:11px;min-height:39px}.library-card .roman{font-size:10px}.lib-heading{flex-direction:column;align-items:start}.library-count{padding-bottom:0}.draw-result-list{gap:7px}.draw-result-list:not(.single) .drawn-card img{max-height:270px}.drawn-card h3{font-size:14px}.drawn-card p{font-size:11px}.draw-result-list.single{max-width:330px}.reading-result{padding:22px 13px}.detail-copy .chapter p{font-size:14px}.chapter.story p{font-size:16px}.page-number{min-width:65px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.page{animation:none}.home-visual img,.library-card,.btn{transition:none}}
+
+/* Five-section navigation after introducing the Wands suit. */
+@media(max-width:600px){
+ .top-inner{display:flex;flex-direction:column;align-items:stretch;gap:2px;min-height:0;padding:9px 12px 5px}
+ .logo{display:block;text-align:center;font-size:16px;letter-spacing:.10em}
+ .logo small{font-size:8px;margin-top:2px}
+ .nav{width:100%;display:flex;justify-content:center;gap:0;flex-wrap:nowrap}
+ .nav a{flex:1;text-align:center;white-space:nowrap;padding:8px 3px;font-size:12px}
+}
