@@ -1,5 +1,7 @@
 import { HeraldicIcon } from "./HeraldicIcon";
 import { MedievalCrest } from "./MedievalCrest";
+import { CloudSettings } from "../cloud/CloudSettings";
+import { isCloudMode } from "../cloud/config";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
@@ -14,6 +16,7 @@ const links = [
 export function AppShell() {
   const { logout } = useAuth();
   const { pathname } = useLocation();
+  const cloudMode = isCloudMode();
   return (
     <div className="app-shell" style={{
       "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
@@ -21,7 +24,7 @@ export function AppShell() {
     } as React.CSSProperties}>
       {import.meta.env.VITE_STATIC_PREVIEW === "true" ? (
         <aside className="preview-banner" role="status">
-          <FleurDeLis size={14}/> 演示模式 · 任务仅保存在本浏览器
+          <FleurDeLis size={14}/> {cloudMode ? "云端同步模式 · 使用 Supabase 保存数据" : "演示模式 · 任务仅保存在本浏览器"}
         </aside>
       ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
@@ -56,6 +59,7 @@ export function AppShell() {
         <main className="app-content" id="main-content" tabIndex={-1}>
           <div className="app-utility-row">
             <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>
+            <CloudSettings/>
             <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
               onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
           </div>
