@@ -36,7 +36,7 @@ export function ContextDetailPage() {
   return (
     <section className="page-stack context-detail-page">
       <header className="ios-page-header context-detail-header">
-        <Link className="back-link" to="/contexts"><HeraldicIcon name="scroll" size={21} />清单</Link>
+        <Link className="back-link" to={context.listId ? `/lists/${context.listId}` : "/"}><HeraldicIcon name="scroll" size={21} />场景</Link>
         <div><h1>{context.name}</h1><p>{context.incompleteCount} 件未完成</p></div>
         <button type="button" className="icon-button" aria-label="复制待办" onClick={() => void copyList()}><HeraldicIcon name="copy" size={22} /></button>
       </header>
