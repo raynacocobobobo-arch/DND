@@ -15,12 +15,14 @@ export function ContextForm({
   context,
   pending,
   onSubmit,
-  onCancel
+  onCancel,
+  entityLabel = "清单"
 }: {
   context?: ContextRecord;
   pending?: boolean;
   onSubmit(input: { name: string; icon: string; color: string }): void;
   onCancel(): void;
+  entityLabel?: string;
 }) {
   const [name, setName] = useState(context?.name ?? "");
   const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? "folder"));
@@ -34,10 +36,10 @@ export function ContextForm({
   return (
     <div className="dialog-backdrop" role="presentation">
       <section className="form-dialog" role="dialog" aria-modal="true" aria-labelledby="context-form-title">
-        <div className="dialog-heading"><h2 id="context-form-title">{context ? "编辑清单" : "新建清单"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
+        <div className="dialog-heading"><h2 id="context-form-title">{context ? `编辑${entityLabel}` : `新建${entityLabel}`}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
         <form className="stacked-form" onSubmit={submit}>
-          <label>清单名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
-          <div className="context-crest-field"><div className="context-crest-label" id="crest-picker-label">选择清单纹章</div>
+          <label>{entityLabel}名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
+          <div className="context-crest-field"><div className="context-crest-label" id="crest-picker-label">选择{entityLabel}纹章</div>
   <div className="heraldic-icon-picker" role="group" aria-labelledby="crest-picker-label">
     {icons.map(({value,label}) => <button type="button" className="heraldic-icon-choice"
       key={value} aria-label={label} aria-pressed={icon===value} onClick={() => setIcon(canonicalCrestName(value))}>
@@ -46,7 +48,7 @@ export function ContextForm({
   </div>
 </div>
           <fieldset><legend>颜色</legend><div className="color-options">{colors.map((value) => <label key={value} style={{ backgroundColor: value }}><input type="radio" name="context-color" value={value} checked={color === value} onChange={() => setColor(value)} /><span className="sr-only">{value}</span></label>)}</div></fieldset>
-          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : "创建清单"}</button></div>
+          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : `创建${entityLabel}`}</button></div>
         </form>
       </section>
     </div>
