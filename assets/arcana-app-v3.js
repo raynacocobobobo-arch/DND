@@ -3,28 +3,18 @@
    Hash routes work with GitHub Pages direct refresh without 404. */
 (()=>{
   'use strict';
-  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH;
+  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED;
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  const CUP_KING={
-    zh:'圣杯国王',en:'KING OF CUPS',title:'风暴中的平静',
-    img:'./minor-arcana/cups/final/king-of-cups-v1.webp?v=approved-20261026',
-    story:'在风暴撕扯海岸的傍晚，一位久经风浪的海上领袖端坐于临海的石座。他手中的圣杯平稳，身下的潮水却从未安静。远处的灯塔仍在闪烁，驶向港口的船只需要一个清醒的决定。他没有试图命令大海平息，只是先确认尚未归来的船员，再准备发出下一道指令。成熟的情感力量并不抹去恐惧，而是在恐惧存在时仍保有责任和体恤。',
-    visual:'人物坐姿占据主要画面，金冠与圣杯共同形成视觉中心；冷蓝色长袍、乌云和海浪塑造持续冲击，杯口和眼神则保持稳定。远景建筑只交代环境，不让神祇或城市规模抢走人物的情感主题。',
-    upright:'正位强调情绪成熟、在压力中保持自我调节、认真倾听他人的需求，以及在承担责任时保有温度。可以做出艰难决定，但不必用冷漠证明权威。它也提醒你成为一个能够容纳复杂感受的人。',
-    reversed:'逆位警惕情绪压抑、表面镇定之下的失控，或以善解人意为名回避边界。另一种表现是利用别人的依赖获得控制权。你需要区分真正的稳定与不肯承认自身需要。',
-    canon:'这张牌采用洛夫克拉夫特式海港、海雾和异质文明纹样，但国王与这段故事属于本系列原创角色。它没有将克苏鲁或其他外神直接描绘为人类国王，也不是任何一篇小说的原文插图。',
-    question:'面对别人的情绪与自己的压力，你能否同时保持同理心和清晰的界限？'
-  };
-  if(!Array.isArray(C)||!Array.isArray(D)||C.length!==22||D.length!==22||!root) {
+  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==11||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
   const escapeText=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
   const clean=s=>escapeText(s);
   const urlCard=id=>`#/card/${id}`;
-  let drawResult=null, currentSpread=1, isDaily=false, currentQuestion='';
+  let drawResult=null, currentSpread=1, isDaily=false, currentQuestion='', drawPool='all';
   let lastView='';
   const docTitle='禁忌之书 · 克苏鲁塔罗';
   const navs=[...document.querySelectorAll('[data-route-nav]')];
@@ -36,9 +26,9 @@
     if(!parts.length) return {screen:'home'};
     if(parts[0]==='home')return {screen:'home'};
     if(parts[0]==='draw')return {screen:'draw'};
-    if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups'};
+    if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups',page:parts[2]==='2'?2:1};
     if(parts[0]==='cups')return {screen:'cups'};
-    if(parts[0]==='card'&&parts[1]==='cups'&&parts[2]==='king')return {screen:'cups-king'};
+    if(parts[0]==='card'&&parts[1]==='cups'&&CU.some(c=>c.slug===parts[2]))return {screen:'cups-card',slug:parts[2]};
     if(parts[0]==='library') {
       const p=Number(parts[1]||1);
       return {screen:'library',page:Number.isInteger(p)?Math.max(1,Math.min(4,p)):1};
@@ -51,7 +41,7 @@
   }
   function updateNav(screen){
     navs.forEach(a=>{
-      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-king'?'cups':screen);
+      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-card'?'cups':screen);
       a.classList.toggle('active',active);
       if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
@@ -69,7 +59,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 1 张小阿卡纳已定稿</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 11 张圣杯已定稿</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -128,56 +118,61 @@
        </div>
      </section>`;
   }
-  function cupsLibrary(){
+  function cupsLibrary(page=1){
+    const start=(page-1)*6, items=CU.slice(start,start+6);
     return `<section class="page library cups-library">
-      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">大阿卡纳牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
       <div class="lib-heading"><div>
-        ${banner('MINOR ARCANA / CUPS','圣杯组 · 已定稿牌面','这一组共14张，目前仅《圣杯国王》通过审核。这里只展示正式定稿，不用未批准的草图冒充成品。')}
-      </div><div class="library-count">已定稿 1 / 14 张</div></div>
+      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','已按你确认的《圣杯国王》美术标准入库。每张牌都有独立原画、故事、图像解析及正逆位解读；未通过审核的牌不会混入正式牌库。')}
+      </div><div class="library-count">正式定稿 11 / 14 · 第 ${page} / 2 页</div></div>
       <div class="library-panel"><div class="library-grid cups-approved-grid">
-         <a href="#/card/cups/king" class="library-card cups-approved-card" aria-label="打开圣杯国王正式高清卡牌和完整解读">
-           <img src="${CUP_KING.img}" fetchpriority="high" alt="圣杯国王正式定稿高清原画">
-           <div class="roman">K / KING OF CUPS · 已定稿</div>
-           <h2 class="card-title">圣杯国王</h2>
-           <div class="caption">风暴中的平静</div>
-         </a>
+        ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card cups-approved-card" aria-label="打开${clean(c.zh)}已定稿原画和完整解读">
+          <img src="${c.thumb}" loading="lazy" alt="${clean(c.zh)}高清塔罗原画">
+          <div class="roman">CUPS / ${clean(c.en)} · 已定稿</div>
+          <h2 class="card-title">${clean(c.zh)}</h2><div class="caption">${clean(c.title)}</div>
+        </a>`).join('')}
       </div></div>
-      <p class="lead" style="margin-top:30px">其余13张保留制作状态，不进入正式牌库。已定稿原画可点击打开独立牌面详情，或单独查看原始高清文件。</p>
-      <div class="actions">
-        <a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯组设计台账 →</a>
-        <a class="btn outline mini" href="#/library/1">返回22张大阿卡纳 →</a>
+      <div class="paginator">
+       ${page>1?'<a class="btn outline mini" href="#/library/cups/1">← 上一页</a>':'<button class="btn outline mini" disabled>← 上一页</button>'}
+       <span class="page-number">${page} / 2</span>
+       ${page===1?'<a class="btn outline mini" href="#/library/cups/2">下一页 →</a>':'<button class="btn outline mini" disabled>下一页 →</button>'}
       </div>
+      <p class="lead">尚未定稿的三张：圣杯五、圣杯骑士、圣杯王后。其余11张已正式纳入网站；在「抽牌」页可选择全部已入库的33张，或仅使用原有22张大阿卡纳。</p>
+      <div class="actions"><a class="btn outline mini" href="#/draw">用已入库牌面抽牌 →</a><a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯制作台账 →</a></div>
     </section>`;
   }
-  function cupsDetail(){
-    const d=CUP_KING;
+  function cupsDetail(slug){
+    const index=CU.findIndex(c=>c.slug===slug);
+    if(index<0) return '<section class="page notfound"><h1>未找到该牌</h1></section>';
+    const d=CU[index],prev=CU[(index+CU.length-1)%CU.length],next=CU[(index+1)%CU.length];
     return `<section class="page detail">
-       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups">小阿卡纳 · 圣杯组</a><span>/</span>圣杯国王</div>
-       <div class="detail-layout">
-         <div class="detail-art">
-           <img src="${d.img}" fetchpriority="high" alt="用户确认定稿的圣杯国王高清原画，941 × 1672">
-           <a class="zoom" href="${d.img}" target="_blank" rel="noopener">单独查看高清原画 · 941 × 1672 ↗</a>
-         </div>
-         <article class="detail-copy">
-           <div class="eyebrow">MINOR ARCANA / CUPS / KING · 已定稿</div>
-           <h1>${d.zh}</h1><div class="subtitle">${d.title} · ${d.en}</div>
-           <div class="character">以已确认的美术原画为准 · 不修改构图或细节</div>
-           ${section('01 / ORIGINAL STORY','牌面的故事',d.story,'story')}
-           ${section('02 / VISUAL STORYTELLING','画面在讲什么',d.visual)}
-           ${section('03 / UPRIGHT','正位 · 启示',d.upright)}
-           ${section('04 / REVERSED','逆位 · 阴影',d.reversed)}
-           ${section('05 / THE MYTHOS','原著背景与艺术改编',d.canon)}
-           <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${d.question}</p></section>
-           <div class="detail-arrows"><a class="btn outline mini" href="#/library/cups">← 返回圣杯组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
-         </article>
-       </div>
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups/${index<6?1:2}">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
+      <div class="detail-layout">
+        <div class="detail-art">
+          <img src="${d.img}" fetchpriority="high" alt="${clean(d.zh)}941 × 1672已确认高清原画">
+          <a class="zoom" target="_blank" rel="noopener" href="${d.img}">打开 941 × 1672 高清原画 ↗</a>
+        </div>
+        <article class="detail-copy">
+          <div class="eyebrow">MINOR ARCANA / SUIT OF CUPS · 正式定稿</div>
+          <h1>${clean(d.zh)}</h1><div class="subtitle">${clean(d.title)} · ${clean(d.en)}</div>
+          <div class="character">传统牌义 / ${clean(d.suitMeaning)}</div>
+          ${section('01 / ORIGINAL NARRATIVE','牌面的故事',d.story,'story')}
+          ${section('02 / VISUAL LANGUAGE','画面在讲什么',d.visual)}
+          ${section('03 / UPRIGHT','正位 · 启示',d.up)}
+          ${section('04 / REVERSED','逆位 · 阴影',d.rev)}
+          ${section('05 / LITERARY ROOTS','原著背景与艺术改编',d.canon)}
+          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(d.question)}</p></section>
+          <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">卡面故事属于艺术化创作，不等同于洛夫克拉夫特原著情节。塔罗解读提供思考角度，不作为确定性预测。</p></section>
+          <div class="detail-arrows"><a class="btn outline mini" href="${urlCard(prev.id)}">← ${clean(prev.zh)}</a><a class="btn outline mini" href="${urlCard(next.id)}">${clean(next.zh)} →</a></div>
+        </article>
+      </div>
     </section>`;
   }
   function seed32(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;}
   function pickCards(n,daily){
     let random=Math.random;
     if(daily){let s=seed32(new Date().toLocaleDateString('en-CA'));random=()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296;};}
-    const pool=C.slice(),out=[];
+    const pool=(drawPool==='major'?C:C.concat(CU)).slice(),out=[];
     for(let i=0;i<n;i++){const j=Math.floor(random()*pool.length);out.push({c:pool.splice(j,1)[0],rev:random()<.3});}
     return out;
   }
@@ -189,6 +184,11 @@
       <div class="draw-layout"><aside class="draw-controls">
          <div class="eyebrow">CHOOSE YOUR SPREAD</div><h2>选择仪式</h2>
          <div class="spread-select">${modeOptions.map(o=>`<button type="button" data-n="${o.n}" data-daily="${o.d?1:0}" class="${currentSpread===o.n&&isDaily===o.d?'active':''}">${o.title}<small style="display:block;margin-top:5px;opacity:.7">${o.desc}</small></button>`).join('')}</div>
+         <label>抽取范围</label>
+         <div class="spread-select pool-select" role="group" aria-label="抽牌范围">
+           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已入库 · 33张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 已定稿11张圣杯</small></button>
+           <button type="button" data-pool="major" class="${drawPool==='major'?'active':''}">仅大阿卡纳 · 22张</button>
+         </div>
          <label for="question">此刻的问题（可选）</label>
          <input id="question" placeholder="写下你想要思考的问题" maxlength="200" value="${clean(currentQuestion)}">
          <button type="button" class="btn" id="go-draw">揭示命运 ↗</button>
@@ -212,14 +212,14 @@
         ${question?'<p class="reading-section query">'+clean(question)+'</p>':''}
         ${cards.map(({c,rev},i)=>`<section class="reading-section">
           <div class="label">POSITION ${i+1} / ${rev?'REVERSED':'UPRIGHT'}</div>
-          <h2>${clean(c.zh)} · ${clean(D[c.id].title)}</h2>
+          <h2>${clean(c.zh)} · ${clean((c.minor?c.title:D[c.id].title))}</h2>
           <p>${n===3?[
           '回看过去：这张牌提示你理解已经形成的经历与模式。',
           '观察现在：这张牌将注意力放在你此刻可以作出的选择。',
           '展望未来：这张牌提示一种值得注意的可能趋势，而非必然预言。'][i]:'请把这幅画看作一面象征性的镜子，重新理解你眼前的问题。'}</p>
-          <p><strong>牌面故事：</strong>${clean(D[c.id].scene)}</p>
-          <p><strong>${rev?'逆位':'正位'}解读：</strong>${clean(rev?D[c.id].rev:D[c.id].up)}</p>
-          <p class="query"><strong>可进一步思考：</strong>${clean(D[c.id].q)}</p>
+          <p><strong>牌面故事：</strong>${clean((c.minor?c.story:D[c.id].scene))}</p>
+          <p><strong>${rev?'逆位':'正位'}解读：</strong>${clean(rev?(c.minor?c.rev:D[c.id].rev):(c.minor?c.up:D[c.id].up))}</p>
+          <p class="query"><strong>可进一步思考：</strong>${clean((c.minor?c.question:D[c.id].q))}</p>
           <a class="btn outline mini" href="${urlCard(c.id)}">阅读「${clean(c.zh)}」完整档案 →</a>
         </section>`).join('')}
       </div><p class="reading-disclaimer">塔罗是一种承载图像、文学与心理联想的自我反思媒介。请依据真实情况、可核实的信息与自己的判断作决定。</p>`;
@@ -230,6 +230,12 @@
         currentSpread=Number(button.dataset.n);
         isDaily=button.dataset.daily==='1';
         document.querySelectorAll('.spread-select button').forEach(x=>x.classList.toggle('active',x===button));
+      };
+    });
+    document.querySelectorAll('.pool-select button').forEach(button=>{
+      button.onclick=()=>{
+        drawPool=button.dataset.pool;
+        document.querySelectorAll('.pool-select button').forEach(x=>x.classList.toggle('active',x===button));
       };
     });
     const input=document.getElementById('question');
@@ -250,8 +256,8 @@
     else if(key==='library'){root.innerHTML=library(route.page);document.title='二十二张牌库 · '+docTitle;}
     else if(key==='card'){root.innerHTML=detail(route.id);document.title=C[route.id].zh+' · '+docTitle;}
     else if(key==='draw'){root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
-    else if(key==='cups'){root.innerHTML=cupsLibrary();document.title='圣杯组 · 小阿卡纳 · '+docTitle;}
-    else if(key==='cups-king'){root.innerHTML=cupsDetail();document.title='圣杯国王 · '+docTitle;}
+    else if(key==='cups'){root.innerHTML=cupsLibrary(route.page);document.title='圣杯组 · 小阿卡纳 · '+docTitle;}
+    else if(key==='cups-card'){root.innerHTML=cupsDetail(route.slug);document.title=CU.find(c=>c.slug===route.slug)?.zh+' · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
