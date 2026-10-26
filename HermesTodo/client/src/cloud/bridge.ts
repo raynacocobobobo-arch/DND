@@ -3,7 +3,7 @@
  * Maps the existing HermesTodo JSON API onto PostgREST and Supabase Auth.
  * All database access is scoped by Supabase RLS; no privileged key is used.
  */
-import { readCloudConfig, type CloudConfig } from "./config";
+import { DEMO_DATA_KEY, readCloudConfig, type CloudConfig } from "./config";
 
 type JsonObject = Record<string, unknown>;
 type Session = {
@@ -183,6 +183,117 @@ function requestBody(init?: RequestInit): JsonObject {
 async function allTasks(config: CloudConfig): Promise<DbTask[]> {
   return rest<DbTask[]>(config, "hermes_tasks?select=*&order=created_at.desc");
 }
+
+const LEGACY_MIGRATION_PREFIX = "hermestodo-legacy-cloud-migrated-v1:";
+const demoContextNames = new Set(["工作项目","个人生活","创作灵感"]);
+const demoTaskTitles = new Set([
+  "记下一个临时想法","买咖啡豆","检查 HermesTodo 新版交互",
+  "整理下一阶段产品需求","记录一个新创作想法","处理前几天未完成的任务"
+]);
+
+async function migrateLegacyLocalData(config: CloudConfig): Promise<void> {
+  const session = await accessToken(config);
+  const migrationKey = LEGACY_MIGRATION_PREFIX + session.user_id;
+  if (localStorage.getItem(migrationKey) === "1") return;
+
+  let legacy: { contexts?: JsonObject[]; tasks?: JsonObject[] } | null = null;
+  try {
+    const raw = localStorage.getItem(DEMO_DATA_KEY);
+    if (raw) legacy = JSON.parse(raw) as { contexts?: JsonObject[]; tasks?: JsonObject[] };
+  } catch {}
+  if (!legacy || !Array.isArray(legacy.contexts) || !Array.isArray(legacy.tasks)) {
+    localStorage.setItem(migrationKey, "1");
+    return;
+  }
+
+  const legacyContexts = legacy.contexts.filter((item) => {
+    const name = String(item.name ?? "").trim();
+    const id = String(item.id ?? "");
+    return name && !(["work","life","creative"].includes(id) && demoContextNames.has(name));
+  });
+  const legacyTasks = legacy.tasks.filter((item) => {
+    const title = String(item.title ?? "").trim();
+    return title && !demoTaskTitles.has(title);
+  });
+  if (!legacyContexts.length && !legacyTasks.length) {
+    localStorage.setItem(migrationKey, "1");
+    return;
+  }
+
+  const cloudContexts = await rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc");
+  const cloudTasks = await allTasks(config);
+  const contextByName = new Map(cloudContexts.map((item) => [item.name.trim(), item]));
+  const contextIdMap = new Map<string,string>();
+
+  for (const old of legacyContexts) {
+    const oldId = String(old.id ?? "");
+    const name = String(old.name ?? "").trim().slice(0,40);
+    if (!oldId || !name) continue;
+    let target = contextByName.get(name);
+    if (!target) {
+      const created = await createContext(config, {
+        name,
+        icon: String(old.icon ?? "folder").slice(0,40),
+        color: /^#[0-9a-fA-F]{6}$/.test(String(old.color ?? "")) ? old.color : "#8CAABA"
+      });
+      target = {
+        id: String(created.id), name, icon: String(created.icon), color: String(created.color),
+        sort_order: Number(created.sortOrder ?? contextByName.size),
+        created_at: String(created.createdAt), updated_at: String(created.updatedAt)
+      };
+      contextByName.set(name,target);
+    }
+    contextIdMap.set(oldId,target.id);
+  }
+
+  // Also map unchanged demo context IDs when a user task was filed into one of them.
+  for (const old of legacy.contexts) {
+    const oldId=String(old.id ?? "");
+    if (contextIdMap.has(oldId)) continue;
+    const name=String(old.name ?? "").trim();
+    const target=contextByName.get(name);
+    if (target) contextIdMap.set(oldId,target.id);
+  }
+
+  const existingKeys = new Set(cloudTasks.map((task) => `${task.context_id ?? ""}\u0000${task.title.trim()}`));
+  const taskIdMap = new Map<string,string>();
+  const roots = legacyTasks.filter((item) => !item.parentTaskId);
+  const children = legacyTasks.filter((item) => item.parentTaskId);
+
+  async function migrateTask(old: JsonObject, parentTaskId: string | null) {
+    const title = String(old.title ?? "").trim().slice(0,200);
+    if (!title) return;
+    const contextId = parentTaskId ? null : (old.contextId ? contextIdMap.get(String(old.contextId)) ?? null : null);
+    const dedupe = `${contextId ?? ""}\u0000${title}`;
+    if (existingKeys.has(dedupe) && !parentTaskId) return;
+    const created = await createTask(config, {
+      title,
+      notes: String(old.notes ?? "").slice(0,4000),
+      priority: old.priority === "high" || old.priority === "low" ? old.priority : "medium",
+      dueAt: typeof old.dueAt === "string" ? old.dueAt : null,
+      contextId,
+      parentTaskId,
+      repeatInterval: ["none","daily","weekly","monthly","yearly","custom"].includes(String(old.repeatInterval)) ? old.repeatInterval : "none",
+      repeatRule: String(old.repeatRule ?? "").slice(0,100)
+    });
+    taskIdMap.set(String(old.id ?? ""), String(created.id));
+    existingKeys.add(dedupe);
+    if (old.isCompleted) {
+      await rest<DbTask[]>(config, "hermes_tasks?id=eq." + encodeURIComponent(String(created.id)), {
+        method:"PATCH",
+        body:JSON.stringify({is_completed:true, completed_at: typeof old.completedAt === "string" ? old.completedAt : new Date().toISOString()})
+      });
+    }
+  }
+
+  for (const old of roots) await migrateTask(old,null);
+  for (const old of children) {
+    const parent = taskIdMap.get(String(old.parentTaskId ?? ""));
+    if (parent) await migrateTask(old,parent);
+  }
+
+  localStorage.setItem(migrationKey, "1");
+}
 async function tasksForDisplay(config: CloudConfig, search: URLSearchParams): Promise<JsonObject[]> {
   const all = await allTasks(config);
   let tasks = all.filter(t => !t.parent_task_id);
@@ -276,6 +387,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
       headers: { apikey: config.publishableKey, Authorization: "Bearer " + token.access_token }
     });
     if (!response.ok) throw new Error("登录状态无效，请重新登录");
+    await migrateLegacyLocalData(config);
     return jsonResponse({ authenticated: true });
   }
   if (endpoint === "/api/auth/login" && method === "POST") {
