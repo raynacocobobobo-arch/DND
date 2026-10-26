@@ -1,9 +1,12 @@
-/** Approved hand-painted medieval coats of arms.
- * Existing list crests stay on the original 8-frame AVIF sprite.
- * Action controls use the newer painted shield assets generated for HermesTodo.
+/** Approved medieval coats of arms.
+ * List crests stay on the original 8-frame AVIF sprite.
+ * Functional actions use the approved 8-frame fantasy relief sprite.
  */
 const crests = ["lion","fleur","compass","tree","book","swords","crown","scroll"] as const;
 type Crest = typeof crests[number];
+
+const actionCrests = ["inbox","add","edit","copy","delete","import","reset","send"] as const;
+type ActionCrest = typeof actionCrests[number];
 
 const aliases: Record<string,Crest> = {
   lion:"lion",fleur:"fleur",compass:"compass",tree:"tree",book:"book",swords:"swords",crown:"crown",scroll:"scroll",
@@ -14,7 +17,7 @@ const aliases: Record<string,Crest> = {
   gamepad:"swords","gamepad-2":"swords"
 };
 
-const actionAliases: Record<string,string> = {
+const actionAliases: Record<string,ActionCrest> = {
   inbox:"inbox",
   add:"add",plus:"add",
   edit:"edit",quill:"edit",feather:"edit",
@@ -34,6 +37,7 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
 }) {
   const action = actionAliases[name];
   if (action) {
+    const index = actionCrests.indexOf(action);
     return <span
       className={`medieval-crest medieval-action-crest ${className}`}
       data-crest={action}
@@ -44,10 +48,10 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
         flexShrink: 0,
         width: size,
         height: size,
-        backgroundImage: `url("${import.meta.env.BASE_URL}art/crest-${action}.webp")`,
+        backgroundImage: `url("${import.meta.env.BASE_URL}art/action-crests.avif")`,
         backgroundRepeat: "no-repeat",
-        backgroundSize: "contain",
-        backgroundPosition: "center"
+        backgroundSize: `${size * actionCrests.length}px ${size}px`,
+        backgroundPosition: `-${index * size}px 0`
       }}
     />;
   }
@@ -62,8 +66,7 @@ export function MedievalCrest({ name, size = 44, className = "" }: {
       display: "inline-block",
       verticalAlign: "middle",
       flexShrink: 0,
-      width: size,
-      height: size,
+      width: size, height: size,
       backgroundImage: `url("${import.meta.env.BASE_URL}art/medieval-crests.avif")`,
       backgroundRepeat: "no-repeat",
       backgroundSize: `${size * crests.length}px ${size}px`,
