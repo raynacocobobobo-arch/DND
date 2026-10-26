@@ -24,12 +24,12 @@
 .v7-capture-caption>span{font:14px Georgia,serif;color:#9a5b46;border-right:1px solid #cbb18b;padding-right:12px}
 .v7-capture-caption small{margin-left:auto;font:10px Georgia,serif;letter-spacing:.14em;color:#9d8870}
 .v7-capture-row{display:flex;align-items:center;gap:10px}
-.v7-capture-row .quick-add{flex:1 1 auto;min-width:0;max-width:none!important;width:auto!important;margin:0!important;background:#fffaf0!important;border:1px solid #c8b391!important;border-radius:3px!important;min-height:53px!important}
+.v7-capture-row .quick-add{position:relative!important;inset:auto!important;left:auto!important;bottom:auto!important;transform:none!important;z-index:1;flex:1 1 auto;min-width:0;max-width:none!important;width:auto!important;margin:0!important;background:#fffaf0!important;border:1px solid #c8b391!important;border-radius:3px!important;min-height:53px!important;box-shadow:inset 0 0 0 1px #fffaf0,0 5px 14px #34261910!important;backdrop-filter:none!important}
 .v7-capture-row .quick-add input{font-size:15px!important;color:#2b3336!important}
 .v7-capture-row .quick-add input::placeholder{color:#8d8071!important}
 .v7-capture-row .quick-add button{border-radius:2px!important;background:#8e4137!important;color:#fff2db!important}
-.v7-details-button{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:53px;padding:0 14px;background:#182d38;color:#f1dfbf;border:1px solid #c1a174;cursor:pointer;font-size:12px}
-.v7-details-button:hover{background:#294452}
+.v7-details-button{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:53px;padding:0 14px;background:#182d38;color:#f1dfbf;border:1px solid #c1a174;cursor:pointer;font-size:12px;box-shadow:inset 0 0 0 2px #0f222c;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.v7-details-button:hover{background:#294452;border-color:#dfbd84;transform:translateY(-1px)}
 .editorial-dashboard .dashboard-layout.v7-desk{grid-template-columns:minmax(0,1fr) minmax(215px,28%);gap:17px}
 .editorial-dashboard .v7-ledger{border:1px solid #c6ab83!important;border-radius:2px!important;background:linear-gradient(90deg,#e8dbc53d 0,#f6eedf 20px,#f6eedf 100%)!important;box-shadow:0 12px 28px #07101b36!important;padding:25px 24px!important}
 .editorial-dashboard .v7-ledger .board-heading{padding-bottom:19px;border-bottom:1px solid #cbb48e!important}
