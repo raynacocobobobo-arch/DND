@@ -195,11 +195,17 @@ async function allLists(config: CloudConfig): Promise<DbList[]> {
 }
 function toList(list: DbList, contexts: DbContext[], tasks: DbTask[]) {
   const sceneIds = new Set(contexts.filter(c => c.list_id === list.id).map(c => c.id));
+  const rootIds = new Set(tasks.filter(t => t.context_id && sceneIds.has(t.context_id)).map(t => t.id));
+  const listTasks = tasks.filter(t =>
+    (t.context_id && sceneIds.has(t.context_id)) ||
+    (t.parent_task_id && rootIds.has(t.parent_task_id))
+  );
   return {
     id: list.id, name: list.name, icon: list.icon, color: list.color, sortOrder: list.sort_order,
     createdAt: list.created_at, updatedAt: list.updated_at,
     sceneCount: sceneIds.size,
-    incompleteCount: tasks.filter(t => t.context_id && sceneIds.has(t.context_id) && !t.is_completed).length
+    taskCount: listTasks.length,
+    incompleteCount: listTasks.filter(t => !t.is_completed).length
   };
 }
 async function createList(config: CloudConfig, value: JsonObject): Promise<JsonObject> {
@@ -559,19 +565,24 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     ]);
     const sceneIds = new Set(contexts.map(item => item.id));
     const rootIds = new Set(tasks.filter(task => task.context_id && sceneIds.has(task.context_id)).map(task => task.id));
-    const ids = tasks
-      .filter(task => !task.is_completed && (
-        (task.context_id && sceneIds.has(task.context_id)) ||
-        (task.parent_task_id && rootIds.has(task.parent_task_id))
-      ))
-      .map(task => task.id);
+    const listTasks = tasks.filter(task =>
+      (task.context_id && sceneIds.has(task.context_id)) ||
+      (task.parent_task_id && rootIds.has(task.parent_task_id))
+    );
+    if (!listTasks.length) return jsonResponse({ updatedCount: 0, completed: false });
+
+    const completed = listTasks.some(task => !task.is_completed);
+    const ids = listTasks.filter(task => task.is_completed !== completed).map(task => task.id);
     if (ids.length) {
       await rest<DbTask[]>(config, "hermes_tasks?id=in.(" + ids.join(",") + ")", {
         method: "PATCH",
-        body: JSON.stringify({ is_completed: true, completed_at: new Date().toISOString() })
+        body: JSON.stringify({
+          is_completed: completed,
+          completed_at: completed ? new Date().toISOString() : null
+        })
       });
     }
-    return jsonResponse({ updatedCount: ids.length });
+    return jsonResponse({ updatedCount: ids.length, completed });
   }
   const lm = /^\/api\/lists\/([^/]+)$/.exec(endpoint);
   if (lm) {
