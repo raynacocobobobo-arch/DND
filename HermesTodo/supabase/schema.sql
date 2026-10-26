@@ -34,7 +34,7 @@ create table if not exists public.hermes_tasks (
   constraint hermes_tasks_context_same_owner
     foreign key (user_id, context_id) references public.hermes_contexts(user_id, id) on delete set null (context_id),
   constraint hermes_tasks_parent_same_owner
-    foreign key (user_id, parent_task_id) references public.hermes_tasks(user_id, id) on delete cascade (parent_task_id),
+    foreign key (user_id, parent_task_id) references public.hermes_tasks(user_id, id) on delete cascade,
   constraint hermes_tasks_no_self_parent check (id is distinct from parent_task_id)
 );
 
