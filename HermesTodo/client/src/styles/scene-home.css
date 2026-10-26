@@ -299,16 +299,38 @@
 /* Top-level list hierarchy */
 .list-card{position:relative}
 .list-card-dragging{opacity:.56;transform:scale(.985)!important;border-color:#8c623d!important}
-.list-card-actions{align-items:center}
-.list-drag-handle{
-  display:grid;place-items:center;width:35px;height:35px;padding:0;
-  border:1px solid #cbb18a;background:#f5e9d6;color:#7d6248;
-  cursor:grab;
+.list-card .context-card-link{padding-bottom:14px}
+.scene-home .list-card-actions{
+  position:static;
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:0 18px 16px;
 }
-.list-drag-handle:active{cursor:grabbing}.list-drag-handle .heraldic-sigil{display:block}
+.scene-home .list-card-actions .list-text-action{
+  width:auto;
+  height:31px;
+  min-width:0;
+  padding:0 10px;
+  border:1px solid #c7aa7f;
+  border-radius:2px;
+  background:#f7ecda;
+  color:#5d4d3d;
+  font:600 12px/1 "PingFang SC","Noto Sans CJK SC",sans-serif;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+.scene-home .list-card-actions .list-text-action:hover{background:#ead9bd;border-color:#9c744d;color:#3f342a}
+.scene-home .list-card-actions .list-text-action:disabled{opacity:.42;cursor:default;background:#eee5d8}
+.scene-home .list-card-actions .list-delete-action{color:#8a3d35;border-color:#c6a08d}
+.scene-home .list-card-actions .list-complete-action{color:#496348;border-color:#a9b59b}
+.scene-home .list-card-actions .list-drag-handle{cursor:grab}
+.scene-home .list-card-actions .list-drag-handle:active{cursor:grabbing}
 .list-order-help{margin:13px 2px 0;color:#876f56;font-size:11px}
 .list-detail-page .scene-home-hero-copy h1{letter-spacing:.04em}
 @media(max-width:760px){
-  .list-drag-handle{width:32px;height:32px}
+  .scene-home .list-card-actions{padding:0 10px 12px;gap:5px}
+  .scene-home .list-card-actions .list-text-action{height:29px;padding:0 8px;font-size:11px}
   .list-order-help{font-size:10px}
 }
