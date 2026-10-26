@@ -44,7 +44,7 @@ afterEach(() => {
 });
 
 describe("contexts interface", () => {
-  test("uses the iPhone-style bottom input to create and edit a context", async () => {
+  test("uses the list-first homepage input to create and edit a context", async () => {
     window.history.replaceState({}, "", "/contexts");
     const contexts = [{ ...travel }];
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
@@ -67,26 +67,26 @@ describe("contexts interface", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const list = await screen.findByRole("list", { name: "情境列表" });
+    const list = await screen.findByRole("list", { name: "清单列表" });
     expect(list).toHaveClass("context-grid");
 
-    expect(screen.queryByRole("button", { name: "新建情境" })).not.toBeInTheDocument();
-    const quickName = screen.getByLabelText("快速新建情境");
-    expect(quickName).toHaveAttribute("placeholder", "新建情境...");
+    expect(screen.queryByRole("button", { name: "新建清单" })).not.toBeInTheDocument();
+    const quickName = screen.getByLabelText("快速新建清单");
+    expect(quickName).toHaveAttribute("placeholder", "新建清单，写下一个场景名称…");
 
-    await user.click(screen.getByRole("button", { name: "添加情境" }));
-    expect(await screen.findByRole("dialog", { name: "新建情境" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "添加清单" }));
+    expect(await screen.findByRole("dialog", { name: "新建清单" })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "#8CAABA" })).toBeChecked();
     await user.click(screen.getByRole("button", { name: "取消" }));
 
     await user.type(quickName, "工作");
-    await user.click(screen.getByRole("button", { name: "添加情境" }));
+    await user.click(screen.getByRole("button", { name: "添加清单" }));
     expect(await screen.findByRole("link", { name: /工作/ })).toBeInTheDocument();
     const createCall = fetchMock.mock.calls.find(([path, init]) => path === "/api/contexts" && init?.method === "POST");
     expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作", icon: "folder", color: "#8CAABA" });
 
     await user.click(screen.getByRole("button", { name: "编辑 工作" }));
-    const name = screen.getByLabelText("情境名称");
+    const name = screen.getByLabelText("清单名称");
     await user.clear(name);
     await user.type(name, "客户项目");
     await user.click(screen.getByRole("button", { name: "保存" }));
@@ -111,8 +111,8 @@ describe("contexts interface", () => {
     render(<App />);
 
     await user.click(await screen.findByRole("button", { name: "删除 旅行" }));
-    const dialog = screen.getByRole("alertdialog", { name: "删除情境？" });
-    expect(dialog).toHaveTextContent("任务不会被删除，但会变为无情境");
+    const dialog = screen.getByRole("alertdialog", { name: "删除清单？" });
+    expect(dialog).toHaveTextContent("任务不会被删除，但会变为收集箱");
     await user.click(screen.getByRole("button", { name: "确认删除" }));
     await waitFor(() => expect(screen.queryByRole("link", { name: /旅行/ })).not.toBeInTheDocument());
   });
@@ -146,7 +146,7 @@ describe("contexts interface", () => {
     await user.click(screen.getByRole("button", { name: "复制待办" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith("【旅行】\n○ 确认航班\n● 预订酒店"));
 
-    await user.type(screen.getByLabelText("快速添加情境任务"), "购买转换插头");
+    await user.type(screen.getByLabelText("快速添加清单任务"), "购买转换插头");
     await user.click(screen.getByRole("button", { name: "添加" }));
     await waitFor(() => {
       const post = fetchMock.mock.calls.find(([path, init]) => path === "/api/tasks" && init?.method === "POST");
