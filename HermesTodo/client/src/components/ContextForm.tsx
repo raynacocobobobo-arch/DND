@@ -28,12 +28,12 @@ export function ContextForm({
   return (
     <div className="dialog-backdrop" role="presentation">
       <section className="form-dialog" role="dialog" aria-modal="true" aria-labelledby="context-form-title">
-        <div className="dialog-heading"><h2 id="context-form-title">{context ? "编辑情境" : "新建情境"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
+        <div className="dialog-heading"><h2 id="context-form-title">{context ? "编辑清单" : "新建清单"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
         <form className="stacked-form" onSubmit={submit}>
-          <label>情境名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
+          <label>清单名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
           <label>图标<select value={icon} onChange={(event) => setIcon(event.target.value)}>{icons.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
           <fieldset><legend>颜色</legend><div className="color-options">{colors.map((value) => <label key={value} style={{ backgroundColor: value }}><input type="radio" name="context-color" value={value} checked={color === value} onChange={() => setColor(value)} /><span className="sr-only">{value}</span></label>)}</div></fieldset>
-          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : "创建情境"}</button></div>
+          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : "创建清单"}</button></div>
         </form>
       </section>
     </div>
