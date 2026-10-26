@@ -7,6 +7,8 @@ import { AppShell } from "./components/AppShell";
 import { LoginPage } from "./pages/LoginPage";
 import { HomePage } from "./pages/HomePage";
 import { ContextsPage } from "./pages/ContextsPage";
+import { ListsPage } from "./pages/ListsPage";
+import { ListDetailPage } from "./pages/ListDetailPage";
 import { ContextDetailPage } from "./pages/ContextDetailPage";
 import { AIPage } from "./pages/AIPage";
 
@@ -21,9 +23,10 @@ function AuthenticatedApp() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<ContextsPage />} />
+        <Route index element={<ListsPage />} />
         <Route path="inbox" element={<HomePage />} />
         <Route path="contexts" element={<Navigate to="/" replace />} />
+        <Route path="lists/:id" element={<ListDetailPage />} />
         <Route path="contexts/:id" element={<ContextDetailPage />} />
         <Route path="ai" element={<AIPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
