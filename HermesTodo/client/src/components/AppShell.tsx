@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
 import { isCloudMode } from "../cloud/config";
-import { ConfirmDialog } from "./ConfirmDialog";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 import { HeraldicIcon } from "./HeraldicIcon";
 import { MedievalCrest } from "./MedievalCrest";
@@ -18,20 +16,6 @@ export function AppShell() {
   const { logout } = useAuth();
   const { pathname } = useLocation();
   const cloudMode = isCloudMode();
-  const [accountOpen, setAccountOpen] = useState(false);
-  const [confirmLogout, setConfirmLogout] = useState(false);
-  const [loggingOut, setLoggingOut] = useState(false);
-
-  async function logoutThisDevice() {
-    setLoggingOut(true);
-    try {
-      await logout();
-      setConfirmLogout(false);
-    } finally {
-      setLoggingOut(false);
-    }
-  }
-
   return (
     <div className="app-shell" style={{
       "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
@@ -73,56 +57,14 @@ export function AppShell() {
         <div className="mobile-brand"><FleurDeLis size={22}/><span>HermesTodo</span></div>
         <main className="app-content" id="main-content" tabIndex={-1}>
           <div className="app-utility-row">
-            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>
-            {cloudMode ? (
-              <div className="account-control">
-                <button
-                  type="button"
-                  className="account-chip"
-                  aria-haspopup="menu"
-                  aria-expanded={accountOpen}
-                  onClick={() => setAccountOpen(value => !value)}
-                >
-                  <span className="account-status-dot" aria-hidden="true"/>
-                  <span>rui</span>
-                  <span className="account-sync-label">已同步</span>
-                </button>
-                {accountOpen ? (
-                  <div className="account-menu" role="menu">
-                    <strong>rui</strong>
-                    <p>此设备会自动保持登录。</p>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="account-logout-link"
-                      onClick={() => {
-                        setAccountOpen(false);
-                        setConfirmLogout(true);
-                      }}
-                    >
-                      退出此设备…
-                    </button>
-                  </div>
-                ) : null}
-              </div>
-            ) : (
+            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>            {!cloudMode ? (
               <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
                 onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
-            )}
+            ) : null}
           </div>
           <Outlet/>
         </main>
       </div>
-      {confirmLogout ? (
-        <ConfirmDialog
-          title="退出此设备？"
-          message="退出后需要重新输入密码。云端任务和清单不会删除。"
-          confirmLabel="确认退出"
-          pending={loggingOut}
-          onCancel={() => setConfirmLogout(false)}
-          onConfirm={() => void logoutThisDevice()}
-        />
-      ) : null}
     </div>
   );
 }
