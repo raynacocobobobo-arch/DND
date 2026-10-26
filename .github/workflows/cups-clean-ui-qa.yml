@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Install live browser and image verification
         run: python -m pip install --quiet selenium requests Pillow
-      - name: Validate Pages: 4 updated cards and Major-standard Cups gallery
+      - name: Validate four updated paintings and unified Cups gallery
         run: |
           cat >/tmp/qa.py <<'PY'
           import io,time,requests
