@@ -74,6 +74,22 @@ async function accessToken(config: CloudConfig): Promise<Session> {
 }
 let fetchDirect: typeof window.fetch;
 
+async function edgeCall<T>(config: CloudConfig, functionName: string, body: JsonObject): Promise<T> {
+  const session = await accessToken(config);
+  const response = await fetchDirect(config.url + "/functions/v1/" + functionName, {
+    method: "POST",
+    headers: {
+      apikey: config.publishableKey,
+      Authorization: "Bearer " + session.access_token,
+      "content-type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  const data = await response.json().catch(() => ({})) as T & JsonObject;
+  if (!response.ok) throw serverError(data, "云端函数调用失败");
+  return data;
+}
+
 /** Parse a verified Supabase user from an existing bearer token, never from untrusted link claims. */
 async function persistLinkSession(config: CloudConfig, tokens: JsonObject): Promise<void> {
   const bearer = String(tokens.access_token ?? "");
@@ -401,9 +417,19 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
       return jsonResponse(null, 204);
     }
   }
-  if ((endpoint === "/api/ai/plan" || endpoint === "/api/ai/import-list") && method === "POST") {
-    // The public preview's existing offline AI sample remains clearly labelled as such.
-    return mockFallback(input, init);
+  if (endpoint === "/api/ai/plan" && method === "POST") {
+    return jsonResponse(await edgeCall<JsonObject>(config, "hermestodo-ai", { action: "plan", messages: data.messages }));
+  }
+  if (endpoint === "/api/ai/import-list" && method === "POST") {
+    return jsonResponse(await edgeCall<JsonObject>(config, "hermestodo-ai", {
+      action: "import", raw: data.raw, contextHint: data.contextHint, messages: data.messages
+    }));
+  }
+  if (endpoint === "/api/data/export" && method === "GET") {
+    return jsonResponse(await edgeCall<JsonObject>(config, "hermestodo-data", { action: "export" }));
+  }
+  if (endpoint === "/api/data/import" && method === "POST") {
+    return jsonResponse(await edgeCall<JsonObject>(config, "hermestodo-data", { action: "import", payload: data.payload }));
   }
   if (endpoint === "/api/ai/commit-suggestions" && method === "POST") {
     return jsonResponse(await commitAiSuggestions(config, data));

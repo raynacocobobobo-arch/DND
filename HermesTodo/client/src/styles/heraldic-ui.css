@@ -116,3 +116,9 @@
   .ai-orb{width:82px!important;height:82px!important}
   .ai-orb .ai-logo{width:62px!important;height:62px!important}
 }
+
+.exchange-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.exchange-import-label{display:grid;gap:7px;color:#625348;font-size:13px;font-weight:650}
+.exchange-import-label textarea{width:100%;resize:vertical;border:1px solid #c6af87;border-radius:5px;background:#fff9ee;color:#26333b;padding:11px;line-height:1.55}
+.exchange-dialog .success-message{margin:12px 0 0;color:#536c4f;font-size:12px}
+@media(max-width:520px){.exchange-actions{grid-template-columns:1fr}}

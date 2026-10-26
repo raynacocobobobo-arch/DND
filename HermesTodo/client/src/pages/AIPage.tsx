@@ -9,6 +9,7 @@ import { AISuggestionList } from "../components/AISuggestionList";
 import { HeraldicDivider } from "../components/HeraldicArt";
 import { AILogo } from "../components/AILogo";
 import { ImportListDialog } from "../components/ImportListDialog";
+import { DataExchangeDialog } from "../components/DataExchangeDialog";
 
 function suggestionKey(title: string): string {
   return title.normalize("NFKC").toLocaleLowerCase("zh-CN").replace(/[\p{P}\p{S}\s]+/gu, "");
@@ -23,6 +24,7 @@ export function AIPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [exchangeOpen, setExchangeOpen] = useState(false);
   const [commitMessage, setCommitMessage] = useState("");
 
   function applyResult(result: AIPlanResult) {
@@ -113,7 +115,7 @@ export function AIPage() {
       <header className="ios-page-header">
         <AILogo className="ai-title-logo" size={32}/>
         <h1>AI 规划器</h1>
-        <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><HeraldicIcon name="upload" size={22}/></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><HeraldicIcon name="reset" size={22}/></button></div>
+        <div className="header-actions"><button type="button" className="icon-button" aria-label="DeepSeek 导入清单" title="DeepSeek 导入清单" onClick={() => setImportOpen(true)}><HeraldicIcon name="upload" size={22}/></button><button type="button" className="icon-button" aria-label="ChatGPT / AI 清单交换" title="ChatGPT / AI 清单交换" onClick={() => setExchangeOpen(true)}><HeraldicIcon name="copy" size={22}/></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><HeraldicIcon name="reset" size={22}/></button></div>
       </header>
       <section className="ai-workspace">
         {messages.length === 0 ? <HeraldicDivider className="ai-ornament"/> : null}
@@ -128,6 +130,12 @@ export function AIPage() {
         </form>
       </section>
       {importOpen ? <ImportListDialog loading={loading} onCancel={() => setImportOpen(false)} onImport={(raw, contextHint) => void importList(raw, contextHint)} /> : null}
+      {exchangeOpen ? <DataExchangeDialog onClose={() => setExchangeOpen(false)} onImported={() => {
+        void Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+          queryClient.invalidateQueries({ queryKey: ["contexts"] })
+        ]);
+      }} /> : null}
     </section>
   );
 }
