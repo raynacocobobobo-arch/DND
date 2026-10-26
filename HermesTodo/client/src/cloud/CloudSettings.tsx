@@ -42,9 +42,9 @@ export function CloudSettings({ onLogin = false }: { onLogin?: boolean }) {
             </div>
             <p>网站仍在 GitHub Pages，清单和任务由 Supabase 存储。连接后可使用邮箱账户跨设备同步。</p>
             <ol className="cloud-setup-steps">
-              <li>在 <a href="https://supabase.com/dashboard" target="_blank" rel="noreferrer">Supabase</a> 创建一个项目。</li>
-              <li>在项目的 SQL Editor 中执行 <a href="https://github.com/raynacocobobobo-arch/DND/blob/feature/hermestodo-dashboard-subtasks-20261025/HermesTodo/supabase/schema.sql" target="_blank" rel="noreferrer">HermesTodo 初始化 SQL</a>，为每个账户开启数据隔离。</li>
-              <li>从项目的 API 设置复制 <strong>Project URL</strong> 和 <strong>publishable key</strong>（旧项目也可使用 anon key）。</li>
+              <li>已为你连接项目 <strong>arnrlepjuqdmvbipswci</strong> 并初始化数据表，项目地址和公开密钥已预填。</li>
+              <li>直接点击 <strong>保存云端连接</strong>，刷新后使用邮箱注册或登录。</li>
+              <li>云端账户的数据与原演示数据彼此独立，原浏览器数据不会自动上传或删除。</li>
             </ol>
             <form className="stacked-form" onSubmit={submit}>
               <label>Supabase Project URL
