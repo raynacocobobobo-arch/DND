@@ -62,6 +62,7 @@ afterEach(() => {
 
 describe("home dashboard", () => {
   test("shows all pending tasks in a single to-do list regardless of due date", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = [
       { ...baseTask, id: "today", title: "今天完成", dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false },
@@ -94,6 +95,7 @@ describe("home dashboard", () => {
   });
 
   test("shows every due-today task without silently dropping items after the fifth", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = Array.from({ length: 7 }, (_, index) => ({
       ...baseTask, id: `task-${index}`, title: `今天任务${index + 1}`,
@@ -127,6 +129,7 @@ describe("home dashboard", () => {
   });
 
   test("quick-add creates a simple task without assigning a due date or priority", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const fetchMock = createFetch([]);
     fetchMock.mockImplementationOnce(async () => jsonResponse({ authenticated: true }));
@@ -167,6 +170,7 @@ describe("home dashboard", () => {
   });
 
   test("home never lists or edits a context's nested tasks; clicking its context opens them", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
     const tasks = [
       { ...baseTask, id: "inbox", title: "收集箱灵感", dueAt: null, isCompleted: false },
