@@ -6,7 +6,7 @@ import { CloudSettings } from "../cloud/CloudSettings";
 import { isCloudMode } from "../cloud/config";
 
 export function LoginPage() {
-  const { login, signup, sendMagicLink, acceptMagicLink } = useAuth();
+  const { login, signup, sendMagicLink, acceptMagicLink, recoverRedirect } = useAuth();
   const cloudMode = isCloudMode();
   const [email, setEmail] = useState(() => {
     try { return localStorage.getItem("hermestodo-last-login-email") ?? ""; } catch { return ""; }
@@ -16,6 +16,8 @@ export function LoginPage() {
   const [registration, setRegistration] = useState(false);
   const [mailSent, setMailSent] = useState(false);
   const [magicLink, setMagicLink] = useState("");
+  const [rescueOpen, setRescueOpen] = useState(false);
+  const [redirectedUrl, setRedirectedUrl] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -53,9 +55,26 @@ export function LoginPage() {
       if (!magicMode) setPassword("");
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "登录失败，请重试";
-      setError(message.includes("Invalid login credentials")
+      setError(message.includes("email rate limit exceeded")
+        ? "Supabase 邮件发送已达限额。不要反复发送，尝试下面的「恢复上次 localhost 登录」，不需要新邮件。"
+        : message.includes("Invalid login credentials")
         ? "邮箱或密码不正确。建议切换邮箱免密码登录，无需重新注册。"
         : message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function resumeLastLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    setNotice("");
+    setSubmitting(true);
+    try {
+      await recoverRedirect(redirectedUrl.trim());
+      setRedirectedUrl("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "恢复登录失败");
     } finally {
       setSubmitting(false);
     }
@@ -115,6 +134,28 @@ export function LoginPage() {
               : cloudMode ? (registration ? "创建云端账户" : "登录云端账户") : "登录"}
           </button>
         </form>
+        {cloudMode ? (
+          <section className="cloud-rescue-section" aria-label="恢复已验证的登录">
+            <button type="button" className="cloud-mode-switch" aria-expanded={rescueOpen}
+              onClick={() => { setRescueOpen(value => !value); setError(""); }}>
+              {rescueOpen ? "收起登录恢复" : "遇到邮件限额或 localhost 错误？恢复上次登录"}
+            </button>
+            {rescueOpen ? (
+              <form className="cloud-rescue-form" onSubmit={resumeLastLogin}>
+                <p>如果此前点击邮件链接后打开过 localhost 错误页，并且该页面还在浏览器标签中，请复制<strong>那一页地址栏的完整网址</strong>粘贴到这里。无需再次发送邮件。</p>
+                <label htmlFor="cloud-redirected-url">之前 localhost 页面地址栏的网址
+                  <textarea id="cloud-redirected-url" className="cloud-magic-link-input"
+                    placeholder="http://localhost:3000/#access_token=..."
+                    value={redirectedUrl} onChange={event => setRedirectedUrl(event.target.value)} rows={3} required />
+                </label>
+                <button type="submit" className="primary-button" disabled={submitting || !redirectedUrl.trim()}>
+                  恢复云端登录
+                </button>
+                <p>如果那个标签页已关闭或地址不含 #access_token，则无法从旧链接恢复；不要把任何登录网址发到聊天中。</p>
+              </form>
+            ) : null}
+          </section>
+        ) : null}
         {cloudMode ? (
           <div className="cloud-login-methods">
             <button type="button" className="cloud-mode-switch" onClick={switchMethod}>
