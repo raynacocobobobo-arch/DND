@@ -303,9 +303,9 @@
 .list-drag-handle{
   display:grid;place-items:center;width:35px;height:35px;padding:0;
   border:1px solid #cbb18a;background:#f5e9d6;color:#7d6248;
-  font:700 16px/1 Georgia,serif;letter-spacing:-.12em;cursor:grab;
+  cursor:grab;
 }
-.list-drag-handle:active{cursor:grabbing}
+.list-drag-handle:active{cursor:grabbing}.list-drag-handle .heraldic-sigil{display:block}
 .list-order-help{margin:13px 2px 0;color:#876f56;font-size:11px}
 .list-detail-page .scene-home-hero-copy h1{letter-spacing:.04em}
 @media(max-width:760px){
