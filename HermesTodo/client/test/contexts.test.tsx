@@ -14,12 +14,24 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 const stamp = "2026-10-25T08:00:00.000Z";
+const travelList = {
+  id: "travel-list",
+  name: "出国旅行",
+  icon: "compass",
+  color: "#8CAABA",
+  sortOrder: 0,
+  sceneCount: 1,
+  incompleteCount: 1,
+  createdAt: stamp,
+  updatedAt: stamp
+};
 const travel = {
   id: "travel-id",
   name: "旅行",
   icon: "suitcase",
   color: "#EEB0A8",
   sortOrder: 0,
+  listId: travelList.id,
   incompleteCount: 1,
   createdAt: stamp,
   updatedAt: stamp
@@ -43,23 +55,23 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("contexts interface", () => {
-  test("uses the list-first homepage input to create and edit a context", async () => {
-    window.history.replaceState({}, "", "/contexts");
-    const contexts = [{ ...travel }];
+describe("lists and scenes interface", () => {
+  test("creates and edits a top-level list with its own crest", async () => {
+    window.history.replaceState({}, "", "/");
+    const lists = [{ ...travelList }];
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
       const path = String(input);
       if (path === "/api/session") return jsonResponse({ authenticated: true });
-      if (path === "/api/contexts" && (!init?.method || init.method === "GET")) return jsonResponse(contexts);
-      if (path === "/api/contexts" && init?.method === "POST") {
+      if (path === "/api/lists" && (!init?.method || init.method === "GET")) return jsonResponse(lists);
+      if (path === "/api/lists" && init?.method === "POST") {
         const body = JSON.parse(String(init.body));
-        const created = { ...travel, ...body, id: "work-id", sortOrder: 1, incompleteCount: 0 };
-        contexts.push(created);
+        const created = { ...travelList, ...body, id: "work-list", sortOrder: 1, sceneCount: 0, incompleteCount: 0 };
+        lists.push(created);
         return jsonResponse(created, 201);
       }
-      if (path === "/api/contexts/work-id" && init?.method === "PATCH") {
-        Object.assign(contexts[1]!, JSON.parse(String(init.body)));
-        return jsonResponse(contexts[1]);
+      if (path === "/api/lists/work-list" && init?.method === "PATCH") {
+        Object.assign(lists[1]!, JSON.parse(String(init.body)));
+        return jsonResponse(lists[1]);
       }
       throw new Error(`Unexpected request: ${init?.method ?? "GET"} ${path}`);
     });
@@ -70,24 +82,21 @@ describe("contexts interface", () => {
     const list = await screen.findByRole("list", { name: "清单列表" });
     expect(list).toHaveClass("context-grid");
 
-    expect(screen.queryByRole("button", { name: "新建清单" })).not.toBeInTheDocument();
     const quickName = screen.getByLabelText("快速新建清单");
-    expect(quickName).toHaveAttribute("placeholder", "新建清单，写下一个场景名称…");
+    expect(quickName).toHaveAttribute("placeholder", "新建清单，例如：国内旅行、工作项目…");
 
     await user.click(screen.getByRole("button", { name: "添加清单" }));
     expect(await screen.findByRole("dialog", { name: "新建清单" })).toBeInTheDocument();
-    expect(screen.getByRole("radio", { name: "#8CAABA" })).toBeChecked();
     expect(screen.getAllByRole("button", { name: /^(金狮|百合花|罗盘|生命树|典籍|双剑|王冠|羽笔卷轴)$/ })).toHaveLength(8);
-    expect(screen.getByRole("button", { name: "百合花" })).toHaveAttribute("aria-pressed","true");
     await user.click(screen.getByRole("button", { name: "取消" }));
 
-    await user.type(quickName, "工作");
+    await user.type(quickName, "工作项目");
     await user.click(screen.getByRole("button", { name: "添加清单" }));
-    expect(await screen.findByRole("link", { name: /工作/ })).toBeInTheDocument();
-    const createCall = fetchMock.mock.calls.find(([path, init]) => path === "/api/contexts" && init?.method === "POST");
-    expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作", icon: "folder", color: "#8CAABA" });
+    expect(await screen.findByRole("link", { name: /工作项目/ })).toBeInTheDocument();
+    const createCall = fetchMock.mock.calls.find(([request, init]) => request === "/api/lists" && init?.method === "POST");
+    expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作项目", icon: "compass", color: "#8CAABA" });
 
-    await user.click(screen.getByRole("button", { name: "编辑 工作" }));
+    await user.click(screen.getByRole("button", { name: "编辑 工作项目" }));
     const name = screen.getByLabelText("清单名称");
     await user.clear(name);
     await user.type(name, "客户项目");
@@ -95,31 +104,32 @@ describe("contexts interface", () => {
     expect(await screen.findByRole("link", { name: /客户项目/ })).toBeInTheDocument();
   });
 
-  test("explains that deleting a context keeps tasks and requires confirmation", async () => {
-    window.history.replaceState({}, "", "/contexts");
+  test("keeps scene deletion behind confirmation and returns its tasks to inbox", async () => {
+    window.history.replaceState({}, "", "/lists/travel-list");
     const contexts = [{ ...travel }];
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
       const path = String(input);
       if (path === "/api/session") return jsonResponse({ authenticated: true });
-      if (path === "/api/contexts" && (!init?.method || init.method === "GET")) return jsonResponse(contexts);
+      if (path === "/api/lists") return jsonResponse([travelList]);
+      if (path === "/api/contexts?listId=travel-list") return jsonResponse(contexts);
       if (path === "/api/contexts/travel-id" && init?.method === "DELETE") {
         contexts.splice(0);
         return jsonResponse(null, 204);
       }
-      throw new Error(`Unexpected request: ${path}`);
+      throw new Error(`Unexpected request: ${init?.method ?? "GET"} ${path}`);
     });
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     render(<App />);
 
     await user.click(await screen.findByRole("button", { name: "删除 旅行" }));
-    const dialog = screen.getByRole("alertdialog", { name: "删除清单？" });
-    expect(dialog).toHaveTextContent("清单内的任务不会被删除，将返回收集箱");
+    const dialog = screen.getByRole("alertdialog", { name: "删除场景？" });
+    expect(dialog).toHaveTextContent("场景内的任务不会被删除，将返回收集箱");
     await user.click(screen.getByRole("button", { name: "确认删除" }));
     await waitFor(() => expect(screen.queryByRole("link", { name: /旅行/ })).not.toBeInTheDocument());
   });
 
-  test("copies the iOS-style todo format and quick-adds without a due date", async () => {
+  test("copies the todo format and quick-adds without a due date", async () => {
     window.history.replaceState({}, "", "/contexts/travel-id");
     const tasks = [
       { ...baseTask, id: "open", title: "确认航班", isCompleted: false },
@@ -151,7 +161,7 @@ describe("contexts interface", () => {
     await user.type(screen.getByLabelText("快速添加清单任务"), "购买转换插头");
     await user.click(screen.getByRole("button", { name: "添加" }));
     await waitFor(() => {
-      const post = fetchMock.mock.calls.find(([path, init]) => path === "/api/tasks" && init?.method === "POST");
+      const post = fetchMock.mock.calls.find(([request, init]) => request === "/api/tasks" && init?.method === "POST");
       expect(JSON.parse(String(post?.[1]?.body))).toMatchObject({
         title: "购买转换插头",
         contextId: "travel-id",
@@ -159,22 +169,20 @@ describe("contexts interface", () => {
       });
     });
   });
-  test("opens the scene/list directory at the root instead of the old dashboard", async () => {
+
+  test("opens top-level lists at root and keeps scenes one level below", async () => {
     window.history.replaceState({}, "", "/");
     vi.stubGlobal("fetch", vi.fn(async (input: string | URL | Request) => {
       const path = String(input);
       if (path === "/api/session") return jsonResponse({ authenticated: true });
-      if (path === "/api/contexts") return jsonResponse([travel]);
-      if (path.startsWith("/api/tasks")) return jsonResponse([]);
+      if (path === "/api/lists") return jsonResponse([travelList]);
       throw new Error(`Unexpected request: ${path}`);
     }));
     render(<App />);
     expect(await screen.findByRole("heading", { name: "我的清单" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "场景目录" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "清单目录" })).toBeInTheDocument();
     expect(await screen.findByRole("list", { name: "清单列表" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /进入收集箱/ })).toHaveAttribute("href", "/inbox");
-    expect(screen.queryByRole("heading", { name: "我的待办" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /旅行/ })).toHaveAttribute("href", "/contexts/travel-id");
+    expect(screen.getByRole("link", { name: /出国旅行/ })).toHaveAttribute("href", "/lists/travel-list");
   });
-
 });
