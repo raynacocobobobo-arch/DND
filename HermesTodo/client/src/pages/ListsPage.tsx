@@ -24,6 +24,7 @@ export function ListsPage() {
   const [error,setError]=useState("");
   const [draggingId,setDraggingId]=useState<string>();
   const [deleting,setDeleting]=useState<ListRecord>();
+  const [completionTarget,setCompletionTarget]=useState<ListRecord>();
   const [actionMessage,setActionMessage]=useState("");
 
   useEffect(()=>{ if(lists.data) setOrdered(lists.data); },[lists.data]);
@@ -71,10 +72,17 @@ export function ListsPage() {
     setActionMessage(`已复制“${list.name}”清单内容`);
   }
 
-  async function completeList(list: ListRecord) {
+  async function toggleListCompletion(list: ListRecord) {
     setActionMessage("");
     const result=await complete.mutateAsync(list.id);
-    setActionMessage(result.updatedCount ? `已勾选 ${result.updatedCount} 项待办` : "这份清单已经全部完成");
+    setCompletionTarget(undefined);
+    if (!result.updatedCount) {
+      setActionMessage("这份清单没有可切换的待办");
+    } else {
+      setActionMessage(result.completed
+        ? `已全部标为完成，共 ${result.updatedCount} 项`
+        : `已全部恢复为未完成，共 ${result.updatedCount} 项`);
+    }
   }
 
   const sceneCount=ordered.reduce((n,x)=>n+x.sceneCount,0);
@@ -114,7 +122,7 @@ export function ListsPage() {
           onEdit={()=>{setEditing(list);setFormOpen(true);}}
           onDelete={()=>setDeleting(list)}
           onCopy={()=>void copyList(list)}
-          onComplete={()=>void completeList(list)}
+          onComplete={()=>setCompletionTarget(list)}
           onDragStart={()=>setDraggingId(list.id)}
           onDragOver={()=>moveDragged(list.id)}
           onDrop={()=>void finishDrag()}
@@ -124,6 +132,15 @@ export function ListsPage() {
       {actionMessage?<p className="copy-toast list-action-toast" role="status">{actionMessage}</p>:null}
     </section>
 
+    {completionTarget?<ConfirmDialog
+      title={completionTarget.incompleteCount > 0 ? "一键勾选全部待办？" : "全部恢复为未完成？"}
+      message={completionTarget.incompleteCount > 0
+        ? `确定将“${completionTarget.name}”下的全部待办标记为完成吗？`
+        : `“${completionTarget.name}”当前已全部完成。确定将全部待办恢复为未完成吗？`}
+      confirmLabel={completionTarget.incompleteCount > 0 ? "确认全部完成" : "确认恢复未完成"}
+      pending={complete.isPending}
+      onCancel={()=>setCompletionTarget(undefined)}
+      onConfirm={()=>void toggleListCompletion(completionTarget)}/>:null}
     {deleting?<ConfirmDialog title="删除清单？"
       message={`确定删除“${deleting.name}”吗？清单和场景目录会删除，但其中任务不会删除，会回到收集箱。`}
       pending={remove.isPending}
