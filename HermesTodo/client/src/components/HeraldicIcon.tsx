@@ -1,4 +1,6 @@
-import { MedievalCrest } from "./MedievalCrest";\n\n/** Hand-drawn, scalable medieval escutcheons. Legacy icon keys are preserved. */
+import { MedievalCrest } from "./MedievalCrest";
+
+/** Hand-drawn, scalable medieval escutcheons. Legacy icon keys are preserved. */
 const alias: Record<string,string> = {
  folder:"scroll",briefcase:"swords",suitcase:"compass",house:"tower",home:"tower",
  "shopping-cart":"coins","shopping-bag":"coins","book-open":"book",book:"book",
@@ -30,7 +32,12 @@ function device(key:string) {
  default: return <g><path d="M20 24c8-4 16-4 24 0v21c-8-4-16-4-24 0V24Z" strokeWidth="2.7"/><path d="M25 30h14m-14 7h14" strokeWidth="2"/></g>;
  }
 }
+const paintedActions = new Set(["inbox","add","plus","edit","quill","feather","copy","trash","delete","upload","import","reset","send"]);
+
 export function HeraldicIcon({name,size=24,className=""}:{name:string;size?:number;className?:string}) {
+ if (paintedActions.has(name)) {
+   return <MedievalCrest name={name} size={size} className={`heraldic-sigil action-crest ${className}`} />;
+ }
  return <svg className={`heraldic-sigil ${className}`} width={size} height={size} viewBox="0 0 64 70"
    fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
    <path d="M32 3 56 12v24c0 15-13 24-24 31C21 60 8 51 8 36V12L32 3Z" strokeWidth="2.6" fill="currentColor" fillOpacity=".05"/>
