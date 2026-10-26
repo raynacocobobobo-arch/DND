@@ -139,6 +139,17 @@ jobs:
               first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
               viewport=browser.execute_script("return window.innerHeight")
               assert first < viewport - 45, f'First scene card below fold: top={first}, viewport={viewport}'
+              # New cloud mode must show the real email login UI instead of a blank screen.
+              browser.execute_script('''localStorage.setItem('hermestodo-supabase-public-v1',
+                JSON.stringify({url:'https://arnrlepjuqdmvbipswci.supabase.co',
+                  publishableKey:'sb_publishable_ci_only_test_public_key'}))''')
+              browser.refresh()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.login-page')))
+              assert browser.find_element(By.CSS_SELECTOR,'#cloud-email').is_displayed()
+              assert '发送免密码登录邮件' in browser.find_element(By.TAG_NAME,'body').text
+              browser.save_screenshot('/tmp/hermestodo-cloud-login.png')
+              browser.execute_script("localStorage.removeItem('hermestodo-supabase-public-v1')")
+              print('CLOUD LOGIN BOOT PASSED: public Pages cloud auth screen renders normally',flush=True)
               print('BROWSER SMOKE PASSED: scene homepage, create list, list details, inbox tasks, AI, mobile',flush=True)
           finally:
               try: print('VISIBLE URL',browser.current_url,flush=True)
@@ -154,6 +165,7 @@ jobs:
           path: |
             /tmp/hermestodo-desktop.png
             /tmp/hermestodo-mobile.png
+            /tmp/hermestodo-cloud-login.png
       - name: Publish preview under existing docs folder
         run: |
           mkdir -p /tmp/hermestodo-preview
@@ -174,3 +186,12 @@ jobs:
             git commit -m "build(hermestodo): publish current interactive preview"
             git push origin HEAD:gh-pages
           fi
+
+      - name: Probe published Pages URL
+        if: always()
+        continue-on-error: true
+        run: |
+          echo 'Checking external GitHub Pages access'
+          for path in 'https://raynacocobobobo-arch.github.io/DND/hermestodo/' 'https://raynacocobobobo-arch.github.io/DND/hermestodo/manifest.webmanifest'; do
+            curl -sSL --max-time 15 -o /dev/null -w '%{http_code} %{remote_ip} %{url_effective}\n' "$path" || true
+          done
