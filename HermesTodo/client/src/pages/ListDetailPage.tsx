@@ -53,7 +53,7 @@ export function ListDetailPage() {
 
   return <section className="page-stack contexts-page scene-home list-detail-page">
     <header className="scene-home-hero list-detail-hero">
-      <img className="scene-home-art" src={`${import.meta.env.BASE_URL}art/joan-dragon-scene-hq.avif`} alt="" aria-hidden="true" loading="eager" decoding="async"/>
+      <img className="scene-home-art" src={`${import.meta.env.BASE_URL}art/joan-fleur-hero-v2.avif`} alt="" aria-hidden="true" loading="eager" decoding="async"/>
       <div className="scene-home-hero-copy">
         <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · SCENES</span>
         <h1>{list.name}<span aria-hidden="true">。</span></h1>
