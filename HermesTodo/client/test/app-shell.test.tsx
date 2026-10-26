@@ -81,6 +81,6 @@ describe("responsive authenticated shell", () => {
 
     expect(await screen.findByRole("heading", { name: "我的清单" })).toBeInTheDocument();
     await waitFor(() => expect(window.location.pathname).toBe("/"));
-    expect(screen.getByRole("link", { name: "首页" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "清单" })).toHaveAttribute("aria-current", "page");
   });
 });
