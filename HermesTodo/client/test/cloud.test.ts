@@ -140,3 +140,64 @@ describe("passwordless email login", () => {
     expect(network).not.toHaveBeenCalled();
   });
 });
+
+describe("recover a verified session without sending another email", () => {
+  it("restores a session from the existing localhost auth redirect", async () => {
+    saveCloudConfig(project, publishable);
+    const network = vi.fn(async (url: string, opts?: RequestInit) => {
+      expect(url).toBe(project + "/auth/v1/user");
+      expect(opts?.headers).toMatchObject({ Authorization: "Bearer existing-access-token" });
+      return new Response(JSON.stringify({ id: "confirmed-owner-id" }), { status: 200,
+        headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", network);
+    expect(installCloudBridge()).toBe(true);
+    const failedBrowserUrl = "http://localhost:3000/#access_token=existing-access-token" +
+      "&refresh_token=existing-refresh-token&expires_in=3600&token_type=bearer";
+    const result = await fetch("/api/auth/recover-redirect", {
+      method: "POST", body: JSON.stringify({ redirectedUrl: failedBrowserUrl })
+    });
+    expect(result.status).toBe(200);
+    expect(network).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(localStorage.getItem("hermestodo-supabase-session-v1") ?? "null"))
+      .toMatchObject({ user_id: "confirmed-owner-id", access_token: "existing-access-token" });
+  });
+
+  it("can use an unconsumed previously sent Supabase verification link", async () => {
+    saveCloudConfig(project, publishable);
+    const rawLink = project + "/auth/v1/verify?token=" + "b".repeat(64) +
+      "&type=magiclink&redirect_to=http%3A%2F%2Flocalhost%3A3000";
+    const network = vi.fn(async (url: string) => {
+      expect(url).toBe(project + "/auth/v1/verify");
+      return new Response(JSON.stringify({
+        access_token: "real-user-access", refresh_token: "real-user-refresh",
+        expires_in: 3600, user: { id: "verified-owner" }
+      }), { status: 200, headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", network);
+    installCloudBridge();
+    const res = await fetch("/api/auth/recover-redirect", {
+      method: "POST", body: JSON.stringify({ redirectedUrl: rawLink })
+    });
+    expect(res.status).toBe(200);
+    expect(network).toHaveBeenCalledTimes(1);
+  });
+
+  it("rejects unrelated websites and links with no issued session", async () => {
+    saveCloudConfig(project, publishable);
+    const network = vi.fn(async () => { throw new Error("Should not use the network"); });
+    vi.stubGlobal("fetch", network);
+    installCloudBridge();
+    for (const redirectedUrl of [
+      "https://evil.test/#access_token=evil&refresh_token=evil",
+      "http://localhost:3000/",
+      "http://localhost:3001/#access_token=foo&refresh_token=bar"
+    ]) {
+      const res = await fetch("/api/auth/recover-redirect", {
+        method: "POST", body: JSON.stringify({ redirectedUrl })
+      });
+      expect(res.status).toBe(400);
+    }
+    expect(network).not.toHaveBeenCalled();
+  });
+});
