@@ -32,7 +32,7 @@ export function ListCard({
           aria-label={`拖动排序 ${list.name}`}
           title="拖动排序"
           onDragStart={(event)=>{event.stopPropagation(); onDragStart();}}
-          onDragEnd={(event)=>{event.stopPropagation(); onDragEnd();}}>⋮⋮</button>
+          onDragEnd={(event)=>{event.stopPropagation(); onDragEnd();}}><HeraldicIcon name="drag" size={21}/></button>
         <button type="button" aria-label={`编辑 ${list.name}`} onClick={onEdit}><HeraldicIcon name="edit" size={23}/></button>
         <span className="context-chevron" aria-hidden="true"><HeraldicIcon name="arrow" size={19}/></span>
       </div>
