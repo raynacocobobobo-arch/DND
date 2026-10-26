@@ -63,6 +63,11 @@ jobs:
               assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
+              # Reject tiny/compressed hero images when publishing the live URL.
+              picture=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script('return arguments[0].complete && arguments[0].naturalWidth >= 1600',picture))
+              assert browser.execute_script('return arguments[0].naturalWidth',picture)==1672
+              assert len(browser.find_elements(By.CSS_SELECTOR,'.scene-home-grid .heraldic-sigil')) >= 1
               # Verify the approved Jeanne d'Arc dragon artwork is the real loaded asset,
               # not a generated UI screenshot or a broken background URL.
               artwork=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
@@ -79,6 +84,11 @@ jobs:
               field.send_keys('网页验收清单')
               browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd button').click()
               wait.until(lambda b: '网页验收清单' in b.find_element(By.TAG_NAME,'body').text)
+              browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .context-card-actions button[aria-label^="编辑"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.heraldic-icon-picker')))
+              assert len(browser.find_elements(By.CSS_SELECTOR,'.heraldic-icon-picker .heraldic-sigil')) >= 7
+              assert 'briefcase' not in browser.find_element(By.CSS_SELECTOR,'.form-dialog').text
+              browser.find_element(By.CSS_SELECTOR,'.form-dialog button[aria-label="关闭"]').click()
               browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts/work"]').click()
               wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
               assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
