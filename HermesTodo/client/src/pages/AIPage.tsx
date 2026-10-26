@@ -67,7 +67,7 @@ export function AIPage() {
 
   async function importList(raw: string, contextHint: string) {
     setLoading(true);
-    setMessages((current) => [...current, { role: "user", content: `导入清单：${contextHint || "未命名情境"}` }]);
+    setMessages((current) => [...current, { role: "user", content: `导入清单：${contextHint || "未命名清单"}` }]);
     try {
       const result = await apiRequest<AIPlanResult>("/api/ai/import-list", {
         method: "POST",
