@@ -1,6 +1,6 @@
 import { zhCN } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
-import { ChevronRight, Sparkles, ArrowUpRight, Plus, Feather } from "lucide-react";
+import { HeraldicIcon } from "../components/HeraldicIcon";
 import { Link } from "react-router-dom";
 
 import { ContextIcon } from "../components/ContextIcon";
@@ -53,13 +53,13 @@ export function HomePage() {
             <h1>{greeting}<span className="v7-intro-punctuation">。</span></h1>
             <p>把想做的事，写下来。<br/>剩下的，一件件完成。</p>
           </div>
-          <div className="v7-intro-mark" aria-hidden="true"><Feather size={35} strokeWidth={1.1}/><span>AD ASTRA</span></div>
+          <div className="v7-intro-mark" aria-hidden="true"><HeraldicIcon name="quill" size={41}/><span>AD ASTRA</span></div>
         </section>
         <section className="v7-capture" aria-label="记录待办">
           <div className="v7-capture-caption"><span>01</span> 写下下一件事 <small>THE NEXT THING</small></div>
           <div className="v7-capture-row">
             <QuickAdd onEmpty={() => setCreateTaskOpen(true)}/>
-            <button type="button" className="v7-details-button" onClick={() => setCreateTaskOpen(true)}><Plus size={18}/> 更多选项</button>
+            <button type="button" className="v7-details-button" onClick={() => setCreateTaskOpen(true)}><HeraldicIcon name="add" size={22}/> 更多选项</button>
           </div>
         </section>
         <div className="dashboard-layout v7-desk">
@@ -99,23 +99,23 @@ export function HomePage() {
                   <p className="dashboard-empty">完成任务后，它们会记录在这里。</p>}
               </section>
             ) : null}
-            <button type="button" className="board-add-link" onClick={() => setCreateTaskOpen(true)}><Plus size={19}/> 添加详细任务</button>
+            <button type="button" className="board-add-link" onClick={() => setCreateTaskOpen(true)}><HeraldicIcon name="add" size={22}/> 添加详细任务</button>
           </section>
           <aside className="dashboard-side-column">
             <section className="contexts-mini v7-index">
-              <div className="side-card-heading"><h2>清单目录</h2><Link to="/">全部 <ChevronRight size={13}/></Link></div>
+              <div className="side-card-heading"><h2>清单目录</h2><Link to="/">全部 <HeraldicIcon name="arrow" size={17}/></Link></div>
               <div className="context-strip">
                 {(contexts.data ?? []).slice(0, 4).map((context) => (
                   <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
                     <span className="context-entry-icon" style={{ color: context.color }}><ContextIcon name={context.icon} size={17}/></span>
                     <strong>{context.name}</strong><small>{context.incompleteCount} 项</small>
-                    <ChevronRight aria-hidden="true" size={14}/>
+                    <HeraldicIcon name="arrow" size={18}/>
                   </Link>
                 ))}
                 {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/">创建第一个清单</Link> : null}
               </div>
             </section>
-            <Link className="ai-teaser v7-ai-note" to="/ai"><Sparkles size={18}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><ArrowUpRight size={17}/></Link>
+            <Link className="ai-teaser v7-ai-note" to="/ai"><HeraldicIcon name="star" size={22}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><HeraldicIcon name="arrow" size={20}/></Link>
           </aside>
         </div>
         <footer className="editorial-footer">FINIS CORONAT OPUS <FleurDeLis size={13}/> HERMES TODO</footer>
