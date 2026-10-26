@@ -1,0 +1,20 @@
+/* Medieval heraldic emblems for all main navigation, list cards and task controls. */
+.heraldic-sigil{display:inline-block;vertical-align:middle;flex-shrink:0}
+.context-icon{display:inline-grid;place-items:center;width:54px;height:59px;background:#efe2cd!important;border:1px solid #b79a68!important;border-radius:3px!important;color:#8b4939!important}
+.scene-home .context-icon{width:56px;height:62px}
+.context-icon .heraldic-sigil{width:37px;height:40px}
+.context-entry-icon .heraldic-sigil{width:28px;height:31px;color:#d5b57a}
+.nav-link .heraldic-sigil{color:#dab982}
+.nav-link-active .heraldic-sigil{color:#f3dba7}
+.context-card-actions .heraldic-sigil{width:22px;height:23px}
+.scene-home-inbox .heraldic-sigil{color:#d5b77d}
+.heraldic-icon-picker{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.heraldic-icon-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:83px;padding:9px 3px;border:1px solid #c6b08c;border-radius:3px;background:#fbf3e5;color:#745c3c;cursor:pointer}
+.heraldic-icon-choice:hover{border-color:#96573b;background:#f0dfc1}
+.heraldic-icon-choice[aria-pressed="true"]{color:#fbe8bc;background:#713a31;border-color:#b8945a;box-shadow:inset 0 0 0 2px #e6c68b64}
+.heraldic-icon-choice span{font:12px/1.2 "Songti SC","Noto Serif CJK SC",serif;white-space:nowrap}
+.heraldic-icon-choice .heraldic-sigil{width:35px;height:38px}
+.heraldic-icon-choice:focus-visible{outline:3px solid #b47c45;outline-offset:2px}
+.context-crest-label{margin-top:2px;color:#604c39;font-weight:600;font-size:13px}
+.scene-home-art{filter:saturate(.97) contrast(1.01)!important}
+@media(max-width:760px){.heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.heraldic-icon-choice{min-height:75px;padding:7px 3px}.heraldic-icon-choice .heraldic-sigil{width:30px;height:34px}.scene-home .context-icon{width:42px;height:47px}.scene-home .context-icon .heraldic-sigil{width:29px;height:33px}.main-navigation .nav-link .heraldic-sigil{width:22px;height:24px}}
