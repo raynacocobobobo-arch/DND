@@ -157,4 +157,22 @@ describe("contexts interface", () => {
       });
     });
   });
+  test("opens the scene/list directory at the root instead of the old dashboard", async () => {
+    window.history.replaceState({}, "", "/");
+    vi.stubGlobal("fetch", vi.fn(async (input: string | URL | Request) => {
+      const path = String(input);
+      if (path === "/api/session") return jsonResponse({ authenticated: true });
+      if (path === "/api/contexts") return jsonResponse([travel]);
+      if (path.startsWith("/api/tasks")) return jsonResponse([]);
+      throw new Error(`Unexpected request: ${path}`);
+    }));
+    render(<App />);
+    expect(await screen.findByRole("heading", { name: "我的清单。" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "场景目录" })).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "清单列表" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /进入收集箱/ })).toHaveAttribute("href", "/inbox");
+    expect(screen.queryByRole("heading", { name: "我的待办" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /旅行/ })).toHaveAttribute("href", "/contexts/travel-id");
+  });
+
 });
