@@ -1,6 +1,6 @@
 {
-  "version": "1.2",
-  "status": "11 officially approved original paintings; 3 remaining",
+  "version": "1.3",
+  "status": "13 approved paintings; Six of Cups needs symbol count correction (5 shown, 6 required)",
   "suit": "Cups",
   "major_reference": "Existing 22 HD Major Arcana are the visual master",
   "rules": [
@@ -113,7 +113,13 @@
       "symbol": "3只倒杯 + 2只立杯，合计5只且空间关系明确",
       "source": "印斯茅斯港镇的原创失落故事，塔罗杯五保留情绪象征",
       "avoid": "不再用大阿卡纳《死神》背身对海的单人剪影构图",
-      "status": "priority"
+      "status": "approved",
+      "approved_art": "./final/five-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认单独生成的这张牌可入库。实际作品以对应的高清原画为准。"
     },
     {
       "no": "VI",
@@ -129,13 +135,13 @@
       "symbol": "6只插花的小杯，恰好构成两组回忆",
       "source": "洛氏对童年与梦中故乡的反复书写，原创家庭场景",
       "avoid": "避开大阿卡纳《太阳》的宏大金色梦城",
-      "status": "approved",
+      "status": "requires-correction",
       "approved_art": "./final/six-of-cups-v1.webp",
       "art_dimensions": [
         941,
         1672
       ],
-      "review": "2026-10-26 用户确认新一批10张圣杯牌可以入库。原画按本次生成文件无损保存；前期视觉设定是创作参考，不等同于对画面每个细节的客观描述。"
+      "review": "需要修正：现有原画标为 SIX OF CUPS，但画面里只有5只可辨认的杯子。用户要求补足第6只；在纠正前，不应宣称这张牌已正式校验完成。"
     },
     {
       "no": "VII",
@@ -261,7 +267,13 @@
       "symbol": "1杯握于骑士手中，运动方向明确",
       "source": "《白船》的邀请与远航意象，骑士信使为原创",
       "avoid": "避免复制大阿卡纳《战车》的南极雪橇与队列",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/knight-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认单独生成的这张牌可入库。实际作品以对应的高清原画为准。"
     },
     {
       "no": "Q",
@@ -277,7 +289,13 @@
       "symbol": "1只精致封盖圣杯，内部反光提示不可言明的心理世界",
       "source": "洛氏梦境与海潮意象上的宫廷牌原创形象",
       "avoid": "避免重画大阿卡纳《皇后》的树形母体和《女祭司》的老巫婆",
-      "status": "design"
+      "status": "approved",
+      "approved_art": "./final/queen-of-cups-v1.webp",
+      "art_dimensions": [
+        941,
+        1672
+      ],
+      "review": "2026-10-26 用户确认单独生成的这张牌可入库。实际作品以对应的高清原画为准。"
     },
     {
       "no": "K",
@@ -302,5 +320,8 @@
       "review": "2026-10-26 用户确认定版。画面定稿不再调整：圣杯国王端坐海崖，单人占据视觉中心，以一只圣杯和风暴海面形成情绪稳定对照；原画已上传并用无损 WebP 保存。"
     }
   ],
-  "approved_count": 11
+  "approved_count": 13,
+  "visual_correction_pending": [
+    "six"
+  ]
 }
