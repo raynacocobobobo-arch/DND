@@ -3,7 +3,19 @@ export const CLOUD_CONFIG_KEY = "hermestodo-supabase-public-v1";
 export const DEMO_DATA_KEY = "hermestodo-public-preview-v1";
 export type CloudConfig = { url: string; publishableKey: string };
 
-export function readCloudConfig(): CloudConfig | null {
+const HOSTED_CLOUD_CONFIG: CloudConfig = {
+  url: "https://arnrlepjuqdmvbipswci.supabase.co",
+  publishableKey: "sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt"
+};
+
+function isHostedHermesTodo(): boolean {
+  return import.meta.env.VITE_STATIC_PREVIEW === "true"
+    && typeof window !== "undefined"
+    && window.location.hostname === "raynacocobobobo-arch.github.io"
+    && window.location.pathname.startsWith("/DND/hermestodo");
+}
+
+function storedCloudConfig(): CloudConfig | null {
   try {
     const raw = localStorage.getItem(CLOUD_CONFIG_KEY);
     if (!raw) return null;
@@ -17,9 +29,18 @@ export function readCloudConfig(): CloudConfig | null {
     return null;
   }
 }
+
+export function readCloudConfig(): CloudConfig | null {
+  // The public Pages site is a private single-user tool: always bind it to the
+  // approved Supabase project so the owner never has to configure "cloud mode".
+  if (isHostedHermesTodo()) return HOSTED_CLOUD_CONFIG;
+  return storedCloudConfig();
+}
+
 export function isCloudMode(): boolean {
   return import.meta.env.VITE_STATIC_PREVIEW === "true" && readCloudConfig() !== null;
 }
+
 export function saveCloudConfig(urlValue: string, keyValue: string): void {
   const url = new URL(urlValue.trim());
   const key = keyValue.trim();
@@ -34,6 +55,7 @@ export function saveCloudConfig(urlValue: string, keyValue: string): void {
   }
   localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify({ url: url.origin, publishableKey: key }));
 }
+
 export function clearCloudConfig(): void {
   localStorage.removeItem(CLOUD_CONFIG_KEY);
 }
