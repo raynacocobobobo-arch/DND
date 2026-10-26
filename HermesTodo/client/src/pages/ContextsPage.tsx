@@ -1,4 +1,4 @@
-import { ArrowUpRight, CirclePlus, Inbox } from "lucide-react";
+import { HeraldicIcon } from "../components/HeraldicIcon";
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 
@@ -70,9 +70,9 @@ export function ContextsPage() {
           </div>
         </div>
         <Link to="/inbox" className="scene-home-inbox">
-          <Inbox size={18} aria-hidden="true"/>
+          <HeraldicIcon name="inbox" size={23}/>
           <span>进入收集箱</span>
-          <ArrowUpRight size={16} aria-hidden="true"/>
+          <HeraldicIcon name="arrow" size={20}/>
         </Link>
       </header>
 
@@ -87,7 +87,7 @@ export function ContextsPage() {
           <input id="quick-add-context" value={quickName}
             onChange={(event) => { setQuickName(event.target.value); setCreateError(""); }}
             placeholder="新建清单，写下一个场景名称…" />
-          <button type="submit" aria-label="添加清单" disabled={create.isPending}><CirclePlus aria-hidden="true" size={25}/></button>
+          <button type="submit" aria-label="添加清单" disabled={create.isPending}><HeraldicIcon name="add" size={26}/></button>
         </form>
         {copiedId ? <p className="copy-toast" role="status">已复制待办</p> : null}
         {contexts.isError ? (
