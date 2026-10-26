@@ -59,7 +59,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯国王已定稿 →</a><span>22 张大阿卡纳 · 圣杯组14张原画已收录</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">小阿卡纳：圣杯14张已定稿 →</a><span>22 张大阿卡纳 · 圣杯组14张原画已收录</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -123,8 +123,8 @@
     return `<section class="page library cups-library">
       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">大阿卡纳牌库</a><span>/</span> 小阿卡纳 · 圣杯组</div>
       <div class="lib-heading"><div>
-      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','圣杯14张原画均已收录，并提供独立故事与正逆位解读。其中圣杯六存在杯数待修正问题，在正式校验完成前不进入抽牌池。')}
-      </div><div class="library-count">圣杯组14张已收录 · 13张通过 · 第 ${page} / 3 页</div></div>
+      ${banner('MINOR ARCANA / SUIT OF CUPS','圣杯组 · 高清正式牌库','圣杯14张原画均已收录，并提供独立故事与正逆位解读。圣杯五、圣杯六已按牌义修正杯数，14张均已正式入库。')}
+      </div><div class="library-count">圣杯组14张已收录 · 14张通过 · 第 ${page} / 3 页</div></div>
       <div class="library-panel"><div class="library-grid cups-approved-grid">
         ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card cups-approved-card" aria-label="打开${clean(c.zh)}原画和完整解读">
           <img src="${c.thumb}" loading="lazy" alt="${clean(c.zh)}高清塔罗原画">
@@ -137,7 +137,7 @@
        <span class="page-number">${page} / 3</span>
        ${page<3?`<a class="btn outline mini" href="#/library/cups/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
       </div>
-      <p class="lead">本次新增《圣杯五》《圣杯骑士》《圣杯王后》均已入库。圣杯组14张图片全部可看，但圣杯六杯数仍待修正，不参与随机抽牌；当前可抽取22张大阿卡纳＋13张已审核圣杯，共35张。</p>
+      <p class="lead">圣杯组14张正式入库。圣杯五已修正为三只倾倒、两只直立；圣杯六已补足第六只。抽牌现支持22张大阿卡纳或包含所有14张圣杯的36张。</p>
       <div class="actions"><a class="btn outline mini" href="#/draw">用已入库牌面抽牌 →</a><a class="btn outline mini" href="./minor-arcana/cups/" target="_blank" rel="noopener">查看圣杯制作台账 →</a></div>
     </section>`;
   }
@@ -186,7 +186,7 @@
          <div class="spread-select">${modeOptions.map(o=>`<button type="button" data-n="${o.n}" data-daily="${o.d?1:0}" class="${currentSpread===o.n&&isDaily===o.d?'active':''}">${o.title}<small style="display:block;margin-top:5px;opacity:.7">${o.desc}</small></button>`).join('')}</div>
          <label>抽取范围</label>
          <div class="spread-select pool-select" role="group" aria-label="抽牌范围">
-           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已审核 · 35张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 已定稿13张圣杯</small></button>
+           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已审核 · 36张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 已定稿14张圣杯</small></button>
            <button type="button" data-pool="major" class="${drawPool==='major'?'active':''}">仅大阿卡纳 · 22张</button>
          </div>
          <label for="question">此刻的问题（可选）</label>
