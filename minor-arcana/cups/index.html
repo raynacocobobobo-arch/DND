@@ -18,6 +18,16 @@ p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:
 .footer{border-top:1px solid var(--line);text-align:center;padding:35px 20px;font-size:12px;color:#857f74}
 @media(max-width:920px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.preview{grid-template-columns:40% 1fr;padding:26px}.facts{grid-template-columns:1fr}}
 @media(max-width:640px){.head{flex-direction:column;align-items:start}.intro{padding:40px 0 35px}.preview{grid-template-columns:1fr}.preview img{max-height:570px;max-width:390px;margin:auto}.grid{grid-template-columns:1fr}.tile{min-height:200px}.gallery{padding:50px 0 80px}.sheet-head{flex-direction:column}}
+
+.approved-preview{border-color:#d2b68391;background:linear-gradient(122deg,#18232a,#121a21)}
+.approved-preview img{max-height:800px}
+.approved-preview h2{font-size:clamp(36px,4vw,55px)}
+.approved-preview .tag{color:#e5c88f}
+.approved-preview .feature-note{color:#e0d3c1;line-height:1.95}
+.approved-preview .feature-actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0 0}
+.approved-preview .feature-actions a{padding:13px 18px;border:1px solid #b99d66a8;color:#f0d6a3;font-size:13px}
+.approved-preview .feature-actions a:hover{background:#b99d6623}
+.tile.approved .status{color:#e6c78e}
 </style></head><body>
 <header><div class="wrap head"><div class="logo">禁忌之书 / THE FORBIDDEN ARCANA</div><a class="back" href="../../index.html#/home">返回现有22张大阿卡纳 ↗</a></div></header>
 <main class="wrap">
@@ -25,8 +35,17 @@ p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:
 <div class="eyebrow">MINOR ARCANA / SUIT 01 / CUPS</div>
 <h1>圣杯组<br>十四张视觉方案</h1>
 <p>已经进入真实视觉制作。本页公开区分「已生成的美术样张」与「已经完成设计但尚未出图的牌」；逐张记录故事、构图、色彩、圣杯符号和与既有大阿卡纳的避重原则。</p>
-<div class="metric"><span><b>14 / 14</b> 张完整设计方案</span><span><b>1 / 14</b> 张生成样张</span><span><b>0 / 14</b> 张最终审核通过</span></div>
+<div class="metric"><span><b>14 / 14</b> 张完整设计方案</span><span><b>2 / 14</b> 张生成样张</span><span><b>1 / 14</b> 张正式定稿</span></div>
 </section>
+<section class="preview approved-preview" id="king-approved">
+<img src="./final/king-of-cups-v1.webp?v=approved-20261026" fetchpriority="high" alt="圣杯国王 King of Cups 正式定稿高清原画，941乘1672像素">
+<div>
+<div class="tag">USER APPROVED / FINAL ARTWORK 01</div>
+<h2>KING OF CUPS</h2><h3>圣杯国王 · 风暴中的平静</h3>
+<p class="feature-note">圣杯组第一张<strong>正式审核通过</strong>的牌面。风暴海面与冷色天幕围绕王座，人物与手中的金色圣杯成为清晰的视觉焦点。延续既有塔罗牌的古金边框，同时保留适度丰富而不显脏乱的细节。</p>
+<p class="feature-note">按照已确认的画面完整保存，不再擅自重绘。<strong>941 × 1672 无损高清 WebP</strong>，可直接用于展示和后续整套卡牌的美术对齐。</p>
+<div class="feature-actions"><a href="./final/king-of-cups-v1.webp?v=approved-20261026" target="_blank" rel="noopener">打开高清定稿原画 ↗</a><a href="#king-approved" onclick="document.querySelectorAll('.tile')[13]?.click();return false">查看国王牌设计档案 ↓</a></div>
+</div></section>
 <section class="preview">
 <img id="ace-photo" src="./drafts/ace-of-cups-v01.webp" alt="圣杯王牌实际视觉样张，非最终定稿">
 <div><div class="tag">FIRST ACTUAL ARTWORK / DRAFT 01</div><h2>ACE OF CUPS</h2><h3>潮汐的第一只圣杯</h3>
@@ -37,7 +56,7 @@ p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:
 <section class="gallery"><div class="eyebrow">EDITORIAL & VISUAL PRODUCTION REGISTER</div><h2>14 张制作台账</h2>
 <p class="sub">点击任意一张，展开它的完整故事、美术构图和避免与22张大阿卡纳重复的规则。</p>
 <div class="grid" id="grid"></div><article class="sheet" id="sheet"></article></section>
-</main><footer class="footer">THE FORBIDDEN ARCANA · SUIT OF CUPS · DESIGN REGISTER V1 · 实际样张1张，其余13张仍待生成与审核</footer>
+</main><footer class="footer">THE FORBIDDEN ARCANA · SUIT OF CUPS · DESIGN REGISTER V1 · 定稿1张 · 候选样张1张 · 其余12张待出图</footer>
 <script>
 fetch('./design-register-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).then(({cards})=>{
  const grid=document.getElementById('grid'),sheet=document.getElementById('sheet');
@@ -48,6 +67,6 @@ fetch('./design-register-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Er
  ['与22张大阿卡纳避重',c.avoid],['当前进度',c.review||'已完成文字与视觉设定，图片尚未生成']
  ];sheet.innerHTML='<div class="sheet-head"><div><div class="eyebrow">'+safe(c.en)+'</div><h3>'+safe(c.zh)+' · '+safe(c.concept)+'</h3></div><button class="close" type="button" id="close">收起 ×</button></div><div class="facts">'+lines.map(([a,b])=>'<div class="fact"><div class="label">'+safe(a)+'</div><p>'+safe(b)+'</p></div>').join('')+'</div>';
  sheet.classList.add('open');document.getElementById('close').onclick=()=>sheet.classList.remove('open');sheet.scrollIntoView({behavior:'smooth',block:'start'});};
- cards.forEach((c,i)=>{let el=document.createElement('button');el.className='tile';el.type='button';el.innerHTML='<div class="number">'+safe(c.no)+'</div><div class="en">'+safe(c.en)+'</div><h3>'+safe(c.zh)+'</h3><div class="concept">'+safe(c.concept)+'</div><span class="status '+(c.status==='sample'?'sample':'')+'">'+(c.status==='sample'?'● 已有实际视觉样张':'○ 已完成设计 / 待出图')+'</span>';el.onclick=()=>{[...grid.children].forEach(x=>x.classList.remove('active'));el.classList.add('active');detail(c);};grid.append(el);});
+ cards.forEach((c,i)=>{let el=document.createElement('button');el.className='tile'+(c.status==='approved'?' approved':'');el.type='button';el.innerHTML='<div class="number">'+safe(c.no)+'</div><div class="en">'+safe(c.en)+'</div><h3>'+safe(c.zh)+'</h3><div class="concept">'+safe(c.concept)+'</div><span class="status '+(c.status==='approved'?'approved':c.status==='sample'?'sample':'')+'">'+(c.status==='approved'?'◆ 已审核定稿 · 高清原画':c.status==='sample'?'● 已有实际视觉样张':'○ 已完成设计 / 待出图')+'</span>';el.onclick=()=>{[...grid.children].forEach(x=>x.classList.remove('active'));el.classList.add('active');detail(c);};grid.append(el);});
 }).catch(e=>{document.getElementById('grid').textContent='读取制作台账失败：'+e.message;});
 </script></body></html>
