@@ -21,8 +21,9 @@ function AuthenticatedApp() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<HomePage />} />
-        <Route path="contexts" element={<ContextsPage />} />
+        <Route index element={<ContextsPage />} />
+        <Route path="inbox" element={<HomePage />} />
+        <Route path="contexts" element={<Navigate to="/" replace />} />
         <Route path="contexts/:id" element={<ContextDetailPage />} />
         <Route path="ai" element={<AIPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
