@@ -48,7 +48,7 @@ jobs:
               except Exception:pass
               time.sleep(6)
             else:raise Exception("14-card library not deployed")
-            assert '14 / 14' in b.find_element(By.CSS_SELECTOR,'.library-count').text
+            assert '圣杯组14张已收录' in b.find_element(By.CSS_SELECTOR,'.library-count').text
             for slug in ("five","six","knight","queen"):
               b.get(base+"?verify=20261026#/card/cups/"+slug)
               WebDriverWait(b,9).until(lambda d:d.find_element(By.CSS_SELECTOR,'.detail-art img'))
