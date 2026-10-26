@@ -78,6 +78,10 @@ def publish_bytes(raw: bytes, entry: dict, root: Path, replace: bool = False) ->
             raise ValueError(f"Source resolution {source.size} != approved {expected}. No auto-resize!")
         mode = "RGBA" if "A" in source.getbands() else "RGB"
         original = source.convert(mode)
+    pixel_hash = hashlib.sha256(original.tobytes()).hexdigest()
+    expected_hash = entry.get("expected_pixel_sha256")
+    if expected_hash and pixel_hash.lower() != str(expected_hash).lower():
+        raise ValueError("Google Docs relay pixels differ from the approved local source hash")
     full.parent.mkdir(parents=True, exist_ok=True)
     thumb.parent.mkdir(parents=True, exist_ok=True)
     full_temp = full.with_name(full.name + ".uploading")
