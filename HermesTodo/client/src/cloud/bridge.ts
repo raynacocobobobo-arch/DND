@@ -308,6 +308,29 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     saveSession(config, token);
     return jsonResponse({ authenticated: true });
   }
+  if (endpoint === "/api/auth/recover-redirect" && method === "POST") {
+    const pasted = String(data.redirectedUrl ?? "").trim();
+    if (!pasted || pasted.length > 12000) throw new Error("请粘贴上次 localhost 错误页面地址栏中的完整网址");
+    let url: URL;
+    try { url = new URL(pasted); } catch { throw new Error("请输入浏览器地址栏中的完整网址"); }
+    // Only an explicitly user-pasted redirected URL is accepted. No network request
+    // ever goes to localhost, and tokens are verified with the configured project.
+    const isLocal = url.protocol === "http:" && url.hostname === "localhost" && url.port === "3000";
+    const isOurSite = url.protocol === "https:" && url.origin === location.origin &&
+      url.pathname.startsWith(String(import.meta.env.BASE_URL));
+    if (!isLocal && !isOurSite) throw new Error("只能使用上次 localhost:3000 或 HermesTodo 网页的跳转地址");
+    const fragment = url.hash.replace(/^#\/?/, "");
+    const params = new URLSearchParams(fragment);
+    const access = params.get("access_token");
+    const refresh = params.get("refresh_token");
+    const expires = Number(params.get("expires_in") ?? 3600);
+    if (!access || !refresh) throw new Error("此地址没有登录凭证。请确认复制的是邮件跳转后浏览器地址栏的完整网址（包含 #access_token）。");
+    await persistLinkSession(config, {
+      access_token: access, refresh_token: refresh,
+      expires_in: Number.isFinite(expires) && expires > 0 ? expires : 3600
+    });
+    return jsonResponse({ authenticated: true });
+  }
   if (endpoint === "/api/auth/logout" && method === "POST") {
     const token = readSession(config);
     localStorage.removeItem(SESSION_KEY);
