@@ -42,8 +42,8 @@ p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:
 <section class="intro">
 <div class="eyebrow">MINOR ARCANA / SUIT 01 / CUPS</div>
 <h1>圣杯组<br>十四张视觉方案</h1>
-<p>已经进入真实视觉制作。本页公开区分「已生成的美术样张」与「已经完成设计但尚未出图的牌」；逐张记录故事、构图、色彩、圣杯符号和与既有大阿卡纳的避重原则。</p>
-<div class="metric"><span><b>14 / 14</b> 张完整设计方案</span><span><b>11 / 14</b> 张正式定稿</span><span><b>3 / 14</b> 张仍待定稿</span></div>
+<p>圣杯组14张原画现已全部收录。已完成13张定稿，圣杯六因为画中只有5只可辨认的杯子仍需修正；它保留在画廊中供查看，但暂不进入抽牌池。</p>
+<div class="metric"><span><b>14 / 14</b> 张完整设计方案</span><span><b>14 / 14</b> 张原画已收录</span><span><b>13 / 14</b> 张正式定稿</span><span><b>1 / 14</b> 张待修正</span></div>
 </section>
 <section class="preview approved-preview" id="king-approved">
 <img src="./final/king-of-cups-v1.webp?v=approved-20261026" fetchpriority="high" alt="圣杯国王 King of Cups 正式定稿高清原画，941乘1672像素">
@@ -56,15 +56,15 @@ p{line-height:1.9}.intro{padding:55px 0 44px;max-width:900px}.intro p{max-width:
 </div></section>
 
 <section class="art-library" id="approved-art">
-<div class="eyebrow">USER-APPROVED ORIGINAL ARTWORKS / 11</div>
-<h2>已入库的11张圣杯原画</h2>
-<p class="small" style="margin-bottom:25px">全部为本次确认的实际原画，并非概念缩略占位图。点击牌面可进入主网站的完整故事与解读。</p>
+<div class="eyebrow">SUIT OF CUPS / ALL 14 ORIGINAL PAINTINGS</div>
+<h2>圣杯组 · 14张完整原画</h2>
+<p class="small" style="margin-bottom:25px">均为已经生成的实际原画。新加入圣杯五、圣杯骑士和圣杯王后；圣杯六保留待修正标记。点击每张牌可进入主站独立详情。</p>
 <div id="artgrid" class="artgrid"></div>
 </section>
 <section class="gallery"><div class="eyebrow">EDITORIAL & VISUAL PRODUCTION REGISTER</div><h2>14 张制作台账</h2>
 <p class="sub">点击任意一张，展开它的完整故事、美术构图和避免与22张大阿卡纳重复的规则。</p>
 <div class="grid" id="grid"></div><article class="sheet" id="sheet"></article></section>
-</main><footer class="footer">THE FORBIDDEN ARCANA · SUIT OF CUPS · DESIGN REGISTER V1 · 正式定稿11张 · 待完成3张：五、骑士、王后</footer>
+</main><footer class="footer">THE FORBIDDEN ARCANA · SUIT OF CUPS · DESIGN REGISTER V1 · 14张原画全部入库 · 正式定稿13张 · 圣杯六待修正</footer>
 <script>
 fetch('./design-register-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).then(({cards})=>{
  const grid=document.getElementById('grid'),sheet=document.getElementById('sheet'),artgrid=document.getElementById('artgrid');
@@ -75,21 +75,21 @@ fetch('./design-register-v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Er
  ['与22张大阿卡纳避重',c.avoid],['当前进度',c.review||'已完成文字与视觉设定，图片尚未生成']
  ];sheet.innerHTML='<div class="sheet-head"><div><div class="eyebrow">'+safe(c.en)+'</div><h3>'+safe(c.zh)+' · '+safe(c.concept)+'</h3></div><button class="close" type="button" id="close">收起 ×</button></div><div class="facts">'+lines.map(([a,b])=>'<div class="fact"><div class="label">'+safe(a)+'</div><p>'+safe(b)+'</p></div>').join('')+'</div>';
  sheet.classList.add('open');document.getElementById('close').onclick=()=>sheet.classList.remove('open');sheet.scrollIntoView({behavior:'smooth',block:'start'});};
- const approved=cards.filter(c=>c.status==='approved');
- approved.forEach(c=>{
+ const published=cards.filter(c=>c.approved_art);
+ published.forEach(c=>{
    const link=document.createElement('a');
    link.className='approved-art-card';
    link.href='../../index.html#/card/cups/'+c.slug;
    const im=document.createElement('img');
    im.loading='lazy';
-   im.alt=c.zh+'已定稿原画';
-   im.src=c.slug==='king'?'./final/king-of-cups-v1.webp?v=cups11-20261026':'./thumbs/'+c.slug+'-of-cups.webp?v=cups11-20261026';
+   im.alt=c.zh+(c.status==='approved'?'已定稿原画':'待修正原画');
+   im.src=['king','five','knight','queen'].includes(c.slug)?'./final/'+c.slug+'-of-cups-v1.webp?v=cups14-20261026':'./thumbs/'+c.slug+'-of-cups.webp?v=cups14-20261026';
    const name=document.createElement('div');
    name.className='approved-name';
-   name.textContent=c.zh+' · '+c.en;
+   name.textContent=c.zh+' · '+c.en+(c.status==='approved'?'':' · 待修正');
    link.append(im,name);
    artgrid.appendChild(link);
  });
- cards.forEach((c,i)=>{let el=document.createElement('button');el.className='tile'+(c.status==='approved'?' approved':'');el.type='button';el.innerHTML='<div class="number">'+safe(c.no)+'</div><div class="en">'+safe(c.en)+'</div><h3>'+safe(c.zh)+'</h3><div class="concept">'+safe(c.concept)+'</div><span class="status '+(c.status==='approved'?'approved':c.status==='sample'?'sample':'')+'">'+(c.status==='approved'?'◆ 已审核定稿 · 高清原画':c.status==='sample'?'● 已有实际视觉样张':'○ 已完成设计 / 待出图')+'</span>';el.onclick=()=>{[...grid.children].forEach(x=>x.classList.remove('active'));el.classList.add('active');detail(c);};grid.append(el);});
+ cards.forEach((c,i)=>{let el=document.createElement('button');el.className='tile'+(c.status==='approved'?' approved':'');el.type='button';el.innerHTML='<div class="number">'+safe(c.no)+'</div><div class="en">'+safe(c.en)+'</div><h3>'+safe(c.zh)+'</h3><div class="concept">'+safe(c.concept)+'</div><span class="status '+(c.status==='approved'?'approved':c.status==='requires-correction'?'sample':c.status==='sample'?'sample':'')+'">'+(c.status==='approved'?'◆ 已审核定稿 · 高清原画':c.status==='requires-correction'?'△ 已收录原画 · 杯数待修正':c.status==='sample'?'● 已有实际视觉样张':'○ 已完成设计 / 待出图')+'</span>';el.onclick=()=>{[...grid.children].forEach(x=>x.classList.remove('active'));el.classList.add('active');detail(c);};grid.append(el);});
 }).catch(e=>{document.getElementById('grid').textContent='读取制作台账失败：'+e.message;});
 </script></body></html>
