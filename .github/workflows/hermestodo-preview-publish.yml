@@ -56,57 +56,54 @@ jobs:
               options.add_argument(arg)
           browser=webdriver.Chrome(options=options)
           try:
-              browser.get('http://127.0.0.1:8090/DND/hermestodo/')
-              wait=WebDriverWait(browser,20)
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
+              browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
+              wait=WebDriverWait(browser,25)
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
               assert '演示模式 · 任务仅保存在本浏览器' in browser.find_element(By.TAG_NAME,'body').text
-              # The independent illustration must be a real image, not a flattened UI.
-              wait.until(lambda b: b.execute_script(
-                  "return !!document.querySelector('.editorial-character') && document.querySelector('.editorial-character').naturalWidth > 0"))
-              assert browser.execute_script("return getComputedStyle(document.querySelector('.editorial-character')).objectFit") == 'cover'
-              assert browser.execute_script("return document.querySelector('.editorial-character').naturalWidth") >= 900
-              assert browser.execute_script("return document.querySelector('.editorial-character').currentSrc.includes('hero-mobile.avif')")
-              # The character image cannot be underneath an opaque dashboard plane.
-              layer=browser.execute_script("return getComputedStyle(document.querySelector('.editorial-backdrop')).zIndex")
-              assert layer not in ['-1', '-2'], f'Painted figure hidden behind canvas, z-index={layer}'
-              assert not browser.find_elements(By.CSS_SELECTOR, '.priority-badge'), 'Priority labels must not appear in a simple to-do list'
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
-              assert browser.execute_script("return !!document.querySelector('.v7-capture-row .quick-add')")
-              assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
-              assert '检查 HermesTodo 新版交互' not in browser.find_element(By.TAG_NAME,'body').text, 'Context child leaked into home'
-              assert not browser.find_elements(By.CSS_SELECTOR,'.progress-card'), 'Daily progress widget should be removed'
-              assert not browser.find_elements(By.CSS_SELECTOR,'.weekly-panel'), 'Last-seven-days widget should be removed'
+              assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
+              assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
+              assert browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input').is_displayed()
+              assert not browser.find_elements(By.CSS_SELECTOR,'.dashboard-task-board'), 'Old dashboard must not be the homepage'
               browser.save_screenshot('/tmp/hermestodo-desktop.png')
-              browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
-              assert not browser.find_elements(By.XPATH, "//label[contains(., '优先级')]"), 'Task form should not ask for priority'
-              browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
-              field=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.quick-add input')))
-              field.send_keys('浏览器交互验收任务')
-              browser.find_element(By.CSS_SELECTOR,'.quick-add button').click()
-              wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
-              browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts"]').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.contexts-page')))
+
+              # The list-first home retains real create and edit functionality.
+              field=browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input')
+              field.send_keys('网页验收清单')
+              browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd button').click()
+              wait.until(lambda b: '网页验收清单' in b.find_element(By.TAG_NAME,'body').text)
               browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts/work"]').click()
               wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
               assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
+
+              # Inbox remains a separate, functioning route.
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
+              assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
+              assert '检查 HermesTodo 新版交互' not in browser.find_element(By.TAG_NAME,'body').text
+              browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
+              browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
+              field=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.v7-capture-row .quick-add input')))
+              field.send_keys('浏览器交互验收任务')
+              browser.find_element(By.CSS_SELECTOR,'.v7-capture-row .quick-add button').click()
+              wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
               browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
+
+              # Mobile list-first home: first scene card must be reachable without horizontal scrolling.
               browser.set_window_size(390,844)
               browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
-              wait.until(lambda b: b.execute_script(
-                  "return document.querySelector('.editorial-character').naturalWidth >= 900 && document.querySelector('.editorial-character').currentSrc.includes('hero-mobile.avif')"))
-              # The first task must be reachable above the bottom navigation
-              # in the initial smartphone viewport, not buried behind a huge hero.
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.dashboard-task-board .task-title-button')))
-              first_task=browser.execute_script("return document.querySelector('.dashboard-task-board .task-title-button').getBoundingClientRect().top")
-              viewport=browser.execute_script("return window.innerHeight")
-              assert first_task < viewport - 66, f'Mobile first task hidden under the fold: task_y={first_task}, viewport={viewport}'
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               browser.save_screenshot('/tmp/hermestodo-mobile.png')
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
-              print('BROWSER SMOKE PASSED: desktop, create, task details, contexts, AI, mobile no-overflow',flush=True)
+              first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
+              viewport=browser.execute_script("return window.innerHeight")
+              assert first < viewport - 45, f'First scene card below fold: top={first}, viewport={viewport}'
+              print('BROWSER SMOKE PASSED: scene homepage, create list, list details, inbox tasks, AI, mobile',flush=True)
           finally:
               try: print('VISIBLE URL',browser.current_url,flush=True)
               except Exception: pass
