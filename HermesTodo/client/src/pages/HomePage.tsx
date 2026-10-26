@@ -4,6 +4,7 @@ import { HeraldicIcon } from "../components/HeraldicIcon";
 import { Link } from "react-router-dom";
 
 import { ContextIcon } from "../components/ContextIcon";
+import { AILogo } from "../components/AILogo";
 import { FleurDeLis } from "../components/HeraldicArt";
 import { QuickAdd } from "../components/QuickAdd";
 import { TaskList } from "../components/TaskList";
@@ -53,7 +54,7 @@ export function HomePage() {
             <h1>{greeting}<span className="v7-intro-punctuation">。</span></h1>
             <p>把想做的事，写下来。<br/>剩下的，一件件完成。</p>
           </div>
-          <div className="v7-intro-mark" aria-hidden="true"><HeraldicIcon name="quill" size={41}/><span>AD ASTRA</span></div>
+          <div className="v7-intro-mark" aria-hidden="true"><HeraldicIcon name="quill" size={41}/><span>逐项完成</span></div>
         </section>
         <section className="v7-capture" aria-label="记录待办">
           <div className="v7-capture-caption"><span>01</span> 写下下一件事 <small>THE NEXT THING</small></div>
@@ -115,7 +116,7 @@ export function HomePage() {
                 {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/">创建第一个清单</Link> : null}
               </div>
             </section>
-            <Link className="ai-teaser v7-ai-note" to="/ai"><HeraldicIcon name="star" size={22}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><HeraldicIcon name="arrow" size={20}/></Link>
+            <Link className="ai-teaser v7-ai-note" to="/ai"><AILogo size={34}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><HeraldicIcon name="arrow" size={20}/></Link>
           </aside>
         </div>
         <footer className="editorial-footer">FINIS CORONAT OPUS <FleurDeLis size={13}/> HERMES TODO</footer>
