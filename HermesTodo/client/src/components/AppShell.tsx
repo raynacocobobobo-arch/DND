@@ -1,11 +1,12 @@
-import { HeraldicIcon } from "./HeraldicIcon";
-import { MedievalCrest } from "./MedievalCrest";
-import { CloudSettings } from "../cloud/CloudSettings";
-import { isCloudMode } from "../cloud/config";
+import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
+import { isCloudMode } from "../cloud/config";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
+import { HeraldicIcon } from "./HeraldicIcon";
+import { MedievalCrest } from "./MedievalCrest";
 
 const links = [
   { to: "/", label: "清单", end: true, glyph: "fleur" },
@@ -17,6 +18,20 @@ export function AppShell() {
   const { logout } = useAuth();
   const { pathname } = useLocation();
   const cloudMode = isCloudMode();
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  async function logoutThisDevice() {
+    setLoggingOut(true);
+    try {
+      await logout();
+      setConfirmLogout(false);
+    } finally {
+      setLoggingOut(false);
+    }
+  }
+
   return (
     <div className="app-shell" style={{
       "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
@@ -24,7 +39,7 @@ export function AppShell() {
     } as React.CSSProperties}>
       {import.meta.env.VITE_STATIC_PREVIEW === "true" ? (
         <aside className="preview-banner" role="status">
-          <FleurDeLis size={14}/> {cloudMode ? "云端同步模式 · 使用 Supabase 保存数据" : "演示模式 · 任务仅保存在本浏览器"}
+          <FleurDeLis size={14}/> {cloudMode ? "云端同步 · 登录状态自动保持" : "演示模式 · 任务仅保存在本浏览器"}
         </aside>
       ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
@@ -59,13 +74,55 @@ export function AppShell() {
         <main className="app-content" id="main-content" tabIndex={-1}>
           <div className="app-utility-row">
             <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>
-            <CloudSettings/>
-            <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
-              onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
+            {cloudMode ? (
+              <div className="account-control">
+                <button
+                  type="button"
+                  className="account-chip"
+                  aria-haspopup="menu"
+                  aria-expanded={accountOpen}
+                  onClick={() => setAccountOpen(value => !value)}
+                >
+                  <span className="account-status-dot" aria-hidden="true"/>
+                  <span>rui</span>
+                  <span className="account-sync-label">已同步</span>
+                </button>
+                {accountOpen ? (
+                  <div className="account-menu" role="menu">
+                    <strong>rui</strong>
+                    <p>此设备会自动保持登录。</p>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="account-logout-link"
+                      onClick={() => {
+                        setAccountOpen(false);
+                        setConfirmLogout(true);
+                      }}
+                    >
+                      退出此设备…
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
+                onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
+            )}
           </div>
           <Outlet/>
         </main>
       </div>
+      {confirmLogout ? (
+        <ConfirmDialog
+          title="退出此设备？"
+          message="退出后需要重新输入密码。云端任务和清单不会删除。"
+          confirmLabel="确认退出"
+          pending={loggingOut}
+          onCancel={() => setConfirmLogout(false)}
+          onConfirm={() => void logoutThisDevice()}
+        />
+      ) : null}
     </div>
   );
 }
