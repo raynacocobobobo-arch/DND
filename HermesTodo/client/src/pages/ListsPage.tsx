@@ -1,23 +1,30 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import type { Task } from "../../../shared/contracts";
+import { apiRequest } from "../api/client";
 
 import { FleurDeLis } from "../components/HeraldicArt";
 import { HeraldicIcon } from "../components/HeraldicIcon";
 import { ListCard } from "../components/ListCard";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ListForm } from "../components/ListForm";
-import { useCreateList, useLists, useReorderLists, useUpdateList, type ListRecord } from "../hooks/useLists";
+import { useCompleteList, useCreateList, useDeleteList, useLists, useReorderLists, useUpdateList, type ListRecord } from "../hooks/useLists";
 
 export function ListsPage() {
   const lists=useLists();
   const create=useCreateList();
   const update=useUpdateList();
   const reorder=useReorderLists();
+  const remove=useDeleteList();
+  const complete=useCompleteList();
   const [ordered,setOrdered]=useState<ListRecord[]>([]);
   const [formOpen,setFormOpen]=useState(false);
   const [editing,setEditing]=useState<ListRecord>();
   const [quickName,setQuickName]=useState("");
   const [error,setError]=useState("");
   const [draggingId,setDraggingId]=useState<string>();
+  const [deleting,setDeleting]=useState<ListRecord>();
+  const [actionMessage,setActionMessage]=useState("");
 
   useEffect(()=>{ if(lists.data) setOrdered(lists.data); },[lists.data]);
 
@@ -48,6 +55,26 @@ export function ListsPage() {
     const ids=ordered.map(x=>x.id);
     setDraggingId(undefined);
     if(ids.length>1) await reorder.mutateAsync(ids).catch(()=>void lists.refetch());
+  }
+
+  async function copyList(list: ListRecord) {
+    setActionMessage("");
+    const contexts=await apiRequest<Array<{id:string;name:string}>>(`/api/contexts?listId=${encodeURIComponent(list.id)}`);
+    const lines=[`【${list.name}】`];
+    for(const context of contexts){
+      lines.push("", `【${context.name}】`);
+      const tasks=await apiRequest<Task[]>(`/api/tasks?contextId=${encodeURIComponent(context.id)}&sort=createdAt`);
+      if(!tasks.length) lines.push("（暂无待办）");
+      else for(const task of tasks) lines.push(`${task.isCompleted?"●":"○"} ${task.title}`);
+    }
+    await navigator.clipboard.writeText(lines.join("\n"));
+    setActionMessage(`已复制“${list.name}”清单内容`);
+  }
+
+  async function completeList(list: ListRecord) {
+    setActionMessage("");
+    const result=await complete.mutateAsync(list.id);
+    setActionMessage(result.updatedCount ? `已勾选 ${result.updatedCount} 项待办` : "这份清单已经全部完成");
   }
 
   const sceneCount=ordered.reduce((n,x)=>n+x.sceneCount,0);
@@ -85,14 +112,23 @@ export function ListsPage() {
       :ordered.length?<ul className="context-grid scene-home-grid" aria-label="清单列表">
         {ordered.map(list=><ListCard key={list.id} list={list} dragging={draggingId===list.id}
           onEdit={()=>{setEditing(list);setFormOpen(true);}}
+          onDelete={()=>setDeleting(list)}
+          onCopy={()=>void copyList(list)}
+          onComplete={()=>void completeList(list)}
           onDragStart={()=>setDraggingId(list.id)}
           onDragOver={()=>moveDragged(list.id)}
           onDrop={()=>void finishDrag()}
           onDragEnd={()=>setDraggingId(undefined)}/>)}
       </ul>:<p className="empty-state dashboard-empty">还没有清单。先创建第一份清单。</p>}
-      <p className="list-order-help">按住卡片底部的 ⋮⋮ 可拖动调整清单顺序。</p>
+      <p className="list-order-help">按住“移动”拖动调整清单顺序。</p>
+      {actionMessage?<p className="copy-toast list-action-toast" role="status">{actionMessage}</p>:null}
     </section>
 
+    {deleting?<ConfirmDialog title="删除清单？"
+      message={`确定删除“${deleting.name}”吗？清单和场景目录会删除，但其中任务不会删除，会回到收集箱。`}
+      pending={remove.isPending}
+      onCancel={()=>setDeleting(undefined)}
+      onConfirm={()=>void remove.mutateAsync(deleting.id).then(()=>{setDeleting(undefined);setActionMessage("清单已删除，原任务已返回收集箱");})}/>:null}
     {formOpen?<ListForm list={editing} pending={create.isPending||update.isPending}
       onCancel={()=>setFormOpen(false)}
       onSubmit={(input)=>{
