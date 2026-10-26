@@ -1,0 +1,31 @@
+/* Optional Supabase cloud configuration; the medieval UI and page layout stay unchanged. */
+.cloud-settings-trigger,.cloud-login-settings {
+  color:#e6cb9a;border:1px solid #b393636e;background:#162d38;
+  border-radius:2px;font:11px/1.2 "PingFang SC",sans-serif;
+  padding:8px 11px;cursor:pointer;white-space:nowrap;
+}
+.cloud-settings-trigger:hover,.cloud-login-settings:hover{background:#2c4552}
+.app-utility-row .cloud-settings-trigger{margin-left:auto;margin-right:9px}
+.cloud-login-settings{display:block;margin:15px auto 5px;background:#243a42;color:#f8ebd3}
+.cloud-setup-overlay{position:fixed;z-index:500;inset:0;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:12px;background:#07111bd9}
+.cloud-setup-dialog{width:min(95vw,620px);max-height:min(92vh,850px);overflow:auto;padding:24px 27px}
+.cloud-setup-dialog p{font-size:13px;line-height:1.65;color:#4c453b}
+.cloud-setup-dialog .dialog-heading h2{font-size:25px}
+.cloud-setup-steps{padding-left:22px;color:#554331;font-size:13px;line-height:1.8;margin:15px 0 18px}
+.cloud-setup-steps a{color:#873e35;text-decoration:underline}
+.cloud-setup-dialog .stacked-form{gap:12px}
+.cloud-setup-dialog .stacked-form input{display:block;width:100%;margin-top:6px;font-size:13px}
+.cloud-setup-warning{border-top:1px solid #d4c1a2;margin-top:14px;padding-top:12px}
+.cloud-reset-button,.cloud-mode-switch{background:none;border:0;padding:9px 4px;color:#8b4439;text-decoration:underline;cursor:pointer;font-size:12px}
+.cloud-reset-button{display:block;margin:0 auto}
+.cloud-mode-switch{display:block;margin:9px auto 2px}
+.cloud-login-note{color:#71695b;font-size:11px;line-height:1.5;text-align:center;max-width:350px;margin:8px auto}
+.cloud-notice{margin:8px 0;color:#47715b;background:#e4ecdf;border:1px solid #b3c6a9;padding:9px;font-size:12px}
+.login-form label{display:block}
+.login-form label input{display:block;width:100%}
+@media(max-width:760px) {
+  .app-utility-row .cloud-settings-trigger{margin:0 6px 0 auto;padding:7px;font-size:10px}
+  .cloud-setup-dialog{padding:17px 15px;max-height:92dvh}
+  .cloud-setup-dialog .dialog-heading h2{font-size:21px}
+  .cloud-setup-steps{padding-left:19px}
+}
