@@ -88,7 +88,7 @@ export function ListsPage() {
           onDragStart={()=>setDraggingId(list.id)}
           onDragOver={()=>moveDragged(list.id)}
           onDrop={()=>void finishDrag()}
-          onDragEnd={()=>void finishDrag()}/>)}
+          onDragEnd={()=>setDraggingId(undefined)}/>)}
       </ul>:<p className="empty-state dashboard-empty">还没有清单。先创建第一份清单。</p>}
       <p className="list-order-help">按住卡片底部的 ⋮⋮ 可拖动调整清单顺序。</p>
     </section>
