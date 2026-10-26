@@ -23,7 +23,7 @@ export function ContextForm({
   onCancel(): void;
 }) {
   const [name, setName] = useState(context?.name ?? "");
-  const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? icons[0]!.value));
+  const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? "folder"));
   const [color, setColor] = useState(context?.color ?? "#8CAABA");
 
   function submit(event: FormEvent<HTMLFormElement>) {
