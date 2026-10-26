@@ -6,7 +6,6 @@ import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { AppShell } from "./components/AppShell";
 import { LoginPage } from "./pages/LoginPage";
 import { HomePage } from "./pages/HomePage";
-import { ContextsPage } from "./pages/ContextsPage";
 import { ListsPage } from "./pages/ListsPage";
 import { ListDetailPage } from "./pages/ListDetailPage";
 import { ContextDetailPage } from "./pages/ContextDetailPage";
