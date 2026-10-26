@@ -81,7 +81,7 @@ export function HomePage() {
                 ))}
               </div>
             </header>
-            <p className="inbox-help">这里收集尚未分类的待办；已归入情境的任务可以在「情境」中查看。</p>
+            <p className="inbox-help">这里收集尚未分类的待办；已归入清单的任务可以在「清单」中查看。</p>
             {showActive ? (
               <section className="dashboard-section dashboard-focus" aria-label="未完成任务">
                 <div className="dashboard-section-heading"><h2>未完成</h2><span className="section-count">{pendingTasks.length} 项</span></div>
@@ -89,7 +89,7 @@ export function HomePage() {
                   <div className="dashboard-empty" role="alert">任务加载失败。<button type="button" className="text-retry-button" onClick={() => void tasks.refetch()}>重试</button></div>
                 ) : tasks.isLoading || contexts.isLoading ? <p>正在读取待办…</p> : pendingTasks.length ? (
                   <TaskList tasks={pendingTasks} contexts={contexts.data ?? []} onOpen={(task) => setSelectedTaskId(task.id)}/>
-                ) : <p className="dashboard-empty">收集箱是空的。直接记下一件事，或者进入情境查看分类任务。</p>}
+                ) : <p className="dashboard-empty">收集箱是空的。直接记下一件事，或者进入清单查看分类任务。</p>}
               </section>
             ) : null}
             {showDone ? (
@@ -103,7 +103,7 @@ export function HomePage() {
           </section>
           <aside className="dashboard-side-column">
             <section className="contexts-mini v7-index">
-              <div className="side-card-heading"><h2>情境目录</h2><Link to="/contexts">全部 <ChevronRight size={13}/></Link></div>
+              <div className="side-card-heading"><h2>清单目录</h2><Link to="/">全部 <ChevronRight size={13}/></Link></div>
               <div className="context-strip">
                 {(contexts.data ?? []).slice(0, 4).map((context) => (
                   <Link key={context.id} className="context-entry" to={`/contexts/${context.id}`}>
@@ -112,7 +112,7 @@ export function HomePage() {
                     <ChevronRight aria-hidden="true" size={14}/>
                   </Link>
                 ))}
-                {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/contexts">创建第一个情境</Link> : null}
+                {!contexts.isLoading && !contexts.data?.length ? <Link className="context-entry context-entry-empty" to="/">创建第一个清单</Link> : null}
               </div>
             </section>
             <Link className="ai-teaser v7-ai-note" to="/ai"><Sparkles size={18}/><div><strong>智识顾问</strong><span>把目标拆解成行动</span></div><ArrowUpRight size={17}/></Link>
