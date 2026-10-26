@@ -74,7 +74,7 @@ describe("home dashboard", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { name: /早上好|下午好|晚上好/ })).toBeInTheDocument();
-    expect(screen.getByText("10月25日 星期日")).toBeInTheDocument();
+    expect(screen.getByText("2026 · 10 · 25")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "下午好" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "我的待办" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
