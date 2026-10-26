@@ -106,10 +106,16 @@ function getLists() {
   return [...store.lists].sort((a,b)=>a.sortOrder-b.sortOrder).map(list => {
     const scenes=store.contexts.filter(c=>c.listId===list.id);
     const sceneIds=new Set(scenes.map(c=>c.id));
+    const rootIds=new Set(store.tasks.filter(t=>t.contextId&&sceneIds.has(t.contextId)).map(t=>t.id));
+    const listTasks=store.tasks.filter(t=>
+      (t.contextId&&sceneIds.has(t.contextId)) ||
+      (t.parentTaskId&&rootIds.has(t.parentTaskId))
+    );
     return {
       ...list,
       sceneCount:scenes.length,
-      incompleteCount:store.tasks.filter(t=>t.contextId && sceneIds.has(t.contextId) && !t.isCompleted).length
+      taskCount:listTasks.length,
+      incompleteCount:listTasks.filter(t=>!t.isCompleted).length
     };
   });
 }
@@ -152,7 +158,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     const item: ListItem = { id:id(), name, icon:String(data.icon||"compass"), color:String(data.color||"#8CAABA"),
       sortOrder:store.lists.length, createdAt:nowISO(), updatedAt:nowISO() };
     store.lists.push(item); persist();
-    return reply({ ...item, sceneCount:0, incompleteCount:0 },201);
+    return reply({ ...item, sceneCount:0, taskCount:0, incompleteCount:0 },201);
   }
   if (path === "/api/lists/reorder" && method === "POST") {
     const ids=Array.isArray(data.orderedIds)?data.orderedIds.map(String):[];
@@ -164,14 +170,22 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   if(lcm && method==="POST"){
     const sceneIds=new Set(store.contexts.filter(x=>x.listId===lcm[1]).map(x=>x.id));
     const rootIds=new Set(store.tasks.filter(t=>t.contextId&&sceneIds.has(t.contextId)).map(t=>t.id));
+    const listTasks=store.tasks.filter(t=>
+      (t.contextId&&sceneIds.has(t.contextId)) ||
+      (t.parentTaskId&&rootIds.has(t.parentTaskId))
+    );
+    if(!listTasks.length) return reply({updatedCount:0,completed:false});
+    const completed=listTasks.some(t=>!t.isCompleted);
     let updatedCount=0;
-    for(const task of store.tasks){
-      const belongs=(task.contextId&&sceneIds.has(task.contextId))||(task.parentTaskId&&rootIds.has(task.parentTaskId));
-      if(belongs&&!task.isCompleted){
-        task.isCompleted=true;task.completedAt=nowISO();task.updatedAt=nowISO();updatedCount++;
+    for(const task of listTasks){
+      if(task.isCompleted!==completed){
+        task.isCompleted=completed;
+        task.completedAt=completed?nowISO():null;
+        task.updatedAt=nowISO();
+        updatedCount++;
       }
     }
-    persist();return reply({updatedCount});
+    persist();return reply({updatedCount,completed});
   }
   const lm=/^\/api\/lists\/([^/]+)$/.exec(path);
   if(lm){
