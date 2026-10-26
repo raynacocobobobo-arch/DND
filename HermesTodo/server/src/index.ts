@@ -12,9 +12,9 @@ const aiPlanner = createArkClient({
 });
 const app = createApp({ db, config, aiPlanner, staticDirectory: "dist/client" });
 
-// Bind to the container interface. Production host exposure remains restricted by
-// Docker Compose to 127.0.0.1:3020; managed container hosts need this binding.
-const listenHost = process.env.LISTEN_HOST ?? "0.0.0.0";
+// systemd/Node runs behind the local reverse proxy: bind loopback by default.
+// Container deployments explicitly set LISTEN_HOST=0.0.0.0 in Dockerfile.
+const listenHost = process.env.LISTEN_HOST ?? "127.0.0.1";
 app.listen(config.port, listenHost, () => {
   console.log(`HermesTodo server listening on ${listenHost}:${config.port}`);
 });
