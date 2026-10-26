@@ -1,12 +1,12 @@
-import { Grid2X2, House, LogOut, Sparkles, type LucideIcon } from "lucide-react";
+import { Grid2X2, Inbox, LogOut, Sparkles, type LucideIcon } from "lucide-react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
 import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
 
 const links = [
-  { to: "/", label: "首页", end: true, icon: House },
-  { to: "/contexts", label: "情境", end: false, icon: Grid2X2 },
+  { to: "/", label: "清单", end: true, icon: Grid2X2 },
+  { to: "/inbox", label: "收集箱", end: true, icon: Inbox },
   { to: "/ai", label: "AI", end: false, icon: Sparkles }
 ] satisfies Array<{ to: string; label: string; end: boolean; icon: LucideIcon }>;
 
@@ -24,7 +24,7 @@ export function AppShell() {
       ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
       <aside className="hermes-sidebar">
-        <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回首页">
+        <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回清单首页">
           <FleurDeLis className="brand-fleur" size={38}/>
           <span className="brand-name"><span>HERMES</span><span>TODO</span></span>
           <span className="brand-subtitle">THE DAILY CHRONICLE</span>
