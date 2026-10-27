@@ -1,0 +1,1 @@
+{"version":"2026-10-27","cards":["ace","four","six","eight"],"excluded":"seven","resolution":[941,1672],"result":"PASS","checks":["lossless-pixel-sha256","public-html","four-card-details","seven-unchanged","major-and-cups-gallery-counts","draw","mobile"]}
