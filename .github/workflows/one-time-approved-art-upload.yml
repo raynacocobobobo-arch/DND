@@ -1,0 +1,148 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+          [
+            {
+              "name": "宝剑 two",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZgIB7pyM6dlL5M8UWdB0aiJGp_7GtbdEcyxDhZIA243FURjM5D3l85gyaZf0UD2_a6YStn3aZVRxSbCcFChn5r2_tyLc1Q9n_5X3kOny0s_TfRZjEb5WwgTJW9RYDbT5RxhXZfyS2Y-DFk6Qi0LdLMg-0CxR2Y6I9HGHFmzWcXCq8GUTo=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "47867997315eeef04747780ed187c43fdaee529ccf9e05008e8dbc16d0ae0183",
+              "output_path": "minor-arcana/swords/final/two-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/two-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 three",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbs71_BIkBjTbr37VYc_724Kgn02wUNo_CcgqYusUTh1Vg0nD5olL1M2A3u4B93zp5MDXQCX37mkIiNKO0OkRMWptbH_PqLO_ELl8lKbYQirZv6tjAApjLNtvgrY_8rbQoLHtiX5YiWOp2BBKflhueikm6WmDzVdPq64RmWtSc0K4BfEpA=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "b63a5aee211a9b69af44c442f97d4f7e37aebea0c0d9fa839676abc5df305eb4",
+              "output_path": "minor-arcana/swords/final/three-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/three-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 four",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaIuB0XWZKwE0CeDjrv0Y05i9un5BrXVWTLAG6g2y6zc6ng8wIeXUua09Z2CLtCMk8dvj1N73SnPQ0bZ3vv-kFPx1whiqIV54Tb8X5Z8O-BMAi9QO2rGhZ2pH8UFRGl_CInIAh5FuBQU4kU-GC6aJe5_imQiizS8kyyNYakYiz7ibENi4w=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "9170db295e19558ad9bcfd3bb99c9e95692d51f99a0f7b09a312653377b5f824",
+              "output_path": "minor-arcana/swords/final/four-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/four-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 five",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZ61gXB0YSFqhTjcffwb53oeTwKLUgaxsVq_JKARBUlp0K2m88TiODCpzJFW9VolWSQyQ-VEwtrOsEnMsU2TuiXezEBbgzhXLQU4qZ38GBs5YtfeZXBv5Yrc-n2LWh9wn3lWszlZiT4Q5xL_qVxMe10rgSTUN4zOsI83HTfAkGa0h6Z=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "43183066f297361ec1531812f21ffd01635b9c98c3b6d12877a8617f57aa66e1",
+              "output_path": "minor-arcana/swords/final/five-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/five-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 six",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZQQsiCwjD4Q4DJD9EbWkfmmckCAsNvtEUD_alMHv_F_oGbslpKHlA7R6IhwSMwlKHNl9X_JkymkmMEa07XyaBV700AiD14o82T3YkE99LDImFO7iN2KWYNT3m7zP3fd_ZcxUsliLRBpGfcOaAjPvnVMEKh5wTJ2sCaAchOXW8UiBvfKW8=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "6bb1dec96e741246afacb0c1489ee18405ed41b53b810cc32ec18259eedb4744",
+              "output_path": "minor-arcana/swords/final/six-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/six-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 seven",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztb-IRnLNVPZgP187SXUpDAOEI267D3svocABwjSbLl49OCe2I0OR-E9mtIlpROpFDnBdt7FORD0OPBl53LmR6uMR2-o_W_A_O-zQlfhl-srNhqH6jzkkfPuUTn0Rk0tjcMBLpj58m3pf-jd9Y0o6MdU4pdMU4COkjICLr_NZWjMTX61uMM=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1671
+              ],
+              "expected_pixel_sha256": "326b039177f7ff8190b89d52ff08ce1931153ed9557ec12f2804aa5569ea30dc",
+              "output_path": "minor-arcana/swords/final/seven-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/seven-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 eight",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaOiUSGT0_T5UM8y0wV00BrYSAfr-mgG0cqU5W6jyJ8r1BzVjEtcY5QzgEbX-OVPXGZVmLrdh-wH3K_iNoPA4sLCU653dkUqqk-tIdRADPU4Ix7DB6mXRhxs1-qRNOV_ZJGYmtS1xkQeaXjfienAwmtthoBanUpZPvqoWQ7Ughjq2r2b3w=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1671
+              ],
+              "expected_pixel_sha256": "9d6b58aa2c687df793ffca5e5f47043f0ecd2b3b1d939b0ecea4f2c0cbf72a1b",
+              "output_path": "minor-arcana/swords/final/eight-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/eight-of-swords-v1.webp"
+            },
+            {
+              "name": "宝剑 nine",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaHsdxhpz-42gljQZ7XKvoQjKDB99aLMmepEsIIDyHhYVdNb40Su3N5DYyx8FSpAIfnKWRVOCSgy5b3wEeCq6cPPsT-XtbofhJp95TCblbhDojabl3YIznokjMIZr4uaP8EG-OOGyvJ0Z4k2QfvLdiugYJvPge2K4LfrRORnydV0vzIurM=s2048?key=O4KOjNxIgRotZpesi83ckA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "4ed005889c4c7b50f5298573914581db880ca4df45835711339607121c6ca5b2",
+              "output_path": "minor-arcana/swords/final/nine-of-swords-v1.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/nine-of-swords-v1.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
