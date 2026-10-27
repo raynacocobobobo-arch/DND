@@ -313,5 +313,5 @@
   }
   window.addEventListener('hashchange',render);
   render();
-  console.info('Forbidden Arcana: Major Arcana 22 + Cups 14 + Wands 1, unified collection and interpretation');
+  console.info('Forbidden Arcana: Major Arcana 22 + Cups 14 + Wands '+W.length+', unified collection and interpretation');
 })();
