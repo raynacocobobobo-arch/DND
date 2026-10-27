@@ -1,0 +1,107 @@
+name: Verify Cups VII and King New Art 20261027
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-vii-king-20261027-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Install verification dependencies
+        run: python -m pip install --quiet Pillow requests selenium
+      - name: Public site image and browser verification
+        shell: bash
+        run: |
+          cat >/tmp/verify_seven_king.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          specs={
+            'seven':('v4','9a03a0b7057ba3fc16abf68ce6f805c0c6cafb738508ff5052310134b59cc144'),
+            'king':('v5','5b8720b4ff328be9c855e45b345822e2692fbaf64a1e2cad2984e797a548aca2')}
+          sess=requests.Session()
+          for i in range(50):
+            try:
+              response=sess.get(base+'?verify-sev-king='+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+              if response.ok and 'cups-vii-king-20261027' in response.text:break
+              print('WAIT_HTML',i,response.status_code,flush=True)
+            except requests.RequestException as e:print('RETRY',str(e)[:110],flush=True)
+            time.sleep(6)
+          else:raise RuntimeError('Public site HTML not refreshed')
+          js=sess.get(base+'assets/cups-approved-v1.js?v=cups-vii-king-20261027',timeout=35)
+          js.raise_for_status()
+          assert 'queen-of-cups-v4.webp' in js.text,'Queen art changed'
+          assert 'page-of-cups-v4.webp' in js.text,'Page art changed'
+          for slug,(version,digest) in specs.items():
+            name=f'{slug}-of-cups-{version}.webp'
+            assert name in js.text,(slug,'metadata missing')
+            response=sess.get(base+f'minor-arcana/cups/final/{name}',timeout=50);response.raise_for_status()
+            im=Image.open(io.BytesIO(response.content));im.load()
+            assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+            verified=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+            assert verified==digest,(slug,verified,digest)
+            thumb=sess.get(base+f'minor-arcana/cups/thumbs/{name}',timeout=35);thumb.raise_for_status()
+            assert Image.open(io.BytesIO(thumb.content)).format=='WEBP',slug
+            print('PIXEL_IDENTICAL_SOURCE',slug,flush=True)
+          o=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:o.add_argument(arg)
+          b=webdriver.Chrome(options=o);b.set_script_timeout(30)
+          try:
+            for slug,(version,_) in specs.items():
+              b.get(base+'?v=20261027-seven-king#/card/cups/'+slug)
+              WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+              text=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+              for header in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+                assert header in text,(slug,header)
+              image=b.find_element(By.CSS_SELECTOR,'.detail-art img')
+              assert f'{slug}-of-cups-{version}.webp' in image.get_attribute('src'),slug
+              dims=b.execute_async_script("const done=arguments[0],img=document.querySelector('.detail-art img');img.decode().then(()=>done([img.naturalWidth,img.naturalHeight])).catch(()=>done([0,0]));")
+              assert dims==[941,1672],(slug,dims)
+              print('DETAIL_BROWSER_PASS',slug,flush=True)
+            b.get(base+'?v=20261027-seven-king#/card/cups/queen')
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            assert 'queen-of-cups-v4.webp' in b.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+            b.get(base+'?v=20261027-seven-king#/library/cups')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            b.get(base+'?v=20261027-seven-king#/library/cups/3')
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==2)
+            b.get(base+'?v=20261027-seven-king#/library/1')
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            b.get(base+'?v=20261027-seven-king#/draw')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+            assert '37张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+            b.execute_script("document.querySelector('#go-draw').click()")
+            assert len(b.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+            b.set_window_size(390,844)
+            b.get(base+'?v=20261027-seven-king#/library/cups')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            dims=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+            assert dims[0]<=dims[1]+2,dims
+            print('LIBRARY_DRAW_MOBILE_PASS',dims,flush=True)
+            print('CUPS_VII_KING_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/verify_seven_king.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Publish verification record
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"version":"2026-10-27","cards":["seven","king"],"original_size":[941,1672],"seven":"v4","king":"v5","result":"PASS","checks":["public-original-pixel-sha256","public-thumbnails","detail-pages","other-art-preserved","galleries","draw","mobile"]}' >live/qa/cups-vii-king-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/cups-vii-king-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(cups): verify approved VII and King public site"; git -C live push origin HEAD:gh-pages; }
+          echo "CUPS_VII_KING_LIVE_QA_PASS"
