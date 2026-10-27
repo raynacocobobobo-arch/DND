@@ -1,0 +1,113 @@
+name: Verify Approved Wands PAGE Live 20261027
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/wands-page-20261027-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Install Pillow Selenium and requests
+        run: python -m pip install --quiet Pillow selenium requests
+      - name: Validate real page original and live site
+        shell: bash
+        run: |
+          cat >/tmp/wands_page_test.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          s=requests.Session()
+          for i in range(50):
+            try:
+              r=s.get(base+'?qa=wands-page-'+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+              if r.ok and 'wands-page-20261027' in r.text:break
+              print('WAIT_SITE_HTML',i,r.status_code,flush=True)
+            except requests.RequestException as ex:print('RETRY_SITE',str(ex)[:100],flush=True)
+            time.sleep(6)
+          else:raise AssertionError('PAGE public HTML never refreshed')
+          src=s.get(base+'assets/wands-approved-v1.js?v=wands-page-20261027',timeout=35)
+          src.raise_for_status()
+          for old in ['ace','two','three','four','five']:
+            assert old+'-of-wands-v2.webp?v=wands-everyday-20261027' in src.text,old
+          assert 'page-of-wands-v2.webp?v=wands-page-20261027' in src.text
+          art=s.get(base+'minor-arcana/wands/final/page-of-wands-v2.webp',timeout=50)
+          art.raise_for_status()
+          im=Image.open(io.BytesIO(art.content));im.load()
+          assert im.format=='WEBP' and im.size==(941,1671),(im.format,im.size)
+          digest=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+          assert digest=='a74a231636c3b9b1ae8b6d20cea6013b5d7c80c3443b483885c3e468034c7a9f',digest
+          thumb=s.get(base+'minor-arcana/wands/thumbs/page-of-wands-v2.webp',timeout=35)
+          thumb.raise_for_status()
+          assert Image.open(io.BytesIO(thumb.content)).format=='WEBP'
+          print('PAGE_SOURCE_PIXEL_IDENTICAL',im.size,flush=True)
+
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:opts.add_argument(arg)
+          b=webdriver.Chrome(options=opts)
+          b.set_script_timeout(40)
+          try:
+            b.get(base+'?qa=page-20261027#/library/wands')
+            WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            names=b.execute_script('return window.WANDS_APPROVED.map(x=>x.slug)')
+            assert names==['ace','two','three','four','five','page'],names
+            print('SIX_WANDS_GALLERY_PASS',flush=True)
+            b.get(base+'?qa=page-20261027#/card/wands/page')
+            WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            src=b.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+            assert 'page-of-wands-v2.webp' in src,src
+            dims=b.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+            assert dims==[941,1671],dims
+            body=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+            for label in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+              assert label in body,label
+            for slug in ['ace','two','three','four','five']:
+              b.get(base+'?qa=page-20261027#/card/wands/'+slug)
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            b.get(base+'?qa=page-20261027#/library/cups')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            assert b.execute_script('return window.CUPS_APPROVED.length')==14
+            b.get(base+'?qa=page-20261027#/library/1')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            assert b.execute_script('return window.ARCANA_CATALOG.length')==22
+            b.get(base+'?qa=page-20261027#/draw')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+            assert '42张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+            b.execute_script("document.querySelector('#go-draw').click()")
+            WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1)
+            b.set_window_size(390,844)
+            b.get(base+'?qa=page-20261027#/library/wands')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+            dims=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+            assert dims[0]<=dims[1]+2,dims
+            b.get(base+'?qa=page-20261027#/card/wands/page')
+            WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            dims=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+            assert dims[0]<=dims[1]+2,dims
+            print('PAGE_BROWSER_GALLERY_DRAW_MOBILE_PASS',flush=True)
+            print('WANDS_PAGE_20261027_FULL_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/wands_page_test.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Record real QA pass
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"date":"2026-10-27","card":"wands/page","source_resolution":[941,1671],"result":"PASS","total_pool":42,"checks":["approved-RGB-pixel-identity","real-website-thumbnail","PAGE-detail","five-old-Wands-preserved","Wands-gallery-six","Major-22","Cups-14","draw-42","mobile"]}' >live/qa/wands-page-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/wands-page-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(wands): confirm PAGE original and live website"; git -C live push origin HEAD:gh-pages; }
+          echo "WANDS_PAGE_20261027_FULL_LIVE_QA_PASS"
