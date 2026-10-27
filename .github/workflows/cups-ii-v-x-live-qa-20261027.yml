@@ -1,0 +1,102 @@
+name: Verify Approved Cups II V X Live
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-ii-v-x-live-qa-20261027.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Install real-browser and image QA
+        run: python -m pip install --quiet requests Pillow selenium
+      - name: Test public HD originals, cards, draw, and mobile
+        shell: bash
+        run: |
+          cat >/tmp/check_cups_20261027.py <<'PY'
+          import hashlib,io,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          root='https://raynacocobobobo-arch.github.io/DND/'
+          expected={'two':'f32605ba025745ef60d17289c9213307caec88878382a76ba08752f6559881f4','five':'bfddab57fa409b7a89b83b12ef53f021104f33baf7be378ef08ed9f366cd21c9','ten':'96a98640e126f22745a116f9b9ebfaa5c3d859506d415250ff266b5c1883d142'}
+          session=requests.Session()
+          for n in range(50):
+              try:
+                  h=session.get(root+'?cups-ii-v-x-qa='+str(n),timeout=25,headers={'Cache-Control':'no-cache'})
+                  if h.ok and 'cups-innsmouth-20261027' in h.text: break
+                  print('WAIT_FOR_PAGES_HTML',n,h.status_code,flush=True)
+              except requests.RequestException as ex: print('RETRY_HTML',str(ex)[:100],flush=True)
+              time.sleep(6)
+          else: raise RuntimeError('Live HTML has not deployed new Cups script reference')
+          js=session.get(root+'assets/cups-approved-v1.js?v=cups-innsmouth-20261027',timeout=35)
+          js.raise_for_status()
+          for slug,pixel_hash in expected.items():
+              assert f'{slug}-of-cups-v4.webp' in js.text,slug
+              url=root+f'minor-arcana/cups/final/{slug}-of-cups-v4.webp'
+              r=session.get(url,timeout=50)
+              r.raise_for_status()
+              im=Image.open(io.BytesIO(r.content)); im.load()
+              assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+              actual=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+              assert actual==pixel_hash,(slug,actual,pixel_hash)
+              rt=session.get(root+f'minor-arcana/cups/thumbs/{slug}-of-cups-v4.webp',timeout=35)
+              rt.raise_for_status()
+              thumb=Image.open(io.BytesIO(rt.content));thumb.load()
+              assert thumb.format=='WEBP',(slug,thumb.format)
+              print('CUPS_LIVE_PIXEL_IDENTICAL',slug,im.size,len(r.content),flush=True)
+          opts=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']: opts.add_argument(a)
+          b=webdriver.Chrome(options=opts);b.set_script_timeout(30)
+          try:
+              for slug in expected:
+                  b.get(root+'?v=cups-20261027#/card/cups/'+slug)
+                  WebDriverWait(b,17).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  txt=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for label in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+                      assert label in txt,(slug,label)
+                  size=b.execute_async_script("const done=arguments[0],i=document.querySelector('.detail-art img');i.decode().then(()=>done([i.naturalWidth,i.naturalHeight])).catch(()=>done([0,0]));")
+                  assert size==[941,1672],(slug,size)
+                  print('CUPS_LIVE_DETAIL_OK',slug,flush=True)
+              b.get(root+'?v=cups-20261027#/library/cups')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              b.get(root+'?v=cups-20261027#/library/cups/3')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==2)
+              b.get(root+'?v=cups-20261027#/library/1')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              print('MAJOR_22_CUPS_14_LIBRARY_PRESERVED',flush=True)
+              b.get(root+'?v=cups-20261027#/draw')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+              assert '37张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+              b.execute_script("document.querySelector('#go-draw').click()")
+              assert len(b.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+              b.set_window_size(390,844)
+              b.get(root+'?v=cups-20261027#/library/cups')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              dims=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+              assert dims[0]<=dims[1]+2,dims
+              print('CUPS_MOBILE_NO_OVERFLOW',dims,flush=True)
+              print('CUPS_II_V_X_REAL_LIVE_BROWSER_QA_PASS',flush=True)
+          finally: b.quit()
+          PY
+          python /tmp/check_cups_20261027.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Record successful public browser and artwork verification
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"version":"2026-10-27","cards":["two","five","ten"],"resolution":[941,1672],"result":"PASS","checks":["public-webp-pixel-sha256","public-website-html","individual-detail-images","library-major-cups-counts","draw","mobile"]}' >live/qa/cups-ii-v-x-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/cups-ii-v-x-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(cups): verify approved II V X live artwork and browser"; git -C live push origin HEAD:gh-pages; }
+          echo "CUPS_II_V_X_REAL_LIVE_BROWSER_QA_PASS"
