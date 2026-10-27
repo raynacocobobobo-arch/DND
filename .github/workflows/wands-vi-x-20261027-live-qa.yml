@@ -1,0 +1,121 @@
+name: Verify Wands VI to X Public Artwork 20261027
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/wands-vi-x-20261027-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 19
+    steps:
+      - name: Install image and browser test libraries
+        run: python -m pip install --quiet requests Pillow selenium
+      - name: Verify public originals and 11-card site in real browser
+        shell: bash
+        run: |
+          cat >/tmp/wands_vi_x_qa.py <<'PY'
+          import io,hashlib,time,requests,json
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          expected={"six":["c762ac0e553c4e496c0615a4c3e728bd34caf959da11b45dc254135139420156",1672],"seven":["ee9f6832c94b2ca7f144df42f7f1f2e95451d0c9362eaaf9f21d8af5e9c88402",1672],"eight":["5d2271d15a7146334d46859ae27da122809d16f1af2be0b8c0942a232e899da0",1671],"nine":["750fe3c506a1fc47499fa050c8bcda6cd8e5d10097c398c46e690bfdb77e4be5",1672],"ten":["9a7b2e203a1a3f0a78291757b583a8f1edad7ec2276071f06f7a842447fb9079",1671]}
+          s=requests.Session()
+          for i in range(60):
+           try:
+            r=s.get(base+'?qa-wands-6-10='+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+            if r.ok and 'wands-vi-x-20261027' in r.text:break
+            print('WAIT_PUBLIC_HTML',i,r.status_code,flush=True)
+           except Exception as e:print('WAIT_HTTP',str(e)[:90],flush=True)
+           time.sleep(6)
+          else:raise RuntimeError('Public HTML cache not updated')
+          js=s.get(base+'assets/wands-approved-v1.js?v=wands-vi-x-20261027',timeout=40)
+          js.raise_for_status()
+          for old in ['ace','two','three','four','five','page']:
+           assert f'{old}-of-wands-v2.webp' in js.text,('old card unexpectedly absent',old)
+          for slug,(expectedsha,height) in expected.items():
+           path=f'minor-arcana/wands/final/{slug}-of-wands-v2.webp'
+           assert path in js.text,('new metadata absent',slug)
+           image=s.get(base+path,timeout=60);image.raise_for_status()
+           im=Image.open(io.BytesIO(image.content));im.load()
+           assert (im.format,im.size)==('WEBP',(941,height)),(slug,im.format,im.size)
+           sha=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+           assert sha==expectedsha,(slug,sha,expectedsha)
+           thumb=s.get(base+f'minor-arcana/wands/thumbs/{slug}-of-wands-v2.webp',timeout=50)
+           thumb.raise_for_status()
+           assert Image.open(io.BytesIO(thumb.content)).format=='WEBP',slug
+           print('WANDS_APPROVED_SOURCE_PIXEL_IDENTICAL',slug,im.size,flush=True)
+          
+          opts=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:
+           opts.add_argument(a)
+          b=webdriver.Chrome(options=opts)
+          b.set_script_timeout(40)
+          try:
+           b.get(base+'?qa=wands-vi-x#/library/wands')
+           WebDriverWait(b,22).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==11)
+           slugs=b.execute_script('return window.WANDS_APPROVED.map(x=>x.slug)')
+           assert slugs==['ace','two','three','four','five','six','seven','eight','nine','ten','page'],slugs
+           print('WANDS_ELEVEN_GALLERY_PASS',flush=True)
+           for slug,(_,height) in expected.items():
+            b.get(base+'?qa=wands-vi-x#/card/wands/'+slug)
+            WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            body=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+            for term in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+             assert term in body,(slug,term)
+            art=b.find_element(By.CSS_SELECTOR,'.detail-art img')
+            assert f'{slug}-of-wands-v2.webp' in art.get_attribute('src'),slug
+            dims=b.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+            assert dims==[941,height],(slug,dims)
+            print('WANDS_NEW_DETAIL_PASS',slug,flush=True)
+           for slug in ['ace','two','three','four','five','page']:
+            b.get(base+'?qa=wands-vi-x#/card/wands/'+slug)
+            WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+           b.get(base+'?qa=wands-vi-x#/library/cups')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           assert b.execute_script('return window.CUPS_APPROVED.length')==14
+           b.get(base+'?qa=wands-vi-x#/library/1')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           assert b.execute_script('return window.ARCANA_CATALOG.length')==22
+           b.get(base+'?qa=wands-vi-x#/draw')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+           assert '47张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+           b.execute_script("document.querySelector('#go-draw').click()")
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1)
+           print('OLD_ART_PRESERVED_DRAW_47_PASS',flush=True)
+           b.set_window_size(390,844)
+           b.get(base+'?qa=wands-vi-x#/library/wands')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==11)
+           w=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+           assert w[0]<=w[1]+2,w
+           for slug in ['eight','ten']:
+            b.get(base+'?qa=wands-vi-x#/card/wands/'+slug)
+            WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            w=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+            assert w[0]<=w[1]+2,(slug,w)
+           print('MOBILE_PASS',flush=True)
+           print('WANDS_VI_X_20261027_FULL_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          
+          PY
+          python /tmp/wands_vi_x_qa.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Store real PASS result on gh-pages
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"date":"2026-10-27","batch":"Wands VI–X","cards":["six","seven","eight","nine","ten"],"result":"PASS","approved_wands_total":11,"total_draw_pool":47,"checks":["public-HD-original-RGB-SHA256","all-five-thumbnails","five-detail-routes","six-existing-wands-unchanged","major-22","cups-14","draw-47","mobile"]}' >live/qa/wands-vi-x-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/wands-vi-x-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(wands): verify VI to X live"; git -C live push origin HEAD:gh-pages; }
+          echo "WANDS_VI_X_20261027_FULL_LIVE_QA_PASS"
