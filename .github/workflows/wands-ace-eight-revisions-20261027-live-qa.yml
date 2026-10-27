@@ -1,0 +1,112 @@
+name: Verify Wands ACE and VIII Revisions 20261027
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/wands-ace-eight-revisions-20261027-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Install dependencies
+        run: python -m pip install --quiet requests Pillow selenium
+      - name: Verify public artwork, text, galleries and mobile browser
+        shell: bash
+        run: |
+          cat >/tmp/wands_ace_eight_qa.py <<'PY'
+          import io,time,hashlib,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          approved={'ace':'58369e15f98a8b895973cbf3bf0a1b4c50e19da47dd84dff4dd436a9f08be353','eight':'0ffe0f360f7d4cba9ab08387c43030aa9929419c0f61e4a51d2427becc54476e'}
+          s=requests.Session()
+          for i in range(50):
+           try:
+            r=s.get(base+'?qa=ace-eight-'+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+            if r.ok and 'wands-ace-eight-revised-20261027' in r.text:break
+            print('WAIT_PUBLIC_HTML',i,r.status_code,flush=True)
+           except requests.RequestException as ex:print('RETRY',str(ex)[:120],flush=True)
+           time.sleep(6)
+          else:raise AssertionError('Public index HTML stale')
+          meta=s.get(base+'assets/wands-approved-v1.js?v=wands-ace-eight-revised-20261027',timeout=35)
+          meta.raise_for_status()
+          for slug,digest in approved.items():
+           name=slug+'-of-wands-v3.webp'
+           assert name in meta.text,slug
+           resp=s.get(base+'minor-arcana/wands/final/'+name,timeout=55);resp.raise_for_status()
+           im=Image.open(io.BytesIO(resp.content));im.load()
+           assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+           sha=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+           assert sha==digest,(slug,sha,digest)
+           thumb=s.get(base+'minor-arcana/wands/thumbs/'+name,timeout=45)
+           thumb.raise_for_status()
+           assert Image.open(io.BytesIO(thumb.content)).format=='WEBP'
+           print('ORIGINAL_RGB_SHA256_MATCH',slug,flush=True)
+          for old in ['two','three','four','five','six','seven','nine','ten','page','knight','queen','king']:
+           assert old+'-of-wands-v2.webp' in meta.text,('Other artwork changed',old)
+          print('12_OTHER_WANDS_PRESERVED',flush=True)
+          o=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:o.add_argument(arg)
+          b=webdriver.Chrome(options=o)
+          b.set_script_timeout(35)
+          try:
+           b.get(base+'?qa=ace-eight#/library/wands')
+           WebDriverWait(b,19).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+           assert b.execute_script('return window.WANDS_APPROVED.length')==14
+           for slug in approved:
+            b.get(base+'?qa=ace-eight#/card/wands/'+slug)
+            WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            art=b.find_element(By.CSS_SELECTOR,'.detail-art img')
+            assert slug+'-of-wands-v3.webp' in art.get_attribute('src')
+            dims=b.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+            assert dims==[941,1672],(slug,dims)
+            content=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+            for header in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+             assert header in content,(slug,header)
+            if slug=='eight':assert '看门狗' in content and '威尔伯' in content
+            print('NEW_CARD_DETAIL_PASS',slug,flush=True)
+           b.get(base+'?qa=ace-eight#/library/cups')
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           assert b.execute_script('return window.CUPS_APPROVED.length')==14
+           b.get(base+'?qa=ace-eight#/library/1')
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           assert b.execute_script('return window.ARCANA_CATALOG.length')==22
+           b.get(base+'?qa=ace-eight#/draw')
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+           assert '50张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+           b.execute_script("document.querySelector('#go-draw').click()")
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1)
+           print('MAJORS_CUPS_DRAW_50_PASS',flush=True)
+           b.set_window_size(390,844)
+           for url,expected_count in [('library/wands',14),('card/wands/ace',1),('card/wands/eight',1)]:
+            b.get(base+'?qa=ace-eight#/'+url)
+            WebDriverWait(b,16).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card' if url.startswith('library') else '.detail-layout'))==expected_count)
+            width=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+            assert width[0]<=width[1]+2,(url,width)
+           print('MOBILE_LAYOUT_PASS',flush=True)
+           print('WANDS_ACE_EIGHT_REPLACEMENT_FULL_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          
+          PY
+          python /tmp/wands_ace_eight_qa.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Save PASS report on published branch
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"date":"2026-10-27","cards":["ace","eight"],"version":"v3","result":"PASS","originals":[941,1672],"wands":14,"draw_pool":50,"checks":["pixel-sha256-two-revised-cards","thumbnails","12-existing-wands-unchanged","two-detail-pages","literary-dog-attack-story","cups-14","majors-22","draw-50","mobile"]}' >live/qa/wands-ace-eight-revisions-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/wands-ace-eight-revisions-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(wands): verify ACE and VIII revision publication"; git -C live push origin HEAD:gh-pages; }
+          echo "WANDS_ACE_EIGHT_REPLACEMENT_FULL_LIVE_QA_PASS"
