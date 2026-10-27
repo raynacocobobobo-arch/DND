@@ -1,0 +1,113 @@
+name: Verify Approved Everyday Cups ACE IV VI VIII Live
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-everyday-live-qa-20261027.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Install real-browser and image QA
+        run: python -m pip install --quiet requests Pillow selenium
+      - name: Test public artwork, card details, draw, galleries, and mobile
+        shell: bash
+        run: |
+          cat >/tmp/check_cups_evd_20261027.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          root='https://raynacocobobo-arch.github.io/DND/'
+          # NOTE: use the repository's canonical user name below, not an alias
+          root='https://raynacocobobobo-arch.github.io/DND/'
+          expected={
+            'ace':'42bba747105913bf9eb2497c5bb8a0ca7926ac350930a85f656975c2d42892dc',
+            'four':'cdfc2907a04d7f7fb1672054165bdd9ae2929b69db3bd8291525d7574d7a66a9',
+            'six':'ec207c7ae815458a8ae11552315f7d432bcb1e136ebf45da39754af3246da26f',
+            'eight':'6180974a2475bf35217a7cddb29198e62a1833e7a884b8d1111ac1a037fbe040'}
+          s=requests.Session()
+          for i in range(50):
+              try:
+                  r=s.get(root+'?cups-everyday-qa='+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+                  if r.ok and 'cups-everyday-20261027' in r.text: break
+                  print('AWAIT_NEW_PUBLIC_HTML',i,r.status_code,flush=True)
+              except requests.RequestException as e: print('RETRY_HTML',str(e)[:150],flush=True)
+              time.sleep(6)
+          else: raise RuntimeError('New index not publicly deployed')
+          data=s.get(root+'assets/cups-approved-v1.js?v=cups-everyday-20261027',timeout=35)
+          data.raise_for_status()
+          assert all(f'{slug}-of-cups-v4.webp' in data.text for slug in expected)
+          # VII explicitly omitted from this batch, old image reference must remain.
+          assert '"slug":"seven"' in data.text
+          for slug,digest in expected.items():
+              path=f'minor-arcana/cups/final/{slug}-of-cups-v4.webp'
+              image=s.get(root+path,timeout=50);image.raise_for_status()
+              im=Image.open(io.BytesIO(image.content));im.load()
+              assert im.format=='WEBP' and im.size==(941,1672),(slug,im.format,im.size)
+              pixelhash=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+              assert pixelhash==digest,(slug,pixelhash,digest)
+              thumbnail=s.get(root+f'minor-arcana/cups/thumbs/{slug}-of-cups-v4.webp',timeout=40)
+              thumbnail.raise_for_status()
+              assert Image.open(io.BytesIO(thumbnail.content)).format=='WEBP'
+              print('EVERYDAY_CUPS_PIXEL_IDENTICAL',slug,im.size,len(image.content),flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1380,940']:opts.add_argument(arg)
+          b=webdriver.Chrome(options=opts);b.set_script_timeout(35)
+          try:
+              for slug in expected:
+                  b.get(root+'?v=cups-everyday-20261027#/card/cups/'+slug)
+                  WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  txt=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for title in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+                      assert title in txt,(slug,title)
+                  size=b.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img'); im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+                  assert size==[941,1672],(slug,size)
+                  print('EVERYDAY_CUPS_DETAIL_PASS',slug,flush=True)
+              b.get(root+'?v=cups-everyday-20261027#/card/cups/seven')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+              seven_src=b.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+              assert '/seven-of-cups-v4.webp' not in seven_src,seven_src
+              print('CUPS_SEVEN_UNCHANGED',flush=True)
+              b.get(root+'?v=cups-everyday-20261027#/library/cups')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              b.get(root+'?v=cups-everyday-20261027#/library/cups/3')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==2)
+              b.get(root+'?v=cups-everyday-20261027#/library/1')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              print('CUPS_14_MAJOR_22_GALLERIES_PRESERVED',flush=True)
+              b.get(root+'?v=cups-everyday-20261027#/draw')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+              assert '37张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+              b.execute_script("document.querySelector('#go-draw').click()")
+              assert len(b.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+              b.set_window_size(390,844)
+              b.get(root+'?v=cups-everyday-20261027#/library/cups')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              dims=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+              assert dims[0]<=dims[1]+2,dims
+              print('EVERYDAY_CUPS_MOBILE_PASS',dims,flush=True)
+              print('CUPS_EVERYDAY_ACE_IV_VI_VIII_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/check_cups_evd_20261027.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Record verified public artwork and gallery checks
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"version":"2026-10-27","cards":["ace","four","six","eight"],"excluded":"seven","resolution":[941,1672],"result":"PASS","checks":["lossless-pixel-sha256","public-html","four-card-details","seven-unchanged","major-and-cups-gallery-counts","draw","mobile"]}' >live/qa/cups-everyday-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/cups-everyday-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(cups): validate everyday ACE IV VI VIII live"; git -C live push origin HEAD:gh-pages; }
+          echo "CUPS_EVERYDAY_ACE_IV_VI_VIII_LIVE_QA_PASS"
