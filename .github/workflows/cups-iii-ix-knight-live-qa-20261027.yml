@@ -1,0 +1,104 @@
+name: Verify Approved Cups III IX KNIGHT Live
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/cups-iii-ix-knight-live-qa-20261027.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Install browser and image verification
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Test three public originals, detail pages, galleries, draw and mobile
+        shell: bash
+        run: |
+          cat >/tmp/check_cups_third.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          pix={
+            'three':'f5c9415fe933b767b2bcd0e929579a8dd635eb98b2c67042d6041fb5917ae26f',
+            'nine':'c3d51709ddb5f937205f7e71593cb81f584c8d1dc938592b49556e271666c93e',
+            'knight':'44e06b94476c603fde2942af03458ff680af89eaa8d30af214c3e5c5b7350592'}
+          s=requests.Session()
+          for i in range(50):
+              try:
+                  r=s.get(base+'?verify-cups-third='+str(i),timeout=30,headers={'Cache-Control':'no-cache'})
+                  if r.ok and 'cups-new20261027' in r.text:break
+                  print('WAIT_FOR_HTML',i,r.status_code,flush=True)
+              except Exception as e:print('RETRY_HTML',str(e)[:130],flush=True)
+              time.sleep(6)
+          else:raise RuntimeError('Public HTML lacks new Cups cache version')
+          js=s.get(base+'assets/cups-approved-v1.js?v=cups-new20261027',timeout=45)
+          js.raise_for_status()
+          assert '"slug":"seven"' in js.text
+          assert '"slug":"seven"' in js.text and 'seven-of-cups-v1.webp' in js.text
+          for slug,digest in pix.items():
+              assert f'{slug}-of-cups-v4.webp' in js.text,slug
+              r=s.get(base+f'minor-arcana/cups/final/{slug}-of-cups-v4.webp',timeout=55)
+              r.raise_for_status()
+              im=Image.open(io.BytesIO(r.content));im.load()
+              assert im.format=='WEBP' and im.size==(941,1672),(slug,im.size,im.format)
+              assert hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()==digest,slug
+              rt=s.get(base+f'minor-arcana/cups/thumbs/{slug}-of-cups-v4.webp',timeout=45);rt.raise_for_status()
+              assert Image.open(io.BytesIO(rt.content)).format=='WEBP',slug
+              print('LIVE_CUPS_ORIGINAL_PIXEL_MATCH',slug,im.size,flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:opts.add_argument(arg)
+          browser=webdriver.Chrome(options=opts)
+          browser.set_script_timeout(40)
+          try:
+              for slug in pix:
+                  browser.get(base+'?v=20261027-cupsthird#/card/cups/'+slug)
+                  WebDriverWait(browser,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  text=browser.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for t in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+                      assert t in text,(slug,t)
+                  dim=browser.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+                  assert dim==[941,1672],(slug,dim)
+                  print('CUPS_DETAIL_PASS',slug,flush=True)
+              browser.get(base+'?v=20261027-cupsthird#/library/cups')
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              browser.get(base+'?v=20261027-cupsthird#/library/cups/3')
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==2)
+              browser.get(base+'?v=20261027-cupsthird#/library/1')
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              print('CUPS_14_MAJORS_22_PRESERVED',flush=True)
+              browser.get(base+'?v=20261027-cupsthird#/draw')
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+              assert '37张' in browser.find_element(By.CSS_SELECTOR,'.pool-select').text
+              browser.execute_script("document.querySelector('#go-draw').click()")
+              assert len(browser.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1
+              browser.set_window_size(390,844)
+              browser.get(base+'?v=20261027-cupsthird#/library/cups')
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              dims=browser.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+              assert dims[0]<=dims[1]+2,dims
+              print('MOBILE_PASS',dims,flush=True)
+              print('CUPS_III_IX_KNIGHT_REAL_BROWSER_PASS',flush=True)
+          finally: browser.quit()
+          PY
+          python /tmp/check_cups_third.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Record public pixel and browser verification
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"version":"2026-10-27","cards":["three","nine","knight"],"seven":"unchanged","resolution":[941,1672],"result":"PASS","checks":["public-webp-pixel-identity","thumbnail","detail-pages","gallery-major-and-cups","draw","mobile"]}' >live/qa/cups-iii-ix-knight-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/cups-iii-ix-knight-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(cups): verify III IX KNIGHT live"; git -C live push origin HEAD:gh-pages; }
+          echo "CUPS_III_IX_KNIGHT_REAL_BROWSER_PASS"
