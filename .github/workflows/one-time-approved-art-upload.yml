@@ -1,0 +1,93 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+                    [
+            {
+              "name": "Cups II approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYPtaiFZmYBSoa__ZqUhk4DwcEcPOrvbj9Ly2LyrYMDVaP585v5pJ253bpJNP9jA3ALi2WnwNTphDXIT8c3MpxfKvUoZePNUmPk9DAjx_OXdGKc4uF7uFmV3Qpj4sNAlFkg87EZDJRtW6oeOX0zOQefjHEFoU3NsiheAQT5aGI0INkzFuc=s2048?key=sh0T7cFChqPeVpweoeyI4A",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "f32605ba025745ef60d17289c9213307caec88878382a76ba08752f6559881f4",
+              "output_path": "minor-arcana/cups/final/two-of-cups-v4.webp",
+              "thumb_path": "minor-arcana/cups/thumbs/two-of-cups-v4.webp"
+            },
+            {
+              "name": "Cups V approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZYePvq000zHub4hk0IVbxQqX8BUlfIM_evpR4PIf6uNC8-kSz7ciFH2QClJqNCgNRQH-F5iP95Y6sU3f2WUhDRDjuaPSmrdG9dEcalMDOpm3pktoqDnKJQ8_mRUfWRUhQY0iwxOtBLXcAOgeOhsaiZYCGvqAxF96IX8AZ225vHypOdSt4=s2048?key=sh0T7cFChqPeVpweoeyI4A",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "bfddab57fa409b7a89b83b12ef53f021104f33baf7be378ef08ed9f366cd21c9",
+              "output_path": "minor-arcana/cups/final/five-of-cups-v4.webp",
+              "thumb_path": "minor-arcana/cups/thumbs/five-of-cups-v4.webp"
+            },
+            {
+              "name": "Cups X approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaPObSZvizrR9EA9nf4ghWyqSiVn9hp6FHYUd43GLb9P86JQnAMh4bLD9uFsuW0KGx0GSt31S1Mgq5AFG3sd3hLwnB7WrCUZtixgAwRS21i64CkvbigR9dhdAqSrOo2SrhdI01zQqjR6IXmnUibogcrnyKMaVfTj8OjSwah9tna21ly3e8=s2048?key=sh0T7cFChqPeVpweoeyI4A",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "96a98640e126f22745a116f9b9ebfaa5c3d859506d415250ff266b5c1883d142",
+              "output_path": "minor-arcana/cups/final/ten-of-cups-v4.webp",
+              "thumb_path": "minor-arcana/cups/thumbs/ten-of-cups-v4.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
