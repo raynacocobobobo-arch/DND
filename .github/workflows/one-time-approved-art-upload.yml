@@ -1,0 +1,82 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+                    [
+            {
+              "name": "Approved Cups seven 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztabMI5Rn7W663n83OSNTEYMI88k0q6uk2vQnbuAauZw03shmQbnbDJiGf--BcuVDSwPUXt97eiXko68lwMbE88KlfTx4OLtRWI3SwWxsZdRhSsWne7iaQWq_FEYELlQEWZ68aBAp2fClIVJVUJyy-Xjt1YQEfCHyyRSQvi8n5IRxY7x=s2048?key=R4UhqTthA7Dx6JfEGQDIIg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "9a03a0b7057ba3fc16abf68ce6f805c0c6cafb738508ff5052310134b59cc144",
+              "output_path": "minor-arcana/cups/final/seven-of-cups-v4.webp",
+              "thumb_path": "minor-arcana/cups/thumbs/seven-of-cups-v4.webp"
+            },
+            {
+              "name": "Approved Cups king 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYYsoxvqrcxnX0YCZljjYiNv7_bYE-DsYTpwP9OClcwpb1SJ3Ybkt25RPRAAhr3SVtN9cRaSHRsX9MwS00lufo4QJ-VhJizz762eb6p8zKXsiCW6elJooGHSytATtHc9l7z1rFszB4kXw8mWhf_kmyNKLs4ME6nL1c3TjUa9FQlRiazOGk=s2048?key=R4UhqTthA7Dx6JfEGQDIIg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "5b8720b4ff328be9c855e45b345822e2692fbaf64a1e2cad2984e797a548aca2",
+              "output_path": "minor-arcana/cups/final/king-of-cups-v5.webp",
+              "thumb_path": "minor-arcana/cups/thumbs/king-of-cups-v5.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
