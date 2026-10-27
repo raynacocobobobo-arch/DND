@@ -1,0 +1,93 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+                    [
+            {
+              "name": "Approved Wands knight original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZB_x6G1y2zPkKolLJcSXlKD_VReStGTt9bOTWPmL2vOb8p1hm-SllEah1bZIAZMa1BRK_bTe1rsFGJnXMJsnkPb2Ta1ax24ZDQU-LLn4skEIKnhrB_TvSvz8IfwmNnSrbWA-jM1k0ce511CpqKgO-ewsNS1Ci2zlOz-2W8MJJyBl8SJy8=s2048?key=869F4GrYIlanydn_DMj_iA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "d19c75039698a47cf7bb68636dbea9a0ea6204d8d131f2231245dd507d4ff00e",
+              "output_path": "minor-arcana/wands/final/knight-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/knight-of-wands-v2.webp"
+            },
+            {
+              "name": "Approved Wands queen original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztatdhwILpFyup1tcm0Xeouj39xXJdZOQbMTNV40935g9ZjRFG6zwrh95Q3I8jLiVqR2fHdA6fXQsxYIty71NjkcIJIpWsGS9k0xHBnqPG0kPh33cRtquwewkpGQDjSM4n2iDe05OE4AJ5FTK0ggOrqHBsI_8uZ1mBipg5L_o8dWJAHqNjk=s2048?key=869F4GrYIlanydn_DMj_iA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "0db8d005ce599d084bc8856b0a37b600b5e6d7fda222160c90f7434691f2cc35",
+              "output_path": "minor-arcana/wands/final/queen-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/queen-of-wands-v2.webp"
+            },
+            {
+              "name": "Approved Wands king original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbfsG9QCWrREClc2w2YQcmhrJaNGNGDFU_VoX6WbKa2XQzLc1bvK10Whd6DEtc1DC-LffzzMcEKaUbRtE8yK47Xs3OC1EBgz1vjPB1rCHGsgmDkHHFNQ9gHV7Egu4CXQRBZOjVLnhHLC9y1mrxsxGR8kxdYjFwgiNvZHy1eOTsspnZ2FMY=s2048?key=869F4GrYIlanydn_DMj_iA",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "1a020852b85fb73c6d66a6919dc398f75eef2e0f2ae0bfc45565e28da5a7b1b9",
+              "output_path": "minor-arcana/wands/final/king-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/king-of-wands-v2.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
