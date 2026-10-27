@@ -1,0 +1,115 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+                    [
+            {
+              "name": "Wands six approved original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYKzvU2cwF1qUKs86qnpkD-O_qzxIXK4sWlXDCchrc3RJ58ooiqPLuH6GUrzgzRR4P089JzXV5JaOYNpVmtuCo_-WZzKEGLtfPWU0nWo0e3oCpXGrrzYbD9l6_4vcYQpLI1PZSEYWoPbXchZEG90BpHBJAqbJC1lEUWIcf5W_mb6X4AJ9A=s2048?key=eq3deBj8FE8y6NL3O5FzTQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "c762ac0e553c4e496c0615a4c3e728bd34caf959da11b45dc254135139420156",
+              "output_path": "minor-arcana/wands/final/six-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/six-of-wands-v2.webp"
+            },
+            {
+              "name": "Wands seven approved original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuzta2eabXffzfbEUQx65bnu2Btcp7zq7MJ1imVP9npjKS3cu0pmrwoAiPUVspKjfCh9mpjFpyVz-Kqpbia2t2BwhasUDUsrdBSgNlv0eUW-PgcEPF1Q_sSpKZu7Jv6dioVzhl_K1pnlhca7txKCi8n_qdmIXl6cQjyM0D8dmilSaVvRG2H0Y=s2048?key=eq3deBj8FE8y6NL3O5FzTQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "ee9f6832c94b2ca7f144df42f7f1f2e95451d0c9362eaaf9f21d8af5e9c88402",
+              "output_path": "minor-arcana/wands/final/seven-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/seven-of-wands-v2.webp"
+            },
+            {
+              "name": "Wands eight approved original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztY8C50QqnwQCmOeNhNxK2dU-DLGCx3gfT852sjRQX2ztHbd0n43D2SqH9KHWvwBvlvDipcMqYw_QEtZfAqOZ0_VgJaU8mBpFqOCX2nO8uqPnTtheoR8bNl8RPLlPDyb17viW7KZGBDCaaepGAM2TnrHfSWZAkMqEX2JYpe6PZ44uzKUVIQ=s2048?key=eq3deBj8FE8y6NL3O5FzTQ",
+              "expected_size": [
+                941,
+                1671
+              ],
+              "expected_pixel_sha256": "5d2271d15a7146334d46859ae27da122809d16f1af2be0b8c0942a232e899da0",
+              "output_path": "minor-arcana/wands/final/eight-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/eight-of-wands-v2.webp"
+            },
+            {
+              "name": "Wands nine approved original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYTtMLzbbXY5kGuLXuLhTAUozFU7SgWjgy2USlRYb19erxCCSEOC5KZMVwgJ9R81-ENW7FzkbIE14bd6wZ6pto4VxW8u517uACluAEmb6jhlfjukrzcLvZZ07ZppXx_NG6FWEELJtzCC6zC9eLGAzZ1PnWOTDLsNKxnNDjWnOUyZNtkDNA=s2048?key=eq3deBj8FE8y6NL3O5FzTQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "750fe3c506a1fc47499fa050c8bcda6cd8e5d10097c398c46e690bfdb77e4be5",
+              "output_path": "minor-arcana/wands/final/nine-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/nine-of-wands-v2.webp"
+            },
+            {
+              "name": "Wands ten approved original 2026-10-27",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbOE_Mk9u_Q1cvdKNIwrfHDgf357mI1uhAyec3TDULQJIjxMnM5zKLuALnARH9FE2NGizSg33L9aFXyXf76o_yuVTTdEnraF90sOFhxUvWStfYSUSucX4CNWxtn2WoCJbXkBRSGE-QWAxivwkg5-5S-70rtpnUNSgvguvvqR4XYXgF1rA0=s2048?key=eq3deBj8FE8y6NL3O5FzTQ",
+              "expected_size": [
+                941,
+                1671
+              ],
+              "expected_pixel_sha256": "9a7b2e203a1a3f0a78291757b583a8f1edad7ec2276071f06f7a842447fb9079",
+              "output_path": "minor-arcana/wands/final/ten-of-wands-v2.webp",
+              "thumb_path": "minor-arcana/wands/thumbs/ten-of-wands-v2.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
