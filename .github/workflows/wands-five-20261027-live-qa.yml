@@ -1,0 +1,125 @@
+name: Verify Wands ACE to Five Live 20261027
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/wands-five-20261027-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Install browser and image validation
+        run: python -m pip install --quiet requests selenium Pillow
+      - name: Check public gallery, images, pixel hashes, deep links, draws and mobile
+        shell: bash
+        run: |
+          cat >/tmp/wands_five_live.py <<'PY'
+          import io,time,hashlib,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          expected={
+           'ace':'1788c4f9730918038f5fa4e59f67b72db482fc7f6947ac0bed91e63a31c96e95',
+           'two':'4b038374d66b447989d0ac1becc60e09ba56410ed8f283dc05864da005154c3a',
+           'three':'aee8bb7336f4c5ea152a92c1712bf0fa1497752b46a8a870775a9601cdeacb8f',
+           'four':'6950b8c49f0d69466c266b20869414f36ab0bafa619a28139de0244a2c4a05b3',
+           'five':'95a857d52d72d095d4a93a55773688d946e75859abfad5a3765c4a9fa264e8ec'
+          }
+          session=requests.Session()
+          for i in range(50):
+           try:
+            response=session.get(base+'?qa=wands-five-'+str(i),timeout=25,headers={'Cache-Control':'no-cache'})
+            if response.ok and 'wands-everyday-20261027' in response.text and 'wands-ace-v-20261027-five' in response.text:break
+            print('WAIT_FOR_PUBLIC_HTML',i,response.status_code,flush=True)
+           except Exception as exc: print('WAIT_RETRY',str(exc)[:120],flush=True)
+           time.sleep(6)
+          else: raise AssertionError('Public Pages HTML has not refreshed')
+
+          r=session.get(base+'assets/wands-approved-v1.js?v=wands-everyday-20261027',timeout=35)
+          r.raise_for_status()
+          for slug,sha in expected.items():
+           assert f'{slug}-of-wands-v2.webp' in r.text,('Missing metadata',slug)
+           path=f'minor-arcana/wands/final/{slug}-of-wands-v2.webp'
+           resp=session.get(base+path,timeout=60);resp.raise_for_status()
+           im=Image.open(io.BytesIO(resp.content));im.load()
+           assert (im.format,im.size)==('WEBP',(941,1672)),(slug,im.format,im.size)
+           pixel_hash=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+           assert pixel_hash==sha,(slug,pixel_hash,sha)
+           th=session.get(base+f'minor-arcana/wands/thumbs/{slug}-of-wands-v2.webp',timeout=45);th.raise_for_status()
+           assert Image.open(io.BytesIO(th.content)).format=='WEBP'
+           print('WANDS_ORIGINAL_PIXEL_IDENTICAL',slug,flush=True)
+
+          options=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']:
+           options.add_argument(a)
+          b=webdriver.Chrome(options=options)
+          b.set_script_timeout(35)
+          try:
+           b.get(base+'?qa=wands5#/library/wands')
+           WebDriverWait(b,22).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==5)
+           ids=b.execute_script('return window.WANDS_APPROVED.map(x=>x.slug)')
+           assert ids==list(expected),ids
+           assert len(b.find_elements(By.CSS_SELECTOR,'.library-card'))==5
+           print('WANDS_FIVE_GALLERY_PASS',flush=True)
+           for slug in expected:
+            b.get(base+'?qa=wands5#/card/wands/'+slug)
+            WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            desc=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+            for term in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编']:
+             assert term in desc,(slug,term)
+            artwork=b.find_element(By.CSS_SELECTOR,'.detail-art img')
+            assert f'{slug}-of-wands-v2.webp' in artwork.get_attribute('src'),slug
+            natural=b.execute_async_script("const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));")
+            assert natural==[941,1672],(slug,natural)
+            print('WANDS_DETAIL_PASS',slug,flush=True)
+           b.get(base+'?qa=wands5#/library/1')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           major_len=b.execute_script('return window.ARCANA_CATALOG.length')
+           assert major_len==22,major_len
+           b.get(base+'?qa=wands5#/library/cups')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+           cups_len=b.execute_script('return window.CUPS_APPROVED.length')
+           assert cups_len==14,cups_len
+           b.get(base+'?qa=wands5#/draw')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'#go-draw'))==1)
+           pool_text=b.find_element(By.CSS_SELECTOR,'.pool-select').text
+           assert '41张' in pool_text, pool_text
+           b.execute_script("document.querySelector('#go-draw').click()")
+           WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.drawn-card'))==1)
+           print('DRAW_41_MAJOR_AND_CUPS_UNCHANGED',flush=True)
+           b.set_window_size(390,844)
+           b.get(base+'?qa=wands5#/library/wands')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==5)
+           width=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+           assert width[0]<=width[1]+2,width
+           b.get(base+'?qa=wands5#/card/wands/five')
+           WebDriverWait(b,18).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+           width=b.execute_script('return [document.documentElement.scrollWidth,innerWidth]')
+           assert width[0]<=width[1]+2,width
+           print('MOBILE_PASS',width,flush=True)
+           print('WANDS_ACE_II_III_IV_V_FULL_LIVE_QA_PASS',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/wands_five_live.py
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Commit PASS QA evidence to public branch
+        shell: bash
+        run: |
+          mkdir -p live/qa
+          printf '%s\n' '{"batch":"Wands ACE–V","date":"2026-10-27","cards":["ace","two","three","four","five"],"resolution":[941,1672],"result":"PASS","total_draw_pool":41,"checks":["public-HD-RGB-pixel-SHA256","thumbs","five-card-gallery","five-detail-routes","22-majors-and-14-cups-preserved","draw","mobile"]}' >live/qa/wands-ace-v-20261027.json
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C live add qa/wands-ace-v-20261027.json
+          git -C live diff --cached --quiet || { git -C live commit -m "test(wands): verify five approved cards public"; git -C live push origin HEAD:gh-pages; }
+          echo "WANDS_ACE_II_III_IV_V_FULL_LIVE_QA_PASS"
