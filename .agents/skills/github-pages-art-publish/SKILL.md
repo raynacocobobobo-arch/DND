@@ -5,6 +5,19 @@ description: Publish user-approved artwork to GitHub Pages through the proven Go
 
 # Verified GitHub Pages Artwork Publisher
 
+
+## Cross-conversation standing instruction · 跨对话永久项目规范（2026-10-27）
+
+**User instruction (confirmed repeatedly):** When asked to 上线、上传、替换、发布 GitHub Pages artwork or website updates for this project, the assistant must **attempt the publication in the current chat** and must **not ask the user to change conversations**, imply that it lacks ability, or say GitHub cannot upload images without first checking which GitHub + Google Drive connector actions are actually available and trying the previously validated relay.
+
+**Connection check first:** Query the available connector action catalog at runtime for GitHub file/workflow actions and Google Drive document/image actions; make safe read-only requests to confirm access. Absence from a small visible tool list does not imply unavailable capabilities: discover via the orchestration tool catalog first. GitHub `fetch_file` and Google Drive `list_folder(root)` are sufficient for initial access checks. Actual write capability is confirmed by write responses, not inferred from read alone.
+
+**Fixed proven binary publishing chain:** approved `/mnt/data/<user-approved original>` PNG → disposable native Google Doc `create_file` → `batch_update_document` `insertInlineImage` with `image_uris` → `get_document` for that image's `inlineObjects[*].embeddedObject.imageProperties.contentUri` → construct one-time GitHub Actions workflow from the bundled template with an accurately indented manifest → main workflow runs reusable `scripts/transfer_art.py` → lossless full-sized WebP plus thumbnails committed to `gh-pages` → update `gh-pages/assets/<suit>-approved-v1.js` and `index.html` cache-busting URL → GitHub Actions-based real-site HTTP/Pillow pixel SHA256/Selenium QA with recorded PASS → delete temporary workflow and Google Doc → comment in project Issue #2 / add repo release note.
+
+**Never fake success:** Creation of the workflow is not a successful upload; verify real `gh-pages` blobs and public image URLs, actual detail pages and original-pixel identity. If image file unavailable, report exact obstacle and attempt verification/recovery; never silently regenerate an already-approved card. Never publish unapproved alternatives. The 22 Major Arcana images must remain unchanged unless user explicitly revises that lock.
+
+**Cross-chat entry point and record:** This file is the project's persistent operational memory, in `main` of `raynacocobobobo-arch/DND`; the next conversation should fetch and follow it rather than asking the user to repeat instructions. The user specifically requested this workflow be reused across conversations on 2026-10-27. This repository record remains available independently of the chat product's automatic personal Memory behavior.
+
 ## Principles
 
 - **Reuse the verified workflow.** GitHub text-only connector actions cannot directly commit binary artwork, but the temporary Google Docs image relay plus GitHub Actions binary commit **does work**. Do not confuse tool limitations with inability to complete the task.
