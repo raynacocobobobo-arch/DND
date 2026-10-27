@@ -7,7 +7,7 @@
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||W.length!==1||!root) {
+  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
@@ -30,7 +30,7 @@
     if(parts[0]==='cups')return {screen:'cups'};
     if(parts[0]==='library'&&parts[1]==='wands')return {screen:'wands'};
     if(parts[0]==='wands')return {screen:'wands'};
-    if(parts[0]==='card'&&parts[1]==='wands'&&parts[2]==='ace')return {screen:'wands-card',slug:'ace'};
+    if(parts[0]==='card'&&parts[1]==='wands'&&W.some(c=>c.slug===parts[2]))return {screen:'wands-card',slug:parts[2]};
     if(parts[0]==='card'&&parts[1]==='cups'&&CU.some(c=>c.slug===parts[2]))return {screen:'cups-card',slug:parts[2]};
     if(parts[0]==='library') {
       const p=Number(parts[1]||1);
@@ -62,7 +62,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：王牌 →</a><span>22 张大阿卡纳 · 14 张圣杯 · 1 张权杖</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -176,7 +176,7 @@
       <div class="crumbs"><a href="#/home">首页</a><span>/</span>权杖组</div>
       <div class="lib-heading">
         <div>${banner('THE GRIMOIRE / SUIT OF WANDS','权杖 · 火与意志','权杖组以火焰、行动和面对未知的决心为主题。选择牌面进入独立故事，查看高清原画与正逆位解读。')}</div>
-        <div class="library-count">显示 1 张 / 共 14 张</div>
+        <div class="library-count">显示 ${W.length} 张 / 共 14 张</div>
       </div>
       <div class="library-panel"><div class="library-grid">
         ${W.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="阅读${clean(c.zh)}的完整故事">
@@ -232,7 +232,7 @@
          <div class="spread-select">${modeOptions.map(o=>`<button type="button" data-n="${o.n}" data-daily="${o.d?1:0}" class="${currentSpread===o.n&&isDaily===o.d?'active':''}">${o.title}<small style="display:block;margin-top:5px;opacity:.7">${o.desc}</small></button>`).join('')}</div>
          <label>抽取范围</label>
          <div class="spread-select pool-select" role="group" aria-label="抽牌范围">
-           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已收录 · 37张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 14张圣杯 + 1张权杖</small></button>
+           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已收录 · ${C.length+CU.filter(c=>c.status==='approved').length+W.filter(c=>c.status==='approved').length}张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 14张圣杯 + ${W.filter(c=>c.status==='approved').length}张权杖</small></button>
            <button type="button" data-pool="major" class="${drawPool==='major'?'active':''}">仅大阿卡纳 · 22张</button>
          </div>
          <label for="question">此刻的问题（可选）</label>
@@ -305,7 +305,7 @@
     else if(key==='cups'){root.innerHTML=cupsLibrary(route.page);document.title='圣杯组 · 小阿卡纳 · '+docTitle;}
     else if(key==='cups-card'){root.innerHTML=cupsDetail(route.slug);document.title=CU.find(c=>c.slug===route.slug)?.zh+' · '+docTitle;}
     else if(key==='wands'){root.innerHTML=wandsLibrary();document.title='权杖组 · 小阿卡纳 · '+docTitle;}
-    else if(key==='wands-card'){root.innerHTML=wandsDetail(route.slug);document.title='权杖王牌 · '+docTitle;}
+    else if(key==='wands-card'){root.innerHTML=wandsDetail(route.slug);document.title=(W.find(c=>c.slug===route.slug)?.zh||'权杖组')+' · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
