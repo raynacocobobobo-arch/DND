@@ -1,0 +1,98 @@
+name: Verify Nine Live Swords Cards
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/swords-nine-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - name: Install image and Selenium test tools
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Test original pixel hashes, public gallery, full texts, draw, other suites, mobile
+        shell: bash
+        run: |
+          cat >/tmp/swords_qa.py <<'PY'
+          import hashlib,io,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          sizes={"ace":[941,1672],"two":[941,1672],"three":[941,1672],"four":[941,1672],"five":[941,1672],"six":[941,1672],"seven":[941,1671],"eight":[941,1671],"nine":[941,1672]}
+          hashes={"ace":"96a5e29792c485256137036388d188c6bedda4402e9c4ba02c6fb193a0cf9824","two":"47867997315eeef04747780ed187c43fdaee529ccf9e05008e8dbc16d0ae0183","three":"b63a5aee211a9b69af44c442f97d4f7e37aebea0c0d9fa839676abc5df305eb4","four":"9170db295e19558ad9bcfd3bb99c9e95692d51f99a0f7b09a312653377b5f824","five":"43183066f297361ec1531812f21ffd01635b9c98c3b6d12877a8617f57aa66e1","six":"6bb1dec96e741246afacb0c1489ee18405ed41b53b810cc32ec18259eedb4744","seven":"326b039177f7ff8190b89d52ff08ce1931153ed9557ec12f2804aa5569ea30dc","eight":"9d6b58aa2c687df793ffca5e5f47043f0ecd2b3b1d939b0ecea4f2c0cbf72a1b","nine":"4ed005889c4c7b50f5298573914581db880ca4df45835711339607121c6ca5b2"}
+          slugs=list(sizes.keys())
+          for i in range(50):
+              r=requests.get(base+'?qa-swords-1-9='+str(i),timeout=35,headers={'Cache-Control':'no-cache'})
+              if r.ok and 'swords-approved-v1.js?v=swords-1-9-20261028' in r.text and 'arcana-app-v3.js?v=swords-1-9-20261028' in r.text:break
+              print('WAIT_FOR_PAGES_PUBLICATION',i,r.status_code,flush=True)
+              time.sleep(6)
+          else:raise AssertionError('HTML cache not updated')
+          print('PUBLIC_HTML_SWORDS_SCRIPT_OK',flush=True)
+          for slug in slugs:
+              for typ in ['final','thumbs']:
+                  u=base+'minor-arcana/swords/'+typ+'/'+slug+'-of-swords-v1.webp?v=9cardQA'
+                  res=requests.get(u,timeout=45)
+                  res.raise_for_status()
+                  art=Image.open(io.BytesIO(res.content));art.load()
+                  assert art.format=='WEBP',(slug,typ,art.format)
+                  if typ=='final':
+                      assert list(art.size)==sizes[slug],(slug,art.size)
+                      sha=hashlib.sha256(art.convert('RGB').tobytes()).hexdigest()
+                      assert sha==hashes[slug],(slug,sha)
+                  else:
+                      assert art.width<=360 and art.height<=640
+              print('LIVE_ORIGINAL_WEBP_PIXEL_IDENTICAL',slug,sizes[slug],flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1380,940']:opts.add_argument(arg)
+          b=webdriver.Chrome(options=opts)
+          b.set_script_timeout(40)
+          try:
+              def go(route):
+                  b.get(base+'?qa=swords-9#/'+route)
+                  WebDriverWait(b,20).until(lambda d: d.execute_script('return document.readyState')=='complete' and not d.find_elements(By.CSS_SELECTOR,'#app .notfound'))
+              go('library/swords')
+              WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==9)
+              counts=b.execute_script('return [window.ARCANA_CATALOG.length,window.CUPS_APPROVED.length,window.WANDS_APPROVED.length,window.SWORDS_APPROVED.length]')
+              assert counts==[22,14,14,9],counts
+              assert len(b.find_elements(By.CSS_SELECTOR,'[data-route-nav]'))==6
+              assert '台账' not in b.find_element(By.ID,'app').text
+              assert '审核' not in b.find_element(By.ID,'app').text
+              print('ALL_59_CARDS_CATALOGUE_INTACT',counts,flush=True)
+              first=b.find_element(By.CSS_SELECTOR,'.library-card')
+              first.click()
+              WebDriverWait(b,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+              assert b.current_url.endswith('#/card/swords/ace'),b.current_url
+              for slug in slugs:
+                  go('card/swords/'+slug)
+                  WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  txt=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for heading in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编','留给你的问题']:
+                      assert heading in txt,(slug,heading)
+                  width,height=b.execute_async_script("""const done=arguments[0];const im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));""")
+                  assert [width,height]==sizes[slug],(slug,width,height)
+              print('NINE_DEEP_LINKS_AND_SIX_STORY_SECTIONS_PASS',flush=True)
+              go('library/1');WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/cups');WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/wands');WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              print('EXISTING_FIFTY_LIBRARY_RECORDS_STILL_PRESENT',flush=True)
+              go('draw');WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
+              assert '59张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+              b.execute_script("Math.random=()=>0.999;document.querySelector('#go-draw').click()")
+              assert '宝剑九' in b.find_element(By.CSS_SELECTOR,'.drawn-card').text
+              print('NINE_SWORDS_INCLUDED_IN_59_CARD_DRAW',flush=True)
+              b.set_window_size(390,844)
+              go('library/swords');WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==9)
+              measures=b.execute_script("return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll('.nav a').length]")
+              assert measures[0]<=measures[1]+2,measures
+              assert measures[2]==6,measures
+              print('MOBILE_SIX_LINK_NAV_NO_OVERFLOW',measures,flush=True)
+              print('ALL_SWORDS_NINE_LIVE_TESTS_PASSED',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/swords_qa.py
