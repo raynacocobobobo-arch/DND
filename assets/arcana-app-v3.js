@@ -93,7 +93,7 @@
       <div class="library-count">全部 22 张 · 一页浏览</div></div>
       <div class="library-panel"><div class="library-grid">${items}</div></div>
       <div style="margin-top:34px;border-top:1px solid var(--line);padding-top:25px">
-        <a class="btn outline mini" href="#/library/cups">小阿卡纳专区：查看已定稿的圣杯国王 →</a>
+        <a class="btn outline mini" href="#/library/cups">继续探索：十四张圣杯 · 《印斯茅斯之影》 →</a>
       </div>
     </section>`;
   }
