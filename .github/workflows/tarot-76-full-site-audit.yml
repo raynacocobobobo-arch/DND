@@ -1,4 +1,4 @@
-name: Tarot 76 Full Live Site Audit
+name: Tarot 77 Full Live Site Audit
 on:
   push:
     branches: [main]
@@ -33,10 +33,10 @@ jobs:
           session=requests.Session()
           for attempt in range(100):
               r=session.get(base+'?qa=tarot76-'+str(attempt),timeout=35,headers={'Cache-Control':'no-cache'});r.raise_for_status()
-              if all(x in r.text for x in ['swords-composition-20261028','full76-deep-reading-20261028','one-page-galleries-deep76-20261028']):break
+              if all(x in r.text for x in ['swords-composition-20261028','pentacles-eight-ordinary-coins-20261028','full77-deep-reading-20261028','one-page-galleries-deep76-20261028']):break
               print('WAIT_FOR_LIVE_76',attempt,flush=True);time.sleep(5)
           else:raise AssertionError('Live HTML missing new artwork/editorial/app references')
-          print('LIVE_76_HTML_ASSET_VERSIONS_OK',flush=True)
+          print('LIVE_77_HTML_ASSET_VERSIONS_OK',flush=True)
           for slug,(size,pixelhash) in source.items():
             for folder in ['final','thumbs']:
               url=base+'minor-arcana/swords/'+folder+'/'+slug+'-of-swords-v3.webp?v=tarot-qa'
@@ -48,6 +48,15 @@ jobs:
                 assert got==pixelhash,(slug,'pixel mismatch',got)
               else:assert im.width<=360 and im.height<=640,(slug,im.size)
             print('REVISED_SWORDS_LOSSLESS_PIXELS_PASS',slug,size,flush=True)
+          url=base+'minor-arcana/pentacles/final/eight-of-pentacles-v1.webp?v=qa-77'
+          rr=session.get(url,timeout=45);rr.raise_for_status()
+          im=Image.open(io.BytesIO(rr.content));im.load()
+          assert im.format=='WEBP' and list(im.size)==[942,1670],(im.format,im.size)
+          assert hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()=='c908ffe5473c968c1d236573b9c0d37c551deda6fb216b5cb8f967d7d0d01e36','Pentacles VIII source mismatch'
+          rthumb=session.get(base+'minor-arcana/pentacles/thumbs/eight-of-pentacles-v1.webp?v=qa-77',timeout=35);rthumb.raise_for_status()
+          thumb=Image.open(io.BytesIO(rthumb.content));thumb.load()
+          assert thumb.format=='WEBP' and thumb.width<=360 and thumb.height<=640,(thumb.format,thumb.size)
+          print('PENTACLES_VIII_ORDINARY_EIGHT_COINS_LOSSLESS_PUBLIC_PASS',flush=True)
           opts=Options()
           for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1360,900']:opts.add_argument(arg)
           d=webdriver.Chrome(options=opts);d.set_script_timeout(45)
@@ -57,8 +66,8 @@ jobs:
             d.get(base+'?qa=tarot76#/library/1')
             wait_css('.library-card',22)
             counts=d.execute_script('return [window.ARCANA_CATALOG.length,window.CUPS_APPROVED.length,window.WANDS_APPROVED.length,window.SWORDS_APPROVED.length,window.PENTACLES_APPROVED.length,Object.keys(window.ARCANA_EDITORIAL||{}).length]')
-            assert counts==[22,14,14,14,12,76],counts
-            suites=[('library/1',22),('library/cups',14),('library/wands',14),('library/swords',14),('library/pentacles',12)]
+            assert counts==[22,14,14,14,13,77],counts
+            suites=[('library/1',22),('library/cups',14),('library/wands',14),('library/swords',14),('library/pentacles',13)]
             for route,n in suites:
               d.execute_script('location.hash=arguments[0]','#/'+route);wait_css('.library-card',n)
               assert not d.find_elements(By.CSS_SELECTOR,'.paginator'),route
@@ -72,7 +81,7 @@ jobs:
             all_keys=[str(i) for i in range(22)]
             for suit in ['cups','wands','swords','pentacles']:
               arr=d.execute_script('return window[arguments[0]].map(x=>x.id)',{'cups':'CUPS_APPROVED','wands':'WANDS_APPROVED','swords':'SWORDS_APPROVED','pentacles':'PENTACLES_APPROVED'}[suit]);all_keys+=arr
-            assert len(all_keys)==76 and len(set(all_keys))==76
+            assert len(all_keys)==77 and len(set(all_keys))==77
             for i,key in enumerate(all_keys):
               route='#/card/'+key
               d.execute_script('location.hash=arguments[0]',route)
@@ -84,13 +93,19 @@ jobs:
               assert len(body)>420,(key,len(body))
               assert not d.find_elements(By.CSS_SELECTOR,'.notfound'),key
               if i%10==0:print('DEEP_DETAIL_PROGRESS',i,key,len(body),flush=True)
-            print('ALL_76_DETAILS_TWO_UNIQUE_ADDED_SECTIONS_AND_EXISTING_CONTENT_PASS',flush=True)
+            print('ALL_77_DETAILS_TWO_UNIQUE_ADDED_SECTIONS_AND_EXISTING_CONTENT_PASS',flush=True)
             d.execute_script('location.hash="#/draw"')
             WebDriverWait(d,15).until(lambda x:len(x.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
-            assert '76张' in d.find_element(By.CSS_SELECTOR,'.pool-select').text
+            assert '77张' in d.find_element(By.CSS_SELECTOR,'.pool-select').text
             d.execute_script('Math.random=()=>0.999;document.querySelector("#go-draw").click()')
             assert '星币国王' in d.find_element(By.CSS_SELECTOR,'.drawn-card').text
-            print('DRAW_POOL_76_PASS',flush=True)
+            d.execute_script('location.hash="#/card/pentacles/eight"')
+          WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+          assert '星币八' in d.find_element(By.CSS_SELECTOR,'.detail-copy').text
+          url=d.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+          assert 'eight-of-pentacles-v1.webp' in url,url
+          print('NEW_PENTACLES_EIGHT_DETAIL_PASS',flush=True)
+          print('DRAW_POOL_77_PASS',flush=True)
             for width in [390,375,320]:
               d.set_window_size(width,844)
               for route,count in suites:
@@ -101,7 +116,7 @@ jobs:
                   print('OVERFLOW_DIAGNOSTIC',width,route,metrics,elements,flush=True)
                 assert metrics[0]<=metrics[1]+2 and metrics[2]==7,(width,route,metrics)
               print('MOBILE_WIDTH_PASS',width,flush=True)
-            print('TAROT_76_FULL_SITE_LIVE_QA_PASSED',flush=True)
+            print('TAROT_77_FULL_SITE_LIVE_QA_PASSED',flush=True)
           finally:d.quit()
           PY
           python /tmp/tarot76qa.py
