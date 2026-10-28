@@ -1,0 +1,104 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+          [
+            {
+              "name": "SWORDS ace approved revised 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYN3ZzzvJ-hfDINjcckSwekgJU2mjqOM5otTQ-juTsQoPfdE7Ui5JgRuE43v8GCR7tcPhnEXSoGpVt5g4Jf-Z87-iDjWmkpIdw6dIBYFqpsOx_TwRP_lrAVhFwF4a270mJ1O_YtDG-J9iQWiZNXMJkkgM1UR02giSiVXsA3tJ8yYgVcj20=s2048?key=qjddnNBuFwFn3qY8trVkIQ",
+              "expected_size": [
+                942,
+                1669
+              ],
+              "expected_pixel_sha256": "b64c024f55749d314d7b692bb39613b990834048f36bc909b51b810b384662f2",
+              "output_path": "minor-arcana/swords/final/ace-of-swords-v3.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/ace-of-swords-v3.webp"
+            },
+            {
+              "name": "SWORDS three approved revised 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztawWpytUVwqAfiqRkVOrEUvYalbcWk4ST1vNfrIbAJr5SNkleAlWpHFANZUKrxjwTd_KUA1ZO2zNGx_8yVSOmiUE9XU4tpx9y7qaY0E34SjKRyOJ3F-OBmYkfCiB0oOBIqcb9OU6TsveUp9w1NlPxKNMd8oedlaja2jWgBMlTu0pSZrfaA=s2048?key=qjddnNBuFwFn3qY8trVkIQ",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "3c3de8a9cd24070d9f084a13f3abc44689ee1ad91535d11bab4be8f843c9214f",
+              "output_path": "minor-arcana/swords/final/three-of-swords-v3.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/three-of-swords-v3.webp"
+            },
+            {
+              "name": "SWORDS seven approved revised 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbtJvdX4Qc38pZcc2n-mEDl6VpeXtE8JZqJdDxdnYo09FdS6TeqKsuAzfqxzSg25ZcnWvZf7BR6AwwWlnNvLWkMtuf-FAanPEA2K9NwulEnzF8b31hTPu-Ho-nyg6_kOD0esQHbkqcao3i7Epuw3K13mfrF6nSpQmhEET2PVkLQzG3m_lQ=s2048?key=qjddnNBuFwFn3qY8trVkIQ",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "dc7259039bab89eca1be32b47c178d399f852ac4b5715c97294404874f7a8273",
+              "output_path": "minor-arcana/swords/final/seven-of-swords-v3.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/seven-of-swords-v3.webp"
+            },
+            {
+              "name": "SWORDS eight approved revised 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztY0CWtIaEY42Sz0_v7ZMdqnClbGE92P3MQP9HYc891YMjZa5QbSHB8dEY3IxWI86yKLph4YXIwFp2Mgd2suYvYbcGxfeVF1P5xnW2CERcw704gs9T66dCc28M-FCWd-mTLcAZp9KQJUCkfIBJkvkwFgB4iZIG656TDYU3r03p1ZfSdqnIM=s2048?key=qjddnNBuFwFn3qY8trVkIQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "cfceabfd610253af180a605b2e38ed07484e36a4f2cc35d2068157269ec3829d",
+              "output_path": "minor-arcana/swords/final/eight-of-swords-v3.webp",
+              "thumb_path": "minor-arcana/swords/thumbs/eight-of-swords-v3.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
