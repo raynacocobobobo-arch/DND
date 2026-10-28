@@ -34,11 +34,7 @@ function recordFromDraw(d){
  meaning:x.rev?(x.c.minor?x.c.rev:(window.ARCANA_DEPTH[x.c.id]||{}).rev):(x.c.minor?x.c.up:(window.ARCANA_DEPTH[x.c.id]||{}).up)}))}
 }
 function addReading(d){
- if(d.daily){
-   const stamp=new Date().toLocaleDateString('en-CA');
-   const prev=state.records.find(r=>r.mode==='daily'&&r.pool===(d.pool||'all')&&new Date(r.time).toLocaleDateString('en-CA')===stamp);
-   if(prev)return {record:prev,saved:true,repeat:true};
- }
+ // Daily cards are deterministic, but each separately asked question deserves its own dated record.
  const r=recordFromDraw(d);state.records.unshift(r);
  if(state.records.length>MAX)state.records.length=MAX;
  return {record:r,saved:commit(),repeat:false};
@@ -130,7 +126,7 @@ function renderRecord(id){
  return '<section class="page archive-page archive-detail"><div class="crumbs"><a href="#/history">命运档案</a><span>/</span>'+ESC(localDate(r.time))+'</div>'+
   '<div class="eyebrow">RECORDED READING</div><h1 class="title">'+recordLabel(r)+'</h1><p class="archive-hint">'+ESC(localDate(r.time))+' · '+(r.pool==='major'?'仅大阿卡纳':'完整牌库')+'</p>'+
   (r.question?'<div class="archive-question-large">当时的问题：'+ESC(r.question)+'</div>':'')+
-  '<div class="archive-reading-cards">'+r.cards.map(x=>{const c=byId(x.id);return c?'<article><a href="#/card/'+encodeURIComponent(x.id)+'"><img src="'+ESC(c.img)+'" loading="lazy" alt="'+ESC(c.zh)+'" style="'+(x.rev?'transform:rotate(180deg)':'')+'"></a><h2>'+ESC(x.name)+'</h2><p>'+ESC(x.position)+' · '+(x.rev?'逆位':'正位')+'</p><p>'+ESC(x.meaning)+'</p><a href="#/card/'+encodeURIComponent(x.id)+'">查看完整牌义 →</a></article>':'';}).join('')+'</div>'+
+  '<div class="archive-reading-cards">'+r.cards.map(x=>{const c=byId(x.id);return c?'<article><a href="#/card/'+encodeURIComponent(x.id)+'"><img src="'+ESC(c.img)+'" loading="lazy" alt="'+ESC(c.zh)+'" style="'+(x.rev?'transform:rotate(180deg)':'')+'"></a><h2>'+ESC(x.name)+'</h2><p>'+ESC(x.position)+' · '+(x.rev?'逆位':'正位')+'</p><p><strong>牌面故事：</strong>'+ESC(x.story||'')+'</p><p><strong>当时的牌义：</strong>'+ESC(x.meaning)+'</p><a href="#/card/'+encodeURIComponent(x.id)+'">查看完整牌义 →</a></article>':'';}).join('')+'</div>'+
   '<section class="archive-notes"><h2>我的笔记</h2><textarea id="archive-note" maxlength="2000" rows="5" placeholder="当时有什么感受？后来发生了什么？">'+ESC(r.note)+'</textarea><p class="archive-hint">仅保存在当前浏览器。笔记不会包含在公开分享文本里。</p><button class="btn" id="archive-save-note">保存笔记</button><span id="archive-note-status" role="status"></span></section>'+
   '<div class="archive-actions"><button id="record-pin">'+(r.pinned?'取消收藏':'收藏本次记录')+'</button><button id="record-copy">复制牌阵摘要</button><button id="record-image">导出牌阵图片</button><button class="danger" id="record-delete">删除记录</button></div></section>';
 }
