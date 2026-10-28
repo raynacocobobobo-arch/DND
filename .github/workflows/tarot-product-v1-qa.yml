@@ -1,0 +1,137 @@
+name: Tarot 78 Product Features Live QA
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/tarot-product-v1-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - name: Install browser testing libraries
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Verify 78-card journal, filters, share downloads, backups and mobile UI
+        shell: bash
+        run: |
+          cat >/tmp/product-v1-qa.py <<'PY'
+          import io,os,time,json,requests,subprocess
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          s=requests.Session()
+          for attempt in range(110):
+              r=s.get(base+'?productqa='+str(attempt),timeout=30,headers={'Cache-Control':'no-cache'})
+              if r.ok and all(x in r.text for x in ['arcana-journal-v1.js?v=archive-1-20261028','arcana-journal-v1.css?v=archive-1-20261028','arcana-app-v3.js?v=archive-1-20261028']):break
+              print('WAITING_FOR_NEW_SITE',attempt,flush=True);time.sleep(5)
+          else:raise Exception('Public HTML did not deploy latest application')
+          assert r.text.count('data-route-nav=')==4
+          print('PUBLIC_APP_AND_NAV_READY',flush=True)
+          for path in ['assets/arcana-journal-v1.js','assets/arcana-app-v3.js']:
+              x=s.get(base+path+'?qa=script',timeout=40);x.raise_for_status()
+              name='/tmp/'+os.path.basename(path)
+              open(name,'w',encoding='utf-8').write(x.text)
+              subprocess.run(['node','--check',name],check=True)
+              print('JS_SYNTAX_PASS',path,flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1360,960']:opts.add_argument(arg)
+          opts.add_experimental_option('prefs',{'download.default_directory':'/tmp/tarotqa','download.prompt_for_download':False,'download.directory_upgrade':True})
+          os.makedirs('/tmp/tarotqa',exist_ok=True)
+          d=webdriver.Chrome(options=opts)
+          d.set_page_load_timeout(50)
+          def go(route):
+              d.execute_script('location.hash=arguments[0]','#/'+route)
+          def until(fn,sec=20):return WebDriverWait(d,sec).until(fn)
+          def count(sel):return len(d.find_elements(By.CSS_SELECTOR,sel))
+          def waitCount(sel,n):until(lambda x:count(sel)==n)
+          try:
+              d.get(base+'?productqa=archive-v1#/home')
+              until(lambda x:count('.home-recent')==1)
+              assert count('.nav a')==4
+              assert '78' in d.find_element(By.CSS_SELECTOR,'.home-copy').text
+              d.execute_script("localStorage.removeItem('forbidden-arcana-journal-v1')")
+              d.refresh()
+              until(lambda x:count('.home-recent')==1)
+              go('explore');waitCount('.explore-item',78)
+              assert count('.explore-shortcuts a')==5
+              d.find_element(By.ID,'explore-search').send_keys('星币十')
+              waitCount('.explore-item',1)
+              assert '星币十' in d.find_element(By.CSS_SELECTOR,'.explore-item').text
+              d.find_element(By.CSS_SELECTOR,'.favorite-toggle').click()
+              assert d.find_element(By.CSS_SELECTOR,'.favorite-toggle').get_attribute('aria-pressed')=='true'
+              d.refresh();waitCount('.explore-item',78)
+              assert d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1')).favorites.includes('pentacles/ten')")
+              fav=d.find_element(By.ID,'explore-faves');fav.click();waitCount('.explore-item',1)
+              fav.click();waitCount('.explore-item',78)
+              d.find_element(By.ID,'explore-suit').find_element(By.CSS_SELECTOR,'option[value="pentacles"]').click()
+              waitCount('.explore-item',14)
+              print('78_CARD_SEARCH_FILTER_FAVORITE_REFRESH_PASSED',flush=True)
+              go('draw');until(lambda x:count('.spread-select:not(.pool-select) button')==3)
+              d.find_element(By.ID,'question').send_keys('要不要开始新项目？')
+              d.find_element(By.CSS_SELECTOR,'.spread-select:not(.pool-select) button[data-n="3"]').click()
+              assert d.find_element(By.CSS_SELECTOR,'.pool-select button[data-pool="all"]').get_attribute('class')=='active'
+              d.find_element(By.ID,'go-draw').click()
+              waitCount('.drawn-card',3)
+              assert '已记录到此浏览器' in d.find_element(By.CSS_SELECTOR,'.reading-save-status').text
+              assert count('#draw-image')==1
+              obj=d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1'))")
+              assert len(obj['records'])==1 and len(obj['records'][0]['cards'])==3 and obj['records'][0]['question']=='要不要开始新项目？',obj
+              print('THREE_CARD_DRAW_AUTOSAVE_PASSED',flush=True)
+              d.refresh();until(lambda x:count('#go-draw')==1)
+              go('history');waitCount('.archive-record',1)
+              assert '要不要开始新项目' in d.find_element(By.CSS_SELECTOR,'.archive-record').text
+              d.find_element(By.CSS_SELECTOR,'.archive-record-link').click()
+              until(lambda x:count('#archive-note')==1)
+              note=d.find_element(By.ID,'archive-note');note.send_keys('这是一条不会被公开分享的私人笔记。')
+              d.find_element(By.ID,'archive-save-note').click()
+              assert '已保存' in d.find_element(By.ID,'archive-note-status').text
+              assert count('.archive-reading-cards article')==3
+              print('HISTORY_DETAIL_NOTES_PASSED',flush=True)
+              d.refresh();until(lambda x:count('#archive-note')==1)
+              assert '私人笔记' in d.find_element(By.ID,'archive-note').get_attribute('value')
+              d.find_element(By.ID,'record-image').click()
+              until(lambda x:any(p.endswith('.png') for p in os.listdir('/tmp/tarotqa')),45)
+              print('DOWNLOAD_READING_PNG_PASSED',flush=True)
+              go('history');until(lambda x:count('#archive-export')==1)
+              d.find_element(By.ID,'archive-export').click()
+              until(lambda x:any(p.endswith('.json') for p in os.listdir('/tmp/tarotqa')),30)
+              jsonfile=[p for p in os.listdir('/tmp/tarotqa') if p.endswith('.json')][0]
+              backup=json.load(open('/tmp/tarotqa/'+jsonfile,encoding='utf-8'))
+              assert len(backup['records'])==1 and backup['favorites']==['pentacles/ten']
+              print('HISTORY_JSON_BACKUP_AND_PRIVATE_NOTES_PASSED',flush=True)
+              d.find_element(By.CSS_SELECTOR,'.archive-record .archive-actions [data-remove]').click()
+              d.switch_to.alert.accept()
+              until(lambda x:count('.archive-record')==0)
+              assert d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1')).records.length")==0
+              print('DELETE_RECORD_PASSED',flush=True)
+              d.find_element(By.ID,'archive-import-file').send_keys('/tmp/tarotqa/'+jsonfile)
+              d.switch_to.alert.accept()
+              d.switch_to.alert.accept()
+              until(lambda x:count('.archive-record')==1)
+              print('JSON_IMPORT_RESTORE_PASSED',flush=True)
+              for width in [390,375,320]:
+                  d.set_window_size(width,800)
+                  for route in ['home','explore','history','draw','library/1','library/cups','library/wands','library/swords','library/pentacles']:
+                      go(route)
+                      until(lambda x: count('.page')>=1)
+                      time.sleep(.1)
+                      metrics=d.execute_script('return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll(".nav a").length]')
+                      if metrics[0]>metrics[1]+2:print('MOBILE_OVERFLOW',width,route,metrics,flush=True)
+                      assert metrics[0]<=metrics[1]+2 and metrics[2]==4,(width,route,metrics)
+                  print('MOBILE_PRODUCT_PASS',width,flush=True)
+              go('explore');waitCount('.explore-item',78)
+              go('card/pentacles/ten');until(lambda x:count('.detail-favorite')==1)
+              assert d.find_element(By.CSS_SELECTOR,'.detail-favorite').get_attribute('aria-pressed')=='true'
+              go('card/0');until(lambda x:count('.detail-favorite')==1)
+              go('card/swords/eight');until(lambda x:count('.detail-favorite')==1)
+              print('DETAIL_FAVORITES_AND_LEGACY_ROUTES_PASSED',flush=True)
+              print('TAROT_78_PRODUCT_V1_LIVE_QA_PASSED',flush=True)
+          finally:
+              d.quit()
+          PY
+          python /tmp/product-v1-qa.py
