@@ -99,13 +99,13 @@ jobs:
             assert '77张' in d.find_element(By.CSS_SELECTOR,'.pool-select').text
             d.execute_script('Math.random=()=>0.999;document.querySelector("#go-draw").click()')
             assert '星币国王' in d.find_element(By.CSS_SELECTOR,'.drawn-card').text
-            d.execute_script('location.hash="#/card/pentacles/eight"')
-          WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
-          assert '星币八' in d.find_element(By.CSS_SELECTOR,'.detail-copy').text
-          url=d.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
-          assert 'eight-of-pentacles-v1.webp' in url,url
-          print('NEW_PENTACLES_EIGHT_DETAIL_PASS',flush=True)
-          print('DRAW_POOL_77_PASS',flush=True)
+              d.execute_script('location.hash="#/card/pentacles/eight"')
+            WebDriverWait(d,20).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+            assert '星币八' in d.find_element(By.CSS_SELECTOR,'.detail-copy').text
+            url=d.find_element(By.CSS_SELECTOR,'.detail-art img').get_attribute('src')
+            assert 'eight-of-pentacles-v1.webp' in url,url
+            print('NEW_PENTACLES_EIGHT_DETAIL_PASS',flush=True)
+            print('DRAW_POOL_77_PASS',flush=True)
           for width in [390,375,320]:
               d.set_window_size(width,844)
               for route,count in suites:
