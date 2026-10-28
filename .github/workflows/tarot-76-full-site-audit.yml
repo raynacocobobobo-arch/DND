@@ -33,7 +33,7 @@ jobs:
           session=requests.Session()
           for attempt in range(100):
               r=session.get(base+'?qa=tarot76-'+str(attempt),timeout=35,headers={'Cache-Control':'no-cache'});r.raise_for_status()
-              if all(x in r.text for x in ['swords-composition-20261028','pentacles-final-78-20261028','full78-deep-reading-20261028','arcana-app-v3.js?v=literary-20261028']):break
+              if all(x in r.text for x in ['swords-composition-20261028','pentacles-final-78-20261028','full78-deep-reading-20261028','arcana-app-v3.js?v=reading-first-20261028']):break
               print('WAIT_FOR_LIVE_76',attempt,flush=True);time.sleep(5)
           else:raise AssertionError('Live HTML missing new artwork/editorial/app references')
           print('LIVE_78_HTML_ASSET_VERSIONS_OK',flush=True)
@@ -96,6 +96,8 @@ jobs:
               d.execute_script('location.hash=arguments[0]',route)
               WebDriverWait(d,18).until(lambda x: len(x.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1 and '#/card/'+key in x.current_url)
               assert len(d.find_elements(By.CSS_SELECTOR,'.quick-read'))==1,key
+              assert len(d.find_elements(By.CSS_SELECTOR,'.detail-meaning-intro'))==1,key
+              assert d.execute_script('return [...document.querySelectorAll(".detail-copy > .chapter")].findIndex(x=>x.classList.contains("story"))')>=4,key
               assert len(d.find_elements(By.CSS_SELECTOR,'.chapter.story p'))>=2,key
               headings=d.execute_script('return Array.from(document.querySelectorAll(".detail-copy .chapter h2")).map(x=>x.textContent.trim())')
               assert '深读 · 故事的暗线' in headings and '回到现实 · 如何理解这张牌' in headings,(key,headings)
@@ -113,6 +115,8 @@ jobs:
               print('FOURTEEN_CARD_NOVELLA_CHAPTERS_PASS',suit,flush=True)
             assert len(d.execute_script('return Object.keys(window.ARCANA_LITERARY_V2.beats)'))==78
             assert d.execute_script('return window.ARCANA_READING_V2.applied===true')
+            assert d.execute_script('return window.ARCANA_INTERPRETATIONS_V3.count===78')
+            assert d.execute_script('return Object.keys(window.ARCANA_EDITORIAL).length===78')
             print('ALL_78_REVISED_STORIES_AND_FOUR_NOVELLAS_PASS',flush=True)
             d.execute_script('location.hash="#/draw"')
             WebDriverWait(d,15).until(lambda x:len(x.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
