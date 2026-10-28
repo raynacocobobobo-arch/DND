@@ -3,11 +3,11 @@
    Hash routes work with GitHub Pages direct refresh without 404. */
 (()=>{
   'use strict';
-  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED;
+  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED;
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!root) {
+  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!Array.isArray(P)||(P.length<1||P.length>14)||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
@@ -30,6 +30,9 @@
     if(parts[0]==='cups')return {screen:'cups'};
     if(parts[0]==='library'&&parts[1]==='wands')return {screen:'wands'};
     if(parts[0]==='wands')return {screen:'wands'};
+    if(parts[0]==='library'&&parts[1]==='pentacles')return {screen:'pentacles'};
+    if(parts[0]==='pentacles')return {screen:'pentacles'};
+    if(parts[0]==='card'&&parts[1]==='pentacles'&&P.some(c=>c.slug===parts[2]))return {screen:'pentacles-card',slug:parts[2]};
     if(parts[0]==='library'&&parts[1]==='swords')return {screen:'swords'};
     if(parts[0]==='swords')return {screen:'swords'};
     if(parts[0]==='card'&&parts[1]==='swords'&&S.some(c=>c.slug===parts[2]))return {screen:'swords-card',slug:parts[2]};
@@ -47,7 +50,7 @@
   }
   function updateNav(screen){
     navs.forEach(a=>{
-      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-card'?'cups':screen==='wands-card'?'wands':screen==='swords-card'?'swords':screen);
+      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-card'?'cups':screen==='wands-card'?'wands':screen==='swords-card'?'swords':screen==='pentacles-card'?'pentacles':screen);
       a.classList.toggle('active',active);
       if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
@@ -65,7 +68,7 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><a href="#/library/pentacles">星币组：已收录${P.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑 · ${P.length} 张星币</span></div>`;
   }
   function library(page){
     const start=(page-1)*6,end=Math.min(22,start+6);
@@ -260,11 +263,54 @@
       </div>
     </section>`;
   }
+  function pentaclesLibrary(){
+    return `<section class="page library">
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span>星币组</div>
+      <div class="lib-heading">
+        <div>${banner('THE GRIMOIRE / SUIT OF PENTACLES','星币 · 土与生命','星币组以《星之彩》中的加德纳农场为舞台，记录日常生活被未知色彩逐渐侵蚀的过程。选择牌面进入独立故事，查看高清原画与正逆位解读。')}</div>
+        <div class="library-count">显示 ${P.length} 张 / 共 14 张</div>
+      </div>
+      <div class="library-panel"><div class="library-grid">
+        ${P.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="阅读${clean(c.zh)}的完整故事">
+          <img loading="eager" src="${c.img}" alt="${clean(c.zh)}高清塔罗原画">
+          <div class="roman">${clean(c.en)}</div>
+          <h2 class="card-title">${clean(c.zh)}</h2>
+          <div class="caption">${clean(c.title)}</div>
+        </a>`).join('')}
+      </div></div>
+    </section>`;
+  }
+  function pentaclesDetail(slug){
+    const c=P.find(x=>x.slug===slug);
+    if(!c)return '<section class="page notfound"><h1>没有找到这张牌</h1></section>';
+    return `<section class="page detail">
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/pentacles">星币组</a><span>/</span>${clean(c.zh)}</div>
+      <div class="detail-layout">
+        <div class="detail-art">
+          <img src="${c.img}" fetchpriority="high" alt="${clean(c.zh)}高清原画">
+          <a class="zoom" target="_blank" rel="noopener" href="${c.img}">单独查看高清原画 ↗</a>
+        </div>
+        <article class="detail-copy">
+          <div class="eyebrow">MINOR ARCANA / SUIT OF PENTACLES · ${clean(c.en)}</div>
+          <h1>${clean(c.zh)}</h1><div class="subtitle">${clean(c.title)} · ${clean(c.en)}</div>
+          <div class="character">象征主题 / ${clean(c.suitMeaning)}</div>
+          ${section('01 / ORIGINAL NARRATIVE','牌面的故事',c.story,'story')}
+          ${section('02 / VISUAL LANGUAGE','画面在讲什么',c.visual)}
+          ${section('03 / UPRIGHT','正位 · 启示',c.up)}
+          ${section('04 / REVERSED','逆位 · 阴影',c.rev)}
+          ${section('05 / LITERARY ROOTS','原著背景与艺术改编',c.canon)}
+          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
+          <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">洛夫克拉夫特神话与传统塔罗牌义的原创融合。画面不是小说原文情节，解读仅用于文化欣赏与个人反思。</p></section>
+          <div class="detail-arrows"><a class="btn outline mini" href="#/library/pentacles">← 返回星币组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
+        </article>
+      </div>
+    </section>`;
+  }
   function seed32(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;}
   function pickCards(n,daily){
     let random=Math.random;
     if(daily){let s=seed32(new Date().toLocaleDateString('en-CA'));random=()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/4294967296;};}
-    const pool=(drawPool==='major'?C:C.concat(CU.filter(c=>c.status==='approved'),W.filter(c=>c.status==='approved'),S.filter(c=>c.status==='approved'))).slice(),out=[];
+    const pool=(drawPool==='major'?C:C.concat(CU.filter(c=>c.status==='approved'),W.filter(c=>c.status==='approved'),S.filter(c=>c.status==='approved'),P.filter(c=>c.status==='approved'))).slice(),out=[];
     for(let i=0;i<n;i++){const j=Math.floor(random()*pool.length);out.push({c:pool.splice(j,1)[0],rev:random()<.3});}
     return out;
   }
@@ -278,7 +324,7 @@
          <div class="spread-select">${modeOptions.map(o=>`<button type="button" data-n="${o.n}" data-daily="${o.d?1:0}" class="${currentSpread===o.n&&isDaily===o.d?'active':''}">${o.title}<small style="display:block;margin-top:5px;opacity:.7">${o.desc}</small></button>`).join('')}</div>
          <label>抽取范围</label>
          <div class="spread-select pool-select" role="group" aria-label="抽牌范围">
-           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已收录 · ${C.length+CU.filter(c=>c.status==='approved').length+W.filter(c=>c.status==='approved').length+S.filter(c=>c.status==='approved').length}张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 14张圣杯 + ${W.filter(c=>c.status==='approved').length}张权杖 + ${S.filter(c=>c.status==='approved').length}张宝剑</small></button>
+           <button type="button" data-pool="all" class="${drawPool==='all'?'active':''}">全部已收录 · ${C.length+CU.filter(c=>c.status==='approved').length+W.filter(c=>c.status==='approved').length+S.filter(c=>c.status==='approved').length+P.filter(c=>c.status==='approved').length}张<small style="display:block;margin-top:5px;opacity:.7">22张大阿卡纳 + 14张圣杯 + ${W.filter(c=>c.status==='approved').length}张权杖 + ${S.filter(c=>c.status==='approved').length}张宝剑 + ${P.filter(c=>c.status==='approved').length}张星币</small></button>
            <button type="button" data-pool="major" class="${drawPool==='major'?'active':''}">仅大阿卡纳 · 22张</button>
          </div>
          <label for="question">此刻的问题（可选）</label>
@@ -354,6 +400,8 @@
     else if(key==='wands-card'){root.innerHTML=wandsDetail(route.slug);document.title=(W.find(c=>c.slug===route.slug)?.zh||'权杖组')+' · '+docTitle;}
     else if(key==='swords'){root.innerHTML=swordsLibrary();document.title='宝剑组 · 小阿卡纳 · '+docTitle;}
     else if(key==='swords-card'){root.innerHTML=swordsDetail(route.slug);document.title=(S.find(c=>c.slug===route.slug)?.zh||'宝剑组')+' · '+docTitle;}
+    else if(key==='pentacles'){root.innerHTML=pentaclesLibrary();document.title='星币组 · 小阿卡纳 · '+docTitle;}
+    else if(key==='pentacles-card'){root.innerHTML=pentaclesDetail(route.slug);document.title=(P.find(c=>c.slug===route.slug)?.zh||'星币组')+' · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
@@ -361,5 +409,5 @@
   }
   window.addEventListener('hashchange',render);
   render();
-  console.info('Forbidden Arcana: Major Arcana 22 + Cups 14 + Wands '+W.length+' + Swords '+S.length+', unified collection and interpretation');
+  console.info('Forbidden Arcana: Major Arcana 22 + Cups 14 + Wands '+W.length+' + Swords '+S.length+' + Pentacles '+P.length+', unified collection and interpretation');
 })();
