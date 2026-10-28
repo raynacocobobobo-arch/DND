@@ -1,0 +1,115 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+          [
+            {
+              "name": "PENTACLES nine approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZAXVm4Wj85CfNMFn_yRYb4lWpRRs4oRzwTvRM3TXWl5QbFSBFDbcvf6c0tk4g6YJpJB0IB5TqwxecGBJb--LGCGmT8GdLCQQbVTIGUh9pa9Z52E6wPxCxDRTcjYk7MJm_bymDpLuC62A7MXSM_7w5YexBJ5cPqmC2u9l-X56OJPXX-vyM=s2048?key=TKXSGTDVrYumDbZ-KnV4NQ",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "44abe79b0c31ed16df8bbdea1a654737c9d0c939d63a1e7364090bf8c283fb3a",
+              "output_path": "minor-arcana/pentacles/final/nine-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/nine-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES page approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYj-lMfXbUgDBpxqbjTfvn4b3D6BGYdZ3ThPCPh4S2WEzcgrUGJfLiJYrpgDGOLs5JLNJAbPDFo1YxDwf9FEdn6YQ3ZLslcOduH8B3Pza7H4uIbGkAtAxVjS5sup5k5XUYO9Wp-orE33syPx6Ch-_KptHBQoCZBEOYuCH2zP3JUDgdBWpM=s2048?key=TKXSGTDVrYumDbZ-KnV4NQ",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "be2ada5d0a48b26e3ebe968bbc815b068afafd4e498d9975b28e372c1066e169",
+              "output_path": "minor-arcana/pentacles/final/page-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/page-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES knight approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaCfy0jEQ5yk6KL5FkXhaV6jAXmPf60CacobKHw00A8BaCzIcXbKL4yhGdqVEB_F2LtLt3zCN9UnFbkRO0iskVZ7LgoSlKbQ9uaEdo7jc0L_twsPSFDDVXVfmitLaOrXmtjY6Zk02Aup8eVCb33zymOuxXT49juEg-W_oBLJzU1JcHzcVY=s2048?key=TKXSGTDVrYumDbZ-KnV4NQ",
+              "expected_size": [
+                941,
+                1670
+              ],
+              "expected_pixel_sha256": "e4b92afa2a9f79ad9d1757c58c508422d27e81511078d62b8d6ba09e84de719a",
+              "output_path": "minor-arcana/pentacles/final/knight-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/knight-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES queen approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYCDtb0qkF390uRy_kTBBBmTe_tFgyz1gB7d6cS6wcxfdgSRweS1E14F0OgncJahMf2W2o79sDBu-4X-cz-4RfKIiTj-Zoi4SWNTnQljceafmB-fD29BE20Vm6vnmtrBMCPVVsqwqiq1coaDhKbOcXQK4zAlcuAYw-biHMfgYYuSCrJVwo=s2048?key=TKXSGTDVrYumDbZ-KnV4NQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "7ec9793ebea264ae0687b088e5971503816474e6df6e82ff20136d9c07c6de92",
+              "output_path": "minor-arcana/pentacles/final/queen-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/queen-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES king approved",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbuT7XrLyVvJNgA-BvuDpwCli1dTnFMCi8fm2kZ54CnAMHgLPaV4Ty0QCfMXs0wiIVtkWFgd3ewkzQshnOD2_xgj_GhU7Drg8VtggQ5_Rg6K4HrNZpAVcj0ejWRJktzlYBOVjEeK6xQHuF-Kq-WZRxw2WaDlqVRip1BSILnjAZHLJDUyZ8=s2048?key=TKXSGTDVrYumDbZ-KnV4NQ",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "fb7b1ae9823417a6829fa4551d13b2ffb793c29e3f085a54d2bb56494f0e4b87",
+              "output_path": "minor-arcana/pentacles/final/king-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/king-of-pentacles-v1.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
