@@ -27,12 +27,12 @@ jobs:
           s=requests.Session()
           for attempt in range(110):
               r=s.get(base+'?productqa='+str(attempt),timeout=30,headers={'Cache-Control':'no-cache'})
-              if r.ok and all(x in r.text for x in ['arcana-journal-v1.js?v=archive-2-20261028','arcana-journal-v1.css?v=archive-1-20261028','arcana-app-v3.js?v=archive-2-20261028']):break
+              if r.ok and all(x in r.text for x in ['arcana-journal-v1.js?v=literary-20261028','arcana-journal-v1.css?v=archive-1-20261028','arcana-app-v3.js?v=literary-20261028']):break
               print('WAITING_FOR_NEW_SITE',attempt,flush=True);time.sleep(5)
           else:raise Exception('Public HTML did not deploy latest application')
           assert r.text.count('data-route-nav=')==4
           print('PUBLIC_APP_AND_NAV_READY',flush=True)
-          for path in ['assets/arcana-journal-v1.js','assets/arcana-app-v3.js']:
+          for path in ['assets/arcana-literary-v2.js','assets/arcana-journeys-v1.js','assets/arcana-reading-v2.js','assets/arcana-journal-v1.js','assets/arcana-app-v3.js']:
               x=s.get(base+path+'?qa=script',timeout=40);x.raise_for_status()
               name='/tmp/'+os.path.basename(path)
               open(name,'w',encoding='utf-8').write(x.text)
@@ -78,10 +78,12 @@ jobs:
               assert d.find_element(By.CSS_SELECTOR,'.pool-select button[data-pool="all"]').get_attribute('class')=='active'
               d.execute_script('document.getElementById("go-draw").click()')
               waitCount('.drawn-card',3)
+              assert count('.reading-synthesis')==1
+              assert '三张牌的关系' in d.find_element(By.CSS_SELECTOR,'.reading-synthesis').text
               assert '已记录到此浏览器' in d.find_element(By.CSS_SELECTOR,'.reading-save-status').text
               assert count('#draw-image')==1
               obj=d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1'))")
-              assert len(obj['records'])==1 and len(obj['records'][0]['cards'])==3 and obj['records'][0]['question']=='要不要开始新项目？',obj
+              assert len(obj['records'])==1 and len(obj['records'][0]['cards'])==3 and obj['records'][0]['question']=='要不要开始新项目？' and len(obj['records'][0].get('synthesis',''))>100,obj
               print('THREE_CARD_DRAW_AUTOSAVE_PASSED',flush=True)
               d.refresh();until(lambda x:count('#go-draw')==1)
               go('history');waitCount('.archive-record',1)
@@ -92,6 +94,8 @@ jobs:
               d.execute_script('document.getElementById("archive-save-note").click()')
               assert '已保存' in d.find_element(By.ID,'archive-note-status').text
               assert count('.archive-reading-cards article')==3
+              assert count('.archive-synthesis')==1
+              assert '当时的三张牌综合解读' in d.find_element(By.CSS_SELECTOR,'.archive-synthesis').text
               assert '牌面故事：' in d.find_element(By.CSS_SELECTOR,'.archive-reading-cards').text
               print('HISTORY_DETAIL_NOTES_PASSED',flush=True)
               d.refresh();until(lambda x:count('#archive-note')==1)
@@ -104,7 +108,7 @@ jobs:
               until(lambda x:any(p.endswith('.json') for p in os.listdir('/tmp/tarotqa')),30)
               jsonfile=[p for p in os.listdir('/tmp/tarotqa') if p.endswith('.json')][0]
               backup=json.load(open('/tmp/tarotqa/'+jsonfile,encoding='utf-8'))
-              assert len(backup['records'])==1 and backup['favorites']==['pentacles/ten']
+              assert len(backup['records'])==1 and backup['favorites']==['pentacles/ten'] and len(backup['records'][0]['synthesis'])>100
               print('HISTORY_JSON_BACKUP_AND_PRIVATE_NOTES_PASSED',flush=True)
               d.execute_script('document.querySelector(".archive-record .archive-actions [data-remove]").click()')
               d.switch_to.alert.accept()
@@ -118,7 +122,7 @@ jobs:
               print('JSON_IMPORT_RESTORE_PASSED',flush=True)
               for width in [390,375,320]:
                   d.set_window_size(width,800)
-                  for route in ['home','explore','history','draw','library/1','library/cups','library/wands','library/swords','library/pentacles']:
+                  for route in ['home','explore','history','draw','library/1','library/cups','library/wands','library/swords','library/pentacles','story/cups','story/wands','story/swords','story/pentacles']:
                       go(route)
                       until(lambda x: count('.page')>=1)
                       time.sleep(.1)
@@ -131,6 +135,14 @@ jobs:
               assert d.find_element(By.CSS_SELECTOR,'.detail-favorite').get_attribute('aria-pressed')=='true'
               go('card/0');until(lambda x:count('.detail-favorite')==1)
               go('card/swords/eight');until(lambda x:count('.detail-favorite')==1)
+              assert count('.detail-share')==1
+              assert count('.quick-read')==1
+              assert len(d.find_elements(By.CSS_SELECTOR,'.chapter.story p'))>=2
+              for suite in ['cups','wands','swords','pentacles']:
+                  go('story/'+suite)
+                  until(lambda x:count('.novella-chapter')==5)
+                  assert count('.novella-strip a')==14,suite
+              print('LITERARY_V2_FOUR_STORIES_QUICK_READ_AND_SHARE_PASSED',flush=True)
               print('DETAIL_FAVORITES_AND_LEGACY_ROUTES_PASSED',flush=True)
               print('TAROT_78_PRODUCT_V1_LIVE_QA_PASSED',flush=True)
           finally:
