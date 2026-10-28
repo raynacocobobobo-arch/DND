@@ -27,7 +27,7 @@ function recordFromDraw(d){
  const positions=d.n===3?['过去','现在','未来']:['启示'];
  return {id:'r-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10),
  time:new Date().toISOString(),mode:d.daily?'daily':d.n===3?'three':'single',
- pool:d.pool||'all',question:String(d.question||'').slice(0,200),note:'',pinned:false,
+ pool:d.pool||'all',question:String(d.question||'').slice(0,200),note:'',pinned:false,synthesis:String(d.synthesis||'').slice(0,2500),
  cards:d.cards.map((x,i)=>({id:String(x.c.id),rev:!!x.rev,position:positions[i],name:x.c.zh,
  title:x.c.minor?x.c.title:(window.ARCANA_DEPTH[x.c.id]||{}).title,
  story:x.c.minor?x.c.story:(window.ARCANA_DEPTH[x.c.id]||{}).scene,
@@ -63,7 +63,7 @@ function importJSON(file){
    const validCard=c=>c&&byId(c.id)&&typeof c.rev==='boolean'&&typeof c.position==='string';
    const records=x.records.filter(r=>r&&typeof r.id==='string'&&r.id.length<120&&typeof r.time==='string'&&!isNaN(Date.parse(r.time))&&['single','three','daily'].includes(r.mode)&&Array.isArray(r.cards)&&[1,3].includes(r.cards.length)&&r.cards.every(validCard)).map(r=>({
       id:r.id,time:r.time,mode:r.mode,pool:r.pool==='major'?'major':'all',
-      question:String(r.question||'').slice(0,200),note:String(r.note||'').slice(0,2000),pinned:!!r.pinned,
+      question:String(r.question||'').slice(0,200),note:String(r.note||'').slice(0,2000),pinned:!!r.pinned,synthesis:String(r.synthesis||'').slice(0,2500),
       cards:r.cards.map(c=>({id:String(c.id),rev:!!c.rev,position:String(c.position).slice(0,24),name:String(c.name||'').slice(0,60),title:String(c.title||'').slice(0,120),story:String(c.story||'').slice(0,1200),meaning:String(c.meaning||'').slice(0,1200)}))
    }));
    const ids=new Set(state.records.map(r=>r.id));
@@ -127,6 +127,7 @@ function renderRecord(id){
   '<div class="eyebrow">RECORDED READING</div><h1 class="title">'+recordLabel(r)+'</h1><p class="archive-hint">'+ESC(localDate(r.time))+' · '+(r.pool==='major'?'仅大阿卡纳':'完整牌库')+'</p>'+
   (r.question?'<div class="archive-question-large">当时的问题：'+ESC(r.question)+'</div>':'')+
   '<div class="archive-reading-cards">'+r.cards.map(x=>{const c=byId(x.id);return c?'<article><a href="#/card/'+encodeURIComponent(x.id)+'"><img src="'+ESC(c.img)+'" loading="lazy" alt="'+ESC(c.zh)+'" style="'+(x.rev?'transform:rotate(180deg)':'')+'"></a><h2>'+ESC(x.name)+'</h2><p>'+ESC(x.position)+' · '+(x.rev?'逆位':'正位')+'</p><p><strong>牌面故事：</strong>'+ESC(x.story||'')+'</p><p><strong>当时的牌义：</strong>'+ESC(x.meaning)+'</p><a href="#/card/'+encodeURIComponent(x.id)+'">查看完整牌义 →</a></article>':'';}).join('')+'</div>'+
+  (r.synthesis?'<section class="archive-synthesis"><div class="eyebrow">SAVED READING</div><h2>当时的三张牌综合解读</h2>'+r.synthesis.split(/\n\n/).filter(Boolean).map(x=>'<p>'+ESC(x)+'</p>').join('')+'<p class="synthesis-disclaimer">按固定规则整理牌义，无 AI，也不会分析你填写的问题。</p></section>':'')+
   '<section class="archive-notes"><h2>我的笔记</h2><textarea id="archive-note" maxlength="2000" rows="5" placeholder="当时有什么感受？后来发生了什么？">'+ESC(r.note)+'</textarea><p class="archive-hint">仅保存在当前浏览器。笔记不会包含在公开分享文本里。</p><button class="btn" id="archive-save-note">保存笔记</button><span id="archive-note-status" role="status"></span></section>'+
   '<div class="archive-actions"><button id="record-pin">'+(r.pinned?'取消收藏':'收藏本次记录')+'</button><button id="record-copy">复制牌阵摘要</button><button id="record-image">导出牌阵图片</button><button class="danger" id="record-delete">删除记录</button></div></section>';
 }
@@ -209,6 +210,16 @@ function installDetailFavorite(){
  function update(){b.textContent=isFavorite(id)?'★ 已收藏此牌':'☆ 收藏这张牌';b.setAttribute('aria-pressed',String(isFavorite(id)));}
  update();b.onclick=()=>{toggleFavorite(id);update();};
  anchor.insertAdjacentElement('afterend',b);
+ const share=document.createElement('button');share.type='button';share.className='favorite-toggle detail-share';share.textContent='分享牌面链接';
+ share.onclick=async()=>{
+   const url='https://raynacocobobobo-arch.github.io/DND/#/card/'+encodeURI(String(id));
+   if(navigator.share){
+     try{await navigator.share({title:card.zh+' · 禁忌之书',text:'查看这张克苏鲁塔罗牌的故事与正逆位解读',url});return;}catch(e){if(e.name==='AbortError')return;}
+   }
+   try{await navigator.clipboard.writeText(url);share.textContent='链接已复制';}
+   catch{prompt('复制牌面链接：',url);}
+ };
+ b.insertAdjacentElement('afterend',share);
 }
 load();
 window.TAROT_JOURNAL={count,addReading,getRecord,renderHistory,installHistory,renderRecord,installRecord,renderExplore,installExplore,installDetailFavorite,copySummary,exportCardImage,isFavorite,exportJSON};
