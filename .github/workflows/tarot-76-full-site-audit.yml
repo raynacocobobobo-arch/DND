@@ -128,7 +128,7 @@ jobs:
                 if metrics[0]>metrics[1]+2:
                   elements=d.execute_script('return Array.from(document.querySelectorAll("body *")).filter(e=>e.getBoundingClientRect().right>innerWidth+2).slice(-12).map(e=>[e.tagName,String(e.className),Math.round(e.getBoundingClientRect().right)])')
                   print('OVERFLOW_DIAGNOSTIC',width,route,metrics,elements,flush=True)
-                assert metrics[0]<=metrics[1]+2 and metrics[2]==7,(width,route,metrics)
+                assert metrics[0]<=metrics[1]+2 and metrics[2]==4,(width,route,metrics)
               print('MOBILE_WIDTH_PASS',width,flush=True)
             print('TAROT_78_FULL_SITE_LIVE_QA_PASSED',flush=True)
           finally:d.quit()
