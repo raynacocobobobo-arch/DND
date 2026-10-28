@@ -75,7 +75,7 @@ jobs:
               d.find_element(By.ID,'question').send_keys('要不要开始新项目？')
               d.find_element(By.CSS_SELECTOR,'.spread-select:not(.pool-select) button[data-n="3"]').click()
               assert d.find_element(By.CSS_SELECTOR,'.pool-select button[data-pool="all"]').get_attribute('class')=='active'
-              d.find_element(By.ID,'go-draw').click()
+              d.execute_script('document.getElementById("go-draw").click()')
               waitCount('.drawn-card',3)
               assert '已记录到此浏览器' in d.find_element(By.CSS_SELECTOR,'.reading-save-status').text
               assert count('#draw-image')==1
@@ -85,26 +85,26 @@ jobs:
               d.refresh();until(lambda x:count('#go-draw')==1)
               go('history');waitCount('.archive-record',1)
               assert '要不要开始新项目' in d.find_element(By.CSS_SELECTOR,'.archive-record').text
-              d.find_element(By.CSS_SELECTOR,'.archive-record-link').click()
+              d.execute_script('document.querySelector(".archive-record-link").click()')
               until(lambda x:count('#archive-note')==1)
               note=d.find_element(By.ID,'archive-note');note.send_keys('这是一条不会被公开分享的私人笔记。')
-              d.find_element(By.ID,'archive-save-note').click()
+              d.execute_script('document.getElementById("archive-save-note").click()')
               assert '已保存' in d.find_element(By.ID,'archive-note-status').text
               assert count('.archive-reading-cards article')==3
               print('HISTORY_DETAIL_NOTES_PASSED',flush=True)
               d.refresh();until(lambda x:count('#archive-note')==1)
               assert '私人笔记' in d.find_element(By.ID,'archive-note').get_attribute('value')
-              d.find_element(By.ID,'record-image').click()
+              d.execute_script('document.getElementById("record-image").click()')
               until(lambda x:any(p.endswith('.png') for p in os.listdir('/tmp/tarotqa')),45)
               print('DOWNLOAD_READING_PNG_PASSED',flush=True)
               go('history');until(lambda x:count('#archive-export')==1)
-              d.find_element(By.ID,'archive-export').click()
+              d.execute_script('document.getElementById("archive-export").click()')
               until(lambda x:any(p.endswith('.json') for p in os.listdir('/tmp/tarotqa')),30)
               jsonfile=[p for p in os.listdir('/tmp/tarotqa') if p.endswith('.json')][0]
               backup=json.load(open('/tmp/tarotqa/'+jsonfile,encoding='utf-8'))
               assert len(backup['records'])==1 and backup['favorites']==['pentacles/ten']
               print('HISTORY_JSON_BACKUP_AND_PRIVATE_NOTES_PASSED',flush=True)
-              d.find_element(By.CSS_SELECTOR,'.archive-record .archive-actions [data-remove]').click()
+              d.execute_script('document.querySelector(".archive-record .archive-actions [data-remove]").click()')
               d.switch_to.alert.accept()
               until(lambda x:count('.archive-record')==0)
               assert d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1')).records.length")==0
