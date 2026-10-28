@@ -75,7 +75,9 @@
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
         <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
       </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><a href="#/library/pentacles">星币组：已收录${P.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑 · ${P.length} 张星币</span></div>`;
+    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><a href="#/library/pentacles">星币组：已收录${P.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑 · ${P.length} 张星币</span></div>
+    <section class="home-novellas"><h2>四部禁忌故事 · 从原著进入牌面</h2>
+    <div class="home-novella-links">${Object.entries(G).map(([suit,j])=>'<a href="#/story/'+suit+'">'+clean(j.name)+' · '+clean(j.work)+'<span>'+clean(j.tagline)+' →</span></a>').join('')}</div></section>`);
   }
   function library(page){
     const start=0,end=C.length;
@@ -150,7 +152,7 @@
            ${extraSections(String(c.id))}
            <section class="chapter"><div class="index">08 / YOUR INTERPRETATION</div><h2>留给你的问题</h2><p class="question">${clean(d.q)}</p></section>
            <section class="chapter"><div class="index">LITERARY REFERENCE</div><h2>出处与创作界限</h2>
-             <p class="foot">相关作品：${c.works.map(clean).join(' / ')}。上述「牌面的故事」为基于神话意象的原创艺术叙事，不能等同洛夫克拉夫特作品的原著情节。占卜解读仅供文化欣赏与个人反思。</p></section>
+             <details class="source-disclosure"><summary>展开出处与创作界限</summary><p class="foot">相关作品：${c.works.map(clean).join(' / ')}。上述「牌面的故事」为基于神话意象的原创艺术叙事，不能等同洛夫克拉夫特作品的原著情节。占卜解读仅供文化欣赏与个人反思。</p></details></section>
            <div class="detail-arrows"><a class="btn outline mini" href="${urlCard(p.id)}">← ${clean(p.zh)}</a><a class="btn outline mini" href="${urlCard(n.id)}">${clean(n.zh)} →</a></div>
          </article>
        </div>
