@@ -31,6 +31,7 @@ function recordFromDraw(d){
  cards:d.cards.map((x,i)=>({id:String(x.c.id),rev:!!x.rev,position:positions[i],name:x.c.zh,
  title:x.c.minor?x.c.title:(window.ARCANA_DEPTH[x.c.id]||{}).title,
  story:x.c.minor?x.c.story:(window.ARCANA_DEPTH[x.c.id]||{}).scene,
+ expanded:window.ARCANA_INTERPRETATIONS_V3?.prose(x.c.id,x.rev,positions[i])||'',
  meaning:x.rev?(x.c.minor?x.c.rev:(window.ARCANA_DEPTH[x.c.id]||{}).rev):(x.c.minor?x.c.up:(window.ARCANA_DEPTH[x.c.id]||{}).up)}))}
 }
 function addReading(d){
@@ -64,7 +65,7 @@ function importJSON(file){
    const records=x.records.filter(r=>r&&typeof r.id==='string'&&r.id.length<120&&typeof r.time==='string'&&!isNaN(Date.parse(r.time))&&['single','three','daily'].includes(r.mode)&&Array.isArray(r.cards)&&[1,3].includes(r.cards.length)&&r.cards.every(validCard)).map(r=>({
       id:r.id,time:r.time,mode:r.mode,pool:r.pool==='major'?'major':'all',
       question:String(r.question||'').slice(0,200),note:String(r.note||'').slice(0,2000),pinned:!!r.pinned,synthesis:String(r.synthesis||'').slice(0,2500),
-      cards:r.cards.map(c=>({id:String(c.id),rev:!!c.rev,position:String(c.position).slice(0,24),name:String(c.name||'').slice(0,60),title:String(c.title||'').slice(0,120),story:String(c.story||'').slice(0,1200),meaning:String(c.meaning||'').slice(0,1200)}))
+      cards:r.cards.map(c=>({id:String(c.id),rev:!!c.rev,position:String(c.position).slice(0,24),name:String(c.name||'').slice(0,60),title:String(c.title||'').slice(0,120),story:String(c.story||'').slice(0,1200),meaning:String(c.meaning||'').slice(0,1200),expanded:String(c.expanded||'').slice(0,2500)}))
    }));
    const ids=new Set(state.records.map(r=>r.id));
    for(const r of records)if(!ids.has(r.id)){state.records.push(r);ids.add(r.id)}
@@ -126,7 +127,7 @@ function renderRecord(id){
  return '<section class="page archive-page archive-detail"><div class="crumbs"><a href="#/history">命运档案</a><span>/</span>'+ESC(localDate(r.time))+'</div>'+
   '<div class="eyebrow">RECORDED READING</div><h1 class="title">'+recordLabel(r)+'</h1><p class="archive-hint">'+ESC(localDate(r.time))+' · '+(r.pool==='major'?'仅大阿卡纳':'完整牌库')+'</p>'+
   (r.question?'<div class="archive-question-large">当时的问题：'+ESC(r.question)+'</div>':'')+
-  '<div class="archive-reading-cards">'+r.cards.map(x=>{const c=byId(x.id);return c?'<article><a href="#/card/'+encodeURIComponent(x.id)+'"><img src="'+ESC(c.img)+'" loading="lazy" alt="'+ESC(c.zh)+'" style="'+(x.rev?'transform:rotate(180deg)':'')+'"></a><h2>'+ESC(x.name)+'</h2><p>'+ESC(x.position)+' · '+(x.rev?'逆位':'正位')+'</p><p><strong>牌面故事：</strong>'+ESC(x.story||'')+'</p><p><strong>当时的牌义：</strong>'+ESC(x.meaning)+'</p><a href="#/card/'+encodeURIComponent(x.id)+'">查看完整牌义 →</a></article>':'';}).join('')+'</div>'+
+  '<div class="archive-reading-cards">'+r.cards.map(x=>{const c=byId(x.id);return c?'<article><a href="#/card/'+encodeURIComponent(x.id)+'?from=history&record='+encodeURIComponent(r.id)+'"><img src="'+ESC(c.img)+'" loading="lazy" alt="'+ESC(c.zh)+'" style="'+(x.rev?'transform:rotate(180deg)':'')+'"></a><h2>'+ESC(x.name)+'</h2><p>'+ESC(x.position)+' · '+(x.rev?'逆位':'正位')+'</p><p class="archive-reading-interpretation"><strong>这张牌的解读：</strong>'+ESC(x.expanded||window.ARCANA_INTERPRETATIONS_V3?.prose(x.id,x.rev,x.position)||x.meaning)+'</p><details><summary>展开原著故事</summary><p>'+ESC(x.story||'')+'</p></details><a href="#/card/'+encodeURIComponent(x.id)+'?from=history&record='+encodeURIComponent(r.id)+'">查看完整牌义与故事 →</a></article>':'';}).join('')+'</div>'+
   (r.synthesis?'<section class="archive-synthesis"><div class="eyebrow">SAVED READING</div><h2>当时的三张牌综合解读</h2>'+r.synthesis.split(/\n\n/).filter(Boolean).map(x=>'<p>'+ESC(x)+'</p>').join('')+'<p class="synthesis-disclaimer">按固定规则整理牌义，无 AI，也不会分析你填写的问题。</p></section>':'')+
   '<section class="archive-notes"><h2>我的笔记</h2><textarea id="archive-note" maxlength="2000" rows="5" placeholder="当时有什么感受？后来发生了什么？">'+ESC(r.note)+'</textarea><p class="archive-hint">仅保存在当前浏览器。笔记不会包含在公开分享文本里。</p><button class="btn" id="archive-save-note">保存笔记</button><span id="archive-note-status" role="status"></span></section>'+
   '<div class="archive-actions"><button id="record-pin">'+(r.pinned?'取消收藏':'收藏本次记录')+'</button><button id="record-copy">复制牌阵摘要</button><button id="record-image">导出牌阵图片</button><button class="danger" id="record-delete">删除记录</button></div></section>';
