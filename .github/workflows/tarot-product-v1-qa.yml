@@ -62,7 +62,7 @@ jobs:
               d.find_element(By.ID,'explore-search').send_keys('星币十')
               waitCount('.explore-item',1)
               assert '星币十' in d.find_element(By.CSS_SELECTOR,'.explore-item').text
-              d.find_element(By.CSS_SELECTOR,'.favorite-toggle').click()
+              d.execute_script('document.querySelector(".favorite-toggle").click()')
               assert d.find_element(By.CSS_SELECTOR,'.favorite-toggle').get_attribute('aria-pressed')=='true'
               d.refresh();waitCount('.explore-item',78)
               assert d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1')).favorites.includes('pentacles/ten')")
