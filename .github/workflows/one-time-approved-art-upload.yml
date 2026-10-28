@@ -199,7 +199,7 @@ jobs:
           p.save(thumb,'WEBP',quality=91,method=5)
           with open('/tmp/approved-art-staging.bin','ab') as f:
               for path in [output,thumb]:
-                  f.write(str(path.relative_to('live')).encode()+b'\\0')
+                  f.write(str(path.relative_to('live')).encode()+bytes([0]))
           print('SWORDS_THREE_DENOISED_V2 '+hashlib.sha256(clean.tobytes()).hexdigest(), flush=True)
           PY
       - name: Commit only verified artwork to gh-pages
