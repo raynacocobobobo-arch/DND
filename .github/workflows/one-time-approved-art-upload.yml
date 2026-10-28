@@ -1,0 +1,126 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+          [
+            {
+              "name": "PENTACLES ace",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztYsLXX5uLggd8wTEjtrLADFWj16ev03wzBYsYPqDNfffRXw1yLwxpoKiZR6HT0qAFFRr9HCz2t3CVjXbmREocoMZ06ZHh5ZKRtMQjbFraJnkW4ny4pX50Ad3hNkWWLjDqQW8VxIx--rIxr5GT_s88Zm8lyCyjlaDTqItHETj6_gP9vLJoI=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "6965253f081226600cebb7b8b2e2029835a1473552747f91ac07bc6dc565626f",
+              "output_path": "minor-arcana/pentacles/final/ace-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/ace-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES two",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaCD0pQcyZM7UAllU04aZbziRlR5BhiWpr6mYGpd0f66zwj8bgrbypOJR68VRI8eyTgHP1BReqL3VIVOqXAzIR650k1dScj6TmRQaUKL298ooSVyX0_iSEcs44coB0eVBkWee5Ch9uQ4O9_AKaV35YrAm85tBbp_Tm18BA3l42ers2M5Hg=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "f9c5e7940fd5fd061d07fcbf1de2f23915ceda7ae9cfc78e83c7e18e7ee02435",
+              "output_path": "minor-arcana/pentacles/final/two-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/two-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES three",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztalUiwrVEhRdR7haxfk0ax5jRBe5WhN4F269ysy_004KxyIPekN3IlDZT15q8LJJV9vuepLvTAOU11R1A7rKTZPUIPoNVtH1GzRiMheNY9AiSlK9-VbWUu0vN7dBo0ZrhvG7zSBm-IrPMYZ_k6unqO6bU2dhdoiqYAuAvONLmF2CnK6eHo=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "8033df0d56e994f2e70dc408f419cd1ef319b362e02824a449c5d822b0b74db4",
+              "output_path": "minor-arcana/pentacles/final/three-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/three-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES four",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztbJfIASztdNbUOS8b1w5EWcCFaDCdZFAz4qnV7Ix4hbj_I1Jki-02I8IwAQgzqjAXPZ0BgEKZAjlxJFy_I4KVhIrlW_2NLCcHOvaJS-jPFJMukTC72BniVAUlvzG51fR1XTMgc3N8-syYkAR0qX6Av5MEkvXHNucei-IDZwEmuN9X4EECA=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "2a2ebeef24e23fef29d68540f198e3b33c5b94f311f64cff6fc738d70adfcb30",
+              "output_path": "minor-arcana/pentacles/final/four-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/four-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES five",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztackxSof4Iwbx00HixbgngEvF7Z0S0gpZGbJFck33rhBFXV4fC2hXRsCBGpkG3G1MVJGxDh6BsFmiXisgyZXk930W2IFOeprdU3ro0t086IZKZVZ--kqjE7gDSV5jz1ZlM1W_MXaKOsmYeoWmS7dFqAxjC_BE6avoMfMaxU5bk0YxqZ=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "1a32a3d18bf006680d792eefc7bbf18523d9f6d432377fbe0c33fe3c581fba11",
+              "output_path": "minor-arcana/pentacles/final/five-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/five-of-pentacles-v1.webp"
+            },
+            {
+              "name": "PENTACLES six",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZEJ3XRGa6tk0GfRs-CXhRCTyJC234vZZJnrqLqc_5eqmWZxVHdvF3HzOGC95wx5q7dtbGXTQGu3wnQy7wUxyZlsGG-8Xfkd3BuXa30lfKXPhbrUiqo3dPFTEXuj6zPkAd5qFQyE3Fz0Om2zUCQqPZFH8O-eG8XXxaM1Sn49UmxMJoW-sk=s2048?key=xPJg0-IC6WsbzmBRESojdg",
+              "expected_size": [
+                942,
+                1670
+              ],
+              "expected_pixel_sha256": "ba53c5b93bb2fcb6369bbddc4f29df47ca3aecefd2d4dfa7ef1d5805408614b2",
+              "output_path": "minor-arcana/pentacles/final/six-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/six-of-pentacles-v1.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
