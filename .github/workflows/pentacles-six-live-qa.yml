@@ -90,7 +90,7 @@ jobs:
               go('library/pentacles');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==12)
               dim=browser.execute_script("return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll('.nav a').length]")
               if dim[0]>dim[1]+2:
-                  offenders=browser.execute_script(\"return Array.from(document.querySelectorAll('body *')).map(el=>({tag:el.tagName,cl:el.className,txt:(el.innerText||'').slice(0,65),right:Math.round(el.getBoundingClientRect().right)})).filter(x=>x.right>innerWidth+2).slice(-20)\")
+                  offenders=browser.execute_script("return Array.from(document.querySelectorAll('body *')).map(el=>({tag:el.tagName,cl:String(el.className),txt:(el.innerText||'').slice(0,65),right:Math.round(el.getBoundingClientRect().right)})).filter(x=>x.right>innerWidth+2).slice(-20)")
                   print('MOBILE_OVERFLOW_DIAGNOSTICS',offenders,flush=True)
               assert dim[0]<=dim[1]+2 and dim[2]==7,dim
               print('MOBILE_390_NO_HORIZONTAL_OVERFLOW',dim,flush=True)
