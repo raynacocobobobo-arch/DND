@@ -3,7 +3,7 @@
    Hash routes work with GitHub Pages direct refresh without 404. */
 (()=>{
   'use strict';
-  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED;
+  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED,ED=window.ARCANA_EDITORIAL||{};
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
@@ -71,11 +71,11 @@
     </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><a href="#/library/pentacles">星币组：已收录${P.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑 · ${P.length} 张星币</span></div>`;
   }
   function library(page){
-    const start=(page-1)*6,end=Math.min(22,start+6);
+    const start=0,end=C.length;
     const items=C.slice(start,end).map(c=>{
       const d=D[c.id];
       return `<a href="${urlCard(c.id)}" class="library-card" aria-label="打开${clean(c.zh)}的专属故事页面">
-        <img loading="lazy" src="${c.img}" alt="${clean(c.zh)} 高清原画">
+        <img loading="lazy" src="${c.thumb||c.img}" decoding="async" alt="${clean(c.zh)} 高清原画缩略图">
         <div class="roman">${clean(c.roman)} / ${String(c.id).padStart(2,'0')}</div>
         <h2 class="card-title">${clean(c.zh)}</h2>
         <div class="caption">${clean(d.title)}</div>
@@ -83,14 +83,9 @@
     }).join('');
     return `<section class="page library">
       <div class="crumbs"><a href="#/home">首页</a><span>/</span> 二十二道门</div>
-      <div class="lib-heading"><div>${banner('THE GRIMOIRE / THE MAJOR ARCANA','二十二道禁忌之门','每张牌有独立的高清原画与完整故事。选择一张牌，进入它自己的篇章；也可以逐页阅读整套图鉴。')}</div>
-      <div class="library-count">第 ${page} / 4 页 · 显示 ${start+1}—${end} / 共 22 张</div></div>
+      <div class="lib-heading"><div>${banner('THE GRIMOIRE / THE MAJOR ARCANA','二十二道禁忌之门','每张牌有独立高清原画与完整故事。22张连续排在同一页，点击牌面进入更深入的独立解读。')}</div>
+      <div class="library-count">全部 22 张 · 一页浏览</div></div>
       <div class="library-panel"><div class="library-grid">${items}</div></div>
-      <div class="paginator">
-         ${page>1?`<a class="btn outline mini" href="#/library/${page-1}">← 上一页</a>`:'<button class="btn outline mini" disabled>← 上一页</button>'}
-         <span class="page-number">${page} / 4</span>
-         ${page<4?`<a class="btn outline mini" href="#/library/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
-      </div>
       <div style="margin-top:34px;border-top:1px solid var(--line);padding-top:25px">
         <a class="btn outline mini" href="#/library/cups">小阿卡纳专区：查看已定稿的圣杯国王 →</a>
       </div>
@@ -99,11 +94,16 @@
   function section(index,title,body,cl='') {
     return `<section class="chapter ${cl}"><div class="index">${index}</div><h2>${clean(title)}</h2><p>${clean(body)}</p></section>`;
   }
+  function extraSections(key){
+    const x=ED[String(key)];
+    if(!x||!x.insight||!x.practice)return '';
+    return section('06 / CLOSE READING','深读 · 故事的暗线',x.insight)+section('07 / PRACTICAL READING','回到现实 · 如何理解这张牌',x.practice);
+  }
   function detail(id){
     const c=C[id],d=D[id];
     const p=C[(id+21)%22],n=C[(id+1)%22];
     return `<section class="page detail">
-       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/${Math.floor(id/6)+1}">牌库</a><span>/</span>${clean(c.zh)}</div>
+       <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/1">牌库</a><span>/</span>${clean(c.zh)}</div>
        <div class="detail-layout">
          <div class="detail-art">
            <img src="${c.img}" fetchpriority="high" alt="${clean(c.zh)} 864 × 1536 高清塔罗原画">
@@ -119,7 +119,8 @@
            <section class="chapter"><div class="index">03 / UPRIGHT</div><h2>正位 · 启示</h2><div class="keys">${c.up.map(clean).join(' · ')}</div><p class="focus">${clean(d.up)}</p></section>
            <section class="chapter"><div class="index">04 / REVERSED</div><h2>逆位 · 阴影</h2><div class="keys">${c.rev.map(clean).join(' · ')}</div><p class="focus rev">${clean(d.rev)}</p></section>
            ${section('05 / THE MYTHOS','原著神话与文学线索',d.canon)}
-           <section class="chapter"><div class="index">06 / YOUR INTERPRETATION</div><h2>留给你的问题</h2><p class="question">${clean(d.q)}</p></section>
+           ${extraSections(String(c.id))}
+           <section class="chapter"><div class="index">08 / YOUR INTERPRETATION</div><h2>留给你的问题</h2><p class="question">${clean(d.q)}</p></section>
            <section class="chapter"><div class="index">LITERARY REFERENCE</div><h2>出处与创作界限</h2>
              <p class="foot">相关作品：${c.works.map(clean).join(' / ')}。上述「牌面的故事」为基于神话意象的原创艺术叙事，不能等同洛夫克拉夫特作品的原著情节。占卜解读仅供文化欣赏与个人反思。</p></section>
            <div class="detail-arrows"><a class="btn outline mini" href="${urlCard(p.id)}">← ${clean(p.zh)}</a><a class="btn outline mini" href="${urlCard(n.id)}">${clean(n.zh)} →</a></div>
@@ -128,26 +129,21 @@
      </section>`;
   }
   function cupsLibrary(page=1){
-    const start=(page-1)*6, end=Math.min(14,start+6), items=CU.slice(start,end);
+    const start=0, end=CU.length, items=CU;
     return `<section class="page library">
       <div class="crumbs"><a href="#/home">首页</a><span>/</span>圣杯组</div>
       <div class="lib-heading">
         <div>${banner('THE GRIMOIRE / SUIT OF CUPS','圣杯 · 十四张牌','十四幅独立原画。选择一张进入它的故事，阅读画面解析、原著线索与正逆位解读。')}</div>
-        <div class="library-count">第 ${page} / 3 页 · 显示 ${start+1}—${end} / 共 14 张</div>
+        <div class="library-count">全部 14 张 · 一页浏览</div>
       </div>
       <div class="library-panel"><div class="library-grid">
        ${items.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="打开${clean(c.zh)}的完整故事">
-           <img src="${c.img}" loading="lazy" alt="${clean(c.zh)}高清原画">
+           <img src="${c.thumb||c.img}" loading="lazy" decoding="async" alt="${clean(c.zh)}高清原画">
            <div class="roman">${clean(c.en)}</div>
            <h2 class="card-title">${clean(c.zh)}</h2>
            <div class="caption">${clean(c.title)}</div>
          </a>`).join('')}
       </div></div>
-      <div class="paginator">
-        ${page>1?`<a class="btn outline mini" href="#/library/cups/${page-1}">← 上一页</a>`:'<button class="btn outline mini" disabled>← 上一页</button>'}
-        <span class="page-number">${page} / 3</span>
-        ${page<3?`<a class="btn outline mini" href="#/library/cups/${page+1}">下一页 →</a>`:'<button class="btn outline mini" disabled>下一页 →</button>'}
-      </div>
     </section>`;
   }
   function cupsDetail(slug){
@@ -155,7 +151,7 @@
     if(index<0) return '<section class="page notfound"><h1>未找到该牌</h1></section>';
     const d=CU[index],prev=CU[(index+CU.length-1)%CU.length],next=CU[(index+1)%CU.length];
     return `<section class="page detail">
-      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups/${Math.floor(index/6)+1}">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
+      <div class="crumbs"><a href="#/home">首页</a><span>/</span><a href="#/library/cups">圣杯正式牌库</a><span>/</span>${clean(d.zh)}</div>
       <div class="detail-layout">
         <div class="detail-art">
           <img src="${d.img}" fetchpriority="high" alt="${clean(d.zh)} 高清原画">
@@ -170,7 +166,8 @@
           ${section('03 / UPRIGHT','正位 · 启示',d.up)}
           ${section('04 / REVERSED','逆位 · 阴影',d.rev)}
           ${section('05 / LITERARY ROOTS','原著背景与艺术改编',d.canon)}
-          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(d.question)}</p></section>
+          ${extraSections(d.id)}
+          <section class="chapter"><div class="index">08 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(d.question)}</p></section>
           <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">卡面故事属于艺术化创作，不等同于洛夫克拉夫特原著情节。塔罗解读提供思考角度，不作为确定性预测。</p></section>
           <div class="detail-arrows"><a class="btn outline mini" href="${urlCard(prev.id)}">← ${clean(prev.zh)}</a><a class="btn outline mini" href="${urlCard(next.id)}">${clean(next.zh)} →</a></div>
         </article>
@@ -186,7 +183,7 @@
       </div>
       <div class="library-panel"><div class="library-grid">
         ${W.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="阅读${clean(c.zh)}的完整故事">
-          <img loading="eager" src="${c.img}" alt="${clean(c.zh)}高清塔罗原画">
+          <img loading="lazy" decoding="async" src="${c.thumb||c.img}" alt="${clean(c.zh)}高清塔罗原画">
           <div class="roman">${clean(c.en)}</div>
           <h2 class="card-title">${clean(c.zh)}</h2>
           <div class="caption">${clean(c.title)}</div>
@@ -213,7 +210,8 @@
           ${section('03 / UPRIGHT','正位 · 启示',c.up)}
           ${section('04 / REVERSED','逆位 · 阴影',c.rev)}
           ${section('05 / LITERARY ROOTS','原著背景与艺术改编',c.canon)}
-          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
+          ${extraSections(c.id)}
+          <section class="chapter"><div class="index">08 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
           <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">洛夫克拉夫特神话与传统塔罗牌义的原创融合。画面不是小说原文情节，解读仅用于文化欣赏与个人反思。</p></section>
           <div class="detail-arrows"><a class="btn outline mini" href="#/library/wands">← 返回权杖组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
         </article>
@@ -229,7 +227,7 @@
       </div>
       <div class="library-panel"><div class="library-grid">
         ${S.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="阅读${clean(c.zh)}的完整故事">
-          <img loading="eager" src="${c.img}" alt="${clean(c.zh)}高清塔罗原画">
+          <img loading="lazy" decoding="async" src="${c.thumb||c.img}" alt="${clean(c.zh)}高清塔罗原画">
           <div class="roman">${clean(c.en)}</div>
           <h2 class="card-title">${clean(c.zh)}</h2>
           <div class="caption">${clean(c.title)}</div>
@@ -256,7 +254,8 @@
           ${section('03 / UPRIGHT','正位 · 启示',c.up)}
           ${section('04 / REVERSED','逆位 · 阴影',c.rev)}
           ${section('05 / LITERARY ROOTS','原著背景与艺术改编',c.canon)}
-          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
+          ${extraSections(c.id)}
+          <section class="chapter"><div class="index">08 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
           <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">洛夫克拉夫特神话与传统塔罗牌义的原创融合。画面不是小说原文情节，解读仅用于文化欣赏与个人反思。</p></section>
           <div class="detail-arrows"><a class="btn outline mini" href="#/library/swords">← 返回宝剑组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
         </article>
@@ -272,7 +271,7 @@
       </div>
       <div class="library-panel"><div class="library-grid">
         ${P.map(c=>`<a href="${urlCard(c.id)}" class="library-card" aria-label="阅读${clean(c.zh)}的完整故事">
-          <img loading="eager" src="${c.img}" alt="${clean(c.zh)}高清塔罗原画">
+          <img loading="lazy" decoding="async" src="${c.thumb||c.img}" alt="${clean(c.zh)}高清塔罗原画">
           <div class="roman">${clean(c.en)}</div>
           <h2 class="card-title">${clean(c.zh)}</h2>
           <div class="caption">${clean(c.title)}</div>
@@ -299,7 +298,8 @@
           ${section('03 / UPRIGHT','正位 · 启示',c.up)}
           ${section('04 / REVERSED','逆位 · 阴影',c.rev)}
           ${section('05 / LITERARY ROOTS','原著背景与艺术改编',c.canon)}
-          <section class="chapter"><div class="index">06 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
+          ${extraSections(c.id)}
+          <section class="chapter"><div class="index">08 / REFLECTION</div><h2>留给你的问题</h2><p class="question">${clean(c.question)}</p></section>
           <section class="chapter"><div class="index">EDITORIAL NOTE</div><h2>来源说明</h2><p class="foot">洛夫克拉夫特神话与传统塔罗牌义的原创融合。画面不是小说原文情节，解读仅用于文化欣赏与个人反思。</p></section>
           <div class="detail-arrows"><a class="btn outline mini" href="#/library/pentacles">← 返回星币组</a><a class="btn outline mini" href="#/library/1">大阿卡纳 →</a></div>
         </article>
