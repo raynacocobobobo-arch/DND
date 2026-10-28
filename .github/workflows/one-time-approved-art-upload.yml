@@ -1,0 +1,82 @@
+# TEMPLATE FILE — copy under .github/workflows/one-time-approved-art-upload.yml
+# The manifest placeholder below must be replaced with actual signed
+# Docs-image URLs and paths. Keep all JSON lines indented by 10 spaces.
+# Delete the entire temporary workflow after a successful deploy.
+name: Transfer Approved Artwork to Live Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/one-time-approved-art-upload.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: one-time-approved-art-publish
+  cancel-in-progress: false
+jobs:
+  publish-originals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout reusable script from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: tools
+          persist-credentials: false
+      - name: Checkout actual Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: live
+          persist-credentials: true
+      - name: Install image library
+        run: python -m pip install --quiet Pillow
+      - name: Transfer real approved files and verify pixel identity
+        shell: bash
+        run: |
+          cat >/tmp/approved-art-manifest.json <<'END_ART_MANIFEST'
+          [
+            {
+              "name": "PENTACLES six approved 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztZfyf3wyFGPpI1q-JyGH6FD8ZPMUtVuPgQ4dYORM77vg3kNL0hq2n21jK1uR8zl-Agms69n23T0nj9V-KLfKnEYjgG158k3fB7qEEqC4sms5WpTSyrZp--KKFcfeZVDGvrE7O4K73m1SKFxHy_bpNyOpCczoTk-ex-UDnKphLWAI-Ic=s2048?key=bvYqsY0h_YMEFEN6_BqjLg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "0e0f7a0b15490137cf1e59f63d3f6ca07d24909cec404979b4b866559296a13b",
+              "output_path": "minor-arcana/pentacles/final/six-of-pentacles-v2.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/six-of-pentacles-v2.webp"
+            },
+            {
+              "name": "PENTACLES seven approved 20261028",
+              "source_url": "https://docs.google.com/docs-images-rt/ALKuztaVhfxs_hfCa9_EQvEHAYDVMjB7azQb5Sx704IxInzsJnyGD5Xqj9UqIvSYedu1Iw1g_6_2NA71KX_ON6VkLRKbh5n9WcS7blnpldUanjcPYp27LT3C2LC1WcR48_cJVZxAehx-MiT8BCJNJ7FvyxeUMABYfk4xDYvyLmXwiSmfhuQy=s2048?key=bvYqsY0h_YMEFEN6_BqjLg",
+              "expected_size": [
+                941,
+                1672
+              ],
+              "expected_pixel_sha256": "e940c4cf398ee86647376ce90e380da11fe54d0953393cd67b9ab2a097b2c218",
+              "output_path": "minor-arcana/pentacles/final/seven-of-pentacles-v1.webp",
+              "thumb_path": "minor-arcana/pentacles/thumbs/seven-of-pentacles-v1.webp"
+            }
+          ]
+          END_ART_MANIFEST
+          python tools/.agents/skills/github-pages-art-publish/scripts/transfer_art.py \
+            --manifest /tmp/approved-art-manifest.json \
+            --root live \
+            --paths-file /tmp/approved-art-staging.bin
+      - name: Commit only verified artwork to gh-pages
+        shell: bash
+        run: |
+          git -C live config user.name "github-actions[bot]"
+          git -C live config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -0 git -C live add -- </tmp/approved-art-staging.bin
+          git -C live diff --cached --stat
+          if git -C live diff --cached --quiet; then
+            echo "No new artwork generated; verify requested version paths"
+            exit 1
+          fi
+          git -C live commit -m "art: publish verified approved originals via reusable skill"
+          git -C live push origin HEAD:gh-pages
+          echo "BINARY_ARTWORK_COMMITTED_TO_LIVE_GH_PAGES"
