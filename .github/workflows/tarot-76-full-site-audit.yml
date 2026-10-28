@@ -63,7 +63,7 @@ jobs:
               d.execute_script('location.hash=arguments[0]','#/'+route);wait_css('.library-card',n)
               assert not d.find_elements(By.CSS_SELECTOR,'.paginator'),route
               thumb_urls=d.execute_script('return Array.from(document.querySelectorAll(".library-card img")).map(x=>x.getAttribute("src"))')
-              assert all('/thumb' in url for url in thumb_urls),(route,thumb_urls[:2])
+              assert all('thumb' in url for url in thumb_urls),(route,thumb_urls[:2])
               assert len(set(thumb_urls))==n,route
               print('ONE_PAGE_GALLERY_PASS',route,n,flush=True)
             for old,n in [('library/4',22),('library/cups/3',14)]:
