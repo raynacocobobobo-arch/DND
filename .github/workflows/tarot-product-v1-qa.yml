@@ -43,7 +43,7 @@ jobs:
           opts.add_experimental_option('prefs',{'download.default_directory':'/tmp/tarotqa','download.prompt_for_download':False,'download.directory_upgrade':True,'profile.default_content_setting_values.automatic_downloads':1})
           os.makedirs('/tmp/tarotqa',exist_ok=True)
           d=webdriver.Chrome(options=opts)
-d.execute_cdp_cmd('Page.setDownloadBehavior',{'behavior':'allow','downloadPath':'/tmp/tarotqa'})
+          d.execute_cdp_cmd('Page.setDownloadBehavior',{'behavior':'allow','downloadPath':'/tmp/tarotqa'})
           d.set_page_load_timeout(50)
           def go(route):
               d.execute_script('location.hash=arguments[0]','#/'+route)
