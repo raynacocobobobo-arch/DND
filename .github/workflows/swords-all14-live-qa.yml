@@ -1,0 +1,89 @@
+name: Verify Complete Swords Suit Live
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/swords-all14-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Install browser verification libraries
+        run: python -m pip install --quiet selenium requests Pillow
+      - name: Verify 14 live cards and original 50 remain intact
+        shell: bash
+        run: |
+          cat >/tmp/swords14_qa.py <<'PY'
+          import io,time,requests,hashlib
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          specs={"ace":{"version":"v1","size":[941,1672],"hash":"96a5e29792c485256137036388d188c6bedda4402e9c4ba02c6fb193a0cf9824"},"two":{"version":"v1","size":[941,1672],"hash":"47867997315eeef04747780ed187c43fdaee529ccf9e05008e8dbc16d0ae0183"},"three":{"version":"v2","size":[941,1672],"hash":"010b54c554880598eb759c8df54bb242b3dd303b141492efb8385d8a1c058512"},"four":{"version":"v2","size":[941,1672],"hash":"1c886c65871747f0f7c9fb722a8b6f17fd4eb8d3205d468da493d6e9d9619af5"},"five":{"version":"v2","size":[941,1672],"hash":"8353d4cd1982ff8e6b1c743685d6c6e0a4274e816f1697079e51137cf9a89a12"},"six":{"version":"v2","size":[941,1672],"hash":"c9b3839b0ed14e0b2e5b40865126c0b2c779652baab74828501d1d42947bdccc"},"seven":{"version":"v2","size":[941,1672],"hash":"30f06afb2ba4766039fd17369e1dfb72a69e771e83193c9fdcdf0a06c02fd53e"},"eight":{"version":"v2","size":[941,1672],"hash":"220104377ff2f0d99fe011687ef571b44f52cba8c6a386bed12a5b272bc5af2d"},"nine":{"version":"v2","size":[941,1672],"hash":"e772c3485137a3bb74f672c131358e877629a02801688db86796907f034560bc"},"ten":{"version":"v1","size":[941,1672],"hash":"ad0770222aeaa043aa379edbbcaef3b1e35a1f83086e6ede0003cabb298a0228"},"page":{"version":"v1","size":[941,1672],"hash":"2909154a1ad88604f591c635b57814b81f7614f5408fe193d86e309139f865df"},"knight":{"version":"v1","size":[941,1672],"hash":"1cfe26b5247e31e40f36e6a631de66e69229b737b3c1c4fda8ddd738b3e01c69"},"queen":{"version":"v1","size":[941,1671],"hash":"e86145dfa7a0eed15fa333b9422138ca6dc8e73180a9a826d402bfc3b844a3a6"},"king":{"version":"v1","size":[941,1670],"hash":"62920b7c8b8714404674118e1b634c5d641c3af84844beb5f33008411484d9da"}}
+          for n in range(55):
+              res=requests.get(base+'?swords14-qa='+str(n),timeout=30,headers={'Cache-Control':'no-cache'})
+              if res.ok and 'swords-approved-v1.js?v=swords-all14-20261028' in res.text and '14 WANDS + 14 SWORDS' in res.text:break
+              print('WAIT_FOR_GITHUB_PAGES',n,res.status_code,flush=True)
+              time.sleep(5)
+          else:raise AssertionError('Published HTML lacks new Swords version')
+          print('LIVE_HTML_UPDATED_14_SWORDS',flush=True)
+          for slug,meta in specs.items():
+              for kind in ['final','thumbs']:
+                  url=base+'minor-arcana/swords/'+kind+'/'+slug+'-of-swords-'+meta['version']+'.webp?verify=20261028'
+                  res=requests.get(url,timeout=50);res.raise_for_status()
+                  im=Image.open(io.BytesIO(res.content));im.load()
+                  assert im.format=='WEBP',(slug,kind,'format',im.format)
+                  if kind=='final':
+                      assert list(im.size)==meta['size'],(slug,'dimensions',im.size)
+                      digest=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+                      assert digest==meta['hash'],(slug,'pixel_hash',digest)
+                  else:
+                      assert im.width<=360 and im.height<=640,(slug,'thumb_size',im.size)
+              print('PUBLISHED_WEBP_PIXEL_HASH_VERIFIED',slug,meta['version'],meta['size'],flush=True)
+          opts=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1380,940']:opts.add_argument(arg)
+          b=webdriver.Chrome(options=opts);b.set_script_timeout(45)
+          try:
+              def go(route):
+                  b.get(base+'?qa14='+route.replace('/','-')+'#/'+route)
+                  WebDriverWait(b,20).until(lambda d: d.execute_script("return document.readyState")=='complete')
+              go('library/swords')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              counts=b.execute_script('return [window.ARCANA_CATALOG.length,window.CUPS_APPROVED.length,window.WANDS_APPROVED.length,window.SWORDS_APPROVED.length]')
+              assert counts==[22,14,14,14],counts
+              assert len(b.find_elements(By.CSS_SELECTOR,'[data-route-nav]'))==6
+              print('FOUR_SUIT_COUNTS_22_14_14_14',counts,flush=True)
+              for slug,meta in specs.items():
+                  go('card/swords/'+slug)
+                  WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  assert not b.find_elements(By.CSS_SELECTOR,'#app .notfound')
+                  s=b.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for title in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编','留给你的问题']:
+                      assert title in s,(slug,title)
+                  dims=b.execute_async_script("""const done=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>done([im.naturalWidth,im.naturalHeight])).catch(()=>done([0,0]));""")
+                  assert dims==meta['size'],(slug,dims)
+              print('FOURTEEN_DETAIL_DEEPLINKS_AND_SIX_SECTIONS_PASS',flush=True)
+              go('library/1');WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/cups');WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/wands');WebDriverWait(b,10).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              print('PREVIOUS_FIFTY_CARDS_ACCESSIBLE',flush=True)
+              go('draw')
+              WebDriverWait(b,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
+              assert '64张' in b.find_element(By.CSS_SELECTOR,'.pool-select').text
+              b.execute_script("Math.random=()=>0.999;document.querySelector('#go-draw').click()")
+              assert '宝剑国王' in b.find_element(By.CSS_SELECTOR,'.drawn-card').text
+              print('ALL_64_CARD_DRAW_POOL_INCLUDES_KING',flush=True)
+              b.set_window_size(390,844);go('library/swords')
+              WebDriverWait(b,12).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              m=b.execute_script("return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll('.nav a').length]")
+              assert m[0]<=m[1]+2 and m[2]==6,m
+              print('MOBILE_390_NO_HORIZONTAL_OVERFLOW',m,flush=True)
+              print('ALL_SWORDS_14_LIVE_QA_PASSED',flush=True)
+          finally:b.quit()
+          PY
+          python /tmp/swords14_qa.py
