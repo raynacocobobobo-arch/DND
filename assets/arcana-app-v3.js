@@ -3,11 +3,11 @@
    Hash routes work with GitHub Pages direct refresh without 404. */
 (()=>{
   'use strict';
-  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED,ED=window.ARCANA_EDITORIAL||{},J=window.TAROT_JOURNAL,R=window.ARCANA_READING_V2,G=window.ARCANA_JOURNEYS||{};
+  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED,ED=window.ARCANA_EDITORIAL||{},J=window.TAROT_JOURNAL,R=window.ARCANA_READING_V2,G=window.ARCANA_JOURNEYS||{},I=window.ARCANA_INTERPRETATIONS_V3;
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  if(!J||!R||!R.applied||Object.keys(G).length!==4||!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!Array.isArray(P)||(P.length<1||P.length>14)||!root) {
+  if(!J||!R||!I||I.count!==78||!R.applied||Object.keys(G).length!==4||!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!Array.isArray(P)||(P.length<1||P.length>14)||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
@@ -15,12 +15,14 @@
   const clean=s=>escapeText(s);
   const urlCard=id=>`#/card/${id}`;
   let drawResult=null, currentSpread=1, isDaily=false, currentQuestion='', drawPool='all';
+  const cardContext=()=>new URLSearchParams((location.hash.split('?')[1]||''));
+  const drawnCardUrl=id=>urlCard(id)+(drawResult?.historyId?'?from=draw&record='+encodeURIComponent(drawResult.historyId):'');
   let lastView='';
   const docTitle='禁忌之书 · 克苏鲁塔罗';
   const navs=[...document.querySelectorAll('[data-route-nav]')];
   function banner(eyebrow,title,subtitle) {return '<div class="eyebrow">'+eyebrow+'</div><h1 class="title">'+title+'</h1><p class="sub">'+subtitle+'</p>';}
   function routeParts(){
-    const text=decodeURIComponent(location.hash.replace(/^#\/?/,''));
+    const text=decodeURIComponent(location.hash.replace(/^#\/?/,'').split('?')[0]);
     const parts=text.split('/').filter(Boolean);
     if(parts[0]==='cards')parts[0]='library';
     if(!parts.length) return {screen:'home'};
@@ -103,8 +105,8 @@
   function quickView(id){
     const q=R.quick(id);
     return '<section class="quick-read" aria-label="30秒速读"><div class="eyebrow">AT A GLANCE / 30秒读懂</div>'+
-      '<h2>这张牌在说什么？</h2><p><strong>故事：</strong>'+clean(q.story)+'</p>'+
-      '<p><strong>正位：</strong>'+clean(q.focus)+'</p><p><strong>逆位：</strong>'+clean(q.shadow)+'</p>'+
+      '<h2>这张牌在说什么？</h2><p><strong>正位：</strong>'+clean(q.focus)+'</p>'+
+      '<p><strong>逆位：</strong>'+clean(q.shadow)+'</p><p><strong>故事背景：</strong>'+clean(q.story)+'</p>'+
       '<button type="button" class="quick-jump" data-read-detail>进入完整故事 ↓</button></section>';
   }
   function novella(suit){
@@ -385,10 +387,10 @@
     return `<div class="eyebrow">${daily?'DAILY CARD':n===3?'THREE-CARD READING':'SINGLE-CARD READING'} / 命运已揭晓</div>
       <div class="draw-result-list ${n===1?'single':''}">
       ${cards.map(({c,rev},i)=>`<article class="drawn-card">
-        <a href="${urlCard(c.id)}" aria-label="进入${clean(c.zh)}完整档案">
+        <a href="${drawnCardUrl(c.id)}" aria-label="进入${clean(c.zh)}完整档案">
           <img loading="eager" src="${c.img}" alt="${clean(c.zh)}" style="${rev?'transform:rotate(180deg)':''}">
         </a><h3>${clean(c.zh)}</h3><p>${positions[i]} · ${rev?'逆位':'正位'}</p>
-        <a class="detail-link" href="${urlCard(c.id)}">打开这张牌的完整故事 ↗</a></article>`).join('')}</div>
+        <a class="detail-link" href="${drawnCardUrl(c.id)}">查看完整牌义与故事 ↗</a></article>`).join('')}</div>
       <div class="reading-sections">
         ${question?'<p class="reading-section query">'+clean(question)+'</p>':''}
         ${cards.map(({c,rev},i)=>`<section class="reading-section">
@@ -398,10 +400,11 @@
           '回看过去：这张牌提示你理解已经形成的经历与模式。',
           '观察现在：这张牌将注意力放在你此刻可以作出的选择。',
           '展望未来：这张牌提示一种值得注意的可能趋势，而非必然预言。'][i]:'请把这幅画看作一面象征性的镜子，重新理解你眼前的问题。'}</p>
-          <p><strong>牌面故事：</strong>${clean((c.minor?c.story:D[c.id].scene))}</p>
-          <p><strong>${rev?'逆位':'正位'}解读：</strong>${clean(rev?(c.minor?c.rev:D[c.id].rev):(c.minor?c.up:D[c.id].up))}</p>
-          <p class="query"><strong>可进一步思考：</strong>${clean((c.minor?c.question:D[c.id].q))}</p>
-          <a class="btn outline mini" href="${urlCard(c.id)}">阅读「${clean(c.zh)}」完整档案 →</a>
+          ${I.drawPanel(c.id,rev,positions[i])}
+          <details class="draw-story-fold"><summary>想了解故事？展开这张牌的原著与画面叙事</summary>
+          <p>${clean(c.minor?c.story:D[c.id].scene)}</p>
+          <p class="draw-story-note">故事是对原著的艺术化改编，不代表牌义能够预测真实事件。</p></details>
+          <a class="btn outline mini" href="${drawnCardUrl(c.id)}">继续阅读完整牌义与原著故事 →</a>
         </section>`).join('')}
       </div>${n===3?'<section class="reading-synthesis"><div class="eyebrow">THREE CARD RELATIONSHIP / NOT AI</div><h2>三张牌的关系 · 整体解读</h2>'+clean(drawResult.synthesis||R.synthesis(cards)).split(/\\n\\n|\n\n/).map(p=>'<p>'+p+'</p>').join('')+'<p class="synthesis-disclaimer">这段解读仅依据抽到的牌、正逆位和位置，按固定规则组织；不会理解或分析你输入的问题，也不是未来预测。</p></section>':''}<div class="draw-save-actions"><button type="button" id="draw-copy">复制牌阵摘要</button><button type="button" id="draw-image">导出牌阵图片</button><a href="#/history/${drawResult.historyId}">查看本次档案 →</a></div><p class="reading-save-status" role="status">${drawResult.saved?'已记录到此浏览器的命运档案':'本地保存失败，请检查浏览器存储设置。'}</p><p class="reading-disclaimer">塔罗是一种承载图像、文学与心理联想的自我反思媒介。请依据真实情况、可核实的信息与自己的判断作决定。</p>`;
   }
@@ -441,13 +444,46 @@
     };
     installDrawResultActions();
   }
+  function restoreDrawFromHistory(recordId){
+    const record=J.getRecord(recordId);if(!record)return false;
+    const all=[...C,...CU,...W,...S,...P];
+    const cards=record.cards.map(x=>({c:all.find(y=>String(y.id)===String(x.id)),rev:!!x.rev}));
+    if(cards.some(x=>!x.c)||![1,3].includes(cards.length))return false;
+    drawResult={cards,question:record.question||'',n:cards.length,daily:record.mode==='daily',
+      pool:record.pool==='major'?'major':'all',synthesis:record.synthesis||'',historyId:record.id,saved:true};
+    currentSpread=cards.length;isDaily=record.mode==='daily';drawPool=drawResult.pool;currentQuestion=drawResult.question;
+    return true;
+  }
+  function prioritizeDetail(route){
+    const copy=root.querySelector('.detail-copy');if(!copy)return;
+    const firstStory=copy.querySelector('.chapter.story');if(!firstStory)return;
+    const id=route.screen==='card'?String(route.id):
+      ({'cups-card':'cups','wands-card':'wands','swords-card':'swords','pentacles-card':'pentacles'})[route.screen]+'/'+route.slug;
+    const sections=[...copy.querySelectorAll(':scope > .chapter')];
+    const order=['正位 · 启示','逆位 · 阴影','深读 · 故事的暗线','回到现实 · 如何理解这张牌','留给你的问题'];
+    for(const title of order){const el=sections.find(x=>x.querySelector('h2')?.textContent.trim()===title);if(el)copy.insertBefore(el,firstStory);}
+    const panel=document.createElement('div');panel.innerHTML=I.detailPanel(id);
+    if(panel.firstElementChild)copy.insertBefore(panel.firstElementChild,copy.querySelector('.chapter')||firstStory);
+    const boundary=document.createElement('div');boundary.className='story-divider';
+    boundary.innerHTML='<span>PART II / 文学原著与视觉叙事</span><h2>然后，进入故事</h2>';
+    copy.insertBefore(boundary,firstStory);
+    const params=cardContext(),origin=params.get('from'),rid=params.get('record');
+    let returnHash=null;
+    if(rid&&J.getRecord(rid)&&origin==='draw')returnHash='#/draw?resume='+encodeURIComponent(rid);
+    if(rid&&J.getRecord(rid)&&origin==='history')returnHash='#/history/'+encodeURIComponent(rid);
+    if(returnHash){
+      const bar=document.createElement('nav');bar.className='reading-return-bar';bar.setAttribute('aria-label','返回之前的阅读');
+      bar.innerHTML='<span>正在阅读单张牌的解释；原牌阵仍然保留。</span><a class="reading-close" href="'+returnHash+'" aria-label="关闭详情并返回之前的牌阵">× <strong>返回本次牌阵</strong></a>';
+      const section=root.querySelector('.detail');section?.insertBefore(bar,section.querySelector('.detail-layout'));
+    }
+  }
   function render(){
     const route=routeParts(), key=route.screen;
     updateNav(key);
     if(key==='home'){root.innerHTML=cover();document.title=docTitle;}
     else if(key==='library'){root.innerHTML=library(route.page);document.title='二十二张牌库 · '+docTitle;}
     else if(key==='card'){root.innerHTML=detail(route.id);document.title=C[route.id].zh+' · '+docTitle;}
-    else if(key==='draw'){root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
+    else if(key==='draw'){const rid=cardContext().get('resume');if(rid)restoreDrawFromHistory(rid);root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
     else if(key==='history'){root.innerHTML=J.renderHistory();J.installHistory();document.title='命运档案 · '+docTitle;}
     else if(key==='history-detail'){root.innerHTML=J.renderRecord(route.id);J.installRecord(route.id);document.title='历史记录 · '+docTitle;}
     else if(key==='explore'){root.innerHTML=J.renderExplore();J.installExplore();document.title='78张全牌图鉴 · '+docTitle;}
@@ -461,7 +497,7 @@
     else if(key==='pentacles'){root.innerHTML=pentaclesLibrary();document.title='星币组 · 小阿卡纳 · '+docTitle;}
     else if(key==='pentacles-card'){root.innerHTML=pentaclesDetail(route.slug);document.title=(P.find(c=>c.slug===route.slug)?.zh||'星币组')+' · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
-    if(['card','cups-card','wands-card','swords-card','pentacles-card'].includes(key))J.installDetailFavorite();
+    if(['card','cups-card','wands-card','swords-card','pentacles-card'].includes(key)){prioritizeDetail(route);J.installDetailFavorite();}
     root.querySelectorAll('[data-read-detail]').forEach(b=>b.addEventListener('click',()=>root.querySelector('.chapter.story')?.scrollIntoView({behavior:'smooth',block:'start'})));
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
