@@ -27,7 +27,7 @@ jobs:
           specs={"ace":{"size":[941,1672],"hash":"6965253f081226600cebb7b8b2e2029835a1473552747f91ac07bc6dc565626f"},"two":{"size":[942,1670],"hash":"32eb43267a1aa140ff155088f9b368422f910904a5fcb911eb4d357e25f7ecf0"},"three":{"size":[941,1672],"hash":"42013e80d9593fc28c96dc3af23585201355e5562161d5d544a0dfb3132bb884"},"four":{"size":[941,1672],"hash":"a6729a213091b41fe0a02655e1236c0ec53fb8ef1e265538a532bf889a0524ff"},"five":{"size":[941,1672],"hash":"b7a0af60129a2ca3ff9f8cb6a9709e082f4bdf2dc549e960335a8d1c854b1c2a"},"six":{"size":[941,1672],"hash":"0e0f7a0b15490137cf1e59f63d3f6ca07d24909cec404979b4b866559296a13b"},"seven":{"size":[941,1672],"hash":"e940c4cf398ee86647376ce90e380da11fe54d0953393cd67b9ab2a097b2c218"},"nine":{"size":[942,1670],"hash":"44abe79b0c31ed16df8bbdea1a654737c9d0c939d63a1e7364090bf8c283fb3a"},"page":{"size":[942,1670],"hash":"be2ada5d0a48b26e3ebe968bbc815b068afafd4e498d9975b28e372c1066e169"},"knight":{"size":[941,1670],"hash":"e4b92afa2a9f79ad9d1757c58c508422d27e81511078d62b8d6ba09e84de719a"},"queen":{"size":[941,1672],"hash":"7ec9793ebea264ae0687b088e5971503816474e6df6e82ff20136d9c07c6de92"},"king":{"size":[941,1672],"hash":"fb7b1ae9823417a6829fa4551d13b2ffb793c29e3f085a54d2bb56494f0e4b87"}}
           for n in range(60):
               r=requests.get(base+'?qa=pentacles-release-'+str(n),timeout=35,headers={'Cache-Control':'no-cache'})
-              if r.ok and 'pentacles-approved-v1.js?v=pentacles-nine-courts-20261028' in r.text and 'pentacles-nine-courts-20261028' in r.text:break
+              if r.ok and 'pentacles-approved-v1.js?v=pentacles-nine-courts-20261028' in r.text and 'arcana-pages-v3.css?v=pentacles-12-mobile-20261028' in r.text:break
               print('WAIT_FOR_LIVE_HTML',n,r.status_code,flush=True)
               time.sleep(5)
           else:raise AssertionError('The public site was not updated')
@@ -89,6 +89,9 @@ jobs:
               browser.set_window_size(390,844)
               go('library/pentacles');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==12)
               dim=browser.execute_script("return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll('.nav a').length]")
+              if dim[0]>dim[1]+2:
+                  offenders=browser.execute_script(\"return Array.from(document.querySelectorAll('body *')).map(el=>({tag:el.tagName,cl:el.className,txt:(el.innerText||'').slice(0,65),right:Math.round(el.getBoundingClientRect().right)})).filter(x=>x.right>innerWidth+2).slice(-20)\")
+                  print('MOBILE_OVERFLOW_DIAGNOSTICS',offenders,flush=True)
               assert dim[0]<=dim[1]+2 and dim[2]==7,dim
               print('MOBILE_390_NO_HORIZONTAL_OVERFLOW',dim,flush=True)
               print('ALL_TWELVE_PENTACLES_LIVE_QA_PASSED',flush=True)
