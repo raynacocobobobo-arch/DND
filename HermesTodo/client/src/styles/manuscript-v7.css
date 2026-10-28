@@ -1,0 +1,79 @@
+/* V7 manuscript system — structural redesign, not a decorative CSS patch. */
+:root{--ms-ink:#202b32;--ms-gold:#b99763;--ms-paper:#f5eddd;--ms-rule:#d6c4a5;--ms-red:#873d36}
+.hermes-sidebar{background:linear-gradient(180deg,#0e1c26,#192934)!important;border-right:1px solid #c1a57445}
+.hermes-sidebar .hermes-brand{padding-top:16px}
+.hermes-sidebar .brand-name{font-family:Georgia,serif;letter-spacing:.16em}
+.hermes-sidebar .brand-subtitle{font-family:Georgia,serif;letter-spacing:.13em;font-size:9px}
+.hermes-sidebar .sidebar-nav-caption{font-family:Georgia,serif;letter-spacing:.16em;color:#bfa77f}
+.hermes-sidebar .nav-link{border-radius:3px!important;margin-block:4px}
+.hermes-sidebar .nav-link-active{background:#8b4239!important;box-shadow:inset 3px 0 #e2c58b}
+.editorial-dashboard .editorial-main.v7-manuscript{position:relative;padding-top:18px;padding-bottom:40px;max-width:1450px}
+.v7-masthead{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:0 4px 13px;border-bottom:1px solid #c7a9777a;color:#e2cc9f;font:11px/1.5 Georgia,serif;letter-spacing:.15em}
+.v7-masthead-label{display:flex;align-items:center;gap:9px}
+.v7-masthead-date{white-space:nowrap;color:#c6b08c}
+.v7-intro{position:relative;display:flex;justify-content:space-between;align-items:center;gap:18px;min-height:175px;padding:20px 20px 19px 26px;background:linear-gradient(100deg,#142734e8,#142734a8 80%,#14273470);border-bottom:1px solid #c9ab7473}
+.v7-intro-copy{position:relative;z-index:2}
+.v7-kicker{font:10px/1.5 Georgia,serif;letter-spacing:.22em;color:#e0c18c}
+.v7-intro h1{font-family:"Songti SC","Noto Serif CJK SC",Georgia,serif;font-size:clamp(35px,3.5vw,58px);font-weight:500;letter-spacing:.07em;color:#f5e6c8;margin:8px 0 11px;line-height:1.12}
+.v7-intro-punctuation{color:#c39d67}
+.v7-intro p{font-size:13px;line-height:1.9;letter-spacing:.06em;color:#e4d6bd;margin:0}
+.v7-intro-mark{width:92px;height:92px;flex:0 0 auto;border:1px solid #c8a46b85;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#d6ba82;opacity:.8}
+.v7-intro-mark span{font:8px Georgia,serif;letter-spacing:.15em}
+.v7-capture{margin:17px 0 19px;padding:17px 19px 19px;background:#f1e5d1;border:1px solid #d4ba90;box-shadow:0 13px 30px #020e183d}
+.v7-capture-caption{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:#463d33;font:600 15px/1.4 "Songti SC",serif}
+.v7-capture-caption>span{font:14px Georgia,serif;color:#9a5b46;border-right:1px solid #cbb18b;padding-right:12px}
+.v7-capture-caption small{margin-left:auto;font:10px Georgia,serif;letter-spacing:.14em;color:#9d8870}
+.v7-capture-row{display:flex;align-items:center;gap:10px}
+.v7-capture-row .quick-add{position:relative!important;inset:auto!important;left:auto!important;bottom:auto!important;transform:none!important;z-index:1;flex:1 1 auto;min-width:0;max-width:none!important;width:auto!important;margin:0!important;background:#fffaf0!important;border:1px solid #c8b391!important;border-radius:3px!important;min-height:53px!important;box-shadow:inset 0 0 0 1px #fffaf0,0 5px 14px #34261910!important;backdrop-filter:none!important}
+.v7-capture-row .quick-add input{font-size:15px!important;color:#2b3336!important}
+.v7-capture-row .quick-add input::placeholder{color:#8d8071!important}
+.v7-capture-row .quick-add button{border-radius:2px!important;background:#8e4137!important;color:#fff2db!important}
+.v7-details-button{flex:0 0 auto;display:flex;align-items:center;gap:7px;min-height:53px;padding:0 14px;background:#182d38;color:#f1dfbf;border:1px solid #c1a174;cursor:pointer;font-size:12px;box-shadow:inset 0 0 0 2px #0f222c;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.v7-details-button:hover{background:#294452;border-color:#dfbd84;transform:translateY(-1px)}
+.editorial-dashboard .dashboard-layout.v7-desk{grid-template-columns:minmax(0,1fr) minmax(215px,28%);gap:17px}
+.editorial-dashboard .v7-ledger{border:1px solid #c6ab83!important;border-radius:2px!important;background:linear-gradient(90deg,#e8dbc53d 0,#f6eedf 20px,#f6eedf 100%)!important;box-shadow:0 12px 28px #07101b36!important;padding:25px 24px!important}
+.editorial-dashboard .v7-ledger .board-heading{padding-bottom:19px;border-bottom:1px solid #cbb48e!important}
+.editorial-dashboard .v7-ledger .board-title h2{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:28px;font-weight:600}
+.editorial-dashboard .v7-ledger .board-eyebrow{font:10px Georgia,serif;letter-spacing:.18em;color:#956f4c}
+.editorial-dashboard .v7-ledger .board-total{background:#e3d4bb;border-radius:2px}
+.editorial-dashboard .v7-ledger .task-row{border-bottom:1px solid #ddceb5!important;padding:15px 6px!important}
+.editorial-dashboard .v7-ledger .task-row:hover{background:#efe3ce!important}
+.editorial-dashboard .v7-ledger .task-check{border-radius:3px!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important}
+.editorial-dashboard .v7-ledger .task-filters{border-radius:3px!important;background:#e9dcc8!important}
+.editorial-dashboard .v7-ledger .task-filters button{border-radius:2px!important}
+.editorial-dashboard .v7-ledger .board-add-link{border-radius:2px!important}
+.editorial-dashboard .v7-index{background:#172c38!important;border:1px solid #bda16f!important;border-radius:2px!important;box-shadow:0 10px 22px #06101a44}
+.editorial-dashboard .v7-index .side-card-heading h2{font-family:"Songti SC",serif;letter-spacing:.08em}
+.editorial-dashboard .v7-ai-note{border-radius:2px!important;border:1px solid #c6a676!important}
+.contexts-page>.ios-page-header,.context-detail-page>.ios-page-header,.ai-page>.ios-page-header{min-height:125px!important;border-radius:2px!important;border:1px solid #b9986280!important;padding:25px!important}
+.contexts-page>.ios-page-header h1,.context-detail-page>.ios-page-header h1,.ai-page>.ios-page-header h1{font-family:"Songti SC","Noto Serif CJK SC",serif!important;font-size:32px!important;letter-spacing:.1em}
+.contexts-page .context-card,.context-detail-page .parchment-panel,.ai-page .ai-workspace{border-radius:2px!important;border:1px solid #c9b48e!important;box-shadow:0 8px 24px #0a111e2a}
+.contexts-page .context-grid{gap:14px}
+.form-dialog,.confirm-dialog{border-radius:3px!important;border:1px solid #bca274!important;background:#f7eddb!important}
+.form-dialog .dialog-heading,.confirm-dialog .dialog-heading{font-family:"Songti SC",serif}
+.form-dialog input,.form-dialog textarea,.form-dialog select{border-radius:3px!important}
+@media(min-width:761px) and (max-width:1280px){.editorial-dashboard .dashboard-layout.v7-desk{grid-template-columns:1fr}.editorial-dashboard .dashboard-side-column{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+.editorial-dashboard .editorial-main.v7-manuscript{padding:0 11px 22px}
+.v7-masthead{padding:10px 4px;font-size:9px;letter-spacing:.08em}
+.v7-masthead-date{font-size:9px}
+.v7-intro{min-height:102px;padding:14px 16px;background:linear-gradient(90deg,#132633f5,#132633df);border-bottom:1px solid #b99c69}
+.v7-intro h1{font-size:31px;margin:4px 0 6px}
+.v7-intro p{font-size:11px;line-height:1.5}
+.v7-intro-mark{width:60px;height:60px}.v7-intro-mark svg{width:23px}.v7-intro-mark span{font-size:6px}
+.v7-capture{margin:9px 0 11px;padding:11px 11px 12px}
+.v7-capture-caption{font-size:13px;margin-bottom:9px}
+.v7-capture-caption small{font-size:8px}
+.v7-capture-row{gap:5px}
+.v7-capture-row .quick-add{min-height:46px!important}
+.v7-capture-row .quick-add input{font-size:13px!important}
+.v7-details-button{min-height:46px;width:46px;padding:0;justify-content:center;font-size:0;gap:0}
+.v7-details-button svg{width:19px}
+.editorial-dashboard .dashboard-layout.v7-desk{grid-template-columns:minmax(0,1fr)}
+.editorial-dashboard .v7-ledger{padding:17px 14px!important}
+.editorial-dashboard .v7-ledger .board-title h2{font-size:23px}
+.editorial-dashboard .v7-ledger .board-heading{gap:12px}
+.contexts-page>.ios-page-header,.context-detail-page>.ios-page-header,.ai-page>.ios-page-header{min-height:92px!important;padding:18px!important}
+}
+@media(max-width:340px){.v7-masthead-date{display:none}.v7-intro-mark{display:none}}
+@media(prefers-reduced-motion:reduce){.v7-capture-row button{transition:none}}

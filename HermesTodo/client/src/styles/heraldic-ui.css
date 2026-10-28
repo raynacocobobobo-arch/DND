@@ -1,0 +1,124 @@
+/* Medieval heraldic emblems for all main navigation, list cards and task controls. */
+.heraldic-sigil{display:inline-block;vertical-align:middle;flex-shrink:0}
+.context-icon{display:inline-grid;place-items:center;width:54px;height:59px;background:#efe2cd!important;border:1px solid #b79a68!important;border-radius:3px!important;color:#8b4939!important}
+.scene-home .context-icon{width:56px;height:62px}
+.context-icon .heraldic-sigil{width:37px;height:40px}
+.context-entry-icon .heraldic-sigil{width:28px;height:31px;color:#d5b57a}
+.nav-link .heraldic-sigil{color:#dab982}
+.nav-link-active .heraldic-sigil{color:#f3dba7}
+.context-card-actions .heraldic-sigil{width:22px;height:23px}
+.scene-home-inbox .heraldic-sigil{color:#d5b77d}
+.heraldic-icon-picker{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.heraldic-icon-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:83px;padding:9px 3px;border:1px solid #c6b08c;border-radius:3px;background:#fbf3e5;color:#745c3c;cursor:pointer}
+.heraldic-icon-choice:hover{border-color:#96573b;background:#f0dfc1}
+.heraldic-icon-choice[aria-pressed="true"]{color:#fbe8bc;background:#713a31;border-color:#b8945a;box-shadow:inset 0 0 0 2px #e6c68b64}
+.heraldic-icon-choice span{font:12px/1.2 "Songti SC","Noto Serif CJK SC",serif;white-space:nowrap}
+.heraldic-icon-choice .heraldic-sigil{width:35px;height:38px}
+.heraldic-icon-choice:focus-visible{outline:3px solid #b47c45;outline-offset:2px}
+.context-crest-label{margin-top:2px;color:#604c39;font-weight:600;font-size:13px}
+.scene-home-art{filter:saturate(.97) contrast(1.01)!important}
+@media(max-width:760px){.heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.heraldic-icon-choice{min-height:75px;padding:7px 3px}.heraldic-icon-choice .heraldic-sigil{width:30px;height:34px}.scene-home .context-icon{width:42px;height:47px}.scene-home .context-icon .heraldic-sigil{width:29px;height:33px}.main-navigation .nav-link .heraldic-sigil{width:22px;height:24px}}
+
+/* Approved hand-painted manuscript shields: no layout or palette redesign. */
+.medieval-crest { display:inline-block;vertical-align:middle;image-rendering:auto; }
+.context-card .context-icon,.scene-home .context-icon{
+  display:inline-grid;place-items:center;
+  width:61px;height:61px;padding:0;
+  border:0!important;background:transparent!important;box-shadow:none!important;
+}
+.context-crest-field .heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.context-crest-field .heraldic-icon-choice{min-height:96px;padding:8px 4px}
+.context-crest-field .heraldic-icon-choice .medieval-crest{margin-bottom:4px}
+.nav-link .medieval-crest{filter:drop-shadow(0 1px 2px #050f17a8)}
+.nav-link-active .medieval-crest{filter:drop-shadow(0 1px 3px #070d17)}
+@media(max-width:760px){
+  .scene-home .context-icon{width:51px;height:51px}
+  .scene-home .context-icon .medieval-crest{transform:scale(.875);transform-origin:center}
+  .context-crest-field .heraldic-icon-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .context-crest-field .heraldic-icon-choice{min-height:84px;padding:5px 2px}
+  .context-crest-field .heraldic-icon-choice .medieval-crest{max-width:100%}
+  .main-navigation .nav-link .medieval-crest{transform:scale(.96);transform-origin:center}
+}
+
+/* Cohesion pass: carry the list-manuscript language into secondary screens. */
+.context-detail-page>.ios-page-header,
+.ai-page>.ios-page-header{
+  background:linear-gradient(135deg,#f8efdf 0%,#efe0c8 100%);
+  border:1px solid #b89a6e!important;
+  box-shadow:inset 0 0 0 4px #fff8e965,0 9px 24px #1d17102b;
+}
+.context-detail-page>.ios-page-header h1,
+.ai-page>.ios-page-header h1{color:#342d28}
+.context-detail-page .back-link{gap:7px;color:#704a36;font-weight:650}
+.context-detail-page .search-control input{
+  border:1px solid #c5ae87;border-radius:2px;background:#fbf3e5;
+  box-shadow:inset 0 1px 3px #4e37200b;color:#332f2a;
+}
+.context-detail-page .task-section{
+  padding:20px 22px;border:1px solid #c8b089;background:#f7eddb;
+  box-shadow:0 8px 24px #15100b16;
+}
+.context-detail-page .task-row{
+  padding:14px 5px;border-bottom:1px solid #d6c4a7;background:transparent;
+}
+.context-detail-page .task-row:last-child{border-bottom:0}
+.context-detail-page .section-heading{padding-bottom:11px;border-bottom:3px double #c2a87f}
+.context-detail-page .section-heading h2{font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:18px;color:#45392f}
+.context-detail-page .inline-control select{
+  border:1px solid #c6ae86;border-radius:2px;background:#efe1ca;color:#635440;
+}
+.context-detail-page .icon-button,
+.ai-page .icon-button{
+  border:1px solid #b99b70;border-radius:2px;background:#f0e1ca;
+  box-shadow:inset 0 0 0 2px #faf1e3;color:#70493a;
+}
+.context-detail-page .icon-button:hover,
+.ai-page .icon-button:hover{background:#e5d2b4;border-color:#9d7448}
+.form-dialog .dialog-heading>button{
+  display:grid;width:34px;height:34px;place-items:center;padding:0;
+  border:1px solid #bca178;border-radius:2px;background:#efe0c8;
+  color:#684b3c;font-size:22px;line-height:1;
+}
+.form-dialog .primary-button,
+.form-dialog .secondary-button,
+.confirm-dialog .primary-button,
+.confirm-dialog .secondary-button{
+  border-radius:2px;
+}
+.form-dialog .primary-button{background:#18303b;color:#f5e4c5;border:1px solid #aa895d}
+.form-dialog .secondary-button{background:#efe2cc;border-color:#c2a77e;color:#594a3a}
+@media(max-width:760px){
+  .context-detail-page .task-section{padding:16px 13px}
+  .context-detail-page>.ios-page-header,
+  .ai-page>.ios-page-header{padding:18px 14px!important;min-height:100px!important}
+}
+
+/* AI identity: ivory heraldic shield, matching the approved metal-relief crest system. */
+.ai-logo{
+  display:inline-grid;place-items:center;flex:0 0 auto;line-height:0;
+  filter:drop-shadow(0 2px 3px #07101866);
+}
+.ai-logo svg{display:block;width:100%;height:100%;overflow:visible}
+.nav-link .ai-logo{filter:drop-shadow(0 1px 2px #050f17a8)}
+.nav-link-active .ai-logo{filter:drop-shadow(0 1px 3px #070d17)}
+.ai-page>.ios-page-header>.ai-title-logo{justify-self:start}
+.ai-orb{
+  display:grid;place-items:center;
+  width:90px!important;height:90px!important;
+  border:1px solid #b89a6e!important;border-radius:8px!important;
+  background:linear-gradient(135deg,#f7eddb,#e9dcc6)!important;
+  box-shadow:inset 0 0 0 4px #fff9ef,0 8px 20px #18232d20!important;
+}
+.ai-orb .ai-logo{width:70px!important;height:70px!important}
+.editorial-dashboard .ai-teaser>.ai-logo{width:36px!important;height:36px!important}
+@media(max-width:760px){
+  .main-navigation .nav-link .ai-logo{width:20px!important;height:20px!important}
+  .ai-orb{width:82px!important;height:82px!important}
+  .ai-orb .ai-logo{width:62px!important;height:62px!important}
+}
+
+.exchange-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.exchange-import-label{display:grid;gap:7px;color:#625348;font-size:13px;font-weight:650}
+.exchange-import-label textarea{width:100%;resize:vertical;border:1px solid #c6af87;border-radius:5px;background:#fff9ee;color:#26333b;padding:11px;line-height:1.55}
+.exchange-dialog .success-message{margin:12px 0 0;color:#536c4f;font-size:12px}
+@media(max-width:520px){.exchange-actions{grid-template-columns:1fr}}

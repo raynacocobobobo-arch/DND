@@ -1,5 +1,5 @@
 import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
-import { CirclePlus } from "lucide-react";
+import { HeraldicIcon } from "./HeraldicIcon";
 import { useState, type FormEvent } from "react";
 
 import { useCreateTask } from "../hooks/useTasks";
@@ -17,8 +17,9 @@ function todayDueAt(): string {
 
 export function QuickAdd({ contextId, dueToday = false, onEmpty }: QuickAddProps) {
   const [title, setTitle] = useState("");
+  const [error, setError] = useState("");
   const createTask = useCreateTask();
-  const label = dueToday ? "快速添加今日任务" : "快速添加情境任务";
+  const label = dueToday ? "快速添加今日任务" : contextId ? "快速添加清单任务" : "快速添加任务";
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,24 +28,30 @@ export function QuickAdd({ contextId, dueToday = false, onEmpty }: QuickAddProps
       onEmpty?.();
       return;
     }
-    await createTask.mutateAsync({
-      title: trimmed,
-      contextId: contextId ?? null,
-      dueAt: dueToday ? todayDueAt() : null
-    });
-    setTitle("");
+    setError("");
+    try {
+      await createTask.mutateAsync({
+        title: trimmed,
+        contextId: contextId ?? null,
+        dueAt: dueToday ? todayDueAt() : null
+      });
+      setTitle("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "添加失败，请重试");
+    }
   }
 
   return (
     <form className="quick-add" onSubmit={submit}>
+      {error ? <p className="quick-add-error" role="alert">{error}</p> : null}
       <label className="sr-only" htmlFor={`quick-add-${contextId ?? "home"}`}>{label}</label>
       <input
         id={`quick-add-${contextId ?? "home"}`}
         value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        placeholder={dueToday ? "今天要完成什么？" : "在这个情境里加一件事…"}
+        onChange={(event) => { setTitle(event.target.value); setError(""); }}
+        placeholder={dueToday ? "今天要完成什么？" : contextId ? "在这个清单里加一件事…" : "添加一件待办…"}
       />
-      <button type="submit" aria-label="添加" disabled={createTask.isPending || (!title.trim() && !onEmpty)}><CirclePlus aria-hidden="true" size={25} /></button>
+      <button type="submit" aria-label="添加" disabled={createTask.isPending || (!title.trim() && !onEmpty)}><HeraldicIcon name="add" size={26} /></button>
     </form>
   );
 }

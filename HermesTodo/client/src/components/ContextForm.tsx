@@ -1,23 +1,31 @@
 import { useState, type FormEvent } from "react";
+import { MedievalCrest, canonicalCrestName } from "./MedievalCrest";
 
 import type { ContextRecord } from "../hooks/useContexts";
 
-const icons = ["folder", "briefcase", "suitcase", "house", "shopping-cart", "book-open", "dumbbell"];
+const icons = [
+  {value:"lion",label:"金狮"}, {value:"fleur",label:"百合花"},
+  {value:"compass",label:"罗盘"}, {value:"tree",label:"生命树"},
+  {value:"book",label:"典籍"}, {value:"swords",label:"双剑"},
+  {value:"crown",label:"王冠"}, {value:"scroll",label:"羽笔卷轴"}
+];
 const colors = ["#E09890", "#CEB068", "#9AB898", "#8CAABA", "#C0A8C8", "#C89870", "#E8B898", "#90B8A8"];
 
 export function ContextForm({
   context,
   pending,
   onSubmit,
-  onCancel
+  onCancel,
+  entityLabel = "清单"
 }: {
   context?: ContextRecord;
   pending?: boolean;
   onSubmit(input: { name: string; icon: string; color: string }): void;
   onCancel(): void;
+  entityLabel?: string;
 }) {
   const [name, setName] = useState(context?.name ?? "");
-  const [icon, setIcon] = useState(context?.icon ?? icons[0]!);
+  const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? "folder"));
   const [color, setColor] = useState(context?.color ?? "#8CAABA");
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -28,12 +36,19 @@ export function ContextForm({
   return (
     <div className="dialog-backdrop" role="presentation">
       <section className="form-dialog" role="dialog" aria-modal="true" aria-labelledby="context-form-title">
-        <div className="dialog-heading"><h2 id="context-form-title">{context ? "编辑情境" : "新建情境"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
+        <div className="dialog-heading"><h2 id="context-form-title">{context ? `编辑${entityLabel}` : `新建${entityLabel}`}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
         <form className="stacked-form" onSubmit={submit}>
-          <label>情境名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
-          <label>图标<select value={icon} onChange={(event) => setIcon(event.target.value)}>{icons.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+          <label>{entityLabel}名称<input value={name} onChange={(event) => setName(event.target.value)} maxLength={40} autoFocus /></label>
+          <div className="context-crest-field"><div className="context-crest-label" id="crest-picker-label">选择{entityLabel}纹章</div>
+  <div className="heraldic-icon-picker" role="group" aria-labelledby="crest-picker-label">
+    {icons.map(({value,label}) => <button type="button" className="heraldic-icon-choice"
+      key={value} aria-label={label} aria-pressed={icon===value} onClick={() => setIcon(canonicalCrestName(value))}>
+      <MedievalCrest name={value} size={45}/><span>{label}</span>
+    </button>)}
+  </div>
+</div>
           <fieldset><legend>颜色</legend><div className="color-options">{colors.map((value) => <label key={value} style={{ backgroundColor: value }}><input type="radio" name="context-color" value={value} checked={color === value} onChange={() => setColor(value)} /><span className="sr-only">{value}</span></label>)}</div></fieldset>
-          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : "创建情境"}</button></div>
+          <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : `创建${entityLabel}`}</button></div>
         </form>
       </section>
     </div>

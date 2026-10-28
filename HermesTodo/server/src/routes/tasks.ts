@@ -22,6 +22,7 @@ const updateSchema = createSchema.omit({ parentTaskId: true }).partial();
 const listSchema = z.object({
   search: z.string().max(200).optional(),
   contextId: z.string().min(1).optional(),
+  scope: z.enum(["inbox"]).optional(),
   sort: z.enum(["priority", "dueDate", "createdAt"]).default("priority")
 });
 
@@ -40,7 +41,7 @@ export function createTasksRouter(dependencies: AppDependencies): Router {
 
   router.get("/", (request, response) => {
     const parsed = listSchema.safeParse(request.query);
-    if (!parsed.success) {
+    if (!parsed.success || (parsed.data.scope === "inbox" && parsed.data.contextId)) {
       response.status(400).json({ error: { code: "INVALID_REQUEST", message: "筛选条件无效" } });
       return;
     }

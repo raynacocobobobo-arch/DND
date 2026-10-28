@@ -40,8 +40,8 @@ describe("responsive authenticated shell", () => {
     const navigation = await screen.findByRole("navigation", { name: "主导航" });
     expect(navigation).toBeInTheDocument();
     expect(navigation).toHaveClass("floating-tab-bar");
-    expect(screen.getByRole("link", { name: "首页" })).not.toHaveAttribute("aria-current");
-    expect(screen.getByRole("link", { name: "情境" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "清单" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "收集箱" })).not.toHaveAttribute("aria-current");
     expect(screen.getByRole("link", { name: "AI" })).not.toHaveAttribute("aria-current");
   });
 
@@ -79,8 +79,8 @@ describe("responsive authenticated shell", () => {
     vi.stubGlobal("fetch", authenticatedFetch());
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "我的清单" })).toBeInTheDocument();
     await waitFor(() => expect(window.location.pathname).toBe("/"));
-    expect(screen.getByRole("link", { name: "首页" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "清单" })).toHaveAttribute("aria-current", "page");
   });
 });

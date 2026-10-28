@@ -1,40 +1,71 @@
-import { Grid2X2, House, LogOut, Sparkles, type LucideIcon } from "lucide-react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 import { useAuth } from "../auth/AuthProvider";
+import { isCloudMode } from "../cloud/config";
+import { FleurDeLis, HeraldicDivider } from "./HeraldicArt";
+import { HeraldicIcon } from "./HeraldicIcon";
+import { MedievalCrest } from "./MedievalCrest";
+import { AILogo } from "./AILogo";
 
 const links = [
-  { to: "/", label: "首页", end: true, icon: House },
-  { to: "/contexts", label: "情境", end: false, icon: Grid2X2 },
-  { to: "/ai", label: "AI", end: false, icon: Sparkles }
-] satisfies Array<{ to: string; label: string; end: boolean; icon: LucideIcon }>;
+  { to: "/", label: "清单", end: true, glyph: "fleur" },
+  { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
+  { to: "/ai", label: "AI", end: false, glyph: "ai" }
+] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
 export function AppShell() {
   const { logout } = useAuth();
+  const { pathname } = useLocation();
+  const cloudMode = isCloudMode();
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{
+      "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
+      "--art-figure": `url("${import.meta.env.BASE_URL}art/standard-bearer-foreground.webp")`
+    } as React.CSSProperties}>
+      {import.meta.env.VITE_STATIC_PREVIEW === "true" ? (
+        <aside className="preview-banner" role="status">
+          <FleurDeLis size={14}/> {cloudMode ? "云端同步 · 登录状态自动保持" : "演示模式 · 任务仅保存在本浏览器"}
+        </aside>
+      ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
-      <main className="app-content" id="main-content" tabIndex={-1}>
-        <div className="app-utility-row">
-          <button type="button" className="logout-button" aria-label="退出登录" onClick={() => void logout()}>
-            <LogOut aria-hidden="true" size={18} />
-          </button>
-        </div>
-        <Outlet />
-      </main>
-      <nav className="main-navigation floating-tab-bar" aria-label="主导航">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              end={link.end}
-              className={({ isActive }) => `nav-link${isActive ? " nav-link-active" : ""}`}
-            >
-              <link.icon aria-hidden="true" size={20} strokeWidth={2.2} />
-              <span>{link.label}</span>
-            </NavLink>
-          ))}
-      </nav>
+      <aside className="hermes-sidebar">
+        <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回清单首页">
+          <FleurDeLis className="brand-fleur" size={38}/>
+          <span className="brand-name"><span>HERMES</span><span>TODO</span></span>
+          <span className="brand-subtitle">THE DAILY CHRONICLE</span>
+        </Link>
+        <HeraldicDivider className="sidebar-divider"/>
+        <span className="sidebar-nav-caption">目录 / INDEX</span>
+        <nav className="main-navigation floating-tab-bar" aria-label="主导航">
+          {links.map((link) => {
+            const active = link.to === "/"
+              ? pathname === "/" || pathname === "/contexts" || pathname.startsWith("/contexts/")
+              : pathname === link.to;
+            return (
+              <Link key={link.to} to={link.to}
+                aria-current={active ? "page" : undefined}
+                className={`nav-link${active ? " nav-link-active" : ""}`}>
+                {link.glyph === "ai" ? <AILogo size={20}/> : <MedievalCrest name={link.glyph} size={29}/>}
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="sidebar-art" aria-hidden="true"><span className="sidebar-art-sigil">FORTITUDO</span></div>
+        <div className="sidebar-motto"><HeraldicDivider/><p>每一个微小行动，都值得被记下。</p><span>逐项完成 · 清晰前行</span></div>
+      </aside>
+      <div className="hermes-main-frame">
+        <div className="mobile-brand"><FleurDeLis size={22}/><span>HermesTodo</span></div>
+        <main className="app-content" id="main-content" tabIndex={-1}>
+          <div className="app-utility-row">
+            <span className="app-edition"><span className="edition-dot"/> MANUSCRIPT EDITION <span className="edition-separator">/</span> 一册属于你的行动手稿</span>\n            {!cloudMode ? (
+              <button type="button" className="logout-button" aria-label="退出登录" title="退出登录"
+                onClick={() => void logout()}><HeraldicIcon name="logout" size={19}/></button>
+            ) : null}
+          </div>
+          <Outlet/>
+        </main>
+      </div>
     </div>
   );
 }

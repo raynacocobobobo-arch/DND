@@ -1,0 +1,205 @@
+name: Publish HermesTodo latest preview
+
+on:
+  push:
+    branches:
+      - feature/hermestodo-dashboard-subtasks-20261025
+    paths:
+      - "HermesTodo/**"
+      - ".github/workflows/hermestodo-preview-publish.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hermestodo-preview-publish
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: HermesTodo/package-lock.json
+      - name: Install dependencies
+        working-directory: HermesTodo
+        run: npm ci
+      - name: Build latest branch as local-data demo
+        working-directory: HermesTodo
+        env:
+          VITE_STATIC_PREVIEW: "true"
+          HERMESTODO_PREVIEW: "true"
+        run: npx vite build
+      - name: Browser smoke test - local latest preview
+        run: |
+          python3 -m pip install --quiet selenium
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-wqy-microhei
+          fc-cache -f
+          mkdir -p /tmp/hermestodo-site/DND/hermestodo
+          cp -a HermesTodo/dist/client/. /tmp/hermestodo-site/DND/hermestodo/
+          nohup python3 -m http.server 8090 --bind 127.0.0.1 --directory /tmp/hermestodo-site >/tmp/hermestodo-http.log 2>&1 &
+          cat >/tmp/hermestodo-smoke.py <<'PY'
+          from selenium import webdriver
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.support.ui import WebDriverWait
+          from selenium.webdriver.support import expected_conditions as EC
+
+          options=Options()
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1536,1024']:
+              options.add_argument(arg)
+          browser=webdriver.Chrome(options=options)
+          try:
+              browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
+              wait=WebDriverWait(browser,25)
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
+              assert '演示模式 · 任务仅保存在本浏览器' in browser.find_element(By.TAG_NAME,'body').text
+              assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
+              assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
+              crest=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .context-card .medieval-crest')
+              assert crest.get_attribute('data-crest') in ('lion','fleur','compass','tree','book','swords','crown','scroll')
+              decoded=browser.execute_async_script("""
+                const cb=arguments[arguments.length-1],img=new Image();
+                img.onload=()=>cb([img.naturalWidth,img.naturalHeight]);
+                img.onerror=()=>cb(null);
+                img.src='/DND/hermestodo/art/medieval-crests.avif';
+              """)
+              assert decoded == [1024,128], f'Heraldic sprite missing or undecodable: {decoded}'
+              # Reject tiny/compressed hero images when publishing the live URL.
+              picture=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script('return arguments[0].complete && arguments[0].naturalWidth >= 1600',picture))
+              assert browser.execute_script('return arguments[0].naturalWidth',picture)==1672
+              assert len(browser.find_elements(By.CSS_SELECTOR,'.scene-home-grid .medieval-crest')) >= 1
+              # Verify the approved Jeanne d'Arc dragon artwork is the real loaded asset,
+              # not a generated UI screenshot or a broken background URL.
+              artwork=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script(
+                  'return arguments[0].complete && arguments[0].naturalWidth >= 1600', artwork))
+              assert 'joan-fleur-hero-hq.avif' in artwork.get_attribute('src')
+              assert artwork.get_attribute('naturalWidth') == '1672'
+              assert browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input').is_displayed()
+              # Routine UI must not expose cloud configuration or an easy-to-misclick cloud exit.
+              assert not browser.find_elements(By.CSS_SELECTOR,'.cloud-settings-trigger')
+              assert '云端设置' not in browser.find_element(By.TAG_NAME,'body').text
+              assert not browser.find_elements(By.CSS_SELECTOR,'.dashboard-task-board'), 'Old dashboard must not be the homepage'
+              browser.save_screenshot('/tmp/hermestodo-desktop.png')
+
+              # The list-first home retains real create and edit functionality.
+              field=browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd input')
+              field.send_keys('网页验收清单')
+              browser.find_element(By.CSS_SELECTOR,'.scene-home-quickadd button').click()
+              wait.until(lambda b: '网页验收清单' in b.find_element(By.TAG_NAME,'body').text)
+              browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .context-card-actions button[aria-label^="编辑"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.heraldic-icon-picker')))
+              assert len(browser.find_elements(By.CSS_SELECTOR,'.heraldic-icon-picker .medieval-crest')) == 8
+              assert 'briefcase' not in browser.find_element(By.CSS_SELECTOR,'.form-dialog').text
+              browser.find_element(By.CSS_SELECTOR,'.form-dialog button[aria-label="关闭"]').click()
+              # Top-level list opens its scene directory; the existing demo scene remains intact.
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/lists/travel-list"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.list-detail-page .scene-home-grid')))
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/contexts/work"]').click()
+              wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
+              assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
+
+              # Inbox remains a separate, functioning route.
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
+              assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
+              assert '检查 HermesTodo 新版交互' not in browser.find_element(By.TAG_NAME,'body').text
+              browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
+              browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
+              field=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.v7-capture-row .quick-add input')))
+              field.send_keys('浏览器交互验收任务')
+              browser.find_element(By.CSS_SELECTOR,'.v7-capture-row .quick-add button').click()
+              wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
+
+              # Mobile list-first home: first scene card must be reachable without horizontal scrolling.
+              browser.set_window_size(390,844)
+              browser.get('http://127.0.0.1:8090/DND/hermestodo/#/')
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
+              mobile_art=browser.find_element(By.CSS_SELECTOR,'.scene-home-art')
+              wait.until(lambda b: b.execute_script(
+                  'return arguments[0].complete && arguments[0].naturalWidth >= 1600', mobile_art))
+              browser.save_screenshot('/tmp/hermestodo-mobile.png')
+              measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
+              assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
+              first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
+              viewport=browser.execute_script("return window.innerHeight")
+              assert first < viewport - 45, f'First scene card below fold: top={first}, viewport={viewport}'
+              # Cloud mode must stay intentionally simple: fixed username + password only.
+              browser.execute_script('''localStorage.setItem('hermestodo-supabase-public-v1',
+                JSON.stringify({url:'https://arnrlepjuqdmvbipswci.supabase.co',
+                  publishableKey:'sb_publishable_ci_only_test_public_key'}))''')
+              browser.refresh()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.login-page')))
+              username=browser.find_element(By.CSS_SELECTOR,'#username')
+              password=browser.find_element(By.CSS_SELECTOR,'#password')
+              assert username.is_displayed() and username.get_attribute('value') == 'rui'
+              assert username.get_attribute('readonly') is not None
+              assert password.is_displayed()
+              cloud_body=browser.find_element(By.TAG_NAME,'body').text
+              assert '进入 HermesTodo' in cloud_body
+              assert '发送免密码登录邮件' not in cloud_body
+              assert 'localhost' not in cloud_body
+              assert '云端设置' not in cloud_body
+              assert not browser.find_elements(By.CSS_SELECTOR,'#cloud-email')
+              browser.save_screenshot('/tmp/hermestodo-cloud-login.png')
+              browser.execute_script("localStorage.removeItem('hermestodo-supabase-public-v1')")
+              print('CLOUD LOGIN BOOT PASSED: fixed single-user password screen renders normally',flush=True)
+              print('BROWSER SMOKE PASSED: list hierarchy, scene details, inbox tasks, AI, mobile',flush=True)
+          finally:
+              try: print('VISIBLE URL',browser.current_url,flush=True)
+              except Exception: pass
+              browser.quit()
+          PY
+          python3 /tmp/hermestodo-smoke.py
+      - name: Save browser captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermestodo-heraldic-preview
+          path: |
+            /tmp/hermestodo-desktop.png
+            /tmp/hermestodo-mobile.png
+            /tmp/hermestodo-cloud-login.png
+      - name: Publish preview under existing docs folder
+        run: |
+          mkdir -p /tmp/hermestodo-preview
+          cp -a HermesTodo/dist/client/. /tmp/hermestodo-preview/
+          # GitHub Pages for this repository publishes from gh-pages root,
+          # not main/docs. Preserve all existing Tarot root assets.
+          git fetch origin gh-pages
+          git checkout -B gh-pages origin/gh-pages
+          mkdir -p hermestodo
+          rsync -a --delete /tmp/hermestodo-preview/ hermestodo/
+          touch hermestodo/.nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add hermestodo
+          if git diff --staged --quiet; then
+            echo "Preview unchanged"
+          else
+            git commit -m "build(hermestodo): publish current interactive preview"
+            git push origin HEAD:gh-pages
+          fi
+
+      - name: Probe published Pages URL
+        if: always()
+        continue-on-error: true
+        run: |
+          echo 'Checking external GitHub Pages access'
+          for path in 'https://raynacocobobobo-arch.github.io/DND/hermestodo/' 'https://raynacocobobobo-arch.github.io/DND/hermestodo/manifest.webmanifest'; do
+            curl -sSL --max-time 15 -o /dev/null -w '%{http_code} %{remote_ip} %{url_effective}\n' "$path" || true
+          done

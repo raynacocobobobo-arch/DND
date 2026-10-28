@@ -72,7 +72,7 @@ describe("login experience", () => {
     await user.click(screen.getByRole("button", { name: "登录" }));
 
     expect(await screen.findByRole("navigation", { name: "主导航" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "首页" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "清单" })).toBeInTheDocument();
     const loginCall = fetchMock.mock.calls.find(([path, init]) => path === "/api/auth/login" && init?.method === "POST");
     expect(JSON.parse(String(loginCall?.[1]?.body))).toEqual({
       password: "correct horse battery staple"

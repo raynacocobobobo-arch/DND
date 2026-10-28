@@ -1,7 +1,7 @@
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { useState, type FormEvent } from "react";
 
-import type { Priority, RepeatInterval } from "../../../shared/contracts";
+import type { RepeatInterval } from "../../../shared/contracts";
 import type { ContextRecord } from "../hooks/useContexts";
 import type { TaskInput, TaskRecord } from "../hooks/useTasks";
 
@@ -13,7 +13,8 @@ export function TaskForm({
   pending,
   onSave,
   initialContextId = null,
-  initialDueAt = null
+  initialDueAt = null,
+  allowContextSelection = true
 }: {
   task?: TaskRecord;
   contexts: ContextRecord[];
@@ -21,11 +22,11 @@ export function TaskForm({
   onSave(input: TaskInput): void;
   initialContextId?: string | null;
   initialDueAt?: string | null;
+  allowContextSelection?: boolean;
 }) {
   const dueAt = task?.dueAt ?? initialDueAt;
   const [title, setTitle] = useState(task?.title ?? "");
   const [notes, setNotes] = useState(task?.notes ?? "");
-  const [priority, setPriority] = useState<Priority>(task?.priority ?? "medium");
   const [contextId, setContextId] = useState(task?.contextId ?? initialContextId ?? "");
   const [dueDate, setDueDate] = useState(dueAt ? formatInTimeZone(dueAt, "Asia/Shanghai", "yyyy-MM-dd") : "");
   const [dueTime, setDueTime] = useState(dueAt ? formatInTimeZone(dueAt, "Asia/Shanghai", "HH:mm") : "09:00");
@@ -43,7 +44,6 @@ export function TaskForm({
     onSave({
       title: title.trim(),
       notes: notes.trim(),
-      priority,
       contextId: contextId || null,
       dueAt: dueDate ? fromZonedTime(`${dueDate}T${dueTime || "09:00"}:00`, "Asia/Shanghai").toISOString() : null,
       repeatInterval,
@@ -54,15 +54,19 @@ export function TaskForm({
   return (
     <form className="stacked-form task-form" onSubmit={submit}>
       <label>任务标题<input value={title} onChange={(event) => setTitle(event.target.value)} maxLength={200} required /></label>
-      <label>备注<textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={4000} rows={3} /></label>
       <div className="form-grid">
-        <label>优先级<select value={priority} onChange={(event) => setPriority(event.target.value as Priority)}><option value="high">高</option><option value="medium">中</option><option value="low">低</option></select></label>
-        <label>所属情境<select value={contextId} onChange={(event) => setContextId(event.target.value)}><option value="">无情境</option>{contexts.map((context) => <option key={context.id} value={context.id}>{context.name}</option>)}</select></label>
+        {allowContextSelection ? <div className="task-context-field"><label>任务归属<select value={contextId} onChange={(event) => setContextId(event.target.value)}><option value="">首页收集箱</option>{contexts.map((context) => <option key={context.id} value={context.id}>{context.name}</option>)}</select></label>{task ? <small className="context-move-hint">修改归属后，任务会移到对应情境，不会生成副本。</small> : null}</div> : null}
         <label>截止日期<input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} /></label>
         <label>截止时间<input type="time" value={dueTime} onChange={(event) => setDueTime(event.target.value)} disabled={!dueDate} /></label>
-        <label>重复<select value={repeatInterval} onChange={(event) => setRepeatInterval(event.target.value as RepeatInterval)}><option value="none">不重复</option><option value="daily">每天</option><option value="weekly">每周</option><option value="monthly">每月</option><option value="yearly">每年</option><option value="custom">自定义</option></select></label>
-        {repeatInterval === "custom" ? <label>自定义重复<input value={repeatRule} onChange={(event) => setRepeatRule(event.target.value)} placeholder="每周一 / 每月15日" /></label> : null}
       </div>
+      <details className="task-more-options" open={Boolean(task)}>
+        <summary>更多选项 <span>备注、重复</span></summary>
+        <div className="task-extra-fields">
+          <label>备注<textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={4000} rows={3} /></label>
+          <label>重复<select value={repeatInterval} onChange={(event) => setRepeatInterval(event.target.value as RepeatInterval)}><option value="none">不重复</option><option value="daily">每天</option><option value="weekly">每周</option><option value="monthly">每月</option><option value="yearly">每年</option><option value="custom">自定义</option></select></label>
+          {repeatInterval === "custom" ? <label>自定义重复<input value={repeatRule} onChange={(event) => setRepeatRule(event.target.value)} placeholder="每周一 / 每月15日" /></label> : null}
+        </div>
+      </details>
       {error ? <p className="form-error" role="alert">{error}</p> : null}
       <button type="submit" className="primary-button" disabled={pending || !title.trim()}>保存任务</button>
     </form>

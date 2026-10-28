@@ -1,7 +1,5 @@
 import type { AISuggestion } from "../../../shared/contracts";
 
-const priorityLabel = { high: "高", medium: "中", low: "低" };
-
 export function AISuggestionList({ suggestions }: { suggestions: AISuggestion[] }) {
   if (!suggestions.length) return null;
   return (
@@ -12,7 +10,6 @@ export function AISuggestionList({ suggestions }: { suggestions: AISuggestion[] 
           <li key={`${suggestion.context}-${suggestion.title}`} data-testid="ai-suggestion">
             <div><strong>{suggestion.title}</strong><span>{suggestion.category}</span></div>
             {suggestion.note ? <p>{suggestion.note}</p> : null}
-            <em className={`priority-badge priority-${suggestion.priority}`}>{priorityLabel[suggestion.priority]}优先级</em>
           </li>
         ))}
       </ul>

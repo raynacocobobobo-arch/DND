@@ -1,0 +1,167 @@
+name: "HermesTodo legacy Docker deploy (disabled; server uses systemd)"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hermestodo-production
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Verify real backend build and reachability
+    runs-on: ubuntu-latest
+    outputs:
+      health: ${{ steps.probe.outputs.health }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: HermesTodo/package-lock.json
+      - name: Install dependencies
+        working-directory: HermesTodo
+        run: npm ci
+      - name: Test
+        working-directory: HermesTodo
+        run: npm test
+      - name: Typecheck
+        working-directory: HermesTodo
+        run: npm run typecheck
+      - name: Build REAL server and client (no preview mocks)
+        working-directory: HermesTodo
+        env:
+          VITE_STATIC_PREVIEW: "false"
+          HERMESTODO_PREVIEW: "false"
+        run: npm run build
+      - name: Verify real build has no browser demo bootstrap
+        working-directory: HermesTodo
+        run: |
+          test -s dist/server/index.js
+          test -s dist/client/index.html
+          if grep -R -l 'hermestodo-public-preview-v1' dist/client/assets; then
+            echo "::error::Production build contains browser-local demo storage"
+            exit 1
+          fi
+          echo "Real server and browser bundles compiled; demo store absent."
+      - name: Probe documented Tencent Cloud endpoint
+        id: probe
+        shell: bash
+        run: |
+          set +e
+          body=$(curl --insecure --silent --show-error --connect-timeout 6 --max-time 12 https://82.156.85.52:8443/api/health 2>&1)
+          status=$?
+          if [ "$status" -eq 0 ] && printf '%s' "$body" | grep -q '"status":"ok"'; then
+            echo "health=reachable" >> "$GITHUB_OUTPUT"
+            echo "Production API health is reachable."
+          else
+            echo "health=unreachable" >> "$GITHUB_OUTPUT"
+            echo "::warning::Production API is not reachable from the GitHub runner; deployment may require server/network setup."
+          fi
+          if timeout 6 bash -c 'echo > /dev/tcp/82.156.85.52/22' 2>/dev/null; then
+            echo "SSH port 22: reachable."
+          else
+            echo "::warning::SSH port 22: not reachable from the GitHub runner."
+          fi
+
+  deploy:
+    name: Back up and deploy same-origin React + Node + SQLite
+    if: false # Prevent Docker/self-hosted deployment until the actual systemd unit is verified.
+    needs: validate
+    # Production changes are explicit. Never deploy from a mere preview update.
+    runs-on: ubuntu-latest
+    environment: hermestodo-production
+    env:
+      DEPLOY_KEY: ${{ secrets.HERMESTODO_SSH_PRIVATE_KEY }}
+      DEPLOY_HOST_KEY: ${{ secrets.HERMESTODO_SSH_KNOWN_HOSTS }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require authorized server credentials
+        shell: bash
+        run: |
+          if [ -z "$DEPLOY_KEY" ] || [ -z "$DEPLOY_HOST_KEY" ]; then
+            echo "::error::Set HERMESTODO_SSH_PRIVATE_KEY and HERMESTODO_SSH_KNOWN_HOSTS in GitHub Actions Secrets. No server changes were made."
+            exit 1
+          fi
+      - name: Configure pinned SSH host and deployment key
+        shell: bash
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/hermestodo_deploy
+          chmod 600 ~/.ssh/hermestodo_deploy
+          printf '%s\n' "$DEPLOY_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<'SSHCONFIG'
+          Host hermestodo-production
+            HostName 82.156.85.52
+            User ubuntu
+            Port 22
+            IdentityFile ~/.ssh/hermestodo_deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            UserKnownHostsFile ~/.ssh/known_hosts
+            ConnectTimeout 12
+          SSHCONFIG
+          chmod 600 ~/.ssh/config
+      - name: Verify dedicated app directory and create online SQLite backup
+        shell: bash
+        run: |
+          ssh hermestodo-production 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /home/ubuntu/hermestodo-web
+          test -f .env || { echo "Server .env missing; deployment stopped without changes"; exit 1; }
+          test -f compose.yaml || { echo "Existing app compose.yaml missing; deployment stopped"; exit 1; }
+          mkdir -p data backups
+          if docker compose ps --status running --services | grep -qx app; then
+            docker compose exec -T app node scripts/backup.mjs
+          else
+            echo "App not running; preserving all existing data without backup modification."
+          fi
+          REMOTE
+      - name: Sync application source only (preserve server secrets and SQLite)
+        shell: bash
+        run: |
+          rsync -az --delete \
+            --exclude='.env' --exclude='.env.*' --exclude='data/' \
+            --exclude='backups/' --exclude='.git/' \
+            --exclude='node_modules/' --exclude='dist/' \
+            --exclude='*.sqlite*' \
+            HermesTodo/ hermestodo-production:/home/ubuntu/hermestodo-web/
+      - name: Build and restart HermesTodo app only
+        shell: bash
+        run: |
+          ssh hermestodo-production 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /home/ubuntu/hermestodo-web
+          test -f .env
+          grep -q '^PUBLIC_ORIGIN=https://82.156.85.52:8443$' .env || {
+            echo "PUBLIC_ORIGIN does not match the official same-origin endpoint"; exit 1;
+          }
+          docker compose config --quiet
+          docker compose build app
+          docker compose up -d --no-deps app
+          for attempt in $(seq 1 24); do
+            if node scripts/smoke.mjs http://127.0.0.1:3020/api/health; then
+              break
+            fi
+            if [ "$attempt" -eq 24 ]; then
+              docker compose logs --tail=60 app
+              echo "HermesTodo API health failed"
+              exit 1
+            fi
+            sleep 5
+          done
+          REMOTE
+      - name: Verify public endpoint after deployment
+        shell: bash
+        run: |
+          curl --insecure --fail --silent --show-error --retry 4 --retry-delay 3 \
+            https://82.156.85.52:8443/api/health | grep -q '"status":"ok"'
+          echo "Live backend responds successfully on the documented endpoint."
+      - name: Remove ephemeral SSH key
+        if: always()
+        run: rm -f ~/.ssh/hermestodo_deploy ~/.ssh/known_hosts ~/.ssh/config
