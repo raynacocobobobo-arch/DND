@@ -1,0 +1,94 @@
+name: Verify Six Pentacles Live
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/pentacles-six-live-qa.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-site:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Install image and browser test tools
+        run: python -m pip install --quiet Pillow requests selenium
+      - name: Verify public site, originals, stories, draw pool, locked card collections, mobile
+        shell: bash
+        run: |
+          cat > /tmp/pentacles_qa.py <<'PY'
+          import io,hashlib,time,requests
+          from PIL import Image
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+          base='https://raynacocobobobo-arch.github.io/DND/'
+          specs={"ace":{"size":[941,1672],"hash":"6965253f081226600cebb7b8b2e2029835a1473552747f91ac07bc6dc565626f"},"two":{"size":[942,1670],"hash":"f9c5e7940fd5fd061d07fcbf1de2f23915ceda7ae9cfc78e83c7e18e7ee02435"},"three":{"size":[941,1672],"hash":"8033df0d56e994f2e70dc408f419cd1ef319b362e02824a449c5d822b0b74db4"},"four":{"size":[941,1672],"hash":"2a2ebeef24e23fef29d68540f198e3b33c5b94f311f64cff6fc738d70adfcb30"},"five":{"size":[941,1672],"hash":"1a32a3d18bf006680d792eefc7bbf18523d9f6d432377fbe0c33fe3c581fba11"},"six":{"size":[942,1670],"hash":"ba53c5b93bb2fcb6369bbddc4f29df47ca3aecefd2d4dfa7ef1d5805408614b2"}}
+          for n in range(60):
+              r=requests.get(base+'?qa=pentacles-release-'+str(n),timeout=35,headers={'Cache-Control':'no-cache'})
+              if r.ok and 'pentacles-approved-v1.js?v=pentacles-ace-six-20261028' in r.text and 'pentacles-ace-six-20261028' in r.text:break
+              print('WAIT_FOR_LIVE_HTML',n,r.status_code,flush=True)
+              time.sleep(5)
+          else:raise AssertionError('The public site was not updated')
+          print('LIVE_PENTACLES_HTML_VERIFIED',flush=True)
+          for slug,spec in specs.items():
+              for group in ['final','thumbs']:
+                  u=base+'minor-arcana/pentacles/'+group+'/'+slug+'-of-pentacles-v1.webp?v=pentacles-qa'
+                  r=requests.get(u,timeout=45);r.raise_for_status()
+                  im=Image.open(io.BytesIO(r.content));im.load()
+                  assert im.format=='WEBP',(slug,group,im.format)
+                  if group=='final':
+                      assert list(im.size)==spec['size'],(slug,im.size)
+                      h=hashlib.sha256(im.convert('RGB').tobytes()).hexdigest()
+                      assert h==spec['hash'],(slug,h)
+                  else:
+                      assert im.width<=360 and im.height<=640,(slug,im.size)
+              print('PENTACLES_PUBLIC_LOSSLESS_PIXEL_IDENTICAL',slug,spec['size'],flush=True)
+          o=Options()
+          for a in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--window-size=1360,900']:o.add_argument(a)
+          browser=webdriver.Chrome(options=o)
+          browser.set_script_timeout(45)
+          try:
+              def go(route):
+                  browser.get(base+'?qa=all-70#/'+route)
+                  WebDriverWait(browser,25).until(lambda d:d.execute_script('return document.readyState')=='complete' and len(d.find_elements(By.CSS_SELECTOR,'#app'))==1)
+              go('library/pentacles')
+              WebDriverWait(browser,20).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              counts=browser.execute_script('return [window.ARCANA_CATALOG.length,window.CUPS_APPROVED.length,window.WANDS_APPROVED.length,window.SWORDS_APPROVED.length,window.PENTACLES_APPROVED.length]')
+              assert counts==[22,14,14,14,6],counts
+              assert len(browser.find_elements(By.CSS_SELECTOR,'[data-route-nav]'))==7
+              assert not browser.find_elements(By.CSS_SELECTOR,'.notfound')
+              print('PENTACLES_SIX_CARDS_AND_FIVE_SUIT_COUNTS_OK',counts,flush=True)
+              first=browser.find_element(By.CSS_SELECTOR,'.library-card')
+              first.click()
+              WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+              assert browser.current_url.endswith('#/card/pentacles/ace'),browser.current_url
+              for slug,spec in specs.items():
+                  go('card/pentacles/'+slug)
+                  WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.detail-layout'))==1)
+                  txt=browser.find_element(By.CSS_SELECTOR,'.detail-copy').text
+                  for title in ['牌面的故事','画面在讲什么','正位 · 启示','逆位 · 阴影','原著背景与艺术改编','留给你的问题']:
+                      assert title in txt,(slug,title)
+                  dims=browser.execute_async_script("""let cb=arguments[0],im=document.querySelector('.detail-art img');im.decode().then(()=>cb([im.naturalWidth,im.naturalHeight])).catch(()=>cb([0,0]));""")
+                  assert dims==spec['size'],(slug,dims)
+              print('SIX_PENTACLES_DETAILS_AND_STORIES_PASSED',flush=True)
+              go('library/1');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/cups');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              go('library/wands');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              go('library/swords');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==14)
+              print('PREVIOUS_64_RECORDS_ACCESSIBLE',flush=True)
+              go('draw');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.pool-select button'))==2)
+              assert '70张' in browser.find_element(By.CSS_SELECTOR,'.pool-select').text
+              browser.execute_script("Math.random=()=>0.999;document.querySelector('#go-draw').click()")
+              assert '星币六' in browser.find_element(By.CSS_SELECTOR,'.drawn-card').text
+              print('ALL_70_DRAW_POOL_INCLUDES_PENTACLES_SIX',flush=True)
+              browser.set_window_size(390,844)
+              go('library/pentacles');WebDriverWait(browser,15).until(lambda d:len(d.find_elements(By.CSS_SELECTOR,'.library-card'))==6)
+              dim=browser.execute_script("return [document.documentElement.scrollWidth,innerWidth,document.querySelectorAll('.nav a').length]")
+              assert dim[0]<=dim[1]+2 and dim[2]==7,dim
+              print('MOBILE_390_NO_HORIZONTAL_OVERFLOW',dim,flush=True)
+              print('ALL_SIX_PENTACLES_PUBLIC_QA_PASSED',flush=True)
+          finally:browser.quit()
+          PY
+          python /tmp/pentacles_qa.py
