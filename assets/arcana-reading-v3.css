@@ -1,0 +1,32 @@
+/* Reading-first V3: interpretation before literary commentary, persistent return to saved spread */
+.reading-return-bar{position:sticky;top:69px;z-index:25;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;margin:0 0 24px;border:1px solid #a78a5780;background:rgba(14,23,30,.96);box-shadow:0 8px 28px #0007;backdrop-filter:blur(8px)}
+.reading-return-bar>span{font-size:13px;color:#c8bca7;line-height:1.6}
+.reading-close{display:inline-flex;align-items:center;gap:8px;justify-content:center;border:1px solid #d0af74;color:#ffedc7!important;background:#302b22;padding:10px 17px;font-size:21px;line-height:1.2;white-space:nowrap}
+.reading-close strong{font-size:13px;letter-spacing:.02em;font-weight:500}
+.reading-close:hover,.reading-close:focus-visible{background:#67513a;outline:2px solid #e1c18d;outline-offset:2px}
+.detail-meaning-intro{padding:24px 24px 21px;margin:22px 0 25px;background:linear-gradient(135deg,#262c2a,#101922);border:1px solid #b9a06d8e;border-left:3px solid #e5bd78}
+.detail-meaning-intro h2{font:normal 27px/1.4 Georgia,"Noto Serif SC",serif;color:#f0d6a7;margin:10px 0 16px}
+.detail-meaning-intro>p{font-size:14px;line-height:1.95;color:#e2d6c6}
+.detail-meaning-pair{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:18px 0}
+.detail-meaning-pair>div{padding:14px 15px;border:1px solid #ae926377;background:#08121d88}
+.detail-meaning-pair strong{display:block;font-size:14px;color:#e6c68f;margin-bottom:9px}
+.detail-meaning-pair p{color:#d9cdbb;font-size:13px;line-height:1.85;margin:0}
+.detail-meaning-intro .meaning-boundary{font-size:13px;border-top:1px solid #9b835852;padding-top:15px;color:#cbbca2}
+.story-divider{padding:25px 0 13px;border-top:1px solid #b79a6a87;margin-top:28px}
+.story-divider span{font-size:12px;letter-spacing:.1em;color:#c2a778}
+.story-divider h2{font:normal 26px/1.45 Georgia,"Noto Serif SC",serif;color:#e8cfa4;margin:10px 0}
+.draw-story-fold{padding:14px 15px;background:#111d26;border:1px solid #9b815c75;margin:19px 0}
+.draw-story-fold summary{cursor:pointer;font-size:14px;color:#e9cb97;line-height:1.7}
+.draw-story-fold p{font-size:14px;color:#cfc1af;line-height:1.9;margin:14px 0}
+.draw-story-fold .draw-story-note{font-size:12px;color:#a99e8a}
+.reading-depth{display:grid;gap:10px}
+.reading-depth p{font-size:15px;line-height:2.0;color:#ddd2c1;white-space:pre-line;margin:0;padding:10px 0;border-bottom:1px solid #967e5644}
+.reading-depth strong{color:#e8c78f}
+.reading-depth .reading-core{font-size:16px;color:#f0e2ca;background:#ad8c5130;border-left:3px solid #c9a76c;padding:16px 18px}
+.reading-depth .reading-reflection{border-bottom:0;color:#d9be86}
+.reading-section .query:not(.reading-reflection){color:#d9be86}
+.archive-reading-cards .archive-reading-interpretation{font-size:14px;line-height:1.95;text-align:left;padding:13px 10px;color:#ddceba;white-space:pre-line;background:#101b2588}
+.archive-reading-cards details{margin:16px 0;padding:10px;background:#121b26;border:1px solid #907a5477;text-align:left}
+.archive-reading-cards details summary{cursor:pointer;color:#e5c78f;font-size:13px}
+.archive-reading-cards details p{white-space:pre-line}
+@media(max-width:700px){.reading-return-bar{top:60px;padding:9px 11px;margin-bottom:14px}.reading-return-bar>span{display:none}.reading-close{width:100%;justify-content:space-between;padding:11px 15px}.detail-meaning-intro{padding:18px 15px}.detail-meaning-pair{grid-template-columns:1fr}.reading-depth p{font-size:14px}.reading-depth .reading-core{font-size:15px}}
