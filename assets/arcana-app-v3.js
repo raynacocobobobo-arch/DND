@@ -3,11 +3,11 @@
    Hash routes work with GitHub Pages direct refresh without 404. */
 (()=>{
   'use strict';
-  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED,ED=window.ARCANA_EDITORIAL||{};
+  const C=window.ARCANA_CATALOG,D=window.ARCANA_DEPTH,CU=window.CUPS_APPROVED,W=window.WANDS_APPROVED,S=window.SWORDS_APPROVED,P=window.PENTACLES_APPROVED,ED=window.ARCANA_EDITORIAL||{},J=window.TAROT_JOURNAL;
   const root=document.querySelector('#app');
   // The approved Minor Arcana artwork is a separate suit entry; do not silently
   // mix a single minor card into the original 22-card Major Arcana draw.
-  if(!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!Array.isArray(P)||(P.length<1||P.length>14)||!root) {
+  if(!J||!Array.isArray(C)||!Array.isArray(D)||!Array.isArray(CU)||C.length!==22||D.length!==22||CU.length!==14||!Array.isArray(W)||(W.length<1||W.length>14)||!Array.isArray(S)||(S.length<1||S.length>14)||!Array.isArray(P)||(P.length<1||P.length>14)||!root) {
     if(root) root.innerHTML='<div class="page notfound"><h1>牌库加载失败</h1><p>请刷新页面后重试。</p></div>';
     return;
   }
@@ -26,6 +26,9 @@
     if(!parts.length) return {screen:'home'};
     if(parts[0]==='home')return {screen:'home'};
     if(parts[0]==='draw')return {screen:'draw'};
+    if(parts[0]==='history'&&parts[1])return {screen:'history-detail',id:parts.slice(1).join('/')};
+    if(parts[0]==='history')return {screen:'history'};
+    if(parts[0]==='explore')return {screen:'explore'};
     if(parts[0]==='library'&&parts[1]==='cups')return {screen:'cups',page:Math.max(1,Math.min(3,Number(parts[2]||1)||1))};
     if(parts[0]==='cups')return {screen:'cups'};
     if(parts[0]==='library'&&parts[1]==='wands')return {screen:'wands'};
@@ -50,7 +53,10 @@
   }
   function updateNav(screen){
     navs.forEach(a=>{
-      const active=a.dataset.routeNav === (screen==='card'?'library':screen==='cups-card'?'cups':screen==='wands-card'?'wands':screen==='swords-card'?'swords':screen==='pentacles-card'?'pentacles':screen);
+      const key=a.dataset.routeNav;
+      const active=key==='library' && ['library','cups','wands','swords','pentacles','cups-card','wands-card','swords-card','pentacles-card','card','explore'].includes(screen)
+        ||key==='history'&&['history','history-detail'].includes(screen)
+        ||key===screen;
       a.classList.toggle('active',active);
       if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
@@ -58,11 +64,11 @@
   function cover(){
     const c=C[0];
     return `<section class="page home">
-      <div class="home-copy"><div class="eyebrow">THE FORBIDDEN ARCANA / 22 MAJOR ARCANA</div>
+      <div class="home-copy"><div class="eyebrow">THE FORBIDDEN ARCANA / COMPLETE 78-CARD DECK</div>
         <h1 class="title">禁忌之书<br>深渊塔罗</h1>
-        <p class="sub">每一幅画都是通向古老故事的门。二十二张大阿卡纳，将洛夫克拉夫特神话、黑暗象征与塔罗解读联结在一起。一次只进入一个章节，不必将所有秘密同时摊开。</p>
-        <div class="actions"><a class="btn" href="#/draw">开始抽牌 <span aria-hidden="true">↗</span></a><a class="btn outline" href="#/library/1">进入二十二张牌库 →</a></div>
-        <p class="kicker" style="margin-top:34px">抽牌 · 原画 · 牌面故事 · 原著神话 · 正逆位解析</p>
+        <p class="sub">七十八张原画，五组牌面，贯穿洛夫克拉夫特世界的禁忌故事。你可以在完整图鉴中探索它们，也可以从一次抽牌开始，把自己的思考留在命运档案。</p>
+        <div class="actions"><a class="btn" href="#/draw">开始抽牌 <span aria-hidden="true">↗</span></a><a class="btn outline" href="#/explore">探索78张全牌图鉴 →</a></div>
+        <p class="kicker" style="margin-top:34px">78张完整牌组 · 原著故事 · 正逆位 · 命运档案 · 个人收藏</p><p class="home-recent">你的命运档案已保存 ${J.count()} 次抽牌。<a href="#/history">打开记录 →</a></p>
       </div>
       <div class="home-visual">
         <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
@@ -331,6 +337,7 @@
          <input id="question" placeholder="写下你想要思考的问题" maxlength="200" value="${clean(currentQuestion)}">
          <button type="button" class="btn" id="go-draw">揭示命运 ↗</button>
          <p class="note">正逆位将分别展开。每日之牌使用本地日期的固定结果。解读用于思考，不构成确定性的预测。</p>
+         <p class="archive-hint"><a href="#/history">查看历史记录（${J.count()}条） →</a> · 本地私密保存，可导出备份。</p>
        </aside><div class="reading-result ${drawResult?'':'empty'}" id="reading-result">
         ${drawResult?renderDrawResult():'<div class="sigil" aria-hidden="true">✧</div><div class="eyebrow">THE VEIL IS CLOSED</div><h2>故事尚未开始</h2><p>从左侧选择仪式，抽取第一张牌。</p>'}
        </div></div></section>`;
@@ -360,14 +367,20 @@
           <p class="query"><strong>可进一步思考：</strong>${clean((c.minor?c.question:D[c.id].q))}</p>
           <a class="btn outline mini" href="${urlCard(c.id)}">阅读「${clean(c.zh)}」完整档案 →</a>
         </section>`).join('')}
-      </div><p class="reading-disclaimer">塔罗是一种承载图像、文学与心理联想的自我反思媒介。请依据真实情况、可核实的信息与自己的判断作决定。</p>`;
+      </div><div class="draw-save-actions"><button type="button" id="draw-copy">复制牌阵摘要</button><button type="button" id="draw-image">导出牌阵图片</button><a href="#/history/${drawResult.historyId}">查看本次档案 →</a></div><p class="reading-save-status" role="status">${drawResult.saved?'已记录到此浏览器的命运档案':'本地保存失败，请检查浏览器存储设置。'}</p><p class="reading-disclaimer">塔罗是一种承载图像、文学与心理联想的自我反思媒介。请依据真实情况、可核实的信息与自己的判断作决定。</p>`;
+  }
+  function installDrawResultActions(){
+    if(!drawResult || !drawResult.historyId)return;
+    const r=J.getRecord(drawResult.historyId);if(!r)return;
+    document.querySelector('#draw-copy')?.addEventListener('click',()=>J.copySummary(r));
+    document.querySelector('#draw-image')?.addEventListener('click',()=>J.exportCardImage(r));
   }
   function installDraw(){
-    document.querySelectorAll('.spread-select button').forEach(button=>{
+    document.querySelectorAll('.spread-select:not(.pool-select) button').forEach(button=>{
       button.onclick=()=>{
         currentSpread=Number(button.dataset.n);
         isDaily=button.dataset.daily==='1';
-        document.querySelectorAll('.spread-select button').forEach(x=>x.classList.toggle('active',x===button));
+        document.querySelectorAll('.spread-select:not(.pool-select) button').forEach(x=>x.classList.toggle('active',x===button));
       };
     });
     document.querySelectorAll('.pool-select button').forEach(button=>{
@@ -380,12 +393,16 @@
     input.oninput=()=>currentQuestion=input.value;
     document.getElementById('go-draw').onclick=()=>{
       currentQuestion=input.value.trim();
-      drawResult={cards:pickCards(currentSpread,isDaily),question:currentQuestion,n:currentSpread,daily:isDaily};
+      drawResult={cards:pickCards(currentSpread,isDaily),question:currentQuestion,n:currentSpread,daily:isDaily,pool:drawPool};
+      const saved=J.addReading(drawResult);
+      drawResult.historyId=saved.record.id;drawResult.saved=saved.saved;
       const holder=document.querySelector('#reading-result');
       holder.classList.remove('empty');
       holder.innerHTML=renderDrawResult();
+      installDrawResultActions();
       if(matchMedia('(max-width:800px)').matches)holder.scrollIntoView({behavior:'smooth',block:'start'});
     };
+    installDrawResultActions();
   }
   function render(){
     const route=routeParts(), key=route.screen;
@@ -394,6 +411,9 @@
     else if(key==='library'){root.innerHTML=library(route.page);document.title='二十二张牌库 · '+docTitle;}
     else if(key==='card'){root.innerHTML=detail(route.id);document.title=C[route.id].zh+' · '+docTitle;}
     else if(key==='draw'){root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
+    else if(key==='history'){root.innerHTML=J.renderHistory();J.installHistory();document.title='命运档案 · '+docTitle;}
+    else if(key==='history-detail'){root.innerHTML=J.renderRecord(route.id);J.installRecord(route.id);document.title='历史记录 · '+docTitle;}
+    else if(key==='explore'){root.innerHTML=J.renderExplore();J.installExplore();document.title='78张全牌图鉴 · '+docTitle;}
     else if(key==='cups'){root.innerHTML=cupsLibrary(route.page);document.title='圣杯组 · 小阿卡纳 · '+docTitle;}
     else if(key==='cups-card'){root.innerHTML=cupsDetail(route.slug);document.title=CU.find(c=>c.slug===route.slug)?.zh+' · '+docTitle;}
     else if(key==='wands'){root.innerHTML=wandsLibrary();document.title='权杖组 · 小阿卡纳 · '+docTitle;}
@@ -403,6 +423,7 @@
     else if(key==='pentacles'){root.innerHTML=pentaclesLibrary();document.title='星币组 · 小阿卡纳 · '+docTitle;}
     else if(key==='pentacles-card'){root.innerHTML=pentaclesDetail(route.slug);document.title=(P.find(c=>c.slug===route.slug)?.zh||'星币组')+' · '+docTitle;}
     else{root.innerHTML='<section class="page notfound"><h1>没有找到这道门</h1><p>地址可能已过期，请返回首页。</p><a class="btn" href="#/home">返回首页 →</a></section>';document.title='页面不存在 · '+docTitle;}
+    if(['card','cups-card','wands-card','swords-card','pentacles-card'].includes(key))J.installDetailFavorite();
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
     root.focus({preventScroll:true});
