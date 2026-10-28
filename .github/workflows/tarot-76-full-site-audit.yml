@@ -106,7 +106,7 @@ jobs:
           assert 'eight-of-pentacles-v1.webp' in url,url
           print('NEW_PENTACLES_EIGHT_DETAIL_PASS',flush=True)
           print('DRAW_POOL_77_PASS',flush=True)
-            for width in [390,375,320]:
+          for width in [390,375,320]:
               d.set_window_size(width,844)
               for route,count in suites:
                 d.execute_script('location.hash=arguments[0]','#/'+route);wait_css('.library-card',count)
