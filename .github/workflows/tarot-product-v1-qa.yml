@@ -111,8 +111,8 @@ jobs:
               assert d.execute_script("return JSON.parse(localStorage.getItem('forbidden-arcana-journal-v1')).records.length")==0
               print('DELETE_RECORD_PASSED',flush=True)
               d.find_element(By.ID,'archive-import-file').send_keys('/tmp/tarotqa/'+jsonfile)
-              d.switch_to.alert.accept()
-              d.switch_to.alert.accept()
+              until(EC.alert_is_present(),10).accept()
+              until(EC.alert_is_present(),10).accept()
               until(lambda x:count('.archive-record')==1)
               print('JSON_IMPORT_RESTORE_PASSED',flush=True)
               for width in [390,375,320]:
