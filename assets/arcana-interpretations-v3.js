@@ -18,12 +18,13 @@ function read(id,rev=false,position='启示'){
    :position.includes('未来')?'放在未来的位置，所指的是值得提前准备的一种趋势，并不是会必然发生的事件。'
    :'把这张牌当作一面象征性的镜子，先核对现实中的事实，再决定哪些提醒值得采用。';
  const theme=major?(c.up||[]).join(' · '):String(c.suitMeaning||'');
+ const scene=({"major":"在现实中，你可以把这张牌当作一次重新审视人生结构的邀请。写下你正在扮演的身份、它要求你做出的承诺，以及你还有哪些没有被别人替你决定的选择。它提示的是思考方向，不是替你宣告哪条道路一定正确。","cups":"如果问题与关系、家庭或归属感有关，先描述双方真实发生的行为，再记录自己的情绪与期待。区分被接纳的愿望、已经存在的信任和仍待确认的边界。情感可以被认真对待，但不需要以放弃判断为代价。","wands":"如果问题涉及行动或创作，先列出最希望推动的一件事、目前可以调动的资源和必须承担的代价。把冲动转为一项可以在现实中试验的小行动，同时明确什么时候需要停下、求助或调整方向。","swords":"如果面前是艰难选择，试着做一张简单的证据表：已经确认的事实、尚未检验的推论、每种行动的风险和退出条件。理性的价值不在于永远不犯错，而在于允许新证据真正改变结论。","pentacles":"如果问题与工作、金钱或长期生活有关，把可以计算的成本与无法直接标价的健康、安全、关系分开。不要只问这件事是否能继续投入，也要问这些投入是否仍能帮助你所珍视的人与生活。"})[major?'major':key.split('/')[0]]||'';
  return {id:key,name:c.zh,orientation:rev?'逆位':'正位',theme,
   primary:focus,core:x.core||'',insight:e.insight||'',practice:e.practice||'',
-  caution:x.caution||'',counter:other,position:loc,question:String(d.question||d.q||'')};
+  caution:x.caution||'',situation:scene,counter:other,position:loc,question:String(d.question||d.q||'')};
 }
 function prose(id,rev,position){const x=read(id,rev,position);if(!x)return '';
- return [x.primary,x.core,x.insight,x.practice,x.caution,x.position].filter(Boolean).join('\n\n');
+ return [x.primary,x.core,x.insight,x.practice,x.situation,x.caution,x.position].filter(Boolean).join('\n\n');
 }
 function drawPanel(id,rev,position){
  const x=read(id,rev,position);if(!x)return '';
@@ -32,6 +33,7 @@ function drawPanel(id,rev,position){
  '<p><strong>深入理解：</strong>'+esc(x.core)+'</p>'+
  '<p><strong>象征与心理线索：</strong>'+esc(x.insight)+'</p>'+
  '<p><strong>现实中的提醒：</strong>'+esc(x.practice)+'</p>'+
+ '<p><strong>放到现实里：</strong>'+esc(x.situation)+'</p>'+
  '<p><strong>需要警惕：</strong>'+esc(x.caution)+'</p>'+
  '<p><strong>'+esc(position)+'：</strong>'+esc(x.position)+'</p>'+
  '<p class="reading-reflection"><strong>可以问自己：</strong>'+esc(x.question)+'</p>'+
