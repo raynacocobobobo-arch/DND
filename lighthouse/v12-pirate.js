@@ -121,6 +121,8 @@ export function createPirateShip(parent){
  const lampMat=new T.MeshStandardMaterial({color:'#ffc978',emissive:0xff9e45,emissiveIntensity:1.4,roughness:.5});
  cub(.14,.20,.16,lampMat,-1.48,.62,-.46);
  cub(.14,.20,.16,lampMat,-1.48,.62,.46);
+ const lanternFill=new T.PointLight(0xffcb88,3.8,7.5,1.6);
+ lanternFill.position.set(-.15,1.4,.3);lanternFill.castShadow=false;ship.add(lanternFill);
  const wake=mesh(new T.TorusGeometry(1.0,.025,6,48),seaFoam);
  wake.rotation.x=Math.PI/2;wake.castShadow=false;
  wake.position.y=-.15;wake.scale.set(2.35,.95,1);
