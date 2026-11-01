@@ -203,7 +203,7 @@ export function buildIsland(){
   const grass=1-smooth(.68,.94,r),col=new T.Color('#8f9590').lerp(new T.Color('#546747'),grass);
   col.multiplyScalar(1+.038*Math.cos(18*a+11*r));
   c.push(col.r,col.g,col.b);
-  if(j<nr&&i<ns){let k=j*(ns+1)+i;idx.push(k,k+ns+1,k+1,k+1,k+ns+1,k+ns+2)}
+  if(j<nr&&i<ns){let k=j*(ns+1)+i;idx.push(k,k+1,k+ns+1,k+1,k+ns+2,k+ns+1)}
  }
  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));
  g.setAttribute('uv',new T.Float32BufferAttribute(uv,2));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.setIndex(idx);
