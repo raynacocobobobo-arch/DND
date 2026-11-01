@@ -299,7 +299,8 @@ export function buildDeckAndHouse(){
  }
  // Three timber crates with corner edges and nailed slats; staggered, not tiled.
  const crate=(px,pz,w=.39,h=.32)=>{
-  box(w,h,w,wood,px,deck+h*.50+.035,pz);
+  const body=box(w,h,w,wood,px,deck+h*.50+.035,pz);
+  body.name='supply-crate';body.userData.footprint={x:px,z:pz,width:w,height:h};
   box(w+.012,.035,w+.012,woodTop,px,deck+h+.047,pz);
   for(let sy of [-1,1]){
    box(w+.016,.028,.035,woodEdge,px,deck+.13,pz+sy*w*.51);
