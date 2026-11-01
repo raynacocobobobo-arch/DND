@@ -5,14 +5,10 @@ import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,grou
 
 function cliffMass(cx,cz,length,width,height,phase){
  // Connected non-spherical ridge mesh: the silhouette follows terrain geology.
- const positions=[],colors=[],n=13,base=.20,front=cz+width*.53,back=cz-width*.52;
- const warm=new T.Color('#77736a'),shadow=new T.Color('#51595b'),sunlit=new T.Color('#90897b');
- function vertex(p,color){positions.push(...p);colors.push(color.r,color.g,color.b)}
- function tri(a,b,c,face){
-  const shade=face==='front'?sunlit:face==='back'?shadow:warm;
-  let col=shade.clone().multiplyScalar(.87+.23*rr(0,1));
-  vertex(a,col);vertex(b,col);vertex(c,col);
- }
+ const positions=[],uvs=[],n=13,base=.20,front=cz+width*.53,back=cz-width*.52;
+ // Project the same M.stone texture used by scattered rocks across continuous cliff faces.
+ function vertex(p){positions.push(...p);uvs.push(p[0]*.27+.5,p[1]*.30+p[2]*.08)}
+ function tri(a,b,c){vertex(a);vertex(b);vertex(c)}
  for(let i=0;i<n;i++){
   let t=i/n,t2=(i+1)/n;
   function ridge(q){
@@ -31,8 +27,8 @@ function cliffMass(cx,cz,length,width,height,phase){
   tri(r0,bbmid,bb0,'back');tri(bb0,bbmid,bb1,'back');tri(bbmid,r1,bb1,'back');tri(r0,r1,bbmid,'back');
  }
  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));
- geo.setAttribute('color',new T.Float32BufferAttribute(colors,3));geo.computeVertexNormals();
- return add(geo,new T.MeshStandardMaterial({vertexColors:true,roughness:1,side:T.DoubleSide,flatShading:true}));
+ geo.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geo.computeVertexNormals();
+ return add(geo,M.stone);
 }
 export function buildCliffs(){
  cliffMass(-4.45,-3.13,4.15,2.16,2.93,.7);
@@ -40,16 +36,24 @@ export function buildCliffs(){
  cliffMass(3.63,-4.15,3.50,1.95,2.27,1.6);
  groundRock(-5.6,-2.28,.96,.82,.88,M.stone,2);
  groundRock(5.68,-3.87,.83,.75,.75,M.stone,2);
+ // Keep both docks and their pile foundations completely clear of rocks.
+ const pierClearance=(x,z,margin=0)=>(
+   (Math.abs(x+3.72)<.79+margin&&z>2.28-margin&&z<6.02+margin)||
+   (Math.abs(x-3.70)<.85+margin&&z>2.20-margin&&z<6.05+margin)
+ );
  // A few low coastal boulders, buried at the actual surface height.
  for(const [x,z,s] of [[-3.8,-.2,.64],[-3.75,1.85,.4],[-2.95,2.55,.48],[-4.10,2.4,.38],
  [-1.75,3.2,.38],[1.00,3.6,.31],[4.26,1.52,.38],[4.58,.72,.37],
  [3.3,2.65,.29],[3.5,3.45,.34],[-.1,3.48,.34]]){
-  groundRock(x,z,s*1.30,s*.8,s,rr(0,1)>.6?M.stone:M.cliff,2);
+  if(pierClearance(x,z,s*.65))continue;
+  groundRock(x,z,s*1.30,s*.8,s,M.stone,2);
  }
  // Smaller stones only in sparse, ground-contact groups (never a random floating field).
  for(let i=0;i<37;i++){
   const a=rr(0,Math.PI*2),r=rr(.61,1.05),x=-.2+5.00*r*Math.cos(a),z=.25+3.88*r*Math.sin(a);
-  const s=rr(.08,.25),o=ico(1,i%5?M.stone:M.cliff,x,coastalHeight(x,z)+s*.15,z,1);
+  const s=rr(.08,.25);
+  if(pierClearance(x,z,s+.13))continue;
+  const o=ico(1,M.stone,x,coastalHeight(x,z)+s*.15,z,1);
   o.scale.set(s*rr(1.05,1.7),s*.66,s*rr(.8,1.3));o.rotation.y=rr(-2,2);
  }
 }
@@ -85,10 +89,12 @@ export function buildLighthouse(){
  const halo=new T.Sprite(new T.SpriteMaterial({map:haloTex,transparent:true,depthWrite:false,
   blending:T.AdditiveBlending,color:0xffd9a4,opacity:.78}));
  halo.position.set(x,lampCenter,z);halo.scale.set(1.75,1.75,1);group.add(halo);
- const shade=cyl(.83,.52,.37,18,M.red,x,deck+1.28,z);
+ // A pointed conical lighthouse crown: wide eave at the base, zero-radius apex.
+ cyl(.81,.81,.10,32,M.red,x,deck+1.11,z);
+ const shade=cyl(0,.80,.60,32,M.red,x,deck+1.46,z);
  shade.castShadow=true;
- cyl(.025,.025,.14,12,M.metal,x,deck+1.51,z);
- ico(.078,M.red,x,deck+1.59,z,2);
+ cyl(.025,.025,.14,12,M.metal,x,deck+1.81,z);
+ ico(.069,M.red,x,deck+1.91,z,2);
  for(let i=0;i<16;i++){
   let a=i*Math.PI*2/16;
   beam([x+.58*Math.sin(a),deck+.28,z+.58*Math.cos(a)],
@@ -275,8 +281,21 @@ export function buildBoat(L=1.68,B=.50,finish=M.wood){
    else idx.push(a,a+1,b,a+1,b+1,b);
   }
  }
+ // Close the bottom across both sides; otherwise water penetrates the open hull.
+ const floorOffset=verts.length/3;
+ for(let i=0;i<=ns;i++){
+  const t=i/ns*2-1,wid=B*Math.pow(Math.max(0,1-t*t),.70),rise=.19*Math.pow(Math.abs(t),3);
+  for(let side of [-1,1]){
+   verts.push(t*L/2,-.302+rise,side*wid*.29);
+   uv.push(i/ns,side===-1?0:1);
+  }
+ }
+ for(let i=0;i<ns;i++){const a=floorOffset+i*2,b=a+2;idx.push(a,a+1,b,a+1,b+1,b)}
  const geom=new T.BufferGeometry();geom.setAttribute('position',new T.Float32BufferAttribute(verts,3));geom.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geom.setIndex(idx);geom.computeVertexNormals();
  add(geom,new T.MeshStandardMaterial({color:0x76513c,roughness:.94,side:T.DoubleSide}),0,0,0,g);
+ // Wooden interior sole just above the sealed bottom, hiding the water at all viewing angles.
+ const sole=box(L*.76,.044,B*.91,M.darkWood,0,-.216,0,g);
+ sole.castShadow=false;
  for(let side of [-1,1]){
   const pts=[];for(let i=0;i<=ns;i++){
    let t=i/ns*2-1,wid=B*Math.pow(Math.max(0,1-t*t),.70);
@@ -299,12 +318,12 @@ export function buildBoat(L=1.68,B=.50,finish=M.wood){
 export function buildShips(){
  // Rowboat: solid elliptical hull and oars. Tethered near right-hand pier.
  let boat=buildBoat(1.45,.45,M.wood);
- boat.position.set(.66,.32,4.89);boat.rotation.y=-.32;
+ boat.position.set(.66,.51,4.89);boat.rotation.y=-.32;
  for(let s of [-1,1]){
   beam([-.05,.08,s*.22],[.22,.11,s*.98],.022,M.wood,boat);
   box(.13,.035,.17,M.wood,.22,.11,s*.98,boat);
  }
- pipe([[.6,.38,4.95],[1.9,.42,4.75],[3.5,.38,4.69]],.013,M.rope);
+ pipe([[.6,.54,4.95],[1.9,.46,4.75],[3.5,.38,4.69]],.013,M.rope);
  // Rear-right ruined ship: strongly visible curled prow + broken hull + ribs.
  const wreck=buildBoat(3.10,.88,M.wreck);
  wreck.position.set(4.65,.57,-2.20);wreck.rotation.y=-.39;wreck.rotation.z=-.16;
