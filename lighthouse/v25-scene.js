@@ -5,7 +5,7 @@ import {buildSite} from './v23-site.js?v=23a';
 import {createNightEvents} from './v23-events.js?v=23a';
 import {createSteadySeaClouds} from './v23-clouds.js?v=23a';
 import {createFlyingGulls} from './v23-gulls.js?v=23a';
-import {createFishmanVisitor} from './v25-fishman.js?v=25a';
+import {createFishmanVisitor} from './v25-fishman.js?v=25b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);
@@ -118,7 +118,7 @@ try{
  scene.traverse(o=>{if(o.isMesh){count++;triCount+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3}});
  if(count<210)throw Error('Scene incomplete: '+count+' meshes');
  document.body.dataset.meshCount=String(count);
- document.body.dataset.version='v25a';
+ document.body.dataset.version='v25b';
  document.body.dataset.visitorType='permanent-fishman';
  document.body.dataset.visitorDetailMeshes=String(visitor.getState().meshCount);
  document.body.dataset.visitorHeight=String(visitor.getState().height.toFixed(4));

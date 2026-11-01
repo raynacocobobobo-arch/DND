@@ -72,7 +72,7 @@ jobs:
            const ship=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
            const combo=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(1));
            await page.screenshot({path:'lighthouse/v25-qa-output/fishman-night-events.png'});
-           const good=data.version==='v25a'&&data.geometry==='pass'&&
+           const good=data.version==='v25b'&&data.geometry==='pass'&&
             data.type==='permanent-fishman'&&data.vectorSea==='true'&&data.sideWalls==='4'&&!data.topview&&
             [night,day,afterNight].every(s=>s.form==='fishman'&&s.permanent&&!s.morphing&&
              s.belowDoor&&s.fishEyes===2&&s.tailVisible&&s.outfit.scarf&&
