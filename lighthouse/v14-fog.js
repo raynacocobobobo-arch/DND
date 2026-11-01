@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {W,D,WATER_CENTER_X,WATER_CENTER_Z,group} from './v14-world.js?v=14a';
+import {W,D,WATER_CENTER_X,WATER_CENTER_Z,group} from './v14-world.js?v=14b';
 
 /** Layered, gently moving fog from 85-100% normalized edge distance.
  *  Horizontal veils work from above; full-height curtains hide the cutaway side.
