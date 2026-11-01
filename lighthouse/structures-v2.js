@@ -75,6 +75,16 @@ export function buildLighthouse(){
  cyl(.51,.51,.86,16,M.glass,x,lampCenter,z);
  cyl(.17,.22,.68,16,M.light,x,lampCenter,z);
  columnLight(x,lampCenter,z);
+ // Soft photographic halo around the actual lantern glass (not a fake sky beam).
+ const haloCanvas=document.createElement('canvas');haloCanvas.width=128;haloCanvas.height=128;
+ const hc=haloCanvas.getContext('2d'),rg=hc.createRadialGradient(64,64,2,64,64,63);
+ rg.addColorStop(0,'rgba(255,255,227,1)');rg.addColorStop(.19,'rgba(255,216,139,.80)');
+ rg.addColorStop(.48,'rgba(255,175,95,.24)');rg.addColorStop(1,'rgba(255,167,80,0)');
+ hc.fillStyle=rg;hc.fillRect(0,0,128,128);
+ const haloTex=new T.CanvasTexture(haloCanvas);
+ const halo=new T.Sprite(new T.SpriteMaterial({map:haloTex,transparent:true,depthWrite:false,
+  blending:T.AdditiveBlending,color:0xffd9a4,opacity:.78}));
+ halo.position.set(x,lampCenter,z);halo.scale.set(1.75,1.75,1);group.add(halo);
  const shade=cyl(.83,.52,.37,18,M.red,x,deck+1.28,z);
  shade.castShadow=true;
  cyl(.025,.025,.14,12,M.metal,x,deck+1.51,z);
