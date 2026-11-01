@@ -12,7 +12,7 @@ export function createOffshoreReefs(){
  // Locations are the vetted V27 offshore sites; keep ship, little boat, and
  // every Kraken spawning site clear.
  const defs=[
-  {name:'slender-pinnacle',x:-11,z:8,height:3.08,footprint:.70},
+  {name:'slender-pinnacle',x:-13.3,z:7.7,height:3.08,footprint:.70},
   {name:'broad-crag',x:9,z:7,height:2.28,footprint:1.22},
   {name:'jagged-ridge',x:-6,z:-8,height:1.74,footprint:1.24}
  ];
@@ -43,7 +43,11 @@ export function createOffshoreReefs(){
  // Exactly the island cliff map and stone light response; slight violet
  // coloring brings the material closer to the grey-lavender reference.
  const rockMaterial=M.cliff.clone();
- rockMaterial.color.set('#c9c4d4');
+ // The shared cliff noise map creates diagonal bands on large faces.
+ // The supplied rock reference has CLEAN, muted lavender-gray matte planes.
+ // Preserve the same stone lighting model and roughness, not that texture.
+ rockMaterial.map=null;
+ rockMaterial.color.set('#9692a3');
  rockMaterial.vertexColors=true;
  rockMaterial.flatShading=true;
  rockMaterial.roughness=1;
@@ -186,7 +190,9 @@ export function createOffshoreReefs(){
  });
  return {root,getState:()=>({
   count:instances.length,solid:true,safe,style:'reference-sculpted-rocks',
-  materialType:rockMaterial.type,materialMatchesIslandMap:rockMaterial.map===M.cliff.map,
+  materialType:rockMaterial.type,
+  referenceMatte:rockMaterial.map===null&&rockMaterial.flatShading&&rockMaterial.roughness===1,
+  sharesIslandStoneLighting:rockMaterial.type===M.cliff.type&&rockMaterial.metalness===M.cliff.metalness,
   sharedMaterial:meshes.every(m=>m.material===rockMaterial),
   meshes:meshes.length,sculptedPieces:meshes.map(m=>m.name),
   geometryTypes:meshes.map(m=>m.geometry.type),

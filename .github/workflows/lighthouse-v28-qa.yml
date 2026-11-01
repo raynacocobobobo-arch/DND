@@ -72,13 +72,13 @@ jobs:
            const ship=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
            const combo=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(1));
            const accepted=[night,day].every(v=>
-             v.version==='v28a'&&v.rendered==='true'&&v.sceneAudit==='pass'&&
+             v.version==='v28b'&&v.rendered==='true'&&v.sceneAudit==='pass'&&
              v.header===0&&v.seaStyle==='nearshore-deepwater-vector'&&
              v.waterThickness===3&&v.seabedThickness===1.5&&
              v.reefs.style==='reference-sculpted-rocks'&&
              v.reefs.count===3&&v.reefs.safe&&v.reefs.solid&&
              v.reefs.materialType==='MeshStandardMaterial'&&
-             v.reefs.materialMatchesIslandMap&&v.reefs.sharedMaterial&&
+             v.reefs.referenceMatte&&v.reefs.sharesIslandStoneLighting&&v.reefs.sharedMaterial&&
              v.reefs.meshes>=7&&
              v.reefs.sculptedPieces.every(s=>s.includes('rock')||s.includes('stone')||s.includes('ridge')||s.includes('buttress'))&&
              v.reefs.geometryTypes.every(s=>s==='BufferGeometry')&&

@@ -5,7 +5,7 @@ import {buildSite} from './v27-site.js?v=27a';
 import {createNightEvents} from './v27-events.js?v=27a';
 import {createSteadySeaClouds} from './v27-clouds.js?v=27a';
 import {createFlyingGulls} from './v27-gulls.js?v=27a';
-import {createOffshoreReefs} from './v28-reefs.js?v=28a';
+import {createOffshoreReefs} from './v28-reefs.js?v=28b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);
@@ -118,7 +118,7 @@ try{
  scene.traverse(o=>{if(o.isMesh){count++;triCount+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3}});
  if(count<210)throw Error('Scene incomplete: '+count+' meshes');
  document.body.dataset.meshCount=String(count);
- document.body.dataset.version='v28a';
+ document.body.dataset.version='v28b';
  document.body.dataset.reefStyle=reefs.getState().style;
  document.body.dataset.reefMeshes=String(reefs.getState().meshes);
  document.body.dataset.characterCount='0';
@@ -191,7 +191,7 @@ window.__lighthouseNightEvents={
   const p=reefs.getState().sites[index];
   if(!p)return;
   controls.autoRotate=false;
-  camera.position.set(p.x+3.75,p.height*.74+1.65,p.z+4.0);
+  camera.position.set(p.x+(index===0?-3.65:3.75),p.height*.74+1.65,p.z+4.0);
   controls.target.set(p.x,Math.min(1.65,p.height*.49),p.z);
   controls.update();
  },
