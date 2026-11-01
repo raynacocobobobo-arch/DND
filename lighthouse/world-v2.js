@@ -80,9 +80,9 @@ export function textured(hex,kind,rough=.9,repeat=[1,1]){
 export const M={
  sand:material('#ffffff',.98,0,{map:textured('#d2b58c','sand',1,[2.5,2.5])}),
  soil:material('#ffffff',.97,0,{map:textured('#877665','soil',1,[3,1])}),
- stone:material('#ffffff',.99,0,{map:textured('#61666a','rock',1,[1.3,1.1])}),
+ stone:material('#ffffff',.97,0,{map:textured('#85817d','rock',1,[1.3,1.1]),flatShading:true}),
  basalt:material('#ffffff',.97,0,{map:textured('#343e47','rock',1,[2,2])}),
- cliff:material('#ffffff',.95,0,{map:textured('#77726a','rock',1,[1,1])}),
+ cliff:material('#ffffff',.97,0,{map:textured('#85817d','rock',1,[1.3,1.1]),flatShading:true}),
  grass:material('#ffffff',.95,0,{map:textured('#718d57','grass',1,[3,3])}),
  plaster:material('#ffffff',.95,0,{map:textured('#e8dccc','plaster')}),
  red:material('#a73832',.8),white:material('#e3e0d5',.9),
