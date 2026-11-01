@@ -58,6 +58,9 @@ try{
  let meshCount=0,triCount=0;
  scene.traverse(o=>{if(o.isMesh){meshCount++;const g=o.geometry;if(g?.index)triCount+=g.index.count/3;else if(g?.attributes?.position)triCount+=g.attributes.position.count/3;}});
  console.info('[Lighthouse rebuild] meshes:',meshCount,'triangles:',Math.round(triCount));
+ // A passing WebGL canvas is insufficient if model modules used different group instances.
+ if(meshCount<240)throw new Error('Incomplete lighthouse scene: only '+meshCount+' meshes; assets not attached');
+ document.body.dataset.meshCount=String(meshCount);
  status.hidden=true;
 }catch(err){console.error(err);status.hidden=false;status.textContent='场景构建失败：'+(err?.message||String(err));throw err}
 document.getElementById('reset')?.addEventListener('click',()=>{
