@@ -191,7 +191,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
  }
  if(activeTool.startsWith('asset:')){
   const asset=activeTool.slice(6);
-  history();const o={id:uid(),asset,name:asset,x:clamp(p.x,-WIDTH/2,WIDTH/2),
+  history();const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(p.x,-WIDTH/2,WIDTH/2),
    z:clamp(p.z,-DEPTH/2,DEPTH/2),rotation:0,scale:1};
   world.objects.push(o);selected=o.id;rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
@@ -203,11 +203,16 @@ renderer.domElement.addEventListener('pointermove',e=>{
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
  cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,brush)*CELLX);
- if(draggingObj&&selected&&objects.has(selected)){
-  const o=objects.get(selected);o.x=clamp(p.x,-WIDTH/2,WIDTH/2);o.z=clamp(p.z,-DEPTH/2,DEPTH/2);
-  const g=assetLayer.children.find(x=>x.userData.recordId===selected);
-  if(g)g.position.set(o.x,terrainY(o.x,o.z),o.z);
-  $('posx').value=o.x.toFixed(2);$('posz').value=o.z.toFixed(2);setDirty(true);
+ if(draggingObj&&currentRecord()){
+   const native=selected.startsWith('native:');
+   const o=native?nativeEdit(selected.slice(7)):objects.get(selected);
+   o.x=clamp(p.x,-WIDTH/2,WIDTH/2);o.z=clamp(p.z,-DEPTH/2,DEPTH/2);
+   if(native)applyNativeEdits(world,gameGroup);
+   else{
+    const g=assetLayer.children.find(x=>x.userData.mapId===selected);
+    if(g)g.position.set(o.x,terrainY(o.x,o.z),o.z);
+   }
+   $('posx').value=o.x.toFixed(2);$('posz').value=o.z.toFixed(2);setDirty(true);
  }else if(stroke){
   const cell=getCellAt(p.x,p.z),key=cell?.index;
   if(key!==undefined&&key!==lastStroke){paint(p.x,p.z);lastStroke=key;}
@@ -227,12 +232,28 @@ $('brush').oninput=e=>{brush=+e.target.value;$('brush-val').textContent=brush;};
 $('strength').oninput=e=>{strength=+e.target.value;$('strength-val').textContent=strength;};
 $('undo').onclick=()=>applyHistory('undo');$('redo').onclick=()=>applyHistory('redo');
 $('duplicate').onclick=()=>{
- if(!selected)return;history();
- const o=objects.get(selected);const clone={...o,id:uid(),name:o.name+' 复制',x:clamp(o.x+3,-WIDTH/2,WIDTH/2),z:clamp(o.z+3,-DEPTH/2,DEPTH/2)};
- world.objects.push(clone);selected=clone.id;rebuildObjects();setDirty(true);saveLocal();
+ if(!selected)return;
+ const r=currentRecord();if(!r)return;history();
+ const obj={...r,id:uid(),asset:r.asset,name:r.name+' 复制',
+  x:clamp(r.x+3,-WIDTH/2,WIDTH/2),z:clamp(r.z+3,-DEPTH/2,DEPTH/2)};
+ delete obj.hidden;
+ world.objects.push(obj);selected=obj.id;rebuildObjects();setDirty(true);saveLocal();
 };
 $('delete').onclick=()=>{
- if(!selected)return;history();world.objects=world.objects.filter(x=>x.id!==selected);selected=null;rebuildObjects();setDirty(true);saveLocal();
+ if(!selected)return;history();
+ if(selected.startsWith('native:')){
+  nativeEdit(selected.slice(7)).hidden=true;
+  applyNativeEdits(world,gameGroup);
+ }else{
+  world.objects=world.objects.filter(x=>x.id!==selected);
+  selected=null;rebuildObjects();
+ }
+ updateInspector();setDirty(true);saveLocal();
+};
+$('restore-native').onclick=()=>{
+ if(!selected?.startsWith('native:'))return;history();
+ delete world.baseEdits[selected.slice(7)];
+ applyNativeEdits(world,gameGroup);updateInspector();setDirty(true);saveLocal();
 };
 $('selected-name').onchange=e=>mutateSelected(o=>o.name=e.target.value.slice(0,90));
 for(const field of ['posx','posz'])$(field).onchange=e=>mutateSelected(o=>o[field==='posx'?'x':'z']=clamp(Number(e.target.value)||0,field==='posx'?-WIDTH/2:-DEPTH/2,field==='posx'?WIDTH/2:DEPTH/2));
@@ -283,9 +304,15 @@ window.__lighthouseEditor={
  heights:world.heights.length,tool:activeTool,selected,history:hist.length,
  realGameAssets:true,prefabTypes:catalog.types,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
- placeAt:(asset,x,z)=>{const valid=['rock','tree','lighthouse','hut','dock','wreck','fish','kraken'];if(!valid.includes(asset))return false;
+ placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
   history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);redraw();saveLocal();},
+ selectNative:id=>{if(!BASE_ASSETS[id])return false;selected='native:'+id;updateInspector();return true;},
+ editNative:(id,change)=>{
+  if(!BASE_ASSETS[id])return false;history();
+  Object.assign(nativeEdit(id),change);applyNativeEdits(world,gameGroup);
+  setDirty(true);saveLocal();return true;
+ },
  getCatalog:()=>catalog.types.map(id=>({id,name:catalog.all[id].label})),
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
