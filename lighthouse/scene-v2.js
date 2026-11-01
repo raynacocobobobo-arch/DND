@@ -1,8 +1,8 @@
 
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {W,D,group,setRenderer,buildCutaway,buildIsland,box,material} from './world-v2.js?v=7d';
-import {buildCliffs,buildLighthouse,buildCottage,buildTrees,buildPiers,buildShips,buildExtras} from './structures-v2.js?v=7d';
+import {W,D,group,setRenderer,buildCutaway,buildIsland,box,material} from './world-v2.js?v=7e';
+import {buildCliffs,buildLighthouse,buildCottage,buildTrees,buildPiers,buildShips,buildExtras} from './structures-v2.js?v=7e';
 
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,150);
@@ -61,7 +61,11 @@ try{
  status.hidden=true;
 }catch(err){console.error(err);status.hidden=false;status.textContent='场景构建失败：'+(err?.message||String(err));throw err}
 document.getElementById('reset')?.addEventListener('click',()=>{
- camera.position.copy(initial);controls.target.copy(target);controls.update();
+ camera.up.set(0,1,0);camera.position.copy(initial);controls.target.copy(target);controls.update();
+});
+document.getElementById('topview')?.addEventListener('click',()=>{
+ camera.up.set(0,0,-1);camera.position.set(.001,29,.001);
+ controls.target.set(0,0,0);controls.update();
 });
 document.getElementById('rotate')?.addEventListener('click',e=>{
  controls.autoRotate=!controls.autoRotate;controls.autoRotateSpeed=.65;
