@@ -2,7 +2,7 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {W,D,group,setRenderer,buildCutaway,buildIsland,box,material} from './world-v2.js?v=7c';
-import {buildCliffs,buildLighthouse,buildCottage,buildTrees,buildPiers,buildShips,buildExtras} from './structures-v2.js?v=7b';
+import {buildCliffs,buildLighthouse,buildCottage,buildTrees,buildPiers,buildShips,buildExtras} from './structures-v2.js?v=7c';
 
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,150);
