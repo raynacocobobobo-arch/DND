@@ -87,7 +87,7 @@ jobs:
            const shipState=await inspect();
            await page.locator('#mode-day').click();
            const shipDuringSunrise=await inspect();
-           const shipFinished=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(20));
+           const shipFinished=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(27));
            const boatSafe=await page.evaluate(()=>window.__lighthouseNightEvents.getBoat().safe);
            const ok=start.version==='v33a'&&start.mode==='day'&&
              start.event.daytimeEnabled&&start.event.daytimeWaitMultiplier===2&&
@@ -106,7 +106,9 @@ jobs:
              dayAgain.activeCount===3&&dayFinish.activeCount===0&&
              afterComplete.event.phase==='waiting'&&
              afterComplete.event.wait>=10&&afterComplete.event.wait<=20&&
-             nightIdle.event.night&&nightIdle.event.wait<=10&&
+             nightIdle.event.night&&
+             Math.abs((nightIdle.event.wait-nightIdle.event.elapsed)-
+              .5*(afterComplete.event.wait-afterComplete.event.elapsed))<.02&&
              shipStart&&shipState.event.ship.active&&
              shipDuringSunrise.event.ship.active&&
              !shipFinished.ship.active&&boatSafe&&errors.length===0;
