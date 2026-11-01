@@ -187,8 +187,16 @@ export function createKraken(parent,options={}){
  setNight(false);
  return {
   root,setNight,update,
-  getState:()=>({night,phase,elapsed,wait,hold,growth,origin:{...origin},seaY,
-                count:1,visible:root.visible,everAppeared:visibleOnce}),
+  getState:()=>{
+   const a=new T.Vector3(),tip=new T.Vector3(),mid=new T.Vector3();
+   center(0,growth,totalTime,a);
+   center(1,growth,totalTime,tip);
+   center(.77,growth,totalTime,mid);
+   return {night,phase,elapsed,wait,hold,growth,origin:{...origin},seaY,
+     count:1,suckers:cups.length,visible:root.visible,everAppeared:visibleOnce,
+     bend:Math.hypot(tip.x-a.x,tip.z-a.z),
+     hookedTipDrop:mid.y-tip.y,tipHeight:tip.y-seaY};
+  },
   forceEvent:()=>startEvent()
  };
 }
