@@ -65,7 +65,7 @@ export function createFlyingGulls(){
  const active=new Map();
  function scheduleQuietInterval(){
   // Finish the whole crossing, then let only the resident be visible for a while.
-  nextArrival=time+R(17,26);
+  nextArrival=time+R(28,42);
   nextCompanion=Infinity;
  }
  function startTransient(bird){
@@ -123,7 +123,7 @@ export function createFlyingGulls(){
    startTransient(transients[0]);
    nextArrival=Infinity;
    // A companion joins only on some passes, not every time.
-   nextCompanion=rnd()<.35?time+R(3.5,7.5):Infinity;
+   nextCompanion=rnd()<.28?time+R(3.5,7.5):Infinity;
   }
   if(active.size===1&&time>=nextCompanion){
    const idle=transients.find(g=>!active.has(g.index));
