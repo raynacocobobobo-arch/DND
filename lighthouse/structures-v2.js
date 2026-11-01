@@ -8,9 +8,9 @@ export function buildCliffs(){
  groundRock(-5.38,-1.88,1.44,1.45,1.17,M.stone,3);
  groundRock(-2.94,-3.14,1.52,2.33,1.25,M.cliff,3);
  groundRock(-5.33,-3.55,1.24,1.26,.89,M.cliff,2);
- groundRock(3.67,-3.58,2.37,2.39,1.65,M.cliff,3);
- groundRock(5.63,-2.89,1.41,1.56,1.09,M.stone,2);
- groundRock(2.40,-4.0,1.25,1.20,1.14,M.cliff,2);
+ groundRock(3.05,-4.30,2.23,2.08,1.54,M.cliff,3);
+ groundRock(5.75,-4.25,1.12,1.16,1.02,M.stone,2);
+ groundRock(2.20,-4.45,1.14,1.05,1.02,M.cliff,2);
  // A few low coastal boulders, buried at the actual surface height.
  for(const [x,z,s] of [[-3.8,-.2,.64],[-3.75,1.85,.4],[-2.95,2.55,.48],[-4.10,2.4,.38],
  [-1.75,3.2,.38],[1.00,3.6,.31],[4.26,1.52,.38],[4.58,.72,.37],
@@ -170,7 +170,7 @@ export function buildTrees(){
  // Very thin turf tufts, along contours, no tall grass slab.
  for(let i=0;i<220;i++){
   const a=rr(0,2*Math.PI),r=Math.sqrt(rng())*.77;
-  const x=-.2+4.57*r*Math.cos(a),z=.25+3.47*r*Math.sin(a);
+  const x=-.2+5.00*r*Math.cos(a),z=.25+3.88*r*Math.sin(a);
   if(Math.hypot(x+.38,z+.3)<1.1||Math.abs(x-2.16)<1.25&&Math.abs(z-1.22)<.95)continue;
   const y=coastalHeight(x,z),h=rr(.025,.091);
   if(i%11===0){let f=ico(.027,M.trims,x,y+.02,z,1);f.scale.y=.48;continue}
@@ -204,8 +204,8 @@ export function buildPiers(){
    }pipe(pts,.017,M.rope);
   }
  }
- makePier(-3.62,2.68,5.70,1.07);
- makePier(3.61,2.61,5.81,1.19);
+ makePier(-3.72,2.78,5.65,1.07);
+ makePier(3.70,2.68,5.77,1.19);
  // Pier barrel, dock blocks; no barrels floating.
  function barrel(x,z,y=.62){
   let obj=cyl(.19,.16,.40,12,M.wood,x,y,z);
@@ -268,7 +268,7 @@ export function buildShips(){
  pipe([[.6,.38,4.95],[1.9,.42,4.75],[3.5,.38,4.69]],.013,M.rope);
  // Rear-right ruined ship: strongly visible curled prow + broken hull + ribs.
  const wreck=buildBoat(3.10,.88,M.wreck);
- wreck.position.set(5.03,.28,-3.21);wreck.rotation.y=-.47;wreck.rotation.z=-.17;
+ wreck.position.set(4.65,.26,-2.15);wreck.rotation.y=-.39;wreck.rotation.z=-.14;
  const tipx=-3.10/2;
  pipe([[tipx,0,0],[tipx-.18,.33,0],[tipx-.20,.94,0],[tipx-.01,1.23,0],[tipx+.24,1.19,0],[tipx+.35,.95,0]],.085,M.wood,wreck);
  // Exposed planks broken upright at the rear, with gradually varied height.
@@ -283,7 +283,7 @@ export function buildShips(){
  }
  // Ancient stern debris around wreck, sparse and large rather than tiny noisy chips.
  for(let i=0;i<6;i++){
-  let x=rr(4.6,7.15),z=rr(-4.8,-2.4),o=box(rr(.30,.80),.08,rr(.13,.27),M.wreck,x,.20,z);
+  let x=rr(4.4,6.6),z=rr(-3.4,-1.3),o=box(rr(.30,.80),.08,rr(.13,.27),M.wreck,x,.20,z);
   o.rotation.y=rr(-2,2);o.rotation.z=rr(-.2,.2);
  }
 }
@@ -299,7 +299,7 @@ export function buildExtras(){
  }
  for(let i=0;i<48;i++){
   let a=rr(0,2*Math.PI),r=rr(.28,.76);
-  let x=-.2+4.57*r*Math.cos(a),z=.25+3.47*r*Math.sin(a),y=coastalHeight(x,z);
+  let x=-.2+5.00*r*Math.cos(a),z=.25+3.88*r*Math.sin(a),y=coastalHeight(x,z);
   if(Math.hypot(x+.38,z+.3)<1.13||Math.abs(x-2.16)<1.1&&Math.abs(z-1.22)<1.03)continue;
   ico(.024,M.trims,x,y+.032,z,1);
  }
