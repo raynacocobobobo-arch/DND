@@ -1,0 +1,113 @@
+name: Lighthouse V16 single cloud bank and sparse gulls QA
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse/v16-*.js'
+      - 'lighthouse/v16-preview.html'
+      - '.github/workflows/lighthouse-v16-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          mkdir -p /tmp/lighthouse-v16
+          npm --prefix /tmp/lighthouse-v16 install --no-audit --no-fund playwright@1.56.1
+          /tmp/lighthouse-v16/node_modules/.bin/playwright install chromium
+      - name: Verify WebGL, single cloud layer, gull arrivals and retained night events
+        env:
+          NODE_PATH: /tmp/lighthouse-v16/node_modules
+        run: |
+          python3 -m http.server 8765 >/tmp/v16-server.log 2>&1 &
+          mkdir -p lighthouse/v16-qa-output
+          cat >/tmp/lighthouse-v16/test.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+           const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
+           const page=await browser.newPage({viewport:{width:1440,height:1050},deviceScaleFactor:1});
+           const errors=[];
+           page.on('pageerror',e=>errors.push('PAGE '+e.message));
+           page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
+           page.on('requestfailed',r=>errors.push('REQUEST '+r.url()+' '+r.failure().errorText));
+           await page.goto('http://127.0.0.1:8765/lighthouse/v16-preview.html',{waitUntil:'domcontentloaded'});
+           await page.waitForFunction(()=>document.body.dataset.rendered==='true',{timeout:60000});
+           const base=await page.evaluate(()=>({
+            version:document.body.dataset.version,
+            geometryAudit:document.body.dataset.geometryAudit,
+            waterFactor:+document.body.dataset.waterAreaFactor,
+            fogMeshCount:+document.body.dataset.fogMeshCount,
+            cloudCount:+document.body.dataset.cloudCount,
+            gullCount:+document.body.dataset.gullCount,
+            clouds:window.__lighthouseNightEvents.getClouds(),
+            gulls:window.__lighthouseNightEvents.getGulls(),
+            events:window.__lighthouseNightEvents.getState()
+           }));
+           await page.screenshot({path:'lighthouse/v16-qa-output/night-perspective.png'});
+           await page.locator('#topview').click();
+           await page.screenshot({path:'lighthouse/v16-qa-output/night-topview.png'});
+           await page.locator('#mode-day').click();
+           await page.waitForTimeout(3050);
+           await page.screenshot({path:'lighthouse/v16-qa-output/day-topview.png'});
+           await page.locator('#reset').click();
+           await page.screenshot({path:'lighthouse/v16-qa-output/day-perspective.png'});
+           const birdLog=await page.evaluate(()=>{
+             const api=window.__lighthouseNightEvents;
+             const snapshots=[];
+             for(let t=0;t<200;t++){
+              api.advanceGullsForTest(1);
+              const state=api.getGulls();
+              if(t%10===0||state.visibleCount>1)snapshots.push({t,visible:state.visibleCount,entered:state.entered,exited:state.exited});
+             }
+             return {end:api.getGulls(),snapshots};
+           });
+           const dayBirds=await page.evaluate(()=>window.__lighthouseNightEvents.getGulls());
+           await page.screenshot({path:'lighthouse/v16-qa-output/day-bird-patrol.png'});
+           await page.locator('#mode-night').click();
+           await page.waitForTimeout(3050);
+           await page.evaluate(()=>window.__lighthouseNightEvents.pauseForTest(true));
+           const armsLaunched=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('tentacles',5,[0,1,2,3,0]));
+           const arms=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(2.5));
+           const shipLaunched=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
+           const combo=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(1.0));
+           await page.screenshot({path:'lighthouse/v16-qa-output/night-tentacles-ship.png'});
+           await page.locator('#mode-day').click();
+           const dayInstant=await page.evaluate(()=>window.__lighthouseNightEvents.getState());
+           const retreated=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(5));
+           const shipGone=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(26));
+           console.log('V16_QA_RESULT',JSON.stringify({base,birdLog,armsLaunched,armsCount:arms.activeCount,shipLaunched,concurrent:combo.concurrent,dayInstant:dayInstant.activeCount,retreated:retreated.activeCount,shipGone:shipGone.ship.active,errors}));
+           const ok=base.version==='v16a'&&base.geometryAudit==='pass'&&
+            Math.abs(base.waterFactor-5.6)<.0002&&base.fogMeshCount===0&&
+            base.cloudCount>=10&&base.cloudCount<=16&&
+            base.clouds.layerCount===1&&base.clouds.opaque&&
+            base.clouds.shape==='square'&&
+            base.clouds.edgePenetration.min>=.04&&base.clouds.edgePenetration.max>=.15&&
+            base.gullCount===1&&base.gulls.residentCount===1&&
+            base.gulls.transientCapacity===2&&base.gulls.visibleCount===1&&
+            birdLog.end.entered>=2&&birdLog.end.exited>=1&&
+            birdLog.end.maxVisible<=3&&birdLog.snapshots.some(x=>x.visible===1)&&
+            birdLog.snapshots.some(x=>x.visible>=2)&&
+            base.events.positions.length===8&&base.events.corridorClear&&
+            armsLaunched&&arms.activeCount===5&&shipLaunched&&combo.concurrent&&
+            dayInstant.activeCount===5&&dayInstant.ship.active&&
+            retreated.activeCount===0&&!shipGone.ship.active&&errors.length===0;
+           await browser.close();
+           if(!ok)throw Error('V16 assertions failed');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/lighthouse-v16/test.cjs
+      - name: Upload proof screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-v16-qa-screenshots
+          path: lighthouse/v16-qa-output/
+          if-no-files-found: warn
