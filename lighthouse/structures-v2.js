@@ -2,15 +2,44 @@
 import * as T from 'three';
 import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js?v=7b';
 
+
+function cliffMass(cx,cz,length,width,height,phase){
+ // Connected non-spherical ridge mesh: the silhouette follows terrain geology.
+ const positions=[],colors=[],n=13,base=.20,front=cz+width*.53,back=cz-width*.52;
+ const warm=new T.Color('#8c806f'),shadow=new T.Color('#5f6465'),sunlit=new T.Color('#a89b84');
+ function vertex(p,color){positions.push(...p);colors.push(color.r,color.g,color.b)}
+ function tri(a,b,c,face){
+  const shade=face==='front'?sunlit:face==='back'?shadow:warm;
+  let col=shade.clone().multiplyScalar(.87+.23*rr(0,1));
+  vertex(a,col);vertex(b,col);vertex(c,col);
+ }
+ for(let i=0;i<n;i++){
+  let t=i/n,t2=(i+1)/n;
+  function ridge(q){
+   const x=cx+(q-.5)*length;
+   const h=Math.pow(Math.max(.025,Math.sin(Math.PI*q)),.81)*height*(.86+.16*Math.sin(q*13+phase));
+   return [x,base+h,cz+.16*Math.sin(q*7+phase)];
+  }
+  const r0=ridge(t),r1=ridge(t2);
+  const ff0=[cx+(t-.5)*length,base,front-.07*Math.sin(t*11+phase)],
+        ff1=[cx+(t2-.5)*length,base,front-.07*Math.sin(t2*11+phase)];
+  const bb0=[cx+(t-.5)*length,base,back+.08*Math.cos(t*8+phase)],
+        bb1=[cx+(t2-.5)*length,base,back+.08*Math.cos(t2*8+phase)];
+  const ffmid=[(r0[0]+r1[0])*.5,base+height*.16+(r0[1]+r1[1])*.19,(r0[2]+front)*.5];
+  tri(r0,ff0,ffmid,'front');tri(ff0,ff1,ffmid,'front');tri(ffmid,ff1,r1,'front');tri(r0,ffmid,r1,'front');
+  const bbmid=[(r0[0]+r1[0])*.5,base+height*.11+(r0[1]+r1[1])*.21,(r0[2]+back)*.5];
+  tri(r0,bbmid,bb0,'back');tri(bb0,bbmid,bb1,'back');tri(bbmid,r1,bb1,'back');tri(r0,r1,bbmid,'back');
+ }
+ const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));
+ geo.setAttribute('color',new T.Float32BufferAttribute(colors,3));geo.computeVertexNormals();
+ return add(geo,new T.MeshStandardMaterial({vertexColors:true,roughness:1,side:T.DoubleSide,flatShading:true}));
+}
 export function buildCliffs(){
- // Continuously overlapping rear ridges: kept behind the central lighthouse.
- groundRock(-4.42,-2.55,2.43,2.84,1.68,M.cliff,3);
- groundRock(-5.38,-1.88,1.44,1.45,1.17,M.stone,3);
- groundRock(-2.94,-3.14,1.52,2.33,1.25,M.cliff,3);
- groundRock(-5.33,-3.55,1.24,1.26,.89,M.cliff,2);
- groundRock(3.05,-4.30,2.23,2.08,1.54,M.cliff,3);
- groundRock(5.75,-4.25,1.12,1.16,1.02,M.stone,2);
- groundRock(2.20,-4.45,1.14,1.05,1.02,M.cliff,2);
+ cliffMass(-4.45,-3.13,4.15,2.16,2.93,.7);
+ cliffMass(-3.1,-3.55,2.0,1.6,1.95,2.3);
+ cliffMass(3.63,-4.15,3.50,1.95,2.27,1.6);
+ groundRock(-5.6,-2.28,.96,.82,.88,M.stone,2);
+ groundRock(5.68,-3.87,.83,.75,.75,M.stone,2);
  // A few low coastal boulders, buried at the actual surface height.
  for(const [x,z,s] of [[-3.8,-.2,.64],[-3.75,1.85,.4],[-2.95,2.55,.48],[-4.10,2.4,.38],
  [-1.75,3.2,.38],[1.00,3.6,.31],[4.26,1.52,.38],[4.58,.72,.37],
@@ -19,7 +48,7 @@ export function buildCliffs(){
  }
  // Smaller stones only in sparse, ground-contact groups (never a random floating field).
  for(let i=0;i<37;i++){
-  const a=rr(0,Math.PI*2),r=rr(.61,1.05),x=-.2+4.57*r*Math.cos(a),z=.25+3.47*r*Math.sin(a);
+  const a=rr(0,Math.PI*2),r=rr(.61,1.05),x=-.2+5.00*r*Math.cos(a),z=.25+3.88*r*Math.sin(a);
   const s=rr(.08,.25),o=ico(1,i%5?M.stone:M.cliff,x,coastalHeight(x,z)+s*.15,z,1);
   o.scale.set(s*rr(1.05,1.7),s*.66,s*rr(.8,1.3));o.rotation.y=rr(-2,2);
  }
