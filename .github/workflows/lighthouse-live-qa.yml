@@ -56,9 +56,9 @@ jobs:
             await page.screenshot({path:'lighthouse/qa-output/rotated.png'});
             await page.locator('#reset').click();
             await page.waitForTimeout(500);
-            await page.locator('#topview').click();
-            await page.waitForTimeout(1100);
-            await page.screenshot({path:'lighthouse/qa-output/overhead.png'});
+            if(await page.locator('#topview').count()!==0)throw Error('Removed overhead button still present');
+            // Keep perspective orbit controls working; overhead shortcut is intentionally removed.
+            await page.screenshot({path:'lighthouse/qa-output/reset-perspective.png'});
             console.log('RESULT',JSON.stringify(initial));
             console.log('BROWSER_ERRORS',JSON.stringify(errors));
             await browser.close();
