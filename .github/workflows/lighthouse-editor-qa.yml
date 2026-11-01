@@ -1,0 +1,53 @@
+name: Lighthouse standalone terrain editor QA
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse-editor/**'
+      - '.github/workflows/lighthouse-editor-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          mkdir -p /tmp/editorqa
+          npm --prefix /tmp/editorqa install --no-fund --no-audit playwright@1.56.1
+          /tmp/editorqa/node_modules/.bin/playwright install chromium
+      - name: Verify terrain painting, objects, JSON roundtrip
+        env:
+          NODE_PATH: /tmp/editorqa/node_modules
+        run: |
+          python3 -m http.server 8765 >/tmp/editor.log 2>&1 &
+          cat >/tmp/editorqa/test.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+           const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader']});
+           const page=await browser.newPage({viewport:{width:1440,height:950}});
+           const errors=[];page.on('pageerror',e=>errors.push(e.message));
+           await page.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
+           await page.waitForFunction(()=>document.body.dataset.editorReady==='true',{timeout:60000});
+           const data=await page.evaluate(()=>{
+            const e=window.__lighthouseEditor,before=e.exportMap(),count=before.objects.length;
+            const h=e.paintAt(0,-49,'raise');
+            const added=e.placeAt('tree',8,9);
+            const edited=e.exportMap(),length=edited.objects.length;
+            e.importMap(before);const restored=e.exportMap();
+            return {state:e.getState(),h,added,count,length,
+             restored:JSON.stringify(restored)===JSON.stringify(before)};
+           });
+           await page.screenshot({path:'/tmp/editor-map.png'});
+           console.log('EDITOR_QA',JSON.stringify({data,errors}));
+           await browser.close();
+           if(!data.added||data.length!==data.count+1||!data.restored||errors.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/editorqa/test.cjs

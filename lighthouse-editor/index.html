@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>灯塔世界 · 地图编辑器 V1 | DND</title>
+<style>
+:root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
+#app{display:grid;grid-template-columns:260px minmax(0,1fr)270px;grid-template-rows:58px minmax(0,1fr) 29px;height:100dvh;min-height:480px}
+header{grid-column:1/4;background:#152731;border-bottom:1px solid #324b52;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px}
+.brand{font-weight:700;font-size:16px}.muted{font-size:11px;color:#93afb5}.hdr-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+button,.filelabel{background:#25414c;color:#e8f3f0;border:1px solid #3e626a;border-radius:7px;padding:8px 10px;cursor:pointer;font-size:12px;white-space:nowrap}
+button:hover,.filelabel:hover{background:#385d66}button.active{background:#347e7a;border-color:#8bc6b9;color:white}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #afdbc9}
+button.primary{background:#4b8078;border-color:#8abcae}button:disabled{opacity:.4;cursor:not-allowed}
+aside{background:#14252d;overflow-y:auto;padding:16px;min-width:0}#left{border-right:1px solid #334950}#right{border-left:1px solid #334950}
+h2{font-size:13px;font-weight:650;margin:0 0 12px;color:#f2f5ef}h3{font-size:12px;margin:15px 0 8px;color:#a8c4c7}
+.section{padding-bottom:14px;border-bottom:1px solid #355059;margin-bottom:14px}
+.toolgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.toolgrid button{text-align:left;white-space:normal;min-height:42px}
+label{display:block;font-size:12px;color:#bdd0d1;margin:10px 0 5px}
+input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=text],select{width:100%;background:#0e2028;color:#e9f2eb;border:1px solid #43616a;padding:8px;border-radius:6px;font-size:12px}
+#view{position:relative;min-width:0;overflow:hidden;background:#173d50;touch-action:none}
+#view canvas{width:100%;height:100%;display:block;touch-action:none}
+#hint{position:absolute;left:13px;top:13px;padding:9px 12px;border-radius:7px;background:#0d2331c7;border:1px solid #6b9ca25e;font-size:11px;pointer-events:none}
+#toast{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);background:#173a42de;border:1px solid #7bada7a0;border-radius:8px;padding:10px 14px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+.stats{padding:9px 10px;background:#1e3740;border-radius:8px;border:1px solid #35565c;font-size:12px;line-height:1.9}
+.value{color:#e5dcac;font-variant-numeric:tabular-nums}
+#assets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#assets button{height:58px;white-space:normal;text-align:center;font-size:11px}
+#assets button span{display:block;font-size:20px;margin-bottom:3px}
+.props{display:grid;grid-template-columns:1fr 1fr;gap:8px}.props label{margin-top:0}
+footer{grid-column:1/4;background:#0d2028;border-top:1px solid #38525a;padding:7px 14px;font-size:11px;color:#9bb6b9;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+a{color:#b2d8cf}
+#input-json{display:none}
+@media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
+@media(max-width:740px){#app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(350px,1fr) auto auto auto;height:auto;min-height:100dvh}header{grid-column:1;flex-wrap:wrap}#left{grid-row:2;border:0;border-bottom:1px solid #38525a}#view{grid-row:3;height:55vh;min-height:350px}#right{grid-row:4;border:0;border-top:1px solid #38525a}footer{grid-column:1;grid-row:5}.section{padding-bottom:10px;margin-bottom:10px}.toolgrid{grid-template-columns:repeat(4,1fr)}#assets{grid-template-columns:repeat(4,1fr)}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
+</head><body>
+<div id="app">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">独立地图工程 · Terrain Editor V1 · DND</div></div><div class="hdr-actions">
+<button id="undo">撤销</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
+<button id="save" class="primary">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
+<aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
+<button data-tool="raise" class="active">⛰ 抬高</button><button data-tool="lower">⌄ 降低</button>
+<button data-tool="flatten">▬ 平整</button><button data-tool="water">≈ 挖水域</button>
+<button data-tool="sand">▧ 沙地</button><button data-tool="grass">✿ 草地</button>
+<button data-tool="rock">◆ 岩地</button><button data-tool="select">↖ 选择</button></div>
+<label for="brush">笔刷半径 · <output id="brush-val">2</output> 格</label><input id="brush" type="range" min="1" max="6" value="2">
+<label for="strength">地形强度 · <output id="strength-val">1</output> 级</label><input id="strength" type="range" min="1" max="4" value="1"></div>
+<div class="section"><h2>素材资源库</h2><div id="assets">
+<button data-asset="rock"><span>🪨</span>礁石</button>
+<button data-asset="tree"><span>🌲</span>树木</button>
+<button data-asset="lighthouse"><span>🏮</span>灯塔</button>
+<button data-asset="hut"><span>🏠</span>木屋</button>
+<button data-asset="dock"><span>⚓</span>码头</button>
+<button data-asset="wreck"><span>⛵</span>沉船</button>
+<button data-asset="fish"><span>🐟</span>鱼群区</button>
+<button data-asset="kraken"><span>〰</span>触手点</button></div>
+<p class="muted">选择素材后点击地图放置。同一模型可任意复制、旋转、缩放。鱼群和触手为游戏逻辑标记。</p></div>
+<div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">新建海域</button><button id="demo-world">恢复群岛</button></div><p class="muted">默认地图约 20 倍原场景面积，64 × 56 个地形格。当前游戏不会被覆盖。</p></div>
+</aside>
+<main id="view"><div id="hint">左键 / 触摸：绘制或摆放　·　右键拖动：旋转　·　滚轮：缩放</div><div id="toast" role="status"></div></main>
+<aside id="right">
+<div class="section"><h2>地图概览</h2><div class="stats">世界面积：<span class="value" id="size">146 × 129</span><br>地形网格：<span class="value">64 × 56</span><br>模型实例：<span class="value" id="object-count">0</span><br>当前工具：<span class="value" id="tool-name">抬高</span><br>当前坐标：<span class="value" id="cursor">—</span><br>修改状态：<span class="value" id="dirty">已保存</span></div></div>
+<div class="section"><h2>选中对象</h2><div id="none" class="muted">使用「选择」工具点击场景模型。</div>
+<div id="inspector" hidden><label for="selected-name">模型名称</label><input id="selected-name" type="text">
+<div class="props"><div><label for="posx">X 坐标</label><input id="posx" type="number" step=".1"></div><div><label for="posz">Z 坐标</label><input id="posz" type="number" step=".1"></div></div>
+<label for="rot">旋转角度 · <output id="rot-val">0°</output></label><input id="rot" type="range" min="0" max="359" value="0">
+<label for="scale">模型大小 · <output id="scale-val">1.0</output></label><input id="scale" type="range" min=".3" max="3" step=".1" value="1">
+<div class="toolgrid" style="margin-top:12px"><button id="duplicate">复制</button><button id="delete">删除</button></div></div></div>
+<div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。每次编辑自动保存到当前浏览器；也可导出 JSON 作为正式地图文件。</p></div>
+<div><button id="autosave" style="width:100%">立即保存到浏览器</button></div>
+</aside>
+<footer id="footer">地图工程与捕鱼游戏相互独立 · 地形、物体与生态区可导出为统一 JSON · 当前编辑内容保存在本设备浏览器</footer>
+</div><script type="module" src="./editor.js?v=1a"></script>
+</body></html>
