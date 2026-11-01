@@ -45,6 +45,7 @@ jobs:
             const base=await page.evaluate(()=>({
               ready:document.body.dataset.rendered,version:document.body.dataset.version,
               meshCount:Number(document.body.dataset.meshCount||0),
+              geometryAudit:document.body.dataset.geometryAudit,tyreCount:Number(document.body.dataset.tyreCount||0),
               initialMode:document.body.dataset.mode,
               canvas:document.querySelector('canvas')?.width,
               status:document.querySelector('#status')?.textContent,
@@ -79,7 +80,7 @@ jobs:
             const night=await page.evaluate(()=>document.body.dataset.mode);
             console.log('RESULT',JSON.stringify({base,day,night,errors}));
             await browser.close();
-            if(base.ready!=='true'||base.version!=='v10'||base.meshCount<210||base.initialMode!=='night'||day!=='day'||night!=='night'||errors.length)process.exit(1);
+            if(base.ready!=='true'||base.version!=='v10'||base.meshCount<210||base.geometryAudit!=='pass'||base.tyreCount!==6||base.initialMode!=='night'||day!=='day'||night!=='night'||errors.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node /tmp/lighthouse-v10/qa.cjs
