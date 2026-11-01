@@ -39,12 +39,17 @@ export function createSquareCloudBorder(){
  for(const s of specs){
   const axisX=s.side%2===0,sign=(s.side===0||s.side===3)?-1:1;
   // Tangential axis is X for north/south and Z for east/west.
-  const x=centerX+(axisX?s.along*hx:sign*s.depth*hx);
-  const z=centerZ+(axisX?sign*s.depth*hz:s.along*hz);
+  // The V16a clouds nearly matched the island's footprint.  Shrink their
+  // horizontal span by 27%, push outward, and retain enough overlap to veil
+  // the fading square water edge (without forming a wall near the island).
+  const depthNorm=Math.min(.986,s.depth+.052);
+  const span=s.width*.73;
+  const x=centerX+(axisX?s.along*hx:sign*depthNorm*hx);
+  const z=centerZ+(axisX?sign*depthNorm*hz:s.along*hz);
   const tangentX=axisX?1:0,tangentZ=axisX?0:1;
   const inwardX=axisX?0:-sign,inwardZ=axisX?-sign:0;
   const id=clusters.length,phase=range(0,Math.PI*2);
-  clusters.push({id,side:s.side,x,z,width:s.width,penetration:1-s.depth,altitude:s.up});
+  clusters.push({id,side:s.side,x,z,width:span,penetration:1-depthNorm,altitude:s.up-.16});
   // One large central nucleus, then asymmetrical, progressively smaller cloud lobes.
   // Overall silhouette ranges from tall cumulus to long, low windswept clusters.
   const bulk=s.bulk;
@@ -62,14 +67,14 @@ export function createSquareCloudBorder(){
   const materialIndex=s.seed%palette.length;
   for(let j=0;j<count;j++){
    const p=layout[j],jitter=range(.88,1.12);
-   const px=x+tangentX*(p.a*s.width*.48+range(-.22,.22))+
-     inwardX*range(.15,1.00);
-   const pz=z+tangentZ*(p.a*s.width*.48+range(-.22,.22))+
-     inwardZ*range(.15,1.00);
-   const horiz=s.width*(j===0?.29:.235)*p.wt*jitter;
-   const height=(1.55+.23*bulk)*p.ht*range(.91,1.08);
-   const depth=(2.40+.35*bulk)*p.d*range(.90,1.08);
-   const py=s.up+p.h*(1.45+.20*bulk)+range(-.11,.11);
+   const px=x+tangentX*(p.a*span*.48+range(-.22,.22))+
+     inwardX*range(.06,.50);
+   const pz=z+tangentZ*(p.a*span*.48+range(-.22,.22))+
+     inwardZ*range(.06,.50);
+   const horiz=span*(j===0?.29:.235)*p.wt*jitter;
+   const height=.77*(1.55+.23*bulk)*p.ht*range(.91,1.08);
+   const depth=.84*(2.40+.35*bulk)*p.d*range(.90,1.08);
+   const py=s.up-.16+p.h*(1.12+.16*bulk)+range(-.09,.09);
    parts[materialIndex].push({id,side:s.side,
     x:px,y:py,z:pz,sx:horiz,sy:height,sz:depth,
     yaw:range(-.32,.32),phase});
@@ -119,6 +124,8 @@ export function createSquareCloudBorder(){
   edgePenetration:{min:Math.min(...clusters.map(c=>c.penetration)),
     max:Math.max(...clusters.map(c=>c.penetration))},
   bounds:{width:W,depth:D},
+  scaleRevision:'compact-73pct',
+  maxCloudWidth:Math.max(...clusters.map(c=>c.width)),
   clusters:clusters.map(c=>({...c}))
  })};
 }

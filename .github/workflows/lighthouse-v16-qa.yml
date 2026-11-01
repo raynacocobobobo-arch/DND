@@ -46,6 +46,7 @@ jobs:
             waterFactor:+document.body.dataset.waterAreaFactor,
             fogMeshCount:+document.body.dataset.fogMeshCount,
             cloudCount:+document.body.dataset.cloudCount,
+            cloudMaxWidth:+document.body.dataset.cloudMaxWidth,
             gullCount:+document.body.dataset.gullCount,
             clouds:window.__lighthouseNightEvents.getClouds(),
             gulls:window.__lighthouseNightEvents.getGulls(),
@@ -84,12 +85,14 @@ jobs:
            const retreated=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(5));
            const shipGone=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(26));
            console.log('V16_QA_RESULT',JSON.stringify({base,birdLog,armsLaunched,armsCount:arms.activeCount,shipLaunched,concurrent:combo.concurrent,dayInstant:dayInstant.activeCount,retreated:retreated.activeCount,shipGone:shipGone.ship.active,errors}));
-           const ok=base.version==='v16a'&&base.geometryAudit==='pass'&&
+           const ok=base.version==='v16b'&&base.geometryAudit==='pass'&&
             Math.abs(base.waterFactor-5.6)<.0002&&base.fogMeshCount===0&&
             base.cloudCount>=10&&base.cloudCount<=16&&
+            base.cloudMaxWidth<=7.1&&base.cloudMaxWidth>=4.0&&
+            base.clouds.scaleRevision==='compact-73pct'&&
             base.clouds.layerCount===1&&base.clouds.opaque&&
             base.clouds.shape==='square'&&
-            base.clouds.edgePenetration.min>=.04&&base.clouds.edgePenetration.max>=.15&&
+            base.clouds.edgePenetration.min>=.013&&base.clouds.edgePenetration.max>=.09&&
             base.gullCount===1&&base.gulls.residentCount===1&&
             base.gulls.transientCapacity===2&&base.gulls.visibleCount===1&&
             birdLog.end.entered>=2&&birdLog.end.exited>=1&&
