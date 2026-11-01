@@ -586,20 +586,24 @@ function buildOakBarrels(){
 // Native-game asset grouping. These wrappers do NOT remake any geometry:
 // every existing mesh, material, light, and transform is retained unchanged.
 // Editor and game both clone these exact source assemblies.
-function captureNativeAsset(name,type,builder){
+function captureNativeAsset(name,type,builder,anchor=[0,0,0]){
  const before=group.children.length;
  const value=builder();
+ const parts=group.children.slice(before);
  const g=new T.Group();g.name='game-asset-'+name;
  g.userData.gameAssetType=type;
- for(const child of group.children.slice(before))g.add(child);
- group.add(g);
+ g.userData.baseAnchor=anchor;
+ g.position.set(...anchor);group.add(g);
+ // attach() maintains world-space geometry while creating a real local pivot
+ // for designer transforms and ordinary rotation around the object center.
+ for(const child of parts)g.attach(child);
  return value;
 }
 export function buildSite(){
  captureNativeAsset('shore-rocks','shore_rock',buildRockyIsland);
  captureNativeAsset('pine-forest','pine',buildPineForest);
- captureNativeAsset('lighthouse','lighthouse',buildLighthouse);
- captureNativeAsset('boathouse','boathouse',buildDeckAndHouse);
+ captureNativeAsset('lighthouse','lighthouse',buildLighthouse,[.82,0,-2.38]);
+ captureNativeAsset('boathouse','boathouse',buildDeckAndHouse,[-3.48,0,.88]);
  const boat=buildBoat();
  captureNativeAsset('coastal-flora','flora',buildCoastalMicroflora);
  captureNativeAsset('supply-barrels','barrel',buildOakBarrels);
