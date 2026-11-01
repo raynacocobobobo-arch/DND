@@ -1,5 +1,5 @@
-import {createKraken} from './v12-tentacle.js?v=12a';
-import {createPirateShip} from './v12-pirate.js?v=12a';
+import {createKraken} from './v12-tentacle.js?v=12b';
+import {createPirateShip} from './v12-pirate.js?v=12b';
 /** Exclusive night encounters: either 1..3 Kraken arms, OR one passing ship. */
 export function createNightEvents(parent){
  const positions=[
