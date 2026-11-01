@@ -1,6 +1,6 @@
 
 import * as T from 'three';
-import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js';
+import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js?v=7b';
 
 export function buildCliffs(){
  // Continuously overlapping rear ridges: kept behind the central lighthouse.
