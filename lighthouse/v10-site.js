@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {group,rr,rng,coastalHeight,add,box,cyl,ico,beam,pipe,material,M} from './v9-world.js?v=10c';
+import {group,rr,rng,coastalHeight,add,box,cyl,ico,beam,pipe,material,M} from './v9-world.js?v=10d';
 const pineMat=['#243f35','#2c4d3a','#365a43','#45654a','#536b43'].map(c=>material(c,.98,0,{flatShading:true}));
 const warmRock=material('#747e82',.97,0,{flatShading:true});
 const shoreRock=material('#59676e',.99,0,{flatShading:true});
@@ -306,9 +306,10 @@ export function buildDeckAndHouse(){
    box(w+.016,.028,.035,woodEdge,px,deck+.30,pz+sy*w*.51);
   }
  };
- crate(left+.43,front-.56,.40);
- crate(left+.83,front-.66,.32);
- crate(right-.45,rear+.57,.28,.29);
+ // Each crate occupies its own footprint; maintain clearance for slats and railings.
+ crate(left+.46,front-.55,.40);
+ crate(left+1.22,front-.70,.32);
+ crate(right-.56,rear+.68,.28,.29);
  // Fishing-tool rack, wall ventilation and a coiled cable on an exterior workbench.
  box(.72,.055,.29,woodTop,right-.69,deck+.62,rear+.48);
  for(let i=0;i<3;i++){
@@ -350,11 +351,13 @@ export function buildDeckAndHouse(){
   beam([x+i*(ww*.42),deck-.14,front-.14],[x+i*(ww*.25),-.63,front-.17],.047,woodEdge);
  }
  // Shoreward path: a few stepping timbers follow the actual terrain, not a raised artificial patch.
- const stepping=[[.50,2.45],[.80,2.36],[1.07,2.27],[1.30,2.13]];
+ // Stop the timber path BEFORE the stone fire ring, leaving a visible ground landing.
+ const stepping=[[.46,2.57],[.67,2.55],[.88,2.53]];
  for(const [px,pz] of stepping){
   const gy=coastalHeight(px,pz);
-  const st=box(.28,.060,.51,woodTop,px,gy+.026,pz);
-  st.rotation.y=.08;
+  const st=box(.24,.060,.43,woodTop,px,gy+.038,pz);
+  st.rotation.y=-.05;
+  st.userData.isLandingStep=true;
  }
  // Supply barrels near the stairs (not seating or stools).
  function supplyBarrel(px,pz){
@@ -366,8 +369,11 @@ export function buildDeckAndHouse(){
  }
  supplyBarrel(-.59,2.71);
  // A small dark utility pole by the walkway with a warm lamp.
- beam([.83,coastalHeight(.83,2.37),2.37],[.83,1.87,2.37],.029,woodEdge);
- const pathLamp=box(.10,.12,.10,lampBulb,.83,1.76,2.37);
+ // Position the lamp OUTSIDE the timber path, on the seaward (positive-Z) side.
+ const lampX=.91,lampZ=3.04,lampGround=coastalHeight(lampX,lampZ);
+ const lampPost=beam([lampX,lampGround,lampZ],[lampX,lampGround+1.30,lampZ],.031,woodEdge);
+ lampPost.userData.isPathLamp=true;
+ const pathLamp=box(.12,.14,.12,lampBulb,lampX,lampGround+1.22,lampZ);
  lights.house1=new T.PointLight(0xffaa6b,0,8,1.5);lights.house1.position.set(hx-.9,base+1.40,houseFront+.66);group.add(lights.house1);
  lights.house2=new T.PointLight(0xffba73,0,7,1.5);lights.house2.position.set(hx+1.1,base+1.32,houseFront+.63);group.add(lights.house2);
 }
@@ -437,9 +443,18 @@ function buildBoat(){
  box(.47,.29,.024,M.glass,.22,.50,0,parent);
  const bow=box(.46,.060,B*.82,redTrim,.79,.19,0,parent);
  beam([.72,.19,-B*.80],[.72,.19,B*.80],.025,cream,parent);
- // Fenders with individual dark painted accents: no loop / ring-only hull.
+ // Six real black rubber tyres, three on EACH hull side.
+ // The torus is upright in the XY plane, with the axle normal to the hull in Z.
+ const tyreRubber=material('#20262a',.99,0,{flatShading:false});
+ const tyreSidewall=material('#3a4145',.99);
  for(const sign of [-1,1])for(let i=0;i<3;i++){
-  ico(.062,waterBoat,-.68+i*.60,.04,sign*.57,1,parent);
+   const tx=-.70+i*.68,t=tx/(L*.5);
+   const sideBeam=B*Math.pow(Math.max(.005,1-t*t),.72);
+   const outerZ=sign*(sideBeam+.055);
+   const wheel=add(new T.TorusGeometry(.138,.051,10,28),tyreRubber,tx,.015,outerZ,parent);
+   wheel.name='hanging-tyre';
+   // A small contact sleeve attaches the black tyre to the cream gunwale.
+   beam([tx,.16,sign*sideBeam],[tx,.14,outerZ],.014,tyreSidewall,parent);
  }
 }
 export function buildCampfire(){
