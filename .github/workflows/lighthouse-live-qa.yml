@@ -55,6 +55,9 @@ jobs:
             await page.screenshot({path:'lighthouse/qa-output/rotated.png'});
             await page.locator('#reset').click();
             await page.waitForTimeout(500);
+            await page.locator('#topview').click();
+            await page.waitForTimeout(1100);
+            await page.screenshot({path:'lighthouse/qa-output/overhead.png'});
             console.log('RESULT',JSON.stringify(initial));
             console.log('BROWSER_ERRORS',JSON.stringify(errors));
             await browser.close();
