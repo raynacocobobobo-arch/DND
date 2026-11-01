@@ -1,0 +1,36 @@
+name: Lighthouse public URL version verification
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse/index.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate production HTML references the expected 3D bundle
+        run: |
+          grep -q 'v10-scene.js?v=10b' lighthouse/index.html
+          grep -q '灯塔营地 V10' lighthouse/index.html
+      - name: Verify actual public Pages document and live JS after deployment
+        run: |
+          set -eu
+          BASE='https://raynacocobobobo-arch.github.io/DND/lighthouse/'
+          for i in $(seq 1 48); do
+            CACHE_TOKEN="${GITHUB_SHA}-${GITHUB_RUN_ID}-${i}"
+            curl --retry 2 -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}?release-check=${CACHE_TOKEN}" -o /tmp/public-lighthouse.html || true
+            if grep -q 'v10-scene.js?v=10b' /tmp/public-lighthouse.html 2>/dev/null && grep -q '灯塔营地 V10' /tmp/public-lighthouse.html; then
+              curl -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}v10-scene.js?v=10b&check=${CACHE_TOKEN}" -o /tmp/public-lighthouse-v10.js
+              grep -q "dataset.version='v10'" /tmp/public-lighthouse-v10.js
+              printf 'PUBLIC_V10_VERIFIED url=%s\n' "${BASE}"
+              exit 0
+            fi
+            sleep 7
+          done
+          echo 'Public Pages did not publish V10 within the verification window.' >&2
+          exit 1
