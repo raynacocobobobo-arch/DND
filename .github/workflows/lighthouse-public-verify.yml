@@ -15,8 +15,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate production HTML references the expected 3D bundle
         run: |
-          grep -q 'v11-scene.js?v=11a' lighthouse/index.html
-          grep -q '灯塔营地 V11a' lighthouse/index.html
+          grep -q 'v12-scene.js?v=12b' lighthouse/index.html
+          grep -q '灯塔营地 V12a' lighthouse/index.html
       - name: Verify actual public Pages document and live JS after deployment
         run: |
           set -eu
@@ -24,10 +24,10 @@ jobs:
           for i in $(seq 1 48); do
             CACHE_TOKEN="${GITHUB_SHA}-${GITHUB_RUN_ID}-${i}"
             curl --retry 2 -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}?release-check=${CACHE_TOKEN}" -o /tmp/public-lighthouse.html || true
-            if grep -q 'v11-scene.js?v=11a' /tmp/public-lighthouse.html 2>/dev/null && grep -q '灯塔营地 V11a' /tmp/public-lighthouse.html; then
-              curl -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}v11-scene.js?v=11a&check=${CACHE_TOKEN}" -o /tmp/public-lighthouse-v10.js
-              grep -q "dataset.version='v11a'" /tmp/public-lighthouse-v10.js
-              printf 'PUBLIC_V11A_VERIFIED url=%s\n' "${BASE}"
+            if grep -q 'v12-scene.js?v=12b' /tmp/public-lighthouse.html 2>/dev/null && grep -q '灯塔营地 V12a' /tmp/public-lighthouse.html; then
+              curl -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}v12-scene.js?v=12b&check=${CACHE_TOKEN}" -o /tmp/public-lighthouse-v10.js
+              grep -q "dataset.version='v12a'" /tmp/public-lighthouse-v10.js
+              printf 'PUBLIC_V12A_VERIFIED url=%s\n' "${BASE}"
               exit 0
             fi
             sleep 7
