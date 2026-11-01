@@ -25,30 +25,35 @@ export function createSquareCloudBorder(){
   else if(side===1){x=cx+edge*halfW;z=cz+t*halfD;alongX=0;alongZ=1;outX=1;outZ=0;}
   else if(side===2){x=cx-t*halfW;z=cz+edge*halfD;alongX=-1;alongZ=0;outX=0;outZ=1;}
   else {x=cx-edge*halfW;z=cz-t*halfD;alongX=0;alongZ=-1;outX=-1;outZ=0;}
-  const lift=band===0?R(1.10,2.28):R(2.15,3.18);
-  const length=band===0?R(2.35,3.80):R(2.55,4.35);
-  const puffCount=6+Math.floor(rnd()*4),phase=R(0,Math.PI*2);
+  const lift=band===0?R(3.00,3.75):R(4.10,5.20);
+  const length=band===0?R(3.00,4.12):R(3.25,4.40);
+  const puffCount=7+Math.floor(rnd()*2),phase=R(0,Math.PI*2);
   const id=clusters.length;
   clusters.push({x,z,side,band,phase,lift,puffCount});
   // A broad, squat cumulus silhouette made from overlapping irregular polyhedra.
   // Every puff is solid (opaque). Different shapes/colors create readable facets.
+  const silhouette=[
+   [-.96,-.11,.65],[-.67,.18,.91],[-.31,.34,.94],
+   [.12,.43,1.08],[.49,.24,.88],[.87,-.06,.68],
+   [-.18,-.26,.57],[.45,-.24,.61]
+  ];
   for(let j=0;j<puffCount;j++){
-   const span=j/(puffCount-1)*2-1;
-   const middle=1-.43*Math.abs(span);
-   const wide=length*(.10+.18*middle)*R(.78,1.10);
-   const high=R(.39,.87)*middle+R(.18,.33);
-   const deep=R(.48,.92);
-   const pX=x+alongX*span*length*.38+outX*R(-.44,.35);
-   const pZ=z+alongZ*span*length*.38+outZ*R(-.44,.35);
-   const y=lift+R(-.27,.20)+(j%3===0?.37:0);
+   const [span,up,amount]=silhouette[j];
+   const lump=amount*R(.91,1.09);
+   const wide=length*.29*lump;
+   const high=.91*lump;
+   const deep=.83*lump;
+   const pX=x+alongX*span*length*.42+outX*R(-.17,.24);
+   const pZ=z+alongZ*span*length*.42+outZ*R(-.17,.24);
+   const y=lift+up*1.32+R(-.07,.09);
    const matIndex=Math.floor(rnd()*palette.length);
    parts[matIndex].push({id,x:pX,y,z:pZ,sx:wide,sy:high,sz:deep,
-     yaw:R(-.60,.60),phase:phase+R(-.35,.35),side,band});
+     yaw:R(-.40,.40),phase:phase+R(-.35,.35),side,band});
   }
  };
  // Two staggered rows on each straight edge; corners intentionally overlap.
  for(let side=0;side<4;side++){
-  const inner=side%2===0?18:16,outer=side%2===0?13:12;
+  const inner=side%2===0?16:14,outer=side%2===0?8:7;
   for(let i=0;i<inner;i++)addCluster(side,(i+.10+R(-.14,.14))/(inner-1),0);
   for(let i=0;i<outer;i++)addCluster(side,(i+.35+R(-.11,.11))/(outer-1),1);
  }
