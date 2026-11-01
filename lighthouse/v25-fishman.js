@@ -93,7 +93,7 @@ export function createFishmanVisitor(){
   indices.push(...Array.from({length:sides-2},(_,i)=>[0,i+2,i+1]).flat());
   const last=(rings.length-1)*sides;
   indices.push(...Array.from({length:sides-2},(_,i)=>[last,last+i+1,last+i+2]).flat());
-  const g=new THREE.BufferGeometry();
+  let g=new THREE.BufferGeometry();
   g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
   g.setIndex(indices);g=g.toNonIndexed();
   g.computeVertexNormals();
