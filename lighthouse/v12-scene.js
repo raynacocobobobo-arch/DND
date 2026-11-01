@@ -1,8 +1,8 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v12-world.js?v=12a';
-import {buildSite} from './v12-site.js?v=12a';
-import {createNightEvents} from './v12-events.js?v=12a';
+import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v12-world.js?v=12b';
+import {buildSite} from './v12-site.js?v=12b';
+import {createNightEvents} from './v12-events.js?v=12b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(29.8,20.7,34.2);
