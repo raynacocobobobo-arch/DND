@@ -48,10 +48,9 @@ jobs:
            await page.screenshot({path:'lighthouse/v24-qa-output/night-fishman-closeup.png'});
            await page.evaluate(()=>window.__lighthouseNightEvents.resetCameraForTest());
            await page.locator('#mode-day').click();
-           await page.waitForTimeout(1000);
-           const mid=await api();
+           const mid=await page.evaluate(()=>window.__lighthouseNightEvents.advanceVisitorTransitionForTest(1.3));
            await page.screenshot({path:'lighthouse/v24-qa-output/transform-middle.png'});
-           await page.waitForTimeout(2200);
+           await page.evaluate(()=>window.__lighthouseNightEvents.advanceVisitorTransitionForTest(1.7));
            const day=await api();
            await page.screenshot({path:'lighthouse/v24-qa-output/day-human-default.png'});
            await page.evaluate(()=>window.__lighthouseNightEvents.focusVisitorForTest());
@@ -59,7 +58,7 @@ jobs:
            await page.screenshot({path:'lighthouse/v24-qa-output/day-human-closeup.png'});
            await page.evaluate(()=>window.__lighthouseNightEvents.resetCameraForTest());
            await page.locator('#mode-night').click();
-           await page.waitForTimeout(3300);
+           await page.evaluate(()=>window.__lighthouseNightEvents.advanceVisitorTransitionForTest(3.0));
            const afterNight=await api();
            await page.screenshot({path:'lighthouse/v24-qa-output/back-to-fishman.png'});
            const sceneData=await page.evaluate(()=>({

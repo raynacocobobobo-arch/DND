@@ -5,7 +5,7 @@ import {buildSite} from './v23-site.js?v=23a';
 import {createNightEvents} from './v23-events.js?v=23a';
 import {createSteadySeaClouds} from './v23-clouds.js?v=23a';
 import {createFlyingGulls} from './v23-gulls.js?v=23a';
-import {createDayNightVisitor} from './v24-character.js?v=24b';
+import {createDayNightVisitor} from './v24-character.js?v=24c';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);
@@ -21,7 +21,7 @@ host.appendChild(renderer.domElement);scene.add(group);
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.copy(initial);controls.target.copy(target);
 controls.enableDamping=true;controls.dampingFactor=.057;
-controls.minDistance=11;controls.maxDistance=105;controls.maxPolarAngle=Math.PI*.86;
+controls.minDistance=3.0;controls.maxDistance=105;controls.maxPolarAngle=Math.PI*.86;
 controls.screenSpacePanning=true;controls.update();
 const hemi=new T.HemisphereLight(0xd7ebfb,0x50505a,1.8);scene.add(hemi);
 const key=new T.DirectionalLight(0xffd7af,3.2);
@@ -179,14 +179,22 @@ window.__lighthouseSea=seaSurface;
 window.__lighthouseNightEvents={
  getState:()=>nightEvents?.getState(),
  getVisitor:()=>visitor?.getState(),
+ advanceVisitorTransitionForTest:(seconds)=>{
+  const steps=Math.ceil(Math.max(0,Math.min(6,seconds))/.10);
+  for(let i=0;i<steps;i++)updateLighting(.10);
+  visitor?.update(0,dayBlend);
+  return visitor?.getState();
+ },
  focusVisitorForTest:()=>{
   const p=visitor.root.position;
   controls.autoRotate=false;
-  camera.position.set(p.x+1.50,p.y+1.04,p.z+2.25);
-  controls.target.set(p.x,p.y+.36,p.z);
+  controls.minDistance=1.50;
+  camera.position.set(p.x+.58,p.y+.82,p.z+1.45);
+  controls.target.set(p.x,p.y+.38,p.z);
   controls.update();
  },
  resetCameraForTest:()=>{
+  controls.minDistance=3.0;
   camera.up.set(0,1,0);camera.position.copy(initial);
   controls.target.copy(target);controls.update();
  },
