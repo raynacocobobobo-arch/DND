@@ -89,7 +89,7 @@ export function buildPineForest(){
 }
 
 export function buildLighthouse(){
- const x=.82,z=-2.38,ground=coastalHeight(x,z),height=5.67;
+ const x=.82,z=-2.38,ground=coastalHeight(x,z),height=4.86;
  cyl(.88,1.05,.34,24,M.stone,x,ground+.15,z);
  cyl(.77,.91,.75,24,redTrim,x,ground+.53,z);
  const sections=9,base=ground+.92;
