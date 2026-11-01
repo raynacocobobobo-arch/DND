@@ -159,9 +159,12 @@ export function createKraken(parent,options={}){
  }
  function update(delta){
   // Time is intentionally frame-rate independent and clamped after tab/background suspension.
-  const dt=Math.min(Math.max(delta||0,0),.10);
+  const raw=Math.max(delta||0,0);
+  // Waiting uses real elapsed time even if the GPU renders slowly.
+  // Only the visible motion is capped to avoid enormous jumps after a suspended tab.
+  const dt=phase==='waiting'?raw:Math.min(raw,1.6);
   if(!night){root.visible=false;return}
-  totalTime+=dt;
+  totalTime+=Math.min(raw,1.6);
   elapsed+=dt;
   if(phase==='waiting'){
    if(elapsed>=wait)startEvent();
