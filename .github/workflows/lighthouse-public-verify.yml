@@ -26,11 +26,11 @@ jobs:
             curl --retry 2 -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}?release-check=${CACHE_TOKEN}" -o /tmp/public-lighthouse.html || true
             if grep -q 'v28-scene.js?v=28a' /tmp/public-lighthouse.html 2>/dev/null && grep -q '灯塔营地 V28a' /tmp/public-lighthouse.html; then
               curl -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}v28-scene.js?v=28a&check=${CACHE_TOKEN}" -o /tmp/public-lighthouse-v10.js
-              grep -q "dataset.version='v27a'" /tmp/public-lighthouse-v10.js
+              grep -q "dataset.version='v28a'" /tmp/public-lighthouse-v10.js
               printf 'PUBLIC_V28A_VERIFIED url=%s\n' "${BASE}"
               exit 0
             fi
             sleep 7
           done
-          echo 'Public Pages did not publish V24 within the verification window.' >&2
+          echo 'Public Pages did not publish V28 within the verification window.' >&2
           exit 1
