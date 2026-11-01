@@ -1,0 +1,102 @@
+name: Lighthouse V15 square clouds and flying gulls QA
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse/v15-*.js'
+      - 'lighthouse/v15-preview.html'
+      - '.github/workflows/lighthouse-v15-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          mkdir -p /tmp/lighthouse-v15
+          npm --prefix /tmp/lighthouse-v15 install --no-audit --no-fund playwright@1.56.1
+          /tmp/lighthouse-v15/node_modules/.bin/playwright install chromium
+      - name: Test WebGL rendering, square clouds, animated gulls and retained night events
+        env:
+          NODE_PATH: /tmp/lighthouse-v15/node_modules
+        run: |
+          python3 -m http.server 8765 >/tmp/v15-server.log 2>&1 &
+          mkdir -p lighthouse/v15-qa-output
+          cat >/tmp/lighthouse-v15/test.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+           const browser=await chromium.launch({headless:true,args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
+           const page=await browser.newPage({viewport:{width:1440,height:1050},deviceScaleFactor:1});
+           const errors=[];
+           page.on('pageerror',e=>errors.push('PAGE '+e.message));
+           page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
+           page.on('requestfailed',r=>errors.push('REQUEST '+r.url()+' '+r.failure().errorText));
+           await page.goto('http://127.0.0.1:8765/lighthouse/v15-preview.html',{waitUntil:'domcontentloaded'});
+           await page.waitForFunction(()=>document.body.dataset.rendered==='true',{timeout:60000});
+           const base=await page.evaluate(()=>({
+            version:document.body.dataset.version,meshCount:+document.body.dataset.meshCount,
+            geometryAudit:document.body.dataset.geometryAudit,
+            waterFactor:+document.body.dataset.waterAreaFactor,
+            fogMeshCount:+document.body.dataset.fogMeshCount,
+            cloudCount:+document.body.dataset.cloudCount,
+            gullCount:+document.body.dataset.gullCount,
+            perimeterShape:document.body.dataset.perimeterShape,
+            clouds:window.__lighthouseNightEvents.getClouds(),
+            gulls:window.__lighthouseNightEvents.getGulls(),
+            events:window.__lighthouseNightEvents.getState()
+           }));
+           await page.screenshot({path:'lighthouse/v15-qa-output/night-square-clouds.png'});
+           await page.locator('#topview').click();
+           await page.screenshot({path:'lighthouse/v15-qa-output/top-square-clouds.png'});
+           await page.locator('#mode-day').click();
+           await page.waitForTimeout(3100);
+           await page.screenshot({path:'lighthouse/v15-qa-output/day-clouds-gulls.png'});
+           const pos1=await page.evaluate(()=>window.__lighthouseNightEvents.getGulls());
+           await page.waitForTimeout(1300);
+           const pos2=await page.evaluate(()=>window.__lighthouseNightEvents.getGulls());
+           await page.locator('#reset').click();
+           await page.screenshot({path:'lighthouse/v15-qa-output/day-perspective.png'});
+           await page.locator('#mode-night').click();
+           await page.evaluate(()=>window.__lighthouseNightEvents.pauseForTest(true));
+           const launched=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('tentacles',5,[0,1,2,3,0]));
+           const arms=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(2.5));
+           const shipLaunch=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
+           const combo=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(1.0));
+           await page.screenshot({path:'lighthouse/v15-qa-output/night-kraken-ship-clouds.png'});
+           await page.locator('#mode-day').click();
+           const dayInstant=await page.evaluate(()=>window.__lighthouseNightEvents.getState());
+           const retreat=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(5));
+           const afterShip=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(26));
+           await page.screenshot({path:'lighthouse/v15-qa-output/after-day-exit.png'});
+           const result={base,pos1,pos2,launched,arms,shipLaunch,combo,dayInstant,retreat,afterShip,errors};
+           console.log('V15_QA_RESULT',JSON.stringify(result));
+           const moved=Math.hypot(pos1.positions[0].x-pos2.positions[0].x,pos1.positions[0].z-pos2.positions[0].z)>.06;
+           const flapped=Math.abs(pos1.wingAngle-pos2.wingAngle)>.02;
+           const pass=base.version==='v15a'&&base.geometryAudit==='pass'&&
+             Math.abs(base.waterFactor-5.6)<.0002&&base.fogMeshCount===0&&
+             base.perimeterShape==='square'&&base.cloudCount>=90&&base.gullCount===9&&
+             base.clouds.shape==='square'&&base.clouds.opaque&&base.clouds.fogMeshCount===0&&
+             base.clouds.puffCount>=600&&base.events.positions.length===8&&
+             base.events.corridorClear&&moved&&flapped&&launched&&arms.activeCount===5&&
+             shipLaunch&&combo.concurrent&&dayInstant.activeCount===5&&
+             dayInstant.ship.active&&retreat.activeCount===0&&
+             !afterShip.ship.active&&errors.length===0;
+           await browser.close();
+           if(!pass)throw Error('V15 QA failed: '+JSON.stringify({moved,flapped,errors,base,armsCount:arms.activeCount}));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/lighthouse-v15/test.cjs
+      - name: Upload screenshot proofs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-v15-qa-screenshots
+          path: lighthouse/v15-qa-output/
+          if-no-files-found: warn
