@@ -84,7 +84,9 @@ export function createOpenSeaClouds(){
   const available=slots.filter(s=>s.phase!=='hidden'&&s.phase!=='exiting');
   const keeper=available[Math.floor(rnd()*available.length)]||slots[0];
   const targetCount=1+Math.floor(rnd()*3);
-  const newSites=chooseSites([keeper.site],targetCount-1);
+  // Exclude even fading-out locations: two clouds must never overlap at one site.
+  const occupied=slots.filter(s=>s.site>=0).map(s=>s.site);
+  const newSites=chooseSites(occupied,targetCount-1);
   let cursor=0;
   for(const s of slots){
    if(s===keeper)continue;
