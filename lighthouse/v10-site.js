@@ -318,6 +318,7 @@ export function buildDeckAndHouse(){
  ring.rotation.x=Math.PI*.48;
  // Light-garland supports run from the left railing to the house, carefully separated from cabin.
  const lampBulb=material('#f4e4a6',.40,0,{emissive:0xffcf83,emissiveIntensity:.9});
+ glowParts.stringBulbs=lampBulb;
  const festoon=material('#464343',1);
  const postA=[left-.12,deck+2.20,front-.38],postB=[left+.12,deck+2.04,rear+.16];
  beam([postA[0],deck+.12,postA[2]],postA,.034,woodEdge);
