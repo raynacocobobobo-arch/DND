@@ -106,7 +106,7 @@ export function createPirateShip(parent){
   beam([mastX,topY-h-.04,left],[mastX,topY-h-.04,right],.024,edges);
   // Thin standing rigging runs toward the two ends of each cross-yard.
   for(const side of [-1,1]){
-   beam([mastX,cy+1.65,0],[mastX,topY,side*w*.53],.008,dark);
+   beam([mastX,topY+.18,0],[mastX,topY,side*w*.53],.008,dark);
    beam([mastX,topY-h,side*w*.53],[mastX,.46,0],.008,dark);
   }
  }
