@@ -38,7 +38,7 @@ jobs:
            const data=await page.evaluate(()=>{
             const e=window.__lighthouseEditor,before=e.exportMap(),count=before.objects.length;
             const h=e.paintAt(0,-49,'raise');
-            const added=e.placeAt('tree',8,9);
+            const added=e.placeAt('pine',8,9);
             const edited=e.exportMap(),length=edited.objects.length;
             e.importMap(before);const restored=e.exportMap();
             return {state:e.getState(),h,added,count,length,
@@ -47,7 +47,7 @@ jobs:
            await page.screenshot({path:'/tmp/editor-map.png'});
            console.log('EDITOR_QA',JSON.stringify({data,errors}));
            await browser.close();
-           if(!data.added||data.length!==data.count+1||!data.restored||errors.length)process.exit(1);
+           if(!data.state.realGameAssets||data.state.prefabTypes.length!==8||!data.added||data.length!==data.count+1||!data.restored||errors.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node /tmp/editorqa/test.cjs
