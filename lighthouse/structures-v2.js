@@ -1,6 +1,6 @@
 
 import * as T from 'three';
-import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js?v=7g';
+import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js?v=7h';
 
 
 // Reference-inspired stone clusters: a few multi-faced boulders, never broad triangular wall-mountains.
