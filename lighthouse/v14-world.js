@@ -135,28 +135,9 @@ export function groundRock(cx,cz,sx,sy,sz,mat=M.cliff,details=2){
 }
 function softWave(x,z){return .045*Math.sin(x*2.8+z*.65)+.024*Math.cos(z*3.6-x*.70)+.012*Math.sin(x*6.0+z*4.7)}
 export function buildCutaway(){
- box(W,2.55,D,M.basalt,WATER_CENTER_X,-3.12,WATER_CENTER_Z).castShadow=false; // thinner geological cutaway, unchanged waterline
- box(W+.01,.28,D+.01,M.soil,WATER_CENTER_X,-1.705,WATER_CENTER_Z).castShadow=false;
- // water is a continuous thin gradient over the soil and bedrock; no coplanar decorations.
- let sides=[];
- const makeSide=(along,zfixed,sign)=>{
-  let w=along?W:D,seg=100,v=[],uv=[],id=[];
-  for(let j=0;j<=24;j++)for(let i=0;i<=seg;i++){
-   const offset=-w/2+w*i/seg;
-   const x=along?WATER_CENTER_X+offset:zfixed;
-   const z=along?zfixed:WATER_CENTER_Z+offset;
-   const top=.18+softWave(x,z);
-   const y=-1.56+(j/24)*(top+1.56);
-   v.push(x,y,z);uv.push(i/seg*2,j/24);
-   if(j<24&&i<seg){let k=j*(seg+1)+i;id.push(k,k+1,k+seg+1,k+1,k+seg+2,k+seg+1)}
-  }
-  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(v,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(id);geo.computeVertexNormals();
-  const mesh=add(geo,new T.MeshPhysicalMaterial({color:0x348796,transparent:true,opacity:.78,roughness:.27,metalness:.06,side:T.DoubleSide,depthWrite:true}));
-  mesh.castShadow=false;return mesh;
- };
- const waterVolume=box(W,1.66,D,material('#164452',.48),WATER_CENTER_X,-.735,WATER_CENTER_Z); waterVolume.castShadow=false;waterVolume.userData.isWaterVolume=true;
- makeSide(true,WATER_CENTER_Z+D/2-.004,1);makeSide(true,WATER_CENTER_Z-D/2+.004,-1);
- makeSide(false,WATER_CENTER_X+W/2-.004,1);makeSide(false,WATER_CENTER_X-W/2+.004,-1);
+ // The outermost geological square and water-box sidewalls are intentionally
+ // not rendered: the user asked to lose the visible rectangular sea boundary.
+ // Shore terrain and every island prop retain their original geometry and position.
  // Build the sea surface as a ring with a true hole matching the island's shoreline.
  // A full rectangular plane placed under the island used to show through in top views.
  const nA=256,nR=56,verts=[],uvs=[],colors=[],faces=[];
@@ -173,7 +154,10 @@ export function buildCutaway(){
    const shoal=1-smooth(.97,1.72,t);
    const c=new T.Color('#1c596b').lerp(new T.Color('#448890'),shoal*.54);
    c.multiplyScalar(1+.075*Math.sin(x*1.45+z*.87)+.04*Math.sin(x*3.1-z*1.8));
-   colors.push(c.r,c.g,c.b);
+   // Vertex opacity rolls off inside the cloud bank; no hard ocean perimeter.
+   const edge=Math.max(Math.abs((x-WATER_CENTER_X)/(W/2)),Math.abs((z-WATER_CENTER_Z)/(D/2)));
+   const fade=1-smooth(.845,.995,edge);
+   colors.push(c.r,c.g,c.b,fade);
    if(j<nR&&i<nA){
      const q=j*(nA+1)+i;
      faces.push(q,q+1,q+nA+1,q+1,q+nA+2,q+nA+1);
@@ -182,7 +166,7 @@ export function buildCutaway(){
  const wg=new T.BufferGeometry();
  wg.setAttribute('position',new T.Float32BufferAttribute(verts,3));
  wg.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));
- wg.setAttribute('color',new T.Float32BufferAttribute(colors,3));
+ wg.setAttribute('color',new T.Float32BufferAttribute(colors,4));
  wg.setIndex(faces);
  // Analytic surface normals smooth out radial mesh banding over the wider ocean.
  const waterNormals=[];
@@ -197,7 +181,8 @@ export function buildCutaway(){
  wg.setAttribute('normal',new T.Float32BufferAttribute(waterNormals,3));
  const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({
    vertexColors:true,color:0xffffff,roughness:.57,metalness:.012,
-   clearcoat:.20,clearcoatRoughness:.55,side:T.DoubleSide
+   clearcoat:.20,clearcoatRoughness:.55,side:T.DoubleSide,
+   transparent:true,depthWrite:false
  }));
  water.castShadow=false;water.receiveShadow=true;water.userData.isWaterSurface=true;water.userData.center=[WATER_CENTER_X,WATER_CENTER_Z];water.userData.areaFactor=WATER_AREA_FACTOR;group.add(water);
  // Removed 44 freestanding underwater stones. They produced visible offshore
