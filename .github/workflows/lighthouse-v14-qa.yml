@@ -81,7 +81,7 @@ jobs:
             const variants=visible(arms).map(a=>a.variant);
             if(base.version!=='v14a'||base.meshCount<350||Math.abs(base.waterFactor-5.6)>.0002||
                base.waterCenter!=='-0.2,0.25'||base.geometryAudit!=='pass'||base.tyreCount!==6||
-               base.fogMeshCount!==11||base.fog.veilCount!==3||base.fog.curtainCount!==8||
+               base.fogMeshCount!==7||base.fog.veilCount!==7||base.fog.curtainCount!==0||
                base.event.positions.length!==8||!base.event.corridorClear||
                base.event.siteClearances.some(x=>x<1.0)||
                !launched||arms.activeCount!==5||variants.sort((a,b)=>a-b).join(',')!=='0,0,1,2,3'||
