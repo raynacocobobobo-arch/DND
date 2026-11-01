@@ -43,6 +43,10 @@ jobs:
            const api=()=>page.evaluate(()=>window.__lighthouseNightEvents.getVisitor());
            const night=await api();
            await page.screenshot({path:'lighthouse/v24-qa-output/night-fishman-default.png'});
+           await page.evaluate(()=>window.__lighthouseNightEvents.focusVisitorForTest());
+           await page.waitForTimeout(400);
+           await page.screenshot({path:'lighthouse/v24-qa-output/night-fishman-closeup.png'});
+           await page.evaluate(()=>window.__lighthouseNightEvents.resetCameraForTest());
            await page.locator('#mode-day').click();
            await page.waitForTimeout(1000);
            const mid=await api();
@@ -50,6 +54,10 @@ jobs:
            await page.waitForTimeout(2200);
            const day=await api();
            await page.screenshot({path:'lighthouse/v24-qa-output/day-human-default.png'});
+           await page.evaluate(()=>window.__lighthouseNightEvents.focusVisitorForTest());
+           await page.waitForTimeout(400);
+           await page.screenshot({path:'lighthouse/v24-qa-output/day-human-closeup.png'});
+           await page.evaluate(()=>window.__lighthouseNightEvents.resetCameraForTest());
            await page.locator('#mode-night').click();
            await page.waitForTimeout(3300);
            const afterNight=await api();

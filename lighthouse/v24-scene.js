@@ -5,7 +5,7 @@ import {buildSite} from './v23-site.js?v=23a';
 import {createNightEvents} from './v23-events.js?v=23a';
 import {createSteadySeaClouds} from './v23-clouds.js?v=23a';
 import {createFlyingGulls} from './v23-gulls.js?v=23a';
-import {createDayNightVisitor} from './v24-character.js?v=24a';
+import {createDayNightVisitor} from './v24-character.js?v=24b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);
@@ -179,6 +179,17 @@ window.__lighthouseSea=seaSurface;
 window.__lighthouseNightEvents={
  getState:()=>nightEvents?.getState(),
  getVisitor:()=>visitor?.getState(),
+ focusVisitorForTest:()=>{
+  const p=visitor.root.position;
+  controls.autoRotate=false;
+  camera.position.set(p.x+1.50,p.y+1.04,p.z+2.25);
+  controls.target.set(p.x,p.y+.36,p.z);
+  controls.update();
+ },
+ resetCameraForTest:()=>{
+  camera.up.set(0,1,0);camera.position.copy(initial);
+  controls.target.copy(target);controls.update();
+ },
  getClouds:()=>cloudBorder?.getState(),
  advanceCloudsForTest:(seconds)=>cloudBorder?.advanceForTest(seconds),
  getGulls:()=>gulls?.getState(),
