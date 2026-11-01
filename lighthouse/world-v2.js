@@ -118,9 +118,17 @@ export function groundRock(cx,cz,sx,sy,sz,mat=M.cliff,details=2){
   let mult=1+.09*Math.sin(x*6+z*5+offset)+.053*Math.sin(y*14+x*7+offset)+.032*Math.sin(z*21+x*12);
   p.setXYZ(i,x*mult,y*mult,z*mult);
  }
+ // Match the geological ridge UV scale so nearby stones share one consistent texture.
+ const y=coastalHeight(cx,cz)+sy*.28;
+ const uvs=geo.attributes.uv;
+ if(uvs){
+   for(let i=0;i<p.count;i++){
+     uvs.setXY(i,(cx+p.getX(i)*sx)*.27+.5,(y+p.getY(i)*sy)*.30+(cz+p.getZ(i)*sz)*.08);
+   }
+   uvs.needsUpdate=true;
+ }
  geo.computeVertexNormals();
- let y=coastalHeight(cx,cz);
- const o=add(geo,mat,cx,y+sy*.28,cz);o.scale.set(sx,sy,sz);o.rotation.y=rr(-1,1);o.rotation.z=rr(-.07,.07);return o;
+ const o=add(geo,mat,cx,y,cz);o.scale.set(sx,sy,sz);o.rotation.y=rr(-1,1);o.rotation.z=rr(-.07,.07);return o;
 }
 function softWave(x,z){return .045*Math.sin(x*2.8+z*.65)+.024*Math.cos(z*3.6-x*.70)+.012*Math.sin(x*6.0+z*4.7)}
 export function buildCutaway(){
