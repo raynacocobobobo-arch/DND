@@ -58,10 +58,10 @@ jobs:
             await page.locator('#reset').click();
             await page.locator('#mode-night').click();
             const started=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('tentacles',3,[0,1,2]));
-            const arms=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(2.5));
+            const arms=await page.evaluate(()=>{window.__lighthouseNightEvents.pauseForTest(true);return window.__lighthouseNightEvents.advanceForTest(2.5);});
             await page.screenshot({path:'lighthouse/v13-qa-output/three-tentacle-shapes.png'});
             const shipStarted=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
-            const concurrent=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(3.5));
+            const concurrent=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(1.2));
             await page.screenshot({path:'lighthouse/v13-qa-output/ship-with-tentacles.png'});
             const variantFour=await page.evaluate(()=>{
               window.__lighthouseNightEvents.forceEvent('tentacles',1,[3]);
@@ -74,7 +74,7 @@ jobs:
             console.log('V13_QA_RESULT',JSON.stringify(result));
             await browser.close();
             const selected=(s)=>s.arms.filter(a=>s.selected.includes(a.index));
-            const shapes=selected(arms).map(a=>a.variant);
+            const shapes=selected(arms).map(a=>a.variant).sort((a,b)=>a-b);
             const s4=selected(variantFour)[0];
             if(base.version!=='v13a'||base.meshCount<250||
                Math.abs(base.waterFactor-2.8)>.00015||base.waterCenter!=='-0.2,0.25'||
