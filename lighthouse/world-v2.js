@@ -102,7 +102,7 @@ export const M={
 export function coastalHeight(x,z){
  const dx=(x+.20)/5.00,dz=(z-.25)/3.88;
  const r=Math.sqrt(dx*dx+dz*dz);
- let hill=.18+.54*Math.pow(Math.max(0,1-r),1.6);
+ let hill=.225+.48*Math.pow(Math.max(0,1-r),1.6)+.105*(1-smooth(.68,1.02,r));
  hill+=.07*Math.exp(-((x+2)**2+(z+1.2)**2)/7);
  hill+=.03*Math.sin(x*2.7+z*.9)*Math.max(0,1-r);
  return hill;
