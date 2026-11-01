@@ -23,7 +23,7 @@ export function createPerimeterFog(){
   'uniform vec3 uColor;uniform float uTime;uniform float uStrength;',
   noise,
   'void main(){float r=max(abs(vUv.x-.5)*2.0,abs(vUv.y-.5)*2.0)*1.12;',
-  'float a=smoothstep(.85,1.00,r);',
+  'float a=smoothstep(.83,.965,r)*(1.0-smoothstep(1.012,1.115,r));',
   'float mist=n(vWorld.xz*.28+vec2(uTime*.021,uTime*.010));',
   'float wisp=n(vWorld.xz*.66-vec2(0.,uTime*.029));',
   'float alpha=clamp(a*(.68+.27*mist+.14*wisp)*uStrength,0.,.98);',
