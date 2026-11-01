@@ -6,7 +6,7 @@ import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,grou
 function cliffMass(cx,cz,length,width,height,phase){
  // Connected non-spherical ridge mesh: the silhouette follows terrain geology.
  const positions=[],colors=[],n=13,base=.20,front=cz+width*.53,back=cz-width*.52;
- const warm=new T.Color('#8c806f'),shadow=new T.Color('#5f6465'),sunlit=new T.Color('#a89b84');
+ const warm=new T.Color('#77736a'),shadow=new T.Color('#51595b'),sunlit=new T.Color('#90897b');
  function vertex(p,color){positions.push(...p);colors.push(color.r,color.g,color.b)}
  function tri(a,b,c,face){
   const shade=face==='front'?sunlit:face==='back'?shadow:warm;
@@ -17,7 +17,7 @@ function cliffMass(cx,cz,length,width,height,phase){
   let t=i/n,t2=(i+1)/n;
   function ridge(q){
    const x=cx+(q-.5)*length;
-   const h=Math.pow(Math.max(.025,Math.sin(Math.PI*q)),.81)*height*(.86+.16*Math.sin(q*13+phase));
+   const plateau=smooth(0,.23,q)*(1-smooth(.73,1,q));const h=height*plateau*(.72+.17*Math.sin(q*6+phase)+.08*Math.cos(q*16+phase));
    return [x,base+h,cz+.16*Math.sin(q*7+phase)];
   }
   const r0=ridge(t),r1=ridge(t2);
@@ -297,7 +297,7 @@ export function buildShips(){
  pipe([[.6,.38,4.95],[1.9,.42,4.75],[3.5,.38,4.69]],.013,M.rope);
  // Rear-right ruined ship: strongly visible curled prow + broken hull + ribs.
  const wreck=buildBoat(3.10,.88,M.wreck);
- wreck.position.set(4.65,.26,-2.15);wreck.rotation.y=-.39;wreck.rotation.z=-.14;
+ wreck.position.set(4.65,.57,-2.20);wreck.rotation.y=-.39;wreck.rotation.z=-.16;
  const tipx=-3.10/2;
  pipe([[tipx,0,0],[tipx-.18,.33,0],[tipx-.20,.94,0],[tipx-.01,1.23,0],[tipx+.24,1.19,0],[tipx+.35,.95,0]],.085,M.wood,wreck);
  // Exposed planks broken upright at the rear, with gradually varied height.
