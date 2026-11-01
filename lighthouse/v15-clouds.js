@@ -25,9 +25,9 @@ export function createSquareCloudBorder(){
   else if(side===1){x=cx+edge*halfW;z=cz+t*halfD;alongX=0;alongZ=1;outX=1;outZ=0;}
   else if(side===2){x=cx-t*halfW;z=cz+edge*halfD;alongX=-1;alongZ=0;outX=0;outZ=1;}
   else {x=cx-edge*halfW;z=cz-t*halfD;alongX=0;alongZ=-1;outX=-1;outZ=0;}
-  const lift=band===0?R(3.00,3.75):R(4.10,5.20);
-  const length=band===0?R(3.00,4.12):R(3.25,4.40);
-  const puffCount=7+Math.floor(rnd()*2),phase=R(0,Math.PI*2);
+  const lift=band===0?R(2.85,3.90):R(4.10,5.35);
+  const length=band===0?R(5.20,6.60):R(4.60,6.00);
+  const puffCount=8,phase=R(0,Math.PI*2);
   const id=clusters.length;
   clusters.push({x,z,side,band,phase,lift,puffCount});
   // A broad, squat cumulus silhouette made from overlapping irregular polyhedra.
@@ -40,9 +40,9 @@ export function createSquareCloudBorder(){
   for(let j=0;j<puffCount;j++){
    const [span,up,amount]=silhouette[j];
    const lump=amount*R(.91,1.09);
-   const wide=length*.29*lump;
-   const high=.91*lump;
-   const deep=.83*lump;
+   const wide=length*.265*lump;
+   const high=1.17*lump;
+   const deep=1.05*lump;
    const pX=x+alongX*span*length*.42+outX*R(-.17,.24);
    const pZ=z+alongZ*span*length*.42+outZ*R(-.17,.24);
    const y=lift+up*1.32+R(-.07,.09);
@@ -53,11 +53,11 @@ export function createSquareCloudBorder(){
  };
  // Two staggered rows on each straight edge; corners intentionally overlap.
  for(let side=0;side<4;side++){
-  const inner=side%2===0?16:14,outer=side%2===0?8:7;
+  const inner=side%2===0?9:8,outer=side%2===0?6:5;
   for(let i=0;i<inner;i++)addCluster(side,(i+.10+R(-.14,.14))/(inner-1),0);
   for(let i=0;i<outer;i++)addCluster(side,(i+.35+R(-.11,.11))/(outer-1),1);
  }
- const geometry=new T.IcosahedronGeometry(1,0);
+ const geometry=new T.IcosahedronGeometry(1,1);
  const proxy=new T.Object3D();
  const meshes=parts.map((rec,i)=>{
   const material=new T.MeshLambertMaterial({color:palette[i][1],flatShading:true,side:T.FrontSide});

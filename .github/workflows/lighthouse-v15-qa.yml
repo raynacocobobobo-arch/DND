@@ -64,6 +64,7 @@ jobs:
            await page.locator('#reset').click();
            await page.screenshot({path:'lighthouse/v15-qa-output/day-perspective.png'});
            await page.locator('#mode-night').click();
+           await page.waitForTimeout(3050);
            await page.evaluate(()=>window.__lighthouseNightEvents.pauseForTest(true));
            const launched=await page.evaluate(()=>window.__lighthouseNightEvents.forceEvent('tentacles',5,[0,1,2,3,0]));
            const arms=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(2.5));
@@ -81,9 +82,9 @@ jobs:
            const flapped=Math.abs(pos1.wingAngle-pos2.wingAngle)>.02;
            const pass=base.version==='v15a'&&base.geometryAudit==='pass'&&
              Math.abs(base.waterFactor-5.6)<.0002&&base.fogMeshCount===0&&
-             base.perimeterShape==='square'&&base.cloudCount>=90&&base.gullCount===9&&
+             base.perimeterShape==='square'&&base.cloudCount>=50&&base.gullCount===9&&
              base.clouds.shape==='square'&&base.clouds.opaque&&base.clouds.fogMeshCount===0&&
-             base.clouds.puffCount>=600&&base.events.positions.length===8&&
+             base.clouds.puffCount>=400&&base.events.positions.length===8&&
              base.events.corridorClear&&moved&&flapped&&launched&&arms.activeCount===5&&
              shipLaunch&&combo.concurrent&&dayInstant.activeCount===5&&
              dayInstant.ship.active&&retreat.activeCount===0&&

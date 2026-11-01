@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate production HTML references the expected 3D bundle
         run: |
-          grep -q 'v15-scene.js?v=15b' lighthouse/index.html
+          grep -q 'v15-scene.js?v=15c' lighthouse/index.html
           grep -q '灯塔营地 V15a' lighthouse/index.html
       - name: Verify actual public Pages document and live JS after deployment
         run: |

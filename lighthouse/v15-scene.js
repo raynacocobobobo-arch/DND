@@ -3,7 +3,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v15-world.js?v=15a';
 import {buildSite} from './v15-site.js?v=15a';
 import {createNightEvents} from './v14-events.js?v=14a';
-import {createSquareCloudBorder} from './v15-clouds.js?v=15b';
+import {createSquareCloudBorder} from './v15-clouds.js?v=15c';
 import {createFlyingGulls} from './v15-gulls.js?v=15a';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
