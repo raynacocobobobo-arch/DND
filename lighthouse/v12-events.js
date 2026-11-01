@@ -3,7 +3,7 @@ import {createPirateShip} from './v12-pirate.js?v=12a';
 /** Exclusive night encounters: either 1..3 Kraken arms, OR one passing ship. */
 export function createNightEvents(parent){
  const positions=[
-   {x:-8.4,z:-3.0}, // western water
+   {x:-8.1,z:3.65}, // visible western water, clear of the raised deck
    {x:7.35,z:-3.85},// northeastern open sea
    {x:4.9,z:7.25}   // southern ocean, beyond coast
  ];
