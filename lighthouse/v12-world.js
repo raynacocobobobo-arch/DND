@@ -159,7 +159,7 @@ export function buildCutaway(){
  makeSide(false,WATER_CENTER_X+W/2-.004,1);makeSide(false,WATER_CENTER_X-W/2+.004,-1);
  // Build the sea surface as a ring with a true hole matching the island's shoreline.
  // A full rectangular plane placed under the island used to show through in top views.
- const nA=224,nR=32,verts=[],uvs=[],colors=[],faces=[];
+ const nA=256,nR=56,verts=[],uvs=[],colors=[],faces=[];
  const cx=WATER_CENTER_X,cz=WATER_CENTER_Z,rx=5.38,rz=4.34;
  for(let j=0;j<=nR;j++)for(let i=0;i<=nA;i++){
    const a=2*Math.PI*i/nA,dx=Math.cos(a)*rx,dz=Math.sin(a)*rz;
@@ -183,10 +183,21 @@ export function buildCutaway(){
  wg.setAttribute('position',new T.Float32BufferAttribute(verts,3));
  wg.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));
  wg.setAttribute('color',new T.Float32BufferAttribute(colors,3));
- wg.setIndex(faces);wg.computeVertexNormals();
+ wg.setIndex(faces);
+ // Analytic surface normals smooth out radial mesh banding over the wider ocean.
+ const waterNormals=[];
+ const e=.007;
+ for(let i=0;i<verts.length;i+=3){
+   const x=verts[i],z=verts[i+2];
+   const dx=(softWave(x+e,z)-softWave(x-e,z))/(2*e);
+   const dz=(softWave(x,z+e)-softWave(x,z-e))/(2*e);
+   const n=new T.Vector3(-dx,1,-dz).normalize();
+   waterNormals.push(n.x,n.y,n.z);
+ }
+ wg.setAttribute('normal',new T.Float32BufferAttribute(waterNormals,3));
  const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({
-   vertexColors:true,color:0xffffff,roughness:.44,metalness:.025,
-   clearcoat:.43,clearcoatRoughness:.28,side:T.DoubleSide
+   vertexColors:true,color:0xffffff,roughness:.57,metalness:.012,
+   clearcoat:.20,clearcoatRoughness:.55,side:T.DoubleSide
  }));
  water.castShadow=false;water.receiveShadow=true;water.userData.isWaterSurface=true;water.userData.center=[WATER_CENTER_X,WATER_CENTER_Z];water.userData.areaFactor=WATER_AREA_FACTOR;group.add(water);
  const underwater=new T.Group();group.add(underwater);
