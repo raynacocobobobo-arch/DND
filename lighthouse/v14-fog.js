@@ -24,7 +24,7 @@ export function createPerimeterFog(){
   'uniform vec3 uColor;uniform vec3 uSky;uniform float uTime;uniform float uStrength;',
   noise,
   // World-space radial distance with multi-scale noisy boundaries: no oval vignette.
-  'void main(){float r=length((vUv-.5)*2.0)*1.12;',
+  'void main(){float r=length((vUv-.5)*2.0)*1.40;',
   'float n1=n(vWorld.xz*.16+vec2(uTime*.004,-uTime*.005));',
   'float n2=n(vWorld.xz*.43+vec2(-uTime*.012,uTime*.006));',
   'float edge=r+.080*(n1-.5)+.035*(n2-.5);',
@@ -57,7 +57,7 @@ export function createPerimeterFog(){
    [.35,.58],[.73,.64],[1.12,.66],[1.57,.60],
    [2.05,.56],[2.62,.48],[3.23,.42]
  ]){
-  const o=new T.Mesh(new T.PlaneGeometry(W*1.12,D*1.12),mat(horizontal,alpha));
+  const o=new T.Mesh(new T.PlaneGeometry(W*1.40,D*1.40),mat(horizontal,alpha));
   o.rotation.x=-Math.PI/2;o.position.set(WATER_CENTER_X,y,WATER_CENTER_Z);
   o.name='perimeter-fog-horizontal';o.frustumCulled=false;o.renderOrder=32;
   o.castShadow=false;root.add(o);fogMeshes.push(o);
