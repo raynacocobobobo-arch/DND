@@ -12,7 +12,7 @@ export function createFishmanVisitor(){
  const root=new THREE.Group();root.name='lighthouse-fishman';
  const location={x:1.30,z:-.03};
  root.position.set(location.x,coastalHeight(location.x,location.z),location.z);
- root.rotation.y=.56;
+ root.rotation.y=1.13; // three-quarter fish profile like the supplied reference
  const fullHeight=3.20,scale=.213;
  root.scale.setScalar(scale);
  root.add(model);group.add(root);
@@ -216,16 +216,17 @@ export function createFishmanVisitor(){
   [3.045,-.03,-.116,.14,.120]
  ],12);
  // Blue upper eyebrow ridge / angular snout projects forward.
- ell(skull,'blueLite','elongated-fish-snout',[0,2.535,.315],[.407,.247,.476],1);
- ell(skull,'scales','nose-tip-upper-lip',[0,2.535,.674],[.324,.099,.215],1);
- ell(skull,'belly','pale-underjaw',[0,2.341,.443],[.409,.154,.357],1);
- ell(skull,'blueShadow','deep-mouth-seam',[0,2.427,.677],[.331,.034,.131],0);
- ell(skull,'blueLite','lower-lip-rim',[0,2.391,.702],[.335,.039,.131],0);
+ ell(skull,'blueLite','elongated-fish-snout',[0,2.539,.372],[.392,.217,.519],1);
+ ell(skull,'scales','nose-tip-upper-lip',[0,2.521,.742],[.321,.078,.195],1);
+ ell(skull,'belly','pale-underjaw',[0,2.348,.476],[.381,.121,.353],1);
+ ell(skull,'blueShadow','deep-mouth-seam',[0,2.429,.748],[.298,.014,.122],0);
+ ell(skull,'blueLite','lower-lip-rim',[0,2.396,.761],[.291,.023,.105],0);
  // Both gold eyes are nested radial discs, custom pupils and eye highlights.
  for(const side of [-1,1]){
-  const s=side,pivot=new THREE.Group();pivot.position.set(s*.421,2.739,.194);
+  const s=side,pivot=new THREE.Group();pivot.position.set(s*.385,2.735,.171);
+  pivot.scale.set(.87,.89,.77);
   // Eyes follow cheek/temple direction rather than front-facing cartoon eyes.
-  pivot.rotation.y=s*.47;skull.add(pivot);
+  pivot.rotation.y=s*.63;skull.add(pivot);
   const dark=ell(pivot,'eyeSocket','deep-eye-orbit-'+s,[0,0,.003],
    [.290,.285,.136],1);
   ell(pivot,'eyeDeep','ochre-eye-outer-'+s,[0,0,.121],[.248,.244,.105],1);
@@ -265,7 +266,7 @@ export function createFishmanVisitor(){
  }
  // Tiny nostrils and layered blue gill plates for profile readability.
  for(const s of [-1,1]){
-  ell(skull,'gills','small-nostril-'+s,[s*.157,2.627,.820],[.027,.022,.017],0);
+  ell(skull,'gills','small-nostril-'+s,[s*.174,2.616,.904],[.023,.018,.012],0);
   for(let j=0;j<3;j++){
    const g=ell(skull,j===0?'blueShadow':'blueLite','gill-cover-'+s+'-'+j,
     [s*(.405-j*.008),2.47-j*.075,-.113-j*.040],
