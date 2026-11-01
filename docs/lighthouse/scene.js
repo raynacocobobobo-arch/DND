@@ -33,7 +33,7 @@ function mat(color,roughness=.83,metalness=0,extra={}){return new T.MeshStandard
 function noisyTex(base,mode,contrast=.12){
   const canvas=document.createElement('canvas');canvas.width=256;canvas.height=256;
   const ctx=canvas.getContext('2d'),img=ctx.createImageData(256,256);
-  const rgb=new T.Color(base);const r=Math.round(rgb.r*255),g=Math.round(rgb.g*255),b=Math.round(rgb.b*255);
+  const rgb=new T.Color(base).convertLinearToSRGB();const r=Math.round(rgb.r*255),g=Math.round(rgb.g*255),b=Math.round(rgb.b*255);
   function hash(x,y,s){let v=Math.sin(x*127.1+y*311.7+s*73.4)*43758.5453;return v-Math.floor(v)}
   function smooth(x,y,s){let ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy;fx=fx*fx*(3-2*fx);fy=fy*fy*(3-2*fy);let a=hash(ix,iy,s),b=hash(ix+1,iy,s),c=hash(ix,iy+1,s),d=hash(ix+1,iy+1,s);return (a+(b-a)*fx)*(1-fy)+(c+(d-c)*fx)*fy}
   for(let y=0;y<256;y++)for(let x=0;x<256;x++){
@@ -218,7 +218,7 @@ function tree(x,z,h=2){
 }
 function pine(x,z,h=1.6){
  const y=islandHeight(x,z);cyl(.08,.11,h*.65,8,M.wood,x,y+h*.32,z);
- for(let i=0;i<3;i++)cyl(.15+i*.18,0,h*.43,9,M.pine,x,y+h*(.75-i*.16),z);
+ for(let i=0;i<3;i++)cyl(0,.15+i*.18,h*.43,9,M.pine,x,y+h*(.75-i*.16),z);
 }
 [[-2.95,-1.15,1.8],[-2.2,-1.7,2.15],[1.15,-1.95,2.10],[2.2,-1.35,2.0],[3.50,.14,1.85],[3.37,2.27,1.75]].forEach(v=>tree(...v));
 [[-3.1,.95,1.55],[-2.5,1.65,1.35],[3.7,1.75,1.45]].forEach(v=>pine(...v));
