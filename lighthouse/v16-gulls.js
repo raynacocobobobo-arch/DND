@@ -61,11 +61,12 @@ export function createFlyingGulls(){
   if(side===2)return new T.Vector3(cx+t*hx,0,cz+hz+margin);
   return new T.Vector3(cx-hx-margin,0,cz+t*hz);
  };
- let time=0,nextArrival=R(8,14),entered=0,exited=0,maxVisible=1;
+ let time=0,nextArrival=R(12,19),nextCompanion=Infinity,entered=0,exited=0,maxVisible=1;
  const active=new Map();
- function schedule(){
-  // Natural long quiet intervals; the second bird sometimes joins after first.
-  nextArrival=time+R(active.size===0?12:9,active.size===0?21:16);
+ function scheduleQuietInterval(){
+  // Finish the whole crossing, then let only the resident be visible for a while.
+  nextArrival=time+R(17,26);
+  nextCompanion=Infinity;
  }
  function startTransient(bird){
   const side=Math.floor(rnd()*4);
@@ -111,15 +112,23 @@ export function createFlyingGulls(){
    s.elapsed+=d;
    const t=Math.min(1,s.elapsed/s.duration);
    if(t>=1){
-    s.bird.root.visible=false;active.delete(i);exited++;continue;
+    s.bird.root.visible=false;active.delete(i);exited++;
+    if(active.size===0)scheduleQuietInterval();
+    continue;
    }
    const p=s.curve.getPoint(t),v=s.curve.getTangent(t);
    pose(s.bird,p,v,s.offset);
   }
-  if(time>=nextArrival && active.size<2){
+  if(active.size===0&&time>=nextArrival){
+   startTransient(transients[0]);
+   nextArrival=Infinity;
+   // A companion joins only on some passes, not every time.
+   nextCompanion=rnd()<.35?time+R(3.5,7.5):Infinity;
+  }
+  if(active.size===1&&time>=nextCompanion){
    const idle=transients.find(g=>!active.has(g.index));
    if(idle)startTransient(idle);
-   schedule();
+   nextCompanion=Infinity;
   }
   const visible=1+active.size;
   maxVisible=Math.max(maxVisible,visible);
@@ -136,7 +145,8 @@ export function createFlyingGulls(){
    positions,wingAngle:+resident.wings[0].pivot.rotation.z.toFixed(4),
    activeRoutes:[...active.values()].map(s=>({from:s.from,to:s.to,
     progress:+(s.elapsed/s.duration).toFixed(3)})),
-   elapsed:+time.toFixed(3),nextArrival:+nextArrival.toFixed(3)
+   elapsed:+time.toFixed(3),nextArrival:Number.isFinite(nextArrival)?+nextArrival.toFixed(3):null,
+   nextCompanion:Number.isFinite(nextCompanion)?+nextCompanion.toFixed(3):null
   };
  }
  update(.016);
