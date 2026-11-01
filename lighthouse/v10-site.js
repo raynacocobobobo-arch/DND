@@ -320,10 +320,11 @@ export function buildDeckAndHouse(){
  const lampBulb=material('#f4e4a6',.40,0,{emissive:0xffcf83,emissiveIntensity:.9});
  glowParts.stringBulbs=lampBulb;
  const festoon=material('#464343',1);
- const postA=[left-.12,deck+2.20,front-.38],postB=[left+.12,deck+2.04,rear+.16];
+ const postA=[left-.12,deck+1.92,front-.37],postB=[right-.68,deck+2.10,front-.12];
  beam([postA[0],deck+.12,postA[2]],postA,.034,woodEdge);
  beam([postB[0],deck+.12,postB[2]],postB,.034,woodEdge);
  const positions=[];
+ lights.festoon=[];
  for(let i=0;i<=12;i++){
    const t=i/12;
    const px=postA[0]+(postB[0]-postA[0])*t;
@@ -331,8 +332,11 @@ export function buildDeckAndHouse(){
    const pz=postA[2]+(postB[2]-postA[2])*t;
    positions.push([px,py,pz]);
    if(i>0 && i<12 && i%2===0){
-     ico(.055,lampBulb,px,py-.052,pz,1);
+     ico(.056,lampBulb,px,py-.052,pz,1);
      beam([px,py,pz],[px,py-.058,pz],.012,graphite);
+     const little=new T.PointLight(0xffc67a,0,3.2,1.8);
+     little.position.set(px,py-.07,pz);group.add(little);
+     lights.festoon.push(little);
    }
  }
  pipe(positions,.010,festoon);
@@ -340,6 +344,30 @@ export function buildDeckAndHouse(){
  const lamp2=[right+.25,deck+1.55,front-.95];
  beam([lamp2[0],deck-.10,lamp2[2]],lamp2,.038,woodEdge);
  box(.11,.13,.10,lampBulb,lamp2[0],deck+1.47,lamp2[2]);
+
+ // Braced beams beneath the front row, visible from the low-angle camera.
+ for(let i of [-1,1]){
+  beam([x+i*(ww*.42),deck-.14,front-.14],[x+i*(ww*.25),-.63,front-.17],.047,woodEdge);
+ }
+ // Shoreward path: a few stepping timbers follow the actual terrain, not a raised artificial patch.
+ const stepping=[[.50,2.45],[.80,2.36],[1.07,2.27],[1.30,2.13]];
+ for(const [px,pz] of stepping){
+  const gy=coastalHeight(px,pz);
+  const st=box(.28,.060,.51,woodTop,px,gy+.026,pz);
+  st.rotation.y=.08;
+ }
+ // Supply barrels near the stairs (not seating or stools).
+ function supplyBarrel(px,pz){
+  const gy=coastalHeight(px,pz),height=.53;
+  cyl(.18,.17,height,11,wood,px,gy+height*.5,pz);
+  for(const t of [.09,.45])cyl(.19,.19,.036,11,graphite,px,gy+t,pz);
+  const cap=cyl(.178,.178,.025,11,woodTop,px,gy+height+.008,pz);
+  cap.castShadow=true;
+ }
+ supplyBarrel(-.59,2.71);
+ // A small dark utility pole by the walkway with a warm lamp.
+ beam([.83,coastalHeight(.83,2.37),2.37],[.83,1.87,2.37],.029,woodEdge);
+ const pathLamp=box(.10,.12,.10,lampBulb,.83,1.76,2.37);
  lights.house1=new T.PointLight(0xffaa6b,0,8,1.5);lights.house1.position.set(hx-.9,base+1.40,houseFront+.66);group.add(lights.house1);
  lights.house2=new T.PointLight(0xffba73,0,7,1.5);lights.house2.position.set(hx+1.1,base+1.32,houseFront+.63);group.add(lights.house2);
 }
@@ -351,6 +379,7 @@ function buildBoat(){
  parent.position.set(-2.55,.50,5.10);parent.rotation.y=-.36;
  const L=2.34,B=.66,n=32,rings=5,vertices=[],uv=[],indices=[];
  const hull=material('#315768',.60,0,{side:T.DoubleSide});
+ const rubber=material('#d9d5c9',.81);
  // Two plank-sided hull halves with a solid dark floor placed safely ABOVE water surface.
  for(let side of [-1,1]){
    const start=vertices.length/3;
@@ -384,7 +413,7 @@ function buildBoat(){
    const t=i/n*2-1;
    pts.push([t*L/2,.155+.10*Math.pow(Math.abs(t),3),side*B*Math.pow(Math.max(.005,1-t*t),.72)]);
   }
-  pipe(pts,.047,cream,parent);
+  pipe(pts,.027,rubber,parent);
  }
  for(const t of [-.88,.88]){
   box(.12,.34,.25,hull,t*L*.5,-.07,0,parent);
