@@ -155,8 +155,9 @@ export function buildCutaway(){
    const c=new T.Color('#1c596b').lerp(new T.Color('#448890'),shoal*.54);
    c.multiplyScalar(1+.075*Math.sin(x*1.45+z*.87)+.04*Math.sin(x*3.1-z*1.8));
    // Vertex opacity rolls off inside the cloud bank; no hard ocean perimeter.
-   const edge=Math.max(Math.abs((x-WATER_CENTER_X)/(W/2)),Math.abs((z-WATER_CENTER_Z)/(D/2)));
-   const fade=1-smooth(.845,.995,edge);
+   const nx=(x-WATER_CENTER_X)/(W/2),nz=(z-WATER_CENTER_Z)/(D/2);
+   const edge=Math.hypot(nx,nz)+.032*Math.sin(x*.43+z*.29)+.019*Math.sin(z*.62-x*.25);
+   const fade=1-smooth(.745,1.02,edge);
    colors.push(c.r,c.g,c.b,fade);
    if(j<nR&&i<nA){
      const q=j*(nA+1)+i;
