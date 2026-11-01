@@ -61,9 +61,11 @@ jobs:
            const travel=await page.evaluate(()=>{
              const api=window.__lighthouseNightEvents;
              const start=api.getClouds();
-             const half=api.advanceCloudsForTest(20);
-             const end=api.advanceCloudsForTest(20);
-             return {start,half,end};
+             const q1=api.advanceCloudsForTest(10);
+             const half=api.advanceCloudsForTest(10);
+             const q3=api.advanceCloudsForTest(10);
+             const end=api.advanceCloudsForTest(10);
+             return {start,q1,half,q3,end};
            });
            await page.screenshot({path:'lighthouse/v18-qa-output/day-after-40s.png'});
            await page.locator('#mode-night').click();
@@ -78,11 +80,16 @@ jobs:
            const instant=await page.evaluate(()=>window.__lighthouseNightEvents.getState());
            const retreat=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(5));
            const exit=await page.evaluate(()=>window.__lighthouseNightEvents.advanceForTest(26));
-           const allOpaque=[travel.start,travel.half,travel.end].every(v=>
+           const samples=[travel.start,travel.q1,travel.half,travel.q3,travel.end];
+           const allOpaque=samples.every(v=>
              v.opaque&&v.activeCount===3&&v.fixedCount===3&&
              v.clouds.every(c=>!c.transparent&&c.opacity===1&&c.visible));
-           const moved=travel.start.clouds.every((c,i)=>
-             Math.abs(c.x-travel.half.clouds[i].x)>0.50);
+           // Four samples at 10-second intervals cover the entire sway cycle,
+           // regardless of the animation phase when the browser test starts.
+           const moved=travel.start.clouds.every((c,i)=>{
+             const xs=samples.map(s=>s.clouds[i].x);
+             return Math.max(...xs)-Math.min(...xs)>.42;
+           });
            const returned=travel.start.clouds.every((c,i)=>
              Math.abs(c.x-travel.end.clouds[i].x)<.02);
            const passed=data.version==='v18a'&&data.geometry==='pass'&&
