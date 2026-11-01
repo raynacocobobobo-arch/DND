@@ -3,7 +3,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v14-world.js?v=14d';
 import {buildSite} from './v14-site.js?v=14d';
 import {createNightEvents} from './v14-events.js?v=14a';
-import {createPerimeterFog} from './v14-fog.js?v=14d';
+import {createPerimeterFog} from './v14-fog.js?v=14e';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);

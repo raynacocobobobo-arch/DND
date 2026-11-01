@@ -1,13 +1,14 @@
 import * as T from 'three';
 import {W,D,WATER_CENTER_X,WATER_CENTER_Z,group} from './v14-world.js?v=14d';
 
-/** Layered, gently moving fog from 85-100% normalized edge distance.
- *  Horizontal veils work from above; full-height curtains hide the cutaway side.
+/** Seven softly layered cloud veils conceal the outer 80-100% ocean perimeter.
+ *  No square geometry is drawn at the boundary; fog dissolves into the sky.
  */
 export function createPerimeterFog(){
  const root=new T.Group();root.name='ocean-perimeter-dense-fog';group.add(root);
- const dark=new T.Color('#0b2536'),bright=new T.Color('#9bbdc6'),tint=dark.clone();
- const uTime={value:0},uColor={value:tint};
+ const dark=new T.Color('#49697a'),bright=new T.Color('#c5dce0'),tint=dark.clone();
+ const skyNight=new T.Color('#071b2b'),skyDay=new T.Color('#8bbdd2'),sky=skyNight.clone();
+ const uTime={value:0},uColor={value:tint},uSky={value:sky};
  const vertex=[
   'varying vec2 vUv;varying vec3 vWorld;',
   'void main(){vUv=uv;vec4 w=modelMatrix*vec4(position,1.0);vWorld=w.xyz;',
@@ -20,16 +21,22 @@ export function createPerimeterFog(){
  ].join('\n');
  const horizontal=[
   'varying vec2 vUv;varying vec3 vWorld;',
-  'uniform vec3 uColor;uniform float uTime;uniform float uStrength;',
+  'uniform vec3 uColor;uniform vec3 uSky;uniform float uTime;uniform float uStrength;',
   noise,
+  // World-space radial distance with multi-scale noisy boundaries: no oval vignette.
   'void main(){float r=length((vUv-.5)*2.0)*1.12;',
-  'r+=.038*(n(vWorld.xz*.23+vec2(uTime*.009,0.))-.5);',
-  'float a=smoothstep(.75,.96,r)*(1.0-smoothstep(1.028,1.115,r));',
-  'float mist=n(vWorld.xz*.28+vec2(uTime*.021,uTime*.010));',
-  'float wisp=n(vWorld.xz*.66-vec2(0.,uTime*.029));',
-  'float alpha=clamp(a*(.68+.27*mist+.14*wisp)*uStrength,0.,.98);',
-  'gl_FragColor=vec4(uColor,alpha);}'
- ].join('\n');
+  'float n1=n(vWorld.xz*.16+vec2(uTime*.004,-uTime*.005));',
+  'float n2=n(vWorld.xz*.43+vec2(-uTime*.012,uTime*.006));',
+  'float edge=r+.080*(n1-.5)+.035*(n2-.5);',
+  // Thick cloud occupies the outer sea; it blends out to the exact sky color.
+  'float bank=smoothstep(.78,.96,edge)*(1.0-smoothstep(1.00,1.27,edge));',
+  'float mist=n(vWorld.xz*.27+vec2(uTime*.012,uTime*.003));',
+  'float streak=n(vWorld.xz*.81-vec2(uTime*.018,uTime*.009));',
+  'float density=clamp(.76+.22*mist+.18*streak,.50,1.25);',
+  'float alpha=clamp(bank*density*uStrength,0.,.98);',
+  'vec3 fogColor=mix(uColor,uSky,smoothstep(.90,1.19,edge));',
+  'gl_FragColor=vec4(fogColor,alpha);}'
+ ].join('\\n');
  const curtain=[
   'varying vec2 vUv;varying vec3 vWorld;',
   'uniform vec3 uColor;uniform float uTime;uniform float uStrength;',
@@ -38,17 +45,17 @@ export function createPerimeterFog(){
  ].join('\n');
  function mat(shader,opacity){
   return new T.ShaderMaterial({
-   uniforms:{uTime,uColor,uStrength:{value:opacity}},
+   uniforms:{uTime,uColor,uSky,uStrength:{value:opacity}},
    vertexShader:vertex,fragmentShader:shader,transparent:true,
    side:T.DoubleSide,depthWrite:false,depthTest:true
   });
  }
  const fogMeshes=[];
- // Seven overlapping translucent banks create a volume without flat vertical
- // rectangles or any exposed top edges; all fade spatially from 85-100%.
+ // Seven overlapping translucent banks hide the sea edge from elevated views.
+ // Their irregular, wide sky-color fade prevents a conspicuous dark oval border.
  for(const [y,alpha] of [
-   [.35,.51],[.73,.56],[1.12,.61],[1.57,.62],
-   [2.05,.55],[2.62,.50],[3.23,.38]
+   [.35,.58],[.73,.64],[1.12,.66],[1.57,.60],
+   [2.05,.56],[2.62,.48],[3.23,.42]
  ]){
   const o=new T.Mesh(new T.PlaneGeometry(W*1.12,D*1.12),mat(horizontal,alpha));
   o.rotation.x=-Math.PI/2;o.position.set(WATER_CENTER_X,y,WATER_CENTER_Z);
@@ -59,8 +66,10 @@ export function createPerimeterFog(){
  function setMode(next){mode=next==='day'?'day':'night';}
  function update(dt,dayBlend){
   clock+=Math.min(Math.max(0,dt||0),.5);
-  uTime.value=clock;tint.copy(dark).lerp(bright,T.MathUtils.clamp(dayBlend??(mode==='day'?1:0),0,1));
+  uTime.value=clock;
+  const blend=T.MathUtils.clamp(dayBlend??(mode==='day'?1:0),0,1);
+  tint.copy(dark).lerp(bright,blend);sky.copy(skyNight).lerp(skyDay,blend);
  }
  return {root,update,setMode,getState:()=>({veilCount:7,curtainCount:0,
-  meshCount:fogMeshes.length,clearInterior:.85,denseAt:1.0,mode})};
+  meshCount:fogMeshes.length,clearInterior:.78,denseAt:.96,mode})};
 }
