@@ -20,7 +20,7 @@ const former={rock:'shore_rock',tree:'pine',hut:'boathouse',dock:'boathouse'};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 export function emptyMap(){
  return {schema:WORLD_SCHEMA,version:2,width:WIDTH,depth:DEPTH,grid:[GW,GH],
- heights:Array(GW*GH).fill(-3),types:Array(GW*GH).fill('water'),objects:[]};
+ heights:Array(GW*GH).fill(-3),types:Array(GW*GH).fill('water'),objects:[],baseEdits:{}};
 }
 export function normalizeMap(v){
  if(!v||!Array.isArray(v.heights)||v.heights.length!==GW*GH||
@@ -31,6 +31,19 @@ export function normalizeMap(v){
  const w=emptyMap();
  w.heights=v.heights.map(t=>clamp(Math.round(Number(t)||0),-3,9));
  w.types=v.types.map(t=>['water','sand','grass','rock'].includes(t)?t:'water');
+ w.baseEdits={};
+ if(v.baseEdits&&typeof v.baseEdits==='object'){
+  for(const id of ['lighthouse','boathouse']){
+   const rec=v.baseEdits[id];if(!rec)continue;
+   w.baseEdits[id]={
+    x:clamp(Number(rec.x)||0,-WIDTH/2,WIDTH/2),
+    z:clamp(Number(rec.z)||0,-DEPTH/2,DEPTH/2),
+    rotation:((Number(rec.rotation)||0)%360+360)%360,
+    scale:clamp(Number(rec.scale)||1,.3,3),
+    hidden:!!rec.hidden
+   };
+  }
+ }
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
@@ -74,9 +87,12 @@ export function nativePrefabCatalog(group,reefRoot){
   if(!node)continue;
   // The source is the actual THREE.Object3D from lighthouse V35 scene.
   const base=node.clone(true), origin=anchor||[node.position.x,0,node.position.z];
+  const bbox=new T.Box3().setFromObject(node);
+  // Normalize every genuine game model to its bottom contact plane.
+  const lowerY=Number.isFinite(bbox.min.y)?bbox.min.y:0;
   const prefab=new T.Group();
   prefab.name='shared-original-'+asset;
-  base.position.set(base.position.x-origin[0],base.position.y-origin[1],base.position.z-origin[2]);
+  base.position.set(base.position.x-origin[0],base.position.y-lowerY,base.position.z-origin[2]);
   prefab.add(base);
   // Generated clones are not treated as original boat / Kraken UI sources.
   prefab.userData.assetType=asset;
@@ -182,4 +198,23 @@ export function savePreviewMap(w){
 export function readPreviewMap(){
  try{const raw=localStorage.getItem(SHARED_MAP_KEY);return raw?normalizeMap(JSON.parse(raw)):null;}
  catch(e){console.warn('Invalid saved map preview:',e);return null;}
+}
+
+export const BASE_ASSETS={
+ lighthouse:{name:'原版灯塔',x:.82,z:-2.38},
+ boathouse:{name:'原版木屋与平台',x:-3.48,z:.88}
+};
+export function applyNativeEdits(w,group){
+ const results=[];
+ for(const [id,defaultInfo] of Object.entries(BASE_ASSETS)){
+  const root=group.getObjectByName('game-asset-'+id);
+  if(!root)continue;
+  const edit=w.baseEdits?.[id];
+  root.position.set(edit?.x??defaultInfo.x,0,edit?.z??defaultInfo.z);
+  root.rotation.y=(edit?.rotation??0)*Math.PI/180;
+  root.scale.setScalar(edit?.scale??1);
+  root.visible=!(edit?.hidden);
+  results.push({id,x:root.position.x,z:root.position.z,visible:root.visible});
+ }
+ return results;
 }
