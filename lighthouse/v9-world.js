@@ -132,7 +132,7 @@ export function groundRock(cx,cz,sx,sy,sz,mat=M.cliff,details=2){
 }
 function softWave(x,z){return .045*Math.sin(x*2.8+z*.65)+.024*Math.cos(z*3.6-x*.70)+.012*Math.sin(x*6.0+z*4.7)}
 export function buildCutaway(){
- box(W,4.05,D,M.basalt,0,-3.87,0).castShadow=false; // bedrock extends to -5.895
+ box(W,2.55,D,M.basalt,0,-3.12,0).castShadow=false; // thinner geological cutaway, unchanged waterline
  box(W+.01,.28,D+.01,M.soil,0,-1.705,0).castShadow=false;
  // water is a continuous thin gradient over the soil and bedrock; no coplanar decorations.
  let sides=[];
@@ -206,7 +206,16 @@ export function buildIsland(){
   if(j<nr&&i<ns){let k=j*(ns+1)+i;idx.push(k,k+ns+1,k+1,k+1,k+ns+1,k+ns+2)}
  }
  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));
- g.setAttribute('uv',new T.Float32BufferAttribute(uv,2));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.setIndex(idx);g.computeVertexNormals();
+ g.setAttribute('uv',new T.Float32BufferAttribute(uv,2));g.setAttribute('color',new T.Float32BufferAttribute(c,3));g.setIndex(idx);
+ // Deterministic analytic normals avoid a conspicuous radial shading star at the island center.
+ const normals=[];
+ for(let i=0;i<p.length;i+=3){
+   const x=p[i],z=p[i+2],eps=.035;
+   const nx=(coastalHeight(x-eps,z)-coastalHeight(x+eps,z))/(2*eps);
+   const nz=(coastalHeight(x,z-eps)-coastalHeight(x,z+eps))/(2*eps);
+   const v=new T.Vector3(nx,1,nz).normalize();normals.push(v.x,v.y,v.z);
+ }
+ g.setAttribute('normal',new T.Float32BufferAttribute(normals,3));
  add(g,new T.MeshStandardMaterial({vertexColors:true,roughness:1,side:T.DoubleSide}));
  // braided shore break: 3 narrow ribbons solely on horizontal ocean surface
  for(let band=0;band<3;band++){
