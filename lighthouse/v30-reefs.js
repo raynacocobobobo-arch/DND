@@ -81,7 +81,7 @@ export function createOffshoreReefs(){
  });
  return {root,getState:()=>({
   style:'island-shorestone-direct',count:sites.length,meshCount:meshes.length,
-  safe,exactIslandMaterials:meshes.every(m=>m.material===warmRock||m.material===shoreRock),
+  solid:true,safe,exactIslandMaterials:meshes.every(m=>m.material===warmRock||m.material===shoreRock),
   noTextureMaps:meshes.every(m=>m.material.map===null),
   referenceGeometry:meshes.every(m=>m.geometry.type==='DodecahedronGeometry'),
   lowFacets:meshes.every(m=>m.geometry.attributes.position.count<=110),
