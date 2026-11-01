@@ -2,7 +2,7 @@ import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v13-world.js?v=13a';
 import {buildSite} from './v13-site.js?v=13a';
-import {createNightEvents} from './v13-events.js?v=13a';
+import {createNightEvents} from './v13-events.js?v=13b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(26.5,18.7,30.4);
@@ -125,8 +125,10 @@ window.addEventListener('resize',()=>{
  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);
 });
 // Inspectable event states for reproducible browser QA; no manual action shown on screen.
+let pauseNightEventsForQA=false;
 window.__lighthouseNightEvents={
  getState:()=>nightEvents?.getState(),
+ pauseForTest:(v)=>{pauseNightEventsForQA=!!v;return pauseNightEventsForQA;},
  forceEvent:(kind,count,variants)=>nightEvents?.launch(kind,count,variants),
  advanceForTest:(seconds)=>{
   const count=Math.max(0,Math.min(300,Math.ceil(seconds/.1)));
@@ -138,7 +140,7 @@ const animationClock=new T.Clock();
 let frames=0;
 renderer.setAnimationLoop(()=>{
  const dt=animationClock.getDelta();
- nightEvents?.update(dt);
+ if(!pauseNightEventsForQA)nightEvents?.update(dt);
  controls.update();renderer.render(scene,camera);
  if(++frames===10)document.body.dataset.rendered='true';
 });
