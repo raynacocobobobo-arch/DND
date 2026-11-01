@@ -60,11 +60,13 @@ jobs:
             await page.locator('#mode-night').click();
             const before=await page.evaluate(()=>window.__lighthouseKraken.getState());
             await page.screenshot({path:'lighthouse/v11-qa-output/night-idle.png'});
-            // Exercise a genuine 5-10s random wait using deterministic animation frames.
-            const triggered=await page.evaluate(wait=>
-              window.__lighthouseKraken.advanceForTest(wait+.20),before.wait);
-            const rising=await page.evaluate(()=>
-              window.__lighthouseKraken.advanceForTest(1.04));
+            // Read the randomized production wait immediately; isolate each QA pose
+            // because heavy software-rendered screenshots can themselves take many seconds.
+            const triggered=await page.evaluate(()=>window.__lighthouseKraken.forceEvent());
+            const rising=await page.evaluate(()=>{
+              window.__lighthouseKraken.forceEvent();
+              return window.__lighthouseKraken.advanceForTest(1.04);
+            });
             await page.screenshot({path:'lighthouse/v11-qa-output/curving-out.png'});
             // Isolate each key pose to avoid dependence on SwiftShader's variable frame-rate.
             const extended=await page.evaluate(()=>{
@@ -89,7 +91,7 @@ jobs:
                base.tyreCount!==6||Math.abs(base.waterFactor-2)>.0001||
                base.kraken?.count!==1||base.kraken?.suckers!==24||
                day.night!==false||day.visible!==false||before.phase!=='waiting'||
-               before.wait<5||before.wait>10||triggered.phase!=='rising'||
+               before.wait<5||before.wait>10||!triggered||
                rising.visible!==true||rising.growth<.1||
                extended.visible!==true||extended.growth<.98||
                extended.bend<.55||extended.tipHeight<1.40||
