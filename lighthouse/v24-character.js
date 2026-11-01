@@ -9,13 +9,13 @@ export function createDayNightVisitor(){
  const door={x:.82,z:-1.52,height:.72};
  const fire={x:1.80,z:1.70};
  // On the path from tower doorway to campfire, outside both footprints.
- const x=1.30,z:-.03,ground=coastalHeight(x,z);
+ const x=1.30,z=-.03,ground=coastalHeight(x,z);
  const root=new T.Group();root.name='day-night-fishman-visitor';
  root.position.set(x,ground,z);
  // Face partly toward the standard camera (+x,+z).
  root.rotation.y=.62;
  group.add(root);
- const size=.595,fishHeight=1.14*size,humanHeight=1.09*size;
+ const size=.595,fishHeight=1.19*size,humanHeight=1.18*size;
  root.scale.setScalar(size);
  const color=(c)=>new T.MeshLambertMaterial({
   color:c,flatShading:true,side:T.DoubleSide
@@ -173,8 +173,9 @@ export function createDayNightVisitor(){
   human.visible=day>.0001;fish.visible=night>.0001;fins.visible=night>.0001;
   common.scale.y=1+.004*Math.sin(clock*1.0);
   const headBob=.003*Math.sin(clock*.9);
-  human.position.y=headBob;
-  fish.position.y=headBob;
+  human.position.y=(1-humanScale)*.89+headBob;
+  fish.position.y=(1-fishScale)*.89+headBob;
+  fins.position.y=(1-fishScale)*.47;
  }
  update(0,0);
  function getState(){
