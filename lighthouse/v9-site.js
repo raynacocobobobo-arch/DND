@@ -35,8 +35,8 @@ export function buildRockyIsland(){
  // Shoreline rocky banks follow the reference: continuous stone clusters at right foreground.
  const edge=[
  [4.75,1.20,.80,.68,.75],[4.62,2.12,.91,.83,.79],[4.12,2.93,1.08,.91,.88],
- [3.34,3.76,.80,.74,.82],[2.56,4.13,.73,.57,.72],[1.80,4.19,.65,.58,.70],
- [.97,4.30,.66,.48,.60],[.18,4.35,.58,.50,.55],
+ [3.34,3.76,.80,.74,.82],[2.56,4.13,.56,.45,.58],
+ [.97,4.30,.43,.39,.44],
  [4.65,-.02,.69,.62,.74],[4.58,-1.03,.63,.61,.75],
  [4.04,-3.10,.84,.90,.87],[3.47,-3.69,.70,.73,.68],
  [-4.80,-2.45,1.15,.90,1.08],[-4.38,-3.22,1.02,1.08,.96],
@@ -46,11 +46,11 @@ export function buildRockyIsland(){
   let [x,z,rx,ry,rz]=edge[i];preciseRocks(x,z,rx,ry,rz,i%4===0?shoreRock:warmRock,rr(-1,1));
  }
  // Larger, unified rocks form the island bank under the porch and front stairs.
- for(const [x,z,a,b,c] of [[-.35,3.30,.52,.43,.45],[.63,3.70,.71,.50,.61],
+ for(const [x,z,a,b,c] of [[.40,3.90,.34,.32,.38],
  [1.63,3.81,.63,.55,.64],[3.90,1.12,.72,.55,.70],[-.98,3.65,.46,.42,.49]]){
   preciseRocks(x,z,a,b,c,shoreRock,rr(-.8,.8));
  }
- for(let i=0;i<25;i++){
+ for(let i=0;i<13;i++){
   const sector=i%3, cx=sector===0?4.07:sector===1?.75:3.25,cz=sector===0?2.55:sector===1?4.0:3.65;
   const x=cx+rr(-.50,.50),z=cz+rr(-.51,.51),s=rr(.14,.30);
   preciseRocks(x,z,s*1.18,s*.90,s,i%4===0?shoreRock:warmRock,rr(-2,2));
@@ -254,7 +254,7 @@ export function buildDeckAndHouse(){
   cyl(.045,.060,.69,7,woodEdge,x+sx*(ww/2-.09),deck+.40,rear+.23+i*(dd-.46)/3);
  }
  // Front-to-right wood stair, not intersecting the island rocks or sea.
- const sx=right-.30,sz=front-.88;
+ const sx=right-.42,sz=front-1.12;
  for(let i=0;i<5;i++){
   const stepY=deck-(i+.5)*.18;
   const stepX=sx+(i+.55)*.28;
