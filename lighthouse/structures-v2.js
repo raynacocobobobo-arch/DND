@@ -3,39 +3,40 @@ import * as T from 'three';
 import {group,M,rr,rng,clamp,smooth,coastalHeight,box,cyl,ico,add,pipe,beam,groundRock,material} from './world-v2.js?v=7g';
 
 
-function cliffMass(cx,cz,length,width,height,phase){
- // Connected non-spherical ridge mesh: the silhouette follows terrain geology.
- const positions=[],uvs=[],n=13,base=.20,front=cz+width*.53,back=cz-width*.52;
- // Project the same M.stone texture used by scattered rocks across continuous cliff faces.
- function vertex(p){positions.push(...p);uvs.push(p[0]*.27+.5,p[1]*.30+p[2]*.08)}
- function tri(a,b,c){vertex(a);vertex(b);vertex(c)}
- for(let i=0;i<n;i++){
-  let t=i/n,t2=(i+1)/n;
-  function ridge(q){
-   const x=cx+(q-.5)*length;
-   const plateau=smooth(0,.23,q)*(1-smooth(.73,1,q));const h=height*plateau*(.72+.17*Math.sin(q*6+phase)+.08*Math.cos(q*16+phase));
-   return [x,base+h,cz+.16*Math.sin(q*7+phase)];
-  }
-  const r0=ridge(t),r1=ridge(t2);
-  const ff0=[cx+(t-.5)*length,base,front-.07*Math.sin(t*11+phase)],
-        ff1=[cx+(t2-.5)*length,base,front-.07*Math.sin(t2*11+phase)];
-  const bb0=[cx+(t-.5)*length,base,back+.08*Math.cos(t*8+phase)],
-        bb1=[cx+(t2-.5)*length,base,back+.08*Math.cos(t2*8+phase)];
-  const ffmid=[(r0[0]+r1[0])*.5,base+height*.16+(r0[1]+r1[1])*.19,(r0[2]+front)*.5];
-  tri(r0,ff0,ffmid,'front');tri(ff0,ff1,ffmid,'front');tri(ffmid,ff1,r1,'front');tri(r0,ffmid,r1,'front');
-  const bbmid=[(r0[0]+r1[0])*.5,base+height*.11+(r0[1]+r1[1])*.21,(r0[2]+back)*.5];
-  tri(r0,bbmid,bb0,'back');tri(bb0,bbmid,bb1,'back');tri(bbmid,r1,bb1,'back');tri(r0,r1,bbmid,'back');
+// Reference-inspired stone clusters: a few multi-faced boulders, never broad triangular wall-mountains.
+function facetedBoulder(x,z,sx,sy,sz,angle=0){
+ const g=new T.DodecahedronGeometry(1,0),p=g.attributes.position;
+ for(let i=0;i<p.count;i++){
+  const vx=p.getX(i),vy=p.getY(i),vz=p.getZ(i);
+  const k=1+.078*Math.sin(vx*6.2+vz*5.4+angle)+.045*Math.sin(vy*7.5+vx*4.3);
+  p.setXYZ(i,vx*k,vy*k,vz*k);
  }
- const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));
- geo.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));geo.computeVertexNormals();
- return add(geo,M.stone);
+ const uvs=new Float32Array(p.count*2);
+ for(let i=0;i<p.count;i++){
+   uvs[i*2]=(x+p.getX(i)*sx)*.27+.5;
+   uvs[i*2+1]=(z+p.getZ(i)*sz)*.08+(.28+sy*.53+p.getY(i)*sy)*.30;
+ }
+ g.setAttribute('uv',new T.BufferAttribute(uvs,2));g.computeVertexNormals();
+ // Bury the lower half into the island, so the rocks read as a natural mass.
+ const o=add(g,M.stone,x,coastalHeight(x,z)+sy*.54,z);
+ o.scale.set(sx,sy,sz);o.rotation.set(.02,angle,.025);
+ return o;
 }
 export function buildCliffs(){
- cliffMass(-4.45,-3.13,4.15,2.16,2.93,.7);
- cliffMass(-3.1,-3.55,2.0,1.6,1.95,2.3);
- cliffMass(3.63,-4.15,3.50,1.95,2.27,1.6);
- groundRock(-5.6,-2.28,.96,.82,.88,M.stone,2);
- groundRock(5.68,-3.87,.83,.75,.75,M.stone,2);
+ // Left/rear rocky ridge; layered irregular stone blocks with subdued warm-grey facets.
+ facetedBoulder(-4.43,-3.47,1.71,1.73,1.36,.23);
+ facetedBoulder(-4.78,-4.05,1.38,1.94,1.19,-.30);
+ facetedBoulder(-3.35,-3.55,1.41,1.40,1.11,.48);
+ facetedBoulder(-5.42,-2.90,1.02,1.04,.83,-.14);
+ facetedBoulder(-3.45,-4.39,1.19,.99,.86,.28);
+ // Right/rear stone formation: stays behind the curled-prow wreck.
+ facetedBoulder(3.26,-4.38,1.55,1.46,1.20,-.23);
+ facetedBoulder(4.30,-4.83,1.64,1.62,1.19,.44);
+ facetedBoulder(5.40,-4.33,1.06,1.09,.82,.16);
+ facetedBoulder(2.28,-4.24,.87,.84,.77,-.43);
+ // A few ground-supported small rocks around the main formations.
+ groundRock(-5.63,-2.22,.89,.69,.79,M.stone,1);
+ groundRock(5.55,-3.73,.80,.68,.74,M.stone,1);
  // Keep both docks and their pile foundations completely clear of rocks.
  const pierClearance=(x,z,margin=0)=>(
    (Math.abs(x+3.72)<.79+margin&&z>2.28-margin&&z<6.02+margin)||
@@ -189,38 +190,82 @@ export function buildCottage(){
  return {x,z,g};
 }
 
+// Forest kit based on the supplied illustration: faceted needles, single-piece polygon foliage,
+// clearly visible trunks and restrained three-blade ground tufts.
 export function buildTrees(){
- function leafy(x,z,h,spread=.62){
-  let y=coastalHeight(x,z);
-  const trunk=cyl(.075,.15,h*.52,9,M.wood,x,y+h*.26,z);
-  for(let i=0;i<3;i++){
-   let a=i*2.4+rr(-.2,.2),s=.28;
-   beam([x,y+h*.48,z],[x+Math.cos(a)*s,y+h*.70,z+Math.sin(a)*s],.045,M.wood);
-  }
-  for(let i=0;i<21;i++){
-   let a=rr(0,Math.PI*2),r=rr(.1,spread),height=rr(.63,.95)*h,s=rr(.22,.42)*h/2;
-   const o=ico(s,M.foliage[i%M.foliage.length],x+Math.cos(a)*r,y+height,z+Math.sin(a)*r,2);
-   o.scale.set(rr(.8,1.2),rr(.72,1.18),rr(.8,1.2));
-  }
+ const wood=M.wood;
+ const needle=[material('#809a32',1),material('#9ab43a',1),material('#728b34',1),material('#a4b64b',1)];
+ const deciduous=[material('#6b943d',1),material('#819d3c',1),material('#92a63e',1),material('#5b813b',1)];
+ for(const m of [...needle,...deciduous]){m.flatShading=true;}
+ function fir(x,z,h,index=0){
+   const y=coastalHeight(x,z);
+   cyl(.055,.092,h*.69,7,wood,x,y+h*.345,z);
+   const tiers=[
+    {height:.51*h,center:.52*h,radius:.31*h},
+    {height:.47*h,center:.715*h,radius:.255*h},
+    {height:.53*h,center:.93*h,radius:.205*h}
+   ];
+   for(let i=0;i<tiers.length;i++){
+     const t=tiers[i];
+     const m=needle[(index+i)%needle.length];
+     const mesh=add(new T.ConeGeometry(t.radius,t.height,5,1,false,Math.PI*.17),m,x,y+t.center,z);
+     mesh.rotation.y=.17*(index+i);
+   }
  }
- function pine(x,z,h){
-  let y=coastalHeight(x,z);
-  cyl(.06,.09,h*.6,8,M.wood,x,y+.3*h,z);
-  for(let i=0;i<4;i++)cyl(0,.47-i*.09,h*.37,9,M.pine,x,y+.38*h+i*.18*h,z);
+ function oval(x,z,h,index=0,wide=false){
+   const y=coastalHeight(x,z),trunk=wide?.49:.61;
+   cyl(.046,.074,h*trunk,6,wood,x,y+h*trunk*.5,z);
+   const radius=h*(wide?.285:.175),base=h*(wide?.45:.51);
+   const height=h*(wide?.58:.66);
+   const sides=7;
+   const rings=[
+      [0,.18],[.13,.74],[.36,1.0],[.68,.92],[.86,.58],[1,.10]
+   ],v=[],ids=[];
+   for(let j=0;j<rings.length;j++){
+    const [t,r]=rings[j];
+    for(let i=0;i<sides;i++){
+      const a=(i/sides)*Math.PI*2+.23,variation=1+.045*Math.sin(i*3+index);
+      v.push(radius*r*variation*Math.cos(a),base+t*height,radius*r*variation*Math.sin(a));
+    }
+   }
+   for(let j=0;j<rings.length-1;j++)for(let i=0;i<sides;i++){
+     const a=j*sides+i,b=j*sides+(i+1)%sides,c=(j+1)*sides+i,d=(j+1)*sides+(i+1)%sides;
+     ids.push(a,b,c,b,d,c);
+   }
+   const geo=new T.BufferGeometry();
+   geo.setAttribute('position',new T.Float32BufferAttribute(v,3));
+   geo.setIndex(ids);geo.computeVertexNormals();
+   // Each face has a distinct angle, not 21 overlapping foliage spheres.
+   const mesh=add(geo,deciduous[index%deciduous.length],x,y,z);
+   mesh.material.side=T.DoubleSide;
  }
- // Vegetation stays behind building, not hiding entrance or boat.
- [[-2.55,-.95,2.05],[-1.75,-1.7,1.9],[1.1,-1.82,2.15],[2.19,-1.5,2.05],
- [3.08,-1.26,1.75],[3.5,.24,1.45]].forEach(v=>leafy(...v));
- [[-3.26,.43,1.45],[-2.91,1.1,1.16],[3.63,1.8,1.25]].forEach(v=>pine(...v));
- // Very thin turf tufts, along contours, no tall grass slab.
- for(let i=0;i<220;i++){
-  const a=rr(0,2*Math.PI),r=Math.sqrt(rng())*.77;
-  const x=-.2+5.00*r*Math.cos(a),z=.25+3.88*r*Math.sin(a);
-  if(Math.hypot(x+.38,z+.3)<1.1||Math.abs(x-2.16)<1.25&&Math.abs(z-1.22)<.95)continue;
-  const y=coastalHeight(x,z),h=rr(.025,.091);
-  if(i%11===0){let f=ico(.027,M.trims,x,y+.02,z,1);f.scale.y=.48;continue}
-  const o=cyl(0,rr(.012,.026),h,3,M.foliage[i%4],x,y+h*.5,z);
-  o.castShadow=false;
+ // Tall pines lead on the left as in the user's reference; variety stays close to original positions.
+ fir(-3.27,.42,1.99,0);
+ fir(-2.90,1.12,1.36,2);
+ fir(-2.48,-.98,1.81,1);
+ fir(3.66,1.82,1.25,3);
+ oval(-1.75,-1.67,1.73,0,true);
+ oval(1.08,-1.84,1.95,1,false);
+ oval(2.19,-1.51,1.71,2,true);
+ oval(3.10,-1.25,1.78,3,false);
+ oval(3.51,.27,1.48,1,false);
+ // Handful of natural clumps near boulders and edges; keep sand and central path clear.
+ const grassM=[material('#728b35',1),material('#9da448',1),material('#617d38',1)];
+ for(let i=0;i<57;i++){
+    const theta=rr(0,2*Math.PI),r=.46+rr(0,.39);
+    const x=-.2+5*r*Math.cos(theta),z=.25+3.88*r*Math.sin(theta);
+    if((Math.abs(x+3.72)<.88&&z>2.20)||
+       (Math.abs(x-3.70)<.88&&z>2.15)||
+       (Math.hypot(x+.38,z+.3)<1.18)||
+       (Math.abs(x-2.16)<1.25&&Math.abs(z-1.22)<1.03))continue;
+    const y=coastalHeight(x,z);
+    for(let j=0;j<3;j++){
+      const height=rr(.10,.21),a=(2*Math.PI*j)/3+rr(-.18,.18);
+      const blade=add(new T.ConeGeometry(.019,height,3,1),grassM[(i+j)%grassM.length],
+       x+Math.cos(a)*.046,y+height*.5,z+Math.sin(a)*.046);
+      blade.rotation.z=Math.cos(a)*.24;blade.rotation.x=Math.sin(a)*.24;
+      blade.castShadow=false;
+    }
  }
 }
 
