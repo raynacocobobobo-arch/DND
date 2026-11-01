@@ -52,9 +52,7 @@ try{
  buildPiers();
  buildShips();
  buildExtras();
- // A dark tabletop that receives only the silhouette shadow; no visible horizon.
- const plane=new T.Mesh(new T.PlaneGeometry(160,160),new T.ShadowMaterial({opacity:.26}));
- plane.rotation.x=-Math.PI/2;plane.position.y=-5.93;plane.receiveShadow=true;scene.add(plane);
+ // No invisible shadow receiver: its off-block silhouettes polluted the overhead view.
  let meshCount=0,triCount=0;
  scene.traverse(o=>{if(o.isMesh){meshCount++;const g=o.geometry;if(g?.index)triCount+=g.index.count/3;else if(g?.attributes?.position)triCount+=g.attributes.position.count/3;}});
  console.info('[Lighthouse rebuild] meshes:',meshCount,'triangles:',Math.round(triCount));
