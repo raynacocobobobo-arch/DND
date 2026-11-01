@@ -143,20 +143,38 @@ export function buildCutaway(){
  box(W,1.66,D,material('#236a79',.44),0,-.735,0).castShadow=false;
  makeSide(true,D/2+.018,1);makeSide(true,-D/2-.018,-1);
  makeSide(false,W/2+.018,1);makeSide(false,-W/2-.018,-1);
- const wg=new T.PlaneGeometry(W-.08,D-.08,140,132),p=wg.attributes.position;
- const color=[];
- for(let i=0;i<p.count;i++){
-  let x=p.getX(i),z=-p.getY(i),wave=softWave(x,z);
-  p.setZ(i,.18+wave);
-  const dx=(x+.2)/5.2,dz=(z-.25)/4.0,dist=Math.sqrt(dx*dx+dz*dz);
-  const shoal=1-smooth(.92,1.67,dist);
-  let c=new T.Color('#226d82').lerp(new T.Color('#54a4a9'),shoal*.60);
-  c.multiplyScalar(1+.075*Math.sin(x*1.45+z*.87)+.04*Math.sin(x*3.1-z*1.8));
-  color.push(c.r,c.g,c.b);
+ // Build the sea surface as a ring with a true hole matching the island's shoreline.
+ // A full rectangular plane placed under the island used to show through in top views.
+ const nA=224,nR=32,verts=[],uvs=[],colors=[],faces=[];
+ const cx=-.20,cz=.25,rx=5.00,rz=3.88;
+ for(let j=0;j<=nR;j++)for(let i=0;i<=nA;i++){
+   const a=2*Math.PI*i/nA,dx=Math.cos(a)*rx,dz=Math.sin(a)*rz;
+   const tx=Math.abs(dx)<1e-8?Infinity:((dx>0?W*.5:-W*.5)-cx)/dx;
+   const tz=Math.abs(dz)<1e-8?Infinity:((dz>0?D*.5:-D*.5)-cz)/dz;
+   const outer=Math.min(tx,tz)-.0025,inner=ellipseRadius(a)+.004;
+   const t=inner+(outer-inner)*j/nR;
+   const x=cx+dx*t,z=cz+dz*t;
+   verts.push(x,.18+softWave(x,z),z);
+   uvs.push(x/W+.5,z/D+.5);
+   const shoal=1-smooth(.97,1.72,t);
+   const c=new T.Color('#226d82').lerp(new T.Color('#54a4a9'),shoal*.60);
+   c.multiplyScalar(1+.075*Math.sin(x*1.45+z*.87)+.04*Math.sin(x*3.1-z*1.8));
+   colors.push(c.r,c.g,c.b);
+   if(j<nR&&i<nA){
+     const q=j*(nA+1)+i;
+     faces.push(q,q+1,q+nA+1,q+1,q+nA+2,q+nA+1);
+   }
  }
- wg.setAttribute('color',new T.Float32BufferAttribute(color,3));wg.computeVertexNormals();
- const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({vertexColors:true,color:0xffffff,roughness:.44,metalness:.025,clearcoat:.43,clearcoatRoughness:.28,side:T.DoubleSide}));
- water.rotation.x=-Math.PI/2;water.castShadow=false;water.receiveShadow=true;group.add(water);
+ const wg=new T.BufferGeometry();
+ wg.setAttribute('position',new T.Float32BufferAttribute(verts,3));
+ wg.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));
+ wg.setAttribute('color',new T.Float32BufferAttribute(colors,3));
+ wg.setIndex(faces);wg.computeVertexNormals();
+ const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({
+   vertexColors:true,color:0xffffff,roughness:.44,metalness:.025,
+   clearcoat:.43,clearcoatRoughness:.28,side:T.DoubleSide
+ }));
+ water.castShadow=false;water.receiveShadow=true;group.add(water);
  const underwater=new T.Group();group.add(underwater);
  for(let i=0;i<30;i++){
   const x=rr(-W/2+.5,W/2-.5),z=rr(-D/2+.5,D/2-.5);
