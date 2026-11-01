@@ -90,7 +90,7 @@ function rebuildObjects(){
   g.traverse(m=>{if(m.isMesh)m.userData.recordId=r.id;});
   assetLayer.add(g);objects.set(r.id,r);
  }
- if(!selected||!objects.has(selected))selected=null;
+ if(!selected||(!objects.has(selected)&&!selected.startsWith('native:')))selected=null;
  updateInspector();$('object-count').textContent=world.objects.length;
 }
 function redraw(){rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
@@ -128,10 +128,33 @@ function pointAt(evt){
  return point;
 }
 function findSelected(evt){
- const rect=renderer.domElement.getBoundingClientRect();ndc.set((evt.clientX-rect.left)/rect.width*2-1,-(evt.clientY-rect.top)/rect.height*2+1);
+ const rect=renderer.domElement.getBoundingClientRect();
+ ndc.set((evt.clientX-rect.left)/rect.width*2-1,-(evt.clientY-rect.top)/rect.height*2+1);
  ray.setFromCamera(ndc,camera);
- const hits=ray.intersectObjects(assetLayer.children,true);
- return hits.find(h=>h.object.userData.recordId)?.object.userData.recordId||null;
+ for(const hit of ray.intersectObjects([...assetLayer.children,...Object.values(nativeTargets).filter(Boolean)],true)){
+  let parent=hit.object;
+  while(parent){
+   if(parent.userData.mapId)return parent.userData.mapId;
+   for(const [id,obj] of Object.entries(nativeTargets))if(obj===parent)return 'native:'+id;
+   parent=parent.parent;
+  }
+ }
+ return null;
+}
+function currentRecord(){
+ if(!selected)return null;
+ if(selected.startsWith('native:')){
+  const id=selected.slice(7),base=BASE_ASSETS[id],r=world.baseEdits?.[id]||{};
+  if(!base)return null;
+  return {id,asset:id,name:base.name,x:r.x??base.x,z:r.z??base.z,
+   rotation:r.rotation??0,scale:r.scale??1,hidden:r.hidden??false};
+ }
+ return objects.get(selected)||null;
+}
+function nativeEdit(id){
+ world.baseEdits??={};
+ return world.baseEdits[id]??={x:BASE_ASSETS[id].x,z:BASE_ASSETS[id].z,
+  rotation:0,scale:1,hidden:false};
 }
 function setTool(t){
  activeTool=t;document.querySelectorAll('[data-tool],[data-asset]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t||b.dataset.asset&&('asset:'+b.dataset.asset)===t));
@@ -139,16 +162,22 @@ function setTool(t){
  $('tool-name').textContent=names[t]||('放置 '+t.replace('asset:',''));
 }
 function mutateSelected(fn){
- if(!selected||!objects.has(selected))return;
- history();fn(objects.get(selected));rebuildObjects();setDirty(true);saveLocal();
+ if(!currentRecord())return;history();
+ if(selected.startsWith('native:')){
+  fn(nativeEdit(selected.slice(7)));applyNativeEdits(world,gameGroup);
+ }else{fn(objects.get(selected));rebuildObjects();}
+ updateInspector();setDirty(true);saveLocal();
 }
 function updateInspector(){
- const r=objects.get(selected);
- $('inspector').hidden=!r;$('none').hidden=!!r;
- if(!r)return;
- $('selected-name').value=r.name;$('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
+ const r=currentRecord();
+ $('inspector').hidden=!r;$('none').hidden=!!r;if(!r)return;
+ const native=selected.startsWith('native:');
+ $('selected-name').value=r.name;$('selected-name').disabled=native;
+ $('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
  $('rot').value=r.rotation;$('rot-val').textContent=Math.round(r.rotation)+'°';
  $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);
+ $('delete').textContent=native?'隐藏原版模型':'删除';
+ $('restore-native').hidden=!native;
 }
 let draggingObj=false;
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
