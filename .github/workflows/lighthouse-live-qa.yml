@@ -45,6 +45,7 @@ jobs:
             await page.screenshot({path:'lighthouse/qa-output/main.png',fullPage:true});
             const initial=await page.evaluate(()=>({
               ready:document.body.dataset.rendered,
+              meshCount:Number(document.body.dataset.meshCount||0),
               canvas:document.querySelector('canvas')?.width,
               status:document.querySelector('#status')?.textContent,
               statusHidden:document.querySelector('#status')?.hidden,
@@ -61,7 +62,7 @@ jobs:
             console.log('RESULT',JSON.stringify(initial));
             console.log('BROWSER_ERRORS',JSON.stringify(errors));
             await browser.close();
-            if(initial.ready!=='true'||!initial.canvas||errors.length)process.exit(1);
+            if(initial.ready!=='true'||!initial.canvas||initial.meshCount<240||errors.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node /tmp/lighthouse-qa/test.cjs
