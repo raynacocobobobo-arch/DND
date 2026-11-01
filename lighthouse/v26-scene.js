@@ -1,11 +1,11 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v23-world.js?v=23a';
-import {buildSite} from './v23-site.js?v=23a';
-import {createNightEvents} from './v23-events.js?v=23a';
-import {createSteadySeaClouds} from './v23-clouds.js?v=23a';
-import {createFlyingGulls} from './v23-gulls.js?v=23a';
-import {createDayNightVisitor} from './v24-character.js?v=24c';
+import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v26-world.js?v=26a';
+import {buildSite} from './v26-site.js?v=26a';
+import {createNightEvents} from './v26-events.js?v=26a';
+import {createSteadySeaClouds} from './v26-clouds.js?v=26a';
+import {createFlyingGulls} from './v26-gulls.js?v=26a';
+import {createOffshoreReefs} from './v26-reefs.js?v=26a';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(36.2,24.5,41.4);
@@ -32,14 +32,14 @@ scene.add(key);
 const fill=new T.DirectionalLight(0x93bce5,1.0);fill.position.set(8,7,-7);scene.add(fill);
 const rim=new T.DirectionalLight(0xffbb89,.65);rim.position.set(-7,8,-10);scene.add(rim);
 const skyDay=new T.Color('#8bbdd2'),skyNight=new T.Color('#071b2b');
-let site,nightEvents,cloudBorder,gulls,visitor,seaSurface,mode='night';
-const seaNightColor=new T.Color('#1b526a'),seaDayColor=new T.Color('#34859a');
+let site,nightEvents,cloudBorder,gulls,reefs,seaSurface,mode='night';
+
 let dayBlend=0,transitionFrom=0,targetDayBlend=0,transitionElapsed=2.8;
 let initialLighting=true;const sceneSky=new T.Color();
 function applyLighting(blend){
  const b=T.MathUtils.clamp(blend,0,1),lerp=T.MathUtils.lerp;
  sceneSky.copy(skyNight).lerp(skyDay,b);scene.background=sceneSky;
- if(seaSurface)seaSurface.material.color.copy(seaNightColor).lerp(seaDayColor,b);
+ seaSurface?.userData.setBlend(b);
  hemi.intensity=lerp(.48,2.15,b);
  hemi.color.set(0x8fb4d2).lerp(new T.Color(0xd7eeff),b);
  hemi.groundColor.set(0x243849).lerp(new T.Color(0x6a6660),b);
@@ -90,7 +90,7 @@ try{
  nightEvents=createNightEvents(group);
  cloudBorder=createSteadySeaClouds();
  gulls=createFlyingGulls();
- visitor=createDayNightVisitor();
+ reefs=createOffshoreReefs();
  // Geometry QA checks, independent of screenshot or WebGL availability.
  const audit={tyres:[],steps:[],lamps:[],crates:[]};
  group.traverse(object=>{
@@ -118,23 +118,26 @@ try{
  scene.traverse(o=>{if(o.isMesh){count++;triCount+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3}});
  if(count<210)throw Error('Scene incomplete: '+count+' meshes');
  document.body.dataset.meshCount=String(count);
- document.body.dataset.version='v24a';
- document.body.dataset.visitorHeight=String(visitor.getState().height.toFixed(4));
- document.body.dataset.visitorBelowDoor=String(visitor.getState().belowDoor);
+ document.body.dataset.version='v26a';
+ document.body.dataset.characterCount='0';
+ document.body.dataset.reefCount=String(reefs.getState().count);
+ document.body.dataset.reefSafe=String(reefs.getState().safe);
  const sidewallCount=group.children.filter(c=>c.userData.waterSidewall).length;
  document.body.dataset.waterSidewallCount=String(sidewallCount);
  document.body.dataset.waterTopCapRemoved=String(seaSurface.userData.underwaterTopCapRemoved);
  if(sidewallCount!==4||!seaSurface.userData.underwaterTopCapRemoved)throw Error('Sea cap conflict audit failed');
- const flatSea=seaSurface&&seaSurface.userData.vectorFlat&&
-  seaSurface.geometry.type==='PlaneGeometry'&&
-  seaSurface.geometry.attributes.position.count===4&&
-  seaSurface.material.type==='MeshBasicMaterial'&&
-  seaSurface.material.opacity===1&&!seaSurface.material.transparent&&
-  !seaSurface.material.vertexColors&&seaSurface.material.depthWrite;
- document.body.dataset.vectorSea=String(!!flatSea);
- document.body.dataset.seaTriangles=String(seaSurface?.geometry.index?.count/3||0);
- document.body.dataset.seaHeight=String(seaSurface?.position.y);
- if(!flatSea)throw Error('Flat vector sea audit failed');
+ const facetedSea=!!(seaSurface?.userData.vectorFlat&&
+  seaSurface?.userData.faceted&&seaSurface.geometry.type==='BufferGeometry'&&
+  seaSurface.geometry.attributes.position.count>=400&&
+  seaSurface.geometry.attributes.color.count===seaSurface.geometry.attributes.position.count&&
+  seaSurface.material.vertexColors&&seaSurface.material.type==='MeshBasicMaterial'&&
+  seaSurface.material.opacity===1&&!seaSurface.material.transparent&&seaSurface.material.depthWrite);
+ document.body.dataset.vectorSea=String(facetedSea);
+ document.body.dataset.seaStyle='multicolor-faceted-flat';
+ document.body.dataset.seaTriangles=String(seaSurface.geometry.attributes.position.count/3);
+ document.body.dataset.seaPaletteCount=String(seaSurface.userData.paletteCount);
+ document.body.dataset.seaHeight=String(seaSurface.userData.seaLevel);
+ if(!facetedSea)throw Error('Faceted flat sea geometry audit failed');
  document.body.dataset.fogMeshCount='0';
  document.body.dataset.waterVolumeCount=String(group.children.filter(c=>c.userData.isWaterVolume).length);
  document.body.dataset.shipClippingEnabled=String(renderer.localClippingEnabled);
@@ -151,10 +154,10 @@ try{
  document.body.dataset.waterAreaFactor=WATER_AREA_FACTOR.toFixed(5);
  document.body.dataset.waterDimensions=`${W.toFixed(3)} × ${D.toFixed(3)}`;
  document.body.dataset.waterCenter=`${WATER_CENTER_X},${WATER_CENTER_Z}`;
- console.info('V24 daylight visitor transforms into low-poly fishman after dark:',count,'triangles:',Math.round(triCount));
+ console.info('V26 no character, multifaceted blue sea, three low-poly reefs:',count,'triangles:',Math.round(triCount));
  setMode('night');
  status.hidden=true;
-}catch(err){status.textContent='V24 场景加载失败：'+(err?.message||err);status.hidden=false;console.error(err);throw err}
+}catch(err){status.textContent='V26 场景加载失败：'+(err?.message||err);status.hidden=false;console.error(err);throw err}
 document.getElementById('mode-day')?.addEventListener('click',()=>setMode('day'));
 document.getElementById('mode-night')?.addEventListener('click',()=>setMode('night'));
 document.getElementById('reset')?.addEventListener('click',()=>{
@@ -165,7 +168,7 @@ document.getElementById('rotate')?.addEventListener('click',e=>{
  e.currentTarget.setAttribute('aria-pressed',String(controls.autoRotate));
 });
 document.getElementById('capture')?.addEventListener('click',()=>{
- renderer.render(scene,camera);let a=document.createElement('a');a.href=renderer.domElement.toDataURL('image/png');a.download='Lighthouse_Camp_V24_'+mode+'.png';a.click();
+ renderer.render(scene,camera);let a=document.createElement('a');a.href=renderer.domElement.toDataURL('image/png');a.download='Lighthouse_Camp_V26_'+mode+'.png';a.click();
 });
 document.getElementById('fullscreen')?.addEventListener('click',()=>{
  if(!document.fullscreenElement)host.requestFullscreen?.();else document.exitFullscreen?.();
@@ -178,26 +181,7 @@ let pauseNightEventsForQA=false;
 window.__lighthouseSea=seaSurface;
 window.__lighthouseNightEvents={
  getState:()=>nightEvents?.getState(),
- getVisitor:()=>visitor?.getState(),
- advanceVisitorTransitionForTest:(seconds)=>{
-  const steps=Math.ceil(Math.max(0,Math.min(6,seconds))/.10);
-  for(let i=0;i<steps;i++)updateLighting(.10);
-  visitor?.update(0,dayBlend);
-  return visitor?.getState();
- },
- focusVisitorForTest:()=>{
-  const p=visitor.root.position;
-  controls.autoRotate=false;
-  controls.minDistance=1.50;
-  camera.position.set(p.x+.58,p.y+.82,p.z+1.45);
-  controls.target.set(p.x,p.y+.38,p.z);
-  controls.update();
- },
- resetCameraForTest:()=>{
-  controls.minDistance=3.0;
-  camera.up.set(0,1,0);camera.position.copy(initial);
-  controls.target.copy(target);controls.update();
- },
+ getReefs:()=>reefs?.getState(),
  getClouds:()=>cloudBorder?.getState(),
  advanceCloudsForTest:(seconds)=>cloudBorder?.advanceForTest(seconds),
  getGulls:()=>gulls?.getState(),
@@ -219,7 +203,6 @@ renderer.setAnimationLoop(()=>{
  updateLighting(dt);
  cloudBorder?.update(dt,dayBlend);
  gulls?.update(dt);
- visitor?.update(dt,dayBlend);
  controls.update();renderer.render(scene,camera);
  if(++frames===10)document.body.dataset.rendered='true';
 });
