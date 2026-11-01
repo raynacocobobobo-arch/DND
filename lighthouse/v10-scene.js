@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {group,buildCutaway,buildIsland,setRenderer} from './v9-world.js?v=10a';
-import {buildSite} from './v10-site.js?v=10a';
+import {group,buildCutaway,buildIsland,setRenderer} from './v9-world.js?v=10b';
+import {buildSite} from './v10-site.js?v=10b';
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
 const initial=new T.Vector3(16.6,12.5,19.2);
@@ -20,7 +20,7 @@ controls.minDistance=11;controls.maxDistance=50;controls.maxPolarAngle=Math.PI*.
 controls.screenSpacePanning=true;controls.update();
 const hemi=new T.HemisphereLight(0xd7ebfb,0x50505a,1.8);scene.add(hemi);
 const key=new T.DirectionalLight(0xffd7af,3.2);
-key.position.set(-9,16,10);key.castShadow=true;key.shadow.mapSize.set(3072,3072);
+key.position.set(-8,20,11);key.castShadow=true;key.shadow.mapSize.set(3072,3072);
 key.shadow.camera.left=-14;key.shadow.camera.right=14;key.shadow.camera.top=14;key.shadow.camera.bottom=-14;
 key.shadow.camera.near=.5;key.shadow.camera.far=48;key.shadow.bias=-.00035;key.shadow.normalBias=.025;key.shadow.radius=3;
 scene.add(key);
@@ -51,6 +51,7 @@ function setMode(next){
  site.glowParts.lamplit.emissiveIntensity=night?3.5:0;
  site.glowParts.fireMat.emissiveIntensity=night?3.8:0;
  if(site.glowParts.stringBulbs)site.glowParts.stringBulbs.emissiveIntensity=night?2.1:0;
+ if(site.lights.festoon)for(const bulb of site.lights.festoon)bulb.intensity=night?1.1:0;
  site.fire.visible=night;
  document.body.dataset.mode=mode;
  for(let which of ['day','night']){
