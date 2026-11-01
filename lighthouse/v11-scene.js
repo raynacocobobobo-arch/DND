@@ -125,7 +125,13 @@ window.addEventListener('resize',()=>{
 // Allow browser tests to inspect the event without adding an intrusive on-screen switch.
 window.__lighthouseKraken={
  getState:()=>kraken?.getState(),
- forceEvent:()=>kraken?.forceEvent()
+ forceEvent:()=>kraken?.forceEvent(),
+ advanceForTest:(seconds)=>{
+   // Deterministic animation step for visual QA only; normal playback uses real clock time.
+   const count=Math.max(0,Math.min(180,Math.ceil(seconds/.10)));
+   for(let i=0;i<count;i++)kraken?.update(.10);
+   return kraken?.getState();
+ }
 };
 const animationClock=new T.Clock();
 let frames=0;
