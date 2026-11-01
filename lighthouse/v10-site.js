@@ -252,7 +252,7 @@ export function buildDeckAndHouse(){
  }
  box(.23,.35,.15,material('#ded8c9',.81),hx+.93,base+.60,houseFront+.10);
  box(.12,.12,.18,graphite,hx+.93,base+.57,houseFront+.23);
- box(.095,.20,.13,graphite,hx-.33,base+1.62,houseFront+.13);
+
  const lampM=material('#f8d29b',.35,0,{emissive:0xffbd6a,emissiveIntensity:2.0});
  box(.14,.21,.10,graphite,hx+.63,base+1.64,houseFront+.09);
  box(.088,.14,.12,lampM,hx+.63,base+1.64,houseFront+.13);
