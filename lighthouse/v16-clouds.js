@@ -10,20 +10,20 @@ export function createSquareCloudBorder(){
  // side: north/east/south/west; along: -1..1; depth: distance from center / half-extent.
  // Four sides have different density, scale, penetration and spacing. No second row.
  const specs=[
-  {side:0,along:-.92,depth:.88,width:8.0,up:2.65,bulk:1.15,seed:11},
-  {side:0,along:-.36,depth:.91,width:6.5,up:2.95,bulk:.98,seed:19},
-  {side:0,along:.20,depth:.84,width:9.2,up:2.35,bulk:1.34,seed:27},
-  {side:0,along:.87,depth:.95,width:6.4,up:3.22,bulk:.90,seed:39},
-  {side:1,along:-.83,depth:.89,width:8.8,up:2.60,bulk:1.14,seed:41},
-  {side:1,along:-.09,depth:.83,width:9.6,up:2.10,bulk:1.40,seed:53},
-  {side:1,along:.78,depth:.96,width:6.8,up:3.04,bulk:.86,seed:61},
-  {side:2,along:-.94,depth:.94,width:7.6,up:2.80,bulk:1.09,seed:73},
-  {side:2,along:-.48,depth:.84,width:9.6,up:2.24,bulk:1.36,seed:83},
-  {side:2,along:.15,depth:.93,width:6.3,up:3.12,bulk:.97,seed:97},
-  {side:2,along:.82,depth:.86,width:9.0,up:2.50,bulk:1.30,seed:103},
-  {side:3,along:-.78,depth:.91,width:7.3,up:2.86,bulk:1.03,seed:113},
-  {side:3,along:.02,depth:.82,width:9.4,up:2.16,bulk:1.35,seed:127},
-  {side:3,along:.88,depth:.94,width:7.4,up:2.95,bulk:1.01,seed:139}
+  {side:0,along:-.92,depth:.88,width:8.0,up:1.89,bulk:1.15,seed:11},
+  {side:0,along:-.36,depth:.91,width:6.5,up:2.14,bulk:.98,seed:19},
+  {side:0,along:.20,depth:.84,width:9.2,up:1.63,bulk:1.34,seed:27},
+  {side:0,along:.87,depth:.95,width:6.4,up:2.39,bulk:.90,seed:39},
+  {side:1,along:-.83,depth:.89,width:8.8,up:1.83,bulk:1.14,seed:41},
+  {side:1,along:-.09,depth:.83,width:9.6,up:1.39,bulk:1.40,seed:53},
+  {side:1,along:.78,depth:.96,width:6.8,up:2.30,bulk:.86,seed:61},
+  {side:2,along:-.94,depth:.94,width:7.6,up:2.08,bulk:1.09,seed:73},
+  {side:2,along:-.48,depth:.84,width:9.6,up:1.55,bulk:1.36,seed:83},
+  {side:2,along:.15,depth:.93,width:6.3,up:2.32,bulk:.97,seed:97},
+  {side:2,along:.82,depth:.86,width:9.0,up:1.79,bulk:1.30,seed:103},
+  {side:3,along:-.78,depth:.91,width:7.3,up:2.06,bulk:1.03,seed:113},
+  {side:3,along:.02,depth:.82,width:9.4,up:1.47,bulk:1.35,seed:127},
+  {side:3,along:.88,depth:.94,width:7.4,up:2.14,bulk:1.01,seed:139}
  ];
  let seed=26021102;
  const random=()=>((seed=(1664525*seed+1013904223)>>>0)/4294967296);
@@ -63,12 +63,12 @@ export function createSquareCloudBorder(){
   for(let j=0;j<count;j++){
    const p=layout[j],jitter=range(.88,1.12);
    const px=x+tangentX*(p.a*s.width*.48+range(-.22,.22))+
-     inwardX*range(-.65,.42);
+     inwardX*range(.15,1.00);
    const pz=z+tangentZ*(p.a*s.width*.48+range(-.22,.22))+
-     inwardZ*range(-.65,.42);
-   const horiz=s.width*(j===0?.255:.21)*p.wt*jitter;
-   const height=(1.38+.24*bulk)*p.ht*range(.91,1.08);
-   const depth=(1.95+.27*bulk)*p.d*range(.90,1.08);
+     inwardZ*range(.15,1.00);
+   const horiz=s.width*(j===0?.29:.235)*p.wt*jitter;
+   const height=(1.55+.23*bulk)*p.ht*range(.91,1.08);
+   const depth=(2.40+.35*bulk)*p.d*range(.90,1.08);
    const py=s.up+p.h*(1.45+.20*bulk)+range(-.11,.11);
    parts[materialIndex].push({id,side:s.side,
     x:px,y:py,z:pz,sx:horiz,sy:height,sz:depth,
