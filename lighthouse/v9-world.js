@@ -201,7 +201,7 @@ export function buildIsland(){
   const y=coastalHeight(x,z);
   p.push(x,y,z);uv.push((x+7.7)/15.4,(z+7.1)/14.2);
   const grass=1-smooth(.68,.94,r),col=new T.Color('#8f9590').lerp(new T.Color('#546747'),grass);
-  col.multiplyScalar(1+.038*Math.cos(18*a+11*r));
+  col.multiplyScalar(1+.027*smooth(.11,.90,r)*Math.cos(18*a+11*r));
   c.push(col.r,col.g,col.b);
   if(j<nr&&i<ns){let k=j*(ns+1)+i;idx.push(k,k+1,k+ns+1,k+1,k+ns+2,k+ns+1)}
  }
