@@ -43,22 +43,16 @@ export function createPerimeterFog(){
   });
  }
  const fogMeshes=[];
- for(const [y,alpha] of [[.43,.58],[.95,.64],[1.48,.74]]){
+ // Seven overlapping translucent banks create a volume without flat vertical
+ // rectangles or any exposed top edges; all fade spatially from 85-100%.
+ for(const [y,alpha] of [
+   [.35,.51],[.73,.56],[1.12,.61],[1.57,.62],
+   [2.05,.55],[2.62,.50],[3.23,.38]
+ ]){
   const o=new T.Mesh(new T.PlaneGeometry(W*1.12,D*1.12),mat(horizontal,alpha));
   o.rotation.x=-Math.PI/2;o.position.set(WATER_CENTER_X,y,WATER_CENTER_Z);
   o.name='perimeter-fog-horizontal';o.frustumCulled=false;o.renderOrder=32;
   o.castShadow=false;root.add(o);fogMeshes.push(o);
- }
- for(const expand of [.996,1.075])for(const side of [-1,1]){
-  const w=W*expand,d=D*expand;
-  const xwall=new T.Mesh(new T.PlaneGeometry(d,8.5),mat(curtain,expand>1?.95:.77));
-  xwall.rotation.y=Math.PI/2;xwall.position.set(WATER_CENTER_X+side*w/2,-.4,WATER_CENTER_Z);
-  xwall.name='perimeter-fog-curtain';xwall.renderOrder=34;xwall.frustumCulled=false;
-  xwall.castShadow=false;root.add(xwall);fogMeshes.push(xwall);
-  const zwall=new T.Mesh(new T.PlaneGeometry(w,8.5),mat(curtain,expand>1?.95:.77));
-  zwall.position.set(WATER_CENTER_X,-.4,WATER_CENTER_Z+side*d/2);
-  zwall.name='perimeter-fog-curtain';zwall.renderOrder=34;zwall.frustumCulled=false;
-  zwall.castShadow=false;root.add(zwall);fogMeshes.push(zwall);
  }
  let clock=0,mode='night';
  function setMode(next){mode=next==='day'?'day':'night';}
@@ -66,6 +60,6 @@ export function createPerimeterFog(){
   clock+=Math.min(Math.max(0,dt||0),.5);
   uTime.value=clock;tint.copy(dark).lerp(bright,T.MathUtils.clamp(dayBlend??(mode==='day'?1:0),0,1));
  }
- return {root,update,setMode,getState:()=>({veilCount:3,curtainCount:8,
+ return {root,update,setMode,getState:()=>({veilCount:7,curtainCount:0,
   meshCount:fogMeshes.length,clearInterior:.85,denseAt:1.0,mode})};
 }
