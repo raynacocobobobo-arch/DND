@@ -63,6 +63,29 @@ try{
  buildCutaway();
  buildIsland();
  site=buildSite();
+ // Geometry QA checks, independent of screenshot or WebGL availability.
+ const audit={tyres:[],steps:[],lamps:[],crates:[]};
+ group.traverse(object=>{
+   if(object.name==='hanging-tyre')audit.tyres.push(object.position.clone());
+   if(object.userData.isLandingStep)audit.steps.push(object.position.clone());
+   if(object.userData.isPathLamp)audit.lamps.push(object.position.clone());
+   if(object.name==='supply-crate')audit.crates.push(object.userData.footprint);
+ });
+ const fireCenter={x:1.80,z:1.70};
+ const stepClear=audit.steps.every(p=>Math.hypot(p.x-fireCenter.x,p.z-fireCenter.z)>1.0);
+ const lampClear=audit.lamps.length===1&&
+   audit.steps.every(p=>Math.hypot(p.x-audit.lamps[0].x,p.z-audit.lamps[0].z)>.35);
+ const crateClear=audit.crates.every((a,i)=>audit.crates.slice(i+1).every(b=>
+   Math.abs(a.x-b.x)>(a.width+b.width)/2+.035||
+   Math.abs(a.z-b.z)>(a.width+b.width)/2+.035));
+ const geometryOk=audit.tyres.length===6&&audit.steps.length===3&&
+   audit.lamps.length===1&&audit.crates.length===3&&stepClear&&lampClear&&crateClear;
+ document.body.dataset.geometryAudit=geometryOk?'pass':'fail';
+ document.body.dataset.tyreCount=String(audit.tyres.length);
+ if(!geometryOk)throw new Error('Geometry audit failed: '+JSON.stringify({
+   tyres:audit.tyres.length,steps:audit.steps.length,lamps:audit.lamps.length,
+   crates:audit.crates.length,stepClear,lampClear,crateClear
+ }));
  let count=0,triCount=0;
  scene.traverse(o=>{if(o.isMesh){count++;triCount+=(o.geometry.index?.count||o.geometry.attributes.position.count)/3}});
  if(count<210)throw Error('Scene incomplete: '+count+' meshes');
