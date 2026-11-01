@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {group,rr,rng,coastalHeight,add,box,cyl,ico,beam,pipe,material,M} from './v14-world.js?v=14a';
+import {group,rr,rng,coastalHeight,add,box,cyl,ico,beam,pipe,material,M} from './v14-world.js?v=14b';
 const pineMat=['#243f35','#2c4d3a','#365a43','#45654a','#536b43'].map(c=>material(c,.98,0,{flatShading:true}));
 const warmRock=material('#747e82',.97,0,{flatShading:true});
 const shoreRock=material('#59676e',.99,0,{flatShading:true});
