@@ -36,7 +36,7 @@ export function createPerimeterFog(){
   'float alpha=clamp(bank*density*uStrength,0.,.98);',
   'vec3 fogColor=mix(uColor,uSky,smoothstep(.90,1.19,edge));',
   'gl_FragColor=vec4(fogColor,alpha);}'
- ].join('\\n');
+ ].join('\n');
  const curtain=[
   'varying vec2 vUv;varying vec3 vWorld;',
   'uniform vec3 uColor;uniform float uTime;uniform float uStrength;',
