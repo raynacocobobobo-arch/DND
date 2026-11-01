@@ -1,0 +1,158 @@
+name: Lighthouse V34 day 10-15s Kraken and click ripple QA
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse/v34-*.js'
+      - 'lighthouse/v34-preview.html'
+      - '.github/workflows/lighthouse-v34-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          mkdir -p /tmp/lighthouse-v34
+          npm --prefix /tmp/lighthouse-v34 install --no-audit --no-fund playwright@1.56.1
+          /tmp/lighthouse-v34/node_modules/.bin/playwright install chromium
+      - name: Test Kraken interval and lengths plus desktop and mobile click ripples
+        env:
+          NODE_PATH: /tmp/lighthouse-v34/node_modules
+        run: |
+          python3 -m http.server 8765 >/tmp/lighthouse-v34.log 2>&1 &
+          mkdir -p lighthouse/v34-qa-output
+          cat >/tmp/lighthouse-v34/test.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:[
+              '--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
+            const errors=[];
+            async function install(page){
+              page.on('pageerror',e=>errors.push('PAGE '+e.message));
+              page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
+              page.on('requestfailed',r=>errors.push('REQUEST '+r.url()+' '+r.failure().errorText));
+              await page.goto('http://127.0.0.1:8765/lighthouse/v34-preview.html',
+                {waitUntil:'domcontentloaded'});
+              await page.waitForFunction(()=>document.body.dataset.rendered==='true',{timeout:60000});
+              await page.evaluate(()=>window.__lighthouseNightEvents.pauseForTest(true));
+            }
+            const desktop=await browser.newPage({viewport:{width:1440,height:1050},deviceScaleFactor:1});
+            await install(desktop);
+            const state=()=>desktop.evaluate(()=>{
+              const a=window.__lighthouseNightEvents;
+              return {version:document.body.dataset.version,mode:document.body.dataset.mode,
+                event:a.getState(),boat:a.getBoat()};
+            });
+            const start=await state();
+            const pirateDay=await desktop.evaluate(()=>window.__lighthouseNightEvents.forceEvent('ship'));
+            const dayTentacles=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.forceEvent('tentacles',3,[0,1,2]));
+            const rising=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceForTest(4));
+            const hovering=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceForTest(2.7));
+            await desktop.screenshot({path:'lighthouse/v34-qa-output/day-hovering-kraken.png'});
+            const stillHovering=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceForTest(6.1));
+            const retreating=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceForTest(2.7));
+            const completed=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceForTest(6.7));
+            const after=await state();
+            // Check a real desktop click at a projected safe ocean point.
+            const validPoint=await desktop.evaluate(()=>{
+              const a=window.__lighthouseNightEvents;
+              const rect=document.querySelector('canvas').getBoundingClientRect();
+              const b=a.getBoat();
+              for(let y=rect.top+rect.height*.2;y<rect.bottom*.83;y+=28)
+                for(let x=rect.left+rect.width*.17;x<rect.right*.83;x+=28){
+                  const p=a.boatWorldAtClient(x,y);
+                  if(p&&a.testBoatSafe(p.x,p.z)&&Math.hypot(p.x-b.x,p.z-b.z)>1.5)
+                    return {x,y,world:p};
+                }
+              return null;
+            });
+            if(validPoint)await desktop.mouse.click(validPoint.x,validPoint.y);
+            const justClicked=await state();
+            await desktop.screenshot({path:'lighthouse/v34-qa-output/desktop-click-small-ripple.png'});
+            const rippleMid=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceBoatForTest(.4));
+            const rippleGone=await desktop.evaluate(()=>
+              window.__lighthouseNightEvents.advanceBoatForTest(.8));
+            await desktop.screenshot({path:'lighthouse/v34-qa-output/desktop-after-ripple-fades.png'});
+            await desktop.locator('#mode-night').click();
+            const night=await state();
+            await desktop.locator('#mode-day').click();
+            const dayAgain=await state();
+
+            const mobile=await browser.newPage({viewport:{width:390,height:844},
+              deviceScaleFactor:1,isMobile:true,hasTouch:true});
+            await install(mobile);
+            const tapPoint=await mobile.evaluate(()=>{
+              const a=window.__lighthouseNightEvents;
+              const rect=document.querySelector('canvas').getBoundingClientRect();
+              const b=a.getBoat();
+              for(let y=rect.top+rect.height*.14;y<rect.bottom*.85;y+=23)
+                for(let x=rect.left+rect.width*.13;x<rect.right*.87;x+=22){
+                  const p=a.boatWorldAtClient(x,y);
+                  if(p&&a.testBoatSafe(p.x,p.z)&&Math.hypot(p.x-b.x,p.z-b.z)>1.5)
+                    return {x,y,world:p};
+                }
+              return null;
+            });
+            if(tapPoint)await mobile.touchscreen.tap(tapPoint.x,tapPoint.y);
+            const mobileState=await mobile.evaluate(()=>window.__lighthouseNightEvents.getBoat());
+            await mobile.screenshot({path:'lighthouse/v34-qa-output/mobile-tap-small-ripple.png'});
+            const animated=mobileState.rippleCount===1&&
+              mobileState.ripplesCreated===1&&mobileState.accepted>=1;
+            const risingStates=rising.arms.filter(a=>a.visible);
+            const hoveringStates=hovering.arms.filter(a=>a.visible);
+            const retreatStates=retreating.arms.filter(a=>a.visible);
+            const ok=start.version==='v34a'&&start.mode==='day'&&
+              start.event.dayWaitRange[0]===10&&start.event.dayWaitRange[1]===15&&
+              start.event.nightWaitRange[0]===5&&start.event.nightWaitRange[1]===10&&
+              start.event.riseDuration===6.6&&start.event.retreatDuration===6.6&&
+              start.event.wait>=10&&start.event.wait<=15&&
+              pirateDay===false&&dayTentacles===true&&
+              risingStates.length===3&&
+              risingStates.every(a=>a.phase==='rising'&&a.riseDuration===6.6&&
+                a.retreatBaseDuration===6.6)&&
+              hoveringStates.length===3&&hoveringStates.every(a=>a.phase==='hover')&&
+              stillHovering.arms.filter(a=>a.visible).every(a=>a.phase==='hover'||a.phase==='retreat')&&
+              retreatStates.length>=1&&retreatStates.every(a=>a.phase==='retreat')&&
+              completed.activeCount===0&&after.event.wait>=10&&after.event.wait<=15&&
+              Boolean(validPoint)&&justClicked.boat.rippleCount===1&&
+              justClicked.boat.ripplesCreated===1&&justClicked.boat.accepted>=1&&
+              rippleMid.rippleCount===1&&rippleGone.rippleCount===0&&
+              rippleGone.ripplesExpired===1&&night.event.night&&!dayAgain.event.night&&
+              Boolean(tapPoint)&&animated&&errors.length===0;
+            console.log('V34_QA_RESULT',JSON.stringify({ok,
+              initial:{mode:start.mode,wait:start.event.wait,dayRange:start.event.dayWaitRange},
+              pirateDay,dayTentacles,
+              risePhases:risingStates.map(a=>a.phase),hoverPhases:hoveringStates.map(a=>a.phase),
+              laterPhases:stillHovering.arms.filter(a=>a.visible).map(a=>a.phase),
+              retreatPhases:retreatStates.map(a=>a.phase),
+              finalActive:completed.activeCount,
+              clicked:justClicked.boat,
+              afterRipple:{count:rippleGone.rippleCount,expired:rippleGone.ripplesExpired},
+              mobileRipple:{tapPoint,state:mobileState},errors}));
+            await browser.close();
+            if(!ok)throw Error('V34 Kraken timings and click ripple QA failed');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/lighthouse-v34/test.cjs
+      - name: Upload browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-v34-tentacle-ripple
+          path: lighthouse/v34-qa-output/
+          if-no-files-found: warn
