@@ -1,6 +1,6 @@
 
 import * as T from 'three';
-export const W=15.4,D=14.2;
+export const W=14.4,D=13.0;
 let seed=93218;
 export const rng=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};
 export const rr=(a,b)=>a+(b-a)*rng();
@@ -100,7 +100,7 @@ export const M={
  foam:new T.MeshBasicMaterial({color:0xf1f6ed,transparent:true,opacity:.75,depthWrite:false,side:T.DoubleSide})
 };
 export function coastalHeight(x,z){
- const dx=(x+.20)/4.57,dz=(z-.25)/3.47;
+ const dx=(x+.20)/5.00,dz=(z-.25)/3.88;
  const r=Math.sqrt(dx*dx+dz*dz);
  let hill=.18+.54*Math.pow(Math.max(0,1-r),1.6);
  hill+=.07*Math.exp(-((x+2)**2+(z+1.2)**2)/7);
@@ -148,14 +148,14 @@ export function buildCutaway(){
  for(let i=0;i<p.count;i++){
   let x=p.getX(i),z=-p.getY(i),wave=softWave(x,z);
   p.setZ(i,.18+wave);
-  const dx=(x+.2)/4.8,dz=(z-.25)/3.7,dist=Math.sqrt(dx*dx+dz*dz);
+  const dx=(x+.2)/5.2,dz=(z-.25)/4.0,dist=Math.sqrt(dx*dx+dz*dz);
   const shoal=1-smooth(.92,1.67,dist);
-  let c=new T.Color('#28798d').lerp(new T.Color('#68b2b0'),shoal*.62);
+  let c=new T.Color('#226d82').lerp(new T.Color('#54a4a9'),shoal*.60);
   c.multiplyScalar(1+.075*Math.sin(x*1.45+z*.87)+.04*Math.sin(x*3.1-z*1.8));
   color.push(c.r,c.g,c.b);
  }
  wg.setAttribute('color',new T.Float32BufferAttribute(color,3));wg.computeVertexNormals();
- const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({vertexColors:true,color:0xffffff,roughness:.25,metalness:.04,clearcoat:.8,clearcoatRoughness:.17,side:T.DoubleSide}));
+ const water=new T.Mesh(wg,new T.MeshPhysicalMaterial({vertexColors:true,color:0xffffff,roughness:.44,metalness:.025,clearcoat:.43,clearcoatRoughness:.28,side:T.DoubleSide}));
  water.rotation.x=-Math.PI/2;water.castShadow=false;water.receiveShadow=true;group.add(water);
  const underwater=new T.Group();group.add(underwater);
  for(let i=0;i<30;i++){
@@ -171,7 +171,7 @@ export function buildIsland(){
  const nr=35,ns=156,p=[],uv=[],c=[],idx=[];
  for(let j=0;j<=nr;j++)for(let i=0;i<=ns;i++){
   const a=2*Math.PI*i/ns,r=j/nr,er=ellipseRadius(a);
-  const x=-.20+Math.cos(a)*4.57*r*er,z=.25+Math.sin(a)*3.47*r*er;
+  const x=-.20+Math.cos(a)*5.00*r*er,z=.25+Math.sin(a)*3.88*r*er;
   const y=coastalHeight(x,z);
   p.push(x,y,z);uv.push((x+7.7)/15.4,(z+7.1)/14.2);
   const grass=1-smooth(.53,.82,r),col=new T.Color('#d5b989').lerp(new T.Color('#718a54'),grass);
@@ -189,7 +189,7 @@ export function buildIsland(){
    let theta=i/220*2*Math.PI,edge=ellipseRadius(theta);
    for(let t of [0,1]){
     let rr0=edge*(1.014+.026*band+.013*t)+.006*Math.sin(22*theta+band*2);
-    let x=-.2+4.57*rr0*Math.cos(theta),z=.25+3.47*rr0*Math.sin(theta);
+    let x=-.2+5.00*rr0*Math.cos(theta),z=.25+3.88*rr0*Math.sin(theta);
     v.push(x,.193+softWave(x,z)+.015, z);
     a.push((i%10===0?1:.78)*(1-.20*band));
    }
