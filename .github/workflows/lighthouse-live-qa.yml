@@ -1,0 +1,71 @@
+name: Lighthouse V7 live browser QA
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'lighthouse/**'
+      - '.github/workflows/lighthouse-live-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium automation
+        run: |
+          mkdir -p /tmp/lighthouse-qa
+          npm --prefix /tmp/lighthouse-qa install --no-audit --no-fund playwright@1.56.1
+          /tmp/lighthouse-qa/node_modules/.bin/playwright install chromium
+      - name: Run visual and interaction smoke test
+        env:
+          NODE_PATH: /tmp/lighthouse-qa/node_modules
+        run: |
+          python3 -m http.server 8765 >/tmp/lighthouse-http.log 2>&1 &
+          mkdir -p lighthouse/qa-output
+          cat > /tmp/lighthouse-qa/test.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({
+              headless:true,
+              args:['--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']
+            });
+            const page=await browser.newPage({viewport:{width:1440,height:1050},deviceScaleFactor:1});
+            const errors=[];
+            page.on('pageerror',e=>errors.push('PAGEERROR '+e.message));
+            page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
+            page.on('requestfailed',r=>errors.push('REQUEST '+r.url()+' '+r.failure().errorText));
+            await page.goto('http://127.0.0.1:8765/lighthouse/',{waitUntil:'domcontentloaded'});
+            await page.waitForTimeout(12000);
+            await page.screenshot({path:'lighthouse/qa-output/main.png',fullPage:true});
+            const initial=await page.evaluate(()=>({
+              ready:document.body.dataset.rendered,
+              canvas:document.querySelector('canvas')?.width,
+              status:document.querySelector('#status')?.textContent,
+              statusHidden:document.querySelector('#status')?.hidden,
+              title:document.title
+            }));
+            await page.mouse.move(650,520);await page.mouse.down();await page.mouse.move(860,590,{steps:12});await page.mouse.up();
+            await page.waitForTimeout(1200);
+            await page.screenshot({path:'lighthouse/qa-output/rotated.png'});
+            await page.locator('#reset').click();
+            await page.waitForTimeout(500);
+            console.log('RESULT',JSON.stringify(initial));
+            console.log('BROWSER_ERRORS',JSON.stringify(errors));
+            await browser.close();
+            if(initial.ready!=='true'||!initial.canvas||errors.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/lighthouse-qa/test.cjs
+      - name: Upload scene screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-v7-webgl-qa
+          path: lighthouse/qa-output/
+          if-no-files-found: warn
