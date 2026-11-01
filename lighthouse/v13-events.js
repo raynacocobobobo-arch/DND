@@ -1,5 +1,5 @@
 import {createKraken} from './v13-tentacle.js?v=13a';
-import {createPirateShip} from './v13-pirate.js?v=13a';
+import {createPirateShip} from './v13-pirate.js?v=13b';
 
 /**
  * Independent night-only encounters:
@@ -62,6 +62,8 @@ export function createNightEvents(parent){
      for(let i=order.length-1;i>0;i--){
        const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];
      }
+     // Reset all five arms before selecting the next batch, preventing stale visible arms.
+     arms.forEach(a=>a.setNight(true));
      // Each tentacle event is freshly chosen from five sites and four visual profiles.
      selected=order.slice(0,n);
      lastVariants=selected.map((index,k)=>{
