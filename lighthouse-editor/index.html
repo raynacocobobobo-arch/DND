@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V4.8.2 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V4.9.0 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -54,14 +54,65 @@ footer{grid-column:1/4;background:#0d2028;border-top:1px solid #38525a;padding:7
 a{color:#b2d8cf}
 #input-json{display:none}
 @media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
-@media(max-width:740px){#app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(350px,1fr) auto auto auto;height:auto;min-height:100dvh}header{grid-column:1;flex-wrap:wrap}#left{grid-row:2;border:0;border-bottom:1px solid #38525a}#view{grid-row:3;height:55vh;min-height:350px}#right{grid-row:4;border:0;border-top:1px solid #38525a}footer{grid-column:1;grid-row:5}.section{padding-bottom:10px;margin-bottom:10px}.toolgrid{grid-template-columns:repeat(4,1fr)}.asset-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* Mobile V4.9: fullscreen canvas with independent bottom-sheet editors. */
+#mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim{display:none}
+@media(max-width:740px){
+ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+ #app{display:block;width:100%;height:100dvh;min-height:0;overflow:hidden}
+ header{position:fixed;top:0;left:0;right:0;z-index:80;height:calc(55px + env(safe-area-inset-top));padding:calc(6px + env(safe-area-inset-top)) 12px 6px;gap:8px;flex-wrap:nowrap}
+ header .brand{font-size:14px;white-space:nowrap}
+ header .brand + .muted{display:none}
+ header .hdr-actions{display:none}
+ #mobile-top-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
+ #mobile-top-actions button{min-height:36px;padding:6px 8px;font-size:12px}
+ #view{position:fixed;top:calc(55px + env(safe-area-inset-top));bottom:calc(66px + env(safe-area-inset-bottom));left:0;right:0;width:100%;height:auto;min-height:0;z-index:1}
+ #hint{display:none}
+ #mobile-view-controls{display:flex;position:absolute;top:10px;right:10px;z-index:6;gap:7px}
+ #mobile-view-controls button{padding:9px 12px;min-height:40px;font-size:12px;background:#142f3be6;box-shadow:0 2px 10px #061b2270}
+ #mobile-view-controls button.active{background:#327c74}
+ #toast{bottom:18px;max-width:85vw}
+ #mobile-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;position:fixed;bottom:0;left:0;right:0;height:calc(66px + env(safe-area-inset-bottom));padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:#101f28;border-top:1px solid #42616a;z-index:100}
+ #mobile-bar button{min-width:0;min-height:47px;padding:5px 1px;font-size:12px;background:transparent;border:1px solid transparent;border-radius:9px;white-space:normal}
+ #mobile-bar button.active{color:#fff;background:#29564f;border-color:#6aa899}
+ #left,#right{display:none;position:fixed;left:0;right:0;top:auto;bottom:calc(66px + env(safe-area-inset-bottom));height:auto;max-height:min(58dvh,560px);width:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;z-index:60;padding:14px 15px 18px;background:#142731;box-shadow:0 -10px 25px #06151ba6;border:1px solid #4d6970;border-bottom:0;border-radius:16px 16px 0 0}
+ #left:before,#right:before{content:'';display:block;width:36px;height:4px;border-radius:3px;background:#58747b;margin:-5px auto 14px}
+ body[data-mobile-panel="assets"] #left,body[data-mobile-panel="terrain"] #left,body[data-mobile-panel="more"] #left,body[data-mobile-panel="scene"] #right,body[data-mobile-panel="inspector"] #right{display:block}
+ body[data-mobile-panel="assets"] #left>.section:not(:nth-of-type(4)){display:none}
+ body[data-mobile-panel="terrain"] #left>.section:not(:nth-of-type(1)){display:none}
+ body[data-mobile-panel="more"] #left>.section:nth-of-type(1),body[data-mobile-panel="more"] #left>.section:nth-of-type(4){display:none}
+ body[data-mobile-panel="scene"] #right>.section:not(:nth-of-type(1)){display:none}
+ body[data-mobile-panel="scene"] #right>div:last-child:not(.section){display:none}
+ body[data-mobile-panel="inspector"] #right>.section:not(:nth-of-type(2)):not(:nth-of-type(4)){display:none}
+ body[data-mobile-panel="inspector"] #right>div:last-child:not(.section){display:none}
+ body[data-mobile-panel="inspector"] #right{display:flex;flex-direction:column}
+ body[data-mobile-panel="inspector"] #right:before{flex-shrink:0}
+ body[data-mobile-panel="inspector"] #right>.section:nth-of-type(4){order:0}
+ body[data-mobile-panel="inspector"] #right>.section:nth-of-type(2){order:1}
+ #mobile-scrim{position:fixed;top:calc(55px + env(safe-area-inset-top));bottom:calc(66px + env(safe-area-inset-bottom));left:0;right:0;z-index:50;background:#06121638}
+ body[data-mobile-panel]:not([data-mobile-panel="none"]) #mobile-scrim{display:block}
+ #scene-list{max-height:35dvh}
+ .section{margin-bottom:12px;padding-bottom:12px}
+ .toolgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .toolgrid button,.filelabel{min-height:44px}
+ .asset-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .asset-card{min-height:0}
+ .asset-category h3{font-size:13px}
+ #assets{gap:12px}
+ .scene-pick{font-size:13px;min-height:40px}
+ .scene-action{min-width:38px;min-height:38px}
+ input[type=range]{min-height:32px}
+ input[type=text],input[type=number],select{font-size:16px;min-height:40px}
+ footer{display:none}
+}
+
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.8.2 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.9.0 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
-<button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
+<button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div><div id="mobile-top-actions"><button id="mobile-undo" aria-label="撤销上一步">撤销</button><button id="mobile-save" class="primary">导出</button></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
 <button data-tool="raise">⛰ 抬高</button><button data-tool="lower">⌄ 降低</button>
 <button data-tool="flatten">▬ 平整</button><button data-tool="water">≈ 挖水域</button>
@@ -94,7 +145,7 @@ a{color:#b2d8cf}
 <div class="toolgrid" style="margin-top:9px"><button id="apply-map-size" class="primary">应用新尺寸</button><button id="frame-world">查看完整地图</button></div>
 <p class="muted">宽度、深度可分别填写，可扩大或缩小。新增区域默认全部为原版风格海面，原岛屿与模型保持坐标不变。缩小时若会裁掉已编辑内容，则阻止操作。此设置不影响正式游戏尺寸。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
 </aside>
-<main id="view"><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
+<main id="view"><div id="mobile-view-controls"><button type="button" id="mobile-touch-nav" class="active">浏览视角</button><button type="button" id="mobile-touch-edit">编辑模型</button></div><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
 <aside id="right">
 <div class="section"><h2>场景对象管理器</h2>
 <input id="scene-search" type="text" placeholder="搜索模型名称或编号" aria-label="搜索场景对象">
@@ -139,6 +190,7 @@ a{color:#b2d8cf}
 <div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可拖动绘制。修改会自动保存在本浏览器，点击「试玩当前地图」即可进入独立 V35 试玩环境，使用当前草稿中的模型和地形；正式游戏始终保持原版不变。可另行导出 JSON 备份。</p></div>
 <div><button id="autosave" style="width:100%">保存编辑器草稿</button></div>
 </aside>
-<footer id="footer">V4.8.2 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
-</div><script type="module" src="./editor.js?v=appearance-controls-v1"></script>
+<div id="mobile-scrim" aria-hidden="true"></div><nav id="mobile-bar" aria-label="手机编辑工具"><button data-mobile-tab="assets" type="button">素材库</button><button data-mobile-tab="terrain" type="button">地形</button><button data-mobile-tab="scene" type="button">场景</button><button data-mobile-tab="inspector" type="button">属性</button><button data-mobile-tab="more" type="button">更多</button></nav>
+<footer id="footer">V4.9.0 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
+</div><script type="module" src="./editor.js?v=mobile-editor-v490"></script>
 </body></html>
