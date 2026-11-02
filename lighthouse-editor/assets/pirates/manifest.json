@@ -1878,6 +1878,48 @@
       "file": "SM_Bld_Mansion_Pole_02.glb",
       "label": "海盗 · Bld Mansion Pole 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_roof_corner_01",
+      "file": "SM_Bld_Mansion_Roof_Corner_01.glb",
+      "label": "海盗 · Bld Mansion Roof Corner 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_roof_end_01",
+      "file": "SM_Bld_Mansion_Roof_End_01.glb",
+      "label": "海盗 · Bld Mansion Roof End 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_roof_end_flat_01",
+      "file": "SM_Bld_Mansion_Roof_End_Flat_01.glb",
+      "label": "海盗 · Bld Mansion Roof End Flat 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_roof_middle_01",
+      "file": "SM_Bld_Mansion_Roof_Middle_01.glb",
+      "label": "海盗 · Bld Mansion Roof Middle 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_roof_single_01",
+      "file": "SM_Bld_Mansion_Roof_Single_01.glb",
+      "label": "海盗 · Bld Mansion Roof Single 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_stairs_01",
+      "file": "SM_Bld_Mansion_Stairs_01.glb",
+      "label": "海盗 · Bld Mansion Stairs 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_tower_01",
+      "file": "SM_Bld_Mansion_Tower_01.glb",
+      "label": "海盗 · Bld Mansion Tower 01",
+      "defaultScale": 1
     }
   ]
 }
