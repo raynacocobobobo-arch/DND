@@ -6,6 +6,306 @@
       "file": "SM_Prop_Parrot_01.glb",
       "label": "海盗 · 鹦鹉",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_anchor_01",
+      "file": "SM_Prop_Anchor_01.glb",
+      "label": "海盗 · Anchor 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_01",
+      "file": "SM_Prop_Barrel_01.glb",
+      "label": "海盗 · Barrel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_02",
+      "file": "SM_Prop_Barrel_02.glb",
+      "label": "海盗 · Barrel 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_03",
+      "file": "SM_Prop_Barrel_03.glb",
+      "label": "海盗 · Barrel 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_04",
+      "file": "SM_Prop_Barrel_04.glb",
+      "label": "海盗 · Barrel 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_05",
+      "file": "SM_Prop_Barrel_05.glb",
+      "label": "海盗 · Barrel 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_barrel_half_01",
+      "file": "SM_Prop_Barrel_Half_01.glb",
+      "label": "海盗 · Barrel Half 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_bench_01",
+      "file": "SM_Prop_Bench_01.glb",
+      "label": "海盗 · Bench 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_bottletorch_01",
+      "file": "SM_Prop_BottleTorch_01.glb",
+      "label": "海盗 · BottleTorch 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cage_01",
+      "file": "SM_Prop_Cage_01.glb",
+      "label": "海盗 · Cage 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cage_02",
+      "file": "SM_Prop_Cage_02.glb",
+      "label": "海盗 · Cage 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_campfire_01",
+      "file": "SM_Prop_Campfire_01.glb",
+      "label": "海盗 · Campfire 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_campfire_pot_01",
+      "file": "SM_Prop_Campfire_Pot_01.glb",
+      "label": "海盗 · Campfire Pot 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannonballs_01",
+      "file": "SM_Prop_CannonBalls_01.glb",
+      "label": "海盗 · CannonBalls 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannonballs_02",
+      "file": "SM_Prop_CannonBalls_02.glb",
+      "label": "海盗 · CannonBalls 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannonballs_03",
+      "file": "SM_Prop_CannonBalls_03.glb",
+      "label": "海盗 · CannonBalls 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_01",
+      "file": "SM_Prop_Cannon_01.glb",
+      "label": "海盗 · Cannon 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_02",
+      "file": "SM_Prop_Cannon_02.glb",
+      "label": "海盗 · Cannon 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_03",
+      "file": "SM_Prop_Cannon_03.glb",
+      "label": "海盗 · Cannon 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_lowdetail_01",
+      "file": "SM_Prop_Cannon_LowDetail_01.glb",
+      "label": "海盗 · Cannon LowDetail 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_pole_01",
+      "file": "SM_Prop_Cannon_Pole_01.glb",
+      "label": "海盗 · Cannon Pole 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cart_01",
+      "file": "SM_Prop_Cart_01.glb",
+      "label": "海盗 · Cart 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_01",
+      "file": "SM_Prop_Chest_01.glb",
+      "label": "海盗 · Chest 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_02",
+      "file": "SM_Prop_Chest_02.glb",
+      "label": "海盗 · Chest 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_03",
+      "file": "SM_Prop_Chest_03.glb",
+      "label": "海盗 · Chest 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_lid_01",
+      "file": "SM_Prop_Chest_Lid_01.glb",
+      "label": "海盗 · Chest Lid 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_lid_02",
+      "file": "SM_Prop_Chest_Lid_02.glb",
+      "label": "海盗 · Chest Lid 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_lid_03",
+      "file": "SM_Prop_Chest_Lid_03.glb",
+      "label": "海盗 · Chest Lid 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_treasure_01",
+      "file": "SM_Prop_Chest_Treasure_01.glb",
+      "label": "海盗 · Chest Treasure 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_treasure_02",
+      "file": "SM_Prop_Chest_Treasure_02.glb",
+      "label": "海盗 · Chest Treasure 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chest_treasure_03",
+      "file": "SM_Prop_Chest_Treasure_03.glb",
+      "label": "海盗 · Chest Treasure 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chimney_01",
+      "file": "SM_Prop_Chimney_01.glb",
+      "label": "海盗 · Chimney 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_chimney_02",
+      "file": "SM_Prop_Chimney_02.glb",
+      "label": "海盗 · Chimney 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_clothesline_01",
+      "file": "SM_Prop_ClothesLine_01.glb",
+      "label": "海盗 · ClothesLine 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crane_01",
+      "file": "SM_Prop_Crane_01.glb",
+      "label": "海盗 · Crane 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crane_02",
+      "file": "SM_Prop_Crane_02.glb",
+      "label": "海盗 · Crane 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crane_03",
+      "file": "SM_Prop_Crane_03.glb",
+      "label": "海盗 · Crane 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crane_shark_01",
+      "file": "SM_Prop_Crane_Shark_01.glb",
+      "label": "海盗 · Crane Shark 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crank_01",
+      "file": "SM_Prop_Crank_01.glb",
+      "label": "海盗 · Crank 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_01",
+      "file": "SM_Prop_Crate_01.glb",
+      "label": "海盗 · Crate 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_02",
+      "file": "SM_Prop_Crate_02.glb",
+      "label": "海盗 · Crate 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_03",
+      "file": "SM_Prop_Crate_03.glb",
+      "label": "海盗 · Crate 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_04",
+      "file": "SM_Prop_Crate_04.glb",
+      "label": "海盗 · Crate 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_05",
+      "file": "SM_Prop_Crate_05.glb",
+      "label": "海盗 · Crate 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_06",
+      "file": "SM_Prop_Crate_06.glb",
+      "label": "海盗 · Crate 06",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_cannonballs_01",
+      "file": "SM_Prop_Crate_Cannonballs_01.glb",
+      "label": "海盗 · Crate Cannonballs 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_crate_covered_01",
+      "file": "SM_Prop_Crate_Covered_01.glb",
+      "label": "海盗 · Crate Covered 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_debris_01",
+      "file": "SM_Prop_Debris_01.glb",
+      "label": "海盗 · Debris 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_debris_02",
+      "file": "SM_Prop_Debris_02.glb",
+      "label": "海盗 · Debris 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_debris_03",
+      "file": "SM_Prop_Debris_03.glb",
+      "label": "海盗 · Debris 03",
+      "defaultScale": 1
     }
   ]
 }
