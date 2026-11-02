@@ -2,6 +2,7 @@ import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
+import {createExternalGLBLibrary} from './external-glb-library.js?v=1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -42,6 +43,7 @@ for(const child of gameGroup.children)
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
 const coastalPalmAssets=await registerCoastalPalms(catalog);
+const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
 const nativeTargets=nativeGameTargets();
@@ -182,6 +184,9 @@ function initial(){
 function validWorld(w){return normalizeMap(w)}
 const snapshot=()=>JSON.stringify(world);
 function history(){hist.push(snapshot());if(hist.length>30)hist.shift();future=[];}
+function snapGridX(x){return clamp(Math.round((x+WIDTH/2)/CELLX)*CELLX-WIDTH/2,-WIDTH/2,WIDTH/2);}
+function snapGridZ(z){return clamp(Math.round((z+DEPTH/2)/CELLZ)*CELLZ-DEPTH/2,-DEPTH/2,DEPTH/2);}
+function snappedXZ(x,z){return $('gizmo-snap').checked?[snapGridX(x),snapGridZ(z)]:[x,z];}
 function getCellAt(x,z){
  const col=Math.floor((x+WIDTH/2)/CELLX),row=Math.floor((z+DEPTH/2)/CELLZ);
  if(col<0||row<0||col>=GW||row>=GH)return null;
@@ -193,7 +198,15 @@ function rebuildTerrain(){
  if(terrain){root.remove(terrain);terrain.geometry.dispose();}
  terrain=createTerrainMesh(world);root.add(terrain);updateObjectsHeight();
 }
-function objModel(asset){return catalog.create(asset)}
+function objModel(asset){
+ if(asset.startsWith('ext_glb_')&&!glbLibrary.has(asset)){
+  const missing=new T.Mesh(new T.BoxGeometry(2,2,2),
+   new T.MeshBasicMaterial({color:0xff5075,wireframe:true}));
+  missing.name='缺失 GLB：'+asset;
+  const g=new T.Group();g.add(missing);return g;
+ }
+ return catalog.create(asset);
+}
 function updateObjectsHeight(){
  for(const g of assetLayer.children){const rec=objects.get(g.userData.recordId);if(rec)g.position.y=terrainY(rec.x,rec.z)+(rec.y??0);}
 }
@@ -277,10 +290,12 @@ function selectItem(id,multi=false){
  if(id&&activeTool!=='select')setTool('select');
  if(!multi)selectedIds.clear();
  if(id){
+  const group=!multi?recordById(id)?.group:null;
+  if(group)for(const r of world.objects)if(r.group===group)selectedIds.add(r.id);
   if(multi&&selectedIds.has(id))selectedIds.delete(id);
   else selectedIds.add(id);
  }
- selected=[...selectedIds].at(-1)||null;
+ selected=id&&selectedIds.has(id)?id:([...selectedIds].at(-1)||null);
  updateInspector();
 }
 function nativeEdit(id){
@@ -483,7 +498,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   if(transform.dragging||transform.axis)return;
   const hit=findSelected(e),multi=e.shiftKey;
   selectItem(hit,multi);
-  if(hit&&!multi&&!isLocked(hit)&&!recordById(hit)?.hidden){
+  if(hit&&!multi&&selectedIds.size===1&&!isLocked(hit)&&!recordById(hit)?.hidden){
    const r=recordById(hit);
    directDrag={pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,
     anchorX:p.x,anchorZ:p.z,originX:r.x,originZ:r.z,started:false};
@@ -493,8 +508,9 @@ renderer.domElement.addEventListener('pointerdown',e=>{
  }
  if(activeTool.startsWith('asset:')){
   const asset=activeTool.slice(6);
-  history();const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(p.x,-WIDTH/2,WIDTH/2),
-   z:clamp(p.z,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:1};
+  history();const [px,pz]=snappedXZ(p.x,p.z);
+  const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
+   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:1};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
  history();stroke=true;lastStroke='';
@@ -516,7 +532,7 @@ renderer.domElement.addEventListener('pointermove',e=>{
    // Apply mouse movement delta, not the mouse's absolute ground coordinates.
    const nx=clamp(drag.originX+(p.x-drag.anchorX),-WIDTH/2,WIDTH/2);
    const nz=clamp(drag.originZ+(p.z-drag.anchorZ),-DEPTH/2,DEPTH/2);
-   o.x=nx;o.z=nz;
+   [o.x,o.z]=snappedXZ(nx,nz);
    if(native)applyNativeEdits(world,gameGroup);
    else{
     const g=assetLayer.children.find(x=>x.userData.mapId===selected);
@@ -557,6 +573,7 @@ $('toggle-original').onclick=()=>{
 };
 // Human-readable asset families; meshes under 'parts' retain authored type names.
 function assetCategory(id,meta={}){
+ if(id.startsWith('ext_glb_'))return meta.category||'外部模型 GLB';
  if(meta.kind==='detail'){
   const cat=meta.category||'其他';
   if(cat.includes('lighthouse')||cat.includes('灯塔'))return '细节构件 / 灯塔';
@@ -657,7 +674,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['外部地形 GLB','外部模型 GLB','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
