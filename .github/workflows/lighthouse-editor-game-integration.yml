@@ -87,7 +87,7 @@ jobs:
             await editorReload.waitForFunction(()=>document.body.dataset.editorReady==='true',{timeout:60000});
             const persisted=await editorReload.evaluate(()=>window.__lighthouseEditor.exportMap());
             const ok=before.state.realGameAssets&&
-              before.state.prefabTypes.length===8&&
+              before.state.prefabTypes.length>=80&&
               before.native.lighthouse&&before.native.boathouse&&
               afterEdit.state.realGameAssets&&
               afterEdit.map.schema==='lighthouse-world-v2'&&
@@ -98,7 +98,7 @@ jobs:
               inGame.dataset.linked==='true'&&
               inGame.dataset.source==='editor-preview'&&
               +inGame.dataset.objects===afterEdit.map.objects.length&&
-              +inGame.dataset.nativeAssets===8&&
+              +inGame.dataset.nativeAssets>=80&&
               +inGame.dataset.terrain>0&&
               inGame.info.nativeEdits.find(x=>x.id==='lighthouse').x===7&&
               inGame.info.nativeEdits.find(x=>x.id==='lighthouse').z===-1&&

@@ -47,11 +47,11 @@ export function normalizeMap(v){
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
-  if(!ASSETS[asset])return null;
+  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset))return null;
   const id=String(obj.id||'item-'+i).slice(0,60);
   if(seen.has(id))return null;
   seen.add(id);
-  return {id,asset,name:String(obj.name||ASSETS[asset].label).slice(0,90),
+  return {id,asset,name:String(obj.name||ASSETS[asset]?.label||asset).slice(0,90),
    x:clamp(Number(obj.x)||0,-WIDTH/2,WIDTH/2),
    z:clamp(Number(obj.z)||0,-DEPTH/2,DEPTH/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
@@ -83,6 +83,7 @@ export function nativePrefabCatalog(group,reefRoot){
   offshore_reef:{node:reefRoot?.getObjectByName('reef-0'),anchor:[-13.3,0,7.7]}
  };
  const templates=new Map();
+ const labels={...ASSETS};
  for(const [asset,{node,anchor}] of Object.entries(candidates)){
   if(!node)continue;
   // The source is the actual THREE.Object3D from lighthouse V35 scene.
@@ -98,8 +99,55 @@ export function nativePrefabCatalog(group,reefRoot){
   prefab.userData.assetType=asset;
   templates.set(asset,prefab);
  }
+ // Discover ALL distinct real scene meshes, not just eight hand-picked
+ // prefabs. Stable ordinal IDs follow deterministic build order shared by
+ // the game and editor, including the detailed building parts and foliage.
+ // Exclude sea, soil, terrain, light sprites, and ocean boundary geometry:
+ // those are world infrastructure rather than movable asset instances.
+ const skip=new Set(['nearshore-deepwater-vector-sea',
+  'opaque-sea-cross-section','sea-geological-base',
+  'sea-soil-stratum','flat-vector-coastline-outline']);
+ let ordinal=0;
+ group.updateMatrixWorld(true);
+ group.traverse(o=>{
+  if(!o.isMesh||!o.geometry||skip.has(o.name)||o.userData.isWaterVolume||
+   o.userData.isWaterSurface||o.userData.waterSidewall||
+   o.name.startsWith('water-sidewall')||o.name.startsWith('sea-'))return;
+  const asset='part_'+String(++ordinal).padStart(5,'0');
+  const ancestry=[];let parent=o.parent;
+  while(parent&&parent!==group){
+   if(parent.name?.startsWith('game-asset-')){
+    ancestry.unshift(parent.name.slice('game-asset-'.length));break;
+   }
+   parent=parent.parent;
+  }
+  const category=ancestry[0]||'场景细节';
+  const title=o.name&&o.name!=='Mesh'?o.name:(o.geometry.type.replace('Geometry',''));
+  const parentLabel=category==='boathouse'?'木屋与平台':category==='shore-rocks'?'岸边石头':
+   category==='pine-forest'?'松林':category==='supply-barrels'?'补给木桶':
+   category==='lighthouse'?'灯塔':category==='campfire'?'营火':
+   category.startsWith('tree-')?'松树':category;
+  labels[asset]={label:parentLabel+' · '+title+' #'+String(ordinal).padStart(3,'0'),
+   category:parentLabel,sourceName:o.name||'',meshType:o.geometry.type,
+   sourceId:o.uuid};
+  // The standalone mesh uses its actual original material and geometry;
+  // keep original world rotation / scale but recenter its bounding box
+  // for sensible brush placement. No model is redrawn.
+  const cloned=o.clone(false);
+  const geomBounds=new T.Box3().setFromObject(o);
+  const cx=(geomBounds.min.x+geomBounds.max.x)/2,
+    cz=(geomBounds.min.z+geomBounds.max.z)/2,
+    low=geomBounds.min.y;
+  const pos=new T.Vector3(),quat=new T.Quaternion(),scale=new T.Vector3();
+  o.matrixWorld.decompose(pos,quat,scale);
+  cloned.position.set(pos.x-cx,pos.y-low,pos.z-cz);
+  cloned.quaternion.copy(quat);cloned.scale.copy(scale);
+  const holder=new T.Group();holder.name='native-mesh-'+asset;holder.add(cloned);
+  holder.userData.assetType=asset;
+  templates.set(asset,holder);
+ });
  return {
-  all:ASSETS,
+  all:labels,
   types:[...templates.keys()],
   create:(asset)=>{
    const original=templates.get(asset);

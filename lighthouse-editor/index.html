@@ -47,16 +47,13 @@ a{color:#b2d8cf}
 <button data-tool="rock">◆ 岩地</button><button data-tool="select">↖ 选择</button></div>
 <label for="brush">笔刷半径 · <output id="brush-val">2</output> 格</label><input id="brush" type="range" min="1" max="6" value="2">
 <label for="strength">地形强度 · <output id="strength-val">1</output> 级</label><input id="strength" type="range" min="1" max="4" value="1"></div>
-<div class="section"><h2>素材资源库</h2><div id="assets">
-<button data-asset="shore_rock"><span>🪨</span>游戏原石</button>
-<button data-asset="pine"><span>🌲</span>游戏松树</button>
-<button data-asset="lighthouse"><span>🏮</span>原版灯塔</button>
-<button data-asset="boathouse"><span>🏠</span>原版木屋</button>
-<button data-asset="barrel"><span>🛢</span>原版木桶</button>
-<button data-asset="campfire"><span>🔥</span>游戏营火</button>
-<button data-asset="service_boat"><span>🚤</span>原版小船</button>
-<button data-asset="offshore_reef"><span>🪨</span>外海礁石</button></div>
-<p class="muted">素材直接来自灯塔游戏，并非重新绘制的占位模型。</p></div>
+<div class="section"><h2>素材资源库</h2><label for="asset-search">搜索游戏场景模型</label>
+<input id="asset-search" type="text" placeholder="例如：松树、窗户、栏杆、轮胎">
+<label for="asset-filter">按游戏构件分类</label>
+<select id="asset-filter"><option value="">全部原版素材</option></select>
+<div class="stats" style="margin:8px 0">当前选择：<span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">扫描游戏模型中…</div></div>
+<div id="assets"></div>
+<p class="muted">完整扫描灯塔游戏的真实网格对象：既能选择整组模型，也能单独复制窗框、栏杆、木板、轮胎、树冠等构件。可搜索筛选。</p></div>
 <div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">新建海域</button><button id="demo-world">恢复群岛</button></div><p class="muted">20 倍海域、64 × 56 格。地形和模型摆放可以在游戏中预览。</p></div>
 </aside>
 <main id="view"><div id="hint">左键 / 触摸：绘制或摆放　·　右键拖动：旋转　·　滚轮：缩放</div><div id="toast" role="status"></div></main>
@@ -72,5 +69,5 @@ a{color:#b2d8cf}
 <div><button id="autosave" style="width:100%">保存游戏预览地图</button></div>
 </aside>
 <footer id="footer">游戏真实模型与地形共用一个地图 JSON · 点击「在游戏中预览」直接验证修改</footer>
-</div><script type="module" src="./editor.js?v=2a"></script>
+</div><script type="module" src="./editor.js?v=3a"></script>
 </body></html>

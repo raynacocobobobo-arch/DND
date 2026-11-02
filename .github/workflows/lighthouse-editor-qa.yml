@@ -47,7 +47,7 @@ jobs:
            await page.screenshot({path:'/tmp/editor-map.png'});
            console.log('EDITOR_QA',JSON.stringify({data,errors}));
            await browser.close();
-           if(!data.state.realGameAssets||data.state.prefabTypes.length!==8||!data.added||data.length!==data.count+1||!data.restored||errors.length)process.exit(1);
+           if(!data.state.realGameAssets||data.state.prefabTypes.length<80||!data.added||data.length!==data.count+1||!data.restored||errors.length)process.exit(1);
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node /tmp/editorqa/test.cjs

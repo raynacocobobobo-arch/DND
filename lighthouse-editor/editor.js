@@ -32,7 +32,7 @@ for(const child of gameGroup.children)
  if(child.userData.waterSidewall||['sea-geological-base','sea-soil-stratum','opaque-sea-cross-section'].includes(child.name))
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
-if(catalog.types.length!==8)throw Error('游戏原模型提取不完整: '+catalog.types);
+if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 const nativeTargets=Object.fromEntries(Object.keys(BASE_ASSETS).map(id=>[id,gameGroup.getObjectByName('game-asset-'+id)]));
 const root=new T.Group();scene.add(root);addOpenOcean(root);
 let terrain=null,assetLayer=new T.Group();root.add(assetLayer);
@@ -160,6 +160,8 @@ function setTool(t){
  activeTool=t;document.querySelectorAll('[data-tool],[data-asset]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t||b.dataset.asset&&('asset:'+b.dataset.asset)===t));
  const names={raise:'抬高',lower:'降低',flatten:'平整',water:'挖水域',sand:'沙地',grass:'草地',rock:'岩地',select:'选择'};
  $('tool-name').textContent=names[t]||('放置 '+t.replace('asset:',''));
+ const selectedAsset=t.startsWith('asset:')?t.slice(6):'';
+ $('selected-asset').textContent=selectedAsset?(catalog.all[selectedAsset]?.label||selectedAsset):'无';
 }
 function mutateSelected(fn){
  if(!currentRecord())return;history();
@@ -227,7 +229,35 @@ renderer.domElement.addEventListener('pointerup',finish);
 renderer.domElement.addEventListener('pointercancel',finish);
 view.addEventListener('pointerleave',()=>cursor.visible=false);
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
-document.querySelectorAll('[data-asset]').forEach(b=>b.onclick=()=>setTool('asset:'+b.dataset.asset));
+function renderAssetLibrary(){
+ const query=$('asset-search').value.trim().toLowerCase();
+ const group=$('asset-filter').value;
+ const found=catalog.types.filter(id=>{
+  const entry=catalog.all[id]||{};
+  return (!group||((entry.category||'整组模型')===group))&&
+   (!query||(entry.label||id).toLowerCase().includes(query)||id.includes(query));
+ });
+ const box=$('assets');box.replaceChildren();
+ // Large scenes stay usable: show the first 120, allow searching/filtering
+ // to reach every mesh; no assets are omitted from the registry.
+ for(const id of found.slice(0,120)){
+  const o=catalog.all[id];const btn=document.createElement('button');
+  btn.type='button';btn.dataset.asset=id;btn.title=o.label;
+  const title=document.createElement('span');
+  title.textContent=id.startsWith('part_')?'◈':'⬡';
+  const label=document.createTextNode(o.label);
+  btn.append(title,label);btn.onclick=()=>setTool('asset:'+id);box.append(btn);
+ }
+ $('asset-result').textContent=found.length+' 个可复用模型'+(found.length>120?'（显示前120，输入关键词继续筛选）':'');
+}
+const categories=[...new Set(catalog.types.map(id=>catalog.all[id]?.category||'整组模型'))];
+for(const c of categories){
+ const option=document.createElement('option');option.value=c;option.textContent=c;
+ $('asset-filter').append(option);
+}
+$('asset-search').addEventListener('input',renderAssetLibrary);
+$('asset-filter').addEventListener('change',renderAssetLibrary);
+renderAssetLibrary();
 $('brush').oninput=e=>{brush=+e.target.value;$('brush-val').textContent=brush;};
 $('strength').oninput=e=>{strength=+e.target.value;$('strength-val').textContent=strength;};
 $('undo').onclick=()=>applyHistory('undo');$('redo').onclick=()=>applyHistory('redo');
@@ -302,7 +332,7 @@ rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(fal
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,
  heights:world.heights.length,tool:activeTool,selected,history:hist.length,
- realGameAssets:true,prefabTypes:catalog.types,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
+ realGameAssets:true,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
   history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1});rebuildObjects();saveLocal();return true;},
