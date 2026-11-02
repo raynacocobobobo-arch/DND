@@ -55,8 +55,15 @@ jobs:
               api.placeAt('pine',8,9);
               const map=api.exportMap(),id=map.objects.at(-1).id;
               api.selectObject(id);
+              const yInput=document.querySelector('#posy');
+              if(!yInput)throw Error('Missing Y coordinate editor');
+              yInput.value='4.25';yInput.dispatchEvent(new Event('change',{bubbles:true}));
               api.setObjectFlags(id,{hidden:true,locked:true});
+              api.selectNative('lighthouse');
+              const baseY=document.querySelector('#posy');
+              baseY.value='2.5';baseY.dispatchEvent(new Event('change',{bubbles:true}));
               api.setObjectFlags('native:lighthouse',{hidden:true,locked:true});
+              api.selectObject(id);
               api.setTransformMode('translate');
               const saved=api.exportMap(),state=api.getState();
               return {id,saved,state,
@@ -85,9 +92,9 @@ jobs:
               initial.sceneRows>10&&initial.state.prefabTypes.length>=80&&
               edited.hasHierarchy&&edited.hasTransform&&edited.rows>initial.sceneRows&&
               edited.state.selected===edited.id&&
-              item.hidden&&item.locked&&kept.hidden&&kept.locked&&
-              edited.saved.baseEdits.lighthouse.hidden&&edited.saved.baseEdits.lighthouse.locked&&
-              persisted.baseEdits.lighthouse.hidden&&persisted.baseEdits.lighthouse.locked&&
+              item.hidden&&item.locked&&item.y===4.25&&kept.hidden&&kept.locked&&kept.y===4.25&&
+              edited.saved.baseEdits.lighthouse.hidden&&edited.saved.baseEdits.lighthouse.locked&&edited.saved.baseEdits.lighthouse.y===2.5&&
+              persisted.baseEdits.lighthouse.hidden&&persisted.baseEdits.lighthouse.locked&&persisted.baseEdits.lighthouse.y===2.5&&
               fixed.source==='original-fixed'&&fixed.gameMap===0&&
               +fixed.mapObjects===0&&!fixed.editorLink&&failures.length===0;
             console.log('V4_QA',JSON.stringify({ok,initial:initial.state,
