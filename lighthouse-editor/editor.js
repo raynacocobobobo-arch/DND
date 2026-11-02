@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
@@ -11,7 +12,7 @@ let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const BASE_CELL_X=146/64,BASE_CELL_Z=129/56,MIN_WIDTH=34,MIN_DEPTH=30,MAX_SIZE=430;
 const colors={water:0x276476,sand:0xc6b78a,grass:0x71866d,rock:0x71858c};
-let world,activeTool='select',brush=2,strength=1,selected=null,hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
+let world,activeTool='select',brush=2,strength=1,selected=null,selectedIds=new Set(),hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
 const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH,grid:[GW,GH],heights:Array(GW*GH).fill(-2),types:Array(GW*GH).fill('water'),objects:[]});
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
@@ -25,6 +26,10 @@ camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=
 controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
 controls.touches={ONE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
+const transform=new TransformControls(camera,renderer.domElement);
+const transformProxy=new T.Object3D();scene.add(transformProxy);scene.add(transform);
+transform.setSize(.82);transform.setMode('translate');
+let transformMode='translate',syncingProxy=false,transformLast=new T.Vector2(),dragHistoryTaken=false;
 setRenderer(renderer);renderer.localClippingEnabled=true;
 scene.add(gameGroup);
 const originalSea=buildCutaway();buildIsland();buildSite();const originalReefs=createOffshoreReefs();
@@ -192,11 +197,13 @@ function rebuildObjects(){
  assetLayer.clear();objects.clear();selectionHelper.visible=false;
  for(const r of world.objects){
   const g=objModel(r.asset);g.userData.recordId=r.id;g.userData.mapId=r.id;g.name=r.name;
-  g.position.set(r.x,terrainY(r.x,r.z),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);
+  g.position.set(r.x,terrainY(r.x,r.z),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);g.visible=!r.hidden;
   g.traverse(m=>{if(m.isMesh)m.userData.recordId=r.id;});
   assetLayer.add(g);objects.set(r.id,r);
  }
  if(!selected||(!objects.has(selected)&&!selected.startsWith('native:')))selected=null;
+ selectedIds=new Set([...selectedIds].filter(id=>id.startsWith('native:')||objects.has(id)));
+ if(selected&&!selectedIds.has(selected))selectedIds.add(selected);
  updateInspector();$('object-count').textContent=world.objects.length+' 新增 / '+Object.keys(nativeTargets).length+' 原版';
 }
 function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
@@ -205,7 +212,7 @@ function saveLocal(){try{savePreviewMap(world)}catch(e){console.warn('Local save
 function applyHistory(direction){
  const from=direction==='undo'?hist:future,to=direction==='undo'?future:hist;
  if(!from.length)return;
- to.push(snapshot());world=validWorld(JSON.parse(from.pop()));selected=null;redraw();saveLocal();toast(direction==='undo'?'已撤销':'已重做');
+ to.push(snapshot());world=validWorld(JSON.parse(from.pop()));selected=null;selectedIds.clear();redraw();saveLocal();toast(direction==='undo'?'已撤销':'已重做');
 }
 function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.id);toast.id=setTimeout(()=>$('toast').classList.remove('show'),2200);}
 function paint(x,z){
@@ -240,27 +247,41 @@ function findSelected(evt){
  for(const hit of ray.intersectObjects([...assetLayer.children,...(gameGroup.visible?Object.values(nativeTargets).filter(o=>o&&o.visible):[])],true)){
   let parent=hit.object;
   while(parent){
-   if(parent.userData.mapId)return parent.userData.mapId;
-   for(const [id,obj] of Object.entries(nativeTargets))if(obj===parent)return 'native:'+id;
+   if(parent.userData.mapId){const id=parent.userData.mapId;if(!objects.get(id)?.locked)return id;break;}
+   for(const [id,obj] of Object.entries(nativeTargets))if(obj===parent){if(!world.baseEdits?.[id]?.locked)return 'native:'+id;break;}
    parent=parent.parent;
   }
  }
  return null;
 }
-function currentRecord(){
- if(!selected)return null;
- if(selected.startsWith('native:')){
-  const id=selected.slice(7),base=BASE_ASSETS[id],r=world.baseEdits?.[id]||{};
+function recordById(id){
+ if(!id)return null;
+ if(id.startsWith('native:')){
+  const key=id.slice(7),base=BASE_ASSETS[key],r=world.baseEdits?.[key]||{};
   if(!base)return null;
-  return {id,asset:id,name:base.name,x:r.x??base.x,z:r.z??base.z,
-   rotation:r.rotation??0,scale:r.scale??1,hidden:r.hidden??false};
+  return {id,asset:key,name:base.name,x:r.x??base.x,z:r.z??base.z,
+   rotation:r.rotation??0,scale:r.scale??1,hidden:r.hidden??false,locked:r.locked??false};
  }
- return objects.get(selected)||null;
+ return objects.get(id)||null;
+}
+function currentRecord(){return recordById(selected);}
+function actualRecord(id){
+ return id.startsWith('native:')?nativeEdit(id.slice(7)):objects.get(id);
+}
+function isLocked(id){return !!recordById(id)?.locked;}
+function selectItem(id,multi=false){
+ if(!multi)selectedIds.clear();
+ if(id){
+  if(multi&&selectedIds.has(id))selectedIds.delete(id);
+  else selectedIds.add(id);
+ }
+ selected=[...selectedIds].at(-1)||null;
+ updateInspector();
 }
 function nativeEdit(id){
  world.baseEdits??={};
  return world.baseEdits[id]??={x:BASE_ASSETS[id].x,z:BASE_ASSETS[id].z,
-  rotation:0,scale:1,hidden:false};
+  rotation:0,scale:1,hidden:false,locked:false};
 }
 function setTool(t){
  activeTool=t;document.querySelectorAll('[data-tool],[data-asset]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t||b.dataset.asset&&('asset:'+b.dataset.asset)===t));
