@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.2.2 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V5.3.0 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -101,7 +101,7 @@ a{color:#b2d8cf}
 </head><body>
 <div id="app">
 <header>
- <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.2.2 · DND</div></div>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.3.0 · DND</div></div>
  <div class="hdr-actions">
   <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button>
   <button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
@@ -125,6 +125,14 @@ a{color:#b2d8cf}
   <div id="glb-status" class="muted" style="margin:8px 0"></div>
   <div class="toolgrid"><button id="export-portable">导出完整工程</button><button id="snap-neighbor">模型外框贴边</button></div>
  </div>
+ <div class="section" id="asset-manager-section">
+  <h2>素材管理</h2>
+  <input id="manage-asset-search" type="text" placeholder="搜索要管理的模型">
+  <select id="manage-asset-list" size="7" style="width:100%;min-height:146px;margin-top:8px" aria-label="选择素材"></select>
+  <div class="muted" id="manage-asset-status" style="margin:7px 0">选择素材以查看使用状态</div>
+  <div class="toolgrid"><button id="manage-asset-delete">删除 / 移除素材</button><button id="manage-asset-restore">恢复已移除</button></div>
+  <p class="muted">正在地图中使用的素材不可删除。本机 GLB 将从浏览器数据库删除；内置和 GitHub 模型仅从当前浏览器素材库移除，不删除远程文件。</p>
+ </div>
  <div class="section" id="backup-section">
   <h2>地图备份</h2>
   <button id="backup-create" class="primary" style="width:100%">快速备份</button>
@@ -133,7 +141,7 @@ a{color:#b2d8cf}
   <div class="toolgrid" style="margin-top:8px">
    <button id="backup-restore">恢复所选备份</button><button id="backup-delete">删除所选备份</button>
   </div>
-  <div class="muted" id="backup-status" style="margin-top:7px"></div>
+  <div class="muted" id="backup-status" style="margin-top:7px">正在读取持久备份…</div><button id="backup-export" style="width:100%;margin-top:7px">下载所选备份 JSON</button>
  </div>
  <div class="section" id="size-section">
   <h2>海域尺寸</h2>
@@ -189,6 +197,6 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
-<footer>地图编辑器 V5.2.2</footer>
-</div><script type="module" src="./editor-desktop-v522.js"></script>
+<footer>地图编辑器 V5.3.0</footer>
+</div><script type="module" src="./editor-desktop-v530.js"></script>
 </body></html>
