@@ -338,7 +338,7 @@ function renderSceneObjects(){
    found++;
    const row=document.createElement('div');row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
    const name=document.createElement('button');name.type='button';name.className='scene-pick';
-   name.textContent=r.name;name.title=id+' · X '+r.x.toFixed(1)+' · Z '+r.z.toFixed(1);
+   name.textContent=r.name;name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
    name.onclick=e=>selectItem(id,e.shiftKey);row.append(name);
    for(const [flag,value,label] of [['hidden',r.hidden?'◌':'◉',r.hidden?'显示':'隐藏'],['locked',r.locked?'▣':'▢',r.locked?'解锁':'锁定']]){
     const button=document.createElement('button');button.type='button';button.className='scene-action';
