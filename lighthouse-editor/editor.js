@@ -20,7 +20,7 @@ renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
 view.insertBefore(renderer.domElement,view.firstChild);scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
 const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92,65);scene.add(sunlight);
 const controls=new OrbitControls(camera,renderer.domElement);
-camera.position.set(102,114,123);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
+camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
 controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
 controls.touches={ONE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=330;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
@@ -347,11 +347,11 @@ $('input-json').onchange=async e=>{
 };
 $('autosave').onclick=()=>{saveLocal();toast('预览地图已保存');};
 $('open-game').onclick=()=>{saveLocal();window.open('../lighthouse/?map=editor','_blank','noopener');};
-function resetCamera(){camera.position.set(102,114,123);camera.lookAt(0,0,0);controls.target.set(0,0,0);controls.update();}
+function resetCamera(){camera.position.set(40,38,46);camera.lookAt(0,0,0);controls.target.set(0,0,0);controls.update();}
 $('reset-view').onclick=resetCamera;
 $('camera').onclick=()=>{
  isTop=!isTop;
- camera.position.set(isTop?.01:102,isTop?175:114,isTop?.01:123);
+ camera.position.set(isTop?.01:40,isTop?76:38,isTop?.01:46);
  camera.up.set(0,1,0);controls.target.set(0,0,0);controls.update();
  $('camera').textContent=isTop?'切换透视':'切换俯视';
 };
