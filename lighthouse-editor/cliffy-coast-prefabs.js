@@ -2,11 +2,23 @@ import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 // Original FBX geometry and material groups from the user's Cliffy Coast package.
-// Each GLB remains at source dimensions. Placement uses defaultScale=0.3;
+// Each GLB remains at source dimensions. Placement uses per-asset lighthouse-height defaultScale;
 // never bake this into vertices or alter the approved original island.
 const SPECS = [
- {id:'cliffy_coast_tree1', label:'Cliffy Coast · Tree1', file:'tree1.glb', triangles:1203},
- {id:'cliffy_coast_tree3', label:'Cliffy Coast · Tree3', file:'tree3.glb', triangles:639}
+ {id:'cliffy_coast_tree1',label:'Cliffy Coast · Tree1',file:'tree1.glb',triangles:1203,defaultScale:0.18455},
+ {id:'cliffy_coast_tree2',label:'Cliffy Coast · Tree2',file:'tree2.glb',triangles:770,defaultScale:0.18944},
+ {id:'cliffy_coast_tree3',label:'Cliffy Coast · Tree3',file:'tree3.glb',triangles:639,defaultScale:0.174},
+ {id:'cliffy_coast_treedamaged1',label:'Cliffy Coast · TreeDamaged1',file:'treedamaged1.glb',triangles:291,defaultScale:0.22361},
+ {id:'cliffy_coast_treedamaged2',label:'Cliffy Coast · TreeDamaged2',file:'treedamaged2.glb',triangles:293,defaultScale:0.23641},
+ {id:'cliffy_coast_treedamaged3',label:'Cliffy Coast · TreeDamaged3',file:'treedamaged3.glb',triangles:289,defaultScale:0.24061},
+ {id:'cliffy_coast_plant',label:'Cliffy Coast · Plant',file:'plant.glb',triangles:165,defaultScale:0.41906},
+ {id:'cliffy_coast_plant2',label:'Cliffy Coast · Plant2',file:'plant2.glb',triangles:165,defaultScale:0.47629},
+ {id:'cliffy_coast_plant3',label:'Cliffy Coast · Plant3',file:'plant3.glb',triangles:165,defaultScale:0.44171},
+ {id:'cliffy_coast_reed',label:'Cliffy Coast · Reed',file:'reed.glb',triangles:400,defaultScale:0.34797},
+ {id:'cliffy_coast_reedbig',label:'Cliffy Coast · ReedBig',file:'reedbig.glb',triangles:1200,defaultScale:0.37486},
+ {id:'cliffy_coast_ivy1',label:'Cliffy Coast · Ivy1',file:'ivy1.glb',triangles:756,defaultScale:0.28611},
+ {id:'cliffy_coast_ivy2_housewall',label:'Cliffy Coast · Ivy2_HouseWall',file:'ivy2_housewall.glb',triangles:721,defaultScale:0.29639},
+ {id:'cliffy_coast_field',label:'Cliffy Coast · Field',file:'field.glb',triangles:5941,defaultScale:0.45}
 ];
 
 export async function registerCliffyCoastTrees(catalog) {
@@ -39,8 +51,8 @@ export async function registerCliffyCoastTrees(catalog) {
   catalog.types.push(spec.id);
   const size=bounds.getSize(new T.Vector3());
   catalog.all[spec.id]={
-   label:spec.label,category:'Cliffy Coast 树木',kind:'complete',
-   source:'Cliffy Coast original FBX GLB',defaultScale:0.3,triangles:spec.triangles,
+   label:spec.label,category:'Cliffy Coast 植物',kind:'complete',
+   source:'Cliffy Coast original FBX GLB',defaultScale:spec.defaultScale,triangles:spec.triangles,
    size:[size.x,size.y,size.z].map(n=>+n.toFixed(3))
   };
  }
@@ -48,5 +60,5 @@ export async function registerCliffyCoastTrees(catalog) {
   const model=templates.get(id);
   return model?model.clone(true):existingCreate(id);
  };
- return SPECS.map(({id,label,triangles})=>({id,label,triangles}));
+ return loaded.map(({spec})=>({id:spec.id,label:spec.label,triangles:spec.triangles}));
 }
