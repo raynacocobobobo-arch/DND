@@ -101,6 +101,7 @@ jobs:
               +inGame.dataset.nativeAssets>=80&&
               +inGame.dataset.terrain>0&&
               inGame.info.nativeEdits.find(x=>x.id==='lighthouse').x===7&&
+              +inGame.dataset.nativeAssets===before.state.prefabTypes.length&&
               inGame.info.nativeEdits.find(x=>x.id==='lighthouse').z===-1&&
               inGame.map.heights[10*64+25]===4&&
               inGame.boat.mapWorldLoaded&&inGame.boat.safe&&
@@ -111,6 +112,7 @@ jobs:
               objects:afterEdit.map.objects.length,
               nativeMoved:afterEdit.native.lighthouse,
               game:inGame.dataset,
+              sharedPrefabCount:before.state.prefabTypes.length,
               gameNative:inGame.info.nativeEdits,
               gameBoatSafe:inGame.boat.safe,
               sameLand:inGame.map.heights[10*64+25],
