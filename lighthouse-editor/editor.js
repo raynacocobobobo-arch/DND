@@ -5,7 +5,7 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,applyNativeEdits,
- BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=37a';
+ BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=38a';
 const $=id=>document.getElementById(id),view=$('view');
 const GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
