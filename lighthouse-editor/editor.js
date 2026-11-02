@@ -5,7 +5,7 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,applyNativeEdits,
- BASE_ASSETS,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=37a';
+ BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=37a';
 const $=id=>document.getElementById(id),view=$('view');
 const GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
@@ -33,8 +33,8 @@ for(const child of gameGroup.children)
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
-gameGroup.visible=false; // source library, not part of blank editor map
-const nativeTargets=Object.fromEntries(Object.keys(BASE_ASSETS).map(id=>[id,gameGroup.getObjectByName('game-asset-'+id)]));
+gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
+const nativeTargets=nativeGameTargets();
 const root=new T.Group();scene.add(root);
 const openSea=addOpenOcean(root);openSea.scale.set(2.5,2.5,1);
 scene.fog=new T.Fog(0x88b9c9,88,265);
@@ -125,7 +125,7 @@ function rebuildObjects(){
   assetLayer.add(g);objects.set(r.id,r);
  }
  if(!selected||(!objects.has(selected)&&!selected.startsWith('native:')))selected=null;
- updateInspector();$('object-count').textContent=world.objects.length;
+ updateInspector();$('object-count').textContent=world.objects.length+' 新增 / '+Object.keys(nativeTargets).length+' 原版';
 }
 function redraw(){rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
 function setDirty(v){dirty=v;$('dirty').textContent=v?'有未导出修改':'已导出';}
@@ -165,7 +165,7 @@ function findSelected(evt){
  const rect=renderer.domElement.getBoundingClientRect();
  ndc.set((evt.clientX-rect.left)/rect.width*2-1,-(evt.clientY-rect.top)/rect.height*2+1);
  ray.setFromCamera(ndc,camera);
- for(const hit of ray.intersectObjects(assetLayer.children,true)){
+ for(const hit of ray.intersectObjects([...assetLayer.children,...(gameGroup.visible?Object.values(nativeTargets).filter(o=>o&&o.visible):[])],true)){
   let parent=hit.object;
   while(parent){
    if(parent.userData.mapId)return parent.userData.mapId;
@@ -270,6 +270,12 @@ document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
 document.getElementById('finish-region').onclick=finishOutline;
 document.getElementById('cancel-region').onclick=()=>{resetOutline();toast('已取消轮廓');};
 document.getElementById('terrain-height').oninput=e=>document.getElementById('terrain-height-val').textContent=e.target.value;
+$('toggle-original').onclick=()=>{
+ gameGroup.visible=!gameGroup.visible;
+ $('toggle-original').textContent=gameGroup.visible?'隐藏原版岛屿':'显示原版岛屿';
+ $('toggle-original').setAttribute('aria-pressed',String(gameGroup.visible));
+ selected=null;updateInspector();toast(gameGroup.visible?'已显示完整 V35 原版岛屿':'仅暂时隐藏原版岛屿，未删除模型');
+};
 function renderAssetLibrary(){
  const query=$('asset-search').value.trim().toLowerCase();
  const group=$('asset-filter').value;
@@ -332,7 +338,7 @@ $('rot').onchange=e=>mutateSelected(o=>o.rotation=+e.target.value);
 $('rot').oninput=e=>$('rot-val').textContent=e.target.value+'°';
 $('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
 $('scale').oninput=e=>$('scale-val').textContent=(+e.target.value).toFixed(1);
-$('new-world').onclick=()=>{if(!confirm('新建海域会替换当前地图，建议先导出 JSON。继续吗？'))return;history();world=emptyMap();selected=null;redraw();saveLocal();toast('已新建空白海域');};
+$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap();selected=null;redraw();saveLocal();toast('已清空新增内容，原游戏岛屿保留');};
 $('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;redraw();saveLocal();toast('已恢复群岛模板');};
 $('save').onclick=()=>{
  const data=JSON.stringify(world,null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
@@ -375,7 +381,7 @@ rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(fal
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,
  heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,history:hist.length,
- realGameAssets:true,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
+ realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
   history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1});rebuildObjects();saveLocal();return true;},
@@ -391,8 +397,9 @@ window.__lighthouseEditor={
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
 };
 renderer.setAnimationLoop(()=>{
- controls.update();const selectedGroup=selected?assetLayer.children.find(g=>g.userData.mapId===selected):null;
- if(selectedGroup){selectedGroup.updateWorldMatrix(true,true);selectionBounds.setFromObject(selectedGroup);selectionHelper.visible=!selectionBounds.isEmpty();}
+ controls.update();let selectedGroup=selected?assetLayer.children.find(g=>g.userData.mapId===selected):null;
+ if(!selectedGroup&&selected?.startsWith('native:')&&gameGroup.visible)selectedGroup=nativeTargets[selected.slice(7)];
+ if(selectedGroup&&selectedGroup.visible){selectedGroup.updateWorldMatrix(true,true);selectionBounds.setFromObject(selectedGroup);selectionHelper.visible=!selectionBounds.isEmpty();}
  else selectionHelper.visible=false;
  renderer.render(scene,camera);
 });
