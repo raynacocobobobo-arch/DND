@@ -237,6 +237,16 @@ function updateObjectsHeight(){
   root.traverse(mesh=>{
    if(!mesh.isMesh||!mesh.material)return;
    if(isNative&&!nativeOriginalMaterials.has(mesh))nativeOriginalMaterials.set(mesh,mesh.material);
+   if(isNative){
+    const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+    if(mats.every(m=>m?.userData?.colorAdjustment)){
+     for(const m of mats){
+      m.userData.colorAdjustment.brightness.value=b;
+      m.userData.colorAdjustment.saturation.value=s;
+     }
+     return;
+    }
+   }
    const source=isNative?nativeOriginalMaterials.get(mesh):mesh.material;
    // Reuse an instance's adjusted materials when moving a slider.
    if(!isNative&&mesh.userData.adjustedMaterials){
@@ -305,7 +315,14 @@ function rebuildObjects(){
  if(selected&&!selectedIds.has(selected))selectedIds.add(selected);
  updateInspector();$('object-count').textContent=world.objects.length+' 新增 / '+Object.keys(nativeTargets).length+' 原版';
 }
-function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
+function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(true);}
+function applyAllNativeAppearance(){
+ for(const [id,rec] of Object.entries(world.baseEdits||{})){
+  if((rec.brightness??1)!==1||(rec.saturation??1)!==1||nativeOriginalMaterials.has(nativeTargets[id])){
+   adjustMaterials(nativeTargets[id],rec.brightness??1,rec.saturation??1,true);
+  }
+ }
+}
 function setDirty(v){dirty=v;$('dirty').textContent=v?'有未导出修改':'已导出';}
 function saveLocal(){try{savePreviewMap(world)}catch(e){console.warn('Local save unavailable',e);}}
 function applyHistory(direction){
