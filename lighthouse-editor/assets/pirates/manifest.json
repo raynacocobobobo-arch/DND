@@ -1536,6 +1536,54 @@
       "file": "SM_Bld_Cuba_Hall_Front_01.glb",
       "label": "海盗 · Bld Cuba Hall Front 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_room_01",
+      "file": "SM_Bld_Cuba_Hall_Room_01.glb",
+      "label": "海盗 · Bld Cuba Hall Room 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_room_02",
+      "file": "SM_Bld_Cuba_Hall_Room_02.glb",
+      "label": "海盗 · Bld Cuba Hall Room 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_room_03",
+      "file": "SM_Bld_Cuba_Hall_Room_03.glb",
+      "label": "海盗 · Bld Cuba Hall Room 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_room_04",
+      "file": "SM_Bld_Cuba_Hall_Room_04.glb",
+      "label": "海盗 · Bld Cuba Hall Room 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_tower_01",
+      "file": "SM_Bld_Cuba_Hall_Tower_01.glb",
+      "label": "海盗 · Bld Cuba Hall Tower 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_roof_01",
+      "file": "SM_Bld_Cuba_Roof_01.glb",
+      "label": "海盗 · Bld Cuba Roof 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_roof_02",
+      "file": "SM_Bld_Cuba_Roof_02.glb",
+      "label": "海盗 · Bld Cuba Roof 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_roof_03",
+      "file": "SM_Bld_Cuba_Roof_03.glb",
+      "label": "海盗 · Bld Cuba Roof 03",
+      "defaultScale": 1
     }
   ]
 }
