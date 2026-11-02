@@ -11,6 +11,7 @@ import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
  from './shared-map.js?v=46-scale-percent-1';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
+import {registerCliffyCoastTrees} from '../lighthouse-editor/cliffy-coast-prefabs.js?v=1';
 import {createExternalGLBLibrary} from '../lighthouse-editor/external-glb-library.js?v=1';
 import {registerLegacyHarborPrefabs} from '../lighthouse-editor/legacy-harbor-assets.js?v=1a';
 // This is an entirely separate editor-map GAME PREVIEW. The production v35-scene.js
@@ -202,6 +203,7 @@ try{
  const prefabs=nativePrefabCatalog(group,reefs.root);
  registerLegacyHarborPrefabs(prefabs);
  await registerCoastalPalms(prefabs);
+ await registerCliffyCoastTrees(prefabs);
  // Local game preview shares the editor's IndexedDB asset cache.
  // Published preview deliberately does not embed arbitrary local assets.
  const externalLibrary=await createExternalGLBLibrary(prefabs);
