@@ -39,7 +39,7 @@ export function emptyMap(options={}){
     !Number.isFinite(width)||!Number.isFinite(depth)||width<1||depth<1)
   throw Error('地图尺寸或网格无效');
  return {schema:WORLD_SCHEMA,version:2,width,depth,grid:[gx,gz],
-  heights:Array(gx*gz).fill(-3),types:Array(gx*gz).fill('water'),objects:[],baseEdits:{},regions:[]};
+  heights:Array(gx*gz).fill(-3),types:Array(gx*gz).fill('water'),objects:[],baseEdits:{},regions:[],assetScaleVersion:'cliffy-batch01-source-unit-v1'};
 }
 export function normalizeMap(v){
  const grid=v?.grid;
@@ -83,7 +83,7 @@ export function normalizeMap(v){
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
-  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset)&&! /^coastal_tree_t0[1-4]$/.test(asset)&&! /^legacy_(shipwreck|pier_west|pier_east)$/.test(asset)&&! /^ext_glb_[0-9a-f]{24}$/.test(asset)&&! /^cliffy_coast_tree[13]$/.test(asset))return null;
+  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset)&&! /^coastal_tree_t0[1-4]$/.test(asset)&&! /^legacy_(shipwreck|pier_west|pier_east)$/.test(asset)&&! /^ext_glb_[0-9a-f]{24}$/.test(asset)&&! /^cliffy_coast_(?:tree[123]|treedamaged[123]|plant[23]?|reed(?:big)?|ivy1|ivy2_housewall|field)$/.test(asset))return null;
   const id=String(obj.id||'item-'+i).slice(0,60);
   if(seen.has(id))return null;
   seen.add(id);
@@ -92,7 +92,7 @@ export function normalizeMap(v){
     y:clamp(Number(obj.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
    z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
-   scale:clamp(Number(obj.scale)||1,.05,5),hidden:!!obj.hidden,locked:!!obj.locked,
+   scale:clamp((Number(obj.scale)||1)*(!v.assetScaleVersion&&['cliffy_coast_tree1','cliffy_coast_tree3'].includes(asset)?.3:1),.05,5),hidden:!!obj.hidden,locked:!!obj.locked,
    group:typeof obj.group==='string'&&/^grp_[a-z0-9]{6,20}$/.test(obj.group)?obj.group:null};
  }).filter(Boolean);
  return w;
