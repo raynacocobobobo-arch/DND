@@ -7,7 +7,7 @@ import {createSteadySeaClouds} from './v27-clouds.js?v=27a';
 import {createFlyingGulls} from './v27-gulls.js?v=27a';
 import {createOffshoreReefs} from './v35-reefs.js?v=35a';
 import {createBoatNavigator} from './v35-boat-nav.js?v=35a';
-import {normalizeMap,nativePrefabCatalog,
+import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
  from './shared-map.js?v=44preview';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
@@ -15,9 +15,17 @@ import {registerLegacyHarborPrefabs} from '../lighthouse-editor/legacy-harbor-as
 // This is an entirely separate editor-map GAME PREVIEW. The production v35-scene.js
 // keeps the unedited, fixed-size original scene. This module alone loads the
 // explicitly published editor-preview-map.json file from the gh-pages branch.
-const response=await fetch(new URL('./editor-preview-map.json',import.meta.url),{cache:'no-store'});
-if(!response.ok)throw Error('Unable to fetch editor preview map: HTTP '+response.status);
-const worldMap=normalizeMap(await response.json());
+// ?source=local reads the editor's same-origin auto-saved draft.
+const isLocalRequested=new URLSearchParams(location.search).get('source')==='local';
+const localMap=isLocalRequested?readPreviewMap():null;
+let publishedMap=null;
+if(!localMap){
+ const response=await fetch(new URL('./editor-preview-map.json',import.meta.url),{cache:'no-store'});
+ if(!response.ok)throw Error('Unable to fetch editor preview map: HTTP '+response.status);
+ publishedMap=await response.json();
+}
+const worldMap=normalizeMap(localMap||publishedMap);
+const previewSource=localMap?'editor-local-preview':'editor-published-preview';
 const worldHasEdits=true;
 
 const host=document.getElementById('viewport'),status=document.getElementById('status');
@@ -141,7 +149,7 @@ try{
  document.body.dataset.version='v35a';
  document.body.dataset.mapLinked='true';
  document.body.dataset.worldMapActive=String(worldHasEdits);
- document.body.dataset.worldMapSource='editor-published-preview';
+ document.body.dataset.worldMapSource=previewSource;
  document.body.dataset.previewScene='true';
  document.body.dataset.clickRipple='true';
  document.body.dataset.dynamicHazards='true';
@@ -238,7 +246,7 @@ window.__lighthouseNightEvents={
  getReefs:()=>reefs?.getState(),
  getWorldMap:()=>worldMap,
  getMapInfo:()=>({
-  active:worldHasEdits,source:'editor-published-preview',
+  active:worldHasEdits,source:previewSource,
   count:worldMap.objects.length,
   terrainCells:worldMap.heights.filter(y=>y>0).length,
   schema:worldMap.schema,nativeAssets:Object.keys(BASE_ASSETS),
