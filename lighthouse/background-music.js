@@ -1,72 +1,58 @@
-/* Lighthouse looping background soundtrack.
- * Try unmuted autoplay on page load. Browsers that disallow audible
- * autoplay will start on the first user gesture anywhere on the scene.
- * The bundled MP3 must be published at ./audio/lighthouse_background_music.mp3.
+/* Lighthouse background soundtrack V4.
+ * The soundtrack is shipped with the game; no file picker, sound button,
+ * volume slider or separate music overlay is required.
+ *
+ * Browser policy: attempt audible playback on page load; where blocked by
+ * Safari / Chrome, retry synchronously with the first user gesture anywhere
+ * within the game. Do not attempt to circumvent the browser restriction.
  */
-const player=document.getElementById('game-background-music');
-const toggle=document.getElementById('music-toggle');
-const status=document.getElementById('music-status');
-const volume=document.getElementById('music-volume');
-const bundled='./audio/lighthouse_background_music.mp3';
-let assetPresent=false,playingRequested=true,attempting=false;
-player.volume=.35;player.loop=true;player.preload='auto';
-function notify(message){status.hidden=false;status.textContent=message;}
-function state(){
- const playing=!player.paused;
- toggle.setAttribute('aria-pressed',String(playing));
- toggle.textContent=playing?'音乐：播放中':'音乐：关闭';
+const audio=document.getElementById('game-background-music');
+audio.volume=0.35;
+audio.muted=false;
+audio.loop=true;
+audio.preload='auto';
+let inFlight=false;
+let lastError=null;
+let startedOnce=false;
+function state(value){document.body.dataset.musicStatus=value;}
+function stopRetry(){
+ for(const t of ['pointerdown','touchstart','keydown'])
+   window.removeEventListener(t,attemptAutoplay,true);
 }
-async function begin(){
- if(!assetPresent||!playingRequested||attempting||!player.paused)return;
- attempting=true;
- try{
-  await player.play();
-  removeGestureRetry();
-  notify('背景音乐自动循环播放中');
- }catch(e){
-  // NotAllowedError is expected in browsers blocking audible autoplay.
-  if(e.name==='NotAllowedError')notify('浏览器限制自动播放，点击游戏画面后将自动播放音乐');
-  else notify('背景音乐暂时无法播放');
- }finally{attempting=false;state();}
+function attemptAutoplay(){
+ if(document.hidden||inFlight||!audio.paused||audio.error)return;
+ inFlight=true;
+ let promise;
+ try { promise=audio.play(); }
+ catch(e){inFlight=false;lastError=e?.name||String(e);state('blocked');return;}
+ Promise.resolve(promise).then(()=>{
+   startedOnce=true;lastError=null;state('playing');stopRetry();
+ }).catch(e=>{
+   lastError=e?.name||String(e);
+   state(e?.name==='NotAllowedError'?'gesture-needed':'error');
+ }).finally(()=>{inFlight=false;});
 }
-function gestureRetry(){if(playingRequested)begin();}
-function removeGestureRetry(){
- for(const type of ['pointerdown','keydown','touchstart'])window.removeEventListener(type,gestureRetry,true);
-}
-function setupGestureRetry(){
- for(const type of ['pointerdown','keydown','touchstart'])
-  window.addEventListener(type,gestureRetry,{capture:true});
-}
-toggle.addEventListener('click',()=>{
- if(!player.paused){
-  playingRequested=false;player.pause();
-  notify('背景音乐已暂停');removeGestureRetry();
- }else{
-  playingRequested=true;setupGestureRetry();begin();
- }
- state();
+for(const t of ['pointerdown','touchstart','keydown'])
+  window.addEventListener(t,attemptAutoplay,{capture:true,passive:t!=='keydown'});
+audio.addEventListener('play',()=>state('playing'));
+audio.addEventListener('pause',()=>{if(!document.hidden)state('paused');});
+audio.addEventListener('error',()=>state('load-error'));
+audio.addEventListener('canplay',attemptAutoplay);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){audio.pause();state('background-paused');}
+ else attemptAutoplay();
 });
-volume.addEventListener('input',()=>{player.volume=Number(volume.value)/100;});
-player.addEventListener('play',state);
-player.addEventListener('pause',state);
-player.addEventListener('error',()=>{
- notify('音乐文件未加载成功，请检查网页音频资源是否已发布');
-});
+window.addEventListener('pageshow',attemptAutoplay);
 window.__lighthouseMusic={
- getState:()=>({assetPresent,ready:assetPresent,playing:!player.paused,
-  autoPlayRequested:playingRequested,loop:player.loop,volume:player.volume,
-  source:assetPresent?'bundled':'missing'}),
- play:()=>{playingRequested=true;begin();},
- pause:()=>{playingRequested=false;player.pause();state();}
+ getState:()=>({
+  playing:!audio.paused,ready:audio.readyState>=2,
+  loop:audio.loop,volume:audio.volume,muted:audio.muted,
+  duration:Number.isFinite(audio.duration)?audio.duration:null,
+  source:audio.currentSrc,status:document.body.dataset.musicStatus,
+  startedOnce,lastError
+ }),
+ play:attemptAutoplay,
+ pause:()=>audio.pause()
 };
-setupGestureRetry();
-// HEAD preflight avoids treating GitHub Pages' HTML fallback as MP3.
-fetch(bundled,{method:'HEAD',cache:'no-store'}).then(r=>{
- if(!r.ok)return;
- const type=r.headers.get('content-type')||'';
- if(/text\/html/i.test(type))return;
- assetPresent=true;
- player.src=bundled;player.load();
- begin(); // attempt automatic playback immediately on every visit
-}).catch(()=>{});
-state();
+state('loading');
+attemptAutoplay();
