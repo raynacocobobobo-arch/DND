@@ -401,9 +401,30 @@ $('gizmo-snap').onchange=e=>{
  transform.setRotationSnap(on?Math.PI/12:null);
  transform.setScaleSnap(on?.1:null);
 };
-transform.addEventListener('dragging-changed',e=>{controls.enabled=!e.value;});
-transform.addEventListener('mouseDown',()=>{if(selectedIds.size)history();});
+// Track screen movement before accepting gizmo changes. Small pointer jitter
+// must not alter the model, including when the user clicks a gizmo handle.
+const gizmoPointer={startX:0,startY:0,x:0,y:0};
+let gizmoDragActive=false,gizmoDragStarted=false;
+renderer.domElement.addEventListener('pointerdown',e=>{
+ if(e.button===0){gizmoPointer.startX=e.clientX;gizmoPointer.startY=e.clientY;
+  gizmoPointer.x=e.clientX;gizmoPointer.y=e.clientY;}
+},true);
+renderer.domElement.addEventListener('pointermove',e=>{
+ gizmoPointer.x=e.clientX;gizmoPointer.y=e.clientY;
+},true);
+transform.addEventListener('dragging-changed',e=>{
+ controls.enabled=!e.value;
+ if(!e.value)syncTransform();
+});
+transform.addEventListener('mouseDown',()=>{
+ gizmoDragActive=true;gizmoDragStarted=false;
+});
 transform.addEventListener('objectChange',()=>{
+ if(gizmoDragActive&&!gizmoDragStarted){
+  const travelled=Math.hypot(gizmoPointer.x-gizmoPointer.startX,gizmoPointer.y-gizmoPointer.startY);
+  if(travelled<DIRECT_DRAG_THRESHOLD)return;
+  gizmoDragStarted=true;history();
+ }
  if(syncingProxy||!world)return;
  syncingProxy=true;
  const entries=[...selectedIds].map(id=>({id,r:recordById(id)})).filter(({r})=>r&&!r.hidden&&!r.locked);
@@ -440,7 +461,12 @@ transform.addEventListener('objectChange',()=>{
  }
  syncingProxy=false;
 });
-transform.addEventListener('mouseUp',()=>{saveLocal();renderSceneObjects();syncTransform();});
+transform.addEventListener('mouseUp',()=>{
+ if(gizmoDragStarted){saveLocal();renderSceneObjects();}
+ gizmoDragActive=false;gizmoDragStarted=false;
+ // TransformControls dispatches mouseUp before setting dragging=false.
+ // The dragging-changed listener above resets the proxy after release.
+});
 // Selecting never moves a model. A drag must travel at least 8 screen pixels
 // and uses the pointer's original offset relative to the selected model.
 const DIRECT_DRAG_THRESHOLD=8;
