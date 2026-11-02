@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -38,6 +39,7 @@ for(const child of gameGroup.children)
  if(child.userData.waterSidewall||['sea-geological-base','sea-soil-stratum','opaque-sea-cross-section'].includes(child.name))
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
+const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
 const nativeTargets=nativeGameTargets();
@@ -383,7 +385,8 @@ function assetCategory(id,meta={}){
   return '细节构件 / '+cat;
  }
  if(id.startsWith('kraken_'))return '海怪与事件';
- if(id==='pirate_ship'||id==='service_boat')return '船只';
+ if(id==='pirate_ship'||id==='service_boat'||id==='legacy_shipwreck')return '船只';
+ if(id==='legacy_pier_west'||id==='legacy_pier_east')return '码头与栈道';
  if(id.includes('reef')||id.includes('rock'))return '礁石与海岸';
  if(id.includes('pine')||id.includes('tree')||id.includes('flora'))return '树木与植被';
  if(id==='lighthouse'||id==='boathouse')return '灯塔与建筑';
@@ -473,7 +476,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['灯塔与建筑','树木与植被','礁石与海岸','船只','营地与道具','海怪与事件'];
+ const order=['灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
