@@ -228,12 +228,76 @@ function objModel(asset){
 function updateObjectsHeight(){
  for(const g of assetLayer.children){const rec=objects.get(g.userData.recordId);if(rec)g.position.y=terrainY(rec.x,rec.z)+(rec.y??0);}
 }
+
+ // Independent material copies prevent edits from recoloring other model instances.
+ const nativeOriginalMaterials=new WeakMap();
+ function adjustMaterials(root,brightness=1,saturation=1,isNative=false){
+  if(!root)return;
+  const b=clamp(Number(brightness)||1,0,2),s=clamp(Number(saturation)||0,0,2);
+  root.traverse(mesh=>{
+   if(!mesh.isMesh||!mesh.material)return;
+   if(isNative&&!nativeOriginalMaterials.has(mesh))nativeOriginalMaterials.set(mesh,mesh.material);
+   const source=isNative?nativeOriginalMaterials.get(mesh):mesh.material;
+   // Reuse an instance's adjusted materials when moving a slider.
+   if(!isNative&&mesh.userData.adjustedMaterials){
+    const mats=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+    for(const m of mats)if(m?.userData?.colorAdjustment){
+     m.userData.colorAdjustment.brightness.value=b;
+     m.userData.colorAdjustment.saturation.value=s;
+    }
+    return;
+   }
+   const create=m=>{
+    if(!m)return m;
+    const copy=m.clone(),previous=m.onBeforeCompile;
+    const uniformB={value:b},uniformS={value:s};
+    copy.userData.colorAdjustment={brightness:uniformB,saturation:uniformS};
+    copy.onBeforeCompile=shader=>{
+     previous?.(shader);
+     shader.uniforms.editorBrightness=uniformB;
+     shader.uniforms.editorSaturation=uniformS;
+     shader.fragmentShader='uniform float editorBrightness;\nuniform float editorSaturation;\n'+shader.fragmentShader;
+     const marker='#include <map_fragment>';
+     const adjustment='\nfloat editorLuma=dot(diffuseColor.rgb,vec3(0.2126,0.7152,0.0722));\ndiffuseColor.rgb=clamp(mix(vec3(editorLuma),diffuseColor.rgb,editorSaturation)*editorBrightness,0.0,1.0);';
+     shader.fragmentShader=shader.fragmentShader.replace(marker,marker+adjustment);
+    };
+    copy.customProgramCacheKey=()=>((m.customProgramCacheKey?.()||'')+'-editor-bs-v1');
+    return copy;
+   };
+   if(isNative){
+    // Restore the original material before making each updated copy.
+    mesh.material=Array.isArray(source)?source.map(create):create(source);
+   }else{
+    mesh.material=Array.isArray(source)?source.map(create):create(source);
+    mesh.userData.adjustedMaterials=true;
+   }
+  });
+ }
+ function refreshSelectedAppearance(){
+  if(!selected||selectedIds.size!==1)return;
+  const r=currentRecord();if(!r)return;
+  const node=selected.startsWith('native:')?nativeTargets[selected.slice(7)]:assetLayer.children.find(g=>g.userData.recordId===selected);
+  if(!node)return;
+  if(selected.startsWith('native:'))adjustMaterials(node,r.brightness??1,r.saturation??1,true);
+  else{
+   // Existing cloned model has independent uniforms; no geometry reload.
+   const b=r.brightness??1,s=r.saturation??1;
+   node.traverse(m=>{if(!m.isMesh)return;for(const mat of (Array.isArray(m.material)?m.material:[m.material])){
+    if(mat?.userData?.colorAdjustment){
+     mat.userData.colorAdjustment.brightness.value=b;
+     mat.userData.colorAdjustment.saturation.value=s;
+    }
+   }});
+  }
+ }
+
 function rebuildObjects(){
  assetLayer.clear();objects.clear();selectionHelper.visible=false;
  for(const r of world.objects){
   const g=objModel(r.asset);g.userData.recordId=r.id;g.userData.mapId=r.id;g.name=r.name;
   g.position.set(r.x,terrainY(r.x,r.z)+(r.y??0),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);g.visible=!r.hidden;
   g.traverse(m=>{if(m.isMesh)m.userData.recordId=r.id;});
+   adjustMaterials(g,r.brightness??1,r.saturation??1);
   assetLayer.add(g);objects.set(r.id,r);
  }
  if(!selected||(!objects.has(selected)&&!selected.startsWith('native:')))selected=null;
@@ -295,7 +359,7 @@ function recordById(id){
   const key=id.slice(7),base=BASE_ASSETS[key],r=world.baseEdits?.[key]||{};
   if(!base)return null;
   return {id,asset:key,name:base.name,x:r.x??base.x,y:r.y??0,z:r.z??base.z,
-   rotation:r.rotation??0,scale:r.scale??1,hidden:r.hidden??false,locked:r.locked??false};
+   rotation:r.rotation??0,scale:r.scale??1,brightness:r.brightness??1,saturation:r.saturation??1,hidden:r.hidden??false,locked:r.locked??false};
  }
  return objects.get(id)||null;
 }
@@ -350,6 +414,8 @@ function updateInspector(){
   $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
   $('rot').value=r.rotation;$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(3);$('scale-val').textContent=+(r.scale*100).toFixed(2)+'%';
+   for(const key of ['brightness','saturation']){$('appearance-'+key).value=Math.round((r[key]??1)*100);$('appearance-'+key+'-value').textContent=Math.round((r[key]??1)*100)+'%';$('appearance-'+key).disabled=!editable;}
+   $('appearance-reset').disabled=!editable;
   for(const field of ['posx','posy','posz'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
   $('duplicate').disabled=locked||multi;
@@ -751,7 +817,7 @@ $('duplicate').onclick=()=>{
  if(!catalog.types.includes(r.asset)){toast('此原版对象不能直接复制，请从模型库放置');return;}
  history();
  const o={id:uid(),asset:r.asset,name:r.name+' 复制',x:clamp(r.x+3,-WIDTH/2,WIDTH/2),
-  z:clamp(r.z+3,-DEPTH/2,DEPTH/2),rotation:r.rotation,scale:r.scale,hidden:false,locked:false};
+  z:clamp(r.z+3,-DEPTH/2,DEPTH/2),rotation:r.rotation,scale:r.scale,brightness:r.brightness??1,saturation:r.saturation??1,hidden:false,locked:false};
  world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setDirty(true);saveLocal();
 };
 $('delete').onclick=()=>{
@@ -787,6 +853,32 @@ function numberOr(raw,fallback){
 }
 function degrees(v){return ((numberOr(v,0)%360)+360)%360;}
 function percentage(v){return clamp(numberOr(v,100),.1,500)/100;}
+// Keep the current model on screen while dragging; commit one undo step on release.
+for(const key of ['brightness','saturation']){
+ const input=$('appearance-'+key);
+ let before=null;
+ input.addEventListener('pointerdown',()=>{before=currentRecord()?.[key]??1;});
+ input.addEventListener('input',()=>{
+  const r=currentRecord();if(!r||selectedIds.size!==1||isLocked(selected))return;
+  actualRecord(selected)[key]=Number(input.value)/100;
+  $('appearance-'+key+'-value').textContent=input.value+'%';
+  refreshSelectedAppearance();setDirty(true);
+ });
+ input.addEventListener('change',()=>{
+  const r=currentRecord();if(!r||selectedIds.size!==1||isLocked(selected))return;
+  const next=Number(input.value)/100;
+  if(before!==null&&Math.abs(before-next)>1e-7){
+   const old=actualRecord(selected)[key];
+   actualRecord(selected)[key]=before;history();actualRecord(selected)[key]=old;
+  }
+  before=null;saveLocal();
+ });
+}
+$('appearance-reset').onclick=()=>{
+ if(!currentRecord()||selectedIds.size!==1||isLocked(selected))return;
+ mutateSelected(r=>{r.brightness=1;r.saturation=1;});
+ refreshSelectedAppearance();
+};
 $('selected-name').onchange=e=>setSelectedName(e.target.value);
 for(const field of ['posx','posz'])$(field).onchange=e=>{
  const key=field==='posx'?'x':'z',limit=key==='x'?WIDTH/2:DEPTH/2;
