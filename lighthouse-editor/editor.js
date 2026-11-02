@@ -7,7 +7,7 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,MAX_EDITOR_GRID,
- BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=41a';
+ BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=42b';
 const $=id=>document.getElementById(id),view=$('view');
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
@@ -503,7 +503,7 @@ $('toggle-original').onclick=()=>{
  gameGroup.visible=!gameGroup.visible;
  $('toggle-original').textContent=gameGroup.visible?'隐藏原版岛屿':'显示原版岛屿';
  $('toggle-original').setAttribute('aria-pressed',String(gameGroup.visible));
- selected=null;updateInspector();toast(gameGroup.visible?'已显示完整 V35 原版岛屿':'仅暂时隐藏原版岛屿，未删除模型');
+ selected=null;selectedIds.clear();updateInspector();toast(gameGroup.visible?'已显示完整 V35 原版岛屿':'仅暂时隐藏原版岛屿，未删除模型');
 };
 // Human-readable asset families; meshes under 'parts' retain authored type names.
 function assetCategory(id,meta={}){
@@ -749,11 +749,18 @@ window.__lighthouseEditor={
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
 };
+const tempSelectionBounds=new T.Box3();
 renderer.setAnimationLoop(()=>{
- controls.update();let selectedGroup=selected?assetLayer.children.find(g=>g.userData.mapId===selected):null;
- if(!selectedGroup&&selected?.startsWith('native:')&&gameGroup.visible)selectedGroup=nativeTargets[selected.slice(7)];
- if(selectedGroup&&selectedGroup.visible){selectedGroup.updateWorldMatrix(true,true);selectionBounds.setFromObject(selectedGroup);selectionHelper.visible=!selectionBounds.isEmpty();}
- else selectionHelper.visible=false;
+ controls.update();selectionBounds.makeEmpty();
+ for(const id of selectedIds){
+  const target=id.startsWith('native:')?(gameGroup.visible?nativeTargets[id.slice(7)]:null):
+   assetLayer.children.find(g=>g.userData.mapId===id);
+  if(!target||!target.visible)continue;
+  target.updateWorldMatrix(true,true);
+  tempSelectionBounds.setFromObject(target);
+  if(!tempSelectionBounds.isEmpty())selectionBounds.union(tempSelectionBounds);
+ }
+ selectionHelper.visible=!selectionBounds.isEmpty();
  renderer.render(scene,camera);
 });
 document.body.dataset.editorReady='true';
