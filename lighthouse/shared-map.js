@@ -83,7 +83,7 @@ export function normalizeMap(v){
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
-  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset))return null;
+  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset)&&! /^coastal_tree_t0[1-4]$/.test(asset)&&! /^legacy_(shipwreck|pier_west|pier_east)$/.test(asset))return null;
   const id=String(obj.id||'item-'+i).slice(0,60);
   if(seen.has(id))return null;
   seen.add(id);
