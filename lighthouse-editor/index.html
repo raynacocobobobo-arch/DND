@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V4.1 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V4.1.2 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -59,7 +59,7 @@ a{color:#b2d8cf}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.1 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.1.2 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
 <button id="open-game" class="primary">查看独立游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
@@ -112,6 +112,6 @@ a{color:#b2d8cf}
 <div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。修改会保存到同一浏览器，编辑内容暂不加载进正式游戏。扩展数据可导出 JSON，待完成模型与加载机制后另行发布。</p></div>
 <div><button id="autosave" style="width:100%">保存编辑器草稿</button></div>
 </aside>
-<footer id="footer">V4.1 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
-</div><script type="module" src="./editor.js?v=91yz"></script>
+<footer id="footer">V4.1.2 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
+</div><script type="module" src="./editor.js?v=412-clickfix"></script>
 </body></html>
