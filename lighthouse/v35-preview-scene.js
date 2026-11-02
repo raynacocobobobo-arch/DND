@@ -1,3 +1,4 @@
+import {registerCliffyCoastHouses} from '../lighthouse-editor/cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {group,buildCutaway,buildIsland,setRenderer,W,D,WATER_CENTER_X,WATER_CENTER_Z,WATER_AREA_FACTOR} from './v27-world.js?v=27a';
@@ -16,8 +17,8 @@ import {registerCliffyCoastBatch02} from '../lighthouse-editor/cliffy-coast-batc
 import {registerCliffyCoastBatch03} from '../lighthouse-editor/cliffy-coast-batch03.js?v=1';
 import {registerCliffyCoastBatch04} from '../lighthouse-editor/cliffy-coast-batch04.js?v=1';
 import {registerCliffyCoastBatch05} from '../lighthouse-editor/cliffy-coast-batch05.js?v=1';
-import {registerCliffyCoastBatch06_07} from '../lighthouse-editor/cliffy-coast-batch06-07.js?v=1-bulk';
-import {registerCliffyCoastBatch08_10} from '../lighthouse-editor/cliffy-coast-batch08-10.js?v=1-bulk';
+import {registerCliffyCoastBatch06_07} from '../lighthouse-editor/cliffy-coast-batch06-07.js?v=2-house-pivot';
+import {registerCliffyCoastBatch08_10} from '../lighthouse-editor/cliffy-coast-batch08-10.js?v=2-house-pivot';
 import {createExternalGLBLibrary} from '../lighthouse-editor/external-glb-library.js?v=1';
 import {registerLegacyHarborPrefabs} from '../lighthouse-editor/legacy-harbor-assets.js?v=1a';
 // This is an entirely separate editor-map GAME PREVIEW. The production v35-scene.js
@@ -221,6 +222,8 @@ try{
   const batch06_07=await registerCliffyCoastBatch06_07(prefabs).catch(err=>{console.error('Cliffy 06-07 preview:',err);return {loaded:0};});
   document.body.dataset.cliffyBatch06_07=String(batch06_07.loaded);
   const batch08_10=await registerCliffyCoastBatch08_10(prefabs).catch(err=>{console.error('Cliffy 08-10 preview:',err);return {loaded:0};});
+  const cliffyHouses=registerCliffyCoastHouses(prefabs);
+  document.body.dataset.cliffyHouses=String(cliffyHouses.loaded);
   document.body.dataset.cliffyBatch08_10=String(batch08_10.loaded);
  // Local game preview shares the editor's IndexedDB asset cache.
  // Published preview deliberately does not embed arbitrary local assets.
