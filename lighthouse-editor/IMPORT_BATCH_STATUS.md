@@ -5,7 +5,7 @@
 ## 批次范围（FBX 原始文件）
 - 总计 172 个 FBX；`1_FBX/Terrain/` 17 个地形独立处理；`Collision/` 12 个碰撞代理不进入普通素材库；剩余 **143 个场景模型候选**。
 - **Batch 01 Plants：14/14 已转换并提交，尚待真人浏览器视觉验收。** `Assets/Lowpoly Style/Cliffy Coast/1_FBX/Plants/`。
-- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；Batch 04 Other：0/18；Batch 05 Bridges/Paths/Walls：0/13；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
+- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；**Batch 04 Misc：18/18 已提交，待浏览器视觉验收**；Batch 05 Bridges/Paths/Walls：0/13；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
 - 以上后续类别为**计划分组**，下一批开工前按原 FBX 文件重新核对实际归属；不得把计划数说成已处理数量。
 
 ## Batch 01（植物14）
@@ -43,7 +43,7 @@
 
 **游戏边界**：当前仅在编辑器和 `lighthouse/preview.html` 试玩环境生效，不修改 `lighthouse/` 正式游戏 V35 固定资产。
 
-**下一步**：先在浏览器验收 Batch 01+02+03，尤其检查武器贴图对应关系；随后从 Batch 04（原计划18件）中核对可用的灯具、摊位、推车等，不擅自扩充范围。**第三方资源许可：** 用户提供源包不自动等于允许公开再分发，正式公开持续部署应核实相应授权。
+**下一步**：优先验收前四批的灯具、摊位、营火及武器贴图；然后处理 Batch 05 桥梁、道路与围墙13件。**第三方资源许可：** 用户提供源包不自动等于允许公开再分发，正式公开持续部署应核实相应授权。
 
 ## Batch 02（工具14 + 家具6）
 
@@ -125,3 +125,38 @@
 - **未验收：** 真人浏览器材质、透明、着地、缩放比例、性能、删除/撤销与试玩行为。
 
 **边界：** 不改动原版岛屿地形、原版V35正式游戏或前两批素材。第三方资源再分发授权仍须核实。
+
+
+## Batch 04（场景杂件18）——已提交，待视觉验收
+
+**模型文件提交**：`b8c63447113f61a14922db7b8137421567572d7d`。18个独立GLB文件位于 `lighthouse-editor/assets/cliffy-coast/`，新素材注册模块为 `cliffy-coast-batch04.js`。累计已提交 **70/143个非地形模型，剩余73个**。
+
+| FBX | 三角面 tris | 默认缩放 |
+|---|---:|---:|
+| Lantern_Metal | 764 | 20.389% |
+| Lantern_MetalDouble | 1644 | 23.931% |
+| Lantern_Wall | 737 | 51.772% |
+| Lantern_Wood | 694 | 20.389% |
+| MarketStand_Blue | 2138 | 91.144% |
+| MarketStand_Green | 2138 | 91.144% |
+| MarketStand_Red | 2138 | 91.144% |
+| MarketStand_White | 2138 | 91.144% |
+| CartBig1 | 3260 | 47.182% |
+| MuddPlane | 71 | 11.747% |
+| RockBlock1 | 212 | 108.400% |
+| RockBlock3 | 240 | 140.658% |
+| RockBlock_Torch1 | 774 | 95.617% |
+| RockBlock_Torch2 | 822 | 107.385% |
+| StonePath_Curve | 324 | 21.171% |
+| StonePath_Straight | 303 | 20.557% |
+| WoodenPloorPatch1 | 202 | 24.450% |
+| Campfire | 490 | 43.610% |
+| **合计** | **19,089** | — |
+
+**本批范围**：灯具4、摊位4、推车1、泥地1、岩块4、石路2、木地板片1、营火1。全部源FBX几何未烘焙缩放，保留各自UV和原始面数，导入时以灯塔整体约7.43世界单位为基准设定 `defaultScale`（以长轴控制部分横向模型尺寸）。
+
+**贴图风险**：其中11件 FBX 引用 Asia/Desert 等未随包提供的纹理贴图。当前GLB用资源包内 Cliffy Coast `Main.png` 图集作为临时贴图，几何和UV保留，但**灯具、四色摊位、营火的原版颜色不能保证复原**，营火不附带点火与粒子动画；需要网页视觉验收，不可将临时材质标记为最终定版。
+
+**校验通过**：18个FBX三角化与GLB回读面数一致，总19,089 tris；已通过GitHub Git blob/tree/commit方式提交18个文件；注册模块及编辑器、试玩场景均已接线；待执行全量JavaScript静态语法检查和浏览器渲染验收。
+
+**版本**：灯塔编辑器 V4.6.0，编辑器与独立试玩场景均引用 `cliffy-coast-batch04.js`；正式V35游戏未修改。**下一批**：Batch 05 桥梁、道路、围墙13个（开工前重新核对原FBX的归属及是否与Batch04已有道路构件重复）。
