@@ -27,7 +27,7 @@ button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inheri
 <div id="viewport"></div>
 
 <nav aria-label="三维场景控制">
-<a href="../lighthouse-editor/" target="_blank" rel="noopener" style="font-size:12px;text-decoration:none;background:#386476d9;border:1px solid #a3bdc977;border-radius:8px;padding:10px 12px">地图编辑器</a><button id="reset" type="button">重置视角</button>
+<button id="reset" type="button">重置视角</button>
 <button id="rotate" type="button" aria-pressed="false">自动旋转</button>
 <button id="mode-day" type="button" aria-pressed="true">白天</button>
 <button id="mode-night" type="button" aria-pressed="false">夜晚</button>
@@ -36,6 +36,6 @@ button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inheri
 </nav>
 
 <div id="status" role="status">正在加载 V35a 灯塔营地…</div>
-<script type="module" src="./v35-scene.js?v=38a"></script>
+<script type="module" src="./v35-scene.js?v=39a"></script>
 <script>window.addEventListener('error',function(e){let s=document.getElementById('status'); if(s){s.hidden=false;s.textContent='无法加载三维场景，请确认网络能访问 jsDelivr。'+(e.message||'')}});</script>
 </body></html>
