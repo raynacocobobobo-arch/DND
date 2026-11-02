@@ -12,7 +12,7 @@ const SPECS = [
 export async function registerCliffyCoastTrees(catalog) {
  const loader=new GLTFLoader(), templates=new Map();
  const existingCreate=catalog.create.bind(catalog);
- const loaded=await Promise.all(SPECS.map(async spec=>{
+ const results=await Promise.allSettled(SPECS.map(async spec=>{
   const uri=new URL('./assets/cliffy-coast/'+spec.file,import.meta.url).href;
   const gltf=await loader.loadAsync(uri);
   const bounds=new T.Box3().setFromObject(gltf.scene);
@@ -30,6 +30,9 @@ export async function registerCliffyCoastTrees(catalog) {
   model.add(gltf.scene);
   return {spec,model,bounds};
  }));
+ const loaded=results.filter(r=>r.status==='fulfilled').map(r=>r.value);
+ for(const result of results)if(result.status==='rejected')
+  console.error('Cliffy Coast GLB failed to load; existing editor remains available:',result.reason);
  for(const {spec,model,bounds} of loaded){
   if(catalog.types.includes(spec.id))throw Error('Duplicate Cliffy Coast asset '+spec.id);
   templates.set(spec.id,model);
