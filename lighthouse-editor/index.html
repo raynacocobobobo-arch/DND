@@ -59,153 +59,153 @@ a{color:#b2d8cf}
 #input-json{display:none}
 @media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
 
-/* Mobile V4.9: fullscreen canvas with independent bottom-sheet editors. */
+
+/* Compact editor with non-blocking minimap and mobile panels */
+#minimap{position:absolute;left:14px;bottom:16px;z-index:10;width:202px;padding:7px;background:#10252de8;border:1px solid #527178;border-radius:10px;box-shadow:0 5px 16px #08191d9e;user-select:none}
+#minimap .minimap-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600;color:#c9e0dd;padding:0 4px 6px}
+#minimap canvas{display:block;width:100%;height:auto;aspect-ratio:5/4;border-radius:6px;touch-action:none;cursor:crosshair;background:#204858}
+#minimap .minimap-title button{padding:2px 5px;font-size:11px;border:0;background:transparent}
+#asset-section,#glb-section,#backup-section,#size-section,#transform-section,#inspector-section{min-width:0}
+#backup-list{margin-top:6px}
+#backup-name{margin-top:6px}
 #mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim,#mobile-project-actions{display:none}
 @media(max-width:740px), (pointer:coarse) and (max-width:1020px){
- html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
- #app{display:block;width:100%;height:100dvh;min-height:0;overflow:hidden}
- header{position:fixed;top:0;left:0;right:0;z-index:80;height:calc(55px + env(safe-area-inset-top));padding:calc(6px + env(safe-area-inset-top)) 12px 6px;gap:8px;flex-wrap:nowrap}
- header .brand{font-size:14px;white-space:nowrap}
- header .brand + .muted{display:none}
- header .hdr-actions{display:none}
- #mobile-top-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
- #mobile-top-actions button{min-height:36px;padding:6px 8px;font-size:12px}
- #view{position:fixed;top:calc(55px + env(safe-area-inset-top));bottom:calc(66px + env(safe-area-inset-bottom));left:0;right:0;width:100%;height:auto;min-height:0;z-index:1}
+ html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none}
+ #app{display:block;height:100dvh;min-height:0;overflow:hidden}
+ header{position:fixed;top:0;left:0;right:0;height:calc(54px + env(safe-area-inset-top));padding:calc(6px + env(safe-area-inset-top)) 10px 6px;z-index:80;flex-wrap:nowrap}
+ header .brand{font-size:14px}header .brand+.muted,header .hdr-actions{display:none}
+ #mobile-top-actions{display:flex;gap:5px;align-items:center}
+ #mobile-top-actions button{min-height:36px;padding:6px 8px;font-size:11px}
+ #view{position:fixed;left:0;right:0;top:calc(54px + env(safe-area-inset-top));bottom:calc(64px + env(safe-area-inset-bottom));height:auto;min-height:0;z-index:1}
  #hint{display:none}
- #mobile-view-controls{display:flex;position:absolute;top:10px;right:10px;z-index:6;gap:7px}
- #mobile-view-controls button{padding:9px 12px;min-height:40px;font-size:12px;background:#142f3be6;box-shadow:0 2px 10px #061b2270}
- #mobile-view-controls button.active{background:#327c74}
- #toast{bottom:18px;max-width:85vw}
- #mobile-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;position:fixed;bottom:0;left:0;right:0;height:calc(66px + env(safe-area-inset-bottom));padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:#101f28;border-top:1px solid #42616a;z-index:100}
- #mobile-bar button{min-width:0;min-height:47px;padding:5px 1px;font-size:12px;background:transparent;border:1px solid transparent;border-radius:9px;white-space:normal}
- #mobile-bar button.active{color:#fff;background:#29564f;border-color:#6aa899}
- #left,#right{display:none;position:fixed;left:0;right:0;top:auto;bottom:calc(66px + env(safe-area-inset-bottom));height:auto;max-height:min(58dvh,560px);width:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;z-index:60;padding:14px 15px 18px;background:#142731;box-shadow:0 -10px 25px #06151ba6;border:1px solid #4d6970;border-bottom:0;border-radius:16px 16px 0 0}
- #left:before,#right:before{content:'';display:block;width:36px;height:4px;border-radius:3px;background:#58747b;margin:-5px auto 14px}
- body[data-mobile-panel="assets"] #left,body[data-mobile-panel="terrain"] #left,body[data-mobile-panel="more"] #left,body[data-mobile-panel="scene"] #right,body[data-mobile-panel="inspector"] #right{display:block}
- body[data-mobile-panel="more"] #left{display:flex;flex-direction:column}
- body[data-mobile-panel="more"] #mobile-project-actions{display:block;order:-1}
- body[data-mobile-panel="assets"] #left>.section:not(:nth-of-type(4)){display:none}
- body[data-mobile-panel="terrain"] #left>.section:not(:nth-of-type(1)){display:none}
- body[data-mobile-panel="more"] #left>.section:nth-of-type(1),body[data-mobile-panel="more"] #left>.section:nth-of-type(4){display:none}
- body[data-mobile-panel="scene"] #right>.section:not(:nth-of-type(1)){display:none}
- body[data-mobile-panel="scene"] #right>div:last-child:not(.section){display:none}
- body[data-mobile-panel="inspector"] #right>.section:not(:nth-of-type(2)):not(:nth-of-type(4)){display:none}
- body[data-mobile-panel="inspector"] #right>div:last-child:not(.section){display:none}
- body[data-mobile-panel="inspector"] #right{display:flex;flex-direction:column}
- body[data-mobile-panel="inspector"] #right:before{flex-shrink:0}
- body[data-mobile-panel="inspector"] #right>.section:nth-of-type(4){order:0}
- body[data-mobile-panel="inspector"] #right>.section:nth-of-type(2){order:1}
- #mobile-scrim{position:fixed;top:calc(55px + env(safe-area-inset-top));bottom:calc(66px + env(safe-area-inset-bottom));left:0;right:0;z-index:50;background:#06121638}
+ #mobile-view-controls{display:flex;gap:5px;position:absolute;right:8px;top:8px;z-index:8}
+ #mobile-view-controls button{font-size:11px;padding:8px;min-height:38px;background:#142f3be6}
+ #minimap{left:8px;bottom:9px;width:min(39vw,170px);padding:5px}
+ #minimap .minimap-title{font-size:10px;padding-bottom:3px}
+ #minimap canvas{width:100%}
+ #toast{bottom:16px;max-width:85vw}
+ #mobile-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:100;background:#11232b;border-top:1px solid #526c74;height:calc(64px + env(safe-area-inset-bottom));padding:6px 5px calc(5px + env(safe-area-inset-bottom));gap:5px}
+ #mobile-bar button{padding:4px;font-size:12px;min-width:0;background:transparent;border-color:transparent}
+ #mobile-bar button.active{background:#2a6157;border-color:#6fa99b}
+ #left,#right{display:none;position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));max-height:min(62dvh,560px);height:auto;width:100%;overflow-y:auto;overscroll-behavior:contain;z-index:60;padding:14px 15px 18px;background:#13272f;border:1px solid #46636b;border-bottom:0;border-radius:16px 16px 0 0;box-shadow:0 -10px 26px #06171d99}
+ #left:before,#right:before{content:'';display:block;width:36px;height:4px;background:#5d8081;border-radius:3px;margin:-6px auto 12px}
+ body[data-mobile-panel="assets"] #left,body[data-mobile-panel="backup"] #left,body[data-mobile-panel="more"] #left,body[data-mobile-panel="inspector"] #right{display:block}
+ body[data-mobile-panel="assets"] #left>.section:not(#asset-section),
+ body[data-mobile-panel="backup"] #left>.section:not(#backup-section),
+ body[data-mobile-panel="more"] #left>.section:not(#glb-section):not(#size-section):not(#mobile-project-actions){display:none}
+ body[data-mobile-panel="more"] #mobile-project-actions{display:block}
+ body[data-mobile-panel="inspector"] #right>.section{display:block}
+ #mobile-scrim{position:fixed;left:0;right:0;top:calc(54px + env(safe-area-inset-top));bottom:calc(64px + env(safe-area-inset-bottom));background:#06121636;z-index:50}
  body[data-mobile-panel]:not([data-mobile-panel="none"]) #mobile-scrim{display:block}
- #scene-list{max-height:35dvh}
- .section{margin-bottom:12px;padding-bottom:12px}
  .toolgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
  .toolgrid button,.filelabel{min-height:44px}
- .asset-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
- .asset-card{min-height:0}
- .asset-category h3{font-size:13px}
- #assets{gap:12px}
- .scene-pick{font-size:13px;min-height:40px}
- .scene-action{min-width:38px;min-height:38px}
+ .asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ input[type=number],input[type=text],select{font-size:16px;min-height:42px}
  input[type=range]{min-height:32px}
- input[type=text],input[type=number],select{font-size:16px;min-height:40px}
  footer{display:none}
 }
-
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.9.0 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
-<button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
-<button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div><div id="mobile-top-actions"><button id="mobile-undo" aria-label="撤销上一步">撤销</button><button id="mobile-play" class="primary">试玩</button><button id="mobile-save" class="primary">导出</button></div></header>
-<aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
-<button data-tool="raise">⛰ 抬高</button><button data-tool="lower">⌄ 降低</button>
-<button data-tool="flatten">▬ 平整</button><button data-tool="water">≈ 挖水域</button>
-<button data-tool="sand">▧ 沙地</button><button data-tool="grass">✿ 草地</button>
-<button data-tool="rock">◆ 岩地</button><button data-tool="select" class="active">↖ 选择模型</button><button data-tool="outline">▱ 绘制岛屿轮廓</button></div>
-<label for="terrain-height">轮廓目标高度 · <output id="terrain-height-val">4</output> 级</label><input id="terrain-height" type="range" min="1" max="9" value="4">
-<label for="terrain-material">轮廓地表类型</label><select id="terrain-material"><option value="grass">草地</option><option value="rock">岩石</option><option value="sand">沙地</option></select>
-<div class="toolgrid" style="margin-top:9px"><button id="finish-region">完成轮廓 / Enter</button><button id="cancel-region">取消 / Esc</button></div>
-<p class="muted">在游戏原版岛屿周围的海面点击描绘新岛屿边界，设置目标高度后完成；边界与高度保存至 JSON，供后续精细建模。</p>
-<label for="brush">笔刷半径 · <output id="brush-val">2</output> 格</label><input id="brush" type="range" min="1" max="6" value="2">
-<label for="strength">地形强度 · <output id="strength-val">1</output> 级</label><input id="strength" type="range" min="1" max="4" value="1"></div>
-<div class="section"><h2>导入外部 GLB 模型</h2>
-<label for="import-glb" class="filelabel" style="display:block;text-align:center">选择 GLB 文件（支持多选）</label>
-<input id="import-glb" type="file" accept=".glb,model/gltf-binary" multiple style="display:none">
-<p class="muted" id="glb-status">模型保存在此浏览器；刷新后可恢复。</p>
-<div class="toolgrid"><button id="export-portable">导出完整工程（含 GLB）</button><button id="snap-neighbor">模型外框贴边</button></div>
-<p class="muted">普通 JSON 仅保存模型引用；跨浏览器移动请导出「完整工程」，包含模型原文件。GLB 导入后在下方素材库点选放置。</p></div>
-<div class="section"><h2>模块组合</h2><div class="toolgrid"><button id="group-selected">组合选中模型</button><button id="ungroup-selected">拆分组合</button></div>
-<p class="muted">Shift 多选后组合；组合可整体平移，并在 JSON 中保留分组。外框贴边不等于顶点焊接，几何无缝合并仍需检查边缘。</p></div>
-<div class="section"><h2>素材资源库</h2><label for="asset-search">搜索游戏场景模型</label>
-<input id="asset-search" type="text" placeholder="例如：沉船、栈道、松树、木屋">
-<label for="asset-filter">按游戏构件分类</label>
-<select id="asset-filter"><option value="complete" selected>完整元件（默认）</option><option value="">全部原版素材</option><option value="parts">细节零件</option></select>
-<div class="stats" style="margin:8px 0">当前选择：<span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">扫描游戏模型中…</div></div>
-<div id="assets"></div>
-<p class="muted">按建筑、植被、礁石、船只、营地道具与海怪分类；每个缩略图由实际 3D 模型生成，单击后在地图上放置。可切换「细节零件」继续选择独立构件。</p></div>
-<div class="section"><h2>地图海域尺寸</h2>
-<div class="props"><div><label for="map-width">地图宽度 X</label><input id="map-width" type="number" min="34" max="430" step="0.5" value="146"></div>
-<div><label for="map-depth">地图深度 Z</label><input id="map-depth" type="number" min="30" max="430" step="0.5" value="129"></div></div>
-<div class="toolgrid" style="margin-top:9px"><button id="apply-map-size" class="primary">应用新尺寸</button><button id="frame-world">查看完整地图</button></div>
-<p class="muted">宽度、深度可分别填写，可扩大或缩小。新增区域默认全部为原版风格海面，原岛屿与模型保持坐标不变。缩小时若会裁掉已编辑内容，则阻止操作。此设置不影响正式游戏尺寸。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
-<div id="mobile-project-actions" class="section"><h2>视角与工程</h2><div class="toolgrid">
-<button id="mobile-redo">重做</button><button id="mobile-camera">切换俯视</button><button id="mobile-reset-view">重置视角</button><button id="mobile-original">显示 / 隐藏原版岛</button>
-<button id="mobile-open-game">原版游戏</button><label for="input-json" class="filelabel" style="display:grid;place-items:center">导入地图 JSON</label>
-</div></div></aside>
-<main id="view"><div id="mobile-view-controls"><button type="button" id="mobile-touch-nav" class="active">浏览视角</button><button type="button" id="mobile-touch-edit">编辑模型</button><button type="button" id="mobile-view-home">复位</button></div><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
-<aside id="right">
-<div class="section"><h2>场景对象管理器</h2>
-<input id="scene-search" type="text" placeholder="搜索已放置模型名称或编号" aria-label="搜索场景对象">
-<select id="scene-filter" aria-label="场景模型筛选" style="margin:0 0 9px"><option value="all">全部已放置模型</option><option value="visible">仅显示可见模型</option><option value="hidden">仅显示已隐藏模型</option></select>
-<div class="muted" id="scene-count">加载场景对象中…</div>
-<div id="scene-list" aria-label="场景对象列表"></div>
-<p class="muted">只管理你放置的模型，按元件分类；可折叠、搜索、隐藏和锁定。原版游戏物件不在此列表中。</p>
-<div class="scene-bulk"><button id="scene-hide">隐藏选中</button><button id="scene-show">显示选中</button><button id="scene-lock">锁定选中</button><button id="scene-unlock">解锁选中</button></div></div>
-<div class="section"><h2>3D 变换工具</h2>
-<div id="transform-tools"><button id="gizmo-move" class="active">移动 G</button><button id="gizmo-rotate">旋转 R</button><button id="gizmo-scale">缩放 S</button></div>
-<div id="transform-numeric" style="margin-top:12px">
-<label for="rot">旋转角度（度）· <output id="rot-val">0°</output></label>
-<div class="props" style="grid-template-columns:minmax(0,1fr) 92px;align-items:end">
-<input id="rot" type="range" min="0" max="359" step="1" value="0" aria-label="旋转角度滑杆">
-<div><label for="rot-deg">直接输入 °</label><input id="rot-deg" type="number" min="-360" max="360" step="1" value="0"></div>
-</div>
-<label for="scale">模型缩放 · <output id="scale-val">100%</output></label>
-<div class="props" style="grid-template-columns:minmax(0,1fr) 92px;align-items:end">
-<input id="scale" type="range" min=".001" max="20" step=".001" value="1" aria-label="模型缩放滑杆">
-<div><label for="scale-pct">直接输入 %</label><input id="scale-pct" type="number" min=".1" max="2000" step=".001" value="100"></div>
-</div>
-
-<p class="muted" style="margin:6px 0">点击物体后修改参数，按 Enter 确认。Delete 删除选中物体。</p>
-</div>
-<label style="display:flex;align-items:center;gap:6px"><input id="gizmo-snap" type="checkbox" style="width:auto">启用网格 / 角度吸附</label>
-<p class="muted">移动手柄具有 X / Y / Z 三轴，可沿 Y 轴升降对象；旋转绕 Y 轴，缩放保持等比例。多选时支持三轴整体平移。</p></div>
-<div class="section" hidden aria-hidden="true"><h2>地图概览</h2><div class="stats">编辑海域：<span class="value" id="size">146 × 129</span><br>地形网格：<span class="value" id="grid-size">64 × 56</span><br>模型实例：<span class="value" id="object-count">0</span><br>当前工具：<span class="value" id="tool-name">抬高</span><br>当前坐标：<span class="value" id="cursor">—</span><br>修改状态：<span class="value" id="dirty">已保存</span></div></div>
-<div class="section"><h2>选中对象</h2><div id="none" class="muted">点击原游戏或新增的完整模型，即可单独选中；原版模型可隐藏、恢复，新增模型可删除。地形与海面不参与单选。</div>
-<div id="inspector" hidden><div id="multi-hint" hidden></div><label for="selected-name">模型名称</label><input id="selected-name" type="text">
-<div class="props" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:5px">
-<div><label for="posx">X 横向</label><input id="posx" type="number" step=".1"></div>
-<div><label for="posy">Y 高度偏移</label><input id="posy" type="number" min="-50" max="100" step=".1" value="0"></div>
-<div><label for="posz">Z 纵向</label><input id="posz" type="number" step=".1"></div></div>
-<p class="muted">Y=0 为原放置高度；正数向上抬升，负数下沉。原版模型同样适用。</p>
-<h3>模型颜色调整</h3>
-<label for="appearance-brightness">明度 · <output id="appearance-brightness-value">100%</output></label>
-<input id="appearance-brightness" type="range" min="0" max="200" step="1" value="100">
-<label for="appearance-hue">色相 · <output id="appearance-hue-value">0°</output></label>
-<input id="appearance-hue" type="range" min="-180" max="180" step="1" value="0" aria-label="色相滑杆">
-<label for="appearance-saturation">饱和度 · <output id="appearance-saturation-value">100%</output></label>
-<input id="appearance-saturation" type="range" min="0" max="200" step="1" value="100">
-<button id="appearance-reset" type="button" style="margin-top:8px;width:100%">恢复原始颜色</button>
-<p class="muted">明度和饱和度 100%、色相 0° 为原值；调整不修改 GLB 文件和原贴图。</p>
-<h3>素材默认设置</h3><p id="asset-default-status" class="muted">当前为单个模型实例修改</p>
-<div class="toolgrid"><button id="overwrite-asset" class="primary" type="button">覆盖原素材元件</button><button id="restore-asset-defaults" type="button">恢复素材默认值</button></div>
-<p class="muted">覆盖仅保存该元件的缩放、明度、色相和饱和度作为新默认值。以后放置同类元件时生效，不改动已放置的其他实例；随地图工程导出。不会覆盖原始 GLB 文件。</p>
-<div class="toolgrid" style="margin-top:12px"><button id="duplicate">复制</button><button id="delete">删除</button></div><button id="restore-native" type="button" hidden style="width:100%;margin-top:8px">复位原模型</button></div></div>
-<div class="section" hidden aria-hidden="true"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可拖动绘制。修改会自动保存在本浏览器，点击「试玩当前地图」即可进入独立 V35 试玩环境，使用当前草稿中的模型和地形；正式游戏始终保持原版不变。可另行导出 JSON 备份。</p></div>
-<div><button id="autosave" style="width:100%">保存编辑器草稿</button></div>
+<header>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.1.0 · DND</div></div>
+ <div class="hdr-actions">
+  <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button>
+  <button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
+  <button id="play-map" class="primary">试玩地图</button><button id="open-game">原版游戏</button>
+  <button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label>
+  <input id="input-json" type="file" accept=".json,application/json">
+ </div>
+ <div id="mobile-top-actions"><button id="mobile-undo">撤销</button><button id="mobile-backup" class="primary">备份</button><button id="mobile-play">试玩</button></div>
+</header>
+<aside id="left">
+ <div class="section" id="asset-section">
+  <h2>素材资源库</h2><input id="asset-search" type="text" placeholder="搜索模型">
+  <select id="asset-filter"><option value="complete" selected>完整元件</option><option value="">全部素材</option><option value="parts">细节零件</option></select>
+  <div class="stats" style="margin:8px 0"><span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">加载中…</div></div>
+  <div id="assets"></div>
+ </div>
+ <div class="section" id="glb-section">
+  <h2>导入 GLB</h2>
+  <label for="import-glb" class="filelabel" style="display:block;text-align:center">选择 GLB 文件</label>
+  <input id="import-glb" type="file" accept=".glb,model/gltf-binary" multiple hidden>
+  <div id="glb-status" class="muted" style="margin:8px 0"></div>
+  <div class="toolgrid"><button id="export-portable">导出完整工程</button><button id="snap-neighbor">模型外框贴边</button></div>
+ </div>
+ <div class="section" id="backup-section">
+  <h2>地图备份</h2>
+  <button id="backup-create" class="primary" style="width:100%">快速备份</button>
+  <label for="backup-list">选择备份</label>
+  <select id="backup-list"><option value="">暂无备份</option></select>
+  <div class="toolgrid" style="margin-top:8px">
+   <button id="backup-restore">恢复所选备份</button><button id="backup-delete">删除所选备份</button>
+  </div>
+  <div class="muted" id="backup-status" style="margin-top:7px"></div>
+ </div>
+ <div class="section" id="size-section">
+  <h2>海域尺寸</h2>
+  <div class="props"><div><label for="map-width">宽度 X</label><input id="map-width" type="number" min="34" max="430" step=".5" value="146"></div>
+  <div><label for="map-depth">深度 Z</label><input id="map-depth" type="number" min="30" max="430" step=".5" value="129"></div></div>
+  <div class="toolgrid" style="margin-top:8px"><button id="apply-map-size">应用尺寸</button><button id="frame-world">显示整幅地图</button></div>
+ </div>
+ <div class="section" id="mobile-project-actions">
+  <h2>工程操作</h2>
+  <div class="toolgrid">
+   <button id="mobile-redo">重做</button><button id="mobile-camera">切换俯视</button><button id="mobile-reset-view">复位视角</button><button id="mobile-original">显示 / 隐藏原版岛</button>
+   <button id="mobile-open-game">原版游戏</button><button id="mobile-export">导出 JSON</button>
+   <button id="mobile-import-json">导入地图 JSON</button><button id="mobile-full">导出完整工程</button>
+  </div>
+ </div>
 </aside>
-<div id="mobile-scrim" aria-hidden="true"></div><nav id="mobile-bar" aria-label="手机编辑工具"><button data-mobile-tab="assets" type="button">素材库</button><button data-mobile-tab="terrain" type="button">地形</button><button data-mobile-tab="scene" type="button">场景</button><button data-mobile-tab="inspector" type="button">属性</button><button data-mobile-tab="more" type="button">更多</button></nav>
-<footer id="footer">V4.9.0 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
-</div><script type="module" src="./editor.js?v=parrot-colors-v502"></script>
+<main id="view">
+ <div id="mobile-view-controls"><button id="mobile-touch-nav" class="active">浏览视角</button><button id="mobile-touch-edit">编辑模型</button><button id="mobile-view-home">复位</button></div>
+ <div id="minimap"><div class="minimap-title"><span>小地图</span><button id="minimap-center" title="回到原点">中心</button></div>
+  <canvas id="minimap-canvas" width="250" height="200" aria-label="点击或拖动小地图定位摄像机" role="button" tabindex="0"></canvas>
+ </div>
+ <div id="toast" role="status"></div>
+</main>
+<aside id="right">
+ <div class="section" id="transform-section">
+  <h2>模型变换</h2>
+  <div id="transform-tools"><button id="gizmo-move" class="active">移动 G</button><button id="gizmo-rotate">旋转 R</button><button id="gizmo-scale">缩放 S</button></div>
+  <div id="transform-numeric" style="margin-top:12px">
+   <label for="rot">旋转角度 · <output id="rot-val">0°</output></label>
+   <div class="props" style="grid-template-columns:minmax(0,1fr) 85px;align-items:end">
+    <input id="rot" type="range" min="0" max="359" step="1" value="0">
+    <input id="rot-deg" type="number" min="-360" max="360" step="1" value="0"></div>
+   <label for="scale">缩放 · <output id="scale-val">100%</output></label>
+   <div class="props" style="grid-template-columns:minmax(0,1fr) 85px;align-items:end">
+    <input id="scale" type="range" min=".001" max="2" step=".001" value="1">
+    <input id="scale-pct" type="number" min=".1" max="200" step=".1" value="100"></div>
+  </div>
+  <label style="display:flex;align-items:center;gap:7px"><input id="gizmo-snap" type="checkbox" style="width:auto">网格吸附</label>
+ </div>
+ <div class="section" id="inspector-section">
+  <h2>选中对象</h2><div id="none" class="muted">未选中</div>
+  <div id="inspector" hidden>
+   <div id="multi-hint" hidden></div>
+   <label for="selected-name">模型名称</label><input id="selected-name" type="text">
+   <div class="props" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:5px">
+    <div><label for="posx">X</label><input id="posx" type="number" step=".1"></div>
+    <div><label for="posy">Y</label><input id="posy" type="number" min="-50" max="100" step=".1"></div>
+    <div><label for="posz">Z</label><input id="posz" type="number" step=".1"></div>
+   </div>
+   <h3>模型颜色调整</h3>
+   <label for="appearance-brightness">明度 · <output id="appearance-brightness-value">100%</output></label><input id="appearance-brightness" type="range" min="0" max="200" step="1" value="100">
+   <label for="appearance-hue">色相 · <output id="appearance-hue-value">0°</output></label><input id="appearance-hue" type="range" min="-180" max="180" step="1" value="0">
+   <label for="appearance-saturation">饱和度 · <output id="appearance-saturation-value">100%</output></label><input id="appearance-saturation" type="range" min="0" max="200" step="1" value="100">
+   <button id="appearance-reset" type="button" style="width:100%">恢复原始颜色</button>
+   <h3>素材默认设置</h3><div class="muted" id="asset-default-status"></div>
+   <div class="toolgrid"><button id="overwrite-asset" class="primary">覆盖原素材元件</button><button id="restore-asset-defaults">恢复素材默认值</button></div>
+   <div class="toolgrid" style="margin-top:12px"><button id="duplicate">复制</button><button id="delete">删除</button></div>
+   <button id="restore-native" hidden style="margin-top:8px;width:100%">复位原模型</button>
+  </div>
+ </div>
+</aside>
+<div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
+<div id="mobile-scrim" aria-hidden="true"></div>
+<nav id="mobile-bar" aria-label="编辑工具"><button data-mobile-tab="assets">素材库</button><button data-mobile-tab="inspector">属性</button><button data-mobile-tab="backup">备份</button><button data-mobile-tab="more">更多</button></nav>
+<footer>地图编辑器 V5.1.0</footer>
+</div><script type="module" src="./editor.js?v=minimap-backups-v510"></script>
 </body></html>
