@@ -1,4 +1,6 @@
 import * as T from 'three';
+import {createKraken} from './v34-tentacle.js?v=34a';
+import {createPirateShip} from './v27-pirate.js?v=27a';
 
 // One schema / one material and prefab source for BOTH pages.
 // Stored on the same GitHub Pages origin, hence same-browser preview works.
@@ -17,7 +19,12 @@ const ASSETS={
  pine_forest:{label:'整组松林',radius:6},
  shore_rocks:{label:'整组原版岸礁',radius:7},
  coastal_flora:{label:'整组海岸植被',radius:6},
- supply_barrels:{label:'整组补给木桶',radius:2}
+ supply_barrels:{label:'整组补给木桶',radius:2},
+ pirate_ship:{label:'原版双桅海盗船（完整）',radius:3},
+ kraken_variant_0:{label:'原版触手 · 回卷型（完整）',radius:2},
+ kraken_variant_1:{label:'原版触手 · 桥拱型（完整）',radius:2},
+ kraken_variant_2:{label:'原版触手 · 短钩型（完整）',radius:2},
+ kraken_variant_3:{label:'原版触手 · S曲线型（完整）',radius:2}
 };
 export const ASSET_TYPES=Object.keys(ASSETS);
 const former={rock:'shore_rock',tree:'pine',hut:'boathouse',dock:'boathouse'};
@@ -185,10 +192,24 @@ export function nativePrefabCatalog(group,reefRoot){
   holder.userData.assetType=asset;
   templates.set(asset,holder);
  });
+ for(const id of ['pirate_ship','kraken_variant_0','kraken_variant_1','kraken_variant_2','kraken_variant_3'])
+  templates.set(id,new T.Group());
  return {
   all:labels,
   types:[...templates.keys()],
   create:(asset)=>{
+   // These procedural prefabs use exactly the same source model builders as live events.
+   if(asset==='pirate_ship'){
+    const root=new T.Group();root.name='placed-whole-pirate-ship';
+    const boat=createPirateShip(root);boat.ship.visible=true;return root;
+   }
+   if(/^kraken_variant_[0-3]$/.test(asset)){
+    const root=new T.Group();root.name='placed-whole-'+asset;
+    const arm=createKraken(root,{origin:{x:0,z:0},externalControl:true,variant:Number(asset.slice(-1))});
+    arm.setNight(true);arm.forceEvent();
+    for(let i=0;i<5;i++)arm.update(1.6);
+    arm.setNight(false);arm.root.visible=true;return root;
+   }
    const original=templates.get(asset);
    if(!original)throw Error('Game asset unavailable: '+asset);
    const clone=original.clone(true);
