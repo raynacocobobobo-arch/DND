@@ -132,7 +132,15 @@ export async function createExternalGLBLibrary(catalog) {
   source.set(id, {id, name, bytes});
   catalog.types.push(id);
   catalog.all[id] = {label: name, category, kind: 'complete', source: '本地导入 GLB', triangles: tris, size};
-  if (persist && !(await put(db, {id, name, bytes}))) console.warn('GLB 已导入但浏览器未能持久保存', id);
+  if (persist) {
+   const committed = await put(db,{id,name,bytes});
+   if (!committed || !(await modelExists(db,id))) {
+    templates.delete(id);source.delete(id);
+    const position=catalog.types.indexOf(id);if(position>=0)catalog.types.splice(position,1);
+    delete catalog.all[id];
+    throw Error('GLB 未能持久保存到浏览器，已撤销本次导入；请检查存储空间或浏览器权限');
+   }
+  }
   return {id, name, triangles: tris, size, category, persistent: !!db};
  }
  async function importFiles(files) {
