@@ -3,6 +3,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
 import {createExternalGLBLibrary} from './external-glb-library.js?v=1';
+import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -43,6 +44,7 @@ for(const child of gameGroup.children)
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
 const coastalPalmAssets=await registerCoastalPalms(catalog);
+const cliffyCoastTrees=await registerCliffyCoastTrees(catalog);
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -510,7 +512,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   const asset=activeTool.slice(6);
   history();const [px,pz]=snappedXZ(p.x,p.z);
   const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
-   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:asset.startsWith('ext_glb_')?.3:1};
+   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1)};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
  history();stroke=true;lastStroke='';
@@ -574,6 +576,7 @@ $('toggle-original').onclick=()=>{
 // Human-readable asset families; meshes under 'parts' retain authored type names.
 function assetCategory(id,meta={}){
  if(id.startsWith('ext_glb_'))return meta.category||'外部模型 GLB';
+ if(id.startsWith('cliffy_coast_tree'))return 'Cliffy Coast 树木';
  if(meta.kind==='detail'){
   const cat=meta.category||'其他';
   if(cat.includes('lighthouse')||cat.includes('灯塔'))return '细节构件 / 灯塔';
@@ -674,7 +677,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['外部地形 GLB','外部模型 GLB','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 树木','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
@@ -922,7 +925,7 @@ window.__lighthouseEditor={
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
-  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:asset.startsWith('ext_glb_')?.3:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
+  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1),hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
  selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
  editNative:(id,change)=>{
