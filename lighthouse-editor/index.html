@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.0.1 | DND</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
+<title>灯塔世界 · 游戏地图编辑器 V5.2.0 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
-#app{display:grid;grid-template-columns:260px minmax(0,1fr)270px;grid-template-rows:58px minmax(0,1fr) 29px;height:100dvh;min-height:480px}
+#app{display:grid;grid-template-columns:260px minmax(0,1fr)270px;grid-template-rows:58px minmax(0,1fr) 29px;width:100%;min-width:1100px;height:100dvh;min-height:620px}
 header{grid-column:1/4;background:#152731;border-bottom:1px solid #324b52;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px}
 .brand{font-weight:700;font-size:16px}.muted{font-size:11px;color:#93afb5}.hdr-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 button,.filelabel{background:#25414c;color:#e8f3f0;border:1px solid #3e626a;border-radius:7px;padding:8px 10px;cursor:pointer;font-size:12px;white-space:nowrap}
@@ -60,56 +60,24 @@ a{color:#b2d8cf}
 @media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
 
 
-/* Compact editor with non-blocking minimap and mobile panels */
+
+/* One desktop layout on desktop and phones, without a second mobile interface.
+   Touch devices retain only a compact viewport interaction toggle. */
 #minimap{position:absolute;left:14px;bottom:16px;z-index:10;width:202px;padding:7px;background:#10252de8;border:1px solid #527178;border-radius:10px;box-shadow:0 5px 16px #08191d9e;user-select:none}
 #minimap .minimap-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600;color:#c9e0dd;padding:0 4px 6px}
 #minimap canvas{display:block;width:100%;height:auto;aspect-ratio:5/4;border-radius:6px;touch-action:none;cursor:crosshair;background:#204858}
 #minimap .minimap-title button{padding:2px 5px;font-size:11px;border:0;background:transparent}
-#asset-section,#glb-section,#backup-section,#size-section,#transform-section,#inspector-section{min-width:0}
 #backup-list{margin-top:6px}
-#backup-name{margin-top:6px}
-#mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim,#mobile-project-actions{display:none}
-@media(max-width:740px), (pointer:coarse) and (max-width:1020px){
- html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none}
- #app{display:block;height:100dvh;min-height:0;overflow:hidden}
- header{position:fixed;top:0;left:0;right:0;height:calc(54px + env(safe-area-inset-top));padding:calc(6px + env(safe-area-inset-top)) 10px 6px;z-index:80;flex-wrap:nowrap}
- header .brand{font-size:14px}header .brand+.muted,header .hdr-actions{display:none}
- #mobile-top-actions{display:flex;gap:5px;align-items:center}
- #mobile-top-actions button{min-height:36px;padding:6px 8px;font-size:11px}
- #view{position:fixed;left:0;right:0;top:calc(54px + env(safe-area-inset-top));bottom:calc(64px + env(safe-area-inset-bottom));height:auto;min-height:0;z-index:1}
- #hint{display:none}
- #mobile-view-controls{display:flex;gap:5px;position:absolute;right:8px;top:8px;z-index:8}
- #mobile-view-controls button{font-size:11px;padding:8px;min-height:38px;background:#142f3be6}
- #minimap{left:8px;bottom:9px;width:min(39vw,170px);padding:5px}
- #minimap .minimap-title{font-size:10px;padding-bottom:3px}
- #minimap canvas{width:100%}
- #toast{bottom:16px;max-width:85vw}
- #mobile-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:100;background:#11232b;border-top:1px solid #526c74;height:calc(64px + env(safe-area-inset-bottom));padding:6px 5px calc(5px + env(safe-area-inset-bottom));gap:5px}
- #mobile-bar button{padding:4px;font-size:12px;min-width:0;background:transparent;border-color:transparent}
- #mobile-bar button.active{background:#2a6157;border-color:#6fa99b}
- #left,#right{display:none;position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));max-height:min(62dvh,560px);height:auto;width:100%;overflow-y:auto;overscroll-behavior:contain;z-index:60;padding:14px 15px 18px;background:#13272f;border:1px solid #46636b;border-bottom:0;border-radius:16px 16px 0 0;box-shadow:0 -10px 26px #06171d99}
- #left:before,#right:before{content:'';display:block;width:36px;height:4px;background:#5d8081;border-radius:3px;margin:-6px auto 12px}
- body[data-mobile-panel="assets"] #left,body[data-mobile-panel="backup"] #left,body[data-mobile-panel="more"] #left,body[data-mobile-panel="inspector"] #right{display:block}
- body[data-mobile-panel="assets"] #left>.section:not(#asset-section),
- body[data-mobile-panel="backup"] #left>.section:not(#backup-section),
- body[data-mobile-panel="more"] #left>.section:not(#glb-section):not(#size-section):not(#mobile-project-actions){display:none}
- body[data-mobile-panel="more"] #mobile-project-actions{display:block}
- body[data-mobile-panel="inspector"] #right>.section{display:block}
- #mobile-scrim{position:fixed;left:0;right:0;top:calc(54px + env(safe-area-inset-top));bottom:calc(64px + env(safe-area-inset-bottom));background:#06121636;z-index:50}
- body[data-mobile-panel]:not([data-mobile-panel="none"]) #mobile-scrim{display:block}
- .toolgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .toolgrid button,.filelabel{min-height:44px}
- .asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
- input[type=number],input[type=text],select{font-size:16px;min-height:42px}
- input[type=range]{min-height:32px}
- footer{display:none}
-}
+#touch-controls{display:none;position:absolute;right:12px;top:12px;z-index:11;gap:6px}
+#touch-controls button{min-height:40px;background:#14303be8;font-size:12px}
+#touch-controls button.active{background:#347e7a;border-color:#8bc6b9}
+@media(pointer:coarse){#touch-controls{display:flex}button,.filelabel{min-height:36px}#minimap canvas{min-height:135px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
 <header>
- <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.1.0 · DND</div></div>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.2.0 · DND</div></div>
  <div class="hdr-actions">
   <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button>
   <button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
@@ -117,7 +85,7 @@ a{color:#b2d8cf}
   <button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label>
   <input id="input-json" type="file" accept=".json,application/json">
  </div>
- <div id="mobile-top-actions"><button id="mobile-undo">撤销</button><button id="mobile-backup" class="primary">备份</button><button id="mobile-play">试玩</button></div>
+
 </header>
 <aside id="left">
  <div class="section" id="asset-section">
@@ -149,17 +117,9 @@ a{color:#b2d8cf}
   <div><label for="map-depth">深度 Z</label><input id="map-depth" type="number" min="30" max="430" step=".5" value="129"></div></div>
   <div class="toolgrid" style="margin-top:8px"><button id="apply-map-size">应用尺寸</button><button id="frame-world">显示整幅地图</button></div>
  </div>
- <div class="section" id="mobile-project-actions">
-  <h2>工程操作</h2>
-  <div class="toolgrid">
-   <button id="mobile-redo">重做</button><button id="mobile-camera">切换俯视</button><button id="mobile-reset-view">复位视角</button><button id="mobile-original">显示 / 隐藏原版岛</button>
-   <button id="mobile-open-game">原版游戏</button><button id="mobile-export">导出 JSON</button>
-   <button id="mobile-import-json">导入地图 JSON</button><button id="mobile-full">导出完整工程</button>
-  </div>
- </div>
 </aside>
 <main id="view">
- <div id="mobile-view-controls"><button id="mobile-touch-nav" class="active">浏览视角</button><button id="mobile-touch-edit">编辑模型</button><button id="mobile-view-home">复位</button></div>
+ <div id="touch-controls" aria-label="触屏操作模式"><button id="touch-orbit" class="active" type="button">浏览视角</button><button id="touch-edit" type="button">编辑模型</button></div>
  <div id="minimap"><div class="minimap-title"><span>小地图</span><button id="minimap-center" title="回到原点">中心</button></div>
   <canvas id="minimap-canvas" width="250" height="200" aria-label="点击或拖动小地图定位摄像机" role="button" tabindex="0"></canvas>
  </div>
@@ -204,8 +164,6 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
-<div id="mobile-scrim" aria-hidden="true"></div>
-<nav id="mobile-bar" aria-label="编辑工具"><button data-mobile-tab="assets">素材库</button><button data-mobile-tab="inspector">属性</button><button data-mobile-tab="backup">备份</button><button data-mobile-tab="more">更多</button></nav>
-<footer>地图编辑器 V5.1.0</footer>
-</div><script type="module" src="./editor.js?v=minimap-backups-v510"></script>
+<footer>地图编辑器 V5.2.0</footer>
+</div><script type="module" src="./editor.js?v=unified-desktop-v520"></script>
 </body></html>
