@@ -1920,6 +1920,42 @@
       "file": "SM_Bld_Mansion_Tower_01.glb",
       "label": "海盗 · Bld Mansion Tower 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_window_01",
+      "file": "SM_Bld_Mansion_Window_01.glb",
+      "label": "海盗 · Bld Mansion Window 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_01",
+      "file": "SM_Bld_Rickety_Dock_01.glb",
+      "label": "海盗 · Bld Rickety Dock 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_02",
+      "file": "SM_Bld_Rickety_Dock_02.glb",
+      "label": "海盗 · Bld Rickety Dock 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_03",
+      "file": "SM_Bld_Rickety_Dock_03.glb",
+      "label": "海盗 · Bld Rickety Dock 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_platform_01",
+      "file": "SM_Bld_Rickety_Dock_Platform_01.glb",
+      "label": "海盗 · Bld Rickety Dock Platform 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_platform_02",
+      "file": "SM_Bld_Rickety_Dock_Platform_02.glb",
+      "label": "海盗 · Bld Rickety Dock Platform 02",
+      "defaultScale": 1
     }
   ]
 }
