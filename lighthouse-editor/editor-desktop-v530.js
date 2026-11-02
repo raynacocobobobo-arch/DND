@@ -6,7 +6,7 @@ import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
-import {createExternalGLBLibrary} from './external-glb-library.js?v=1';
+import {createExternalGLBLibrary} from './external-glb-library.js?v=2-safe-delete';
 import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=2-batch01';
 import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=1';
 import {registerCliffyCoastBatch03} from './cliffy-coast-batch03.js?v=1';
