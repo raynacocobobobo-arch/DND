@@ -606,6 +606,306 @@
       "file": "SM_Prop_Scrub_Mop_01.glb",
       "label": "海盗 · Scrub Mop 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_dock_01",
+      "file": "SM_Bld_Dock_01.glb",
+      "label": "海盗 · Dock 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_dock_02",
+      "file": "SM_Bld_Dock_02.glb",
+      "label": "海盗 · Dock 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_dock_03",
+      "file": "SM_Bld_Dock_03.glb",
+      "label": "海盗 · Dock 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shanty_buildingattachment_01",
+      "file": "SM_Prop_Shanty_BuildingAttachment_01.glb",
+      "label": "海盗 · Shanty BuildingAttachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shanty_buildingattachment_02",
+      "file": "SM_Prop_Shanty_BuildingAttachment_02.glb",
+      "label": "海盗 · Shanty BuildingAttachment 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shanty_buildingattachment_03",
+      "file": "SM_Prop_Shanty_BuildingAttachment_03.glb",
+      "label": "海盗 · Shanty BuildingAttachment 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shanty_buildingattachment_04",
+      "file": "SM_Prop_Shanty_BuildingAttachment_04.glb",
+      "label": "海盗 · Shanty BuildingAttachment 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwheel_01",
+      "file": "SM_Prop_ShipWheel_01.glb",
+      "label": "海盗 · ShipWheel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwheel_02",
+      "file": "SM_Prop_ShipWheel_02.glb",
+      "label": "海盗 · ShipWheel 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwheel_03",
+      "file": "SM_Prop_ShipWheel_03.glb",
+      "label": "海盗 · ShipWheel 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwreck_01",
+      "file": "SM_Prop_Shipwreck_01.glb",
+      "label": "海盗 · Shipwreck 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwreck_02",
+      "file": "SM_Prop_Shipwreck_02.glb",
+      "label": "海盗 · Shipwreck 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_shipwreck_03",
+      "file": "SM_Prop_Shipwreck_03.glb",
+      "label": "海盗 · Shipwreck 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sign_attachment_01",
+      "file": "SM_Prop_Sign_Attachment_01.glb",
+      "label": "海盗 · Sign Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sign_attachment_02",
+      "file": "SM_Prop_Sign_Attachment_02.glb",
+      "label": "海盗 · Sign Attachment 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sign_attachment_03",
+      "file": "SM_Prop_Sign_Attachment_03.glb",
+      "label": "海盗 · Sign Attachment 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_01",
+      "file": "SM_Prop_Stack_01.glb",
+      "label": "海盗 · Stack 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_02",
+      "file": "SM_Prop_Stack_02.glb",
+      "label": "海盗 · Stack 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_03",
+      "file": "SM_Prop_Stack_03.glb",
+      "label": "海盗 · Stack 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_04",
+      "file": "SM_Prop_Stack_04.glb",
+      "label": "海盗 · Stack 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_05",
+      "file": "SM_Prop_Stack_05.glb",
+      "label": "海盗 · Stack 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stack_06",
+      "file": "SM_Prop_Stack_06.glb",
+      "label": "海盗 · Stack 06",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stallcover_01",
+      "file": "SM_Prop_StallCover_01.glb",
+      "label": "海盗 · StallCover 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stall_cloth_01",
+      "file": "SM_Prop_Stall_Cloth_01.glb",
+      "label": "海盗 · Stall Cloth 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stall_cloth_02",
+      "file": "SM_Prop_Stall_Cloth_02.glb",
+      "label": "海盗 · Stall Cloth 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stall_cloth_03",
+      "file": "SM_Prop_Stall_Cloth_03.glb",
+      "label": "海盗 · Stall Cloth 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stall_cloth_04",
+      "file": "SM_Prop_Stall_Cloth_04.glb",
+      "label": "海盗 · Stall Cloth 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stool_01",
+      "file": "SM_Prop_Stool_01.glb",
+      "label": "海盗 · Stool 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_stool_02",
+      "file": "SM_Prop_Stool_02.glb",
+      "label": "海盗 · Stool 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sugarcane_holder_01",
+      "file": "SM_Prop_SugarCane_Holder_01.glb",
+      "label": "海盗 · SugarCane Holder 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sugarcane_holder_02",
+      "file": "SM_Prop_SugarCane_Holder_02.glb",
+      "label": "海盗 · SugarCane Holder 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sugarcane_pile_01",
+      "file": "SM_Prop_SugarCane_Pile_01.glb",
+      "label": "海盗 · SugarCane Pile 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_sugarcane_pile_02",
+      "file": "SM_Prop_SugarCane_Pile_02.glb",
+      "label": "海盗 · SugarCane Pile 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_table_01",
+      "file": "SM_Prop_Table_01.glb",
+      "label": "海盗 · Table 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_table_02",
+      "file": "SM_Prop_Table_02.glb",
+      "label": "海盗 · Table 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_table_03",
+      "file": "SM_Prop_Table_03.glb",
+      "label": "海盗 · Table 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_treasurepile_01",
+      "file": "SM_Prop_TreasurePile_01.glb",
+      "label": "海盗 · TreasurePile 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_treasurepile_02",
+      "file": "SM_Prop_TreasurePile_02.glb",
+      "label": "海盗 · TreasurePile 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_treasurepile_03",
+      "file": "SM_Prop_TreasurePile_03.glb",
+      "label": "海盗 · TreasurePile 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_treasurepile_04",
+      "file": "SM_Prop_TreasurePile_04.glb",
+      "label": "海盗 · TreasurePile 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_well_01",
+      "file": "SM_Prop_Well_01.glb",
+      "label": "海盗 · Well 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_windowbars_01",
+      "file": "SM_Prop_WindowBars_01.glb",
+      "label": "海盗 · WindowBars 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_01",
+      "file": "SM_Prop_Window_01.glb",
+      "label": "海盗 · Window 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_02",
+      "file": "SM_Prop_Window_02.glb",
+      "label": "海盗 · Window 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_03",
+      "file": "SM_Prop_Window_03.glb",
+      "label": "海盗 · Window 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_04",
+      "file": "SM_Prop_Window_04.glb",
+      "label": "海盗 · Window 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_top_01",
+      "file": "SM_Prop_Window_Top_01.glb",
+      "label": "海盗 · Window Top 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_window_top_02",
+      "file": "SM_Prop_Window_Top_02.glb",
+      "label": "海盗 · Window Top 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_woodplank_01",
+      "file": "SM_Prop_WoodPlank_01.glb",
+      "label": "海盗 · WoodPlank 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_woodplank_02",
+      "file": "SM_Prop_WoodPlank_02.glb",
+      "label": "海盗 · WoodPlank 02",
+      "defaultScale": 1
     }
   ]
 }
