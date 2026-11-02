@@ -1998,6 +1998,42 @@
       "file": "SM_Bld_Rickety_Tower_03.glb",
       "label": "海盗 · Bld Rickety Tower 03",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_base_01",
+      "file": "SM_Bld_Shanty_Base_01.glb",
+      "label": "海盗 · Bld Shanty Base 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_base_02",
+      "file": "SM_Bld_Shanty_Base_02.glb",
+      "label": "海盗 · Bld Shanty Base 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_base_stilts_01",
+      "file": "SM_Bld_Shanty_Base_Stilts_01.glb",
+      "label": "海盗 · Bld Shanty Base Stilts 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_base_stilts_02",
+      "file": "SM_Bld_Shanty_Base_Stilts_02.glb",
+      "label": "海盗 · Bld Shanty Base Stilts 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_deck_01",
+      "file": "SM_Bld_Shanty_Deck_01.glb",
+      "label": "海盗 · Bld Shanty Deck 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_preset_01",
+      "file": "SM_Bld_Shanty_Preset_01.glb",
+      "label": "海盗 · Bld Shanty Preset 01",
+      "defaultScale": 1
     }
   ]
 }
