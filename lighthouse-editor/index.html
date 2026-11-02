@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.2.0 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V5.2.1 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -68,16 +68,40 @@ a{color:#b2d8cf}
 #minimap canvas{display:block;width:100%;height:auto;aspect-ratio:5/4;border-radius:6px;touch-action:none;cursor:crosshair;background:#204858}
 #minimap .minimap-title button{padding:2px 5px;font-size:11px;border:0;background:transparent}
 #backup-list{margin-top:6px}
+#startup-status{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:12;padding:14px 18px;background:#102a34eb;border:1px solid #779c9c;border-radius:10px;max-width:min(520px,90%);text-align:center;color:#e7f6f1;font-size:13px;line-height:1.6;box-shadow:0 6px 24px #07182066}
+#startup-status[hidden]{display:none!important}
+#startup-retry{display:none;margin:9px auto 0;min-height:36px}
+#startup-status[data-error="true"] #startup-retry{display:block}
+#startup-status .startup-subtitle{font-size:11px;color:#adc7c5}
 #touch-controls{display:none;position:absolute;right:12px;top:12px;z-index:11;gap:6px}
 #touch-controls button{min-height:40px;background:#14303be8;font-size:12px}
 #touch-controls button.active{background:#347e7a;border-color:#8bc6b9}
 @media(pointer:coarse){#touch-controls{display:flex}button,.filelabel{min-height:36px}#minimap canvas{min-height:135px}}
 </style>
+<script>
+(function(){
+ function fail(reason){
+  var el=document.getElementById('startup-status'),msg=document.getElementById('startup-message');
+  if(!el||!msg)return;
+  el.hidden=false;el.dataset.error='true';
+  msg.textContent='3D 编辑器加载失败：'+String(reason||'资源加载错误').slice(0,180);
+ }
+ window.addEventListener('error',function(e){
+  if(e.target&&e.target!==window&&e.target.tagName==='IMG')return;
+  if(e.message)fail(e.message);
+ },true);
+ window.addEventListener('unhandledrejection',function(e){fail(e.reason&&e.reason.message||e.reason);});
+ window.addEventListener('pageshow',function(e){
+  if(e.persisted&&document.getElementById('startup-status')&&!document.body.dataset.editorReady)
+   document.getElementById('startup-status').hidden=false;
+ });
+})();
+</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
 <header>
- <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.2.0 · DND</div></div>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.2.1 · DND</div></div>
  <div class="hdr-actions">
   <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button>
   <button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
@@ -119,6 +143,7 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <main id="view">
+ <div id="startup-status" role="status" aria-live="polite"><div id="startup-message">正在初始化地图场景…</div><div class="startup-subtitle">首次加载需要获取模型素材</div><button id="startup-retry" type="button" onclick="location.reload()">重新加载</button></div>
  <div id="touch-controls" aria-label="触屏操作模式"><button id="touch-orbit" class="active" type="button">浏览视角</button><button id="touch-edit" type="button">编辑模型</button></div>
  <div id="minimap"><div class="minimap-title"><span>小地图</span><button id="minimap-center" title="回到原点">中心</button></div>
   <canvas id="minimap-canvas" width="250" height="200" aria-label="点击或拖动小地图定位摄像机" role="button" tabindex="0"></canvas>
@@ -164,6 +189,6 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
-<footer>地图编辑器 V5.2.0</footer>
-</div><script type="module" src="./editor.js?v=unified-desktop-hsb-v521"></script>
+<footer>地图编辑器 V5.2.1</footer>
+</div><script type="module" src="./editor.js?v=unified-desktop-loading-v521"></script>
 </body></html>
