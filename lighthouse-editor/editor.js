@@ -358,6 +358,7 @@ function mutateSelected(fn){
 function updateInspector(){
  const r=currentRecord(),multi=selectedIds.size>1;
  const editable=!!r&&!multi&&!r.locked;
+ const editablePrefab=editable&&!selected.startsWith('native:')&&catalog.types.includes(r.asset);
  for(const field of ['rot','rot-deg','scale','scale-pct'])$(field).disabled=!editable;
  $('transform-numeric').style.opacity=editable?'1':'.55';
  $('inspector').hidden=!r;$('none').hidden=!!r;
@@ -369,7 +370,17 @@ function updateInspector(){
   $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
   $('rot').value=r.rotation;$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(3);$('scale-val').textContent=+(r.scale*100).toFixed(2)+'%';
-   for(const key of ['brightness','saturation']){$('appearance-'+key).value=Math.round((r[key]??1)*100);$('appearance-'+key+'-value').textContent=Math.round((r[key]??1)*100)+'%';$('appearance-'+key).disabled=!editable;}
+   for(const key of ['brightness','saturation']){
+    $('appearance-'+key).value=Math.round((r[key]??1)*100);
+    $('appearance-'+key+'-value').textContent=Math.round((r[key]??1)*100)+'%';
+    $('appearance-'+key).disabled=!editable;
+   }
+   $('appearance-hue').value=r.hue??0;
+   $('appearance-hue-value').textContent=Math.round(r.hue??0)+'°';
+   $('appearance-hue').disabled=!editable;
+   $('overwrite-asset').disabled=!editablePrefab;
+   $('restore-asset-defaults').disabled=!editablePrefab||!world.assetDefaults?.[r.asset];
+   $('asset-default-status').textContent=editablePrefab&&world.assetDefaults?.[r.asset]?'该素材已有自定义默认值':'当前为单个模型实例修改';
    $('appearance-reset').disabled=!editable;
   for(const field of ['posx','posy','posz'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
@@ -565,7 +576,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   const asset=activeTool.slice(6);
   history();const [px,pz]=snappedXZ(p.x,p.z);
   const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
-   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1)};
+   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,...initialAppearanceFor(asset)};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);
    if(mobileMedia.matches)setMobilePanel('inspector');
    return;
@@ -674,6 +685,8 @@ function renderPrefabPreview(id){
   previewRenderer.toneMappingExposure=1.12;
  }
  const model=catalog.create(id);
+ const preset=world?.assetDefaults?.[id];
+ if(preset){model.scale.setScalar(preset.scale);applyModelAppearance(model,preset);}
  const box=new T.Box3().setFromObject(model);
  if(box.isEmpty())return null;
  const sphere=box.getBoundingSphere(new T.Sphere());
@@ -757,6 +770,7 @@ function renderAssetLibrary(){
    const label=document.createElement('span');label.className='asset-label';
    label.textContent=meta.label;
    btn.append(img,label);
+    if(world?.assetDefaults?.[id]){const badge=document.createElement('span');badge.className='asset-overridden';badge.textContent='已覆盖';btn.append(badge);}
    btn.onclick=()=>{setTool('asset:'+id);if(mobileMedia.matches){setMobileInteraction('edit');setMobilePanel('none');}document.querySelectorAll('.asset-card')
      .forEach(item=>item.classList.toggle('active',item===btn));};
    grid.append(btn);
@@ -823,20 +837,50 @@ function numberOr(raw,fallback){
 }
 function degrees(v){return ((numberOr(v,0)%360)+360)%360;}
 function percentage(v){return clamp(numberOr(v,100),.1,2000)/100;}
+
+function initialAppearanceFor(asset){
+ const preset=world?.assetDefaults?.[asset];
+ return {
+  scale:preset?.scale??catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1),
+  brightness:preset?.brightness??1,
+  saturation:preset?.saturation??1,
+  hue:preset?.hue??0
+ };
+}
+$('overwrite-asset').onclick=()=>{
+ const r=currentRecord();
+ if(!r||selectedIds.size!==1||selected.startsWith('native:')||isLocked(selected)||!catalog.types.includes(r.asset))return;
+ const label=catalog.all[r.asset]?.label||r.asset;
+ const values={scale:r.scale,brightness:r.brightness??1,saturation:r.saturation??1,hue:r.hue??0};
+ const ask='将「'+label+'」当前的缩放和颜色保存为素材默认值？\n\n后续放置的同类元件自动使用这些参数，已经放置的其他实例不变。原始 GLB 与贴图保持不变。';
+ if(!confirm(ask))return;
+ history();world.assetDefaults??={};world.assetDefaults[r.asset]=values;
+ previewCache.delete(r.asset);renderAssetLibrary();updateInspector();setDirty(true);saveLocal();
+ toast('已覆盖「'+label+'」的默认缩放和颜色');
+};
+$('restore-asset-defaults').onclick=()=>{
+ const r=currentRecord();
+ if(!r||selectedIds.size!==1||selected.startsWith('native:')||isLocked(selected)||!world.assetDefaults?.[r.asset])return;
+ history();delete world.assetDefaults[r.asset];
+ previewCache.delete(r.asset);renderAssetLibrary();updateInspector();setDirty(true);saveLocal();
+ toast('已恢复此元件的素材默认设置');
+};
+
 // Keep the current model on screen while dragging; commit one undo step on release.
-for(const key of ['brightness','saturation']){
+for(const key of ['brightness','saturation','hue']){
  const input=$('appearance-'+key);
  let before=null;
- input.addEventListener('pointerdown',()=>{before=currentRecord()?.[key]??1;});
+ const neutral=key==='hue'?0:1;
+ input.addEventListener('pointerdown',()=>{before=currentRecord()?.[key]??neutral;});
  input.addEventListener('input',()=>{
   const r=currentRecord();if(!r||selectedIds.size!==1||isLocked(selected))return;
-  actualRecord(selected)[key]=Number(input.value)/100;
-  $('appearance-'+key+'-value').textContent=input.value+'%';
+  actualRecord(selected)[key]=key==='hue'?Number(input.value):Number(input.value)/100;
+  $('appearance-'+key+'-value').textContent=input.value+(key==='hue'?'°':'%');
   refreshSelectedAppearance();setDirty(true);
  });
  input.addEventListener('change',()=>{
   const r=currentRecord();if(!r||selectedIds.size!==1||isLocked(selected))return;
-  const next=Number(input.value)/100;
+  const next=key==='hue'?Number(input.value):Number(input.value)/100;
   if(before!==null&&Math.abs(before-next)>1e-7){
    const old=actualRecord(selected)[key];
    actualRecord(selected)[key]=before;history();actualRecord(selected)[key]=old;
@@ -846,7 +890,7 @@ for(const key of ['brightness','saturation']){
 }
 $('appearance-reset').onclick=()=>{
  if(!currentRecord()||selectedIds.size!==1||isLocked(selected))return;
- mutateSelected(r=>{r.brightness=1;r.saturation=1;});
+ mutateSelected(r=>{r.brightness=1;r.saturation=1;r.hue=0;});
  refreshSelectedAppearance();
 };
 $('selected-name').onchange=e=>setSelectedName(e.target.value);
@@ -871,8 +915,8 @@ for(const id of ['selected-name','posx','posy','posz','rot-deg','scale-pct']){
   renderer.domElement.focus({preventScroll:true});
  });
 }
-$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
-$('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
+$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();const presets={...(world.assetDefaults||{})};world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});world.assetDefaults=presets;selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
+$('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();const presets={...(world.assetDefaults||{})};world=initial();world.assetDefaults=presets;selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
 // External assets: import to a persistent browser library, then use existing
 // click-to-place palette, inspector, 3-axis gizmo, and map object records.
 function updateGLBStatus(extra=''){
@@ -1094,11 +1138,11 @@ catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
 syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(false);setTool('select');
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
- heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
+ heights:world.heights.length,regions:world.regions?.length||0,assetDefaults:Object.keys(world.assetDefaults||{}).length,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
-  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1),hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
+  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,...initialAppearanceFor(asset),hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
  selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
  editNative:(id,change)=>{
