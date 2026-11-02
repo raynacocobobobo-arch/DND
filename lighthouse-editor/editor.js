@@ -1,6 +1,7 @@
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
+import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -40,6 +41,7 @@ for(const child of gameGroup.children)
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
+const coastalPalmAssets=await registerCoastalPalms(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
 const nativeTargets=nativeGameTargets();
