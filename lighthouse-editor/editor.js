@@ -1132,6 +1132,13 @@ $('mobile-touch-nav').onclick=()=>{setMobilePanel('none');setMobileInteraction('
 $('mobile-touch-edit').onclick=()=>{setMobilePanel('none');setMobileInteraction('edit');};
 $('mobile-undo').onclick=()=>applyHistory('undo');
 $('mobile-save').onclick=()=>$('save').click();
+$('mobile-play').onclick=()=>$('play-map').click();
+$('mobile-redo').onclick=()=>$('redo').click();
+$('mobile-camera').onclick=()=>$('camera').click();
+$('mobile-reset-view').onclick=()=>$('reset-view').click();
+$('mobile-view-home').onclick=()=>$('reset-view').click();
+$('mobile-original').onclick=()=>$('toggle-original').click();
+$('mobile-open-game').onclick=()=>$('open-game').click();
 mobileMedia.addEventListener('change',e=>{
  renderer.setPixelRatio(Math.min(devicePixelRatio,e.matches?1.2:1.6));
  if(e.matches){setMobileInteraction('orbit');setMobilePanel('none');}
