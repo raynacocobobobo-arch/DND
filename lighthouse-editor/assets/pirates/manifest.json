@@ -2034,6 +2034,18 @@
       "file": "SM_Bld_Shanty_Preset_01.glb",
       "label": "海盗 · Bld Shanty Preset 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_preset_02",
+      "file": "SM_Bld_Shanty_Preset_02.glb",
+      "label": "海盗 · Bld Shanty Preset 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_preset_03",
+      "file": "SM_Bld_Shanty_Preset_03.glb",
+      "label": "海盗 · Bld Shanty Preset 03",
+      "defaultScale": 1
     }
   ]
 }
