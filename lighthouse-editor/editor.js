@@ -300,16 +300,134 @@ function mutateSelected(fn){
  updateInspector();setDirty(true);saveLocal();
 }
 function updateInspector(){
- const r=currentRecord();
- $('inspector').hidden=!r;$('none').hidden=!!r;if(!r)return;
- const native=selected.startsWith('native:');
- $('selected-name').value=r.name;$('selected-name').disabled=native;
- $('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
- $('rot').value=r.rotation;$('rot-val').textContent=Math.round(r.rotation)+'°';
- $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);
- $('delete').textContent=native?'隐藏原版模型':'删除';
- $('restore-native').hidden=!native;
+ const r=currentRecord(),multi=selectedIds.size>1;
+ $('inspector').hidden=!r;$('none').hidden=!!r;
+ if(r){
+  const native=selected.startsWith('native:'),locked=!!r.locked;
+  $('multi-hint').hidden=!multi;
+  $('multi-hint').textContent=multi?'已选 '+selectedIds.size+' 项；可整体移动，旋转或缩放请先单选。':'';
+  $('selected-name').value=r.name;$('selected-name').disabled=native||locked||multi;
+  $('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
+  $('rot').value=r.rotation;$('rot-val').textContent=Math.round(r.rotation)+'°';
+  $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);
+  for(const field of ['posx','posz','rot','scale'])$(field).disabled=locked||multi;
+  $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
+  $('duplicate').disabled=locked||multi;
+  $('restore-native').hidden=!native;
+ }
+ renderSceneObjects();syncTransform();
 }
+function renderSceneObjects(){
+ if(!world)return;
+ const box=$('scene-list'),scroll=box.scrollTop,q=$('scene-search').value.trim().toLowerCase();
+ const groups=[['原版游戏物件',Object.keys(nativeTargets).map(id=>'native:'+id)],
+  ['新增地图物件',world.objects.map(o=>o.id)]];
+ const fragment=document.createDocumentFragment();
+ let found=0,hidden=0;
+ for(const [heading,ids] of groups){
+  const entries=ids.map(id=>({id,r:recordById(id)})).filter(e=>e.r);
+  hidden+=entries.filter(e=>e.r.hidden).length;
+  const shown=entries.filter(({id,r})=>!q||r.name.toLowerCase().includes(q)||id.toLowerCase().includes(q));
+  if(!shown.length)continue;
+  const h=document.createElement('div');h.className='scene-heading';h.textContent=heading+' · '+shown.length;fragment.append(h);
+  for(const {id,r} of shown){
+   found++;
+   const row=document.createElement('div');row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
+   const name=document.createElement('button');name.type='button';name.className='scene-pick';
+   name.textContent=r.name;name.title=id+' · X '+r.x.toFixed(1)+' · Z '+r.z.toFixed(1);
+   name.onclick=e=>selectItem(id,e.shiftKey);row.append(name);
+   for(const [flag,value,label] of [['hidden',r.hidden?'◌':'◉',r.hidden?'显示':'隐藏'],['locked',r.locked?'▣':'▢',r.locked?'解锁':'锁定']]){
+    const button=document.createElement('button');button.type='button';button.className='scene-action';
+    button.textContent=value;button.title=label+' '+r.name;button.setAttribute('aria-label',label+' '+r.name);
+    button.onclick=e=>{e.stopPropagation();changeFlags([id],flag,!r[flag]);};
+    row.append(button);
+   }
+   fragment.append(row);
+  }
+ }
+ box.replaceChildren(fragment);box.scrollTop=scroll;
+ $('scene-count').textContent=Object.keys(nativeTargets).length+' 原版 / '+world.objects.length+' 新增 / '+hidden+' 隐藏'+(q?' · 匹配 '+found:'');
+}
+function changeFlags(ids,flag,value){
+ const valid=[...new Set(ids)].filter(id=>recordById(id));if(!valid.length)return;
+ history();
+ for(const id of valid){
+  const r=actualRecord(id);r[flag]=value;
+  if(!id.startsWith('native:')&&flag==='hidden'){
+   const mesh=assetLayer.children.find(o=>o.userData.mapId===id);
+   if(mesh)mesh.visible=!value;
+  }
+ }
+ applyNativeEdits(world,gameGroup);updateInspector();setDirty(true);saveLocal();
+}
+for(const [id,flag,value] of [['scene-hide','hidden',true],['scene-show','hidden',false],
+ ['scene-lock','locked',true],['scene-unlock','locked',false]])
+ $(id).onclick=()=>changeFlags([...selectedIds],flag,value);
+$('scene-search').addEventListener('input',renderSceneObjects);
+function syncTransform(){
+ if(!world||syncingProxy||transform.dragging)return;
+ const selectedEntries=[...selectedIds].map(id=>({id,r:recordById(id)}))
+  .filter(({r})=>r&&!r.locked&&!r.hidden);
+ transform.detach();
+ if(!selectedEntries.length)return;
+ const mode=selectedEntries.length>1?'translate':transformMode;
+ transform.setMode(mode);
+ transform.showX=mode!=='rotate';transform.showY=mode!=='translate';transform.showZ=mode!=='rotate';
+ transformProxy.position.set(selectedEntries.reduce((n,e)=>n+e.r.x,0)/selectedEntries.length,
+  SEA+1.25,selectedEntries.reduce((n,e)=>n+e.r.z,0)/selectedEntries.length);
+ transformProxy.rotation.set(0,selectedEntries.length===1?selectedEntries[0].r.rotation*Math.PI/180:0,0);
+ transformProxy.scale.setScalar(selectedEntries.length===1?selectedEntries[0].r.scale:1);
+ transformLast.set(transformProxy.position.x,transformProxy.position.z);transform.attach(transformProxy);
+}
+function setTransformMode(mode){
+ transformMode=mode;
+ for(const [id,m] of [['gizmo-move','translate'],['gizmo-rotate','rotate'],['gizmo-scale','scale']]){
+  $(id).classList.toggle('active',mode===m);
+  $(id).disabled=selectedIds.size>1&&m!=='translate';
+ }
+ syncTransform();
+}
+for(const [id,mode] of [['gizmo-move','translate'],['gizmo-rotate','rotate'],['gizmo-scale','scale']])
+ $(id).onclick=()=>setTransformMode(mode);
+$('gizmo-snap').onchange=e=>{
+ const on=e.target.checked;
+ transform.setTranslationSnap(on?.5:null);
+ transform.setRotationSnap(on?Math.PI/12:null);
+ transform.setScaleSnap(on?.1:null);
+};
+transform.addEventListener('dragging-changed',e=>{controls.enabled=!e.value;});
+transform.addEventListener('mouseDown',()=>{if(selectedIds.size)history();});
+transform.addEventListener('objectChange',()=>{
+ if(syncingProxy||!world)return;
+ syncingProxy=true;
+ const entries=[...selectedIds].map(id=>({id,r:recordById(id)})).filter(({r})=>r&&!r.hidden&&!r.locked);
+ if(entries.length){
+  const mode=entries.length>1?'translate':transformMode;
+  if(mode==='translate'){
+   const dx=transformProxy.position.x-transformLast.x,dz=transformProxy.position.z-transformLast.y;
+   for(const {id} of entries){const r=actualRecord(id);r.x=clamp(r.x+dx,-WIDTH/2,WIDTH/2);r.z=clamp(r.z+dz,-DEPTH/2,DEPTH/2);}
+   transformLast.set(transformProxy.position.x,transformProxy.position.z);
+  }else if(entries.length===1){
+   const r=actualRecord(entries[0].id);
+   if(mode==='rotate')r.rotation=((T.MathUtils.radToDeg(transformProxy.rotation.y)%360)+360)%360;
+   if(mode==='scale'){r.scale=clamp(transformProxy.scale.x,.3,3);transformProxy.scale.setScalar(r.scale);}
+  }
+  let nativeChanged=false;
+  for(const {id} of entries){
+   if(id.startsWith('native:')){nativeChanged=true;continue;}
+   const r=objects.get(id),mesh=assetLayer.children.find(o=>o.userData.mapId===id);
+   if(r&&mesh){mesh.position.set(r.x,terrainY(r.x,r.z),r.z);
+    mesh.rotation.y=r.rotation*Math.PI/180;mesh.scale.setScalar(r.scale);}
+  }
+  if(nativeChanged)applyNativeEdits(world,gameGroup);
+  const r=currentRecord();if(r){$('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
+   $('rot').value=Math.round(r.rotation);$('rot-val').textContent=Math.round(r.rotation)+'°';
+   $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);}
+  setDirty(true);
+ }
+ syncingProxy=false;
+});
+transform.addEventListener('mouseUp',()=>{saveLocal();renderSceneObjects();syncTransform();});
 let draggingObj=false;
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
