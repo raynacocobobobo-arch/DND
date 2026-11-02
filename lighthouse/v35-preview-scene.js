@@ -11,6 +11,7 @@ import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
  from './shared-map.js?v=44preview';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
+import {createExternalGLBLibrary} from '../lighthouse-editor/external-glb-library.js?v=1';
 import {registerLegacyHarborPrefabs} from '../lighthouse-editor/legacy-harbor-assets.js?v=1a';
 // This is an entirely separate editor-map GAME PREVIEW. The production v35-scene.js
 // keeps the unedited, fixed-size original scene. This module alone loads the
@@ -201,6 +202,13 @@ try{
  const prefabs=nativePrefabCatalog(group,reefs.root);
  registerLegacyHarborPrefabs(prefabs);
  await registerCoastalPalms(prefabs);
+ // Local game preview shares the editor's IndexedDB asset cache.
+ // Published preview deliberately does not embed arbitrary local assets.
+ const externalLibrary=await createExternalGLBLibrary(prefabs);
+ const missingExternal=[...new Set(worldMap.objects.map(o=>o.asset)
+  .filter(id=>id.startsWith('ext_glb_')&&!externalLibrary.has(id)))];
+ document.body.dataset.externalGlbAvailable=String(externalLibrary.count());
+ document.body.dataset.externalGlbMissing=String(missingExternal.length);
  const nativeEdits=applyNativeEdits(worldMap,group);
  let editorObjects=null,editorTerrain=null,outerWorldSea=null;
  if(worldHasEdits){
@@ -218,7 +226,10 @@ try{
  console.info('V35 shared editor world:',worldHasEdits,worldMap.objects.length,
   prefabs.types.length,'native asset categories');
  setMode('day');
- status.hidden=true;
+ if(missingExternal.length){
+  status.textContent='地图中有 '+missingExternal.length+' 个外部 GLB 未加载，请返回编辑器导入对应模型或完整工程 JSON。';
+  status.hidden=false;
+ }else status.hidden=true;
 }catch(err){status.textContent='V35 场景加载失败：'+(err?.message||err);status.hidden=false;console.error(err);throw err}
 document.getElementById('mode-day')?.addEventListener('click',()=>setMode('day'));
 document.getElementById('mode-night')?.addEventListener('click',()=>setMode('night'));
