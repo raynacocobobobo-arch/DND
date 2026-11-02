@@ -20,6 +20,9 @@ import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
  BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
 const $=id=>document.getElementById(id),view=$('view');
+const bootElement=$('startup-status'),bootMessage=$('startup-message');
+const loadingText=message=>{if(bootElement&&!bootElement.dataset.error){bootElement.hidden=false;bootMessage.textContent=message;}};
+loadingText('正在创建灯塔场景…');
 const touchMedia=window.matchMedia('(pointer:coarse)');
 let touchInteraction=touchMedia.matches?'orbit':'edit';
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
@@ -47,25 +50,31 @@ let transformMode='translate',syncingProxy=false,transformLast=new T.Vector3(),d
 setRenderer(renderer);renderer.localClippingEnabled=true;
 scene.add(gameGroup);
 const originalSea=buildCutaway();buildIsland();buildSite();const originalReefs=createOffshoreReefs();
+// Start drawing before awaiting optional GLB downloads, so slow mobile networks do
+// not show an empty 3D canvas. The final editor loop replaces this boot renderer.
+renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
+loadingText('场景已创建，正在加载 3D 模型素材…');
 originalSea.userData.setBlend(1);
 for(const child of gameGroup.children)
  if(child.userData.waterSidewall||['sea-geological-base','sea-soil-stratum','opaque-sea-cross-section'].includes(child.name))
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
-const coastalPalmAssets=await registerCoastalPalms(catalog);
+const coastalPalmAssets=await registerCoastalPalms(catalog);loadingText('正在读取素材库 · 植被和道具…');
 const cliffyCoastTrees=await registerCliffyCoastTrees(catalog);
 const cliffyBatch02=await registerCliffyCoastBatch02(catalog);
 const cliffyBatch03=await registerCliffyCoastBatch03(catalog);
 const cliffyBatch04=await registerCliffyCoastBatch04(catalog);
-const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
+const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正在读取素材库 · 建筑和屋顶…');
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.2.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.2.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.2.1] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.2.1',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
+loadingText('正在恢复浏览器里的 GLB 模型…');
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -1124,3 +1133,4 @@ renderer.setAnimationLoop(()=>{
  renderer.render(scene,camera);
 });
 document.body.dataset.editorReady='true';
+if(bootElement&&!bootElement.dataset.error)bootElement.hidden=true;
