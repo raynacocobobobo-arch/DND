@@ -906,6 +906,306 @@
       "file": "SM_Prop_WoodPlank_02.glb",
       "label": "海盗 · WoodPlank 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_hills_01",
+      "file": "SM_Env_Background_Hills_01.glb",
+      "label": "海盗 · Background Hills 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_01",
+      "file": "SM_Env_Background_Island_01.glb",
+      "label": "海盗 · Background Island 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_02",
+      "file": "SM_Env_Background_Island_02.glb",
+      "label": "海盗 · Background Island 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_03",
+      "file": "SM_Env_Background_Island_03.glb",
+      "label": "海盗 · Background Island 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_04",
+      "file": "SM_Env_Background_Island_04.glb",
+      "label": "海盗 · Background Island 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_05",
+      "file": "SM_Env_Background_Island_05.glb",
+      "label": "海盗 · Background Island 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_background_island_06",
+      "file": "SM_Env_Background_Island_06.glb",
+      "label": "海盗 · Background Island 06",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_01",
+      "file": "SM_Env_Beach_01.glb",
+      "label": "海盗 · Beach 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_02",
+      "file": "SM_Env_Beach_02.glb",
+      "label": "海盗 · Beach 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_03",
+      "file": "SM_Env_Beach_03.glb",
+      "label": "海盗 · Beach 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_04",
+      "file": "SM_Env_Beach_04.glb",
+      "label": "海盗 · Beach 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_05",
+      "file": "SM_Env_Beach_05.glb",
+      "label": "海盗 · Beach 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_06",
+      "file": "SM_Env_Beach_06.glb",
+      "label": "海盗 · Beach 06",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_pile_01",
+      "file": "SM_Env_Beach_Pile_01.glb",
+      "label": "海盗 · Beach Pile 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_pile_02",
+      "file": "SM_Env_Beach_Pile_02.glb",
+      "label": "海盗 · Beach Pile 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_pile_03",
+      "file": "SM_Env_Beach_Pile_03.glb",
+      "label": "海盗 · Beach Pile 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_beach_piles_01",
+      "file": "SM_Env_Beach_Piles_01.glb",
+      "label": "海盗 · Beach Piles 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_bush_01",
+      "file": "SM_Env_Bush_01.glb",
+      "label": "海盗 · Bush 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_bush_02",
+      "file": "SM_Env_Bush_02.glb",
+      "label": "海盗 · Bush 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_cloud_01",
+      "file": "SM_Env_Cloud_01.glb",
+      "label": "海盗 · Cloud 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_cloud_02",
+      "file": "SM_Env_Cloud_02.glb",
+      "label": "海盗 · Cloud 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_cloud_03",
+      "file": "SM_Env_Cloud_03.glb",
+      "label": "海盗 · Cloud 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_fern_01",
+      "file": "SM_Env_Fern_01.glb",
+      "label": "海盗 · Fern 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_flat_sand_01",
+      "file": "SM_Env_Flat_Sand_01.glb",
+      "label": "海盗 · Flat Sand 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_flat_sand_02",
+      "file": "SM_Env_Flat_Sand_02.glb",
+      "label": "海盗 · Flat Sand 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_flowers_01",
+      "file": "SM_Env_Flowers_01.glb",
+      "label": "海盗 · Flowers 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_flowers_02",
+      "file": "SM_Env_Flowers_02.glb",
+      "label": "海盗 · Flowers 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grasspatch_01",
+      "file": "SM_Env_GrassPatch_01.glb",
+      "label": "海盗 · GrassPatch 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grasspatch_02",
+      "file": "SM_Env_GrassPatch_02.glb",
+      "label": "海盗 · GrassPatch 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grasspatch_03",
+      "file": "SM_Env_GrassPatch_03.glb",
+      "label": "海盗 · GrassPatch 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grass_01",
+      "file": "SM_Env_Grass_01.glb",
+      "label": "海盗 · Grass 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grass_02",
+      "file": "SM_Env_Grass_02.glb",
+      "label": "海盗 · Grass 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_grass_03",
+      "file": "SM_Env_Grass_03.glb",
+      "label": "海盗 · Grass 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_groundleaves_01",
+      "file": "SM_Env_GroundLeaves_01.glb",
+      "label": "海盗 · GroundLeaves 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_groundleaves_02",
+      "file": "SM_Env_GroundLeaves_02.glb",
+      "label": "海盗 · GroundLeaves 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_groundleaves_03",
+      "file": "SM_Env_GroundLeaves_03.glb",
+      "label": "海盗 · GroundLeaves 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_mangrove_roots_01",
+      "file": "SM_Env_Mangrove_Roots_01.glb",
+      "label": "海盗 · Mangrove Roots 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_mangrove_tree_01",
+      "file": "SM_Env_Mangrove_Tree_01.glb",
+      "label": "海盗 · Mangrove Tree 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_mangrove_tree_02",
+      "file": "SM_Env_Mangrove_Tree_02.glb",
+      "label": "海盗 · Mangrove Tree 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_ocean_tile_01",
+      "file": "SM_Env_Ocean_Tile_01.glb",
+      "label": "海盗 · Ocean Tile 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmbush_03",
+      "file": "SM_Env_PalmBush_03.glb",
+      "label": "海盗 · PalmBush 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_01",
+      "file": "SM_Env_PalmTree_01.glb",
+      "label": "海盗 · PalmTree 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_02",
+      "file": "SM_Env_PalmTree_02.glb",
+      "label": "海盗 · PalmTree 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_03",
+      "file": "SM_Env_PalmTree_03.glb",
+      "label": "海盗 · PalmTree 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_04",
+      "file": "SM_Env_PalmTree_04.glb",
+      "label": "海盗 · PalmTree 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_tall_01",
+      "file": "SM_Env_PalmTree_Tall_01.glb",
+      "label": "海盗 · PalmTree Tall 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_palmtree_tall_02",
+      "file": "SM_Env_PalmTree_Tall_02.glb",
+      "label": "海盗 · PalmTree Tall 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_plants_01",
+      "file": "SM_Env_Plants_01.glb",
+      "label": "海盗 · Plants 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_plants_02",
+      "file": "SM_Env_Plants_02.glb",
+      "label": "海盗 · Plants 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_plants_03",
+      "file": "SM_Env_Plants_03.glb",
+      "label": "海盗 · Plants 03",
+      "defaultScale": 1
     }
   ]
 }
