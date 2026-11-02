@@ -312,12 +312,42 @@ export function createTerrainMesh(w){
  mesh.userData.landCells=landCells;mesh.castShadow=true;mesh.receiveShadow=true;
  return mesh;
 }
-export function addOpenOcean(root){
- // The existing vector sea stays intact at the lighthouse. Extend the
- // surrounding water to the editable 20x world area without changing meshes.
- const material=new T.MeshBasicMaterial({color:0x377d88,side:T.DoubleSide,depthWrite:true});
- const mesh=new T.Mesh(new T.PlaneGeometry(WIDTH,DEPTH),material);
- mesh.rotation.x=-Math.PI/2;mesh.position.y=SEA-.008;
+// Exactly the V35 ocean palette and distance-based bathymetric gradient.
+// The original nearshore mesh stays at the original world size, and this
+// larger surface continues its appearance in the editor's expandable water.
+export function createEditorOceanGeometry(width=WIDTH,depth=DEPTH){
+ const vertex=[],color=[];
+ const near=new T.Color('#66b9c6'),far=new T.Color('#247491');
+ const centerX=-.20,centerZ=.25;
+ const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t)};
+ // One consistent continuous flat mesh, not an untextured solid-color plane.
+ const nx=Math.max(32,Math.min(240,Math.ceil(width/.85)));
+ const nz=Math.max(32,Math.min(240,Math.ceil(depth/.85)));
+ const put=(x,z)=>{
+  vertex.push(x,SEA-.005,z);
+  const distance=Math.hypot((x-centerX)/5.38,(z-centerZ)/4.34);
+  const t=smooth(1.10,2.85,distance);
+  const c=near.clone().lerp(far,t);
+  color.push(c.r,c.g,c.b);
+ };
+ for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){
+  const x0=-width/2+i*width/nx,x1=-width/2+(i+1)*width/nx;
+  const z0=-depth/2+j*depth/nz,z1=-depth/2+(j+1)*depth/nz;
+  put(x0,z0);put(x1,z0);put(x0,z1);
+  put(x1,z0);put(x1,z1);put(x0,z1);
+ }
+ const geo=new T.BufferGeometry();
+ geo.setAttribute('position',new T.Float32BufferAttribute(vertex,3));
+ geo.setAttribute('color',new T.Float32BufferAttribute(color,3));
+ geo.computeBoundingSphere();
+ return geo;
+}
+export function addOpenOcean(root,width=WIDTH,depth=DEPTH){
+ const material=new T.MeshBasicMaterial({
+  color:0xffffff,vertexColors:true,side:T.DoubleSide,
+  depthWrite:true,depthTest:true,toneMapped:false
+ });
+ const mesh=new T.Mesh(createEditorOceanGeometry(width,depth),material);
  mesh.name='shared-world-wide-sea';root.add(mesh);return mesh;
 }
 export function savePreviewMap(w){
