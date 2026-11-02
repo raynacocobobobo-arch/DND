@@ -2064,6 +2064,30 @@
       "file": "SM_Bld_Shanty_Preset_06.glb",
       "label": "海盗 · Bld Shanty Preset 06",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_preset_07",
+      "file": "SM_Bld_Shanty_Preset_07.glb",
+      "label": "海盗 · Bld Shanty Preset 07",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_preset_bar_01",
+      "file": "SM_Bld_Shanty_Preset_Bar_01.glb",
+      "label": "海盗 · Bld Shanty Preset Bar 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_roof_01",
+      "file": "SM_Bld_Shanty_Roof_01.glb",
+      "label": "海盗 · Bld Shanty Roof 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_roof_02",
+      "file": "SM_Bld_Shanty_Roof_02.glb",
+      "label": "海盗 · Bld Shanty Roof 02",
+      "defaultScale": 1
     }
   ]
 }
