@@ -18,7 +18,7 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
- BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=minimap-backups-v511';
+ BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
 const $=id=>document.getElementById(id),view=$('view');
 const touchMedia=window.matchMedia('(pointer:coarse)');
 let touchInteraction=touchMedia.matches?'orbit':'edit';

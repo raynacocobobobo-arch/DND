@@ -11,7 +11,7 @@ import {createOffshoreReefs} from './v35-reefs.js?v=35a';
 import {createBoatNavigator} from './v35-boat-nav.js?v=35a';
 import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
- from './shared-map.js?v=49-batch02-tools';
+ from './shared-map.js?v=vertex-color-hsb-v3';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
 import {registerCliffyCoastTrees} from '../lighthouse-editor/cliffy-coast-prefabs.js?v=2-batch01';
 import {registerCliffyCoastBatch02} from '../lighthouse-editor/cliffy-coast-batch02.js?v=1';

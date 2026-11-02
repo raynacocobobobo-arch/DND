@@ -74,11 +74,11 @@ export function applyModelAppearance(object,options={}){
     shader.uniforms.lighthouseSaturation=saturation;
     shader.uniforms.lighthouseHue=hueOffset;
     shader.fragmentShader='uniform float lighthouseBrightness;\nuniform float lighthouseSaturation;\nuniform float lighthouseHue;\n'+shader.fragmentShader;
-    const marker='#include <map_fragment>';
+    const marker='#include <color_fragment>';
     const correction='\nvec3 lighthouseAxis=vec3(0.57735026919);\nfloat lighthouseAngle=radians(lighthouseHue);\nfloat lighthouseCos=cos(lighthouseAngle);\nfloat lighthouseSin=sin(lighthouseAngle);\nvec3 lighthouseRGB=diffuseColor.rgb;\ndiffuseColor.rgb=lighthouseRGB*lighthouseCos+cross(lighthouseAxis,lighthouseRGB)*lighthouseSin+lighthouseAxis*dot(lighthouseAxis,lighthouseRGB)*(1.0-lighthouseCos);\nfloat lighthouseLuma=dot(diffuseColor.rgb,vec3(0.2126,0.7152,0.0722));\ndiffuseColor.rgb=clamp(mix(vec3(lighthouseLuma),diffuseColor.rgb,lighthouseSaturation)*lighthouseBrightness,0.0,1.0);\n';
     shader.fragmentShader=shader.fragmentShader.replace(marker,marker+correction);
    };
-   material.customProgramCacheKey=()=>((m.customProgramCacheKey?.()||'')+'-lighthouse-hsb-v2');
+   material.customProgramCacheKey=()=>((m.customProgramCacheKey?.()||'')+'-lighthouse-hsb-v3');
    return material;
   };
   mesh.material=Array.isArray(original)?original.map(patch):patch(original);
