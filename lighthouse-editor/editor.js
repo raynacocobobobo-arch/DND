@@ -4,17 +4,17 @@ import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighth
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
- nativePrefabCatalog,createTerrainMesh,addOpenOcean,applyNativeEdits,
+ nativePrefabCatalog,createTerrainMesh,addOpenOcean,applyNativeEdits,MAX_EDITOR_GRID,
  BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=38a';
 const $=id=>document.getElementById(id),view=$('view');
-const GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
+let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const colors={water:0x276476,sand:0xc6b78a,grass:0x71866d,rock:0x71858c};
 let world,activeTool='select',brush=2,strength=1,selected=null,hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
 const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH,grid:[GW,GH],heights:Array(GW*GH).fill(-2),types:Array(GW*GH).fill('water'),objects:[]});
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
-const camera=new T.PerspectiveCamera(43,1,.1,550),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+const camera=new T.PerspectiveCamera(43,1,.1,1000),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=T.SRGBColorSpace;
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
 view.insertBefore(renderer.domElement,view.firstChild);scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
@@ -22,7 +22,7 @@ const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
 controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
-controls.touches={ONE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=330;controls.minDistance=15;
+controls.touches={ONE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
 setRenderer(renderer);renderer.localClippingEnabled=true;
 scene.add(gameGroup);
@@ -45,6 +45,48 @@ const edgeFog=new T.Mesh(new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5),new T.ShaderMa
  transparent:true,depthWrite:false,side:T.DoubleSide
 }));edgeFog.rotation.x=-Math.PI/2;edgeFog.position.y=SEA+.08;edgeFog.renderOrder=9;root.add(edgeFog);
 let terrain=null,assetLayer=new T.Group();root.add(assetLayer);
+function syncWorldDimensions(){
+ const cols=world.grid[0],rows=world.grid[1];
+ if(WIDTH===world.width&&DEPTH===world.depth&&GW===cols&&GH===rows)return;
+ GW=cols;GH=rows;WIDTH=world.width;DEPTH=world.depth;
+ CELLX=WIDTH/GW;CELLZ=DEPTH/GH;
+ openSea.geometry.dispose();
+ openSea.geometry=new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5);
+ openSea.scale.set(1,1,1);
+ edgeFog.geometry.dispose();
+ edgeFog.geometry=new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5);
+ edgeFog.material.uniforms.halfSize.value.set(WIDTH/2,DEPTH/2);
+ $('size').textContent=WIDTH.toFixed(1)+' × '+DEPTH.toFixed(1);
+ $('grid-size').textContent=GW+' × '+GH;
+}
+function expandOcean(factor){
+ const source=world,oldX=source.grid[0],oldZ=source.grid[1];
+ // Add equal numbers of cells on opposite sides, preserving center coordinates.
+ const nextX=2*Math.ceil(oldX*factor/2),nextZ=2*Math.ceil(oldZ*factor/2);
+ if(nextX>MAX_EDITOR_GRID||nextZ>MAX_EDITOR_GRID){
+  toast('已达到当前编辑器的最大海域网格，请先保存地图');return;
+ }
+ const newW=+(source.width*nextX/oldX).toFixed(6);
+ const newD=+(source.depth*nextZ/oldZ).toFixed(6);
+ const expanded=emptyMap({width:newW,depth:newD,grid:[nextX,nextZ]});
+ const offsetX=(nextX-oldX)/2,offsetZ=(nextZ-oldZ)/2;
+ for(let z=0;z<oldZ;z++)for(let x=0;x<oldX;x++){
+  const src=z*oldX+x,dst=(z+offsetZ)*nextX+x+offsetX;
+  expanded.heights[dst]=source.heights[src];
+  expanded.types[dst]=source.types[src];
+ }
+ expanded.objects=source.objects.map(o=>({...o}));
+ expanded.baseEdits=JSON.parse(JSON.stringify(source.baseEdits||{}));
+ expanded.regions=JSON.parse(JSON.stringify(source.regions||[]));
+ history();world=expanded;redraw();saveLocal();
+ $('size').textContent=newW.toFixed(1)+' × '+newD.toFixed(1);
+ toast('海域已扩大，新增部分全部为海面，原岛屿及物件位置不变');
+}
+function frameWholeMap(){
+ const diagonal=Math.hypot(WIDTH,DEPTH),distance=Math.min(680,Math.max(55,diagonal*1.24));
+ camera.position.set(distance*.59,distance*.64,distance*.73);
+ controls.target.set(0,0,0);controls.update();
+}
 const cursorMat=new T.MeshBasicMaterial({color:0xe9e5ba,transparent:true,opacity:.35,depthWrite:false,side:T.DoubleSide});
 const cursor=new T.Mesh(new T.RingGeometry(.86,1.0,40),cursorMat);cursor.rotation.x=-Math.PI/2;cursor.visible=false;root.add(cursor);
 const nodeMeshes=()=>assetLayer.children.filter(m=>m.userData.recordId);
@@ -75,7 +117,7 @@ function finishOutline(){
 }
 function uid(){return 'obj-'+Math.random().toString(36).slice(2,10);}
 function initial(){
- const w=emptyMap();
+ const w=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});
  const forms=[[-23,5,19,14,5],[-47,-35,12,9,3],[43,-27,14,10,3],[34,35,18,10,4],[-49,43,10,8,2]];
  for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
   const px=(x+.5)*CELLX-WIDTH/2,pz=(z+.5)*CELLZ-DEPTH/2;
@@ -127,7 +169,7 @@ function rebuildObjects(){
  if(!selected||(!objects.has(selected)&&!selected.startsWith('native:')))selected=null;
  updateInspector();$('object-count').textContent=world.objects.length+' 新增 / '+Object.keys(nativeTargets).length+' 原版';
 }
-function redraw(){rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
+function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(true);}
 function setDirty(v){dirty=v;$('dirty').textContent=v?'有未导出修改':'已导出';}
 function saveLocal(){try{savePreviewMap(world)}catch(e){console.warn('Local save unavailable',e);}}
 function applyHistory(direction){
@@ -270,6 +312,9 @@ document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
 document.getElementById('finish-region').onclick=finishOutline;
 document.getElementById('cancel-region').onclick=()=>{resetOutline();toast('已取消轮廓');};
 document.getElementById('terrain-height').oninput=e=>document.getElementById('terrain-height-val').textContent=e.target.value;
+$('expand-sea-50').onclick=()=>expandOcean(1.5);
+$('expand-sea-100').onclick=()=>expandOcean(2);
+$('frame-world').onclick=frameWholeMap;
 $('toggle-original').onclick=()=>{
  gameGroup.visible=!gameGroup.visible;
  $('toggle-original').textContent=gameGroup.visible?'隐藏原版岛屿':'显示原版岛屿';
@@ -338,7 +383,7 @@ $('rot').onchange=e=>mutateSelected(o=>o.rotation=+e.target.value);
 $('rot').oninput=e=>$('rot-val').textContent=e.target.value+'°';
 $('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
 $('scale').oninput=e=>$('scale-val').textContent=(+e.target.value).toFixed(1);
-$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap();selected=null;redraw();saveLocal();toast('已清空新增内容，原游戏岛屿保留');};
+$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
 $('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;redraw();saveLocal();toast('已恢复群岛模板');};
 $('save').onclick=()=>{
  const data=JSON.stringify(world,null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
@@ -377,9 +422,9 @@ new ResizeObserver(fit).observe(view);fit();
 try{const current=readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-editor-v1');
  world=current?validWorld(current):old?validWorld(JSON.parse(old)):emptyMap();}
 catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
-rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
+syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
 window.__lighthouseEditor={
- getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,
+ getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,history:hist.length,
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
