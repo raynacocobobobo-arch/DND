@@ -745,7 +745,13 @@ $('input-json').onchange=async e=>{
  e.target.value='';
 };
 $('autosave').onclick=()=>{saveLocal();toast('预览地图已保存');};
-$('open-game').onclick=()=>{saveLocal();window.open('../lighthouse/','_blank','noopener');};
+$('play-map').onclick=()=>{
+ try{
+  savePreviewMap(world);
+  window.open('../lighthouse/preview.html?source=local','_blank','noopener');
+ }catch(err){toast('试玩地图保存失败：'+(err?.message||err));}
+};
+$('open-game').onclick=()=>window.open('../lighthouse/','_blank','noopener');
 function resetCamera(){camera.position.set(40,38,46);camera.lookAt(0,0,0);controls.target.set(0,0,0);controls.update();}
 $('reset-view').onclick=resetCamera;
 $('camera').onclick=()=>{
