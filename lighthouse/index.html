@@ -33,9 +33,16 @@ button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inheri
 <button id="mode-night" type="button" aria-pressed="false">夜晚</button>
 <button id="capture" type="button">保存画面</button>
 <button id="fullscreen" type="button">全屏</button>
+<button id="music-toggle" type="button" aria-pressed="false" title="播放或暂停游戏背景音乐">音乐：关闭</button>
+<label for="music-file" id="music-load-label" title="从设备选择背景音乐 MP3" style="cursor:pointer;background:#0a1926c9;border:1px solid #ffffff35;border-radius:8px;padding:10px 13px;font:12px system-ui,sans-serif">载入音乐</label>
+<input id="music-file" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg,audio/*" style="display:none">
+<label for="music-volume" id="music-volume-label" style="font:12px system-ui,sans-serif;display:flex;align-items:center;gap:5px;background:#0a1926c9;border-radius:8px;padding:8px 10px">音量 <input id="music-volume" type="range" min="0" max="100" value="35" aria-label="背景音乐音量" style="width:65px;accent-color:#9ac5d6"></label>
 </nav>
 
+<audio id="game-background-music" loop preload="none"></audio>
+<div id="music-status" role="status" aria-live="polite" style="position:fixed;left:12px;bottom:12px;padding:7px 11px;background:#102735b8;border-radius:7px;font:11px system-ui;color:#e0e7e9;pointer-events:none" hidden></div>
 <div id="status" role="status">正在加载 V35a 灯塔营地…</div>
 <script type="module" src="./v35-scene.js?v=39a"></script>
+<script type="module" src="./background-music.js?v=1a"></script>
 <script>window.addEventListener('error',function(e){let s=document.getElementById('status'); if(s){s.hidden=false;s.textContent='无法加载三维场景，请确认网络能访问 jsDelivr。'+(e.message||'')}});</script>
 </body></html>
