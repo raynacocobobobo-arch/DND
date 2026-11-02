@@ -1,3 +1,4 @@
+import {registerPiratePrefabs} from '../lighthouse-editor/pirates-prefabs.js?v=1';
 import {registerCliffyCoastHouses} from '../lighthouse-editor/cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
@@ -227,6 +228,8 @@ try{
   document.body.dataset.cliffyBatch08_10=String(batch08_10.loaded);
  // Local game preview shares the editor's IndexedDB asset cache.
  // Published preview deliberately does not embed arbitrary local assets.
+ const piratesAssets=await registerPiratePrefabs(prefabs).catch(err=>{console.error('Pirates preview unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
+ document.body.dataset.piratesAvailable=String(piratesAssets.loaded);
  const externalLibrary=await createExternalGLBLibrary(prefabs);
  const missingExternal=[...new Set(worldMap.objects.map(o=>o.asset)
   .filter(id=>id.startsWith('ext_glb_')&&!externalLibrary.has(id)))];
