@@ -293,7 +293,7 @@ function setTool(t){
  $('selected-asset').textContent=selectedAsset?(catalog.all[selectedAsset]?.label||selectedAsset):'无';
 }
 function mutateSelected(fn){
- if(!currentRecord())return;history();
+ if(!currentRecord()||isLocked(selected)||selectedIds.size>1)return;history();
  if(selected.startsWith('native:')){
   fn(nativeEdit(selected.slice(7)));applyNativeEdits(world,gameGroup);
  }else{fn(objects.get(selected));rebuildObjects();}
@@ -436,15 +436,19 @@ renderer.domElement.addEventListener('pointerdown',e=>{
  if(activeTool==='outline'){if(outlinePoints.length>=256){toast('最多256个轮廓点');return;}
   outlinePoints.push([clamp(p.x,-WIDTH/2,WIDTH/2),clamp(p.z,-DEPTH/2,DEPTH/2)]);previewOutline();return;}
  if(activeTool==='select'){
-  selected=findSelected(e);updateInspector();
-  if(selected){history();draggingObj=true;renderer.domElement.setPointerCapture(e.pointerId);}
+  if(transform.dragging||transform.axis)return;
+  const hit=findSelected(e),multi=e.shiftKey;
+  selectItem(hit,multi);
+  if(hit&&!multi&&!isLocked(hit)&&!recordById(hit)?.hidden){
+   draggingObj=true;dragHistoryTaken=false;renderer.domElement.setPointerCapture(e.pointerId);
+  }
   return;
  }
  if(activeTool.startsWith('asset:')){
   const asset=activeTool.slice(6);
   history();const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(p.x,-WIDTH/2,WIDTH/2),
    z:clamp(p.z,-DEPTH/2,DEPTH/2),rotation:0,scale:1};
-  world.objects.push(o);selected=o.id;rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
+  world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
  history();stroke=true;lastStroke='';
  renderer.domElement.setPointerCapture(e.pointerId);
@@ -454,10 +458,13 @@ renderer.domElement.addEventListener('pointermove',e=>{
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
  cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,brush)*CELLX);
- if(draggingObj&&currentRecord()){
+ if(draggingObj&&currentRecord()&&!isLocked(selected)){
    const native=selected.startsWith('native:');
    const o=native?nativeEdit(selected.slice(7)):objects.get(selected);
-   o.x=clamp(p.x,-WIDTH/2,WIDTH/2);o.z=clamp(p.z,-DEPTH/2,DEPTH/2);
+   const nx=clamp(p.x,-WIDTH/2,WIDTH/2),nz=clamp(p.z,-DEPTH/2,DEPTH/2);
+   if(!dragHistoryTaken&&(Math.abs(nx-o.x)+Math.abs(nz-o.z))>.02){history();dragHistoryTaken=true;}
+   if(!dragHistoryTaken)return;
+   o.x=nx;o.z=nz;
    if(native)applyNativeEdits(world,gameGroup);
    else{
     const g=assetLayer.children.find(x=>x.userData.mapId===selected);
@@ -471,7 +478,8 @@ renderer.domElement.addEventListener('pointermove',e=>{
 },{passive:true});
 function finish(e){
  if(draggingObj||stroke)saveLocal();
- draggingObj=false;stroke=false;lastStroke='';
+ if(draggingObj){renderSceneObjects();syncTransform();}
+ draggingObj=false;dragHistoryTaken=false;stroke=false;lastStroke='';
  try{renderer.domElement.releasePointerCapture(e.pointerId);}catch{}
 }
 renderer.domElement.addEventListener('pointerup',finish);
