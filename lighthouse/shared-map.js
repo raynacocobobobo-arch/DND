@@ -44,8 +44,9 @@ export function normalizeMap(v){
  w.types=v.types.map(t=>['water','sand','grass','rock'].includes(t)?t:'water');
  w.baseEdits={};
  if(v.baseEdits&&typeof v.baseEdits==='object'){
-  for(const id of ['lighthouse','boathouse']){
-   const rec=v.baseEdits[id];if(!rec)continue;
+  for(const [id,rec] of Object.entries(v.baseEdits)){
+   if(!['lighthouse','boathouse','campfire','service_boat','coastal_flora'].includes(id)&&! /^(tree|rock|barrel|reef)-\d+$/.test(id))continue;
+   if(!rec||typeof rec!=='object')continue;
    w.baseEdits[id]={
     x:clamp(Number(rec.x)||0,-WIDTH/2,WIDTH/2),
     z:clamp(Number(rec.z)||0,-DEPTH/2,DEPTH/2),
@@ -194,6 +195,7 @@ export function nativePrefabCatalog(group,reefRoot){
  });
  for(const id of ['pirate_ship','kraken_variant_0','kraken_variant_1','kraken_variant_2','kraken_variant_3'])
   templates.set(id,new T.Group());
+ registerNativeSceneAssets(group,reefRoot);
  return {
   all:labels,
   types:[...templates.keys()],
@@ -312,21 +314,66 @@ export function readPreviewMap(){
  catch(e){console.warn('Invalid saved map preview:',e);return null;}
 }
 
+// The V35 island and sea are immutable terrain; authored original models
+// are individually addressable without redrawing or reparenting the meshes.
 export const BASE_ASSETS={
  lighthouse:{name:'原版灯塔',x:.82,z:-2.38},
  boathouse:{name:'原版木屋与平台',x:-3.48,z:.88}
 };
+const nativeObjects=new Map();
+function registerNativeSceneAssets(group,reefRoot){
+ nativeObjects.clear();
+ const register=(id,name,node,anchor=null)=>{
+  if(!node)return;
+  node.updateWorldMatrix(true,true);
+  const box=new T.Box3().setFromObject(node);
+  if(box.isEmpty())return;
+  const x=anchor?.x??(box.min.x+box.max.x)*.5;
+  const z=anchor?.z??(box.min.z+box.max.z)*.5;
+  BASE_ASSETS[id]={name,x,z};
+  nativeObjects.set(id,{
+   node,position:node.position.clone(),quaternion:node.quaternion.clone(),
+   scale:node.scale.clone(),x,z
+  });
+ };
+ register('lighthouse','原版灯塔',group.getObjectByName('game-asset-lighthouse'),{x:.82,z:-2.38});
+ register('boathouse','原版木屋与平台',group.getObjectByName('game-asset-boathouse'),{x:-3.48,z:.88});
+ register('campfire','原版营火',group.getObjectByName('game-asset-campfire'));
+ register('coastal_flora','原版海岸植被组',group.getObjectByName('game-asset-coastal-flora'));
+ register('service_boat','原版小船',group.getObjectByName('serviceBoat'));
+ const forest=group.getObjectByName('game-asset-pine-forest');
+ for(const node of forest?.children||[]){
+  const n=/^game-asset-tree-(\d+)$/.exec(node.name);
+  if(n)register('tree-'+n[1],'原版松树 '+(+n[1]+1),node);
+ }
+ const rocks=group.getObjectByName('game-asset-shore-rocks');
+ (rocks?.children||[]).filter(o=>o.isMesh).forEach((node,i)=>
+  register('rock-'+i,'原版岸边礁石 '+(i+1),node));
+ const barrels=group.getObjectByName('game-asset-supply-barrels');
+ for(const node of barrels?.children||[]){
+  const n=/^game-asset-barrel-(\d+)$/.exec(node.name);
+  if(n)register('barrel-'+n[1],'原版木桶 '+(+n[1]+1),node);
+ }
+ (reefRoot?.children||[]).filter(o=>/^reef-\d+$/.test(o.name)).forEach((node,i)=>
+  register('reef-'+i,'原版外海礁石 '+(i+1),node));
+}
+export function nativeGameTargets(){
+ return Object.fromEntries([...nativeObjects.entries()].map(([id,record])=>[id,record.node]));
+}
 export function applyNativeEdits(w,group){
  const results=[];
- for(const [id,defaultInfo] of Object.entries(BASE_ASSETS)){
-  const root=group.getObjectByName('game-asset-'+id);
-  if(!root)continue;
-  const edit=w.baseEdits?.[id];
-  root.position.set(edit?.x??defaultInfo.x,0,edit?.z??defaultInfo.z);
-  root.rotation.y=(edit?.rotation??0)*Math.PI/180;
-  root.scale.setScalar(edit?.scale??1);
-  root.visible=!(edit?.hidden);
-  results.push({id,x:root.position.x,z:root.position.z,visible:root.visible});
+ for(const [id,record] of nativeObjects){
+  const base=BASE_ASSETS[id];
+  const edit=w.baseEdits?.[id]||{};
+  const node=record.node;
+  node.position.copy(record.position);
+  node.position.x+=(edit.x??base.x)-base.x;
+  node.position.z+=(edit.z??base.z)-base.z;
+  node.quaternion.copy(record.quaternion);
+  if(edit.rotation)node.rotateY(edit.rotation*Math.PI/180);
+  node.scale.copy(record.scale).multiplyScalar(edit.scale??1);
+  node.visible=!edit.hidden;
+  results.push({id,x:edit.x??base.x,z:edit.z??base.z,visible:node.visible});
  }
  return results;
 }
