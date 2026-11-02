@@ -137,7 +137,7 @@ try{
  document.body.dataset.version='v35a';
  document.body.dataset.mapLinked='true';
  document.body.dataset.worldMapActive=String(worldHasEdits);
- document.body.dataset.worldMapSource=localMap?'editor-preview':publishedMap?'published':'empty';
+ document.body.dataset.worldMapSource='original-fixed';
  document.body.dataset.clickRipple='true';
  document.body.dataset.dynamicHazards='true';
  document.body.dataset.clickToSail='true';
@@ -231,7 +231,7 @@ window.__lighthouseNightEvents={
  getReefs:()=>reefs?.getState(),
  getWorldMap:()=>worldMap,
  getMapInfo:()=>({
-  active:worldHasEdits,source:localMap?'editor-preview':'published',
+  active:worldHasEdits,source:'original-fixed',
   count:worldMap.objects.length,
   terrainCells:worldMap.heights.filter(y=>y>0).length,
   schema:worldMap.schema,nativeAssets:Object.keys(BASE_ASSETS),
