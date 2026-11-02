@@ -8,6 +8,8 @@ import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=1';
 import {registerCliffyCoastBatch03} from './cliffy-coast-batch03.js?v=1';
 import {registerCliffyCoastBatch04} from './cliffy-coast-batch04.js?v=1';
 import {registerCliffyCoastBatch05} from './cliffy-coast-batch05.js?v=1';
+import {registerCliffyCoastBatch06_07} from './cliffy-coast-batch06-07.js?v=1-bulk';
+import {registerCliffyCoastBatch08_10} from './cliffy-coast-batch08-10.js?v=1-bulk';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -53,6 +55,8 @@ const cliffyBatch02=await registerCliffyCoastBatch02(catalog);
 const cliffyBatch03=await registerCliffyCoastBatch03(catalog);
 const cliffyBatch04=await registerCliffyCoastBatch04(catalog);
 const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
+const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
+const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -691,7 +695,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','Cliffy Coast 物品','Cliffy Coast 武器','Cliffy Coast 装饰','Cliffy Coast 灯具','Cliffy Coast 摊位','Cliffy Coast 推车','Cliffy Coast 岩块','Cliffy Coast 道路杂件','Cliffy Coast 营火','Cliffy Coast 桥梁','Cliffy Coast 道路','Cliffy Coast 围墙','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','Cliffy Coast 物品','Cliffy Coast 武器','Cliffy Coast 装饰','Cliffy Coast 灯具','Cliffy Coast 摊位','Cliffy Coast 推车','Cliffy Coast 岩块','Cliffy Coast 道路杂件','Cliffy Coast 营火','Cliffy Coast 桥梁','Cliffy Coast 道路','Cliffy Coast 围墙','Cliffy Coast 建筑','Cliffy Coast 房屋','Cliffy Coast 房屋构件','Cliffy Coast 房屋屋顶','Cliffy Coast 墓园','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');

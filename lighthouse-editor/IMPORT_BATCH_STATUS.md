@@ -5,7 +5,7 @@
 ## 批次范围（FBX 原始文件）
 - 总计 172 个 FBX；`1_FBX/Terrain/` 17 个地形独立处理；`Collision/` 12 个碰撞代理不进入普通素材库；剩余 **143 个场景模型候选**。
 - **Batch 01 Plants：14/14 已转换并提交，尚待真人浏览器视觉验收。** `Assets/Lowpoly Style/Cliffy Coast/1_FBX/Plants/`。
-- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；**Batch 04 Misc：18/18 已提交，待浏览器视觉验收**；**Batch 05 Bridges/Paths/Walls：13/13 已提交，待浏览器视觉与连接缝验收**；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
+- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；**Batch 04 Misc：18/18 已提交，待浏览器视觉验收**；**Batch 05 Bridges/Paths/Walls：13/13 已提交，待浏览器视觉与连接缝验收**；**Batch 06 Structures：12/12**；**Batch 07 House bodies：12/12**；**Batch 08 Roofs：13/13**；**Batch 09 Cemetery A：11/11**；**Batch 10 Cemetery B：12/12**。
 - 以上后续类别为**计划分组**，下一批开工前按原 FBX 文件重新核对实际归属；不得把计划数说成已处理数量。
 
 ## Batch 01（植物14）
@@ -202,3 +202,15 @@
 - **待执行：** 将压缩包按原始二进制内容提交到 `lighthouse-editor/assets/cliffy-coast/cliffy_batch06_07.glbpack.gz`，校验SHA；然后在编辑器和试玩场景引入模块、更新素材分类、版本与本状态，验证24/24加载成功并完成真实浏览器材质检查。
 - **尺度**：塔楼统一35%、风车18%、棚架68.5%、水井34%；房屋内外、房屋构件统一30%。`Door`源文件Y尺度异常，设0.90628%，需重点视觉验收。
 - **注意**：纹理可用性未完全验证，不保证房屋、风车、门与屋顶四色完全匹配原资源。没有进行网格焊接、组合或无缝拼接验收。
+
+
+## Batch 06–10（余下60个场景模型）——一次性二进制提交检查点
+
+- Batch 06 建筑结构：12件、Batch 07 房屋主体构件：12件、Batch 08 屋顶：13件、Batch 09 墓园A：11件、Batch 10 墓园B：12件。累计 **143/143件非地形场景模型** 已纳入 GitHub 代码与资源包。
+- **双包**：`lighthouse-editor/assets/cliffy-coast/cliffy_batch06_07.glbpack.gz` (24个 GLB, Git Blob SHA `2b39d76005fe903351832f0fa0072d51a381966e`)，`lighthouse-editor/assets/cliffy-coast/cliffy_batch08_10.glbpack.gz` (36个 GLB, Git Blob SHA `7095033e9cfeee59c90858302806439fe4dea200`)。
+- 编辑器注册 `cliffy-coast-batch06-07.js` / `cliffy-coast-batch08-10.js`；独立试玩 `v35-preview-scene.js` 启用，两边均保留加载失败兜底，避免影响旧83件资产。
+- **尺度**：灯塔整体高度约7.43 world units；屋顶与已导入房屋主体同用30%源尺度，墓碑与十字架按目标高度独立校准，原始几何不烧录缩放。
+- **本地验证**：24+36个原 FBX/GLB 的三角面数与GLB重读均一致；两个 gzip 的LCGB索引、文件名与内容完整性检查通过；GitHub两个独立 Blob SHA 匹配。
+- **待浏览器验收**：具体模型渲染、实际加载速度、纹理颜色、墙体与屋顶接缝、物品选择/删除/撤销、地图持久化、试玩与灯塔比例。部分材质使用临时 Main atlas，不能视为原版视觉验收通过。
+- **明确排除**：地形17件以及碰撞12件仍未进入普通场景模型库；原版岛屿与正式V35游戏不修改。
+- **授权提醒**：用户提供素材源包不等于自动拥有公开再分发许可，须根据原素材授权条款审核仓库公开分发范围。
