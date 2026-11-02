@@ -201,7 +201,11 @@ export function nativePrefabCatalog(group,reefRoot){
    // These procedural prefabs use exactly the same source model builders as live events.
    if(asset==='pirate_ship'){
     const root=new T.Group();root.name='placed-whole-pirate-ship';
-    const boat=createPirateShip(root);boat.ship.visible=true;return root;
+    const boat=createPirateShip(root);boat.ship.visible=true;
+    // The roaming ship is clipped to the live route; a placed editor instance must not be.
+    boat.ship.traverse(o=>{if(!o.isMesh)return;
+     for(const mat of (Array.isArray(o.material)?o.material:[o.material])){mat.clippingPlanes=null;mat.needsUpdate=true;}
+    });return root;
    }
    if(/^kraken_variant_[0-3]$/.test(asset)){
     const root=new T.Group();root.name='placed-whole-'+asset;
