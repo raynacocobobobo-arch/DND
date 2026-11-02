@@ -98,7 +98,8 @@ export async function registerCliffyCoastBatch06_07(catalog){
   templates.set(spec.id,root);
   catalog.types.push(spec.id);
   catalog.all[spec.id]={label:spec.label,category:spec.category,kind:'complete',
-   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,\n   assemblyOriginPreserved: spec.category==='Cliffy Coast 房屋构件',
+   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,
+   assemblyOriginPreserved: spec.category==='Cliffy Coast 房屋构件',
    triangles:spec.triangles,size:[size.x,size.y,size.z].map(x=>+x.toFixed(3))};
  }
  catalog.create=function(id){
