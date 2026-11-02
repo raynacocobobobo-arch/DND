@@ -80,7 +80,13 @@ export async function registerCliffyCoastBatch06_07(catalog){
   });
   if(Math.round(triangles)!==spec.triangles)throw Error('Triangle mismatch: '+spec.file);
   const root=new T.Group();root.name=spec.id;
-  scene.position.set(-(bounds.min.x+bounds.max.x)/2,-bounds.min.y,-(bounds.min.z+bounds.max.z)/2);
+  // Modular architecture retains the FBX-authored pivot and relative offsets.
+  // Centering each roof/wall independently destroys their shared assembly coordinates.
+  // Props and cemetery items keep the original ground-centered placement behavior.
+  const preserveAssemblyOrigin=spec.category==='Cliffy Coast 房屋构件';
+  if(!preserveAssemblyOrigin){
+   scene.position.set(-(bounds.min.x+bounds.max.x)/2,-bounds.min.y,-(bounds.min.z+bounds.max.z)/2);
+  }
   root.add(scene);
   return {root,bounds,spec};
  }));
@@ -92,7 +98,7 @@ export async function registerCliffyCoastBatch06_07(catalog){
   templates.set(spec.id,root);
   catalog.types.push(spec.id);
   catalog.all[spec.id]={label:spec.label,category:spec.category,kind:'complete',
-   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,
+   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,\n   assemblyOriginPreserved: spec.category==='Cliffy Coast 房屋构件',
    triangles:spec.triangles,size:[size.x,size.y,size.z].map(x=>+x.toFixed(3))};
  }
  catalog.create=function(id){
