@@ -26,7 +26,7 @@ let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const BASE_CELL_X=146/64,BASE_CELL_Z=129/56,MIN_WIDTH=34,MIN_DEPTH=30,MAX_SIZE=430;
 const colors={water:0x276476,sand:0xc6b78a,grass:0x71866d,rock:0x71858c};
-let world,activeTool='select',brush=2,strength=1,selected=null,selectedIds=new Set(),hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
+let world,activeTool='select',selected=null,selectedIds=new Set(),hover=null,hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
 const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH,grid:[GW,GH],heights:Array(GW*GH).fill(-2),types:Array(GW*GH).fill('water'),objects:[]});
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
@@ -37,7 +37,7 @@ view.insertBefore(renderer.domElement,view.firstChild);renderer.domElement.tabIn
 const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92,65);scene.add(sunlight);
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
-controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
+controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.PAN,RIGHT:T.MOUSE.ROTATE};controls.enablePan=true;
 controls.touches={ONE:mobileMedia.matches?T.TOUCH.ROTATE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
 const transform=new TransformControls(camera,renderer.domElement);
@@ -438,7 +438,7 @@ const mobileTouches=new Set();
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(!mobileMedia.matches||e.pointerType!=='touch')return;
  mobileTouches.add(e.pointerId);
- if(mobileTouches.size>1){directDrag=null;stroke=false;}
+ if(mobileTouches.size>1)directDrag=null;
 },true);
 for(const type of ['pointerup','pointercancel','lostpointercapture']){
  renderer.domElement.addEventListener(type,e=>{if(e.pointerType==='touch')mobileTouches.delete(e.pointerId);},true);
@@ -478,7 +478,7 @@ renderer.domElement.addEventListener('pointermove',e=>{
  if(mobileMedia.matches&&e.pointerType==='touch'&&(mobileInteraction==='orbit'||mobileTouches.size>1))return;
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
- cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,brush)*CELLX);
+ cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,CELLX*.7));
  if(directDrag&&directDrag.pointerId===e.pointerId&&currentRecord()&&!isLocked(selected)){
    const drag=directDrag;
    if(!drag.started){
@@ -500,13 +500,11 @@ renderer.domElement.addEventListener('pointermove',e=>{
  }
 },{passive:true});
 function finish(e){
- if(mobileMedia.matches&&e.pointerType==='touch'&&mobileInteraction==='orbit'){directDrag=null;stroke=false;return;}
+ if(mobileMedia.matches&&e.pointerType==='touch'&&mobileInteraction==='orbit'){directDrag=null;return;}
  if(directDrag&&directDrag.pointerId===e.pointerId){
   if(directDrag.started)saveLocal();
   directDrag=null;syncTransform();
  }
- if(stroke)saveLocal();
- stroke=false;lastStroke='';
  try{renderer.domElement.releasePointerCapture(e.pointerId);}catch{}
 }
 renderer.domElement.addEventListener('pointerup',finish);
@@ -898,7 +896,133 @@ $('input-json').onchange=async e=>{
  }catch(err){toast('导入失败：'+err.message)}
  e.target.value='';
 };
-$('autosave').onclick=()=>{saveLocal();toast('预览地图已保存');};
+
+/* Lightweight navigational minimap: click or drag to move the camera target.
+   Does not change model coordinates or alter the world. */
+const miniCanvas=$('minimap-canvas');
+const miniCtx=miniCanvas.getContext('2d',{alpha:false});
+function miniGeometry(){
+ const w=miniCanvas.width,h=miniCanvas.height,padding=9;
+ const unit=Math.min((w-2*padding)/WIDTH,(h-2*padding)/DEPTH);
+ return {w,h,unit,x0:(w-WIDTH*unit)/2,y0:(h-DEPTH*unit)/2};
+}
+function minimapPoint(x,z,g){return [g.x0+(x+WIDTH/2)*g.unit,g.y0+(z+DEPTH/2)*g.unit];}
+function gotoMapPoint(x,z){
+ const next=new T.Vector3(clamp(x,-WIDTH/2,WIDTH/2),0,clamp(z,-DEPTH/2,DEPTH/2));
+ const change=next.clone().sub(controls.target);
+ controls.target.copy(next);
+ camera.position.add(change);
+ controls.update();
+}
+function navigateFromMinimap(e){
+ if(!world)return;
+ const g=miniGeometry(),rect=miniCanvas.getBoundingClientRect();
+ const x=(e.clientX-rect.left)/rect.width*g.w,z=(e.clientY-rect.top)/rect.height*g.h;
+ gotoMapPoint((x-g.x0)/g.unit-WIDTH/2,(z-g.y0)/g.unit-DEPTH/2);
+ renderMinimap();
+}
+miniCanvas.addEventListener('pointerdown',e=>{
+ e.preventDefault();miniCanvas.setPointerCapture(e.pointerId);navigateFromMinimap(e);
+});
+miniCanvas.addEventListener('pointermove',e=>{if(e.buttons&1&&miniCanvas.hasPointerCapture(e.pointerId))navigateFromMinimap(e);});
+miniCanvas.addEventListener('keydown',e=>{
+ if(!['Enter',' ','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+ e.preventDefault();
+ if(e.key==='Enter'||e.key===' ')gotoMapPoint(0,0);
+ else gotoMapPoint(controls.target.x+(e.key==='ArrowLeft'?-8:e.key==='ArrowRight'?8:0),controls.target.z+(e.key==='ArrowUp'?-8:e.key==='ArrowDown'?8:0));
+ renderMinimap();
+});
+$('minimap-center').onclick=()=>gotoMapPoint(0,0);
+let miniLastDraw=0;
+function renderMinimap(){
+ if(!miniCtx||!world)return;
+ const ctx=miniCtx,g=miniGeometry(),[gw,gh]=world.grid,dx=WIDTH/gw,dz=DEPTH/gh;
+ ctx.fillStyle='#173b49';ctx.fillRect(0,0,g.w,g.h);
+ ctx.fillStyle='#255366';ctx.fillRect(g.x0,g.y0,WIDTH*g.unit,DEPTH*g.unit);
+ for(let row=0;row<gh;row++)for(let col=0;col<gw;col++){
+  const i=row*gw+col,h=world.heights[i];
+  if(h<=0)continue;
+  ctx.fillStyle=world.types[i]==='sand'?'#c5aa7a':world.types[i]==='rock'?'#777e7f':'#6f9a72';
+  ctx.fillRect(g.x0+col*dx*g.unit,g.y0+row*dz*g.unit,Math.ceil(dx*g.unit+.35),Math.ceil(dz*g.unit+.35));
+ }
+ if(gameGroup.visible){
+  const [ix,iz]=minimapPoint(0,0,g);
+  ctx.fillStyle='#6d9b78';ctx.strokeStyle='#aac4a6';ctx.lineWidth=1.3;
+  ctx.beginPath();ctx.ellipse(ix,iz,Math.max(3,16*g.unit),Math.max(3,13.5*g.unit),.16,0,Math.PI*2);ctx.fill();ctx.stroke();
+ }
+ for(const obj of world.objects){
+  if(obj.hidden)continue;
+  const [x,y]=minimapPoint(obj.x,obj.z,g);
+  ctx.fillStyle=obj.id===selected?'#ffdf8f':'#e9ede4';
+  ctx.beginPath();ctx.arc(x,y,obj.id===selected?4:2.5,0,Math.PI*2);ctx.fill();
+ }
+ const [cx,cy]=minimapPoint(controls.target.x,controls.target.z,g);
+ const range=Math.min(180,Math.max(8,camera.position.distanceTo(controls.target)*Math.tan(T.MathUtils.degToRad(camera.fov/2))*.8));
+ ctx.strokeStyle='#96e4ed';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+ ctx.strokeRect(cx-range*g.unit,cy-range*g.unit,range*g.unit*2,range*g.unit*2);ctx.setLineDash([]);
+ ctx.strokeStyle='#b7ffff';ctx.lineWidth=1.8;
+ ctx.beginPath();ctx.moveTo(cx-6,cy);ctx.lineTo(cx+6,cy);ctx.moveTo(cx,cy-6);ctx.lineTo(cx,cy+6);ctx.stroke();
+ ctx.fillStyle='#d5f2f2';ctx.font='10px sans-serif';ctx.fillText('N',g.w/2-3,10);
+}
+const BACKUP_KEY='dnd-lighthouse-editor-snapshots-v1';
+function loadBackups(){
+ try{
+  const data=JSON.parse(localStorage.getItem(BACKUP_KEY)||'[]');
+  return Array.isArray(data)?data.filter(b=>b&&typeof b.id==='string'&&b.world&&typeof b.world==='object').slice(0,30):[];
+ }catch(e){console.warn('Backup storage invalid:',e);return [];}
+}
+function renderBackupList(preferredId){
+ const backups=loadBackups(),sel=$('backup-list'),keep=preferredId??sel.value;
+ sel.replaceChildren();
+ if(!backups.length){
+  const opt=new Option('暂无备份','');sel.add(opt);
+ }else for(const b of backups){
+  const date=new Date(b.createdAt);
+  const stamp=Number.isNaN(date.getTime())?'':date.toLocaleString('zh-CN',{hour12:false});
+  sel.add(new Option(b.name+' · '+stamp,b.id));
+ }
+ if(keep&&backups.some(b=>b.id===keep))sel.value=keep;
+ $('backup-restore').disabled=!backups.length;
+ $('backup-delete').disabled=!backups.length;
+ $('backup-status').textContent='当前浏览器保存 '+backups.length+' 份备份';
+}
+function backupDefaultName(){
+ const d=new Date(),pad=n=>String(n).padStart(2,'0');
+ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+}
+function createBackup(){
+ if(!world)return;
+ const backups=loadBackups();
+ if(backups.length>=30){toast('已达到30份备份上限，请先删除旧备份');return;}
+ const name=prompt('备份名称',backupDefaultName());
+ if(name===null)return;
+ const title=name.trim().slice(0,80)||backupDefaultName();
+ const entry={id:'backup-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),name:title,createdAt:Date.now(),world:JSON.parse(snapshot())};
+ try{localStorage.setItem(BACKUP_KEY,JSON.stringify([entry,...backups]));}
+ catch(err){toast('备份失败：本机存储空间不足或不可用');console.warn(err);return;}
+ renderBackupList(entry.id);toast('已备份：'+title);
+}
+function restoreBackup(){
+ const b=loadBackups().find(v=>v.id===$('backup-list').value);if(!b)return;
+ if(!confirm('恢复「'+b.name+'」？当前未备份的地图修改将被覆盖。'))return;
+ try{
+  const restored=validWorld(b.world);
+  history();world=restored;selected=null;selectedIds.clear();
+  redraw();renderAssetLibrary();saveLocal();renderBackupList(b.id);
+  toast('已恢复备份：'+b.name);
+ }catch(err){toast('恢复失败：'+(err?.message||err));}
+}
+function deleteBackup(){
+ const backups=loadBackups(),b=backups.find(v=>v.id===$('backup-list').value);if(!b)return;
+ if(!confirm('删除备份「'+b.name+'」？此操作无法撤销。'))return;
+ try{localStorage.setItem(BACKUP_KEY,JSON.stringify(backups.filter(v=>v.id!==b.id)));renderBackupList();toast('已删除备份');}
+ catch(err){toast('删除备份失败：'+(err?.message||err));}
+}
+$('quick-backup').onclick=createBackup;
+$('backup-create').onclick=createBackup;
+$('backup-restore').onclick=restoreBackup;
+$('backup-delete').onclick=deleteBackup;
+
 $('play-map').onclick=()=>{
  try{
   savePreviewMap(world);
@@ -910,8 +1034,8 @@ function resetCamera(){camera.position.set(40,38,46);camera.lookAt(0,0,0);contro
 $('reset-view').onclick=resetCamera;
 $('camera').onclick=()=>{
  isTop=!isTop;
- camera.position.set(isTop?.01:40,isTop?76:38,isTop?.01:46);
- camera.up.set(0,1,0);controls.target.set(0,0,0);controls.update();
+ camera.position.copy(controls.target).add(new T.Vector3(isTop?.01:40,isTop?76:38,isTop?.01:46));
+ camera.up.set(0,1,0);controls.update();
  $('camera').textContent=isTop?'切换透视':'切换俯视';
 };
 document.addEventListener('keydown',e=>{
@@ -995,7 +1119,7 @@ new ResizeObserver(fit).observe(view);fit();
 try{const current=readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-editor-v1');
  world=current?validWorld(current):old?validWorld(JSON.parse(old)):emptyMap();}
 catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
-syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(false);setTool('select');
+syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(false);setTool('select');renderBackupList();
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,assetDefaults:Object.keys(world.assetDefaults||{}).length,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
@@ -1018,7 +1142,8 @@ window.__lighthouseEditor={
 };
 const tempSelectionBounds=new T.Box3();
 renderer.setAnimationLoop(()=>{
- controls.update();selectionBounds.makeEmpty();
+ controls.update();
+ if(performance.now()-miniLastDraw>150){miniLastDraw=performance.now();renderMinimap();}selectionBounds.makeEmpty();
  for(const id of selectedIds){
   const target=id.startsWith('native:')?(gameGroup.visible?nativeTargets[id.slice(7)]:null):
    assetLayer.children.find(g=>g.userData.mapId===id);
