@@ -4,11 +4,12 @@ import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighth
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
- nativePrefabCatalog,createTerrainMesh,addOpenOcean,applyNativeEdits,MAX_EDITOR_GRID,
+ nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,MAX_EDITOR_GRID,
  BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=40a';
 const $=id=>document.getElementById(id),view=$('view');
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
+const BASE_CELL_X=146/64,BASE_CELL_Z=129/56,MIN_WIDTH=34,MIN_DEPTH=30,MAX_SIZE=430;
 const colors={water:0x276476,sand:0xc6b78a,grass:0x71866d,rock:0x71858c};
 let world,activeTool='select',brush=2,strength=1,selected=null,hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
 const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH,grid:[GW,GH],heights:Array(GW*GH).fill(-2),types:Array(GW*GH).fill('water'),objects:[]});
@@ -36,7 +37,7 @@ if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+cat
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
 const nativeTargets=nativeGameTargets();
 const root=new T.Group();scene.add(root);
-const openSea=addOpenOcean(root);openSea.scale.set(2.5,2.5,1);
+const openSea=addOpenOcean(root);
 scene.fog=new T.Fog(0x88b9c9,88,265);
 const edgeFog=new T.Mesh(new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5),new T.ShaderMaterial({
  uniforms:{fogColor:{value:new T.Color('#88b9c9')},halfSize:{value:new T.Vector2(WIDTH*.5,DEPTH*.5)}},
@@ -51,36 +52,65 @@ function syncWorldDimensions(){
  GW=cols;GH=rows;WIDTH=world.width;DEPTH=world.depth;
  CELLX=WIDTH/GW;CELLZ=DEPTH/GH;
  openSea.geometry.dispose();
- openSea.geometry=new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5);
- openSea.scale.set(1,1,1);
+ openSea.geometry=createEditorOceanGeometry(WIDTH,DEPTH);
  edgeFog.geometry.dispose();
  edgeFog.geometry=new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5);
  edgeFog.material.uniforms.halfSize.value.set(WIDTH/2,DEPTH/2);
  $('size').textContent=WIDTH.toFixed(1)+' × '+DEPTH.toFixed(1);
  $('grid-size').textContent=GW+' × '+GH;
+ $('map-width').value=+WIDTH.toFixed(2);
+ $('map-depth').value=+DEPTH.toFixed(2);
 }
-function expandOcean(factor){
- const source=world,oldX=source.grid[0],oldZ=source.grid[1];
- // Add equal numbers of cells on opposite sides, preserving center coordinates.
- const nextX=2*Math.ceil(oldX*factor/2),nextZ=2*Math.ceil(oldZ*factor/2);
+// Preserve unchanged original island and every prefab X/Z position.
+// Only the editable terrain grid is resampled; new cells are open sea.
+function resizeMapTo(width,depth){
+ const newW=Number(width),newD=Number(depth),source=world;
+ if(!Number.isFinite(newW)||!Number.isFinite(newD)||
+    newW<MIN_WIDTH||newD<MIN_DEPTH||newW>MAX_SIZE||newD>MAX_SIZE){
+  toast('宽度需 '+MIN_WIDTH+'–'+MAX_SIZE+'，深度需 '+MIN_DEPTH+'–'+MAX_SIZE);return false;
+ }
+ if(Math.abs(newW-source.width)<.0001&&Math.abs(newD-source.depth)<.0001){
+  toast('地图尺寸没有变化');return true;
+ }
+ const halfX=newW/2,halfZ=newD/2;
+ const out=(x,z)=>Math.abs(x)>halfX||Math.abs(z)>halfZ;
+ const excluded=source.objects.filter(o=>out(o.x,o.z));
+ const regionsOutside=(source.regions||[]).some(r=>r.points.some(p=>out(p[0],p[1])));
+ let landOutside=false;
+ const [oldGX,oldGZ]=source.grid,cx=source.width/oldGX,cz=source.depth/oldGZ;
+ for(let z=0;z<oldGZ&&!landOutside;z++)for(let x=0;x<oldGX;x++){
+  const i=z*oldGX+x;
+  if(source.heights[i]>0&&out((x+.5)*cx-source.width/2,(z+.5)*cz-source.depth/2)){
+   landOutside=true;break;
+  }
+ }
+ const nativesOutside=Object.entries(source.baseEdits||{}).some(([id,r])=>
+  r&&!r.hidden&&out(r.x??BASE_ASSETS[id]?.x??0,r.z??BASE_ASSETS[id]?.z??0));
+ if(excluded.length||regionsOutside||landOutside||nativesOutside){
+  toast('新边界会裁掉已有地形或元件。请先移回范围内，防止丢失内容。');return false;
+ }
+ const nextX=Math.max(16,2*Math.round(newW/BASE_CELL_X/2));
+ const nextZ=Math.max(16,2*Math.round(newD/BASE_CELL_Z/2));
  if(nextX>MAX_EDITOR_GRID||nextZ>MAX_EDITOR_GRID){
-  toast('已达到当前编辑器的最大海域网格，请先保存地图');return;
+  toast('目标网格超出支持范围，最大为 '+MAX_EDITOR_GRID+' × '+MAX_EDITOR_GRID);return false;
  }
- const newW=+(source.width*nextX/oldX).toFixed(6);
- const newD=+(source.depth*nextZ/oldZ).toFixed(6);
- const expanded=emptyMap({width:newW,depth:newD,grid:[nextX,nextZ]});
- const offsetX=(nextX-oldX)/2,offsetZ=(nextZ-oldZ)/2;
- for(let z=0;z<oldZ;z++)for(let x=0;x<oldX;x++){
-  const src=z*oldX+x,dst=(z+offsetZ)*nextX+x+offsetX;
-  expanded.heights[dst]=source.heights[src];
-  expanded.types[dst]=source.types[src];
+ const result=emptyMap({width:+newW.toFixed(3),depth:+newD.toFixed(3),grid:[nextX,nextZ]});
+ result.baseEdits=JSON.parse(JSON.stringify(source.baseEdits||{}));
+ result.objects=source.objects.map(o=>({...o}));
+ result.regions=JSON.parse(JSON.stringify(source.regions||[]));
+ for(let z=0;z<nextZ;z++)for(let x=0;x<nextX;x++){
+  const wx=(x+.5)*result.width/nextX-result.width/2;
+  const wz=(z+.5)*result.depth/nextZ-result.depth/2;
+  const ox=Math.floor((wx+source.width/2)/cx),oz=Math.floor((wz+source.depth/2)/cz);
+  if(ox>=0&&ox<oldGX&&oz>=0&&oz<oldGZ){
+   const i=oz*oldGX+ox,j=z*nextX+x;
+   result.heights[j]=source.heights[i];
+   result.types[j]=source.types[i];
+  }
  }
- expanded.objects=source.objects.map(o=>({...o}));
- expanded.baseEdits=JSON.parse(JSON.stringify(source.baseEdits||{}));
- expanded.regions=JSON.parse(JSON.stringify(source.regions||[]));
- history();world=expanded;redraw();saveLocal();
- $('size').textContent=newW.toFixed(1)+' × '+newD.toFixed(1);
- toast('海域已扩大，新增部分全部为海面，原岛屿及物件位置不变');
+ history();world=result;resetOutline();selected=null;redraw();saveLocal();
+ toast('地图尺寸已更新；新增海域默认为海，原游戏岛屿与物件保持原位');
+ return true;
 }
 function frameWholeMap(){
  const diagonal=Math.hypot(WIDTH,DEPTH),distance=Math.min(680,Math.max(55,diagonal*1.24));
@@ -312,8 +342,8 @@ document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
 document.getElementById('finish-region').onclick=finishOutline;
 document.getElementById('cancel-region').onclick=()=>{resetOutline();toast('已取消轮廓');};
 document.getElementById('terrain-height').oninput=e=>document.getElementById('terrain-height-val').textContent=e.target.value;
-$('expand-sea-50').onclick=()=>expandOcean(1.5);
-$('expand-sea-100').onclick=()=>expandOcean(2);
+$('apply-map-size').onclick=()=>resizeMapTo($('map-width').value,$('map-depth').value);
+for(const id of ['map-width','map-depth'])$(id).addEventListener('keydown',e=>{if(e.key==='Enter'){$('apply-map-size').click();e.preventDefault();}});
 $('frame-world').onclick=frameWholeMap;
 $('toggle-original').onclick=()=>{
  gameGroup.visible=!gameGroup.visible;
@@ -424,7 +454,7 @@ try{const current=readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-
 catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
 syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
 window.__lighthouseEditor={
- getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,expandable:true,
+ getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,history:hist.length,
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
@@ -437,7 +467,8 @@ window.__lighthouseEditor={
   Object.assign(nativeEdit(id),change);applyNativeEdits(world,gameGroup);
   setDirty(true);saveLocal();return true;
  },
- getCatalog:()=>catalog.types.map(id=>({id,name:catalog.all[id].label})),
+ getCatalog:()=>catalog.types.map(id=>({id,name:catalog.all[id].label,category:assetCategory(id,catalog.all[id])})),
+ resizeMap:(width,depth)=>resizeMapTo(width,depth),
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
 };
