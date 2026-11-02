@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V3.1 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V3.2 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -37,9 +37,9 @@ a{color:#b2d8cf}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V3.1 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V3.2 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
-<button id="open-game" class="primary">在游戏中预览</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
+<button id="open-game" class="primary">查看独立游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
 <button data-tool="raise">⛰ 抬高</button><button data-tool="lower">⌄ 降低</button>
 <button data-tool="flatten">▬ 平整</button><button data-tool="water">≈ 挖水域</button>
@@ -58,20 +58,20 @@ a{color:#b2d8cf}
 <div class="stats" style="margin:8px 0">当前选择：<span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">扫描游戏模型中…</div></div>
 <div id="assets"></div>
 <p class="muted">默认提供完整的灯塔、树木、礁石簇、木屋、木桶、船只等元件。需要精修时可切换「细节零件」，不必重新拼装整个灯塔。所有模型均复用原游戏几何与材质。</p></div>
-<div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
+<div class="section"><h2>扩展海域</h2><div class="toolgrid"><button id="expand-sea-50">海域扩大 50%</button><button id="expand-sea-100">海域扩大 100%</button></div><button id="frame-world" style="width:100%;margin-top:8px">查看完整编辑地图</button><p class="muted">以地图中心为基准向外扩展，新增区域一律为海水；现有岛屿、模型和地形位置不会改变。此功能仅改变编辑器数据，不会改变正式游戏大小。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
 </aside>
 <main id="view"><div id="hint">选择工具：单击选中整体模型、Delete 删除　·　绘制岛屿：点击边界点、Enter 完成　·　右键旋转 / 滚轮缩放</div><div id="toast" role="status"></div></main>
 <aside id="right">
-<div class="section"><h2>地图概览</h2><div class="stats">世界面积：<span class="value" id="size">146 × 129</span><br>地形网格：<span class="value">64 × 56</span><br>模型实例：<span class="value" id="object-count">0</span><br>当前工具：<span class="value" id="tool-name">抬高</span><br>当前坐标：<span class="value" id="cursor">—</span><br>修改状态：<span class="value" id="dirty">已保存</span></div></div>
+<div class="section"><h2>地图概览</h2><div class="stats">编辑海域：<span class="value" id="size">146 × 129</span><br>地形网格：<span class="value" id="grid-size">64 × 56</span><br>模型实例：<span class="value" id="object-count">0</span><br>当前工具：<span class="value" id="tool-name">抬高</span><br>当前坐标：<span class="value" id="cursor">—</span><br>修改状态：<span class="value" id="dirty">已保存</span></div></div>
 <div class="section"><h2>选中对象</h2><div id="none" class="muted">点击原游戏或新增的完整模型，即可单独选中；原版模型可隐藏、恢复，新增模型可删除。地形与海面不参与单选。</div>
 <div id="inspector" hidden><label for="selected-name">模型名称</label><input id="selected-name" type="text">
 <div class="props"><div><label for="posx">X 坐标</label><input id="posx" type="number" step=".1"></div><div><label for="posz">Z 坐标</label><input id="posz" type="number" step=".1"></div></div>
 <label for="rot">旋转角度 · <output id="rot-val">0°</output></label><input id="rot" type="range" min="0" max="359" value="0">
 <label for="scale">模型大小 · <output id="scale-val">1.0</output></label><input id="scale" type="range" min=".3" max="3" step=".1" value="1">
 <div class="toolgrid" style="margin-top:12px"><button id="duplicate">复制</button><button id="delete">删除</button></div><button id="restore-native" type="button" hidden style="width:100%;margin-top:8px">复位原模型</button></div></div>
-<div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。修改会保存到同一浏览器，点击「在游戏中预览」查看。跨设备发布仍需将 JSON 提交仓库。</p></div>
+<div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。修改会保存到同一浏览器，编辑内容暂不加载进正式游戏。扩展数据可导出 JSON，待完成模型与加载机制后另行发布。</p></div>
 <div><button id="autosave" style="width:100%">保存游戏预览地图</button></div>
 </aside>
-<footer id="footer">原版 V35 岛屿默认显示 · 原模型单选与隐藏 · 外围海域可增绘地形 · 地形轮廓+高度导出</footer>
-</div><script type="module" src="./editor.js?v=5a"></script>
+<footer id="footer">原版 V35 岛屿默认显示 · 海域可扩展 · 新增区域默认为海 · 正式游戏保持原样</footer>
+</div><script type="module" src="./editor.js?v=6a"></script>
 </body></html>
