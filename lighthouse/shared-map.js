@@ -31,6 +31,60 @@ const ASSETS={
 export const ASSET_TYPES=Object.keys(ASSETS);
 const former={rock:'shore_rock',tree:'pine',hut:'boathouse',dock:'boathouse'};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+
+/**
+ * Non-destructive per-instance color correction used by the editor and game preview.
+ * Original GLB geometries, textures and authored source materials are retained.
+ * Updates use uniforms so sliders do not recompile shaders for each pointer move.
+ */
+const appearanceOriginalMaterials=new WeakMap();
+const appearanceRange=(value,defaultValue,min,max)=>{
+ const n=Number(value??defaultValue);
+ return Number.isFinite(n)?clamp(n,min,max):defaultValue;
+};
+export function applyModelAppearance(object,options={}){
+ if(!object)return;
+ const b=appearanceRange(options.brightness,1,0,2);
+ const sat=appearanceRange(options.saturation,1,0,2);
+ const hue=appearanceRange(options.hue,0,-180,180);
+ object.traverse(mesh=>{
+  if(!mesh.isMesh||!mesh.material)return;
+  const stored=appearanceOriginalMaterials.get(mesh);
+  if(!stored && b===1 && sat===1 && hue===0)return;
+  if(!stored)appearanceOriginalMaterials.set(mesh,mesh.material);
+  const current=Array.isArray(mesh.material)?mesh.material:[mesh.material];
+  if(current.every(m=>m?.userData?.lighthouseAppearance)){
+   for(const m of current){
+    m.userData.lighthouseAppearance.brightness.value=b;
+    m.userData.lighthouseAppearance.saturation.value=sat;
+    m.userData.lighthouseAppearance.hue.value=hue;
+   }
+   return;
+  }
+  const original=appearanceOriginalMaterials.get(mesh);
+  const patch=m=>{
+   if(!m)return m;
+   const material=m.clone();
+   const oldCompile=m.onBeforeCompile;
+   const brightness={value:b},saturation={value:sat},hueOffset={value:hue};
+   material.userData.lighthouseAppearance={brightness,saturation,hue:hueOffset};
+   material.onBeforeCompile=shader=>{
+    oldCompile?.(shader);
+    shader.uniforms.lighthouseBrightness=brightness;
+    shader.uniforms.lighthouseSaturation=saturation;
+    shader.uniforms.lighthouseHue=hueOffset;
+    shader.fragmentShader='uniform float lighthouseBrightness;\nuniform float lighthouseSaturation;\nuniform float lighthouseHue;\n'+shader.fragmentShader;
+    const marker='#include <map_fragment>';
+    const correction='\nvec3 lighthouseAxis=vec3(0.57735026919);\nfloat lighthouseAngle=radians(lighthouseHue);\nfloat lighthouseCos=cos(lighthouseAngle);\nfloat lighthouseSin=sin(lighthouseAngle);\nvec3 lighthouseRGB=diffuseColor.rgb;\ndiffuseColor.rgb=lighthouseRGB*lighthouseCos+cross(lighthouseAxis,lighthouseRGB)*lighthouseSin+lighthouseAxis*dot(lighthouseAxis,lighthouseRGB)*(1.0-lighthouseCos);\nfloat lighthouseLuma=dot(diffuseColor.rgb,vec3(0.2126,0.7152,0.0722));\ndiffuseColor.rgb=clamp(mix(vec3(lighthouseLuma),diffuseColor.rgb,lighthouseSaturation)*lighthouseBrightness,0.0,1.0);\n';
+    shader.fragmentShader=shader.fragmentShader.replace(marker,marker+correction);
+   };
+   material.customProgramCacheKey=()=>((m.customProgramCacheKey?.()||'')+'-lighthouse-hsb-v2');
+   return material;
+  };
+  mesh.material=Array.isArray(original)?original.map(patch):patch(original);
+ });
+}
+
 export function emptyMap(options={}){
  const grid=options.grid||[GW,GH],width=options.width||WIDTH,depth=options.depth||DEPTH;
  const gx=grid[0],gz=grid[1];
@@ -39,7 +93,7 @@ export function emptyMap(options={}){
     !Number.isFinite(width)||!Number.isFinite(depth)||width<1||depth<1)
   throw Error('地图尺寸或网格无效');
  return {schema:WORLD_SCHEMA,version:2,width,depth,grid:[gx,gz],
-  heights:Array(gx*gz).fill(-3),types:Array(gx*gz).fill('water'),objects:[],baseEdits:{},regions:[],assetScaleVersion:'cliffy-batch01-source-unit-v1'};
+  heights:Array(gx*gz).fill(-3),types:Array(gx*gz).fill('water'),objects:[],baseEdits:{},assetDefaults:{},regions:[],assetScaleVersion:'cliffy-batch01-source-unit-v1'};
 }
 export function normalizeMap(v){
  const grid=v?.grid;
@@ -68,9 +122,30 @@ export function normalizeMap(v){
      y:clamp(Number(rec.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
     z:clamp(Number(rec.z)||0,-w.depth/2,w.depth/2),
     rotation:((Number(rec.rotation)||0)%360+360)%360,
-    scale:clamp(Number(rec.scale)||1,.3,3),
-    brightness:clamp(Number(rec.brightness??1),0,2),saturation:clamp(Number(rec.saturation??1),0,2),
+    scale:clamp(Number(rec.scale??1)||1,.001,20),
+    brightness:clamp(Number(rec.brightness??1),0,2),saturation:clamp(Number(rec.saturation??1),0,2),hue:clamp(Number(rec.hue??0),-180,180),
     hidden:!!rec.hidden,locked:!!rec.locked
+   };
+  }
+ }
+
+ // Presets overwrite the editor's component settings, not the original GLB bytes.
+ // Keep them in the world file so a portable JSON imports its own model presets.
+ w.assetDefaults={};
+ if(v.assetDefaults&&typeof v.assetDefaults==='object'&&!Array.isArray(v.assetDefaults)){
+  for(const [key,rec] of Object.entries(v.assetDefaults).slice(0,300)){
+   const allowed=!!ASSETS[key]||/^part_[0-9]{5}$/.test(key)||
+    /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(key)||
+    /^coastal_tree_t0[1-4]$/.test(key)||
+    /^legacy_(shipwreck|pier_west|pier_east)$/.test(key)||
+    /^ext_glb_[0-9a-f]{24}$/.test(key)||
+    /^cliffy_coast_[a-z0-9_]{1,40}$/.test(key);
+   if(!allowed||!rec||typeof rec!=='object')continue;
+   w.assetDefaults[key]={
+    scale:appearanceRange(rec.scale,1,.001,20),
+    brightness:appearanceRange(rec.brightness,1,0,2),
+    saturation:appearanceRange(rec.saturation,1,0,2),
+    hue:appearanceRange(rec.hue,0,-180,180)
    };
   }
  }
@@ -93,7 +168,7 @@ export function normalizeMap(v){
     y:clamp(Number(obj.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
    z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
-   scale:clamp((Number(obj.scale)||1)*(!v.assetScaleVersion&&['cliffy_coast_tree1','cliffy_coast_tree3'].includes(asset)?.3:1),.001,5),brightness:clamp(Number(obj.brightness??1),0,2),saturation:clamp(Number(obj.saturation??1),0,2),
+   scale:clamp((Number(obj.scale)||1)*(!v.assetScaleVersion&&['cliffy_coast_tree1','cliffy_coast_tree3'].includes(asset)?.3:1),.001,20),brightness:clamp(Number(obj.brightness??1),0,2),saturation:clamp(Number(obj.saturation??1),0,2),hue:clamp(Number(obj.hue??0),-180,180),
    hidden:!!obj.hidden,locked:!!obj.locked,
    group:typeof obj.group==='string'&&/^grp_[a-z0-9]{6,20}$/.test(obj.group)?obj.group:null};
  }).filter(Boolean);
@@ -263,6 +338,7 @@ export function createPlacementLayer(w,catalog,root){
   instance.position.set(obj.x,groundY(w,obj.x,obj.z)+(obj.y??0),obj.z);
   instance.rotation.y=obj.rotation*Math.PI/180;
   instance.scale.setScalar(obj.scale);instance.visible=!obj.hidden;
+   applyModelAppearance(instance,obj);
   instance.traverse(n=>{if(n.isMesh)n.userData.mapObjectId=obj.id});
   layer.add(instance);records.set(obj.id,instance);
  }
