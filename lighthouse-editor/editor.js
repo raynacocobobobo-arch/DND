@@ -750,17 +750,47 @@ $('restore-native').onclick=()=>{
  delete world.baseEdits[selected.slice(7)];applyNativeEdits(world,gameGroup);
  updateInspector();setDirty(true);saveLocal();
 };
-$('selected-name').onchange=e=>mutateSelected(o=>o.name=e.target.value.slice(0,90));
-for(const field of ['posx','posz'])$(field).onchange=e=>mutateSelected(o=>o[field==='posx'?'x':'z']=clamp(Number(e.target.value)||0,field==='posx'?-WIDTH/2:-DEPTH/2,field==='posx'?WIDTH/2:DEPTH/2));
-$('posy').onchange=e=>mutateSelected(o=>o.y=clamp(Number(e.target.value)||0,MIN_OBJECT_Y,MAX_OBJECT_Y));
-function degrees(v){const n=Number(v);return Number.isFinite(n)?((n%360)+360)%360:0;}
-function percentage(v){const n=Number(v);return clamp(Number.isFinite(n)?n:100,5,500)/100;}
-$('rot').onchange=e=>mutateSelected(o=>o.rotation=degrees(e.target.value));
+// Equality checks also prevent Enter + blur from adding duplicate undo states.
+function setSelectedNumber(key,value){
+ const rec=currentRecord();
+ if(!rec||selectedIds.size!==1||isLocked(selected)||!Number.isFinite(value))return;
+ if(Math.abs((Number(rec[key])||0)-value)<1e-7){updateInspector();return;}
+ mutateSelected(obj=>{obj[key]=value;});
+}
+function setSelectedName(value){
+ const rec=currentRecord();
+ if(!rec||selectedIds.size!==1||selected.startsWith('native:')||isLocked(selected))return;
+ const next=String(value).slice(0,90);
+ if(next!==rec.name)mutateSelected(obj=>{obj.name=next;});
+}
+function numberOr(raw,fallback){
+ if(String(raw).trim()==='')return fallback;
+ const n=Number(raw);return Number.isFinite(n)?n:fallback;
+}
+function degrees(v){return ((numberOr(v,0)%360)+360)%360;}
+function percentage(v){return clamp(numberOr(v,100),5,500)/100;}
+$('selected-name').onchange=e=>setSelectedName(e.target.value);
+for(const field of ['posx','posz'])$(field).onchange=e=>{
+ const key=field==='posx'?'x':'z',limit=key==='x'?WIDTH/2:DEPTH/2;
+ setSelectedNumber(key,clamp(numberOr(e.target.value,currentRecord()?.[key]??0),-limit,limit));
+};
+$('posy').onchange=e=>setSelectedNumber('y',clamp(numberOr(e.target.value,currentRecord()?.y??0),MIN_OBJECT_Y,MAX_OBJECT_Y));
+$('rot').onchange=e=>setSelectedNumber('rotation',degrees(e.target.value));
 $('rot').oninput=e=>{$('rot-val').textContent=Math.round(+e.target.value)+'°';$('rot-deg').value=e.target.value;};
-$('rot-deg').onchange=e=>mutateSelected(o=>o.rotation=degrees(e.target.value));
-$('scale').onchange=e=>mutateSelected(o=>o.scale=percentage(+e.target.value*100));
+$('rot-deg').onchange=e=>setSelectedNumber('rotation',degrees(e.target.value));
+$('scale').onchange=e=>setSelectedNumber('scale',percentage(+e.target.value*100));
 $('scale').oninput=e=>{$('scale-val').textContent=Math.round(+e.target.value*100)+'%';$('scale-pct').value=Math.round(+e.target.value*100);};
-$('scale-pct').onchange=e=>mutateSelected(o=>o.scale=percentage(e.target.value));
+$('scale-pct').onchange=e=>setSelectedNumber('scale',percentage(e.target.value));
+// Explicit Enter commit is supported for all object parameter input fields.
+for(const id of ['selected-name','posx','posy','posz','rot-deg','scale-pct']){
+ $(id).addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  e.preventDefault();e.stopPropagation();
+  e.currentTarget.dispatchEvent(new Event('change'));
+  e.currentTarget.blur();
+  renderer.domElement.focus({preventScroll:true});
+ });
+}
 $('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
 $('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
 // External assets: import to a persistent browser library, then use existing
@@ -903,10 +933,14 @@ $('camera').onclick=()=>{
  $('camera').textContent=isTop?'切换透视':'切换俯视';
 };
 document.addEventListener('keydown',e=>{
- if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;
+ if(e.defaultPrevented)return;
+ const focus=document.activeElement;
+ if(focus?.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(focus?.tagName))return;
+ if((e.key==='Delete'||e.code==='Delete')&&selectedIds.size){
+  e.preventDefault();$('delete').click();return;
+ }
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();applyHistory(e.shiftKey?'redo':'undo');}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();applyHistory('redo');}
- if(e.key==='Delete'&&selected)$('delete').click();
  if(e.key==='Escape'){resetOutline();selected=null;selectedIds.clear();updateInspector();}
  if(e.key==='Enter'&&activeTool==='outline')finishOutline();
  if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&selectedIds.size){
