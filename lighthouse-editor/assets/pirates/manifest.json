@@ -1,4 +1,11 @@
 {
   "schemaVersion": 1,
-  "assets": []
+  "assets": [
+    {
+      "id": "pirates_sm_prop_parrot_01",
+      "file": "SM_Prop_Parrot_01.glb",
+      "label": "海盗 · 鹦鹉",
+      "defaultScale": 1
+    }
+  ]
 }
