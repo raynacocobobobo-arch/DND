@@ -327,9 +327,9 @@ function updateInspector(){
   $('multi-hint').textContent=multi?'已选 '+selectedIds.size+' 项；可整体移动，旋转或缩放请先单选。':'';
   $('selected-name').value=r.name;$('selected-name').disabled=native||locked||multi;
   $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
-  $('rot').value=r.rotation;$('rot-val').textContent=Math.round(r.rotation)+'°';
-  $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);
-  for(const field of ['posx','posy','posz','rot','scale'])$(field).disabled=locked||multi;
+  $('rot').value=r.rotation;$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
+  $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(1);$('scale-val').textContent=Math.round(r.scale*100)+'%';
+  for(const field of ['posx','posy','posz','rot','rot-deg','scale','scale-pct'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
   $('duplicate').disabled=locked||multi;
   $('restore-native').hidden=!native;
@@ -461,7 +461,7 @@ transform.addEventListener('objectChange',()=>{
   }else if(entries.length===1){
    const r=actualRecord(entries[0].id);
    if(mode==='rotate')r.rotation=((T.MathUtils.radToDeg(transformProxy.rotation.y)%360)+360)%360;
-   if(mode==='scale'){r.scale=clamp(transformProxy.scale.x,.3,3);transformProxy.scale.setScalar(r.scale);}
+   if(mode==='scale'){r.scale=clamp(transformProxy.scale.x,.05,5);transformProxy.scale.setScalar(r.scale);}
   }
   let nativeChanged=false;
   for(const {id} of entries){
@@ -472,8 +472,8 @@ transform.addEventListener('objectChange',()=>{
   }
   if(nativeChanged)applyNativeEdits(world,gameGroup);
   const r=currentRecord();if(r){$('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
-   $('rot').value=Math.round(r.rotation);$('rot-val').textContent=Math.round(r.rotation)+'°';
-   $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);}
+   $('rot').value=Math.round(r.rotation);$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
+   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(1);$('scale-val').textContent=Math.round(r.scale*100)+'%';}
   setDirty(true);
  }
  syncingProxy=false;
@@ -510,7 +510,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   const asset=activeTool.slice(6);
   history();const [px,pz]=snappedXZ(p.x,p.z);
   const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
-   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:1};
+   z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:asset.startsWith('ext_glb_')?.3:1};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
  history();stroke=true;lastStroke='';
@@ -744,10 +744,14 @@ $('restore-native').onclick=()=>{
 $('selected-name').onchange=e=>mutateSelected(o=>o.name=e.target.value.slice(0,90));
 for(const field of ['posx','posz'])$(field).onchange=e=>mutateSelected(o=>o[field==='posx'?'x':'z']=clamp(Number(e.target.value)||0,field==='posx'?-WIDTH/2:-DEPTH/2,field==='posx'?WIDTH/2:DEPTH/2));
 $('posy').onchange=e=>mutateSelected(o=>o.y=clamp(Number(e.target.value)||0,MIN_OBJECT_Y,MAX_OBJECT_Y));
-$('rot').onchange=e=>mutateSelected(o=>o.rotation=+e.target.value);
-$('rot').oninput=e=>$('rot-val').textContent=e.target.value+'°';
-$('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
-$('scale').oninput=e=>$('scale-val').textContent=(+e.target.value).toFixed(1);
+function degrees(v){const n=Number(v);return Number.isFinite(n)?((n%360)+360)%360:0;}
+function percentage(v){const n=Number(v);return clamp(Number.isFinite(n)?n:100,5,500)/100;}
+$('rot').onchange=e=>mutateSelected(o=>o.rotation=degrees(e.target.value));
+$('rot').oninput=e=>{$('rot-val').textContent=Math.round(+e.target.value)+'°';$('rot-deg').value=e.target.value;};
+$('rot-deg').onchange=e=>mutateSelected(o=>o.rotation=degrees(e.target.value));
+$('scale').onchange=e=>mutateSelected(o=>o.scale=percentage(+e.target.value*100));
+$('scale').oninput=e=>{$('scale-val').textContent=Math.round(+e.target.value*100)+'%';$('scale-pct').value=Math.round(+e.target.value*100);};
+$('scale-pct').onchange=e=>mutateSelected(o=>o.scale=percentage(e.target.value));
 $('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
 $('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
 // External assets: import to a persistent browser library, then use existing
@@ -918,7 +922,7 @@ window.__lighthouseEditor={
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
-  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
+  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:asset.startsWith('ext_glb_')?.3:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
  selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
  editNative:(id,change)=>{
