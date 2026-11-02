@@ -2088,6 +2088,24 @@
       "file": "SM_Bld_Shanty_Roof_02.glb",
       "label": "海盗 · Bld Shanty Roof 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_roof_03",
+      "file": "SM_Bld_Shanty_Roof_03.glb",
+      "label": "海盗 · Bld Shanty Roof 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_roof_04",
+      "file": "SM_Bld_Shanty_Roof_04.glb",
+      "label": "海盗 · Bld Shanty Roof 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_shanty_roof_05",
+      "file": "SM_Bld_Shanty_Roof_05.glb",
+      "label": "海盗 · Bld Shanty Roof 05",
+      "defaultScale": 1
     }
   ]
 }
