@@ -113,6 +113,17 @@ export function nativePrefabCatalog(group,reefRoot){
   if(!o.isMesh||!o.geometry||skip.has(o.name)||o.userData.isWaterVolume||
    o.userData.isWaterSurface||o.userData.waterSidewall||
    o.name.startsWith('water-sidewall')||o.name.startsWith('sea-'))return;
+  // The editor and game construct these SAME authored asset families.
+  // Dynamic clouds/gulls/ships/tentacles (and water infrastructure) must
+  // NOT shift deterministic identifiers between the two processes.
+  let ancestor=o.parent,authored=false;
+  while(ancestor&&ancestor!==group){
+   if(ancestor.name?.startsWith('game-asset-')||
+      ancestor.name==='serviceBoat'||
+      ancestor===reefRoot){authored=true;break;}
+   ancestor=ancestor.parent;
+  }
+  if(!authored)return;
   const asset='part_'+String(++ordinal).padStart(5,'0');
   const ancestry=[];let parent=o.parent;
   while(parent&&parent!==group){
