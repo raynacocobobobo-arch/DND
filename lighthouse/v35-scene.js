@@ -10,17 +10,11 @@ import {createBoatNavigator} from './v35-boat-nav.js?v=35a';
 import {emptyMap,normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
  from './shared-map.js?v=38a';
-const editorPreview=new URLSearchParams(location.search).get('map')==='editor';
-const ignoreLocalMap=new URLSearchParams(location.search).get('map')==='published';
-const localMap=ignoreLocalMap||!editorPreview?null:readPreviewMap();
-let publishedMap=null;
-try{
- const res=await fetch('./world-map.json?v=35a',{cache:'no-store'});
- if(res.ok)publishedMap=normalizeMap(await res.json());
-}catch(error){console.warn('Published map unavailable; falling back to starter world',error);}
-const worldMap=localMap||publishedMap||emptyMap();
-const worldHasEdits=Boolean(worldMap.objects.length||
- Object.keys(worldMap.baseEdits||{}).length||worldMap.heights.some(y=>y>0));
+// Production gameplay is an isolated, fixed-size V35 scene.
+// Editor extensions are design data and are NEVER loaded into the player.
+// Even ?map=editor or a published world-map.json cannot enlarge the live sea.
+const worldMap=emptyMap();
+const worldHasEdits=false;
 
 const host=document.getElementById('viewport'),status=document.getElementById('status');
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(38,innerWidth/innerHeight,.1,160);
