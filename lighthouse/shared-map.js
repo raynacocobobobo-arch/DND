@@ -139,7 +139,7 @@ export function normalizeMap(v){
     /^coastal_tree_t0[1-4]$/.test(key)||
     /^legacy_(shipwreck|pier_west|pier_east)$/.test(key)||
     /^ext_glb_[0-9a-f]{24}$/.test(key)||
-    /^cliffy_coast_[a-z0-9_]{1,40}$/.test(key);
+    /^cliffy_coast_[a-z0-9_]{1,40}$/.test(key)||/^pirates_[a-z0-9_]{1,80}$/.test(key);
    if(!allowed||!rec||typeof rec!=='object')continue;
    w.assetDefaults[key]={
     scale:appearanceRange(rec.scale,1,.001,2),
@@ -159,7 +159,7 @@ export function normalizeMap(v){
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
-  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset)&&! /^coastal_tree_t0[1-4]$/.test(asset)&&! /^legacy_(shipwreck|pier_west|pier_east)$/.test(asset)&&! /^ext_glb_[0-9a-f]{24}$/.test(asset)&&! /^cliffy_coast_[a-z0-9_]{1,40}$/.test(asset))return null;
+  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset)&&! /^coastal_tree_t0[1-4]$/.test(asset)&&! /^legacy_(shipwreck|pier_west|pier_east)$/.test(asset)&&! /^ext_glb_[0-9a-f]{24}$/.test(asset)&&! /^cliffy_coast_[a-z0-9_]{1,40}$/.test(asset)&&! /^pirates_[a-z0-9_]{1,80}$/.test(asset))return null;
   const id=String(obj.id||'item-'+i).slice(0,60);
   if(seen.has(id))return null;
   seen.add(id);
