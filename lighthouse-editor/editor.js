@@ -20,8 +20,8 @@ import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
  BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=minimap-backups-v511';
 const $=id=>document.getElementById(id),view=$('view');
-const mobileMedia=window.matchMedia('(max-width:740px), (pointer:coarse) and (max-width:1020px)');
-let mobileInteraction=mobileMedia.matches?'orbit':'edit';
+const touchMedia=window.matchMedia('(pointer:coarse)');
+let touchInteraction=touchMedia.matches?'orbit':'edit';
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const BASE_CELL_X=146/64,BASE_CELL_Z=129/56,MIN_WIDTH=34,MIN_DEPTH=30,MAX_SIZE=430;
@@ -31,14 +31,14 @@ const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
 const camera=new T.PerspectiveCamera(43,1,.1,1000),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,mobileMedia.matches?1.2:1.6));renderer.outputColorSpace=T.SRGBColorSpace;
+renderer.setPixelRatio(Math.min(devicePixelRatio,touchMedia.matches?1.2:1.6));renderer.outputColorSpace=T.SRGBColorSpace;
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
 view.insertBefore(renderer.domElement,view.firstChild);renderer.domElement.tabIndex=-1;scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
 const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92,65);scene.add(sunlight);
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
 controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.PAN,RIGHT:T.MOUSE.ROTATE};controls.enablePan=true;
-controls.touches={ONE:mobileMedia.matches?T.TOUCH.ROTATE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
+controls.touches={ONE:touchMedia.matches?T.TOUCH.ROTATE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
 const transform=new TransformControls(camera,renderer.domElement);
 const transformProxy=new T.Object3D();scene.add(transformProxy);scene.add(transform);
@@ -62,8 +62,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.1.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.1.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.2.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.2.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
 const glbLibrary=await createExternalGLBLibrary(catalog);
@@ -272,7 +272,7 @@ function selectItem(id,multi=false){
  }
  selected=id&&selectedIds.has(id)?id:([...selectedIds].at(-1)||null);
  updateInspector();
- if(mobileMedia.matches&&selected&&selectedIds.size===1)setMobilePanel('inspector');
+ 
 }
 function nativeEdit(id){
  world.baseEdits??={};
@@ -333,7 +333,7 @@ function updateInspector(){
 
 function syncTransform(){
  if(!world||syncingProxy||transform.dragging)return;
- if(activeTool!=='select'||(mobileMedia.matches&&mobileInteraction==='orbit')){transform.detach();return;}
+ if(activeTool!=='select'||(touchMedia.matches&&touchInteraction==='orbit')){transform.detach();return;}
  const selectedEntries=[...selectedIds].map(id=>({id,r:recordById(id)}))
   .filter(({r})=>r&&!r.locked&&!r.hidden);
  transform.detach();
@@ -436,7 +436,7 @@ const DIRECT_DRAG_THRESHOLD=8;
 let directDrag=null;
 const mobileTouches=new Set();
 renderer.domElement.addEventListener('pointerdown',e=>{
- if(!mobileMedia.matches||e.pointerType!=='touch')return;
+ if(e.pointerType!=='touch')return;
  mobileTouches.add(e.pointerId);
  if(mobileTouches.size>1)directDrag=null;
 },true);
@@ -446,7 +446,7 @@ for(const type of ['pointerup','pointercancel','lostpointercapture']){
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(e.button!==0)return;
- if(mobileMedia.matches&&e.pointerType==='touch'&&(mobileInteraction==='orbit'||mobileTouches.size>1||!e.isPrimary))return;
+ if(e.pointerType==='touch'&&(touchInteraction==='orbit'||mobileTouches.size>1||!e.isPrimary))return;
  // Clicking the canvas commits the previously focused parameter field.
  if(document.activeElement?.matches?.('input, textarea, select'))document.activeElement.blur();
  renderer.domElement.focus({preventScroll:true});
@@ -469,13 +469,13 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
    z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,...initialAppearanceFor(asset)};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);
-   if(mobileMedia.matches)setMobilePanel('inspector');
+   
    return;
  }
  
 },{passive:true});
 renderer.domElement.addEventListener('pointermove',e=>{
- if(mobileMedia.matches&&e.pointerType==='touch'&&(mobileInteraction==='orbit'||mobileTouches.size>1))return;
+ if(e.pointerType==='touch'&&(touchInteraction==='orbit'||mobileTouches.size>1))return;
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
  cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,CELLX*.7));
@@ -500,7 +500,7 @@ renderer.domElement.addEventListener('pointermove',e=>{
  }
 },{passive:true});
 function finish(e){
- if(mobileMedia.matches&&e.pointerType==='touch'&&mobileInteraction==='orbit'){directDrag=null;return;}
+ if(e.pointerType==='touch'&&touchInteraction==='orbit'){directDrag=null;return;}
  if(directDrag&&directDrag.pointerId===e.pointerId){
   if(directDrag.started)saveLocal();
   directDrag=null;syncTransform();
@@ -648,7 +648,7 @@ function renderAssetLibrary(){
    label.textContent=meta.label;
    btn.append(img,label);
     if(world?.assetDefaults?.[id]){const badge=document.createElement('span');badge.className='asset-overridden';badge.textContent='已覆盖';btn.append(badge);}
-   btn.onclick=()=>{setTool('asset:'+id);if(mobileMedia.matches){setMobileInteraction('edit');setMobilePanel('none');}document.querySelectorAll('.asset-card')
+   btn.onclick=()=>{setTool('asset:'+id);if(touchMedia.matches)setTouchInteraction('edit');document.querySelectorAll('.asset-card')
      .forEach(item=>item.classList.toggle('active',item===btn));};
    grid.append(btn);
    const cached=previewCache.get(id);
@@ -1056,60 +1056,28 @@ document.addEventListener('keydown',e=>{
  }
 });
 
-/* Mobile interaction: orbit is deliberately separated from selecting/placing assets.
-   One finger rotates in browse mode; two fingers pan/zoom in either mode. */
-function setMobileInteraction(mode){
- if(!mobileMedia.matches)return;
- mobileInteraction=mode==='edit'?'edit':'orbit';
- controls.touches.ONE=mobileInteraction==='orbit'?T.TOUCH.ROTATE:null;
+/* Unified desktop UI: only touch interaction requires mode switching.
+   A touch on "browse" rotates; two fingers pan/zoom. "edit" allows taps
+   to select/place assets without moving the camera target. */
+function setTouchInteraction(mode){
+ touchInteraction=mode==='edit'?'edit':'orbit';
+ controls.touches.ONE=touchMedia.matches&&touchInteraction==='orbit'?T.TOUCH.ROTATE:null;
  controls.touches.TWO=T.TOUCH.DOLLY_PAN;
- $('mobile-touch-nav').classList.toggle('active',mobileInteraction==='orbit');
- $('mobile-touch-edit').classList.toggle('active',mobileInteraction==='edit');
- $('mobile-touch-nav').setAttribute('aria-pressed',String(mobileInteraction==='orbit'));
- $('mobile-touch-edit').setAttribute('aria-pressed',String(mobileInteraction==='edit'));
+ $('touch-orbit').classList.toggle('active',touchInteraction==='orbit');
+ $('touch-edit').classList.toggle('active',touchInteraction==='edit');
+ $('touch-orbit').setAttribute('aria-pressed',String(touchInteraction==='orbit'));
+ $('touch-edit').setAttribute('aria-pressed',String(touchInteraction==='edit'));
  directDrag=null;
  syncTransform();
 }
-function setMobilePanel(name){
- if(!mobileMedia.matches)return;
- const valid=['assets','inspector','backup','more'];
- const next=valid.includes(name)?name:'none';
- document.body.dataset.mobilePanel=next;
- for(const b of document.querySelectorAll('[data-mobile-tab]')){
-  const on=b.dataset.mobileTab===next;
-  b.classList.toggle('active',on);
-  b.setAttribute('aria-expanded',String(on));
- }
-}
-for(const btn of document.querySelectorAll('[data-mobile-tab]')){
- btn.onclick=()=>{
-  const n=btn.dataset.mobileTab;
-  setMobilePanel(document.body.dataset.mobilePanel===n?'none':n);
- };
-}
-$('mobile-scrim').onclick=()=>setMobilePanel('none');
-$('mobile-touch-nav').onclick=()=>{setMobilePanel('none');setMobileInteraction('orbit');};
-$('mobile-touch-edit').onclick=()=>{setMobilePanel('none');setMobileInteraction('edit');};
-$('mobile-undo').onclick=()=>applyHistory('undo');
-$('mobile-backup').onclick=()=>createBackup();
-$('mobile-play').onclick=()=>$('play-map').click();
-$('mobile-export').onclick=()=>$('save').click();
-$('mobile-import-json').onclick=()=>$('input-json').click();
-$('mobile-full').onclick=()=>$('export-portable').click();
-$('mobile-redo').onclick=()=>$('redo').click();
-$('mobile-camera').onclick=()=>$('camera').click();
-$('mobile-reset-view').onclick=()=>$('reset-view').click();
-$('mobile-view-home').onclick=()=>$('reset-view').click();
-$('mobile-original').onclick=()=>$('toggle-original').click();
-$('mobile-open-game').onclick=()=>$('open-game').click();
-mobileMedia.addEventListener('change',e=>{
- renderer.setPixelRatio(Math.min(devicePixelRatio,e.matches?1.2:1.6));
- if(e.matches){setMobileInteraction('orbit');setMobilePanel('none');}
- else{mobileInteraction='edit';document.body.dataset.mobilePanel='none';
-  controls.touches.ONE=null;controls.touches.TWO=T.TOUCH.DOLLY_PAN;syncTransform();}
+$('touch-orbit').onclick=()=>setTouchInteraction('orbit');
+$('touch-edit').onclick=()=>setTouchInteraction('edit');
+touchMedia.addEventListener('change',()=>{
+ renderer.setPixelRatio(Math.min(devicePixelRatio,touchMedia.matches?1.2:1.6));
+ setTouchInteraction(touchMedia.matches?'orbit':'edit');
  fit();
 });
-if(mobileMedia.matches){setMobileInteraction('orbit');setMobilePanel('none');}
+setTouchInteraction(touchMedia.matches?'orbit':'edit');
 
 function fit(){
  const w=view.clientWidth,h=view.clientHeight;if(w<10||h<10)return;
