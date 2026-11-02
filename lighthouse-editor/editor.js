@@ -1,3 +1,4 @@
+import {registerPiratePrefabs} from './pirates-prefabs.js?v=1';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
@@ -63,6 +64,8 @@ const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{
 const cliffyHouses=registerCliffyCoastHouses(catalog);
 console.info('[Lighthouse V5.0.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
 window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V4.9.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
+window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
