@@ -7,7 +7,7 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,MAX_EDITOR_GRID,
- BASE_ASSETS,nativeGameTargets,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=42b';
+ BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=43y';
 const $=id=>document.getElementById(id),view=$('view');
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
@@ -30,7 +30,7 @@ controls.maxPolarAngle=Math.PI*.48;controls.update();
 const transform=new TransformControls(camera,renderer.domElement);
 const transformProxy=new T.Object3D();scene.add(transformProxy);scene.add(transform);
 transform.setSize(.82);transform.setMode('translate');
-let transformMode='translate',syncingProxy=false,transformLast=new T.Vector2(),dragHistoryTaken=false;
+let transformMode='translate',syncingProxy=false,transformLast=new T.Vector3(),dragHistoryTaken=false;
 setRenderer(renderer);renderer.localClippingEnabled=true;
 scene.add(gameGroup);
 const originalSea=buildCutaway();buildIsland();buildSite();const originalReefs=createOffshoreReefs();
@@ -193,13 +193,13 @@ function rebuildTerrain(){
 }
 function objModel(asset){return catalog.create(asset)}
 function updateObjectsHeight(){
- for(const g of assetLayer.children){const rec=objects.get(g.userData.recordId);if(rec)g.position.y=terrainY(rec.x,rec.z);}
+ for(const g of assetLayer.children){const rec=objects.get(g.userData.recordId);if(rec)g.position.y=terrainY(rec.x,rec.z)+(rec.y??0);}
 }
 function rebuildObjects(){
  assetLayer.clear();objects.clear();selectionHelper.visible=false;
  for(const r of world.objects){
   const g=objModel(r.asset);g.userData.recordId=r.id;g.userData.mapId=r.id;g.name=r.name;
-  g.position.set(r.x,terrainY(r.x,r.z),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);g.visible=!r.hidden;
+  g.position.set(r.x,terrainY(r.x,r.z)+(r.y??0),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);g.visible=!r.hidden;
   g.traverse(m=>{if(m.isMesh)m.userData.recordId=r.id;});
   assetLayer.add(g);objects.set(r.id,r);
  }
@@ -261,7 +261,7 @@ function recordById(id){
  if(id.startsWith('native:')){
   const key=id.slice(7),base=BASE_ASSETS[key],r=world.baseEdits?.[key]||{};
   if(!base)return null;
-  return {id,asset:key,name:base.name,x:r.x??base.x,z:r.z??base.z,
+  return {id,asset:key,name:base.name,x:r.x??base.x,y:r.y??0,z:r.z??base.z,
    rotation:r.rotation??0,scale:r.scale??1,hidden:r.hidden??false,locked:r.locked??false};
  }
  return objects.get(id)||null;
@@ -283,7 +283,7 @@ function selectItem(id,multi=false){
 }
 function nativeEdit(id){
  world.baseEdits??={};
- return world.baseEdits[id]??={x:BASE_ASSETS[id].x,z:BASE_ASSETS[id].z,
+ return world.baseEdits[id]??={x:BASE_ASSETS[id].x,y:0,z:BASE_ASSETS[id].z,
   rotation:0,scale:1,hidden:false,locked:false};
 }
 function setTool(t){
@@ -309,10 +309,10 @@ function updateInspector(){
   $('multi-hint').hidden=!multi;
   $('multi-hint').textContent=multi?'已选 '+selectedIds.size+' 项；可整体移动，旋转或缩放请先单选。':'';
   $('selected-name').value=r.name;$('selected-name').disabled=native||locked||multi;
-  $('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
+  $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
   $('rot').value=r.rotation;$('rot-val').textContent=Math.round(r.rotation)+'°';
   $('scale').value=r.scale;$('scale-val').textContent=r.scale.toFixed(1);
-  for(const field of ['posx','posz','rot','scale'])$(field).disabled=locked||multi;
+  for(const field of ['posx','posy','posz','rot','scale'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
   $('duplicate').disabled=locked||multi;
   $('restore-native').hidden=!native;
@@ -377,12 +377,13 @@ function syncTransform(){
  if(!selectedEntries.length)return;
  const mode=selectedEntries.length>1?'translate':transformMode;
  transform.setMode(mode);
- transform.showX=mode!=='rotate';transform.showY=mode!=='translate';transform.showZ=mode!=='rotate';
+ transform.showX=mode!=='rotate';transform.showY=true;transform.showZ=mode!=='rotate';
  transformProxy.position.set(selectedEntries.reduce((n,e)=>n+e.r.x,0)/selectedEntries.length,
-  SEA+1.25,selectedEntries.reduce((n,e)=>n+e.r.z,0)/selectedEntries.length);
+  selectedEntries.reduce((n,e)=>n+terrainY(e.r.x,e.r.z)+(e.r.y??0),0)/selectedEntries.length+1.25,
+  selectedEntries.reduce((n,e)=>n+e.r.z,0)/selectedEntries.length);
  transformProxy.rotation.set(0,selectedEntries.length===1?selectedEntries[0].r.rotation*Math.PI/180:0,0);
  transformProxy.scale.setScalar(selectedEntries.length===1?selectedEntries[0].r.scale:1);
- transformLast.set(transformProxy.position.x,transformProxy.position.z);transform.attach(transformProxy);
+ transformLast.copy(transformProxy.position);transform.attach(transformProxy);
 }
 function setTransformMode(mode){
  transformMode=mode;
@@ -409,9 +410,16 @@ transform.addEventListener('objectChange',()=>{
  if(entries.length){
   const mode=entries.length>1?'translate':transformMode;
   if(mode==='translate'){
-   const dx=transformProxy.position.x-transformLast.x,dz=transformProxy.position.z-transformLast.y;
-   for(const {id} of entries){const r=actualRecord(id);r.x=clamp(r.x+dx,-WIDTH/2,WIDTH/2);r.z=clamp(r.z+dz,-DEPTH/2,DEPTH/2);}
-   transformLast.set(transformProxy.position.x,transformProxy.position.z);
+   const dx=transformProxy.position.x-transformLast.x;
+   const dy=transformProxy.position.y-transformLast.y;
+   const dz=transformProxy.position.z-transformLast.z;
+   for(const {id} of entries){
+    const r=actualRecord(id);
+    r.x=clamp(r.x+dx,-WIDTH/2,WIDTH/2);
+    r.y=clamp((r.y??0)+dy,MIN_OBJECT_Y,MAX_OBJECT_Y);
+    r.z=clamp(r.z+dz,-DEPTH/2,DEPTH/2);
+   }
+   transformLast.copy(transformProxy.position);
   }else if(entries.length===1){
    const r=actualRecord(entries[0].id);
    if(mode==='rotate')r.rotation=((T.MathUtils.radToDeg(transformProxy.rotation.y)%360)+360)%360;
@@ -421,7 +429,7 @@ transform.addEventListener('objectChange',()=>{
   for(const {id} of entries){
    if(id.startsWith('native:')){nativeChanged=true;continue;}
    const r=objects.get(id),mesh=assetLayer.children.find(o=>o.userData.mapId===id);
-   if(r&&mesh){mesh.position.set(r.x,terrainY(r.x,r.z),r.z);
+   if(r&&mesh){mesh.position.set(r.x,terrainY(r.x,r.z)+(r.y??0),r.z);
     mesh.rotation.y=r.rotation*Math.PI/180;mesh.scale.setScalar(r.scale);}
   }
   if(nativeChanged)applyNativeEdits(world,gameGroup);
@@ -452,7 +460,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{
  if(activeTool.startsWith('asset:')){
   const asset=activeTool.slice(6);
   history();const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(p.x,-WIDTH/2,WIDTH/2),
-   z:clamp(p.z,-DEPTH/2,DEPTH/2),rotation:0,scale:1};
+   z:clamp(p.z,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:1};
   world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
  }
  history();stroke=true;lastStroke='';
@@ -473,7 +481,7 @@ renderer.domElement.addEventListener('pointermove',e=>{
    if(native)applyNativeEdits(world,gameGroup);
    else{
     const g=assetLayer.children.find(x=>x.userData.mapId===selected);
-    if(g)g.position.set(o.x,terrainY(o.x,o.z),o.z);
+    if(g)g.position.set(o.x,terrainY(o.x,o.z)+(o.y??0),o.z);
    }
    $('posx').value=o.x.toFixed(2);$('posz').value=o.z.toFixed(2);setDirty(true);
  }else if(stroke){
@@ -676,6 +684,7 @@ $('restore-native').onclick=()=>{
 };
 $('selected-name').onchange=e=>mutateSelected(o=>o.name=e.target.value.slice(0,90));
 for(const field of ['posx','posz'])$(field).onchange=e=>mutateSelected(o=>o[field==='posx'?'x':'z']=clamp(Number(e.target.value)||0,field==='posx'?-WIDTH/2:-DEPTH/2,field==='posx'?WIDTH/2:DEPTH/2));
+$('posy').onchange=e=>mutateSelected(o=>o.y=clamp(Number(e.target.value)||0,MIN_OBJECT_Y,MAX_OBJECT_Y));
 $('rot').onchange=e=>mutateSelected(o=>o.rotation=+e.target.value);
 $('rot').oninput=e=>$('rot-val').textContent=e.target.value+'°';
 $('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
@@ -732,7 +741,7 @@ window.__lighthouseEditor={
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
-  history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
+  history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,scale:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
  selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
  editNative:(id,change)=>{
@@ -747,7 +756,7 @@ window.__lighthouseEditor={
  setTransformMode:mode=>{if(!['translate','rotate','scale'].includes(mode))return false;setTransformMode(mode);return true;},
  resizeMap:(width,depth)=>resizeMapTo(width,depth),
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
- [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
+ [id,o?{x:o.position.x,y:o.position.y,z:o.position.z,visible:o.visible}:null]))
 };
 const tempSelectionBounds=new T.Box3();
 renderer.setAnimationLoop(()=>{
