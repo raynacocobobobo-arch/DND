@@ -647,28 +647,27 @@ $('brush').oninput=e=>{brush=+e.target.value;$('brush-val').textContent=brush;};
 $('strength').oninput=e=>{strength=+e.target.value;$('strength-val').textContent=strength;};
 $('undo').onclick=()=>applyHistory('undo');$('redo').onclick=()=>applyHistory('redo');
 $('duplicate').onclick=()=>{
- if(!selected)return;
- const r=currentRecord();if(!r)return;history();
- const obj={...r,id:uid(),asset:r.asset,name:r.name+' 复制',
-  x:clamp(r.x+3,-WIDTH/2,WIDTH/2),z:clamp(r.z+3,-DEPTH/2,DEPTH/2)};
- delete obj.hidden;
- world.objects.push(obj);selected=obj.id;rebuildObjects();setDirty(true);saveLocal();
+ if(!selected||selectedIds.size!==1||isLocked(selected))return;
+ const r=currentRecord();if(!r)return;
+ if(!catalog.types.includes(r.asset)){toast('此原版对象不能直接复制，请从模型库放置');return;}
+ history();
+ const o={id:uid(),asset:r.asset,name:r.name+' 复制',x:clamp(r.x+3,-WIDTH/2,WIDTH/2),
+  z:clamp(r.z+3,-DEPTH/2,DEPTH/2),rotation:r.rotation,scale:r.scale,hidden:false,locked:false};
+ world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setDirty(true);saveLocal();
 };
 $('delete').onclick=()=>{
- if(!selected)return;history();
- if(selected.startsWith('native:')){
-  nativeEdit(selected.slice(7)).hidden=true;
-  applyNativeEdits(world,gameGroup);
- }else{
-  world.objects=world.objects.filter(x=>x.id!==selected);
-  selected=null;rebuildObjects();
- }
+ const ids=[...selectedIds].filter(id=>!isLocked(id));
+ if(!ids.length){toast('没有可删除对象；锁定对象请先解锁');return;}
+ history();const removed=new Set(ids.filter(id=>!id.startsWith('native:')));
+ for(const id of ids)if(id.startsWith('native:'))nativeEdit(id.slice(7)).hidden=true;
+ world.objects=world.objects.filter(o=>!removed.has(o.id));
+ selected=null;selectedIds.clear();rebuildObjects();applyNativeEdits(world,gameGroup);
  updateInspector();setDirty(true);saveLocal();
 };
 $('restore-native').onclick=()=>{
  if(!selected?.startsWith('native:'))return;history();
- delete world.baseEdits[selected.slice(7)];
- applyNativeEdits(world,gameGroup);updateInspector();setDirty(true);saveLocal();
+ delete world.baseEdits[selected.slice(7)];applyNativeEdits(world,gameGroup);
+ updateInspector();setDirty(true);saveLocal();
 };
 $('selected-name').onchange=e=>mutateSelected(o=>o.name=e.target.value.slice(0,90));
 for(const field of ['posx','posz'])$(field).onchange=e=>mutateSelected(o=>o[field==='posx'?'x':'z']=clamp(Number(e.target.value)||0,field==='posx'?-WIDTH/2:-DEPTH/2,field==='posx'?WIDTH/2:DEPTH/2));
