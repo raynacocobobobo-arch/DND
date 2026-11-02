@@ -1,3 +1,4 @@
+import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
@@ -8,8 +9,8 @@ import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=1';
 import {registerCliffyCoastBatch03} from './cliffy-coast-batch03.js?v=1';
 import {registerCliffyCoastBatch04} from './cliffy-coast-batch04.js?v=1';
 import {registerCliffyCoastBatch05} from './cliffy-coast-batch05.js?v=1';
-import {registerCliffyCoastBatch06_07} from './cliffy-coast-batch06-07.js?v=1-bulk';
-import {registerCliffyCoastBatch08_10} from './cliffy-coast-batch08-10.js?v=1-bulk';
+import {registerCliffyCoastBatch06_07} from './cliffy-coast-batch06-07.js?v=2-house-pivot';
+import {registerCliffyCoastBatch08_10} from './cliffy-coast-batch08-10.js?v=2-house-pivot';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -57,6 +58,7 @@ const cliffyBatch04=await registerCliffyCoastBatch04(catalog);
 const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
+const cliffyHouses=registerCliffyCoastHouses(catalog);
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
