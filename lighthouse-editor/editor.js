@@ -335,7 +335,7 @@ function updateInspector(){
   $('selected-name').value=r.name;$('selected-name').disabled=native||locked||multi;
   $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
   $('rot').value=r.rotation;$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
-  $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(1);$('scale-val').textContent=Math.round(r.scale*100)+'%';
+  $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(3);$('scale-val').textContent=+(r.scale*100).toFixed(2)+'%';
   for(const field of ['posx','posy','posz'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
   $('duplicate').disabled=locked||multi;
@@ -480,7 +480,7 @@ transform.addEventListener('objectChange',()=>{
   if(nativeChanged)applyNativeEdits(world,gameGroup);
   const r=currentRecord();if(r){$('posx').value=r.x.toFixed(2);$('posz').value=r.z.toFixed(2);
    $('rot').value=Math.round(r.rotation);$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
-   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(1);$('scale-val').textContent=Math.round(r.scale*100)+'%';}
+   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(3);$('scale-val').textContent=+(r.scale*100).toFixed(2)+'%';}
   setDirty(true);
  }
  syncingProxy=false;
