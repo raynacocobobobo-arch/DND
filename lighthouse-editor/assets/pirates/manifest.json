@@ -1710,6 +1710,60 @@
       "file": "SM_Bld_Fort_Base_01.glb",
       "label": "海盗 · Bld Fort Base 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_02",
+      "file": "SM_Bld_Fort_Base_02.glb",
+      "label": "海盗 · Bld Fort Base 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_03",
+      "file": "SM_Bld_Fort_Base_03.glb",
+      "label": "海盗 · Bld Fort Base 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_circle_01",
+      "file": "SM_Bld_Fort_Base_Circle_01.glb",
+      "label": "海盗 · Bld Fort Base Circle 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_circle_02",
+      "file": "SM_Bld_Fort_Base_Circle_02.glb",
+      "label": "海盗 · Bld Fort Base Circle 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_circle_03",
+      "file": "SM_Bld_Fort_Base_Circle_03.glb",
+      "label": "海盗 · Bld Fort Base Circle 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_base_circle_04",
+      "file": "SM_Bld_Fort_Base_Circle_04.glb",
+      "label": "海盗 · Bld Fort Base Circle 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_door_01",
+      "file": "SM_Bld_Fort_Door_01.glb",
+      "label": "海盗 · Bld Fort Door 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_door_02",
+      "file": "SM_Bld_Fort_Door_02.glb",
+      "label": "海盗 · Bld Fort Door 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_fort_door_03",
+      "file": "SM_Bld_Fort_Door_03.glb",
+      "label": "海盗 · Bld Fort Door 03",
+      "defaultScale": 1
     }
   ]
 }
