@@ -1206,6 +1206,306 @@
       "file": "SM_Env_Plants_03.glb",
       "label": "海盗 · Plants 03",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_arch_01",
+      "file": "SM_Bld_Cuba_Arch_01.glb",
+      "label": "海盗 · Cuba Arch 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_arch_02",
+      "file": "SM_Bld_Cuba_Arch_02.glb",
+      "label": "海盗 · Cuba Arch 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_01",
+      "file": "SM_Env_Rock_01.glb",
+      "label": "海盗 · Rock 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_02",
+      "file": "SM_Env_Rock_02.glb",
+      "label": "海盗 · Rock 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_03",
+      "file": "SM_Env_Rock_03.glb",
+      "label": "海盗 · Rock 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_arch_01",
+      "file": "SM_Env_Rock_Arch_01.glb",
+      "label": "海盗 · Rock Arch 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_huge_01",
+      "file": "SM_Env_Rock_Huge_01.glb",
+      "label": "海盗 · Rock Huge 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_huge_02",
+      "file": "SM_Env_Rock_Huge_02.glb",
+      "label": "海盗 · Rock Huge 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_huge_03",
+      "file": "SM_Env_Rock_Huge_03.glb",
+      "label": "海盗 · Rock Huge 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_huge_04",
+      "file": "SM_Env_Rock_Huge_04.glb",
+      "label": "海盗 · Rock Huge 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_01",
+      "file": "SM_Env_Rock_Large_01.glb",
+      "label": "海盗 · Rock Large 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_010",
+      "file": "SM_Env_Rock_Large_010.glb",
+      "label": "海盗 · Rock Large 010",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_011",
+      "file": "SM_Env_Rock_Large_011.glb",
+      "label": "海盗 · Rock Large 011",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_02",
+      "file": "SM_Env_Rock_Large_02.glb",
+      "label": "海盗 · Rock Large 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_03",
+      "file": "SM_Env_Rock_Large_03.glb",
+      "label": "海盗 · Rock Large 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_04",
+      "file": "SM_Env_Rock_Large_04.glb",
+      "label": "海盗 · Rock Large 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_05",
+      "file": "SM_Env_Rock_Large_05.glb",
+      "label": "海盗 · Rock Large 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_06",
+      "file": "SM_Env_Rock_Large_06.glb",
+      "label": "海盗 · Rock Large 06",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_07",
+      "file": "SM_Env_Rock_Large_07.glb",
+      "label": "海盗 · Rock Large 07",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_08",
+      "file": "SM_Env_Rock_Large_08.glb",
+      "label": "海盗 · Rock Large 08",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_large_09",
+      "file": "SM_Env_Rock_Large_09.glb",
+      "label": "海盗 · Rock Large 09",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rock_skull_01",
+      "file": "SM_Env_Rock_Skull_01.glb",
+      "label": "海盗 · Rock Skull 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rocks_01",
+      "file": "SM_Env_Rocks_01.glb",
+      "label": "海盗 · Rocks 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rocks_02",
+      "file": "SM_Env_Rocks_02.glb",
+      "label": "海盗 · Rocks 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_rocks_03",
+      "file": "SM_Env_Rocks_03.glb",
+      "label": "海盗 · Rocks 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_seaweed_01",
+      "file": "SM_Env_Seaweed_01.glb",
+      "label": "海盗 · Seaweed 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_smallrock_01",
+      "file": "SM_Env_SmallRock_01.glb",
+      "label": "海盗 · SmallRock 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_smallrock_02",
+      "file": "SM_Env_SmallRock_02.glb",
+      "label": "海盗 · SmallRock 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_sugarcane_01",
+      "file": "SM_Env_SugarCane_01.glb",
+      "label": "海盗 · SugarCane 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_sugarcane_02",
+      "file": "SM_Env_SugarCane_02.glb",
+      "label": "海盗 · SugarCane 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_sunflower_01",
+      "file": "SM_Env_Sunflower_01.glb",
+      "label": "海盗 · Sunflower 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_sunflower_02",
+      "file": "SM_Env_Sunflower_02.glb",
+      "label": "海盗 · Sunflower 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tile_grass_01",
+      "file": "SM_Env_Tile_Grass_01.glb",
+      "label": "海盗 · Tile Grass 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tile_sand_01",
+      "file": "SM_Env_Tile_Sand_01.glb",
+      "label": "海盗 · Tile Sand 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_base_01",
+      "file": "SM_Env_Tree_Base_01.glb",
+      "label": "海盗 · Tree Base 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_base_02",
+      "file": "SM_Env_Tree_Base_02.glb",
+      "label": "海盗 · Tree Base 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_canopy_01",
+      "file": "SM_Env_Tree_Canopy_01.glb",
+      "label": "海盗 · Tree Canopy 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_canopy_02",
+      "file": "SM_Env_Tree_Canopy_02.glb",
+      "label": "海盗 · Tree Canopy 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_canopy_03",
+      "file": "SM_Env_Tree_Canopy_03.glb",
+      "label": "海盗 · Tree Canopy 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_canopy_04",
+      "file": "SM_Env_Tree_Canopy_04.glb",
+      "label": "海盗 · Tree Canopy 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_dead_01",
+      "file": "SM_Env_Tree_Dead_01.glb",
+      "label": "海盗 · Tree Dead 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_large_01",
+      "file": "SM_Env_Tree_Large_01.glb",
+      "label": "海盗 · Tree Large 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_large_02",
+      "file": "SM_Env_Tree_Large_02.glb",
+      "label": "海盗 · Tree Large 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_vines_01",
+      "file": "SM_Env_Tree_Vines_01.glb",
+      "label": "海盗 · Tree Vines 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_vines_02",
+      "file": "SM_Env_Tree_Vines_02.glb",
+      "label": "海盗 · Tree Vines 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_vines_03",
+      "file": "SM_Env_Tree_Vines_03.glb",
+      "label": "海盗 · Tree Vines 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_vines_04",
+      "file": "SM_Env_Tree_Vines_04.glb",
+      "label": "海盗 · Tree Vines 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_tree_vines_05",
+      "file": "SM_Env_Tree_Vines_05.glb",
+      "label": "海盗 · Tree Vines 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_vines_wall_01",
+      "file": "SM_Env_Vines_Wall_01.glb",
+      "label": "海盗 · Vines Wall 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_env_vines_wall_02",
+      "file": "SM_Env_Vines_Wall_02.glb",
+      "label": "海盗 · Vines Wall 02",
+      "defaultScale": 1
     }
   ]
 }
