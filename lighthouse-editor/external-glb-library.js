@@ -44,6 +44,27 @@ function put(db, item) {
   } catch { resolve(false); }
  });
 }
+async function removeFromDb(db,id){
+ if(!db)throw Error('IndexedDB 不可用，无法永久删除本地模型');
+ return new Promise((resolve,reject)=>{
+  try{
+   const tx=db.transaction(STORE,'readwrite');
+   tx.objectStore(STORE).delete(id);
+   tx.oncomplete=()=>resolve();
+   tx.onerror=()=>reject(tx.error||Error('模型删除失败'));
+   tx.onabort=()=>reject(tx.error||Error('模型删除已中止'));
+  }catch(err){reject(err)}
+ });
+}
+async function modelExists(db,id){
+ if(!db)return false;
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,'readonly'),req=tx.objectStore(STORE).getKey(id);
+  req.onsuccess=()=>resolve(req.result!==undefined);
+  req.onerror=()=>reject(req.error||Error('模型校验失败'));
+ });
+}
+
 async function hexId(buffer) {
  const hash = await crypto.subtle.digest('SHA-256', buffer);
  return PREFIX + [...new Uint8Array(hash)].slice(0, 12).map(v => v.toString(16).padStart(2, '0')).join('');
@@ -148,10 +169,19 @@ export async function createExternalGLBLibrary(catalog) {
   }
   return {added, errors};
  }
+ async function removeAsset(id) {
+  if(!templates.has(id)||!id.startsWith(PREFIX))throw Error('该模型不是可删除的本地导入 GLB');
+  await removeFromDb(db,id);
+  if(await modelExists(db,id))throw Error('模型未从数据库删除');
+  templates.delete(id);source.delete(id);
+  const n=catalog.types.indexOf(id);if(n>=0)catalog.types.splice(n,1);
+  delete catalog.all[id];
+  return true;
+ }
  const saved = await readAll(db);
  for (const record of saved.slice(0, MAX_IMPORTS)) {
   try { await register(record); } catch (err) { console.warn('忽略无法恢复的 GLB', record.id, err); }
  }
- return {importFiles, exportPortable, importPortable, has: id => templates.has(id),
+ return {importFiles, exportPortable, importPortable, removeAsset, has: id => templates.has(id),
   count: () => templates.size, ids: () => [...templates.keys()], persistent: !!db};
 }
