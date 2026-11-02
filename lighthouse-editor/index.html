@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V4.1.3 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V4.2.0 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -59,7 +59,7 @@ a{color:#b2d8cf}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.1.3 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.2.0 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
 <button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
@@ -73,6 +73,14 @@ a{color:#b2d8cf}
 <p class="muted">在游戏原版岛屿周围的海面点击描绘新岛屿边界，设置目标高度后完成；边界与高度保存至 JSON，供后续精细建模。</p>
 <label for="brush">笔刷半径 · <output id="brush-val">2</output> 格</label><input id="brush" type="range" min="1" max="6" value="2">
 <label for="strength">地形强度 · <output id="strength-val">1</output> 级</label><input id="strength" type="range" min="1" max="4" value="1"></div>
+<div class="section"><h2>导入外部 GLB 模型</h2>
+<label for="import-glb" class="filelabel" style="display:block;text-align:center">选择 GLB 文件（支持多选）</label>
+<input id="import-glb" type="file" accept=".glb,model/gltf-binary" multiple style="display:none">
+<p class="muted" id="glb-status">模型保存在此浏览器；刷新后可恢复。</p>
+<div class="toolgrid"><button id="export-portable">导出完整工程（含 GLB）</button><button id="snap-neighbor">模型外框贴边</button></div>
+<p class="muted">普通 JSON 仅保存模型引用；跨浏览器移动请导出「完整工程」，包含模型原文件。GLB 导入后在下方素材库点选放置。</p></div>
+<div class="section"><h2>模块组合</h2><div class="toolgrid"><button id="group-selected">组合选中模型</button><button id="ungroup-selected">拆分组合</button></div>
+<p class="muted">Shift 多选后组合；组合可整体平移，并在 JSON 中保留分组。外框贴边不等于顶点焊接，几何无缝合并仍需检查边缘。</p></div>
 <div class="section"><h2>素材资源库</h2><label for="asset-search">搜索游戏场景模型</label>
 <input id="asset-search" type="text" placeholder="例如：沉船、栈道、松树、木屋">
 <label for="asset-filter">按游戏构件分类</label>
@@ -112,6 +120,6 @@ a{color:#b2d8cf}
 <div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可拖动绘制。修改会自动保存在本浏览器，点击「试玩当前地图」即可进入独立 V35 试玩环境，使用当前草稿中的模型和地形；正式游戏始终保持原版不变。可另行导出 JSON 备份。</p></div>
 <div><button id="autosave" style="width:100%">保存编辑器草稿</button></div>
 </aside>
-<footer id="footer">V4.1.3 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
-</div><script type="module" src="./editor.js?v=preview-map-2"></script>
+<footer id="footer">V4.2.0 场景管理 · X/Y/Z 三轴编辑 · 隐藏与锁定 · 原版岛屿保持不变</footer>
+</div><script type="module" src="./editor.js?v=glb-import-1"></script>
 </body></html>
