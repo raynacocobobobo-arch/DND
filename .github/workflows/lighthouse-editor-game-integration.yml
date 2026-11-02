@@ -1,132 +1,106 @@
-name: Lighthouse V35 editor-to-game shared world integration QA
+name: Lighthouse V4 editor and isolated game QA
 on:
   push:
     branches: [gh-pages]
     paths:
-      - 'lighthouse/v35-*.js'
-      - 'lighthouse/shared-map.js'
-      - 'lighthouse/world-map.json'
-      - 'lighthouse/index.html'
       - 'lighthouse-editor/**'
+      - 'lighthouse/shared-map.js'
+      - 'lighthouse/v35-scene.js'
+      - 'lighthouse/index.html'
       - '.github/workflows/lighthouse-editor-game-integration.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  real-assets-map:
+  browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Chromium
+      - name: Install Chromium
         run: |
-          mkdir -p /tmp/editor-game-ci
-          npm --prefix /tmp/editor-game-ci install --no-audit --no-fund playwright@1.56.1
-          /tmp/editor-game-ci/node_modules/.bin/playwright install chromium
-      - name: Verify native game assets, real terrain and editor/game same-origin sync
+          mkdir -p /tmp/lhv4
+          npm --prefix /tmp/lhv4 install --no-audit --no-fund playwright@1.56.1
+          /tmp/lhv4/node_modules/.bin/playwright install chromium
+      - name: Verify scene hierarchy, locked objects, persistence and game isolation
         env:
-          NODE_PATH: /tmp/editor-game-ci/node_modules
+          NODE_PATH: /tmp/lhv4/node_modules
         run: |
-          python3 -m http.server 8765 >/tmp/editor-game-ci-server.log 2>&1 &
-          mkdir -p lighthouse-editor/qa-integrated
-          cat >/tmp/editor-game-ci/test.cjs <<'JS'
+          python3 -m http.server 8765 >/tmp/lhv4-server.log 2>&1 &
+          mkdir -p lighthouse-editor/qa-v4
+          cat >/tmp/lhv4/test.cjs <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true,args:[
               '--enable-webgl','--use-gl=angle','--use-angle=swiftshader','--disable-dev-shm-usage']});
-            const context=await browser.newContext({viewport:{width:1440,height:960},deviceScaleFactor:1});
-            const errors=[];
-            const listen=page=>{
-              page.on('pageerror',e=>errors.push('PAGE '+e.message));
-              page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
-              page.on('requestfailed',r=>errors.push('REQUEST '+r.url()+' '+r.failure().errorText));
+            const context=await browser.newContext({viewport:{width:1440,height:1000}});
+            const failures=[];
+            const watch=p=>{
+              p.on('pageerror',e=>failures.push('JS '+e.message));
+              p.on('console',m=>{if(m.type()==='error')failures.push('CONSOLE '+m.text());});
+              p.on('requestfailed',r=>failures.push('REQUEST '+r.url()));
             };
-            const editor=await context.newPage();listen(editor);
+            const editor=await context.newPage();watch(editor);
             await editor.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
             await editor.waitForFunction(()=>document.body.dataset.editorReady==='true',{timeout:60000});
-            const before=await editor.evaluate(()=>{
+            const initial=await editor.evaluate(()=>{
               const e=window.__lighthouseEditor;
-              return {state:e.getState(),native:e.getGameNative(),map:e.exportMap()};
+              return {state:e.getState(),sceneRows:document.querySelectorAll('.scene-row').length};
             });
-            // First verify editor actually manipulates an original game object,
-            // not a decorative duplicate. Also sculpt new playable land.
-            const afterEdit=await editor.evaluate(()=>{
-              const e=window.__lighthouseEditor;
-              const base=e.exportMap();
-              // guaranteed change outside the original island
-              const i=25,j=10,k=j*64+i;
-              base.heights[k]=4;base.types[k]='grass';
-              e.importMap(base);
-              e.placeAt('pine',-14,20);
-              e.placeAt('shore_rock',19,11);
-              e.editNative('lighthouse',{x:7,z:-1,rotation:39,scale:1.1});
-              return {state:e.getState(),map:e.exportMap(),native:e.getGameNative()};
+            const edited=await editor.evaluate(()=>{
+              const api=window.__lighthouseEditor;
+              api.placeAt('pine',8,9);
+              const map=api.exportMap(),id=map.objects.at(-1).id;
+              api.selectObject(id);
+              api.setObjectFlags(id,{hidden:true,locked:true});
+              api.setObjectFlags('native:lighthouse',{hidden:true,locked:true});
+              api.setTransformMode('translate');
+              const saved=api.exportMap(),state=api.getState();
+              return {id,saved,state,
+                rows:document.querySelectorAll('.scene-row').length,
+                hasHierarchy:!!document.querySelector('#scene-list'),
+                hasTransform:!!document.querySelector('#gizmo-move')};
             });
-            await editor.screenshot({path:'lighthouse-editor/qa-integrated/editor-real-assets.png'});
-            const localStored=await editor.evaluate(()=>JSON.parse(localStorage.getItem('dnd-lighthouse-world-map-v2')));
-            const page=await context.newPage();listen(page);
-            await page.goto('http://127.0.0.1:8765/lighthouse/?map=editor',{waitUntil:'domcontentloaded'});
-            await page.waitForFunction(()=>document.body.dataset.rendered==='true',{timeout:60000});
-            const inGame=await page.evaluate(()=>{
-              const api=window.__lighthouseNightEvents,info=api.getMapInfo();
-              return {dataset:{version:document.body.dataset.version,
-                 source:document.body.dataset.worldMapSource,
-                 linked:document.body.dataset.mapLinked,
-                 objects:document.body.dataset.mapObjects,
-                 nativeAssets:document.body.dataset.nativeAssetCount,
-                 terrain:document.body.dataset.worldTerrainCells},
-                info,map:api.getWorldMap(),boat:api.getBoat(),
-                light:api.getLight()};
-            });
-            await page.screenshot({path:'lighthouse-editor/qa-integrated/game-reads-editor-map.png'});
-            const editorReload=await context.newPage();listen(editorReload);
-            await editorReload.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
-            await editorReload.waitForFunction(()=>document.body.dataset.editorReady==='true',{timeout:60000});
-            const persisted=await editorReload.evaluate(()=>window.__lighthouseEditor.exportMap());
-            const ok=before.state.realGameAssets&&
-              before.state.prefabTypes.length>=80&&
-              before.native.lighthouse&&before.native.boathouse&&
-              afterEdit.state.realGameAssets&&
-              afterEdit.map.schema==='lighthouse-world-v2'&&
-              afterEdit.map.objects.length===before.map.objects.length+2&&
-              afterEdit.native.lighthouse.x===7&&
-              localStored.baseEdits.lighthouse.x===7&&
-              inGame.dataset.version==='v35a'&&
-              inGame.dataset.linked==='true'&&
-              inGame.dataset.source==='editor-preview'&&
-              +inGame.dataset.objects===afterEdit.map.objects.length&&
-              +inGame.dataset.nativeAssets>=80&&
-              +inGame.dataset.terrain>0&&
-              inGame.info.nativeEdits.find(x=>x.id==='lighthouse').x===7&&
-              +inGame.dataset.nativeAssets===before.state.prefabTypes.length&&
-              inGame.info.nativeEdits.find(x=>x.id==='lighthouse').z===-1&&
-              inGame.map.heights[10*64+25]===4&&
-              inGame.boat.mapWorldLoaded&&inGame.boat.safe&&
-              persisted.baseEdits.lighthouse.x===7&&
-              errors.length===0;
-            console.log('INTEGRATED_EDITOR_GAME_QA',JSON.stringify({
-              ok,originalTypes:before.state.prefabTypes,
-              objects:afterEdit.map.objects.length,
-              nativeMoved:afterEdit.native.lighthouse,
-              game:inGame.dataset,
-              sharedPrefabCount:before.state.prefabTypes.length,
-              gameNative:inGame.info.nativeEdits,
-              gameBoatSafe:inGame.boat.safe,
-              sameLand:inGame.map.heights[10*64+25],
-              errors
+            await editor.screenshot({path:'lighthouse-editor/qa-v4/editor-objects.png'});
+            const reload=await context.newPage();watch(reload);
+            await reload.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
+            await reload.waitForFunction(()=>document.body.dataset.editorReady==='true',{timeout:60000});
+            const persisted=await reload.evaluate(()=>window.__lighthouseEditor.exportMap());
+            const game=await context.newPage();watch(game);
+            await game.goto('http://127.0.0.1:8765/lighthouse/?map=editor',{waitUntil:'domcontentloaded'});
+            await game.waitForFunction(()=>document.body.dataset.rendered==='true',{timeout:60000});
+            const fixed=await game.evaluate(()=>({
+              source:document.body.dataset.worldMapSource,
+              mapObjects:document.body.dataset.mapObjects,
+              linked:document.body.dataset.mapLinked,
+              gameMap:window.__lighthouseNightEvents.getWorldMap().objects.length,
+              editorLink:!!document.querySelector('a[href*="lighthouse-editor"]')
             }));
+            const item=edited.saved.objects.find(o=>o.id===edited.id);
+            const kept=persisted.objects.find(o=>o.id===edited.id);
+            const ok=initial.state.realGameAssets&&
+              initial.sceneRows>10&&initial.state.prefabTypes.length>=80&&
+              edited.hasHierarchy&&edited.hasTransform&&edited.rows>initial.sceneRows&&
+              edited.state.selected===edited.id&&
+              item.hidden&&item.locked&&kept.hidden&&kept.locked&&
+              edited.saved.baseEdits.lighthouse.hidden&&edited.saved.baseEdits.lighthouse.locked&&
+              persisted.baseEdits.lighthouse.hidden&&persisted.baseEdits.lighthouse.locked&&
+              fixed.source==='original-fixed'&&fixed.gameMap===0&&
+              +fixed.mapObjects===0&&!fixed.editorLink&&failures.length===0;
+            console.log('V4_QA',JSON.stringify({ok,initial:initial.state,
+              selected:edited.state.selected,flags:item,persisted:kept,fixed,failures}));
             await browser.close();
-            if(!ok)throw Error('Editor and game integration check did not pass');
-          })().catch(err=>{console.error(err);process.exit(1)});
+            if(!ok)throw Error('V4 editor/game isolation smoke test failed');
+          })().catch(e=>{console.error(e);process.exit(1);});
           JS
-          node /tmp/editor-game-ci/test.cjs
-      - name: QA screenshots
+          node /tmp/lhv4/test.cjs
+      - name: Upload V4 screenshot
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-v35-native-editor-integration
-          path: lighthouse-editor/qa-integrated/
+          name: lighthouse-v4-editor-qa
+          path: lighthouse-editor/qa-v4/
           if-no-files-found: warn
