@@ -4,6 +4,7 @@ import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
 import {createExternalGLBLibrary} from './external-glb-library.js?v=1';
 import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=2-batch01';
+import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -45,6 +46,7 @@ const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
 const coastalPalmAssets=await registerCoastalPalms(catalog);
 const cliffyCoastTrees=await registerCliffyCoastTrees(catalog);
+const cliffyBatch02=await registerCliffyCoastBatch02(catalog);
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -466,7 +468,7 @@ transform.addEventListener('objectChange',()=>{
   }else if(entries.length===1){
    const r=actualRecord(entries[0].id);
    if(mode==='rotate')r.rotation=((T.MathUtils.radToDeg(transformProxy.rotation.y)%360)+360)%360;
-   if(mode==='scale'){r.scale=clamp(transformProxy.scale.x,.05,5);transformProxy.scale.setScalar(r.scale);}
+   if(mode==='scale'){r.scale=clamp(transformProxy.scale.x,.001,5);transformProxy.scale.setScalar(r.scale);}
   }
   let nativeChanged=false;
   for(const {id} of entries){
@@ -582,7 +584,7 @@ $('toggle-original').onclick=()=>{
 // Human-readable asset families; meshes under 'parts' retain authored type names.
 function assetCategory(id,meta={}){
  if(id.startsWith('ext_glb_'))return meta.category||'外部模型 GLB';
- if(id.startsWith('cliffy_coast_'))return 'Cliffy Coast 植物';
+ if(id.startsWith('cliffy_coast_'))return meta.category||'Cliffy Coast 素材';
  if(meta.kind==='detail'){
   const cat=meta.category||'其他';
   if(cat.includes('lighthouse')||cat.includes('灯塔'))return '细节构件 / 灯塔';
@@ -683,7 +685,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
@@ -768,7 +770,7 @@ function numberOr(raw,fallback){
  const n=Number(raw);return Number.isFinite(n)?n:fallback;
 }
 function degrees(v){return ((numberOr(v,0)%360)+360)%360;}
-function percentage(v){return clamp(numberOr(v,100),5,500)/100;}
+function percentage(v){return clamp(numberOr(v,100),.1,500)/100;}
 $('selected-name').onchange=e=>setSelectedName(e.target.value);
 for(const field of ['posx','posz'])$(field).onchange=e=>{
  const key=field==='posx'?'x':'z',limit=key==='x'?WIDTH/2:DEPTH/2;
