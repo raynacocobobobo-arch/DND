@@ -1,0 +1,157 @@
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+
+// Imported GLBs live in IndexedDB, never in localStorage or the map's autosave.
+// A portable project JSON may embed binary assets explicitly on user request.
+const DATABASE = 'lighthouse-external-glb-v1';
+const STORE = 'models';
+const PREFIX = 'ext_glb_';
+const LIMIT_BYTES = 25 * 1024 * 1024;
+const MAX_IMPORTS = 220;
+
+function openDatabase() {
+ return new Promise(resolve => {
+  if (!('indexedDB' in window)) { resolve(null); return; }
+  let request;
+  try { request = indexedDB.open(DATABASE, 1); } catch { resolve(null); return; }
+  request.onupgradeneeded = () => {
+   if (!request.result.objectStoreNames.contains(STORE)) request.result.createObjectStore(STORE, {keyPath: 'id'});
+  };
+  request.onsuccess = () => resolve(request.result);
+  request.onerror = () => resolve(null);
+  request.onblocked = () => resolve(null);
+ });
+}
+function readAll(db) {
+ if (!db) return Promise.resolve([]);
+ return new Promise(resolve => {
+  try {
+   const tx = db.transaction(STORE, 'readonly'), request = tx.objectStore(STORE).getAll();
+   request.onsuccess = () => resolve(request.result || []);
+   request.onerror = () => resolve([]);
+  } catch { resolve([]); }
+ });
+}
+function put(db, item) {
+ if (!db) return Promise.resolve(false);
+ return new Promise(resolve => {
+  try {
+   const tx = db.transaction(STORE, 'readwrite');
+   tx.objectStore(STORE).put(item);
+   tx.oncomplete = () => resolve(true);
+   tx.onerror = () => resolve(false);
+   tx.onabort = () => resolve(false);
+  } catch { resolve(false); }
+ });
+}
+async function hexId(buffer) {
+ const hash = await crypto.subtle.digest('SHA-256', buffer);
+ return PREFIX + [...new Uint8Array(hash)].slice(0, 12).map(v => v.toString(16).padStart(2, '0')).join('');
+}
+function encode64(buffer) {
+ return new Promise((resolve, reject) => {
+  const r = new FileReader();
+  r.onload = () => resolve(String(r.result).split(',')[1]);
+  r.onerror = () => reject(r.error);
+  r.readAsDataURL(new Blob([buffer], {type: 'model/gltf-binary'}));
+ });
+}
+function decode64(s) {
+ if (typeof s !== 'string' || s.length > LIMIT_BYTES * 1.4) throw Error('模型内嵌数据超出上限');
+ const binary = atob(s), bytes = new Uint8Array(binary.length);
+ for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+ return bytes.buffer;
+}
+function triangleCount(scene) {
+ let tris = 0;
+ scene.traverse(node => {
+  if (!node.isMesh || !node.geometry) return;
+  const geo = node.geometry;
+  tris += geo.index ? geo.index.count / 3 : (geo.attributes.position?.count || 0) / 3;
+ });
+ return Math.round(tris);
+}
+export async function createExternalGLBLibrary(catalog) {
+ const loader = new GLTFLoader();
+ const db = await openDatabase();
+ const source = new Map(), templates = new Map();
+ const createOriginal = catalog.create.bind(catalog);
+ catalog.create = function(id) {
+  const template = templates.get(id);
+  return template ? template.clone(true) : createOriginal(id);
+ };
+ async function register(record, persist = false) {
+  const bytes = record.bytes instanceof ArrayBuffer ? record.bytes : record.bytes?.buffer;
+  if (!(bytes instanceof ArrayBuffer) || bytes.byteLength < 20 || bytes.byteLength > LIMIT_BYTES) throw Error('仅支持不超过 25MB 的有效 GLB');
+  const magic = new DataView(bytes).getUint32(0, true);
+  if (magic !== 0x46546c67) throw Error('不是二进制 GLB，请先转换 FBX/GLTF');
+  const id = await hexId(bytes);
+  if (record.id && id !== record.id) throw Error('模型内容与资源 ID 不匹配');
+  if (templates.has(id)) return {id, exists: true, ...catalog.all[id]};
+  if (templates.size >= MAX_IMPORTS) throw Error('本地素材上限为 220 个');
+  const gltf = await loader.parseAsync(bytes.slice(0), '');
+  const bounds = new T.Box3().setFromObject(gltf.scene);
+  if (bounds.isEmpty() || !Number.isFinite(bounds.min.y)) throw Error('模型没有有效几何体');
+  const tris = triangleCount(gltf.scene);
+  if (tris > 500000) throw Error('模型过于复杂（超过 50 万 tris）');
+  // Retain the original geometry and scale, with a predictable bottom-centre origin.
+  const center = bounds.getCenter(new T.Vector3());
+  gltf.scene.position.set(-center.x, -bounds.min.y, -center.z);
+  const wrapper = new T.Group();
+  wrapper.add(gltf.scene);
+  wrapper.name = id;
+  wrapper.traverse(node => {
+   if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; }
+  });
+  const name = String(record.name || 'Imported GLB').replace(/\.glb$/i, '').slice(0, 90);
+  const terrain = /cliff|plateau|terrain|coast|beach|creek|ground|地形|悬崖|海岸/i.test(name);
+  const category = terrain ? '外部地形 GLB' : '外部模型 GLB';
+  const size = bounds.getSize(new T.Vector3()).toArray().map(n => +n.toFixed(3));
+  templates.set(id, wrapper);
+  source.set(id, {id, name, bytes});
+  catalog.types.push(id);
+  catalog.all[id] = {label: name, category, kind: 'complete', source: '本地导入 GLB', triangles: tris, size};
+  if (persist && !(await put(db, {id, name, bytes}))) console.warn('GLB 已导入但浏览器未能持久保存', id);
+  return {id, name, triangles: tris, size, category, persistent: !!db};
+ }
+ async function importFiles(files) {
+  const added = [], errors = [];
+  for (const file of Array.from(files || [])) {
+   try {
+    if (!/\.glb$/i.test(file.name)) throw Error('请选择 .glb 文件');
+    const out = await register({name: file.name, bytes: await file.arrayBuffer()}, true);
+    added.push(out);
+   } catch (err) { errors.push({name: file.name, error: err.message}); }
+  }
+  return {added, errors};
+ }
+ async function exportPortable(map) {
+  const ids = [...new Set((map.objects || []).map(obj => obj.asset).filter(a => a.startsWith(PREFIX)))];
+  const included = [];
+  const missing = [];
+  for (const id of ids) {
+   const r = source.get(id);
+   if (!r) { missing.push(id); continue; }
+   included.push({id, name: r.name, base64: await encode64(r.bytes)});
+  }
+  if (missing.length) throw Error('缺少 ' + missing.length + ' 个原始 GLB，无法制作完整工程包');
+  return {...map, externalGLBs: included};
+ }
+ async function importPortable(map) {
+  const embedded = map?.externalGLBs;
+  if (!Array.isArray(embedded)) return {added: [], errors: []};
+  if (embedded.length > MAX_IMPORTS) throw Error('工程内模型数量过多');
+  const added = [], errors = [];
+  for (const rec of embedded) {
+   try { added.push(await register({id: rec.id, name: rec.name, bytes: decode64(rec.base64)}, true)); }
+   catch (err) { errors.push({name: rec.name || rec.id, error: err.message}); }
+  }
+  return {added, errors};
+ }
+ const saved = await readAll(db);
+ for (const record of saved.slice(0, MAX_IMPORTS)) {
+  try { await register(record); } catch (err) { console.warn('忽略无法恢复的 GLB', record.id, err); }
+ }
+ return {importFiles, exportPortable, importPortable, has: id => templates.has(id),
+  count: () => templates.size, ids: () => [...templates.keys()], persistent: !!db};
+}
