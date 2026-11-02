@@ -23,7 +23,7 @@ export async function registerPiratePrefabs(catalog) {
       const scale = Number(spec.defaultScale ?? 1);
       if (!Number.isFinite(scale) || scale <= 0) throw Error('Invalid default scale');
       const url = new URL(spec.file, BASE);
-      const file = await fetch(url);
+      const file = await fetch(url, {cache:'no-store'});
       if (!file.ok) throw Error('GLB HTTP '+file.status);
       const buffer = await file.arrayBuffer();
       const gltf = await loader.parseAsync(buffer, BASE.href);
