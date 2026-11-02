@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V3.3 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V4.0 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -33,7 +33,22 @@ input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=
 .asset-card .asset-preview{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border:1px solid #345562;background:radial-gradient(circle at 42% 38%,#2f5260,#142630);border-radius:4px}
 .asset-card .asset-label{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:10px;line-height:1.35;min-height:27px;word-break:break-word;padding:0 2px}
 .asset-card.active{outline:2px solid #8ed1c2;border-color:#b5e9d6}
-#assets button span{display:block;font-size:20px;margin-bottom:3px}
+#assets button .asset-label{font-size:10px;margin:0}
+#scene-search{margin:0 0 9px}
+#scene-list{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:5px;padding-right:2px}
+.scene-heading{font-size:11px;color:#8fbbc1;position:sticky;top:0;background:#14252d;padding:7px 0 4px;z-index:2}
+.scene-row{display:flex;align-items:center;gap:3px;border:1px solid #34515b;border-radius:6px;padding:3px;background:#1a3039}
+.scene-row.selected{outline:1px solid #aad5ae;border-color:#83c6b3}
+.scene-row.hidden-item .scene-pick{opacity:.51;text-decoration:line-through}
+.scene-row.locked-item{border-style:dashed}
+.scene-pick{min-width:0;flex:1;text-align:left;padding:5px 3px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:0;background:transparent;cursor:pointer}
+.scene-action{flex:0 0 26px;width:26px;height:27px;display:grid;place-items:center;padding:0;border:1px solid transparent;background:transparent;font-size:12px}
+.scene-action:hover{border-color:#51747b;background:#35515a}
+.scene-bulk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
+.scene-bulk button{font-size:11px;padding:7px 4px}
+#transform-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#transform-tools button{font-size:11px;padding:8px 2px}
+#multi-hint{font-size:11px;color:#aad9c3;margin:8px 0}
 .props{display:grid;grid-template-columns:1fr 1fr;gap:8px}.props label{margin-top:0}
 footer{grid-column:1/4;background:#0d2028;border-top:1px solid #38525a;padding:7px 14px;font-size:11px;color:#9bb6b9;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 a{color:#b2d8cf}
@@ -44,7 +59,7 @@ a{color:#b2d8cf}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V3.3 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.0 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
 <button id="open-game" class="primary">查看独立游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
@@ -71,11 +86,21 @@ a{color:#b2d8cf}
 <div class="toolgrid" style="margin-top:9px"><button id="apply-map-size" class="primary">应用新尺寸</button><button id="frame-world">查看完整地图</button></div>
 <p class="muted">宽度、深度可分别填写，可扩大或缩小。新增区域默认全部为原版风格海面，原岛屿与模型保持坐标不变。缩小时若会裁掉已编辑内容，则阻止操作。此设置不影响正式游戏尺寸。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
 </aside>
-<main id="view"><div id="hint">选择工具：单击选中整体模型、Delete 删除　·　绘制岛屿：点击边界点、Enter 完成　·　右键旋转 / 滚轮缩放</div><div id="toast" role="status"></div></main>
+<main id="view"><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
 <aside id="right">
+<div class="section"><h2>场景对象管理器</h2>
+<input id="scene-search" type="text" placeholder="搜索模型名称或编号" aria-label="搜索场景对象">
+<div class="muted" id="scene-count">加载场景对象中…</div>
+<div id="scene-list" aria-label="场景对象列表"></div>
+<p class="muted">单击定位并选中；Shift + 单击多选。眼睛图标可隐藏或恢复对象，锁定后不会被误拖动。原版物件隐藏后也可在这里找回。</p>
+<div class="scene-bulk"><button id="scene-hide">隐藏选中</button><button id="scene-show">显示选中</button><button id="scene-lock">锁定选中</button><button id="scene-unlock">解锁选中</button></div></div>
+<div class="section"><h2>3D 变换工具</h2>
+<div id="transform-tools"><button id="gizmo-move" class="active">移动 G</button><button id="gizmo-rotate">旋转 R</button><button id="gizmo-scale">缩放 S</button></div>
+<label style="display:flex;align-items:center;gap:6px"><input id="gizmo-snap" type="checkbox" style="width:auto">启用网格 / 角度吸附</label>
+<p class="muted">移动在水平面进行；旋转绕 Y 轴；缩放保持等比例。多选时支持整体平移，旋转与缩放请单独选取。</p></div>
 <div class="section"><h2>地图概览</h2><div class="stats">编辑海域：<span class="value" id="size">146 × 129</span><br>地形网格：<span class="value" id="grid-size">64 × 56</span><br>模型实例：<span class="value" id="object-count">0</span><br>当前工具：<span class="value" id="tool-name">抬高</span><br>当前坐标：<span class="value" id="cursor">—</span><br>修改状态：<span class="value" id="dirty">已保存</span></div></div>
 <div class="section"><h2>选中对象</h2><div id="none" class="muted">点击原游戏或新增的完整模型，即可单独选中；原版模型可隐藏、恢复，新增模型可删除。地形与海面不参与单选。</div>
-<div id="inspector" hidden><label for="selected-name">模型名称</label><input id="selected-name" type="text">
+<div id="inspector" hidden><div id="multi-hint" hidden></div><label for="selected-name">模型名称</label><input id="selected-name" type="text">
 <div class="props"><div><label for="posx">X 坐标</label><input id="posx" type="number" step=".1"></div><div><label for="posz">Z 坐标</label><input id="posz" type="number" step=".1"></div></div>
 <label for="rot">旋转角度 · <output id="rot-val">0°</output></label><input id="rot" type="range" min="0" max="359" value="0">
 <label for="scale">模型大小 · <output id="scale-val">1.0</output></label><input id="scale" type="range" min=".3" max="3" step=".1" value="1">
@@ -83,6 +108,6 @@ a{color:#b2d8cf}
 <div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。修改会保存到同一浏览器，编辑内容暂不加载进正式游戏。扩展数据可导出 JSON，待完成模型与加载机制后另行发布。</p></div>
 <div><button id="autosave" style="width:100%">保存游戏预览地图</button></div>
 </aside>
-<footer id="footer">原版 V35 岛屿与一致的水面 · 分组模型缩略图 · 自定义海域宽深 · 游戏区域不受影响</footer>
-</div><script type="module" src="./editor.js?v=7a"></script>
+<footer id="footer">V4 场景管理 · 多选与锁定 · 3D 变换手柄 · 原版岛屿保持不变</footer>
+</div><script type="module" src="./editor.js?v=8a"></script>
 </body></html>
