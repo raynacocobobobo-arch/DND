@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V3.2 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V3.3 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -24,20 +24,27 @@ input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=
 #toast.show{opacity:1}
 .stats{padding:9px 10px;background:#1e3740;border-radius:8px;border:1px solid #35565c;font-size:12px;line-height:1.9}
 .value{color:#e5dcac;font-variant-numeric:tabular-nums}
-#assets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-#assets button{height:58px;white-space:normal;text-align:center;font-size:11px}
+#assets{display:flex;flex-direction:column;gap:15px}
+.asset-category{min-width:0}
+.asset-category h3{margin:0 0 8px;display:flex;justify-content:space-between;font-size:12px;color:#d6e7e5;border-bottom:1px solid #446169;padding-bottom:6px}
+.asset-category h3 span{font-weight:400;color:#8ba8ad}
+.asset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.asset-card{min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:5px!important;white-space:normal!important;text-align:left!important;position:relative}
+.asset-card .asset-preview{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border:1px solid #345562;background:radial-gradient(circle at 42% 38%,#2f5260,#142630);border-radius:4px}
+.asset-card .asset-label{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:10px;line-height:1.35;min-height:27px;word-break:break-word;padding:0 2px}
+.asset-card.active{outline:2px solid #8ed1c2;border-color:#b5e9d6}
 #assets button span{display:block;font-size:20px;margin-bottom:3px}
 .props{display:grid;grid-template-columns:1fr 1fr;gap:8px}.props label{margin-top:0}
 footer{grid-column:1/4;background:#0d2028;border-top:1px solid #38525a;padding:7px 14px;font-size:11px;color:#9bb6b9;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 a{color:#b2d8cf}
 #input-json{display:none}
 @media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
-@media(max-width:740px){#app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(350px,1fr) auto auto auto;height:auto;min-height:100dvh}header{grid-column:1;flex-wrap:wrap}#left{grid-row:2;border:0;border-bottom:1px solid #38525a}#view{grid-row:3;height:55vh;min-height:350px}#right{grid-row:4;border:0;border-top:1px solid #38525a}footer{grid-column:1;grid-row:5}.section{padding-bottom:10px;margin-bottom:10px}.toolgrid{grid-template-columns:repeat(4,1fr)}#assets{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:740px){#app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(350px,1fr) auto auto auto;height:auto;min-height:100dvh}header{grid-column:1;flex-wrap:wrap}#left{grid-row:2;border:0;border-bottom:1px solid #38525a}#view{grid-row:3;height:55vh;min-height:350px}#right{grid-row:4;border:0;border-top:1px solid #38525a}footer{grid-column:1;grid-row:5}.section{padding-bottom:10px;margin-bottom:10px}.toolgrid{grid-template-columns:repeat(4,1fr)}.asset-grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
 </head><body>
 <div id="app">
-<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V3.2 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
+<header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V3.3 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
 <button id="open-game" class="primary">查看独立游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
@@ -57,8 +64,12 @@ a{color:#b2d8cf}
 <select id="asset-filter"><option value="complete" selected>完整元件（默认）</option><option value="">全部原版素材</option><option value="parts">细节零件</option></select>
 <div class="stats" style="margin:8px 0">当前选择：<span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">扫描游戏模型中…</div></div>
 <div id="assets"></div>
-<p class="muted">默认提供完整的灯塔、树木、礁石簇、木屋、木桶、船只等元件。需要精修时可切换「细节零件」，不必重新拼装整个灯塔。所有模型均复用原游戏几何与材质。</p></div>
-<div class="section"><h2>扩展海域</h2><div class="toolgrid"><button id="expand-sea-50">地图长宽 ×1.5</button><button id="expand-sea-100">地图长宽 ×2</button></div><button id="frame-world" style="width:100%;margin-top:8px">查看完整编辑地图</button><p class="muted">以地图中心为基准向外扩展，新增区域一律为海水；现有岛屿、模型和地形位置不会改变。此功能仅改变编辑器数据，不会改变正式游戏大小。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
+<p class="muted">按建筑、植被、礁石、船只、营地道具与海怪分类；每个缩略图由实际 3D 模型生成，单击后在地图上放置。可切换「细节零件」继续选择独立构件。</p></div>
+<div class="section"><h2>地图海域尺寸</h2>
+<div class="props"><div><label for="map-width">地图宽度 X</label><input id="map-width" type="number" min="34" max="430" step="0.5" value="146"></div>
+<div><label for="map-depth">地图深度 Z</label><input id="map-depth" type="number" min="30" max="430" step="0.5" value="129"></div></div>
+<div class="toolgrid" style="margin-top:9px"><button id="apply-map-size" class="primary">应用新尺寸</button><button id="frame-world">查看完整地图</button></div>
+<p class="muted">宽度、深度可分别填写，可扩大或缩小。新增区域默认全部为原版风格海面，原岛屿与模型保持坐标不变。缩小时若会裁掉已编辑内容，则阻止操作。此设置不影响正式游戏尺寸。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
 </aside>
 <main id="view"><div id="hint">选择工具：单击选中整体模型、Delete 删除　·　绘制岛屿：点击边界点、Enter 完成　·　右键旋转 / 滚轮缩放</div><div id="toast" role="status"></div></main>
 <aside id="right">
@@ -72,6 +83,6 @@ a{color:#b2d8cf}
 <div class="section"><h2>操作提示</h2><p class="muted" style="line-height:1.8">地形笔刷可持续拖动绘制。对象可选择后拖动移动。修改会保存到同一浏览器，编辑内容暂不加载进正式游戏。扩展数据可导出 JSON，待完成模型与加载机制后另行发布。</p></div>
 <div><button id="autosave" style="width:100%">保存游戏预览地图</button></div>
 </aside>
-<footer id="footer">原版 V35 岛屿默认显示 · 海域可扩展 · 新增区域默认为海 · 正式游戏保持原样</footer>
-</div><script type="module" src="./editor.js?v=6b"></script>
+<footer id="footer">原版 V35 岛屿与一致的水面 · 分组模型缩略图 · 自定义海域宽深 · 游戏区域不受影响</footer>
+</div><script type="module" src="./editor.js?v=7a"></script>
 </body></html>
