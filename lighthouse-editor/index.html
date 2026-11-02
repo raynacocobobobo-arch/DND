@@ -56,7 +56,7 @@ a{color:#b2d8cf}
 @media(max-width:1020px){#app{grid-template-columns:205px minmax(0,1fr)225px}aside{padding:11px}header{padding:8px}}
 
 /* Mobile V4.9: fullscreen canvas with independent bottom-sheet editors. */
-#mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim{display:none}
+#mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim,#mobile-project-actions{display:none}
 @media(max-width:740px){
  html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  #app{display:block;width:100%;height:100dvh;min-height:0;overflow:hidden}
@@ -78,6 +78,8 @@ a{color:#b2d8cf}
  #left,#right{display:none;position:fixed;left:0;right:0;top:auto;bottom:calc(66px + env(safe-area-inset-bottom));height:auto;max-height:min(58dvh,560px);width:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;z-index:60;padding:14px 15px 18px;background:#142731;box-shadow:0 -10px 25px #06151ba6;border:1px solid #4d6970;border-bottom:0;border-radius:16px 16px 0 0}
  #left:before,#right:before{content:'';display:block;width:36px;height:4px;border-radius:3px;background:#58747b;margin:-5px auto 14px}
  body[data-mobile-panel="assets"] #left,body[data-mobile-panel="terrain"] #left,body[data-mobile-panel="more"] #left,body[data-mobile-panel="scene"] #right,body[data-mobile-panel="inspector"] #right{display:block}
+ body[data-mobile-panel="more"] #left{display:flex;flex-direction:column}
+ body[data-mobile-panel="more"] #mobile-project-actions{display:block;order:-1}
  body[data-mobile-panel="assets"] #left>.section:not(:nth-of-type(4)){display:none}
  body[data-mobile-panel="terrain"] #left>.section:not(:nth-of-type(1)){display:none}
  body[data-mobile-panel="more"] #left>.section:nth-of-type(1),body[data-mobile-panel="more"] #left>.section:nth-of-type(4){display:none}
@@ -112,7 +114,7 @@ a{color:#b2d8cf}
 <div id="app">
 <header><div><div class="brand">灯塔世界 <span style="color:#b6d8ca;font-weight:400">/ 地图编辑器</span></div><div class="muted">与游戏共用原始模型 · Terrain Editor V4.9.0 · 原版岛屿常驻 · DND</div></div><div class="hdr-actions">
 <button id="undo">撤销</button><button id="toggle-original" aria-pressed="true">隐藏原版岛屿</button><button id="redo">重做</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
-<button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div><div id="mobile-top-actions"><button id="mobile-undo" aria-label="撤销上一步">撤销</button><button id="mobile-save" class="primary">导出</button></div></header>
+<button id="play-map" class="primary">试玩当前地图</button><button id="open-game">原版游戏</button><button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label><input id="input-json" type="file" accept=".json,application/json"></div><div id="mobile-top-actions"><button id="mobile-undo" aria-label="撤销上一步">撤销</button><button id="mobile-play" class="primary">试玩</button><button id="mobile-save" class="primary">导出</button></div></header>
 <aside id="left"><div class="section"><h2>地形工具</h2><div class="toolgrid" id="tools">
 <button data-tool="raise">⛰ 抬高</button><button data-tool="lower">⌄ 降低</button>
 <button data-tool="flatten">▬ 平整</button><button data-tool="water">≈ 挖水域</button>
@@ -144,8 +146,11 @@ a{color:#b2d8cf}
 <div><label for="map-depth">地图深度 Z</label><input id="map-depth" type="number" min="30" max="430" step="0.5" value="129"></div></div>
 <div class="toolgrid" style="margin-top:9px"><button id="apply-map-size" class="primary">应用新尺寸</button><button id="frame-world">查看完整地图</button></div>
 <p class="muted">宽度、深度可分别填写，可扩大或缩小。新增区域默认全部为原版风格海面，原岛屿与模型保持坐标不变。缩小时若会裁掉已编辑内容，则阻止操作。此设置不影响正式游戏尺寸。</p></div><div><h2>地图模板</h2><div class="toolgrid"><button id="new-world">清空新增地形</button><button id="demo-world">恢复群岛</button></div><p class="muted">打开编辑器默认显示真实 V35 岛屿及灯塔、树木、礁石和木屋。146 × 129 是外围扩展规划画布；现有游戏核心海域约 32.7 × 28.9。点击「清空新增地形」不会删除原版岛屿。</p></div>
-</aside>
-<main id="view"><div id="mobile-view-controls"><button type="button" id="mobile-touch-nav" class="active">浏览视角</button><button type="button" id="mobile-touch-edit">编辑模型</button></div><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
+<div id="mobile-project-actions" class="section"><h2>视角与工程</h2><div class="toolgrid">
+<button id="mobile-redo">重做</button><button id="mobile-camera">切换俯视</button><button id="mobile-reset-view">重置视角</button><button id="mobile-original">显示 / 隐藏原版岛</button>
+<button id="mobile-open-game">原版游戏</button><label for="input-json" class="filelabel" style="display:grid;place-items:center">导入地图 JSON</label>
+</div></div></aside>
+<main id="view"><div id="mobile-view-controls"><button type="button" id="mobile-touch-nav" class="active">浏览视角</button><button type="button" id="mobile-touch-edit">编辑模型</button><button type="button" id="mobile-view-home">复位</button></div><div id="hint">选择工具：单击选择 / Shift 多选 / Delete 删除　·　移动 G / 旋转 R / 缩放 S　·　右键旋转视角</div><div id="toast" role="status"></div></main>
 <aside id="right">
 <div class="section"><h2>场景对象管理器</h2>
 <input id="scene-search" type="text" placeholder="搜索模型名称或编号" aria-label="搜索场景对象">
