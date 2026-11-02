@@ -5,6 +5,7 @@ import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
 import {createExternalGLBLibrary} from './external-glb-library.js?v=1';
 import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=2-batch01';
 import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=1';
+import {registerCliffyCoastBatch03} from './cliffy-coast-batch03.js?v=1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
 import {buildSite} from '../lighthouse/v35-site.js?v=35a';
@@ -47,6 +48,7 @@ const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
 const coastalPalmAssets=await registerCoastalPalms(catalog);
 const cliffyCoastTrees=await registerCliffyCoastTrees(catalog);
 const cliffyBatch02=await registerCliffyCoastBatch02(catalog);
+const cliffyBatch03=await registerCliffyCoastBatch03(catalog);
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -685,7 +687,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','Cliffy Coast 物品','Cliffy Coast 武器','Cliffy Coast 装饰','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
