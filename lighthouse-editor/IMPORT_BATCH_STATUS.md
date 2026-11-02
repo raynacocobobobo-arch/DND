@@ -5,7 +5,7 @@
 ## 批次范围（FBX 原始文件）
 - 总计 172 个 FBX；`1_FBX/Terrain/` 17 个地形独立处理；`Collision/` 12 个碰撞代理不进入普通素材库；剩余 **143 个场景模型候选**。
 - **Batch 01 Plants：14/14 已转换并提交，尚待真人浏览器视觉验收。** `Assets/Lowpoly Style/Cliffy Coast/1_FBX/Plants/`。
-- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。Batch 03 Items/Weapons：0/18；Batch 04 Other：0/18；Batch 05 Bridges/Paths/Walls：0/13；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
+- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；Batch 04 Other：0/18；Batch 05 Bridges/Paths/Walls：0/13；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
 - 以上后续类别为**计划分组**，下一批开工前按原 FBX 文件重新核对实际归属；不得把计划数说成已处理数量。
 
 ## Batch 01（植物14）
@@ -43,7 +43,7 @@
 
 **游戏边界**：当前仅在编辑器和 `lighthouse/preview.html` 试玩环境生效，不修改 `lighthouse/` 正式游戏 V35 固定资产。
 
-**下一步**：确认 Batch 01+02 在浏览器的颜色、着地、比例与保存；然后处理 Batch 03（Items/Weapons，计划18件，实际清单开工前重新核对）。**第三方资源许可：** 用户提供源包不自动等于允许公开再分发，正式公开持续部署应核实相应授权。
+**下一步**：先在浏览器验收 Batch 01+02+03，尤其检查武器贴图对应关系；随后从 Batch 04（原计划18件）中核对可用的灯具、摊位、推车等，不擅自扩充范围。**第三方资源许可：** 用户提供源包不自动等于允许公开再分发，正式公开持续部署应核实相应授权。
 
 ## Batch 02（工具14 + 家具6）
 
@@ -85,4 +85,43 @@
 
 **保留边界：** 仅更新编辑器与独立试玩，不改正式 V35 游戏固定场景，也不触碰地形17件。第三方资源公开再分发许可须由素材授权确认。
 
-**阶段总计：34/143 场景模型完成提交，109件待处理；另外17件地形单独处理。**
+**截至 Batch 03：52/143 个非地形场景模型已提交，91件待处理；另外17件地形单独处理。**
+
+
+## Batch 03（物品10 + 武器7 + 土堆装饰1）
+
+**二进制提交：** `9fbff65387848f776c5d13962b51f1efa04648a7`。18 个 GLB 位于 `lighthouse-editor/assets/cliffy-coast/`。每个模型保留 FBX 几何和 UV 原始单位，以 `defaultScale` 控制编辑器默认大小，参照原版灯塔 7.43 世界单位校准物件的高度或长轴。
+
+| 源FBX | 类别 | tris | 默认缩放 | GitHub |
+|---|---|---:|---:|---|
+| BowlEmpty | 物品 | 218 | 110.769% | 已提交 |
+| BowlSmallEmpty | 物品 | 116 | 105.491% | 已提交 |
+| ChoppedWood | 物品 | 1380 | 77.409% | 已提交 |
+| Crate | 物品 | 284 | 78.000% | 已提交 |
+| DumplingBowl | 物品 | 432 | 113.098% | 已提交 |
+| FeedingTrough | 物品 | 282 | 57.625% | 已提交 |
+| HayBale | 物品 | 801 | 49.107% | 已提交 |
+| PlateEmpty | 物品 | 76 | 90.394% | 已提交 |
+| PlateMeal | 物品 | 376 | 90.394% | 已提交 |
+| PlateSoup | 物品 | 76 | 100.622% | 已提交 |
+| Hellebard | 武器 | 382 | 65.901% | 已提交 |
+| MorningStar | 武器 | 238 | 85.105% | 已提交 |
+| OnehandAxe | 武器 | 492 | 106.408% | 已提交 |
+| Sword_A | 武器 | 423 | 73.087% | 已提交 |
+| Sword_B | 武器 | 451 | 76.960% | 已提交 |
+| Sword_C | 武器 | 269 | 78.385% | 已提交 |
+| TwohandAxe | 武器 | 512 | 110.669% | 已提交 |
+| EarthPile | 装饰 | 387 | 54.276% | 已提交 |
+
+**范围调整：** 原 FBX 的 `Items` 实有10件、`Weapons` 实有7件；第18件使用同包 `EarthPile.fbx`（原本属于其他装饰）。`Campfire.fbx` 的材质引用缺失 `Desert1.psd`，不在本批强行加入；后续批次清单应再次核对实际归属与总数。
+
+**材质风险：** 武器 FBX 中部分源路径指向另一个资源包 `Tropical Islands/Main.psd`，在此次 Cliffy Coast 压缩包中没有对应原贴图。转换后暂使用 Cliffy Coast `Main.png` 纹理；这保留了 UV 和网格，但**不能保证武器颜色与原版一致**，需要实际场景验收，必要时从授权素材中取得对应贴图后替换。普通物品和 EarthPile 的原始 FBX 指向 Cliffy Coast Main 贴图。
+
+**已完成校验：**
+- 18个 FBX 转换后 GLB 可重新读取，面数合计 7,195 tris，与源文件三角化统计一致；默认缩放49.107%–113.098%。
+- GitHub 已提交18个独立 GLB，仓库目录读取确认全部存在；累计52个 Cliffy Coast GLB。
+- 编辑器与试玩场景均接入 `cliffy-coast-batch03.js`，新增 `Cliffy Coast 物品`、`Cliffy Coast 武器`、`Cliffy Coast 装饰` 素材分类；页面版本 V4.5.0。
+- 批次注册、编辑器、试玩、地图标准化脚本静态语法检查通过；18个新ID无重复。
+- **未验收：** 真人浏览器材质、透明、着地、缩放比例、性能、删除/撤销与试玩行为。
+
+**边界：** 不改动原版岛屿地形、原版V35正式游戏或前两批素材。第三方资源再分发授权仍须核实。
