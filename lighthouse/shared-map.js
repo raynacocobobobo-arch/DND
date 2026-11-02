@@ -67,7 +67,7 @@ export function normalizeMap(v){
     z:clamp(Number(rec.z)||0,-w.depth/2,w.depth/2),
     rotation:((Number(rec.rotation)||0)%360+360)%360,
     scale:clamp(Number(rec.scale)||1,.3,3),
-    hidden:!!rec.hidden
+    hidden:!!rec.hidden,locked:!!rec.locked
    };
   }
  }
@@ -89,7 +89,7 @@ export function normalizeMap(v){
    x:clamp(Number(obj.x)||0,-w.width/2,w.width/2),
    z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
-   scale:clamp(Number(obj.scale)||1,.3,3)};
+   scale:clamp(Number(obj.scale)||1,.3,3),hidden:!!obj.hidden,locked:!!obj.locked};
  }).filter(Boolean);
  return w;
 }
@@ -256,7 +256,7 @@ export function createPlacementLayer(w,catalog,root){
   instance.userData.mapId=obj.id;instance.name='placed-'+obj.asset+'-'+obj.id;
   instance.position.set(obj.x,groundY(w,obj.x,obj.z),obj.z);
   instance.rotation.y=obj.rotation*Math.PI/180;
-  instance.scale.setScalar(obj.scale);
+  instance.scale.setScalar(obj.scale);instance.visible=!obj.hidden;
   instance.traverse(n=>{if(n.isMesh)n.userData.mapObjectId=obj.id});
   layer.add(instance);records.set(obj.id,instance);
  }
