@@ -10,7 +10,7 @@ const $=id=>document.getElementById(id),view=$('view');
 const GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const colors={water:0x276476,sand:0xc6b78a,grass:0x71866d,rock:0x71858c};
-let world,activeTool='raise',brush=2,strength=1,selected=null,hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
+let world,activeTool='select',brush=2,strength=1,selected=null,hover=null,stroke=false,lastStroke='',hist=[],future=[],dirty=false,isTop=false,objects=new Map(),renderObjectMeshes=[];
 const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH,grid:[GW,GH],heights:Array(GW*GH).fill(-2),types:Array(GW*GH).fill('water'),objects:[]});
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
@@ -33,12 +33,46 @@ for(const child of gameGroup.children)
   child.visible=false;
 const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
+gameGroup.visible=false; // source library, not part of blank editor map
 const nativeTargets=Object.fromEntries(Object.keys(BASE_ASSETS).map(id=>[id,gameGroup.getObjectByName('game-asset-'+id)]));
-const root=new T.Group();scene.add(root);addOpenOcean(root);
+const root=new T.Group();scene.add(root);
+const openSea=addOpenOcean(root);openSea.scale.set(2.5,2.5,1);
+scene.fog=new T.Fog(0x88b9c9,88,265);
+const edgeFog=new T.Mesh(new T.PlaneGeometry(WIDTH*2.5,DEPTH*2.5),new T.ShaderMaterial({
+ uniforms:{fogColor:{value:new T.Color('#88b9c9')},halfSize:{value:new T.Vector2(WIDTH*.5,DEPTH*.5)}},
+ vertexShader:'varying vec2 p;void main(){p=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+ fragmentShader:'uniform vec3 fogColor;uniform vec2 halfSize;varying vec2 p;void main(){float q=max(abs(p.x)/halfSize.x,abs(p.y)/halfSize.y);gl_FragColor=vec4(fogColor,smoothstep(.88,1.03,q));}',
+ transparent:true,depthWrite:false,side:T.DoubleSide
+}));edgeFog.rotation.x=-Math.PI/2;edgeFog.position.y=SEA+.08;edgeFog.renderOrder=9;root.add(edgeFog);
 let terrain=null,assetLayer=new T.Group();root.add(assetLayer);
 const cursorMat=new T.MeshBasicMaterial({color:0xe9e5ba,transparent:true,opacity:.35,depthWrite:false,side:T.DoubleSide});
 const cursor=new T.Mesh(new T.RingGeometry(.86,1.0,40),cursorMat);cursor.rotation.x=-Math.PI/2;cursor.visible=false;root.add(cursor);
 const nodeMeshes=()=>assetLayer.children.filter(m=>m.userData.recordId);
+const selectionBounds=new T.Box3(),selectionHelper=new T.Box3Helper(selectionBounds,0xf2d99b);
+selectionHelper.visible=false;scene.add(selectionHelper);
+let outlinePoints=[],outlinePreview=null;
+function resetOutline(){outlinePoints=[];if(outlinePreview){root.remove(outlinePreview);outlinePreview.geometry.dispose();outlinePreview.material.dispose();outlinePreview=null;}}
+function previewOutline(){
+ if(outlinePreview){root.remove(outlinePreview);outlinePreview.geometry.dispose();outlinePreview.material.dispose();}
+ if(!outlinePoints.length){outlinePreview=null;return;}
+ outlinePreview=new T.Line(new T.BufferGeometry().setFromPoints(outlinePoints.map(([x,z])=>new T.Vector3(x,SEA+.2,z))),new T.LineBasicMaterial({color:0xffe2a0,depthTest:false}));
+ outlinePreview.renderOrder=20;root.add(outlinePreview);
+}
+function insidePolygon(x,z,pts){let inside=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){
+ const a=pts[i],b=pts[j];if((a[1]>z)!==(b[1]>z)&&x<(b[0]-a[0])*(z-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+}return inside;}
+function finishOutline(){
+ if(outlinePoints.length<3){toast('请至少标记三个边界点');return;}
+ const h=+document.getElementById('terrain-height').value,mat=document.getElementById('terrain-material').value,cells=[];
+ for(let z=0;z<GH;z++)for(let x=0;x<GW;x++){
+  const px=(x+.5)*CELLX-WIDTH/2,pz=(z+.5)*CELLZ-DEPTH/2;
+  if(insidePolygon(px,pz,outlinePoints))cells.push(idx(x,z));
+ }
+ if(!cells.length){toast('区域太小，没有覆盖地形网格');return;}
+ history();for(const k of cells){world.heights[k]=h;world.types[k]=mat;}
+ world.regions??=[];world.regions.push({id:uid(),points:outlinePoints.map(p=>[...p]),height:h,material:mat});
+ resetOutline();rebuildTerrain();setDirty(true);saveLocal();toast('已绘制 '+cells.length+' 格地形，高度 '+h);
+}
 function uid(){return 'obj-'+Math.random().toString(36).slice(2,10);}
 function initial(){
  const w=emptyMap();
@@ -83,7 +117,7 @@ function updateObjectsHeight(){
  for(const g of assetLayer.children){const rec=objects.get(g.userData.recordId);if(rec)g.position.y=terrainY(rec.x,rec.z);}
 }
 function rebuildObjects(){
- assetLayer.clear();objects.clear();
+ assetLayer.clear();objects.clear();selectionHelper.visible=false;
  for(const r of world.objects){
   const g=objModel(r.asset);g.userData.recordId=r.id;g.userData.mapId=r.id;g.name=r.name;
   g.position.set(r.x,terrainY(r.x,r.z),r.z);g.rotation.y=r.rotation*Math.PI/180;g.scale.setScalar(r.scale);
@@ -131,7 +165,7 @@ function findSelected(evt){
  const rect=renderer.domElement.getBoundingClientRect();
  ndc.set((evt.clientX-rect.left)/rect.width*2-1,-(evt.clientY-rect.top)/rect.height*2+1);
  ray.setFromCamera(ndc,camera);
- for(const hit of ray.intersectObjects([...assetLayer.children,...Object.values(nativeTargets).filter(Boolean)],true)){
+ for(const hit of ray.intersectObjects(assetLayer.children,true)){
   let parent=hit.object;
   while(parent){
    if(parent.userData.mapId)return parent.userData.mapId;
@@ -158,7 +192,7 @@ function nativeEdit(id){
 }
 function setTool(t){
  activeTool=t;document.querySelectorAll('[data-tool],[data-asset]').forEach(b=>b.classList.toggle('active',b.dataset.tool===t||b.dataset.asset&&('asset:'+b.dataset.asset)===t));
- const names={raise:'抬高',lower:'降低',flatten:'平整',water:'挖水域',sand:'沙地',grass:'草地',rock:'岩地',select:'选择'};
+ const names={raise:'抬高',lower:'降低',flatten:'平整',water:'挖水域',sand:'沙地',grass:'草地',rock:'岩地',select:'选择',outline:'绘制岛屿轮廓'};
  $('tool-name').textContent=names[t]||('放置 '+t.replace('asset:',''));
  const selectedAsset=t.startsWith('asset:')?t.slice(6):'';
  $('selected-asset').textContent=selectedAsset?(catalog.all[selectedAsset]?.label||selectedAsset):'无';
@@ -186,6 +220,8 @@ renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(e.button!==0)return;
  const p=pointAt(e);if(!p)return;
+ if(activeTool==='outline'){if(outlinePoints.length>=256){toast('最多256个轮廓点');return;}
+  outlinePoints.push([clamp(p.x,-WIDTH/2,WIDTH/2),clamp(p.z,-DEPTH/2,DEPTH/2)]);previewOutline();return;}
  if(activeTool==='select'){
   selected=findSelected(e);updateInspector();
   if(selected){history();draggingObj=true;renderer.domElement.setPointerCapture(e.pointerId);}
@@ -228,19 +264,24 @@ function finish(e){
 renderer.domElement.addEventListener('pointerup',finish);
 renderer.domElement.addEventListener('pointercancel',finish);
 view.addEventListener('pointerleave',()=>cursor.visible=false);
-document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
+document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
+ if(b.dataset.tool!=='outline')resetOutline();setTool(b.dataset.tool);
+});
+document.getElementById('finish-region').onclick=finishOutline;
+document.getElementById('cancel-region').onclick=()=>{resetOutline();toast('已取消轮廓');};
+document.getElementById('terrain-height').oninput=e=>document.getElementById('terrain-height-val').textContent=e.target.value;
 function renderAssetLibrary(){
  const query=$('asset-search').value.trim().toLowerCase();
  const group=$('asset-filter').value;
  const found=catalog.types.filter(id=>{
   const entry=catalog.all[id]||{};
-  return (!group||((entry.category||'整组模型')===group))&&
+  return (group==='complete'?entry.kind!=='detail':group==='parts'?entry.kind==='detail':!group||((entry.category||'完整元件')===group))&&
    (!query||(entry.label||id).toLowerCase().includes(query)||id.includes(query));
  });
  const box=$('assets');box.replaceChildren();
  // Large scenes stay usable: show the first 120, allow searching/filtering
  // to reach every mesh; no assets are omitted from the registry.
- for(const id of found.slice(0,120)){
+ for(const id of found){
   const o=catalog.all[id];const btn=document.createElement('button');
   btn.type='button';btn.dataset.asset=id;btn.title=o.label;
   const title=document.createElement('span');
@@ -248,7 +289,7 @@ function renderAssetLibrary(){
   const label=document.createTextNode(o.label);
   btn.append(title,label);btn.onclick=()=>setTool('asset:'+id);box.append(btn);
  }
- $('asset-result').textContent=found.length+' 个可复用模型'+(found.length>120?'（显示前120，输入关键词继续筛选）':'');
+  $('asset-result').textContent=found.length+' 个可复用模型 / 原版素材共 '+catalog.types.length+' 项';
 }
 const categories=[...new Set(catalog.types.map(id=>catalog.all[id]?.category||'整组模型'))];
 for(const c of categories){
@@ -319,6 +360,8 @@ document.addEventListener('keydown',e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();applyHistory(e.shiftKey?'redo':'undo');}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();applyHistory('redo');}
  if(e.key==='Delete'&&selected)$('delete').click();
+ if(e.key==='Escape'){resetOutline();selected=null;updateInspector();}
+ if(e.key==='Enter'&&activeTool==='outline')finishOutline();
 });
 function fit(){
  const w=view.clientWidth,h=view.clientHeight;if(w<10||h<10)return;
@@ -326,12 +369,12 @@ function fit(){
 }
 new ResizeObserver(fit).observe(view);fit();
 try{const current=readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-editor-v1');
- world=current?validWorld(current):old?validWorld(JSON.parse(old)):initial();}
-catch(err){world=initial();console.warn('Map recovery fallback',err);}
-rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('raise');
+ world=current?validWorld(current):old?validWorld(JSON.parse(old)):emptyMap();}
+catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
+rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,
- heights:world.heights.length,tool:activeTool,selected,history:hist.length,
+ heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,history:hist.length,
  realGameAssets:true,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
@@ -347,5 +390,10 @@ window.__lighthouseEditor={
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
 };
-renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
+renderer.setAnimationLoop(()=>{
+ controls.update();const selectedGroup=selected?assetLayer.children.find(g=>g.userData.mapId===selected):null;
+ if(selectedGroup){selectedGroup.updateWorldMatrix(true,true);selectionBounds.setFromObject(selectedGroup);selectionHelper.visible=!selectionBounds.isEmpty();}
+ else selectionHelper.visible=false;
+ renderer.render(scene,camera);
+});
 document.body.dataset.editorReady='true';
