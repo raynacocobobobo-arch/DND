@@ -441,7 +441,10 @@ transform.addEventListener('objectChange',()=>{
  syncingProxy=false;
 });
 transform.addEventListener('mouseUp',()=>{saveLocal();renderSceneObjects();syncTransform();});
-let draggingObj=false;
+// Selecting never moves a model. A drag must travel at least 8 screen pixels
+// and uses the pointer's original offset relative to the selected model.
+const DIRECT_DRAG_THRESHOLD=8;
+let directDrag=null;
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(e.button!==0)return;
@@ -453,8 +456,11 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   const hit=findSelected(e),multi=e.shiftKey;
   selectItem(hit,multi);
   if(hit&&!multi&&!isLocked(hit)&&!recordById(hit)?.hidden){
-   draggingObj=true;dragHistoryTaken=false;renderer.domElement.setPointerCapture(e.pointerId);
-  }
+   const r=recordById(hit);
+   directDrag={pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,
+    anchorX:p.x,anchorZ:p.z,originX:r.x,originZ:r.z,started:false};
+   renderer.domElement.setPointerCapture(e.pointerId);
+  }else directDrag=null;
   return;
  }
  if(activeTool.startsWith('asset:')){
@@ -471,12 +477,17 @@ renderer.domElement.addEventListener('pointermove',e=>{
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
  cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,brush)*CELLX);
- if(draggingObj&&currentRecord()&&!isLocked(selected)){
+ if(directDrag&&directDrag.pointerId===e.pointerId&&currentRecord()&&!isLocked(selected)){
+   const drag=directDrag;
+   if(!drag.started){
+    if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)<DIRECT_DRAG_THRESHOLD)return;
+    drag.started=true;history();
+   }
    const native=selected.startsWith('native:');
    const o=native?nativeEdit(selected.slice(7)):objects.get(selected);
-   const nx=clamp(p.x,-WIDTH/2,WIDTH/2),nz=clamp(p.z,-DEPTH/2,DEPTH/2);
-   if(!dragHistoryTaken&&(Math.abs(nx-o.x)+Math.abs(nz-o.z))>.02){history();dragHistoryTaken=true;}
-   if(!dragHistoryTaken)return;
+   // Apply mouse movement delta, not the mouse's absolute ground coordinates.
+   const nx=clamp(drag.originX+(p.x-drag.anchorX),-WIDTH/2,WIDTH/2);
+   const nz=clamp(drag.originZ+(p.z-drag.anchorZ),-DEPTH/2,DEPTH/2);
    o.x=nx;o.z=nz;
    if(native)applyNativeEdits(world,gameGroup);
    else{
@@ -490,9 +501,12 @@ renderer.domElement.addEventListener('pointermove',e=>{
  }
 },{passive:true});
 function finish(e){
- if(draggingObj||stroke)saveLocal();
- if(draggingObj){renderSceneObjects();syncTransform();}
- draggingObj=false;dragHistoryTaken=false;stroke=false;lastStroke='';
+ if(directDrag&&directDrag.pointerId===e.pointerId){
+  if(directDrag.started){saveLocal();renderSceneObjects();}
+  directDrag=null;syncTransform();
+ }
+ if(stroke)saveLocal();
+ stroke=false;lastStroke='';
  try{renderer.domElement.releasePointerCapture(e.pointerId);}catch{}
 }
 renderer.domElement.addEventListener('pointerup',finish);
