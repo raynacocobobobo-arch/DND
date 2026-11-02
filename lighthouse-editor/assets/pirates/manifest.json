@@ -1956,6 +1956,48 @@
       "file": "SM_Bld_Rickety_Dock_Platform_02.glb",
       "label": "海盗 · Bld Rickety Dock Platform 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_stairs_01",
+      "file": "SM_Bld_Rickety_Dock_Stairs_01.glb",
+      "label": "海盗 · Bld Rickety Dock Stairs 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_stairs_02",
+      "file": "SM_Bld_Rickety_Dock_Stairs_02.glb",
+      "label": "海盗 · Bld Rickety Dock Stairs 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_dock_stairs_curved_01",
+      "file": "SM_Bld_Rickety_Dock_Stairs_Curved_01.glb",
+      "label": "海盗 · Bld Rickety Dock Stairs Curved 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_house_01",
+      "file": "SM_Bld_Rickety_House_01.glb",
+      "label": "海盗 · Bld Rickety House 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_house_02",
+      "file": "SM_Bld_Rickety_House_02.glb",
+      "label": "海盗 · Bld Rickety House 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_house_03",
+      "file": "SM_Bld_Rickety_House_03.glb",
+      "label": "海盗 · Bld Rickety House 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_rickety_tower_03",
+      "file": "SM_Bld_Rickety_Tower_03.glb",
+      "label": "海盗 · Bld Rickety Tower 03",
+      "defaultScale": 1
     }
   ]
 }
