@@ -1,4 +1,4 @@
-import {registerPiratePrefabs} from './pirates-prefabs.js?v=1';
+import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
