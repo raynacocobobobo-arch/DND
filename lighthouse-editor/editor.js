@@ -675,8 +675,8 @@ $('rot').onchange=e=>mutateSelected(o=>o.rotation=+e.target.value);
 $('rot').oninput=e=>$('rot-val').textContent=e.target.value+'°';
 $('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
 $('scale').oninput=e=>$('scale-val').textContent=(+e.target.value).toFixed(1);
-$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
-$('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;redraw();saveLocal();toast('已恢复群岛模板');};
+$('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
+$('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
 $('save').onclick=()=>{
  const data=JSON.stringify(world,null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
  const a=document.createElement('a');a.href=url;a.download='lighthouse-world-map.json';document.body.append(a);a.click();a.remove();
@@ -684,7 +684,7 @@ $('save').onclick=()=>{
 };
 $('input-json').onchange=async e=>{
  const file=e.target.files?.[0];if(!file)return;
- try{const input=validWorld(JSON.parse(await file.text()));history();world=input;selected=null;redraw();saveLocal();toast('地图已导入');}
+ try{const input=validWorld(JSON.parse(await file.text()));history();world=input;selected=null;selectedIds.clear();redraw();saveLocal();toast('地图已导入');}
  catch(err){toast('导入失败：'+err.message)}
  e.target.value='';
 };
@@ -703,8 +703,14 @@ document.addEventListener('keydown',e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();applyHistory(e.shiftKey?'redo':'undo');}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();applyHistory('redo');}
  if(e.key==='Delete'&&selected)$('delete').click();
- if(e.key==='Escape'){resetOutline();selected=null;updateInspector();}
+ if(e.key==='Escape'){resetOutline();selected=null;selectedIds.clear();updateInspector();}
  if(e.key==='Enter'&&activeTool==='outline')finishOutline();
+ if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&selectedIds.size){
+  const key=e.key.toLowerCase();
+  if(key==='g')setTransformMode('translate');
+  if(key==='r')setTransformMode('rotate');
+  if(key==='s')setTransformMode('scale');
+ }
 });
 function fit(){
  const w=view.clientWidth,h=view.clientHeight;if(w<10||h<10)return;
@@ -717,19 +723,23 @@ catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
 syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
- heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,history:hist.length,
+ heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
  realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  paintAt:(x,z,tool='raise')=>{setTool(tool);history();paint(x,z);return world.heights[getCellAt(x,z)?.index??0];},
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
-  history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1});rebuildObjects();saveLocal();return true;},
- exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);redraw();saveLocal();},
- selectNative:id=>{if(!BASE_ASSETS[id])return false;selected='native:'+id;updateInspector();return true;},
+  history();world.objects.push({id:uid(),asset,name:asset,x,z,rotation:0,scale:1,hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
+ exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
+ selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
  editNative:(id,change)=>{
   if(!BASE_ASSETS[id])return false;history();
   Object.assign(nativeEdit(id),change);applyNativeEdits(world,gameGroup);
   setDirty(true);saveLocal();return true;
  },
  getCatalog:()=>catalog.types.map(id=>({id,name:catalog.all[id].label,category:assetCategory(id,catalog.all[id])})),
+ selectObject:(id,multi=false)=>{if(!recordById(id))return false;selectItem(id,multi);return true;},
+ setObjectFlags:(id,flags)=>{if(!recordById(id))return false;
+  for(const flag of ['hidden','locked'])if(flag in flags)changeFlags([id],flag,!!flags[flag]);return true;},
+ setTransformMode:mode=>{if(!['translate','rotate','scale'].includes(mode))return false;setTransformMode(mode);return true;},
  resizeMap:(width,depth)=>resizeMapTo(width,depth),
  getGameNative:()=>Object.fromEntries(Object.entries(nativeTargets).map(([id,o])=>
  [id,o?{x:o.position.x,z:o.position.z,visible:o.visible}:null]))
