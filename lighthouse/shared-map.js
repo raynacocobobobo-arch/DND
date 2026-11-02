@@ -13,14 +13,18 @@ const ASSETS={
  barrel:{label:'原版木桶',radius:.38},
  campfire:{label:'原版营火',radius:.8},
  service_boat:{label:'原版小船',radius:1.3},
- offshore_reef:{label:'原版外海礁石',radius:1.8}
+ offshore_reef:{label:'原版外海礁石',radius:1.8},
+ pine_forest:{label:'整组松林',radius:6},
+ shore_rocks:{label:'整组原版岸礁',radius:7},
+ coastal_flora:{label:'整组海岸植被',radius:6},
+ supply_barrels:{label:'整组补给木桶',radius:2}
 };
 export const ASSET_TYPES=Object.keys(ASSETS);
 const former={rock:'shore_rock',tree:'pine',hut:'boathouse',dock:'boathouse'};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 export function emptyMap(){
  return {schema:WORLD_SCHEMA,version:2,width:WIDTH,depth:DEPTH,grid:[GW,GH],
- heights:Array(GW*GH).fill(-3),types:Array(GW*GH).fill('water'),objects:[],baseEdits:{}};
+ heights:Array(GW*GH).fill(-3),types:Array(GW*GH).fill('water'),objects:[],baseEdits:{},regions:[]};
 }
 export function normalizeMap(v){
  if(!v||!Array.isArray(v.heights)||v.heights.length!==GW*GH||
@@ -44,10 +48,17 @@ export function normalizeMap(v){
    };
   }
  }
+ // Region outlines preserve the designer intent for later terrain-model generation.
+ w.regions=Array.isArray(v.regions)?v.regions.slice(0,128).map((r,i)=>({
+  id:String(r.id||'region-'+i).slice(0,60),
+  height:clamp(Math.round(Number(r.height)||1),1,9),
+  material:['sand','grass','rock'].includes(r.material)?r.material:'grass',
+  points:Array.isArray(r.points)?r.points.slice(0,256).filter(p=>Array.isArray(p)&&p.length===2&&Number.isFinite(+p[0])&&Number.isFinite(+p[1])).map(p=>[clamp(+p[0],-WIDTH/2,WIDTH/2),clamp(+p[1],-DEPTH/2,DEPTH/2)]):[]
+ })).filter(r=>r.points.length>=3):[];
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
   const asset=former[obj.asset]||obj.asset;
-  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset))return null;
+  if(!ASSETS[asset]&&!/^part_[0-9]{5}$/.test(asset)&&! /^(pine_tree|barrel_single|reef_single)_[0-9]+$/.test(asset))return null;
   const id=String(obj.id||'item-'+i).slice(0,60);
   if(seen.has(id))return null;
   seen.add(id);
@@ -80,10 +91,27 @@ export function nativePrefabCatalog(group,reefRoot){
   barrel:{node:barrels?.getObjectByName('game-asset-barrel-0'),anchor:[-.58,0,.17]},
   campfire:{node:group.getObjectByName('game-asset-campfire'),anchor:[1.80,0,1.70]},
   service_boat:{node:group.getObjectByName('serviceBoat'),anchor:[-2.55,.5,5.10]},
-  offshore_reef:{node:reefRoot?.getObjectByName('reef-0'),anchor:[-13.3,0,7.7]}
+  offshore_reef:{node:reefRoot?.getObjectByName('reef-0'),anchor:[-13.3,0,7.7]},
+   pine_forest:{node:forest,anchor:[0,0,0]},
+   shore_rocks:{node:rockRoots,anchor:[0,0,0]},
+   coastal_flora:{node:group.getObjectByName('game-asset-coastal-flora'),anchor:[0,0,0]},
+   supply_barrels:{node:barrels,anchor:[0,0,0]}
  };
  const templates=new Map();
- const labels={...ASSETS};
+ const labels=Object.fromEntries(Object.entries(ASSETS).map(([key,v])=>[key,{...v,category:'完整元件',kind:'complete'}]));
+ // Whole assemblies: one tree includes trunk and crowns; a barrel contains all its parts.
+ for(const [nodes,prefix,label] of [
+  [forest?.children||[],'pine_tree','完整松树'],
+  [barrels?.children||[],'barrel_single','完整木桶'],
+  [reefRoot?.children||[],'reef_single','完整外海礁石']
+ ]){
+  nodes.filter(n=>n.type==='Group').forEach((node,i)=>{
+   const id=prefix+'_'+i;
+   const pos=new T.Vector3();node.getWorldPosition(pos);
+   candidates[id]={node,anchor:[pos.x,0,pos.z]};
+   labels[id]={label:label+' '+(i+1),category:'完整元件',kind:'complete'};
+  });
+ }
  for(const [asset,{node,anchor}] of Object.entries(candidates)){
   if(!node)continue;
   // The source is the actual THREE.Object3D from lighthouse V35 scene.
@@ -139,7 +167,7 @@ export function nativePrefabCatalog(group,reefRoot){
    category==='lighthouse'?'灯塔':category==='campfire'?'营火':
    category.startsWith('tree-')?'松树':category;
   labels[asset]={label:parentLabel+' · '+title+' #'+String(ordinal).padStart(3,'0'),
-   category:parentLabel,sourceName:o.name||'',meshType:o.geometry.type,
+   category:parentLabel,kind:'detail',sourceName:o.name||'',meshType:o.geometry.type,
    sourceId:o.uuid};
   // The standalone mesh uses its actual original material and geometry;
   // keep original world rotation / scale but recenter its bounding box
