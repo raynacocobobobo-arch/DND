@@ -107,8 +107,8 @@ export function nativePrefabCatalog(group,reefRoot){
  ]){
   nodes.filter(n=>n.type==='Group').forEach((node,i)=>{
    const id=prefix+'_'+i;
-   const pos=new T.Vector3();node.getWorldPosition(pos);
-   candidates[id]={node,anchor:[pos.x,0,pos.z]};
+   const bounds=new T.Box3().setFromObject(node);
+   candidates[id]={node,anchor:[(bounds.min.x+bounds.max.x)/2,0,(bounds.min.z+bounds.max.z)/2]};
    labels[id]={label:label+' '+(i+1),category:'完整元件',kind:'complete'};
   });
  }
