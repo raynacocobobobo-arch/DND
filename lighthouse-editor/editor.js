@@ -772,6 +772,7 @@ $('import-glb').onchange=async event=>{
  try{
   const result=await glbLibrary.importFiles(files);
   updateGLBStatus(result.errors.length?'失败 '+result.errors.length+' 个':'导入完成');
+  if(result.added.length){$('asset-search').value='';$('asset-filter').value='complete';}
   renderAssetLibrary();rebuildObjects();
   if(result.added.length){
    const last=result.added.at(-1);
