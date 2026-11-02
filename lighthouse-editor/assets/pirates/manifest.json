@@ -1818,6 +1818,24 @@
       "file": "SM_Bld_Fort_Wall_02.glb",
       "label": "海盗 · Bld Fort Wall 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_corner_01",
+      "file": "SM_Bld_Mansion_Corner_01.glb",
+      "label": "海盗 · Bld Mansion Corner 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_corner_02",
+      "file": "SM_Bld_Mansion_Corner_02.glb",
+      "label": "海盗 · Bld Mansion Corner 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_mansion_door_01",
+      "file": "SM_Bld_Mansion_Door_01.glb",
+      "label": "海盗 · Bld Mansion Door 01",
+      "defaultScale": 1
     }
   ]
 }
