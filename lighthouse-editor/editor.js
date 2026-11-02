@@ -17,8 +17,10 @@ import {buildSite} from '../lighthouse/v35-site.js?v=35a';
 import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,MAX_EDITOR_GRID,
- BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=49-batch02-tools';
+ BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=mobile-appearance-v490';
 const $=id=>document.getElementById(id),view=$('view');
+const mobileMedia=window.matchMedia('(max-width:740px)');
+let mobileInteraction=mobileMedia.matches?'orbit':'edit';
 let GW=64,GH=56,WIDTH=146,DEPTH=129,CELLX=WIDTH/GW,CELLZ=DEPTH/GH;
 const SEA=GAME_SEA,minH=-3,maxH=9,storeKey=SHARED_MAP_KEY;
 const BASE_CELL_X=146/64,BASE_CELL_Z=129/56,MIN_WIDTH=34,MIN_DEPTH=30,MAX_SIZE=430;
@@ -28,14 +30,14 @@ const empty=()=>({schema:'lighthouse-world-v1',version:1,width:WIDTH,depth:DEPTH
 const idx=(x,z)=>z*GW+x,clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
 const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
 const camera=new T.PerspectiveCamera(43,1,.1,1000),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=T.SRGBColorSpace;
+renderer.setPixelRatio(Math.min(devicePixelRatio,mobileMedia.matches?1.2:1.6));renderer.outputColorSpace=T.SRGBColorSpace;
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
 view.insertBefore(renderer.domElement,view.firstChild);renderer.domElement.tabIndex=-1;scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
 const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92,65);scene.add(sunlight);
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
 controls.mouseButtons={LEFT:null,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
-controls.touches={ONE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
+controls.touches={ONE:mobileMedia.matches?T.TOUCH.ROTATE:null,TWO:T.TOUCH.DOLLY_PAN};controls.maxDistance=720;controls.minDistance=15;
 controls.maxPolarAngle=Math.PI*.48;controls.update();
 const transform=new TransformControls(camera,renderer.domElement);
 const transformProxy=new T.Object3D();scene.add(transformProxy);scene.add(transform);
@@ -59,8 +61,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V4.8.1] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V4.8.1',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V4.9.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V4.9.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -233,7 +235,7 @@ function updateObjectsHeight(){
  const nativeOriginalMaterials=new WeakMap();
  function adjustMaterials(root,brightness=1,saturation=1,isNative=false){
   if(!root)return;
-  const b=clamp(Number(brightness)||1,0,2),s=clamp(Number(saturation)||0,0,2);
+  const b=clamp(Number(brightness??1),0,2),s=clamp(Number(saturation??1),0,2);
   root.traverse(mesh=>{
    if(!mesh.isMesh||!mesh.material)return;
    if(isNative&&!nativeOriginalMaterials.has(mesh))nativeOriginalMaterials.set(mesh,mesh.material);
@@ -396,6 +398,7 @@ function selectItem(id,multi=false){
  }
  selected=id&&selectedIds.has(id)?id:([...selectedIds].at(-1)||null);
  updateInspector();
+ if(mobileMedia.matches&&selected&&selectedIds.size===1)setMobilePanel('inspector');
 }
 function nativeEdit(id){
  world.baseEdits??={};
@@ -491,7 +494,7 @@ for(const [id,flag,value] of [['scene-hide','hidden',true],['scene-show','hidden
 $('scene-search').addEventListener('input',renderSceneObjects);
 function syncTransform(){
  if(!world||syncingProxy||transform.dragging)return;
- if(activeTool!=='select'){transform.detach();return;}
+ if(activeTool!=='select'||(mobileMedia.matches&&mobileInteraction==='orbit')){transform.detach();return;}
  const selectedEntries=[...selectedIds].map(id=>({id,r:recordById(id)}))
   .filter(({r})=>r&&!r.locked&&!r.hidden);
  transform.detach();
@@ -592,9 +595,19 @@ transform.addEventListener('mouseUp',()=>{
 // and uses the pointer's original offset relative to the selected model.
 const DIRECT_DRAG_THRESHOLD=8;
 let directDrag=null;
+const mobileTouches=new Set();
+renderer.domElement.addEventListener('pointerdown',e=>{
+ if(!mobileMedia.matches||e.pointerType!=='touch')return;
+ mobileTouches.add(e.pointerId);
+ if(mobileTouches.size>1){directDrag=null;stroke=false;}
+},true);
+for(const type of ['pointerup','pointercancel','lostpointercapture']){
+ renderer.domElement.addEventListener(type,e=>{if(e.pointerType==='touch')mobileTouches.delete(e.pointerId);},true);
+}
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(e.button!==0)return;
+ if(mobileMedia.matches&&e.pointerType==='touch'&&(mobileInteraction==='orbit'||mobileTouches.size>1||!e.isPrimary))return;
  // Clicking the canvas commits the previously focused parameter field.
  if(document.activeElement?.matches?.('input, textarea, select'))document.activeElement.blur();
  renderer.domElement.focus({preventScroll:true});
@@ -618,13 +631,16 @@ renderer.domElement.addEventListener('pointerdown',e=>{
   history();const [px,pz]=snappedXZ(p.x,p.z);
   const o={id:uid(),asset,name:catalog.all[asset]?.label||asset,x:clamp(px,-WIDTH/2,WIDTH/2),
    z:clamp(pz,-DEPTH/2,DEPTH/2),y:0,rotation:0,scale:catalog.all[asset]?.defaultScale??(asset.startsWith('ext_glb_')?.3:1)};
-  world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);return;
+  world.objects.push(o);selected=o.id;selectedIds=new Set([o.id]);rebuildObjects();setTool('select');setDirty(true);saveLocal();toast('已放置 '+asset);
+   if(mobileMedia.matches)setMobilePanel('inspector');
+   return;
  }
  history();stroke=true;lastStroke='';
  renderer.domElement.setPointerCapture(e.pointerId);
  paint(p.x,p.z);
 },{passive:true});
 renderer.domElement.addEventListener('pointermove',e=>{
+ if(mobileMedia.matches&&e.pointerType==='touch'&&(mobileInteraction==='orbit'||mobileTouches.size>1))return;
  const p=pointAt(e);if(!p)return;
  $('cursor').textContent=p.x.toFixed(1)+' / '+p.z.toFixed(1);
  cursor.visible=true;cursor.position.set(p.x,terrainY(p.x,p.z)+.11,p.z);cursor.scale.setScalar(Math.max(.6,brush)*CELLX);
@@ -652,6 +668,7 @@ renderer.domElement.addEventListener('pointermove',e=>{
  }
 },{passive:true});
 function finish(e){
+ if(mobileMedia.matches&&e.pointerType==='touch'&&mobileInteraction==='orbit'){directDrag=null;stroke=false;return;}
  if(directDrag&&directDrag.pointerId===e.pointerId){
   if(directDrag.started){saveLocal();renderSceneObjects();}
   directDrag=null;syncTransform();
@@ -665,6 +682,7 @@ renderer.domElement.addEventListener('pointercancel',finish);
 view.addEventListener('pointerleave',()=>cursor.visible=false);
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{
  if(b.dataset.tool!=='outline')resetOutline();setTool(b.dataset.tool);
+ if(mobileMedia.matches){setMobileInteraction('edit');setMobilePanel('none');}
 });
 document.getElementById('finish-region').onclick=finishOutline;
 document.getElementById('cancel-region').onclick=()=>{resetOutline();toast('已取消轮廓');};
@@ -804,7 +822,7 @@ function renderAssetLibrary(){
    const label=document.createElement('span');label.className='asset-label';
    label.textContent=meta.label;
    btn.append(img,label);
-   btn.onclick=()=>{setTool('asset:'+id);document.querySelectorAll('.asset-card')
+   btn.onclick=()=>{setTool('asset:'+id);if(mobileMedia.matches){setMobileInteraction('edit');setMobilePanel('none');}document.querySelectorAll('.asset-card')
      .forEach(item=>item.classList.toggle('active',item===btn));};
    grid.append(btn);
    const cached=previewCache.get(id);
@@ -1077,6 +1095,52 @@ document.addEventListener('keydown',e=>{
   if(key==='s')setTransformMode('scale');
  }
 });
+
+/* Mobile interaction: orbit is deliberately separated from selecting/placing assets.
+   One finger rotates in browse mode; two fingers pan/zoom in either mode. */
+function setMobileInteraction(mode){
+ if(!mobileMedia.matches)return;
+ mobileInteraction=mode==='edit'?'edit':'orbit';
+ controls.touches.ONE=mobileInteraction==='orbit'?T.TOUCH.ROTATE:null;
+ controls.touches.TWO=T.TOUCH.DOLLY_PAN;
+ $('mobile-touch-nav').classList.toggle('active',mobileInteraction==='orbit');
+ $('mobile-touch-edit').classList.toggle('active',mobileInteraction==='edit');
+ $('mobile-touch-nav').setAttribute('aria-pressed',String(mobileInteraction==='orbit'));
+ $('mobile-touch-edit').setAttribute('aria-pressed',String(mobileInteraction==='edit'));
+ directDrag=null;
+ syncTransform();
+}
+function setMobilePanel(name){
+ if(!mobileMedia.matches)return;
+ const valid=['assets','terrain','scene','inspector','more'];
+ const next=valid.includes(name)?name:'none';
+ document.body.dataset.mobilePanel=next;
+ for(const b of document.querySelectorAll('[data-mobile-tab]')){
+  const on=b.dataset.mobileTab===next;
+  b.classList.toggle('active',on);
+  b.setAttribute('aria-expanded',String(on));
+ }
+}
+for(const btn of document.querySelectorAll('[data-mobile-tab]')){
+ btn.onclick=()=>{
+  const n=btn.dataset.mobileTab;
+  setMobilePanel(document.body.dataset.mobilePanel===n?'none':n);
+ };
+}
+$('mobile-scrim').onclick=()=>setMobilePanel('none');
+$('mobile-touch-nav').onclick=()=>{setMobilePanel('none');setMobileInteraction('orbit');};
+$('mobile-touch-edit').onclick=()=>{setMobilePanel('none');setMobileInteraction('edit');};
+$('mobile-undo').onclick=()=>applyHistory('undo');
+$('mobile-save').onclick=()=>$('save').click();
+mobileMedia.addEventListener('change',e=>{
+ renderer.setPixelRatio(Math.min(devicePixelRatio,e.matches?1.2:1.6));
+ if(e.matches){setMobileInteraction('orbit');setMobilePanel('none');}
+ else{mobileInteraction='edit';document.body.dataset.mobilePanel='none';
+  controls.touches.ONE=null;controls.touches.TWO=T.TOUCH.DOLLY_PAN;syncTransform();}
+ fit();
+});
+if(mobileMedia.matches){setMobileInteraction('orbit');setMobilePanel('none');}
+
 function fit(){
  const w=view.clientWidth,h=view.clientHeight;if(w<10||h<10)return;
  camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);
@@ -1085,7 +1149,7 @@ new ResizeObserver(fit).observe(view);fit();
 try{const current=readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-editor-v1');
  world=current?validWorld(current):old?validWorld(JSON.parse(old)):emptyMap();}
 catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
-syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);setDirty(false);setTool('select');
+syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(false);setTool('select');
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
