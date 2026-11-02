@@ -59,6 +59,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
+console.info('[Lighthouse V4.8.1] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V4.8.1',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 const glbLibrary=await createExternalGLBLibrary(catalog);
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
@@ -697,7 +699,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
- const order=['外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','Cliffy Coast 物品','Cliffy Coast 武器','Cliffy Coast 装饰','Cliffy Coast 灯具','Cliffy Coast 摊位','Cliffy Coast 推车','Cliffy Coast 岩块','Cliffy Coast 道路杂件','Cliffy Coast 营火','Cliffy Coast 桥梁','Cliffy Coast 道路','Cliffy Coast 围墙','Cliffy Coast 建筑','Cliffy Coast 房屋','Cliffy Coast 房屋构件','Cliffy Coast 房屋屋顶','Cliffy Coast 墓园','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
+ const order=['Cliffy Coast 完整房屋','外部地形 GLB','外部模型 GLB','Cliffy Coast 植物','Cliffy Coast 工具','Cliffy Coast 家具','Cliffy Coast 物品','Cliffy Coast 武器','Cliffy Coast 装饰','Cliffy Coast 灯具','Cliffy Coast 摊位','Cliffy Coast 推车','Cliffy Coast 岩块','Cliffy Coast 道路杂件','Cliffy Coast 营火','Cliffy Coast 桥梁','Cliffy Coast 道路','Cliffy Coast 围墙','Cliffy Coast 建筑','Cliffy Coast 房屋','Cliffy Coast 房屋构件','Cliffy Coast 房屋屋顶','Cliffy Coast 墓园','灯塔与建筑','树木与植被','礁石与海岸','船只','码头与栈道','营地与道具','海怪与事件'];
  const sorted=[...buckets.keys()].sort((a,b)=>{
   const ia=order.indexOf(a),ib=order.indexOf(b);
   return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
@@ -738,6 +740,8 @@ for(const c of categories){
 $('asset-search').addEventListener('input',renderAssetLibrary);
 $('asset-filter').addEventListener('change',renderAssetLibrary);
 renderAssetLibrary();
+const houseFilter=document.getElementById('asset-filter');
+if(cliffyHouses.loaded){houseFilter.value='Cliffy Coast 完整房屋';renderAssetLibrary();}
 $('brush').oninput=e=>{brush=+e.target.value;$('brush-val').textContent=brush;};
 $('strength').oninput=e=>{strength=+e.target.value;$('strength-val').textContent=strength;};
 $('undo').onclick=()=>applyHistory('undo');$('redo').onclick=()=>applyHistory('redo');
