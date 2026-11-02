@@ -1,8 +1,16 @@
-# Pirate assets
+# POLYGON Pirates · permanent editor asset library
 
-Approved medieval pirate asset pack imports for the lighthouse map editor.
+This directory is a **GitHub Pages asset directory**, not the browser "Import GLB" storage.
 
-Required model file:
-- `SM_Prop_Parrot_01.glb` — original `SM_Prop_Parrot_01.fbx`, complete static parrot, vertex color baked into GLB. No animation.
+- `*.glb`: published binary files, e.g. `SM_Prop_Parrot_01.glb`.
+- `manifest.json`: required asset index. Models not listed here do not appear in the editor.
+- `../../pirates-prefabs.js`: permanent model loader, used by `../../editor.js` and `../../../lighthouse/v35-preview-scene.js`.
 
-Please upload the original converted GLB here. The asset will be registered in the editor palette once the binary file is present.
+Browser uploads via "选择 GLB 文件" are stored separately in IndexedDB
+(`lighthouse-external-glb-v1`), not automatically written to this directory.
+
+The Windows publisher must push **both** the GLB and updated `manifest.json`
+to `gh-pages`, then verify Git Blob SHA of the published binary.
+Registration is not equivalent to browser rendering acceptance.
+
+The initial manifest has zero assets until a real GLB is uploaded and indexed.
