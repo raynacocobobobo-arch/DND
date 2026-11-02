@@ -7,6 +7,7 @@ import {createPirateShip} from './v27-pirate.js?v=27a';
 export const SHARED_MAP_KEY='dnd-lighthouse-world-map-v2';
 export const WORLD_SCHEMA='lighthouse-world-v2';
 export const GW=64,GH=56,WIDTH=146,DEPTH=129,SEA=.1815;
+export const MAX_EDITOR_GRID=192;
 const ASSETS={
  shore_rock:{label:'岸边原版礁石',radius:.95},
  pine:{label:'原版松树',radius:.75},
@@ -29,17 +30,31 @@ const ASSETS={
 export const ASSET_TYPES=Object.keys(ASSETS);
 const former={rock:'shore_rock',tree:'pine',hut:'boathouse',dock:'boathouse'};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-export function emptyMap(){
- return {schema:WORLD_SCHEMA,version:2,width:WIDTH,depth:DEPTH,grid:[GW,GH],
- heights:Array(GW*GH).fill(-3),types:Array(GW*GH).fill('water'),objects:[],baseEdits:{},regions:[]};
+export function emptyMap(options={}){
+ const grid=options.grid||[GW,GH],width=options.width||WIDTH,depth=options.depth||DEPTH;
+ const gx=grid[0],gz=grid[1];
+ if(!Number.isInteger(gx)||!Number.isInteger(gz)||gx<4||gz<4||
+    gx>MAX_EDITOR_GRID||gz>MAX_EDITOR_GRID||
+    !Number.isFinite(width)||!Number.isFinite(depth)||width<1||depth<1)
+  throw Error('地图尺寸或网格无效');
+ return {schema:WORLD_SCHEMA,version:2,width,depth,grid:[gx,gz],
+  heights:Array(gx*gz).fill(-3),types:Array(gx*gz).fill('water'),objects:[],baseEdits:{},regions:[]};
 }
 export function normalizeMap(v){
- if(!v||!Array.isArray(v.heights)||v.heights.length!==GW*GH||
-  !Array.isArray(v.types)||v.types.length!==GW*GH||
+ const grid=v?.grid;
+ const gw=Array.isArray(grid)?Number(grid[0]):NaN;
+ const gh=Array.isArray(grid)?Number(grid[1]):NaN;
+ const width=Number(v?.width),depth=Number(v?.depth);
+ if(!v||!Number.isInteger(gw)||!Number.isInteger(gh)||
+  gw<4||gh<4||gw>MAX_EDITOR_GRID||gh>MAX_EDITOR_GRID||
+  !Number.isFinite(width)||!Number.isFinite(depth)||width<1||depth<1||
+  width>1000||depth>1000||
+  !Array.isArray(v.heights)||v.heights.length!==gw*gh||
+  !Array.isArray(v.types)||v.types.length!==gw*gh||
   !Array.isArray(v.objects)||v.objects.length>1000||
   !['lighthouse-world-v1',WORLD_SCHEMA].includes(v.schema))
   throw Error('不兼容的地图：请使用地图编辑器导出的世界 JSON');
- const w=emptyMap();
+ const w=emptyMap({grid:[gw,gh],width,depth});
  w.heights=v.heights.map(t=>clamp(Math.round(Number(t)||0),-3,9));
  w.types=v.types.map(t=>['water','sand','grass','rock'].includes(t)?t:'water');
  w.baseEdits={};
@@ -48,8 +63,8 @@ export function normalizeMap(v){
    if(!['lighthouse','boathouse','campfire','service_boat','coastal_flora'].includes(id)&&! /^(tree|rock|barrel|reef)-\d+$/.test(id))continue;
    if(!rec||typeof rec!=='object')continue;
    w.baseEdits[id]={
-    x:clamp(Number(rec.x)||0,-WIDTH/2,WIDTH/2),
-    z:clamp(Number(rec.z)||0,-DEPTH/2,DEPTH/2),
+    x:clamp(Number(rec.x)||0,-w.width/2,w.width/2),
+    z:clamp(Number(rec.z)||0,-w.depth/2,w.depth/2),
     rotation:((Number(rec.rotation)||0)%360+360)%360,
     scale:clamp(Number(rec.scale)||1,.3,3),
     hidden:!!rec.hidden
@@ -61,7 +76,7 @@ export function normalizeMap(v){
   id:String(r.id||'region-'+i).slice(0,60),
   height:clamp(Math.round(Number(r.height)||1),1,9),
   material:['sand','grass','rock'].includes(r.material)?r.material:'grass',
-  points:Array.isArray(r.points)?r.points.slice(0,256).filter(p=>Array.isArray(p)&&p.length===2&&Number.isFinite(+p[0])&&Number.isFinite(+p[1])).map(p=>[clamp(+p[0],-WIDTH/2,WIDTH/2),clamp(+p[1],-DEPTH/2,DEPTH/2)]):[]
+  points:Array.isArray(r.points)?r.points.slice(0,256).filter(p=>Array.isArray(p)&&p.length===2&&Number.isFinite(+p[0])&&Number.isFinite(+p[1])).map(p=>[clamp(+p[0],-w.width/2,w.width/2),clamp(+p[1],-w.depth/2,w.depth/2)]):[]
  })).filter(r=>r.points.length>=3):[];
  const seen=new Set();
  w.objects=v.objects.map((obj,i)=>{
@@ -71,17 +86,18 @@ export function normalizeMap(v){
   if(seen.has(id))return null;
   seen.add(id);
   return {id,asset,name:String(obj.name||ASSETS[asset]?.label||asset).slice(0,90),
-   x:clamp(Number(obj.x)||0,-WIDTH/2,WIDTH/2),
-   z:clamp(Number(obj.z)||0,-DEPTH/2,DEPTH/2),
+   x:clamp(Number(obj.x)||0,-w.width/2,w.width/2),
+   z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
    scale:clamp(Number(obj.scale)||1,.3,3)};
  }).filter(Boolean);
  return w;
 }
 export function getHeight(w,x,z){
- const i=Math.floor((x+WIDTH/2)/(WIDTH/GW)),j=Math.floor((z+DEPTH/2)/(DEPTH/GH));
- if(i<0||j<0||i>=GW||j>=GH)return -3;
- return w.heights[j*GW+i];
+ const gw=w.grid[0],gh=w.grid[1];
+ const i=Math.floor((x+w.width/2)/(w.width/gw)),j=Math.floor((z+w.depth/2)/(w.depth/gh));
+ if(i<0||j<0||i>=gw||j>=gh)return -3;
+ return w.heights[j*gw+i];
 }
 export function groundY(w,x,z){
  return Math.max(SEA+.035,getHeight(w,x,z)+.035);
