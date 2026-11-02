@@ -9,7 +9,7 @@ import {createOffshoreReefs} from './v35-reefs.js?v=35a';
 import {createBoatNavigator} from './v35-boat-nav.js?v=35a';
 import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
- from './shared-map.js?v=45-external-glb-1';
+ from './shared-map.js?v=46-scale-percent-1';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
 import {createExternalGLBLibrary} from '../lighthouse-editor/external-glb-library.js?v=1';
 import {registerLegacyHarborPrefabs} from '../lighthouse-editor/legacy-harbor-assets.js?v=1a';
