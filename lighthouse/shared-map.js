@@ -122,7 +122,7 @@ export function normalizeMap(v){
      y:clamp(Number(rec.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
     z:clamp(Number(rec.z)||0,-w.depth/2,w.depth/2),
     rotation:((Number(rec.rotation)||0)%360+360)%360,
-    scale:clamp(Number(rec.scale??1)||1,.001,20),
+    scale:clamp(Number(rec.scale??1)||1,.001,2),
     brightness:clamp(Number(rec.brightness??1),0,2),saturation:clamp(Number(rec.saturation??1),0,2),hue:clamp(Number(rec.hue??0),-180,180),
     hidden:!!rec.hidden,locked:!!rec.locked
    };
@@ -142,7 +142,7 @@ export function normalizeMap(v){
     /^cliffy_coast_[a-z0-9_]{1,40}$/.test(key);
    if(!allowed||!rec||typeof rec!=='object')continue;
    w.assetDefaults[key]={
-    scale:appearanceRange(rec.scale,1,.001,20),
+    scale:appearanceRange(rec.scale,1,.001,2),
     brightness:appearanceRange(rec.brightness,1,0,2),
     saturation:appearanceRange(rec.saturation,1,0,2),
     hue:appearanceRange(rec.hue,0,-180,180)
@@ -168,7 +168,7 @@ export function normalizeMap(v){
     y:clamp(Number(obj.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
    z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
-   scale:clamp((Number(obj.scale)||1)*(!v.assetScaleVersion&&['cliffy_coast_tree1','cliffy_coast_tree3'].includes(asset)?.3:1),.001,20),brightness:clamp(Number(obj.brightness??1),0,2),saturation:clamp(Number(obj.saturation??1),0,2),hue:clamp(Number(obj.hue??0),-180,180),
+   scale:clamp((Number(obj.scale)||1)*(!v.assetScaleVersion&&['cliffy_coast_tree1','cliffy_coast_tree3'].includes(asset)?.3:1),.001,2),brightness:clamp(Number(obj.brightness??1),0,2),saturation:clamp(Number(obj.saturation??1),0,2),hue:clamp(Number(obj.hue??0),-180,180),
    hidden:!!obj.hidden,locked:!!obj.locked,
    group:typeof obj.group==='string'&&/^grp_[a-z0-9]{6,20}$/.test(obj.group)?obj.group:null};
  }).filter(Boolean);
