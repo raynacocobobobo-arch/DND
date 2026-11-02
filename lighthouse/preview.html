@@ -28,7 +28,7 @@ button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inheri
 </head>
 <body>
 <div id="viewport"></div>
-<div id="map-preview-label"><b>地图试玩预览</b><div>使用已导出的地图 JSON · 不影响正式游戏</div></div>
+<div id="map-preview-label"><b>地图试玩预览</b><div>使用已发布的地图 JSON · 不影响正式游戏</div></div>
 
 <nav aria-label="三维场景控制">
 <a href="../lighthouse-editor/">返回地图编辑器</a>
@@ -43,7 +43,12 @@ button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inheri
 
 <audio id="game-background-music" src="./audio/lighthouse_background_music.mp3?v=music4" autoplay loop preload="auto" playsinline></audio>
 <div id="status" role="status">正在加载地图 JSON 与 V35 原版场景…</div>
-<script type="module" src="./v35-preview-scene.js?v=editor-map-1"></script>
+<script>
+if(new URLSearchParams(location.search).get('source')==='local'){
+ document.querySelector('#map-preview-label div').textContent='使用本浏览器的编辑器草稿 · 不影响正式游戏';
+}
+</script>
+<script type="module" src="./v35-preview-scene.js?v=editor-map-2"></script>
 <script type="module" src="./background-music.js?v=4a"></script>
 <script>window.addEventListener('error',function(e){let s=document.getElementById('status'); if(s){s.hidden=false;s.textContent='无法加载三维场景，请确认网络能访问 jsDelivr。'+(e.message||'')}});</script>
 </body></html>
