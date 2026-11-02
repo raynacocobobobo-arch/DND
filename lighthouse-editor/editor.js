@@ -272,6 +272,7 @@ function actualRecord(id){
 }
 function isLocked(id){return !!recordById(id)?.locked;}
 function selectItem(id,multi=false){
+ if(id&&activeTool!=='select')setTool('select');
  if(!multi)selectedIds.clear();
  if(id){
   if(multi&&selectedIds.has(id))selectedIds.delete(id);
@@ -291,6 +292,7 @@ function setTool(t){
  $('tool-name').textContent=names[t]||('放置 '+t.replace('asset:',''));
  const selectedAsset=t.startsWith('asset:')?t.slice(6):'';
  $('selected-asset').textContent=selectedAsset?(catalog.all[selectedAsset]?.label||selectedAsset):'无';
+ if(t==='select')syncTransform();else transform.detach();
 }
 function mutateSelected(fn){
  if(!currentRecord()||isLocked(selected)||selectedIds.size>1)return;history();
@@ -315,6 +317,8 @@ function updateInspector(){
   $('duplicate').disabled=locked||multi;
   $('restore-native').hidden=!native;
  }
+ $('gizmo-rotate').disabled=multi;
+ $('gizmo-scale').disabled=multi;
  renderSceneObjects();syncTransform();
 }
 function renderSceneObjects(){
@@ -366,6 +370,7 @@ for(const [id,flag,value] of [['scene-hide','hidden',true],['scene-show','hidden
 $('scene-search').addEventListener('input',renderSceneObjects);
 function syncTransform(){
  if(!world||syncingProxy||transform.dragging)return;
+ if(activeTool!=='select'){transform.detach();return;}
  const selectedEntries=[...selectedIds].map(id=>({id,r:recordById(id)}))
   .filter(({r})=>r&&!r.locked&&!r.hidden);
  transform.detach();
