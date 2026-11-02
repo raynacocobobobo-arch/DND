@@ -1506,6 +1506,36 @@
       "file": "SM_Env_Vines_Wall_02.glb",
       "label": "海盗 · Vines Wall 02",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_balcony_01",
+      "file": "SM_Bld_Cuba_Balcony_01.glb",
+      "label": "海盗 · Bld Cuba Balcony 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_balcony_02",
+      "file": "SM_Bld_Cuba_Balcony_02.glb",
+      "label": "海盗 · Bld Cuba Balcony 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_balcony_03",
+      "file": "SM_Bld_Cuba_Balcony_03.glb",
+      "label": "海盗 · Bld Cuba Balcony 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_balcony_corner_01",
+      "file": "SM_Bld_Cuba_Balcony_Corner_01.glb",
+      "label": "海盗 · Bld Cuba Balcony Corner 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_bld_cuba_hall_front_01",
+      "file": "SM_Bld_Cuba_Hall_Front_01.glb",
+      "label": "海盗 · Bld Cuba Hall Front 01",
+      "defaultScale": 1
     }
   ]
 }
