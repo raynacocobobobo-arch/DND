@@ -4,33 +4,52 @@ on:
     branches: [gh-pages]
     paths:
       - 'lighthouse/index.html'
+      - 'lighthouse/audio/lighthouse_background_music.mp3'
+      - '.github/workflows/lighthouse-public-verify.yml'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   public-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
-      - name: Validate production HTML references the expected 3D bundle
+      - name: Validate current production HTML, bundled music and scene
         run: |
-          grep -q 'v35-scene.js?v=35a' lighthouse/index.html
+          set -eu
+          grep -q 'v35-scene.js?v=39a' lighthouse/index.html
           grep -q '灯塔营地 V35a' lighthouse/index.html
-      - name: Verify actual public Pages document and live JS after deployment
+          grep -q 'lighthouse_background_music.mp3?v=music4' lighthouse/index.html
+          grep -q 'background-music.js?v=4a' lighthouse/index.html
+          ! grep -Eq 'id="(music-toggle|music-volume|music-file|music-status)"' lighthouse/index.html
+          test "$(wc -c < lighthouse/audio/lighthouse_background_music.mp3)" -eq 1912206
+      - name: Verify deployed Pages HTML, JS and exact music bytes
         run: |
           set -eu
           BASE='https://raynacocobobobo-arch.github.io/DND/lighthouse/'
-          for i in $(seq 1 48); do
-            CACHE_TOKEN="${GITHUB_SHA}-${GITHUB_RUN_ID}-${i}"
-            curl --retry 2 -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}?release-check=${CACHE_TOKEN}" -o /tmp/public-lighthouse.html || true
-            if grep -q 'v35-scene.js?v=35a' /tmp/public-lighthouse.html 2>/dev/null && grep -q '灯塔营地 V35a' /tmp/public-lighthouse.html; then
-              curl -sSfL -H 'Cache-Control: no-cache' --max-time 15 "${BASE}v35-scene.js?v=35a&check=${CACHE_TOKEN}" -o /tmp/public-lighthouse-v10.js
-              grep -q "dataset.version='v35a'" /tmp/public-lighthouse-v10.js
-              printf 'PUBLIC_V35A_VERIFIED url=%s\n' "${BASE}"
-              exit 0
+          EXPECTED_SHA='80037fed683f262102a001e2d2ff07d01cbc78aa5b82d8dc834437d74ec3ebc3'
+          for i in $(seq 1 44); do
+            CACHE_TOKEN="$GITHUB_SHA-$GITHUB_RUN_ID-$i"
+            if curl -fsSL --retry 1 --max-time 15 -H 'Cache-Control: no-cache' "$BASE?release-check=$CACHE_TOKEN" -o /tmp/public-lighthouse.html \
+                && grep -q 'v35-scene.js?v=39a' /tmp/public-lighthouse.html \
+                && grep -q 'lighthouse_background_music.mp3?v=music4' /tmp/public-lighthouse.html \
+                && grep -q 'background-music.js?v=4a' /tmp/public-lighthouse.html \
+                && ! grep -Eq 'id="(music-toggle|music-volume|music-file|music-status)"' /tmp/public-lighthouse.html; then
+              curl -fsSL --max-time 18 "$BASE""v35-scene.js?v=39a&check=$CACHE_TOKEN" -o /tmp/public-lighthouse-scene.js || true
+              curl -fsSL --max-time 18 "$BASE""background-music.js?v=4a&check=$CACHE_TOKEN" -o /tmp/public-lighthouse-music.js || true
+              if grep -q "dataset.version='v35a'" /tmp/public-lighthouse-scene.js 2>/dev/null \
+                 && grep -q 'attemptAutoplay()' /tmp/public-lighthouse-music.js 2>/dev/null; then
+                curl -fsSL --max-time 60 -H 'Cache-Control: no-cache' "$BASE""audio/lighthouse_background_music.mp3?v=music4&check=$CACHE_TOKEN" -o /tmp/public-lighthouse-music.mp3 || true
+                if [ -f /tmp/public-lighthouse-music.mp3 ] \
+                   && [ "$(wc -c < /tmp/public-lighthouse-music.mp3)" -eq 1912206 ] \
+                   && [ "$(sha256sum /tmp/public-lighthouse-music.mp3 | cut -d' ' -f1)" = "$EXPECTED_SHA" ]; then
+                  echo 'PUBLIC_AUDIO_VERIFIED deployed audio exact bytes, autoplay script and no old controls'
+                  exit 0
+                fi
+              fi
             fi
             sleep 7
           done
-          echo 'Public Pages did not publish V35 within the verification window.' >&2
+          echo 'Failed to verify bundled MP3 and actual production HTML/JS on public GitHub Pages.' >&2
           exit 1
