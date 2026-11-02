@@ -351,26 +351,139 @@ $('toggle-original').onclick=()=>{
  $('toggle-original').setAttribute('aria-pressed',String(gameGroup.visible));
  selected=null;updateInspector();toast(gameGroup.visible?'已显示完整 V35 原版岛屿':'仅暂时隐藏原版岛屿，未删除模型');
 };
+// Human-readable asset families; meshes under 'parts' retain authored type names.
+function assetCategory(id,meta={}){
+ if(meta.kind==='detail'){
+  const cat=meta.category||'其他';
+  if(cat.includes('lighthouse')||cat.includes('灯塔'))return '细节构件 / 灯塔';
+  if(cat.includes('boathouse')||cat.includes('木屋'))return '细节构件 / 木屋与平台';
+  if(cat.includes('pine')||cat.includes('松'))return '细节构件 / 树木';
+  if(cat.includes('shore')||cat.includes('石')||cat.includes('reef'))return '细节构件 / 礁石';
+  return '细节构件 / '+cat;
+ }
+ if(id.startsWith('kraken_'))return '海怪与事件';
+ if(id==='pirate_ship'||id==='service_boat')return '船只';
+ if(id.includes('reef')||id.includes('rock'))return '礁石与海岸';
+ if(id.includes('pine')||id.includes('tree')||id.includes('flora'))return '树木与植被';
+ if(id==='lighthouse'||id==='boathouse')return '灯塔与建筑';
+ if(id.includes('barrel')||id==='campfire')return '营地与道具';
+ return '其他完整模型';
+}
+// Genuine scene-model snapshots: a tiny isolated 3D studio and camera,
+// rendered lazily only for cards inside / near the visible sidebar viewport.
+const previewCache=new Map(),pendingPreviews=[];
+let previewObserver=null,previewScheduled=false,previewRenderer=null;
+const previewScene=new T.Scene();
+previewScene.background=new T.Color('#1e3742');
+previewScene.add(new T.HemisphereLight(0xe9f6f5,0x425766,2.25));
+const previewKey=new T.DirectionalLight(0xffeac6,2.1);
+previewKey.position.set(-6,12,9);previewScene.add(previewKey);
+const previewCamera=new T.PerspectiveCamera(38,4/3,.01,2000);
+function renderPrefabPreview(id){
+ if(previewCache.has(id))return previewCache.get(id);
+ if(!previewRenderer){
+  previewRenderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true,
+   alpha:false,powerPreference:'low-power'});
+  previewRenderer.setPixelRatio(1);
+  previewRenderer.setSize(160,120,false);
+  previewRenderer.outputColorSpace=T.SRGBColorSpace;
+  previewRenderer.toneMapping=T.ACESFilmicToneMapping;
+  previewRenderer.toneMappingExposure=1.12;
+ }
+ const model=catalog.create(id);
+ const box=new T.Box3().setFromObject(model);
+ if(box.isEmpty())return null;
+ const sphere=box.getBoundingSphere(new T.Sphere());
+ const radius=Math.max(.18,sphere.radius),fov=previewCamera.fov*Math.PI/180;
+ const distance=Math.min(1400,Math.max(2,radius/Math.sin(fov/2)*1.35));
+ const facing=new T.Vector3(1.30,.86,1.48).normalize();
+ previewCamera.position.copy(sphere.center).addScaledVector(facing,distance);
+ previewCamera.near=Math.max(.01,distance-radius*2.5);
+ previewCamera.far=distance+radius*4+10;
+ previewCamera.lookAt(sphere.center);
+ previewCamera.updateProjectionMatrix();
+ previewScene.add(model);
+ previewRenderer.render(previewScene,previewCamera);
+ const result=previewRenderer.domElement.toDataURL('image/webp',.82);
+ previewScene.remove(model);
+ previewCache.set(id,result);
+ return result;
+}
+function schedulePreview(){
+ if(previewScheduled||!pendingPreviews.length)return;
+ previewScheduled=true;
+ requestAnimationFrame(()=>{
+  previewScheduled=false;
+  const img=pendingPreviews.shift();
+  if(img?.isConnected&&!img.src){
+   try{const image=renderPrefabPreview(img.dataset.asset);if(image)img.src=image;}
+   catch(err){img.alt='无法预览 '+img.dataset.asset;console.warn('Prefab preview:',img.dataset.asset,err);}
+  }
+  if(pendingPreviews.length)schedulePreview();
+ });
+}
 function renderAssetLibrary(){
  const query=$('asset-search').value.trim().toLowerCase();
- const group=$('asset-filter').value;
+ const mode=$('asset-filter').value;
  const found=catalog.types.filter(id=>{
-  const entry=catalog.all[id]||{};
-  return (group==='complete'?entry.kind!=='detail':group==='parts'?entry.kind==='detail':!group||((entry.category||'完整元件')===group))&&
-   (!query||(entry.label||id).toLowerCase().includes(query)||id.includes(query));
+  const meta=catalog.all[id]||{},category=assetCategory(id,meta);
+  const filter=mode==='complete'?meta.kind!=='detail':
+   mode==='parts'?meta.kind==='detail':
+   !mode||meta.category===mode||category===mode;
+  return filter&&(!query||(meta.label||id).toLowerCase().includes(query)||
+   category.toLowerCase().includes(query)||id.includes(query));
  });
- const box=$('assets');box.replaceChildren();
- // Large scenes stay usable: show the first 120, allow searching/filtering
- // to reach every mesh; no assets are omitted from the registry.
+ if(previewObserver)previewObserver.disconnect();
+ pendingPreviews.length=0;
+ previewObserver=new IntersectionObserver(entries=>{
+  for(const entry of entries){
+   if(!entry.isIntersecting)continue;
+   previewObserver.unobserve(entry.target);
+   const cached=previewCache.get(entry.target.dataset.asset);
+   if(cached)entry.target.src=cached;
+   else pendingPreviews.push(entry.target);
+  }
+  schedulePreview();
+ },{root:$('left'),rootMargin:'180px'});
+ const buckets=new Map();
  for(const id of found){
-  const o=catalog.all[id];const btn=document.createElement('button');
-  btn.type='button';btn.dataset.asset=id;btn.title=o.label;
-  const title=document.createElement('span');
-  title.textContent=id.startsWith('part_')?'◈':'⬡';
-  const label=document.createTextNode(o.label);
-  btn.append(title,label);btn.onclick=()=>setTool('asset:'+id);box.append(btn);
+  const category=assetCategory(id,catalog.all[id]);
+  if(!buckets.has(category))buckets.set(category,[]);
+  buckets.get(category).push(id);
  }
-  $('asset-result').textContent=found.length+' 个可复用模型 / 原版素材共 '+catalog.types.length+' 项';
+ const box=$('assets');box.replaceChildren();
+ const order=['灯塔与建筑','树木与植被','礁石与海岸','船只','营地与道具','海怪与事件'];
+ const sorted=[...buckets.keys()].sort((a,b)=>{
+  const ia=order.indexOf(a),ib=order.indexOf(b);
+  return (ia<0?100:ia)-(ib<0?100:ib)||a.localeCompare(b,'zh-CN');
+ });
+ for(const cat of sorted){
+  const ids=buckets.get(cat),section=document.createElement('section');
+  section.className='asset-category';
+  const title=document.createElement('h3');title.textContent=cat;
+  const count=document.createElement('span');count.textContent=ids.length+' 项';
+  title.append(count);section.append(title);
+  const grid=document.createElement('div');grid.className='asset-grid';
+  for(const id of ids){
+   const meta=catalog.all[id],btn=document.createElement('button');
+   btn.type='button';btn.className='asset-card';btn.dataset.asset=id;
+   btn.title=meta.label+' · '+id;
+   const img=document.createElement('img');img.className='asset-preview';
+   img.alt=meta.label+' 原版模型缩略图';img.dataset.asset=id;
+   img.loading='lazy';img.width=160;img.height=120;
+   const label=document.createElement('span');label.className='asset-label';
+   label.textContent=meta.label;
+   btn.append(img,label);
+   btn.onclick=()=>{setTool('asset:'+id);document.querySelectorAll('.asset-card')
+     .forEach(item=>item.classList.toggle('active',item===btn));};
+   grid.append(btn);
+   const cached=previewCache.get(id);
+   if(cached)img.src=cached;else previewObserver.observe(img);
+  }
+  section.append(grid);box.append(section);
+ }
+ $('asset-result').textContent=found.length+' 个可复用模型 / '+buckets.size+
+  ' 个大类 / 原版素材共 '+catalog.types.length+' 项';
 }
 const categories=[...new Set(catalog.types.map(id=>catalog.all[id]?.category||'整组模型'))];
 for(const c of categories){
