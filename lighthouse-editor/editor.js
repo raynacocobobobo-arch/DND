@@ -23,7 +23,7 @@ const scene=new T.Scene();scene.background=new T.Color('#88b9c9');
 const camera=new T.PerspectiveCamera(43,1,.1,1000),renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=T.SRGBColorSpace;
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.28;
-view.insertBefore(renderer.domElement,view.firstChild);scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
+view.insertBefore(renderer.domElement,view.firstChild);renderer.domElement.tabIndex=-1;scene.add(new T.HemisphereLight(0xc6e5ef,0x52626b,2.15));
 const sunlight=new T.DirectionalLight(0xffe8bd,2.3);sunlight.position.set(-45,92,65);scene.add(sunlight);
 const controls=new OrbitControls(camera,renderer.domElement);
 camera.position.set(40,38,46);controls.target.set(0,0,0);controls.enableDamping=true;controls.dampingFactor=.075;
@@ -322,6 +322,9 @@ function mutateSelected(fn){
 }
 function updateInspector(){
  const r=currentRecord(),multi=selectedIds.size>1;
+ const editable=!!r&&!multi&&!r.locked;
+ for(const field of ['rot','rot-deg','scale','scale-pct'])$(field).disabled=!editable;
+ $('transform-numeric').style.opacity=editable?'1':'.55';
  $('inspector').hidden=!r;$('none').hidden=!!r;
  if(r){
   const native=selected.startsWith('native:'),locked=!!r.locked;
@@ -331,7 +334,7 @@ function updateInspector(){
   $('posx').value=r.x.toFixed(2);$('posy').value=(r.y??0).toFixed(2);$('posz').value=r.z.toFixed(2);
   $('rot').value=r.rotation;$('rot-deg').value=+r.rotation.toFixed(1);$('rot-val').textContent=Math.round(r.rotation)+'°';
   $('scale').value=r.scale;$('scale-pct').value=+(r.scale*100).toFixed(1);$('scale-val').textContent=Math.round(r.scale*100)+'%';
-  for(const field of ['posx','posy','posz','rot','rot-deg','scale','scale-pct'])$(field).disabled=locked||multi;
+  for(const field of ['posx','posy','posz'])$(field).disabled=locked||multi;
   $('delete').textContent=multi?'删除 / 隐藏选中 '+selectedIds.size+' 项':native?'隐藏原版模型':'删除';
   $('duplicate').disabled=locked||multi;
   $('restore-native').hidden=!native;
@@ -358,7 +361,7 @@ function renderSceneObjects(){
    const row=document.createElement('div');row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
    const name=document.createElement('button');name.type='button';name.className='scene-pick';
    name.textContent=r.name+(r.group?' [组合]':'');name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
-   name.onclick=e=>selectItem(id,e.shiftKey);row.append(name);
+   name.onclick=e=>{selectItem(id,e.shiftKey);renderer.domElement.focus({preventScroll:true});};row.append(name);
    for(const [flag,value,label] of [['hidden',r.hidden?'◌':'◉',r.hidden?'显示':'隐藏'],['locked',r.locked?'▣':'▢',r.locked?'解锁':'锁定']]){
     const button=document.createElement('button');button.type='button';button.className='scene-action';
     button.textContent=value;button.title=label+' '+r.name;button.setAttribute('aria-label',label+' '+r.name);
@@ -493,6 +496,9 @@ let directDrag=null;
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 renderer.domElement.addEventListener('pointerdown',e=>{
  if(e.button!==0)return;
+ // Clicking the canvas commits the previously focused parameter field.
+ if(document.activeElement?.matches?.('input, textarea, select'))document.activeElement.blur();
+ renderer.domElement.focus({preventScroll:true});
  const p=pointAt(e);if(!p)return;
  if(activeTool==='outline'){if(outlinePoints.length>=256){toast('最多256个轮廓点');return;}
   outlinePoints.push([clamp(p.x,-WIDTH/2,WIDTH/2),clamp(p.z,-DEPTH/2,DEPTH/2)]);previewOutline();return;}
