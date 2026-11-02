@@ -9,7 +9,7 @@ import {createOffshoreReefs} from './v35-reefs.js?v=35a';
 import {createBoatNavigator} from './v35-boat-nav.js?v=35a';
 import {emptyMap,normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
- from './shared-map.js?v=37a';
+ from './shared-map.js?v=38a';
 const editorPreview=new URLSearchParams(location.search).get('map')==='editor';
 const ignoreLocalMap=new URLSearchParams(location.search).get('map')==='published';
 const localMap=ignoreLocalMap||!editorPreview?null:readPreviewMap();
