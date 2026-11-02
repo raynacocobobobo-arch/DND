@@ -362,7 +362,8 @@ export async function registerCliffyCoastBatch08_10(catalog){
   templates.set(spec.id,root);
   catalog.types.push(spec.id);
   catalog.all[spec.id]={label:spec.label,category:spec.category,kind:'complete',
-   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,\n   assemblyOriginPreserved: spec.category==='Cliffy Coast 房屋屋顶',
+   source:'Cliffy Coast user-supplied FBX',defaultScale:spec.defaultScale,
+   assemblyOriginPreserved: spec.category==='Cliffy Coast 房屋屋顶',
    triangles:spec.triangles,size:[size.x,size.y,size.z].map(x=>+x.toFixed(3))};
  }
  catalog.create=function(id){
