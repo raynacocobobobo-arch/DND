@@ -391,25 +391,43 @@ function updateInspector(){
  $('gizmo-scale').disabled=multi;
  renderSceneObjects();syncTransform();
 }
+
+const collapsedSceneAssets=new Set();
 function renderSceneObjects(){
  if(!world)return;
  const box=$('scene-list'),scroll=box.scrollTop,q=$('scene-search').value.trim().toLowerCase();
- const groups=[['原版游戏物件',Object.keys(nativeTargets).map(id=>'native:'+id)],
-  ['新增地图物件',world.objects.map(o=>o.id)]];
+ const visibleFilter=$('scene-filter').value;
+ const groups=new Map();
+ let hidden=0,shown=0;
+ // The original game assets remain visible in 3D but are excluded from this list.
+ for(const r of [...world.objects].reverse()){
+  if(r.hidden)hidden++;
+  if(visibleFilter==='visible'&&r.hidden)continue;
+  if(visibleFilter==='hidden'&&!r.hidden)continue;
+  const label=catalog.all[r.asset]?.label||r.asset;
+  if(q&&![r.name,r.id,r.asset,label].some(x=>String(x||'').toLowerCase().includes(q)))continue;
+  if(!groups.has(r.asset))groups.set(r.asset,[]);
+  groups.get(r.asset).push(r);shown++;
+ }
  const fragment=document.createDocumentFragment();
- let found=0,hidden=0;
- for(const [heading,ids] of groups){
-  const entries=ids.map(id=>({id,r:recordById(id)})).filter(e=>e.r);
-  hidden+=entries.filter(e=>e.r.hidden).length;
-  const shown=entries.filter(({id,r})=>!q||r.name.toLowerCase().includes(q)||id.toLowerCase().includes(q));
-  if(!shown.length)continue;
-  const h=document.createElement('div');h.className='scene-heading';h.textContent=heading+' · '+shown.length;fragment.append(h);
-  for(const {id,r} of shown){
-   found++;
-   const row=document.createElement('div');row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
+ for(const [asset,records] of groups){
+  const heading=document.createElement('button');
+  heading.type='button';heading.className='scene-heading scene-group-toggle';
+  const expanded=!!q||!collapsedSceneAssets.has(asset);
+  heading.textContent=(expanded?'▾  ':'▸  ')+(catalog.all[asset]?.label||asset)+' · '+records.length;
+  heading.setAttribute('aria-expanded',String(expanded));
+  heading.onclick=()=>{if(collapsedSceneAssets.has(asset))collapsedSceneAssets.delete(asset);else collapsedSceneAssets.add(asset);renderSceneObjects();};
+  fragment.append(heading);
+  if(!expanded)continue;
+  for(const r of records){
+   const id=r.id;
+   const row=document.createElement('div');
+   row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
    const name=document.createElement('button');name.type='button';name.className='scene-pick';
-   name.textContent=r.name+(r.group?' [组合]':'');name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
-   name.onclick=e=>{selectItem(id,e.shiftKey);renderer.domElement.focus({preventScroll:true});};row.append(name);
+   name.textContent=r.name+(r.group?' [组合]':'');
+   name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
+   name.onclick=e=>{selectItem(id,e.shiftKey);renderer.domElement.focus({preventScroll:true});};
+   row.append(name);
    for(const [flag,value,label] of [['hidden',r.hidden?'◌':'◉',r.hidden?'显示':'隐藏'],['locked',r.locked?'▣':'▢',r.locked?'解锁':'锁定']]){
     const button=document.createElement('button');button.type='button';button.className='scene-action';
     button.textContent=value;button.title=label+' '+r.name;button.setAttribute('aria-label',label+' '+r.name);
@@ -419,9 +437,16 @@ function renderSceneObjects(){
    fragment.append(row);
   }
  }
+ if(!shown){
+  const empty=document.createElement('p');empty.className='muted';
+  empty.textContent=world.objects.length?'没有符合条件的模型':'尚未放置新模型，请先在素材库选择元件并在地图上放置。';
+  fragment.append(empty);
+ }
  box.replaceChildren(fragment);box.scrollTop=scroll;
- $('scene-count').textContent=Object.keys(nativeTargets).length+' 原版 / '+world.objects.length+' 新增 / '+hidden+' 隐藏'+(q?' · 匹配 '+found:'');
+ $('scene-count').textContent=world.objects.length+' 个已放置 · '+hidden+' 个已隐藏'+(q?' · 匹配 '+shown:'');
 }
+$('scene-filter').addEventListener('change',renderSceneObjects);
+
 function changeFlags(ids,flag,value){
  const valid=[...new Set(ids)].filter(id=>recordById(id));if(!valid.length)return;
  history();
