@@ -57,7 +57,7 @@ a{color:#b2d8cf}
 
 /* Mobile V4.9: fullscreen canvas with independent bottom-sheet editors. */
 #mobile-top-actions,#mobile-bar,#mobile-view-controls,#mobile-scrim,#mobile-project-actions{display:none}
-@media(max-width:740px){
+@media(max-width:740px), (pointer:coarse) and (max-width:1020px){
  html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  #app{display:block;width:100%;height:100dvh;min-height:0;overflow:hidden}
  header{position:fixed;top:0;left:0;right:0;z-index:80;height:calc(55px + env(safe-area-inset-top));padding:calc(6px + env(safe-area-inset-top)) 12px 6px;gap:8px;flex-wrap:nowrap}
