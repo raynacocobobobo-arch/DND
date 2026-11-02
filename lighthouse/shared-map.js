@@ -8,6 +8,7 @@ export const SHARED_MAP_KEY='dnd-lighthouse-world-map-v2';
 export const WORLD_SCHEMA='lighthouse-world-v2';
 export const GW=64,GH=56,WIDTH=146,DEPTH=129,SEA=.1815;
 export const MAX_EDITOR_GRID=192;
+export const MIN_OBJECT_Y=-50,MAX_OBJECT_Y=100;
 const ASSETS={
  shore_rock:{label:'岸边原版礁石',radius:.95},
  pine:{label:'原版松树',radius:.75},
@@ -64,6 +65,7 @@ export function normalizeMap(v){
    if(!rec||typeof rec!=='object')continue;
    w.baseEdits[id]={
     x:clamp(Number(rec.x)||0,-w.width/2,w.width/2),
+     y:clamp(Number(rec.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
     z:clamp(Number(rec.z)||0,-w.depth/2,w.depth/2),
     rotation:((Number(rec.rotation)||0)%360+360)%360,
     scale:clamp(Number(rec.scale)||1,.3,3),
@@ -87,6 +89,7 @@ export function normalizeMap(v){
   seen.add(id);
   return {id,asset,name:String(obj.name||ASSETS[asset]?.label||asset).slice(0,90),
    x:clamp(Number(obj.x)||0,-w.width/2,w.width/2),
+    y:clamp(Number(obj.y)||0,MIN_OBJECT_Y,MAX_OBJECT_Y),
    z:clamp(Number(obj.z)||0,-w.depth/2,w.depth/2),
    rotation:((Number(obj.rotation)||0)%360+360)%360,
    scale:clamp(Number(obj.scale)||1,.3,3),hidden:!!obj.hidden,locked:!!obj.locked};
@@ -254,7 +257,7 @@ export function createPlacementLayer(w,catalog,root){
   if(!catalog.types.includes(obj.asset))continue;
   const instance=catalog.create(obj.asset);
   instance.userData.mapId=obj.id;instance.name='placed-'+obj.asset+'-'+obj.id;
-  instance.position.set(obj.x,groundY(w,obj.x,obj.z),obj.z);
+  instance.position.set(obj.x,groundY(w,obj.x,obj.z)+(obj.y??0),obj.z);
   instance.rotation.y=obj.rotation*Math.PI/180;
   instance.scale.setScalar(obj.scale);instance.visible=!obj.hidden;
   instance.traverse(n=>{if(n.isMesh)n.userData.mapObjectId=obj.id});
@@ -414,12 +417,13 @@ export function applyNativeEdits(w,group){
   const node=record.node;
   node.position.copy(record.position);
   node.position.x+=(edit.x??base.x)-base.x;
+  node.position.y+=edit.y??0;
   node.position.z+=(edit.z??base.z)-base.z;
   node.quaternion.copy(record.quaternion);
   if(edit.rotation)node.rotateY(edit.rotation*Math.PI/180);
   node.scale.copy(record.scale).multiplyScalar(edit.scale??1);
   node.visible=!edit.hidden;
-  results.push({id,x:edit.x??base.x,z:edit.z??base.z,visible:node.visible});
+  results.push({id,x:edit.x??base.x,y:edit.y??0,z:edit.z??base.z,visible:node.visible});
  }
  return results;
 }
