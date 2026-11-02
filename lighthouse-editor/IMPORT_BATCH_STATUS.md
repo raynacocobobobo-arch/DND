@@ -5,7 +5,7 @@
 ## 批次范围（FBX 原始文件）
 - 总计 172 个 FBX；`1_FBX/Terrain/` 17 个地形独立处理；`Collision/` 12 个碰撞代理不进入普通素材库；剩余 **143 个场景模型候选**。
 - **Batch 01 Plants：14/14 已转换并提交，尚待真人浏览器视觉验收。** `Assets/Lowpoly Style/Cliffy Coast/1_FBX/Plants/`。
-- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；**Batch 04 Misc：18/18 已提交，待浏览器视觉验收**；Batch 05 Bridges/Paths/Walls：0/13；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
+- **Batch 02 Tools/Furniture：20/20 已转换并提交，尚待真人浏览器视觉验收。** `1_FBX/Tools/`14个及`1_FBX/Furniture/`6个。**Batch 03 Items/Weapons/Decoration：18/18 已提交，待浏览器视觉验收。**；**Batch 04 Misc：18/18 已提交，待浏览器视觉验收**；**Batch 05 Bridges/Paths/Walls：13/13 已提交，待浏览器视觉与连接缝验收**；Batch 06 Structures：0/12；Batch 07 House bodies：0/12；Batch 08 Roofs：0/13；Batch 09 Cemetery A：0/11；Batch 10 Cemetery B：0/12。
 - 以上后续类别为**计划分组**，下一批开工前按原 FBX 文件重新核对实际归属；不得把计划数说成已处理数量。
 
 ## Batch 01（植物14）
@@ -129,7 +129,7 @@
 
 ## Batch 04（场景杂件18）——已提交，待视觉验收
 
-**模型文件提交**：`b8c63447113f61a14922db7b8137421567572d7d`。18个独立GLB文件位于 `lighthouse-editor/assets/cliffy-coast/`，新素材注册模块为 `cliffy-coast-batch04.js`。累计已提交 **70/143个非地形模型，剩余73个**。
+**模型文件提交**：`b8c63447113f61a14922db7b8137421567572d7d`。18个独立GLB文件位于 `lighthouse-editor/assets/cliffy-coast/`，新素材注册模块为 `cliffy-coast-batch04.js`。累计已提交 **70/143个非地形模型，剩余73个**。（Batch04历史记录，见后续Batch05进度）
 
 | FBX | 三角面 tris | 默认缩放 |
 |---|---:|---:|
@@ -159,4 +159,35 @@
 
 **校验通过**：18个FBX三角化与GLB回读面数一致，总19,089 tris；已通过GitHub Git blob/tree/commit方式提交18个文件；注册模块及编辑器、试玩场景均已接线；Batch01–04 共70个唯一素材ID、编辑器/试玩/批次模块JavaScript静态语法检查均通过，18个本批模型的Git blob SHA与本地GLB一致。**浏览器内的模型贴图、光照、默认尺寸、着地、删除和试玩仍未完成验收。**
 
-**版本**：灯塔编辑器 V4.6.0，编辑器与独立试玩场景均引用 `cliffy-coast-batch04.js`；正式V35游戏未修改。**下一批**：Batch 05 桥梁、道路、围墙13个（开工前重新核对原FBX的归属及是否与Batch04已有道路构件重复）。
+**版本**：灯塔编辑器 V4.6.0，编辑器与独立试玩场景均引用 `cliffy-coast-batch04.js`；正式V35游戏未修改。**下一批**：Batch 05 桥梁、道路、围墙13个（已于本次完成，详见下文）。
+
+
+## Batch 05（桥梁3、石路4、围栏3、断墙3）——已提交，待视觉验收
+
+**本批13件 / 16,311 tris。累计83/143，剩余60件。** 文件位于 `lighthouse-editor/assets/cliffy-coast/`；注册模块 `lighthouse-editor/cliffy-coast-batch05.js`，编辑器V4.7.0，支持独立试玩，未改正式V35游戏与原始岛屿。
+
+| FBX | tris | 默认缩放 | 分类 |
+|---|---:|---:|---|
+| BridgeStone | 3620 | 47.103% | 桥梁 |
+| BridgeWood | 1318 | 65.180% | 桥梁 |
+| HangingBridgeLong | 4375 | 37.096% | 桥梁 |
+| CobbledStreet1 | 1373 | 29.800% | 道路 |
+| CobbledStreet1_Half | 1183 | 29.800% | 道路 |
+| CobbledStreet2 | 942 | 29.800% | 道路 |
+| CobbledStreet2_Half | 452 | 29.800% | 道路 |
+| FenceStone | 612 | 33.000% | 围墙 |
+| FenceStoneEnd | 56 | 33.000% | 围墙 |
+| FenceStraight3 | 205 | 35.125% | 围墙 |
+| DamagedFortWall1 | 761 | 32.000% | 围墙 |
+| DamagedFortWall2 | 692 | 32.000% | 围墙 |
+| DamagedFortWall3 | 722 | 32.000% | 围墙 |
+
+**尺度校准**：灯塔约7.43世界单位；保留原FBX尺寸，默认scale只在实例上应用一次。CobbledStreet1/1_Half/2/2_Half统一29.8%；FenceStone及FenceStoneEnd统一33%；DamagedFortWall1/2/3统一32%。桥梁按照跨度与通道宽度分别校准。
+
+**边界约束**：以上为独立可放置GLB，尚未实现顶点焊接、自动拓扑无缝拼接或曲面高度匹配。已有外框贴边只是AABB几何外框对齐；岩面接缝须实际试玩验收并另行处理。
+
+**贴图风险**：CobbledStreet四件源FBX引用原资源包中没有随附的Desert Pack贴图，本批GLB暂用Cliffy Coast Main图集，UV未重排但色彩不保证一致。其余模型使用原包Main图集，仍待视觉核验。
+
+**通过的静态检查**：13个FBX多边形三角化tris与GLB回读一致、13个GitHub二进制Blob SHA逐项匹配、注册模块与编辑器及试玩的JS语法检查通过。**未验收**：浏览器实时渲染、材质颜色、转角朝向、贴边接缝、拖放着地、帧率与实际游戏交互。
+
+**下批**：Batch06 Structures，计划12件，先核对剩余原始FBX目录及重复资产，勿触碰前五批及17件地形。
