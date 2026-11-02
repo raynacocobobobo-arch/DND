@@ -355,7 +355,7 @@ function renderSceneObjects(){
    found++;
    const row=document.createElement('div');row.className='scene-row'+(selectedIds.has(id)?' selected':'')+(r.hidden?' hidden-item':'')+(r.locked?' locked-item':'');
    const name=document.createElement('button');name.type='button';name.className='scene-pick';
-   name.textContent=r.name;name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
+   name.textContent=r.name+(r.group?' [组合]':'');name.title=id+' · X '+r.x.toFixed(1)+' · Y '+(r.y??0).toFixed(1)+' · Z '+r.z.toFixed(1);
    name.onclick=e=>selectItem(id,e.shiftKey);row.append(name);
    for(const [flag,value,label] of [['hidden',r.hidden?'◌':'◉',r.hidden?'显示':'隐藏'],['locked',r.locked?'▣':'▢',r.locked?'解锁':'锁定']]){
     const button=document.createElement('button');button.type='button';button.className='scene-action';
@@ -750,6 +750,108 @@ $('scale').onchange=e=>mutateSelected(o=>o.scale=+e.target.value);
 $('scale').oninput=e=>$('scale-val').textContent=(+e.target.value).toFixed(1);
 $('new-world').onclick=()=>{if(!confirm('清空新增地形与模型？原游戏岛屿和原始物件保持不变；建议先导出 JSON。'))return;history();world=emptyMap({width:WIDTH,depth:DEPTH,grid:[GW,GH]});selected=null;selectedIds.clear();redraw();saveLocal();toast('已清空新增内容，保留画布大小和原版岛屿');};
 $('demo-world').onclick=()=>{if(!confirm('恢复预设群岛会覆盖当前地图。继续吗？'))return;history();world=initial();selected=null;selectedIds.clear();redraw();saveLocal();toast('已恢复群岛模板');};
+// External assets: import to a persistent browser library, then use existing
+// click-to-place palette, inspector, 3-axis gizmo, and map object records.
+function updateGLBStatus(extra=''){
+ $('glb-status').textContent='已加载 '+glbLibrary.count()+' 个外部 GLB'
+  +(glbLibrary.persistent?' · IndexedDB 本地持久保存':' · 浏览器不支持持久保存')
+  +(extra?' · '+extra:'');
+}
+function addExternalCategoryOption(){
+ for(const category of ['外部地形 GLB','外部模型 GLB']){
+  if([...$('asset-filter').options].some(o=>o.value===category))continue;
+  const opt=document.createElement('option');opt.value=category;opt.textContent=category;
+  $('asset-filter').append(opt);
+ }
+}
+updateGLBStatus();addExternalCategoryOption();
+$('import-glb').onchange=async event=>{
+ const input=event.target,files=[...(input.files||[])];
+ if(!files.length)return;
+ input.disabled=true;updateGLBStatus('正在读取模型');
+ try{
+  const result=await glbLibrary.importFiles(files);
+  updateGLBStatus(result.errors.length?'失败 '+result.errors.length+' 个':'导入完成');
+  renderAssetLibrary();rebuildObjects();
+  if(result.added.length){
+   const last=result.added.at(-1);
+   setTool('asset:'+last.id);
+  }
+  const errors=result.errors.slice(0,2).map(r=>r.name+': '+r.error);
+  toast('成功 '+result.added.length+' 个'+(errors.length?'；'+errors.join('；'):'') );
+  console.info('GLB import',result);
+ }catch(err){updateGLBStatus('导入失败');toast('模型导入失败：'+err.message);}
+ finally{input.value='';input.disabled=false;}
+};
+function downloadJSON(data,filename){
+ const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+$('export-portable').onclick=async()=>{
+ const button=$('export-portable');button.disabled=true;
+ try{
+  const portable=await glbLibrary.exportPortable(world);
+  downloadJSON(portable,'lighthouse-world-portable.json');
+  toast('完整工程已导出：包含 '+portable.externalGLBs.length+' 个 GLB');
+ }catch(err){toast('完整工程导出失败：'+err.message);}
+ finally{button.disabled=false;}
+};
+$('group-selected').onclick=()=>{
+ const ids=[...selectedIds].filter(id=>!id.startsWith('native:')&&!isLocked(id));
+ if(ids.length<2||ids.length!==selectedIds.size){toast('请 Shift 多选至少两个未锁定的新增模型');return;}
+ history();
+ const group='grp_'+Math.random().toString(36).slice(2,10);
+ for(const id of ids)objects.get(id).group=group;
+ updateInspector();setDirty(true);saveLocal();
+ toast('已组合 '+ids.length+' 个模型；使用三轴移动手柄整体平移');
+};
+$('ungroup-selected').onclick=()=>{
+ const groups=new Set([...selectedIds].map(id=>recordById(id)?.group).filter(Boolean));
+ if(!groups.size){toast('当前选择没有组合');return;}
+ history();let count=0;
+ for(const r of world.objects)if(groups.has(r.group)){r.group=null;count++;}
+ selectedIds.clear();selected=null;updateInspector();setDirty(true);saveLocal();
+ toast('已拆分 '+count+' 个组合成员');
+};
+// World-space bounding-box alignment. This is a positioning tool only;
+// geometry is not welded and incompatible edge silhouettes are not hidden.
+$('snap-neighbor').onclick=()=>{
+ if(selectedIds.size!==1||!selected||selected.startsWith('native:')){
+  toast('先单选一个新增 GLB 模型');return;
+ }
+ const a=objects.get(selected);
+ if(!a?.asset.startsWith('ext_glb_')){toast('贴边功能适用于外部 GLB 地形模块');return;}
+ const modelA=assetLayer.children.find(g=>g.userData.mapId===selected);
+ if(!modelA)return;
+ modelA.updateWorldMatrix(true,true);
+ const ba=new T.Box3().setFromObject(modelA);
+ let best=null;
+ const overlap=(a0,a1,b0,b1)=>Math.min(a1,b1)-Math.max(a0,b0);
+ for(const modelB of assetLayer.children){
+  const other=objects.get(modelB.userData.mapId);
+  if(!other||other.id===a.id||!other.asset.startsWith('ext_glb_')||other.hidden)continue;
+  modelB.updateWorldMatrix(true,true);
+  const bb=new T.Box3().setFromObject(modelB);
+  const zOverlap=overlap(ba.min.z,ba.max.z,bb.min.z,bb.max.z);
+  const xOverlap=overlap(ba.min.x,ba.max.x,bb.min.x,bb.max.x);
+  const pairs=[];
+  if(zOverlap>0.1)pairs.push({axis:'x',delta:bb.max.x-ba.min.x},{axis:'x',delta:bb.min.x-ba.max.x});
+  if(xOverlap>0.1)pairs.push({axis:'z',delta:bb.max.z-ba.min.z},{axis:'z',delta:bb.min.z-ba.max.z});
+  for(const p of pairs){
+   const distance=Math.abs(p.delta);
+   if(!best||distance<best.distance)best={...p,distance,other:other.name,heightGap:Math.abs(ba.min.y-bb.min.y)};
+  }
+ }
+ if(!best||best.distance>Math.max(4,Math.min(12,Math.max(CELLX,CELLZ)*4))){
+  toast('附近未找到可贴边的外部 GLB；请先移动到相邻位置');return;
+ }
+ history();
+ if(best.axis==='x')a.x=clamp(a.x+best.delta,-WIDTH/2,WIDTH/2);
+ else a.z=clamp(a.z+best.delta,-DEPTH/2,DEPTH/2);
+ rebuildObjects();setDirty(true);saveLocal();
+ toast('已对齐 '+best.other+' 的外框'+(best.heightGap>.5?'；高度有差异，请检查接缝':'；请检查实际网格接缝'));
+};
 $('save').onclick=()=>{
  const data=JSON.stringify(world,null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'}));
  const a=document.createElement('a');a.href=url;a.download='lighthouse-world-map.json';document.body.append(a);a.click();a.remove();
@@ -757,8 +859,17 @@ $('save').onclick=()=>{
 };
 $('input-json').onchange=async e=>{
  const file=e.target.files?.[0];if(!file)return;
- try{const input=validWorld(JSON.parse(await file.text()));history();world=input;selected=null;selectedIds.clear();redraw();saveLocal();toast('地图已导入');}
- catch(err){toast('导入失败：'+err.message)}
+ try{
+  const raw=JSON.parse(await file.text());
+  const imported=await glbLibrary.importPortable(raw);
+  const input=validWorld(raw);
+  history();world=input;selected=null;selectedIds.clear();
+  renderAssetLibrary();redraw();saveLocal();updateGLBStatus();
+  const missing=new Set(world.objects.filter(o=>o.asset.startsWith('ext_glb_')&&!glbLibrary.has(o.asset)).map(o=>o.asset));
+  toast('地图已导入'+(imported.added.length?'，恢复 '+imported.added.length+' 个 GLB':'')
+   +(missing.size?'；缺少 '+missing.size+' 个 GLB，请重新导入文件':'')
+   +(imported.errors.length?'；'+imported.errors.length+' 个模型读取失败':''));
+ }catch(err){toast('导入失败：'+err.message)}
  e.target.value='';
 };
 $('autosave').onclick=()=>{saveLocal();toast('预览地图已保存');};
