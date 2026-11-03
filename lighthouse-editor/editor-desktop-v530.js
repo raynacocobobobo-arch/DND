@@ -1,4 +1,4 @@
-import {mountEditorManagement} from './editor-management.js?v=4-github-delete-labels';
+import {mountEditorManagement} from './editor-management.js?v=5-usage-guard';
 import {createEditorStorage} from './editor-storage.js?v=1';
 import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
