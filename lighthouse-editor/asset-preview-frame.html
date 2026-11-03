@@ -17,7 +17,9 @@ const scene=new T.Scene(),camera=new T.PerspectiveCamera(39,size[0]/size[1],0.01
 scene.add(new T.HemisphereLight(0xe3f4f6,0x4a5863,2.1));
 const light=new T.DirectionalLight(0xffe4c9,2.4);light.position.set(-4,8,6);scene.add(light);
 window.addEventListener('message',async event=>{
- if(event.source!==parent||event.data?.type!=='render-glb'||typeof event.data.key!=='string')return;
+ if(event.source!==parent)return;
+ if(event.data?.type==='preview-ping'){parent.postMessage({type:'preview-ready'},'*');return;}
+ if(event.data?.type!=='render-glb'||typeof event.data.key!=='string')return;
  const {key,buffer}=event.data;
  try{
   if(!(buffer instanceof ArrayBuffer)||buffer.byteLength>30*1024*1024)throw Error('GLB 体积超限');
