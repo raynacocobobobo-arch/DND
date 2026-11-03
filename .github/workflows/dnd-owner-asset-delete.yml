@@ -1,0 +1,90 @@
+name: DND owner-approved permanent asset deletion
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      test_only:
+        description: 'Safe smoke test: no repository assets are removed'
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: dnd-asset-delete-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  delete:
+    if: >-
+      (github.event_name == 'issues' &&
+       github.event.issue.title == '[DND-ASSET-DELETE]' &&
+       github.event.issue.user.login == github.repository_owner &&
+       github.event.sender.login == github.repository_owner) ||
+      (github.event_name == 'workflow_dispatch' && inputs.test_only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Read trusted deletion implementation
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: controller
+          persist-credentials: false
+
+      - name: Checkout asset site branch for authenticated changes
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Check owner request and update tracked asset files
+        if: github.event_name == 'issues'
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node controller/.github/scripts/dnd-asset-delete.js site
+
+      - name: Commit physical file deletion and index updates
+        if: github.event_name == 'issues'
+        working-directory: site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A lighthouse-editor/assets/pirates lighthouse-editor/assets/cliffy-coast
+          if git diff --cached --quiet; then
+            echo "No asset files changed"; exit 1
+          fi
+          git commit -m "assets: delete GLBs approved via issue #${{ github.event.issue.number }}"
+          git push origin HEAD:gh-pages
+
+      - name: Add verified result to GitHub issue
+        if: github.event_name == 'issues' && success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA="$(git -C site rev-parse HEAD)"
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" \
+            --body "已永久删除选中的 GitHub 素材、更新索引，并提交至 gh-pages。Commit: \`$SHA\`。"
+          gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --reason completed
+
+      - name: Report deletion failure
+        if: github.event_name == 'issues' && failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" \
+            --body "素材删除流程失败，未确认删除成功。请查看本次 Actions 日志后再重试。"
+
+      - name: Verify workflow and script parse without deletion
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          node --check controller/.github/scripts/dnd-asset-delete.js
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('site/lighthouse-editor/assets/pirates/manifest.json'));const c=JSON.parse(fs.readFileSync('site/lighthouse-editor/assets/cliffy-coast/asset-manager-index.json'));console.log('Safe smoke: pirates',p.assets.length,'cliffy',c.assets.length)"
