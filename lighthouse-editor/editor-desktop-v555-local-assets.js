@@ -641,6 +641,7 @@ function renderAssetLibrary(){
   buckets.get(category).push(id);
  }
  const box=$('assets');box.replaceChildren();
+ if(!found.length){const empty=document.createElement('div');empty.className='muted';empty.textContent='本地素材库为空。请打开全屏素材管理器导入 GLB。';box.append(empty);}
  const sorted=[...buckets.keys()].sort((a,b)=>a.localeCompare(b,'zh-CN'));
  for(const cat of sorted){
   const ids=buckets.get(cat),section=document.createElement('section');
