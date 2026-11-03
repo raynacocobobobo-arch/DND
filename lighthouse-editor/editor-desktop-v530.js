@@ -1,10 +1,10 @@
-import {mountEditorManagement} from './editor-management.js?v=2-thumbnail-management';
+import {mountEditorManagement} from './editor-management.js?v=3-physical-github-delete';
 import {createEditorStorage} from './editor-storage.js?v=1';
 import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
+import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=2-removed-assets';
 import {createExternalGLBLibrary} from './external-glb-library.js?v=2-safe-delete';
 import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=permanent-deletion-v1';
 import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=permanent-deletion-v1';
@@ -69,8 +69,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正�
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.5.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.5.1] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.1',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
@@ -78,7 +78,10 @@ loadingText('正在恢复浏览器里的 GLB 模型…');
 const glbLibrary=await createExternalGLBLibrary(catalog);
 let editorStorage=null;
 try{editorStorage=await createEditorStorage();}catch(e){console.error('Editor IndexedDB unavailable:',e);}
-const hiddenAssets=new Set(editorStorage?await editorStorage.readHidden().catch(()=>[]):[]);
+const hiddenAssets=new Set();
+if(editorStorage){
+ try{await editorStorage.writeHidden([]);}catch(e){console.warn('Previous local-only hides could not be reset',e);}
+}
 let saveChain=Promise.resolve();
 let previousWorkingMap=null,previousWorkingMapArchived=false;
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
