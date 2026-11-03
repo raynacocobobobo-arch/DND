@@ -1,4 +1,8 @@
 {
   "schemaVersion": 1,
-  "ids": []
+  "ids": [
+    "coastal_tree_t01",
+    "coastal_tree_t02",
+    "coastal_tree_t04"
+  ]
 }
