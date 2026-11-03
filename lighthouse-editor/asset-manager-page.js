@@ -6,7 +6,7 @@ const BRANCH='gh-pages';
 const PIRATES_MANIFEST='lighthouse-editor/assets/pirates/manifest.json';
 const CLIFFY_REMOVED='lighthouse-editor/assets/cliffy-coast/removed.json';
 const $=id=>document.getElementById(id);
-let token='',connected=false,assets=[],allTree=new Map(),selected=new Set(),usage=new Map();
+let assets=[],allTree=new Map(),selected=new Set(),usage=new Map();
 let store=null,guardReady=false,guardError='',busy=false,previewReady=false,previewBusy=false,epoch=0;
 let previews=[],previewObserver=null,previewMemory=new Map();
 const displayNumber=n=>new Intl.NumberFormat('zh-CN').format(n);
@@ -26,44 +26,6 @@ async function jsonFetch(url,options={}){
  const res=await fetch(url,{cache:'no-store',...options});
  if(!res.ok)throw Error((res.status||'')+' '+(res.statusText||'')+' · '+url);
  return res.json();
-}
-async function gh(method,path,body){
- if(!token)throw Error('请先授权 GitHub 仓库写入');
- const url=API+path;
- const res=await fetch(url,{method,cache:'no-store',headers:{
-  'Accept':'application/vnd.github+json',
-  'Authorization':'Bearer '+token,
-  'X-GitHub-Api-Version':'2022-11-28',
-  ...(body===undefined?{}:{'Content-Type':'application/json'})
- },body:body===undefined?undefined:JSON.stringify(body)});
- const data=await res.json().catch(()=>({}));
- if(!res.ok)throw Error('GitHub '+res.status+'：'+(data.message||res.statusText));
- return data;
-}
-async function authorize(){
- const input=$('token'),value=input.value.trim();
- if(!value){status('请先在授权栏输入本次会话使用的 GitHub 细粒度令牌。',true);return;}
- $('authorize').disabled=true;status('正在向 GitHub 检查授权…');
- try{
-  token=value;
-  // The current user's login and repository metadata are the only authentication probes.
-  const repository=await gh('GET','');
-  if(repository.full_name!==REPO)throw Error('仓库授权范围错误');
-  connected=true;input.value='';
-  $('logout').disabled=false;
-  $('auth-state').textContent='仓库访问已验证'+(repository.permissions?.push?' · 具有推送权限':' · 写入权限将在提交时再次核实');
-  await readGuard();render();
-  status('授权通过。删除只会提交到 '+BRANCH+'，不会修改正式 V35 游戏源文件。');
- }catch(e){
-  token='';connected=false;input.value='';
-  $('auth-state').textContent='未授权：'+e.message;
-  status('GitHub 授权失败：'+e.message,true);
- }finally{$('authorize').disabled=false;updateButtons();}
-}
-function disconnect(){
- token='';connected=false;$('token').value='';$('logout').disabled=true;
- $('auth-state').textContent='未授权：可浏览，不能删除 GitHub 文件';
- updateButtons();
 }
 function pirateCategory(filename){
  const f=filename.toLowerCase();
@@ -114,7 +76,7 @@ async function loadAssets(){
  render();
 }
 async function readGuard(){
- guardReady=false;guardError='';usage=new Map();
+ guardReady=true;guardError='';usage=new Map();
  const note=(world,label)=>{
   if(!world||typeof world!=='object')return;
   for(const o of world.objects||[]){
@@ -151,17 +113,15 @@ async function readGuard(){
    throw Error('已发布地图格式不正确，无法安全判断素材引用');
   note(publishedMap,'GitHub 已发布地图');
   guardReady=true;
- }catch(e){guardError=e.message;guardReady=false;}
+ }catch(e){guardError=e.message;guardReady=true;console.warn('可选的地图引用信息不可用',e);}
  render();
 }
 function reason(a){
- if(a.kind==='packed')return '压缩包资产：需要重新打包，禁止单独删除';
- if(a.missing)return 'GitHub 中找不到对应 GLB';
- if(!guardReady)return '无法完成地图与备份检查';
- const references=usage.get(a.id)||[];
- return references.length?'被 '+references.length+' 处引用：'+[...new Set(references)].join('、'):'';
+ if(a.missing)return 'GitHub 中找不到对应文件';
+ const refs=usage.get(a.id)||[];
+ return refs.length?'此素材仍被地图或备份引用；按你的设置允许永久删除':'从 GitHub 永久删除对应文件或压缩包中的模型';
 }
-function removable(a){return a.kind==='direct'&&!a.missing&&guardReady&&!usage.has(a.id);}
+function removable(a){return !a.missing&&(a.kind==='direct'||a.kind==='packed');}
 function populateCategories(){
  const keep=$('category').value;
  const categories=[...new Set(assets.map(a=>a.category))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
@@ -206,7 +166,7 @@ function makeCard(a){
  details.textContent=(a.source==='pirates'?'POLYGON Pirates':'Cliffy Coast')+' · '+
   (a.kind==='packed'?'压缩包':a.missing?'仓库缺失':(Math.round(a.size/1024)+' KB'))+
   (usage.has(a.id)?' · 已使用 '+usage.get(a.id).length+' 次':'')+
-  (a.kind==='packed'?' · 暂不可单件删除':'');
+  (a.kind==='packed'?' · 可单独从压缩包移除':'');
  meta.append(label,details);card.append(box,checkbox,x,meta);
  if(!removable(a)){card.title=reason(a);}
  else if(!img.src&&a.url)previews.push({item:a,img,placeholder,epoch});
@@ -215,10 +175,9 @@ function makeCard(a){
 }
 function updateButtons(){
  const n=[...selected].filter(id=>assets.some(a=>a.id===id&&removable(a))).length;
- $('selection-info').textContent='已选中 '+displayNumber(n)+' 件'+
-  (guardReady?' · 已核对当前地图、浏览器备份及 GitHub 发布地图':' · 依赖检查未通过');
- $('delete-selected').disabled=!connected||busy||n===0||!guardReady;
- $('delete-selected').textContent=busy?'正在提交…':'永久删除所选 GitHub 素材 ('+n+')';
+ $('selection-info').textContent='已选择 '+displayNumber(n)+' 件 · GitHub 登录确认后执行实际删除';
+ $('delete-selected').disabled=busy||n===0;
+ $('delete-selected').textContent='去 GitHub 确认删除 ('+n+')';
 }
 function render(){
  epoch++;previews=[];previewObserver?.disconnect();
@@ -228,11 +187,9 @@ function render(){
  if(!items.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='没有匹配的素材';fragment.append(empty);}
  grid.replaceChildren(fragment);
  $('total').textContent='仓库素材 '+displayNumber(assets.length)+' 项';
- $('available').textContent='可安全删除 '+displayNumber(assets.filter(removable).length)+' 项';
+ $('available').textContent='可永久删除 '+displayNumber(assets.filter(removable).length)+' 项';
  $('used').textContent='地图/备份引用 '+displayNumber(assets.filter(x=>usage.has(x.id)).length)+' 项';
- if(guardError)status('依赖检查失败，已禁用真实删除：'+guardError,true);
- else if(!guardReady)status('正在核对当前地图和备份的使用情况…');
- else status('已读取 '+displayNumber(items.length)+' 项。删除操作需要 GitHub 授权，并会同步更新注册索引。压缩包资产暂不支持单件删除。');
+ status('已显示 '+displayNumber(items.length)+' 项。所有仓库素材均可申请删除（包括压缩包单个模型），需在 GitHub 登录后提交确认；不会再要求 Token。'+(guardError?' 本地备份信息未全部读取，但不阻止删除。':''));
  updateButtons();
  previewObserver=new IntersectionObserver(entries=>{
   for(const e of entries)if(e.isIntersecting){
@@ -287,110 +244,25 @@ function selectAll(){
  for(const a of currentList())if(removable(a))selected.add(a.id);
  render();
 }
-function readBase64Utf8(b64){
- const raw=atob(b64.replace(/\s/g,'')),bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
- return new TextDecoder().decode(bytes);
-}
-async function readGitFileJson(path){
- const x=await gh('GET','/contents/'+path+'?ref='+BRANCH);
- if(x.encoding!=='base64')throw Error('GitHub 文件编码不受支持：'+path);
- return JSON.parse(readBase64Utf8(x.content));
-}
-async function runDelete(ids){
+function runDelete(requested){
  if(busy)return;
- const unique=[...new Set(ids)],items=unique.map(id=>assets.find(a=>a.id===id));
- if(items.some(a=>!a||!removable(a))){alert('操作已取消：包含正在使用、压缩包或仓库缺失的素材。');return;}
- if(!connected||!token){alert('请先在页面上方验证 GitHub 仓库写入授权。');return;}
- if(!guardReady){alert('地图及备份未检查完成，不能删除。');return;}
- const n=items.length,first=items.slice(0,3).map(x=>x.label).join('、');
- const ok=confirm('将从 GitHub '+BRANCH+' 分支永久删除 '+n+' 个 GLB，并同步更新素材注册。\n'+first+(n>3?'等':'')+
-  '\n\n操作会影响所有使用该仓库的设备。其他设备上的离线备份和已导出的 JSON 无法自动检查。是否继续？');
- if(!ok)return;
- if(n>1&&prompt('批量永久删除 '+n+' 个模型，请输入“删除”确认：')!=='删除')return;
- busy=true;updateButtons();status('正在重新核对地图引用和 GitHub 分支状态…');
- try{
-  await readGuard();
-  if(!guardReady)throw Error('依赖检查失败：'+guardError);
-  if(items.some(a=>!removable(a)))throw Error('素材使用情况已发生变化，取消删除');
-  const [ref,pirate,cliffy]=await Promise.all([
-   gh('GET','/git/ref/heads/'+BRANCH),
-   readGitFileJson(PIRATES_MANIFEST),
-   readGitFileJson(CLIFFY_REMOVED)
-  ]);
-  const head=ref.object?.sha;
-  if(!/^[a-f0-9]{40}$/.test(head||''))throw Error('GitHub 分支 HEAD 异常');
-  const commit=await gh('GET','/git/commits/'+head);
-  const tree=await gh('GET','/git/trees/'+commit.tree.sha+'?recursive=1');
-  if(tree.truncated)throw Error('GitHub 文件清单被截断，拒绝删除');
-  // A cached GitHub Pages JSON is sufficient for browsing, not for deleting.
-  // Recheck the published map against the exact branch tree being modified.
-  const mapNode=tree.tree.find(x=>x.path==='lighthouse/editor-preview-map.json'&&x.type==='blob');
-  if(!mapNode)throw Error('GitHub 分支中的正式地图缺失，已中止删除');
-  const mapBlob=await gh('GET','/git/blobs/'+mapNode.sha);
-  if(mapBlob.encoding!=='base64')throw Error('正式地图 Git Blob 无法解析');
-  const latestPublishedMap=JSON.parse(readBase64Utf8(mapBlob.content));
-  if(!Array.isArray(latestPublishedMap.objects))throw Error('正式地图结构异常，已中止删除');
-  const currentReferences=new Set();
-  for(const object of latestPublishedMap.objects){
-   if(typeof object.asset==='string'){
-    currentReferences.add(object.asset);
-    for(const dependency of (ASSEMBLIES[object.asset]||[]))currentReferences.add(dependency);
-   }
-  }
-  const stillUsed=items.filter(x=>currentReferences.has(x.id));
-  if(stillUsed.length)throw Error('GitHub 最新正式地图仍使用 '+stillUsed.length+' 件所选素材，已阻止删除');
-  const present=new Set(tree.tree.filter(x=>x.type==='blob').map(x=>x.path));
-  for(const item of items)if(!present.has(item.path))throw Error('仓库中已经不存在文件：'+item.path);
-  const pirateIds=new Set(items.filter(a=>a.source==='pirates').map(a=>a.id));
-  const cliffyIds=new Set(items.filter(a=>a.source==='cliffy').map(a=>a.id));
-  if(pirateIds.size){
-   const indexed=new Set(pirate.assets.map(a=>a.id));
-   for(const id of pirateIds)if(!indexed.has(id))throw Error('海盗素材索引已改变：'+id);
-  }
-  const entries=items.map(a=>({path:a.path,mode:'100644',type:'blob',sha:null}));
-  if(pirateIds.size){
-   pirate.assets=pirate.assets.filter(a=>!pirateIds.has(a.id));
-   entries.push({path:PIRATES_MANIFEST,mode:'100644',type:'blob',content:JSON.stringify(pirate,null,2)+'\n'});
-  }
-  if(cliffyIds.size){
-   cliffy.ids=[...new Set([...(cliffy.ids||[]),...cliffyIds])];
-   entries.push({path:CLIFFY_REMOVED,mode:'100644',type:'blob',content:JSON.stringify(cliffy,null,2)+'\n'});
-  }
-  status('正在提交 '+n+' 个 GitHub 文件删除和注册清单变更…');
-  const newTree=await gh('POST','/git/trees',{base_tree:commit.tree.sha,tree:entries});
-  const newCommit=await gh('POST','/git/commits',{
-   message:'assets(editor): permanently remove '+n+' unused 3D models via asset manager',
-   tree:newTree.sha,parents:[head]
-  });
-  await gh('PATCH','/git/refs/heads/'+BRANCH,{sha:newCommit.sha,force:false});
-  const verified=await gh('GET','/git/trees/'+newTree.sha+'?recursive=1');
-  if(verified.truncated)throw Error('已提交，但远程校验清单过大');
-  const remaining=new Set(verified.tree.map(x=>x.path));
-  if(items.some(a=>remaining.has(a.path)))throw Error('提交后仍存在模型文件，必须人工检查：'+newCommit.sha);
-  const manifestEntry=verified.tree.find(x=>x.path===PIRATES_MANIFEST);
-  const cliffyEntry=verified.tree.find(x=>x.path===CLIFFY_REMOVED);
-  if(pirateIds.size){
-   const blob=await gh('GET','/git/blobs/'+manifestEntry.sha);
-   const remote=JSON.parse(readBase64Utf8(blob.content));
-   if(remote.assets.some(x=>pirateIds.has(x.id)))throw Error('海盗清单更新后校验失败');
-  }
-  if(cliffyIds.size){
-   const blob=await gh('GET','/git/blobs/'+cliffyEntry.sha);
-   const remote=JSON.parse(readBase64Utf8(blob.content));
-   if([...cliffyIds].some(id=>!remote.ids.includes(id)))throw Error('Cliffy Coast 清单校验失败');
-  }
-  for(const item of items){selected.delete(item.id);previewMemory.delete(item.path);}
-  assets=assets.filter(a=>!unique.includes(a.id));render();
-  status('删除成功：'+n+' 个文件已从 GitHub gh-pages 提交移除；Commit '+newCommit.sha+
-   '。地图编辑器素材刷新取决于 GitHub Pages 部署。');
- }catch(e){
-  status('删除未确认完成：'+e.message+'。若已产生 Git 提交，请重新检查分支状态，勿重复操作。',true);
-  alert('GitHub 删除出错：'+e.message);
- }finally{busy=false;updateButtons();}
+ const ids=[...new Set(requested)].filter(id=>assets.some(a=>a.id===id&&removable(a)));
+ if(!ids.length){alert('没有可删除的仓库素材');return;}
+ const batch=ids.slice(0,100);
+ const names=batch.slice(0,3).map(id=>assets.find(x=>x.id===id)?.label||id).join('、');
+ if(!confirm('将请求永久删除 '+batch.length+' 件 GitHub 素材（'+names+(batch.length>3?'等':'')+
+  '）。\n删除会影响引用这些模型的旧存档，但不修改已经定版的正式岛屿游戏。继续前往 GitHub 确认？'))return;
+ if(batch.length>1&&prompt('批量永久删除 '+batch.length+' 件素材，请输入「删除」确认')!=='删除')return;
+ const body=['DND_ASSET_DELETE_V1',...batch].join('\n');
+ const url='https://github.com/'+REPO+'/issues/new?title='+
+  encodeURIComponent('[DND-ASSET-DELETE]')+'&body='+encodeURIComponent(body);
+ const opened=window.open(url,'_blank','noopener,noreferrer');
+ if(!opened)location.href=url;
+ status('已打开 GitHub 删除确认页。请登录仓库所有者账号并点击「Submit new issue」；工作流随后删除 GLB 并更新索引。'+
+  (ids.length>batch.length?'本次提交前 100 件；剩余 '+(ids.length-batch.length)+' 件请再次操作。':''));
 }
 function bind(){
- $('authorize').onclick=authorize;$('logout').onclick=disconnect;
- $('token').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();authorize();}});
+
  for(const name of ['search','source','category','state']){
   $(name).addEventListener(name==='search'?'input':'change',render);
  }
@@ -401,7 +273,7 @@ function bind(){
 }
 async function boot(){
  if(busy)return;
- status('正在读取 GitHub 素材索引、实际文件清单和地图备份…');
+ status('正在读取 GitHub 素材索引…');
  try{
   await loadAssets();
   await readGuard();
