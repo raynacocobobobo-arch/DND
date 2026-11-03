@@ -54,7 +54,8 @@ jobs:
             assert(!fs.existsSync(dir(base+p)),p+' should be gone');
           const pack=zlib.gunzipSync(fs.readFileSync(dir(base+'cliffy-coast/cliffy_batch08_10.glbpack.gz')));
           assert.equal(pack.readUInt32LE(8),0,'packed model removed, preserving archive structure');
-          assert.deepEqual(JSON.parse(fs.readFileSync(dir(base+'cliffy-coast/removed.json'))).ids,['cliffy_coast_anvil','cliffy_coast_roof_red']);
+          assert.deepEqual(JSON.parse(fs.readFileSync(dir(base+'cliffy-coast/removed.json'))).ids,ids.slice().sort(),'all deleted IDs must be tombstoned');
+          assert.equal(JSON.parse(fs.readFileSync(dir(base+'cliffy-coast/asset-manager-index.json'))).assets.length,0,'Cliffy source index must not retain deleted models');
           assert.equal(JSON.parse(fs.readFileSync(dir(base+'pirates/manifest.json'))).assets.length,0);
           assert.equal(JSON.parse(fs.readFileSync(dir(base+'palms/manifest.json'))).assets.length,0);
           fs.writeFileSync(event,JSON.stringify({issue:{user:{login:'attacker'},title:'[DND-ASSET-DELETE]',state:'open',body:'DND_ASSET_DELETE_V1\npirates_sm_prop_parrot_01'},sender:{login:'attacker'}}));
