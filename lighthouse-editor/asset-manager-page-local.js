@@ -1,4 +1,4 @@
-import {createExternalGLBLibrary} from './external-glb-library-local.js?v=555-shared-local-db';
+import {createExternalGLBLibrary} from './external-glb-library-local.js?v=555-shared-local-db-2';
 import {createEditorStorage} from './editor-storage.js?v=1';
 
 const $=id=>document.getElementById(id);
