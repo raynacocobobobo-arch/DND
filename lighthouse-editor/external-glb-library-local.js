@@ -161,7 +161,7 @@ export async function createExternalGLBLibrary(catalog) {
   for (const id of ids) {
    const r = source.get(id);
    if (!r) { missing.push(id); continue; }
-   included.push({id, name: r.name, base64: await encode64(r.bytes)});
+   included.push({id, name: r.name, category:r.category, base64: await encode64(r.bytes)});
   }
   if (missing.length) throw Error('缺少 ' + missing.length + ' 个原始 GLB，无法制作完整工程包');
   return {...map, externalGLBs: included};
@@ -172,7 +172,7 @@ export async function createExternalGLBLibrary(catalog) {
   if (embedded.length > MAX_IMPORTS) throw Error('工程内模型数量过多');
   const added = [], errors = [];
   for (const rec of embedded) {
-   try { added.push(await register({id: rec.id, name: rec.name, bytes: decode64(rec.base64)}, true)); }
+   try { added.push(await register({id: rec.id, name: rec.name, category:rec.category, bytes: decode64(rec.base64)}, true)); }
    catch (err) { errors.push({name: rec.name || rec.id, error: err.message}); }
   }
   return {added, errors};
@@ -189,7 +189,7 @@ export async function createExternalGLBLibrary(catalog) {
  async function renameAsset(id, nextName, nextCategory) {
   const current=source.get(id);
   if(!current)throw Error('找不到本地素材：'+id);
-  const name=String(nextName||current.name).trim().replace(/\\.glb$/i,'').slice(0,90)||current.name;
+  const name=String(nextName||current.name).trim().replace(/\.glb$/i,'').slice(0,90)||current.name;
   const category=String(nextCategory||current.category||inferCategory(name)).trim().slice(0,64)||inferCategory(name);
   const next={...current,name,category};
   if(!await put(db,next))throw Error('素材属性未能保存到本地数据库');
@@ -218,7 +218,7 @@ export async function createExternalGLBLibrary(catalog) {
   for(const record of records){
    if(templates.has(record.id)){
     const current=source.get(record.id);
-    const name=String(record.name||current?.name||'Imported GLB').replace(/\\.glb$/i,'').slice(0,90);
+    const name=String(record.name||current?.name||'Imported GLB').replace(/\.glb$/i,'').slice(0,90);
     const category=String(record.category||inferCategory(name)).slice(0,64);
     const bytes=record.bytes instanceof ArrayBuffer?record.bytes:record.bytes?.buffer;
     source.set(record.id,{...record,name,category,bytes});
