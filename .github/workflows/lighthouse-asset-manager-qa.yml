@@ -78,7 +78,7 @@ jobs:
             await page.fill('#search','');
             assert.equal(await page.locator('article.asset').count(),655);
             assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html'));
-            await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('已显示'),{timeout:30000});
+            assert.ok((await page.locator('#status').textContent()).includes('GitHub 删除确认页'),'Delete action should open the owner confirmation request');
             assert.equal(contentsCalls,0,'Anonymous dependency checks must not call GitHub Contents API');
             assert.ok((await page.locator('#available').textContent()).includes('可永久删除'));
             assert.ok(!errors.length,errors.join('\n'));
