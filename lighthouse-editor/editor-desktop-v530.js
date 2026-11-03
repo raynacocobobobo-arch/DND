@@ -4,7 +4,6 @@ import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {registerLegacyHarborPrefabs} from './legacy-harbor-assets.js?v=1a';
 import {registerCoastalPalms} from './coastal-tree-prefabs.js?v=1';
 import {createExternalGLBLibrary} from './external-glb-library.js?v=2-safe-delete';
 import {registerCliffyCoastTrees} from './cliffy-coast-prefabs.js?v=permanent-deletion-v1';
@@ -12,17 +11,14 @@ import {registerCliffyCoastBatch02} from './cliffy-coast-batch02.js?v=permanent-
 import {registerCliffyCoastBatch03} from './cliffy-coast-batch03.js?v=permanent-deletion-v1';
 import {registerCliffyCoastBatch04} from './cliffy-coast-batch04.js?v=permanent-deletion-v1';
 import {registerCliffyCoastBatch05} from './cliffy-coast-batch05.js?v=permanent-deletion-v1';
-import {registerCliffyCoastBatch06_07} from './cliffy-coast-batch06-07.js?v=2-house-pivot';
-import {registerCliffyCoastBatch08_10} from './cliffy-coast-batch08-10.js?v=2-house-pivot';
+import {registerCliffyCoastBatch06_07} from './cliffy-coast-batch06-07.js?v=physical-delete-v1';
+import {registerCliffyCoastBatch08_10} from './cliffy-coast-batch08-10.js?v=physical-delete-v1';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
-import {group as gameGroup,buildCutaway,buildIsland,setRenderer} from '../lighthouse/v27-world.js?v=27a';
-import {buildSite} from '../lighthouse/v35-site.js?v=35a';
-import {createOffshoreReefs} from '../lighthouse/v35-reefs.js?v=35a';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
- nativePrefabCatalog,createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
- BASE_ASSETS,nativeGameTargets,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
+ createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
+ BASE_ASSETS,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
 const $=id=>document.getElementById(id),view=$('view');
-const EDITOR_BUILD_ID='desktop-20261103-v522';
+const EDITOR_BUILD_ID='desktop-20261103-v550-no-original';
 document.documentElement.dataset.editorBuild=EDITOR_BUILD_ID;
 const bootElement=$('startup-status'),bootMessage=$('startup-message');
 const loadingText=message=>{if(bootElement&&!bootElement.dataset.error){bootElement.hidden=false;bootMessage.textContent=message;}};
@@ -51,21 +47,19 @@ const transform=new TransformControls(camera,renderer.domElement);
 const transformProxy=new T.Object3D();scene.add(transformProxy);scene.add(transform);
 transform.setSize(.82);transform.setMode('translate');
 let transformMode='translate',syncingProxy=false,transformLast=new T.Vector3(),dragHistoryTaken=false;
-setRenderer(renderer);renderer.localClippingEnabled=true;
-scene.add(gameGroup);
-const originalSea=buildCutaway();buildIsland();buildSite();const originalReefs=createOffshoreReefs();
-// The original scene remains a prefab source, but a new map starts as open sea.
-gameGroup.visible=false;
+renderer.localClippingEnabled=true;
+// No V35 game world, island, reefs or native scene is constructed or added
+// to the editor. The approved original game remains in /lighthouse/.
+const gameGroup=new T.Group();gameGroup.visible=false;
 // Start drawing before awaiting optional GLB downloads, so slow mobile networks do
 // not show an empty 3D canvas. The final editor loop replaces this boot renderer.
 renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
 loadingText('场景已创建，正在加载 3D 模型素材…');
-originalSea.userData.setBlend(1);
-for(const child of gameGroup.children)
- if(child.userData.waterSidewall||['sea-geological-base','sea-soil-stratum','opaque-sea-cross-section'].includes(child.name))
-  child.visible=false;
-const catalog=nativePrefabCatalog(gameGroup,originalReefs.root);
-const legacyHarborAssets=registerLegacyHarborPrefabs(catalog);
+// Only independently managed GLB assets participate in this editor's
+// palette. The original game's procedural and scene-owned assets are not
+// registered here, so they cannot be altered through the editor.
+const catalog={types:[],all:{},create:()=>new T.Group()};
+const legacyHarborAssets=[];
 const coastalPalmAssets=await registerCoastalPalms(catalog);loadingText('正在读取素材库 · 植被和道具…');
 const cliffyCoastTrees=await registerCliffyCoastTrees(catalog);
 const cliffyBatch02=await registerCliffyCoastBatch02(catalog);
@@ -75,8 +69,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正�
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.3.4] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.3.4',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.5.0] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.0',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
@@ -89,7 +83,7 @@ let saveChain=Promise.resolve();
 let previousWorkingMap=null,previousWorkingMapArchived=false;
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
 gameGroup.visible=false; // empty-sea editor by default; original scene is only an optional reference
-const nativeTargets=nativeGameTargets();
+const nativeTargets={};
 const root=new T.Group();scene.add(root);
 const openSea=addOpenOcean(root);
 scene.fog=new T.Fog(0x88b9c9,88,265);
@@ -557,12 +551,6 @@ view.addEventListener('pointerleave',()=>cursor.visible=false);
 $('apply-map-size').onclick=()=>resizeMapTo($('map-width').value,$('map-depth').value);
 for(const id of ['map-width','map-depth'])$(id).addEventListener('keydown',e=>{if(e.key==='Enter'){$('apply-map-size').click();e.preventDefault();}});
 $('frame-world').onclick=frameWholeMap;
-$('toggle-original').onclick=()=>{
- gameGroup.visible=!gameGroup.visible;
- $('toggle-original').textContent=gameGroup.visible?'隐藏原版岛屿':'显示原版岛屿';
- $('toggle-original').setAttribute('aria-pressed',String(gameGroup.visible));
- selected=null;selectedIds.clear();updateInspector();toast(gameGroup.visible?'已显示完整 V35 原版岛屿':'仅暂时隐藏原版岛屿，未删除模型');
-};
 // Human-readable asset families; meshes under 'parts' retain authored type names.
 function assetCategory(id,meta={}){
  if(id.startsWith('ext_glb_'))return meta.category||'外部模型 GLB';
@@ -1161,8 +1149,6 @@ $('new-blank').onclick=async()=>{
   }
   history();world=emptyMap();selected=null;selectedIds.clear();
   gameGroup.visible=false;
-  $('toggle-original').textContent='显示原版岛屿';
-  $('toggle-original').setAttribute('aria-pressed','false');
   redraw();renderAssetLibrary();
   await saveLocal();
   toast('已新建空海面：没有岛屿和场景物件');
@@ -1174,16 +1160,12 @@ setDirty(false);setTool('select');await editorFeatures.refreshBackups();await ed
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,assetDefaults:Object.keys(world.assetDefaults||{}).length,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
- realGameAssets:true,originalIslandVisible:gameGroup.visible,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
+ realGameAssets:false,originalIslandVisible:false,nativeObjectCount:Object.keys(nativeTargets).length,prefabTypes:catalog.types,assetCount:catalog.types.length,sharedStoreKey:SHARED_MAP_KEY,rendered:!!renderer.domElement}),
  placeAt:(asset,x,z)=>{if(!catalog.types.includes(asset))return false;
   history();world.objects.push({id:uid(),asset,name:asset,x,y:0,z,rotation:0,...initialAppearanceFor(asset),hidden:false,locked:false});rebuildObjects();saveLocal();return true;},
  exportMap:()=>JSON.parse(snapshot()),importMap:w=>{history();world=validWorld(w);selected=null;selectedIds.clear();redraw();saveLocal();},
- selectNative:id=>{if(!BASE_ASSETS[id])return false;selectItem('native:'+id);return true;},
- editNative:(id,change)=>{
-  if(!BASE_ASSETS[id])return false;history();
-  Object.assign(nativeEdit(id),change);applyNativeEdits(world,gameGroup);applyAllNativeAppearance();
-  setDirty(true);saveLocal();return true;
- },
+ selectNative:()=>false,
+ editNative:()=>false,
  getCatalog:()=>catalog.types.map(id=>({id,name:catalog.all[id].label,category:assetCategory(id,catalog.all[id])})),
  selectObject:(id,multi=false)=>{if(!recordById(id))return false;selectItem(id,multi);return true;},
  setTransformMode:mode=>{if(!['translate','rotate','scale'].includes(mode))return false;setTransformMode(mode);return true;},
