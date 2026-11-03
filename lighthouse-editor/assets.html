@@ -26,8 +26,8 @@ main{padding:22px 25px 55px;max-width:1800px;margin:auto}
 .asset{position:relative;border:1px solid #35515b;background:#152932;border-radius:11px;overflow:hidden;min-width:0;transition:border-color .15s,transform .15s}
 .asset:hover{border-color:#6daba5}.asset.selected{outline:2px solid #b4ded1;border-color:#b4ded1}
 .asset.blocked{opacity:.73}
-.preview{width:100%;aspect-ratio:4/3;background:radial-gradient(circle at 45% 35%,#32505b,#13242e);display:flex;justify-content:center;align-items:center;overflow:hidden}
-.preview img{width:100%;height:100%;object-fit:contain}
+.preview{position:relative;width:100%;aspect-ratio:4/3;background:radial-gradient(circle at 45% 35%,#32505b,#13242e);display:flex;justify-content:center;align-items:center;overflow:hidden}
+.preview img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .preview .placeholder{font-size:12px;color:#8ca6b1;text-align:center;max-width:90%}
 .meta{padding:9px 10px 12px}.name{font-size:12px;line-height:1.4;font-weight:600;word-break:break-word;min-height:34px}
 .details{font-size:10px;color:#a1b6ba;margin-top:5px;line-height:1.55}
@@ -71,5 +71,5 @@ main{padding:22px 25px 55px;max-width:1800px;margin:auto}
  <div><button id="delete-selected" class="danger" type="button" disabled>永久删除所选 GitHub 素材</button></div>
 </div>
 <iframe id="frame" sandbox="allow-scripts" src="./asset-preview-frame.html" title="隔离模型预览"></iframe>
-<script type="module" src="./asset-manager-page.js?v=1"></script>
+<script type="module" src="./asset-manager-page.js?v=2"></script>
 </body></html>
