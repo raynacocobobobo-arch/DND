@@ -264,6 +264,10 @@ function runDelete(requested){
   '）。\n删除会影响引用这些模型的旧存档，但不修改已经定版的正式岛屿游戏。继续前往 GitHub 确认？'))return;
  if(batch.length>1&&prompt('批量永久删除 '+batch.length+' 件素材，请输入「删除」确认')!=='删除')return;
  openGithubAssetDeletion(batch);
+ // Advance the selection when a request contains more than the 100-item URL limit.
+ // Files remain visible until GitHub confirms and deploys the actual deletion.
+ for(const id of batch)selected.delete(id);
+ render();
  status('已打开 GitHub 删除确认页。请登录仓库所有者账号并点击「Submit new issue」；工作流随后删除 GLB 并更新索引。'+
   (ids.length>batch.length?'本次提交前 100 件；剩余 '+(ids.length-batch.length)+' 件请再次操作。':''));
 }
