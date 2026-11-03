@@ -57,8 +57,9 @@ async function loadAssets(){
  const retired=new Set(removed.ids);
  const out=[];
  for(const x of pirate.assets){
-  if(!/^[A-Za-z0-9_.-]+\.glb$/i.test(x.file)||!/^pirates_[a-z0-9_]+$/.test(x.id))continue;
+  if(retired.has(x.id)||!/^[A-Za-z0-9_.-]+\.glb$/i.test(x.file)||!/^pirates_[a-z0-9_]+$/.test(x.id))continue;
   const path='lighthouse-editor/assets/pirates/'+x.file;
+  if(inventoryKnown&&!allTree.has(path))continue;
   out.push({id:x.id,path,label:String(x.label||x.file),file:x.file,source:'pirates',
    category:pirateCategory(x.file),kind:'direct',size:allTree.get(path)?.size||0,
    missing:inventoryKnown&&!allTree.has(path),url:'./assets/pirates/'+encodeURIComponent(x.file)});
@@ -67,14 +68,17 @@ async function loadAssets(){
   if(retired.has(x.id)||!/^cliffy_coast_[a-z0-9_]+$/.test(x.id))continue;
   const direct=x.kind==='direct';
   const path=direct?'lighthouse-editor/assets/cliffy-coast/'+x.file:'';
+  const physicalPath=direct?path:'lighthouse-editor/assets/cliffy-coast/'+x.pack;
+  if(inventoryKnown&&!allTree.has(physicalPath))continue;
   out.push({id:x.id,path,label:String(x.label||x.id),file:x.file,source:'cliffy',
    category:String(x.category||'Cliffy Coast'),kind:direct?'direct':'packed',
    pack:x.pack,size:direct?(allTree.get(path)?.size||0):0,
    missing:direct&&inventoryKnown&&!allTree.has(path),url:direct?'./assets/cliffy-coast/'+encodeURIComponent(x.file):null});
  }
  for(const x of palms.assets){
-  if(!/^coastal_tree_t0[1-4]$/.test(x.id)||!/^[A-Za-z0-9_.-]+\.glb$/.test(x.file))continue;
+  if(retired.has(x.id)||!/^coastal_tree_t0[1-4]$/.test(x.id)||!/^[A-Za-z0-9_.-]+\.glb$/.test(x.file))continue;
   const path='lighthouse-editor/assets/palms/'+x.file;
+  if(inventoryKnown&&!allTree.has(path))continue;
   out.push({id:x.id,path,label:String(x.label||x.file),file:x.file,source:'palms',
    category:String(x.category||'树木与植被'),kind:'direct',
    size:allTree.get(path)?.size||0,missing:inventoryKnown&&!allTree.has(path),
@@ -129,9 +133,9 @@ async function readGuard(){
 function reason(a){
  if(a.missing)return 'GitHub 中找不到对应文件';
  const refs=usage.get(a.id)||[];
- return refs.length?'此素材仍被地图或备份引用；按你的设置允许永久删除':'从 GitHub 永久删除对应文件或压缩包中的模型';
+ return refs.length?'当前地图或备份正在使用，不能删除':'从 GitHub 永久删除对应文件或压缩包中的模型';
 }
-function removable(a){return !a.missing&&(a.kind==='direct'||a.kind==='packed');}
+function removable(a){return !a.missing&&!usage.has(a.id)&&(a.kind==='direct'||a.kind==='packed');}
 function populateCategories(){
  const keep=$('category').value;
  const categories=[...new Set(assets.map(a=>a.category))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
@@ -185,7 +189,7 @@ function makeCard(a){
 }
 function updateButtons(){
  const n=[...selected].filter(id=>assets.some(a=>a.id===id&&removable(a))).length;
- $('selection-info').textContent='已选择 '+displayNumber(n)+' 件 · GitHub 登录确认后执行实际删除';
+ $('selection-info').textContent='已选择 '+displayNumber(n)+' 件 · 仅未被地图或备份使用的素材可删除';
  $('delete-selected').disabled=busy||n===0;
  $('delete-selected').textContent='去 GitHub 确认删除 ('+n+')';
 }
@@ -199,7 +203,7 @@ function render(){
  $('total').textContent='仓库素材 '+displayNumber(assets.length)+' 项';
  $('available').textContent='可永久删除 '+displayNumber(assets.filter(removable).length)+' 项';
  $('used').textContent='地图/备份引用 '+displayNumber(assets.filter(x=>usage.has(x.id)).length)+' 项';
- status('已显示 '+displayNumber(items.length)+' 项。所有仓库素材均可申请删除（包括压缩包单个模型），需在 GitHub 登录后提交确认；不会再要求 Token。'+(guardError?' 本地备份信息未全部读取，但不阻止删除。':''));
+ status('已显示 '+displayNumber(items.length)+' 项。未被地图或备份使用的素材可删除；已不存在的文件不会显示为素材，需在 GitHub 登录后提交确认；不会再要求 Token。'+(guardError?' 本地备份信息未全部读取，但不阻止删除。':''));
  updateButtons();
  previewObserver=new IntersectionObserver(entries=>{
   for(const e of entries)if(e.isIntersecting){
