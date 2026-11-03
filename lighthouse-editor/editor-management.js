@@ -3,67 +3,130 @@ export function mountEditorManagement(ctx){
  const {catalog,glbLibrary,editorStorage,hiddenAssets,getWorld,
   refreshLibrary,afterDelete,loadWorld,downloadJSON,toast}=ctx;
  const $=id=>document.getElementById(id);
- async function refreshAssets(preferred){
-  const list=$('manage-asset-list'),current=preferred??list.value;
-  const q=$('manage-asset-search').value.trim().toLowerCase();
-  const options=catalog.types.filter(id=>{
-   const m=catalog.all[id]||{};
-   return !q||[m.label,id,m.category].some(v=>String(v||'').toLowerCase().includes(q));
-  });
-  list.replaceChildren();
-  for(const id of options){
-   const meta=catalog.all[id]||{},uses=getWorld()?.objects?.filter(x=>x.asset===id).length||0;
-   const suffix=hiddenAssets.has(id)?' [已移除]':uses?' [使用'+uses+']':'';
-   list.add(new Option((meta.label||id)+suffix,id));
+ // One integrated management mode inside the thumbnail palette.
+ // Native and repository models are only hidden locally; imported GLBs
+ // are removed from this browser's IndexedDB after dependency checking.
+ let managing=false,showRemoved=false,deleting=false;
+ const chosen=new Set();
+ const isManaging=()=>managing;
+ const isShowingRemoved=()=>managing&&showRemoved;
+ const isSelected=id=>chosen.has(id);
+ function updateAssetControls(message=''){
+  $('asset-manage-toggle').classList.toggle('active',managing);
+  $('asset-manage-toggle').textContent=managing?'退出移除':'移除素材';
+  $('asset-manage-toggle').setAttribute('aria-pressed',String(managing));
+  $('asset-manager-tools').hidden=!managing;
+  $('asset-remove-selected').disabled=!managing||deleting||chosen.size===0;
+  $('asset-remove-selected').textContent='删除选中 ('+chosen.size+')';
+  $('asset-select-visible').disabled=!managing||deleting;
+  $('asset-manager-show-removed').checked=showRemoved;
+  $('asset-manage-status').textContent=message||
+   (chosen.size?'已选中 '+chosen.size+' 个素材；点击「删除选中」批量处理。':
+    '点击缩略图多选，点右上角红色 × 单独删除。地图或备份使用中的素材不可删除。');
+ }
+ function setManaging(value){
+  managing=!!value;chosen.clear();showRemoved=false;
+  if(managing){
+   const active=getWorld()?.objects;
+   // No placement command must remain armed when deleting thumbnails.
+   document.querySelectorAll('.asset-card.active').forEach(el=>el.classList.remove('active'));
   }
-  if(options.includes(current))list.value=current;
-  else if(options.length)list.selectedIndex=0;
-  assetStatus();
+  updateAssetControls();refreshLibrary();
  }
- function assetStatus(){
-  const id=$('manage-asset-list').value,m=catalog.all[id],uses=getWorld()?.objects?.filter(o=>o.asset===id).length||0;
-  $('manage-asset-status').textContent=!m?'没有匹配的素材':
-   (m.label||id)+' · '+(uses?'已放置 '+uses+' 次，不可删除':'当前地图未使用')+
-   (hiddenAssets.has(id)?' · 已移除':'')+
-   (id.startsWith('ext_glb_')?' · 删除本地 GLB':' · 仅隐藏本机素材库');
-  $('manage-asset-delete').disabled=!m||hiddenAssets.has(id);
-  $('manage-asset-restore').disabled=!m||!hiddenAssets.has(id);
+ function toggleSelect(id){
+  if(!managing||hiddenAssets.has(id)||!catalog.all[id])return;
+  if(chosen.has(id))chosen.delete(id);else chosen.add(id);
+  updateAssetControls();refreshLibrary();
  }
- $('manage-asset-search').addEventListener('input',()=>refreshAssets());
- $('manage-asset-list').addEventListener('change',assetStatus);
- $('manage-asset-delete').onclick=async()=>{
-  const id=$('manage-asset-list').value,m=catalog.all[id],world=getWorld();if(!m||!world)return;
-  const count=world.objects.filter(o=>o.asset===id).length;
-  if(count){alert('不可删除：当前地图使用了此素材 '+count+' 次。请先删除对应场景对象。');return;}
-  if(editorStorage){
-   try{
-    const backups=await editorStorage.listBackups();
-    const used=backups.filter(b=>(b.world.objects||[]).some(o=>o.asset===id));
-    if(used.length){alert('不可删除：'+used.length+' 份地图备份仍引用此素材。请先处理这些备份。');return;}
-   }catch(e){alert('无法核对备份依赖，停止删除：'+e.message);return;}
-  }else{alert('本机存储不可用，无法安全删除素材。');return;}
-  const local=id.startsWith('ext_glb_');
-  const label=m.label||id;
-  if(!confirm(local?'永久删除本机 GLB「'+label+'」？需要原文件才能重新导入。':
-   '从当前浏览器素材库移除「'+label+'」？GitHub 和原版模型不删除，可以恢复。'))return;
-  try{
-   if(local)await glbLibrary.removeAsset(id);
-   else{
-    await editorStorage.writeHidden([...hiddenAssets,id]);
-    hiddenAssets.add(id);
-   }
-   afterDelete(id);refreshLibrary();await refreshAssets(id);
-   toast(local?'本机 GLB 已删除':'素材已从本机素材库移除');
-  }catch(e){alert('素材删除失败：'+e.message);}
- };
- $('manage-asset-restore').onclick=async()=>{
-  const id=$('manage-asset-list').value;if(!hiddenAssets.has(id))return;
+ async function restoreAsset(id){
+  if(!hiddenAssets.has(id)||deleting)return false;
+  if(!editorStorage){alert('本地存储不可用，无法恢复素材');return false;}
+  deleting=true;updateAssetControls();
   try{
    const next=[...hiddenAssets].filter(x=>x!==id);
    await editorStorage.writeHidden(next);hiddenAssets.delete(id);
-   refreshLibrary();await refreshAssets(id);toast('素材已恢复');
-  }catch(e){alert('恢复素材失败：'+e.message);}
+   refreshLibrary();updateAssetControls('已恢复「'+(catalog.all[id]?.label||id)+'」');
+   toast('素材已恢复到资源库');return true;
+  }catch(e){alert('素材恢复失败：'+e.message);return false;}
+  finally{deleting=false;updateAssetControls();}
+ }
+ async function removeAssets(requested){
+  if(deleting||!managing)return {removed:[],blocked:[]};
+  const ids=[...new Set(requested)].filter(id=>catalog.all[id]&&!hiddenAssets.has(id));
+  if(!ids.length)return {removed:[],blocked:[]};
+  if(!editorStorage){alert('持久存储不可用，无法安全移除素材。');return {removed:[],blocked:ids};}
+  deleting=true;updateAssetControls('正在检查素材使用情况与地图备份…');
+  try{
+   // A referenced asset cannot disappear from the scene or any saved backup.
+   const world=getWorld();
+   const backups=await editorStorage.listBackups();
+   const references=new Map();
+   for(const obj of world?.objects||[])references.set(obj.asset,(references.get(obj.asset)||0)+1);
+   const protectedBackup=new Map();
+   for(const backup of backups){
+    const used=new Set((backup.world?.objects||[]).map(obj=>obj.asset));
+    for(const id of used)protectedBackup.set(id,(protectedBackup.get(id)||0)+1);
+   }
+   const blocked=ids.filter(id=>references.has(id)||protectedBackup.has(id));
+   const eligible=ids.filter(id=>!blocked.includes(id));
+   if(!eligible.length){
+    const detail=blocked.slice(0,3).map(id=>(catalog.all[id]?.label||id)+
+     (references.has(id)?'：地图使用 '+references.get(id)+' 次':'：'+protectedBackup.get(id)+' 份备份引用')).join('；');
+    alert('无法删除：所选素材都在使用中。'+detail+(blocked.length>3?'；另有 '+(blocked.length-3)+' 个':''));
+    updateAssetControls('已阻止删除 '+blocked.length+' 个正在使用的素材');return {removed:[],blocked};
+   }
+   const permanently=eligible.filter(id=>id.startsWith('ext_glb_'));
+   const locally=eligible.filter(id=>!id.startsWith('ext_glb_'));
+   const preview=eligible.slice(0,3).map(id=>catalog.all[id]?.label||id).join('、');
+   const ask=(eligible.length===1?'移除「'+preview+'」？':'移除 '+eligible.length+' 个素材（'+preview+(eligible.length>3?'等':'')+'）？')+
+    (permanently.length?'\n其中 '+permanently.length+' 个本机导入 GLB 将从当前浏览器数据库永久删除。':'')+
+    (locally.length?'\n其中 '+locally.length+' 个内置 / GitHub 素材只在本浏览器资源库隐藏，可恢复。':'')+
+    (blocked.length?'\n另有 '+blocked.length+' 个正在使用的素材将跳过，不删除。':'');
+   if(!confirm(ask)){updateAssetControls('已取消素材移除');return {removed:[],blocked};}
+   const removed=[],errors=[];
+   // Persist the non-destructive portion in one checked IndexedDB write.
+   if(locally.length){
+    try{
+     await editorStorage.writeHidden([...hiddenAssets,...locally]);
+     for(const id of locally){hiddenAssets.add(id);removed.push(id);afterDelete(id);}
+    }catch(e){errors.push('素材库移除失败：'+e.message);}
+   }
+   // GLB deletes are individually committed; a failure never clears scene data.
+   for(const id of permanently){
+    try{await glbLibrary.removeAsset(id);removed.push(id);afterDelete(id);}
+    catch(e){errors.push((catalog.all[id]?.label||id)+'：'+e.message);}
+   }
+   for(const id of removed)chosen.delete(id);
+   refreshLibrary();updateAssetControls(
+    '已移除 '+removed.length+' 个'+(blocked.length?'；保护 '+blocked.length+' 个使用中的素材':'')+
+    (errors.length?'；失败 '+errors.length+' 个':''));
+   if(errors.length)alert('部分素材未删除：'+errors.join('；'));
+   else toast('已移除 '+removed.length+' 个素材'+(blocked.length?'，跳过 '+blocked.length+' 个使用中的素材':''));
+   if(blocked.length)alert('有 '+blocked.length+' 个素材未删除，因为当前地图或备份仍在使用。');
+   return {removed,blocked,errors};
+  }catch(e){alert('删除前检查失败，未继续：'+e.message);return {removed:[],blocked:ids};}
+  finally{deleting=false;updateAssetControls();}
+ }
+ const removeOne=id=>removeAssets([id]);
+ const removeSelected=()=>removeAssets([...chosen]);
+ $('asset-manage-toggle').onclick=()=>setManaging(!managing);
+ $('asset-manage-exit').onclick=()=>setManaging(false);
+ $('asset-manager-show-removed').onchange=e=>{
+  showRemoved=!!e.target.checked;chosen.clear();updateAssetControls();refreshLibrary();
  };
+ $('asset-remove-selected').onclick=removeSelected;
+ $('asset-select-visible').onclick=()=>{
+  if(!managing)return;
+  for(const wrap of document.querySelectorAll('#assets .asset-card-wrap')){
+   const id=wrap.dataset.asset;if(catalog.all[id]&&!hiddenAssets.has(id))chosen.add(id);
+  }
+  updateAssetControls();refreshLibrary();
+ };
+ async function refreshAssets(){
+  for(const id of [...chosen])if(!catalog.all[id]||hiddenAssets.has(id))chosen.delete(id);
+  updateAssetControls();refreshLibrary();
+ }
+ updateAssetControls();
  const backupControls=['backup-restore','backup-delete','backup-export'];
  async function refreshBackups(prefer){
   const list=$('backup-list'),prior=prefer??list.value;
@@ -130,5 +193,5 @@ export function mountEditorManagement(ctx){
    toast('已下载备份 JSON');
   }catch(e){alert('备份下载失败：'+e.message);}
  };
- return {refreshAssets,refreshBackups};
+ return {refreshAssets,refreshBackups,isManaging,isShowingRemoved,isSelected,toggleSelect,removeOne,removeSelected,restoreAsset};
 }
