@@ -1147,6 +1147,27 @@ resumeButton.onclick=async()=>{
   toast('已恢复上次编辑的地图');
  }catch(err){alert('恢复上次编辑失败：'+err.message);}
 };
+$('new-blank').onclick=async()=>{
+ const old=JSON.parse(snapshot());
+ const changed=world.objects.length>0||world.regions?.length>0||
+  Object.keys(world.baseEdits||{}).length>0||
+  world.types.some(t=>t!=='water')||world.heights.some(h=>h>-3);
+ if(changed&&!confirm('新建空海面？当前地图将替换为没有岛屿和物件的海面。之前的地图会先自动备份。'))return;
+ try{
+  if(changed){
+   if(!editorStorage)throw Error('浏览器备份存储不可用，无法保护当前地图，请先导出 JSON');
+   await editorStorage.createBackup('新建空海面前 '+new Date().toLocaleString('zh-CN',{hour12:false}),old);
+   await editorFeatures.refreshBackups();
+  }
+  history();world=emptyMap();selected=null;selectedIds.clear();
+  gameGroup.visible=false;
+  $('toggle-original').textContent='显示原版岛屿';
+  $('toggle-original').setAttribute('aria-pressed','false');
+  redraw();renderAssetLibrary();
+  await saveLocal();
+  toast('已新建空海面：没有岛屿和场景物件');
+ }catch(err){alert('新建空海面失败：'+err.message);}
+};
 syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();
 setDirty(false);setTool('select');await editorFeatures.refreshBackups();await editorFeatures.refreshAssets();
 // Deliberately do not autosave the empty startup canvas over a previous session.
