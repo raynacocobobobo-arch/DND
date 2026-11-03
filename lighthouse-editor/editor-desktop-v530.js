@@ -18,7 +18,7 @@ import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
  BASE_ASSETS,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
 const $=id=>document.getElementById(id),view=$('view');
-const EDITOR_BUILD_ID='desktop-20261103-v550-no-original';
+const EDITOR_BUILD_ID='desktop-20261103-v553-prune-deleted';
 document.documentElement.dataset.editorBuild=EDITOR_BUILD_ID;
 const bootElement=$('startup-status'),bootMessage=$('startup-message');
 const loadingText=message=>{if(bootElement&&!bootElement.dataset.error){bootElement.hidden=false;bootMessage.textContent=message;}};
@@ -69,13 +69,32 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正�
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.5.1] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.1',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.5.3] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.3',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
 loadingText('正在恢复浏览器里的 GLB 模型…');
 const glbLibrary=await createExternalGLBLibrary(catalog);
+// Deletion tombstones are shared by the editor, asset manager and preview.
+// Remove retired IDs from the live palette as well as from their source files.
+const deletedAssetIds=new Set();
+try{
+ const response=await fetch(new URL('./assets/cliffy-coast/removed.json',import.meta.url),{cache:'no-store'});
+ if(response.ok){
+  const index=await response.json();
+  for(const id of Array.isArray(index.ids)?index.ids:[])if(typeof id==='string')deletedAssetIds.add(id);
+ }
+}catch(error){console.warn('Deleted asset index unavailable; stale map objects will be checked against the catalog',error);}
+for(const id of deletedAssetIds)delete catalog.all[id];
+catalog.types=catalog.types.filter(id=>!deletedAssetIds.has(id));
+for(const id of [...catalog.types]){
+ const parts=catalog.all[id]?.assemblyParts;
+ if(Array.isArray(parts)&&parts.some(part=>deletedAssetIds.has(part)||!catalog.all[part])){
+  delete catalog.all[id];
+  catalog.types=catalog.types.filter(item=>item!==id);
+ }
+}
 let editorStorage=null;
 try{editorStorage=await createEditorStorage();}catch(e){console.error('Editor IndexedDB unavailable:',e);}
 const hiddenAssets=new Set();
@@ -175,7 +194,26 @@ const nodeMeshes=()=>assetLayer.children.filter(m=>m.userData.recordId);
 const selectionBounds=new T.Box3(),selectionHelper=new T.Box3Helper(selectionBounds,0xf2d99b);
 selectionHelper.visible=false;scene.add(selectionHelper);
 function uid(){return 'obj-'+Math.random().toString(36).slice(2,10);}
-function validWorld(w){return normalizeMap(w)}
+function validWorld(w){
+ const normalized=normalizeMap(w);
+ const count=normalized.objects.length;
+ normalized.objects=normalized.objects.filter(object=>{
+  const id=String(object.asset||'');
+  if(deletedAssetIds.has(id))return false;
+  if(id.startsWith('ext_glb_'))return glbLibrary.has(id);
+  if(/^(?:pirates|cliffy_coast|coastal_tree)_/.test(id)){
+   const meta=catalog.all[id];
+   if(!meta)return false;
+   const parts=meta.assemblyParts;
+   if(Array.isArray(parts)&&parts.some(part=>deletedAssetIds.has(part)||!catalog.all[part]))return false;
+  }
+  return true;
+ });
+ if(normalized.objects.length!==count){
+  console.info('[Lighthouse] Removed '+(count-normalized.objects.length)+' map object(s) whose asset files were deleted');
+ }
+ return normalized;
+}
 const snapshot=()=>JSON.stringify(world);
 function history(){hist.push(snapshot());if(hist.length>30)hist.shift();future=[];}
 function snapGridX(x){return clamp(Math.round((x+WIDTH/2)/CELLX)*CELLX-WIDTH/2,-WIDTH/2,WIDTH/2);}
@@ -194,10 +232,9 @@ function rebuildTerrain(){
 }
 function objModel(asset){
  if(asset.startsWith('ext_glb_')&&!glbLibrary.has(asset)){
-  const missing=new T.Mesh(new T.BoxGeometry(2,2,2),
-   new T.MeshBasicMaterial({color:0xff5075,wireframe:true}));
-  missing.name='缺失 GLB：'+asset;
-  const g=new T.Group();g.add(missing);return g;
+  // Deleted or unavailable assets are pruned by validWorld; never draw a
+  // red "missing GLB" placeholder into the editable map.
+  return new T.Group();
  }
  return catalog.create(asset);
 }
