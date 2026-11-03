@@ -52,6 +52,7 @@ async function authorize(){
   connected=true;input.value='';
   $('logout').disabled=false;
   $('auth-state').textContent='仓库访问已验证'+(repository.permissions?.push?' · 具有推送权限':' · 写入权限将在提交时再次核实');
+  await readGuard();render();
   status('授权通过。删除只会提交到 '+BRANCH+'，不会修改正式 V35 游戏源文件。');
  }catch(e){
   token='';connected=false;input.value='';
@@ -74,16 +75,21 @@ function pirateCategory(filename){
  return '海盗 · 其他';
 }
 async function loadAssets(){
- const [pirate,cliffy,removed,tree]=await Promise.all([
+ const [pirate,cliffy,removed]=await Promise.all([
   jsonFetch('./assets/pirates/manifest.json'),
   jsonFetch('./assets/cliffy-coast/asset-manager-index.json'),
-  jsonFetch('./assets/cliffy-coast/removed.json'),
-  jsonFetch(API+'/git/trees/'+BRANCH+'?recursive=1')
+  jsonFetch('./assets/cliffy-coast/removed.json')
  ]);
- if(tree.truncated)throw Error('GitHub 文件树被截断，已停止危险的删除操作');
  if(!Array.isArray(pirate.assets)||!Array.isArray(cliffy.assets)||!Array.isArray(removed.ids))
   throw Error('仓库的素材索引格式不正确');
- allTree=new Map(tree.tree.filter(x=>x.type==='blob').map(x=>[x.path,x]));
+ // Gallery remains available even if GitHub's anonymous API is rate-limited.
+ let tree=null;
+ try{
+  tree=await jsonFetch(API+'/git/trees/'+BRANCH+'?recursive=1');
+  if(tree.truncated)throw Error('文件树截断');
+ }catch(e){console.warn('GitHub 文件体积暂不可查询，删除时将重新核验',e);}
+ const inventoryKnown=!!tree&&!tree.truncated;
+ allTree=new Map(inventoryKnown?tree.tree.filter(x=>x.type==='blob').map(x=>[x.path,x]):[]);
  const retired=new Set(removed.ids);
  const out=[];
  for(const x of pirate.assets){
@@ -91,7 +97,7 @@ async function loadAssets(){
   const path='lighthouse-editor/assets/pirates/'+x.file;
   out.push({id:x.id,path,label:String(x.label||x.file),file:x.file,source:'pirates',
    category:pirateCategory(x.file),kind:'direct',size:allTree.get(path)?.size||0,
-   missing:!allTree.has(path),url:'./assets/pirates/'+encodeURIComponent(x.file)});
+   missing:inventoryKnown&&!allTree.has(path),url:'./assets/pirates/'+encodeURIComponent(x.file)});
  }
  for(const x of cliffy.assets){
   if(retired.has(x.id)||!/^cliffy_coast_[a-z0-9_]+$/.test(x.id))continue;
@@ -100,7 +106,7 @@ async function loadAssets(){
   out.push({id:x.id,path,label:String(x.label||x.id),file:x.file,source:'cliffy',
    category:String(x.category||'Cliffy Coast'),kind:direct?'direct':'packed',
    pack:x.pack,size:direct?(allTree.get(path)?.size||0):0,
-   missing:direct&&!allTree.has(path),url:direct?'./assets/cliffy-coast/'+encodeURIComponent(x.file):null});
+   missing:direct&&inventoryKnown&&!allTree.has(path),url:direct?'./assets/cliffy-coast/'+encodeURIComponent(x.file):null});
  }
  assets=out;
  selected=new Set([...selected].filter(id=>out.some(a=>a.id===id)));
@@ -128,7 +134,8 @@ async function readGuard(){
    const raw=localStorage.getItem(key);
    if(raw)note(JSON.parse(raw),'浏览器历史地图');
   }
-  const published=await jsonFetch(API+'/contents/lighthouse/editor-preview-map.json?ref='+BRANCH);
+  const published=token?await gh('GET','/contents/lighthouse/editor-preview-map.json?ref='+BRANCH):
+   await jsonFetch(API+'/contents/lighthouse/editor-preview-map.json?ref='+BRANCH);
   if(published.encoding!=='base64')throw Error('GitHub 发布地图编码不受支持');
   note(JSON.parse(readBase64Utf8(published.content)),'GitHub 已发布地图');
   guardReady=true;
