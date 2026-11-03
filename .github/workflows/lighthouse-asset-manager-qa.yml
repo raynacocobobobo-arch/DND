@@ -38,7 +38,7 @@ jobs:
           const fs=require('fs'),assert=require('node:assert/strict');
           const ROOT='lighthouse-editor/assets/';
           const tree=[];
-          for(const dir of ['pirates','cliffy-coast']){
+          for(const dir of ['pirates','cliffy-coast','palms']){
             for(const f of fs.readdirSync(ROOT+dir)){
               if(!f.endsWith('.glb'))continue;
               tree.push({path:ROOT+dir+'/'+f,type:'blob',size:fs.statSync(ROOT+dir+'/'+f).size});
