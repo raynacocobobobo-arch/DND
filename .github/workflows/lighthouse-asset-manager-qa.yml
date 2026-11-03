@@ -6,6 +6,8 @@ on:
       - 'lighthouse-editor/assets.html'
       - 'lighthouse-editor/index.html'
       - 'lighthouse-editor/editor-desktop-v530.js'
+      - 'lighthouse-editor/github-delete-request.js'
+      - 'lighthouse-editor/assets/palms/manifest.json'
       - 'lighthouse-editor/asset-manager-page.js'
       - 'lighthouse-editor/asset-preview-frame.html'
       - 'lighthouse-editor/editor-storage.js'
@@ -53,19 +55,23 @@ jobs:
               return r.fulfill({status:403,contentType:'application/json',body:'{"message":"API rate limit exceeded"}'});
             });
             await page.goto('http://127.0.0.1:8765/lighthouse-editor/assets.html',{waitUntil:'domcontentloaded'});
-            await page.waitForFunction(()=>document.querySelector('#total')?.textContent.includes('651'),{timeout:35000});
-            assert.equal(await page.locator('article.asset').count(),651);
-            assert.equal(await page.locator('#delete-selected').isDisabled(),true,'Delete must be impossible without authorization');
+            await page.waitForFunction(()=>document.querySelector('#total')?.textContent.includes('655'),{timeout:35000});
+            assert.equal(await page.locator('article.asset').count(),655);
+            assert.equal(await page.locator('#token').count(),0,'No token field in public GitHub Pages');
+            assert.equal(await page.locator('#delete-selected').isDisabled(),true,'Nothing selected yet');
+            await page.locator('article.asset .select-item').first().check();
+            assert.equal(await page.locator('#delete-selected').isDisabled(),false,'Selection should be deletable without PAT');
+            await page.locator('#clear-selection').click();
             await page.fill('#search','Parrot');
             assert.ok((await page.locator('article.asset').count())>=1);
             await page.fill('#search','');
-            assert.equal(await page.locator('article.asset').count(),651);
+            assert.equal(await page.locator('article.asset').count(),655);
             assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html'));
-            await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('已读取'),{timeout:30000});
+            await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('已显示'),{timeout:30000});
             assert.equal(contentsCalls,0,'Anonymous dependency checks must not call GitHub Contents API');
             assert.ok((await page.locator('#available').textContent()).includes('可安全删除'));
             assert.ok(!errors.length,errors.join('\n'));
-            console.log('ASSET_MANAGER_QA PASS: 403 Contents API bypassed and 651 indexed entries readable');
+            console.log('ASSET_MANAGER_QA PASS: 403 Contents API bypassed and 655 indexed entries readable');
             const editor=await browser.newPage({viewport:{width:1440,height:900}});
             const editorErrors=[];editor.on('pageerror',e=>editorErrors.push(e.message));
             await editor.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
@@ -82,6 +88,9 @@ jobs:
             assert.equal(blank.regions,0);
             assert.equal(blank.original,false);
             assert.equal(blank.resume,true);
+            assert.equal(await editor.locator('#toggle-original').count(),0,'Original island control must be removed');
+            assert.equal(await editor.evaluate(()=>window.__lighthouseEditor.getState().nativeObjectCount),0,
+              'Native original game scene must not be built');
             assert.ok(!editorErrors.length,editorErrors.join('\n'));
             console.log('BLANK_OCEAN_QA PASS',JSON.stringify(blank));
             await browser.close();
