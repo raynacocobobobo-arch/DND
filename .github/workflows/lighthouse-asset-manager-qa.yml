@@ -54,7 +54,7 @@ jobs:
             assert.ok((await page.locator('article.asset').count())>=1);
             await page.fill('#search','');
             assert.equal(await page.locator('article.asset').count(),651);
-            assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html"'));
+            assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html'));
             assert.ok(!errors.length,errors.join('\n'));
             console.log('ASSET_MANAGER_QA PASS 651 indexed entries; no-token delete disabled; search and editor link present');
             await browser.close();
