@@ -2406,6 +2406,306 @@
       "file": "SM_Item_Compass_01.glb",
       "label": "海盗 · Compass 01",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_cup_01",
+      "file": "SM_Item_Cup_01.glb",
+      "label": "海盗 · Cup 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_flask_01",
+      "file": "SM_Item_Flask_01.glb",
+      "label": "海盗 · Flask 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_gem_01",
+      "file": "SM_Item_Gem_01.glb",
+      "label": "海盗 · Gem 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_gem_02",
+      "file": "SM_Item_Gem_02.glb",
+      "label": "海盗 · Gem 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_gem_03",
+      "file": "SM_Item_Gem_03.glb",
+      "label": "海盗 · Gem 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_map_01",
+      "file": "SM_Item_Map_01.glb",
+      "label": "海盗 · Map 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_map_02",
+      "file": "SM_Item_Map_02.glb",
+      "label": "海盗 · Map 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_map_03",
+      "file": "SM_Item_Map_03.glb",
+      "label": "海盗 · Map 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_map_attachment_01",
+      "file": "SM_Item_Map_Attachment_01.glb",
+      "label": "海盗 · Map Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_plate_01",
+      "file": "SM_Item_Plate_01.glb",
+      "label": "海盗 · Plate 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_pomb_attachment_01",
+      "file": "SM_Item_Pomb_Attachment_01.glb",
+      "label": "海盗 · Pomb Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_potion_01",
+      "file": "SM_Item_Potion_01.glb",
+      "label": "海盗 · Potion 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_potion_attachment_01",
+      "file": "SM_Item_Potion_Attachment_01.glb",
+      "label": "海盗 · Potion Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_pouch_attachment_01",
+      "file": "SM_Item_Pouch_Attachment_01.glb",
+      "label": "海盗 · Pouch Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_pouch_attachment_02",
+      "file": "SM_Item_Pouch_Attachment_02.glb",
+      "label": "海盗 · Pouch Attachment 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_roll_attachment_01",
+      "file": "SM_Item_Roll_Attachment_01.glb",
+      "label": "海盗 · Roll Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_rope_attachment_01",
+      "file": "SM_Item_Rope_Attachment_01.glb",
+      "label": "海盗 · Rope Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_skullcandle_01",
+      "file": "SM_Item_SkullCandle_01.glb",
+      "label": "海盗 · SkullCandle 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_skull_01",
+      "file": "SM_Item_Skull_01.glb",
+      "label": "海盗 · Skull 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_skull_attachment_01",
+      "file": "SM_Item_Skull_Attachment_01.glb",
+      "label": "海盗 · Skull Attachment 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_spyglass_01",
+      "file": "SM_Item_Spyglass_01.glb",
+      "label": "海盗 · Spyglass 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_spyglass_02",
+      "file": "SM_Item_Spyglass_02.glb",
+      "label": "海盗 · Spyglass 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_01_separate",
+      "file": "SM_Prop_Cannon_01_Separate.glb",
+      "label": "海盗 · Cannon 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_02_separate",
+      "file": "SM_Prop_Cannon_02_Separate.glb",
+      "label": "海盗 · Cannon 02 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_cannon_03_separate",
+      "file": "SM_Prop_Cannon_03_Separate.glb",
+      "label": "海盗 · Cannon 03 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_cage_01",
+      "file": "SM_Prop_Skeleton_Cage_01.glb",
+      "label": "海盗 · Skeleton Cage 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_cage_02",
+      "file": "SM_Prop_Skeleton_Cage_02.glb",
+      "label": "海盗 · Skeleton Cage 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_chest_01",
+      "file": "SM_Prop_Skeleton_Chest_01.glb",
+      "label": "海盗 · Skeleton Chest 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_chest_02",
+      "file": "SM_Prop_Skeleton_Chest_02.glb",
+      "label": "海盗 · Skeleton Chest 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_ground_01",
+      "file": "SM_Prop_Skeleton_Ground_01.glb",
+      "label": "海盗 · Skeleton Ground 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_ground_02",
+      "file": "SM_Prop_Skeleton_Ground_02.glb",
+      "label": "海盗 · Skeleton Ground 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_ground_03",
+      "file": "SM_Prop_Skeleton_Ground_03.glb",
+      "label": "海盗 · Skeleton Ground 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_prop_skeleton_shackle_01",
+      "file": "SM_Prop_Skeleton_Shackle_01.glb",
+      "label": "海盗 · Skeleton Shackle 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_medium_01_hull",
+      "file": "SM_Veh_Boat_Medium_01_Hull.glb",
+      "label": "海盗 · Boat Medium 01 Hull",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_medium_01_hull_pirate",
+      "file": "SM_Veh_Boat_Medium_01_Hull_Pirate.glb",
+      "label": "海盗 · Boat Medium 01 Hull Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_rowing_01_hull",
+      "file": "SM_Veh_Boat_Rowing_01_Hull.glb",
+      "label": "海盗 · Boat Rowing 01 Hull",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_rowing_01_hull_pirate",
+      "file": "SM_Veh_Boat_Rowing_01_Hull_Pirate.glb",
+      "label": "海盗 · Boat Rowing 01 Hull Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_small_01_hull",
+      "file": "SM_Veh_Boat_Small_01_Hull.glb",
+      "label": "海盗 · Boat Small 01 Hull",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_small_01_hull_pirate",
+      "file": "SM_Veh_Boat_Small_01_Hull_Pirate.glb",
+      "label": "海盗 · Boat Small 01 Hull Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull",
+      "file": "SM_Veh_Boat_Warship_01_Hull.glb",
+      "label": "海盗 · Boat Warship 01 Hull",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull_bare",
+      "file": "SM_Veh_Boat_Warship_01_Hull_Bare.glb",
+      "label": "海盗 · Boat Warship 01 Hull Bare",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull_pirate",
+      "file": "SM_Veh_Boat_Warship_01_Hull_Pirate.glb",
+      "label": "海盗 · Boat Warship 01 Hull Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull_pirate_bare",
+      "file": "SM_Veh_Boat_Warship_01_Hull_Pirate_Bare.glb",
+      "label": "海盗 · Boat Warship 01 Hull Pirate Bare",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull_upsized",
+      "file": "SM_Veh_Boat_Warship_01_Hull_Upsized.glb",
+      "label": "海盗 · Boat Warship 01 Hull Upsized",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_boat_warship_01_hull_upsized_pirate",
+      "file": "SM_Veh_Boat_Warship_01_Hull_Upsized_Pirate.glb",
+      "label": "海盗 · Boat Warship 01 Hull Upsized Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_extra_barrel_01",
+      "file": "SM_Veh_Extra_Barrel_01.glb",
+      "label": "海盗 · Extra Barrel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_extra_barrels_01",
+      "file": "SM_Veh_Extra_Barrels_01.glb",
+      "label": "海盗 · Extra Barrels 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_extra_cargo_01",
+      "file": "SM_Veh_Extra_Cargo_01.glb",
+      "label": "海盗 · Extra Cargo 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_extra_gun_01",
+      "file": "SM_Veh_Extra_Gun_01.glb",
+      "label": "海盗 · Extra Gun 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_extra_gun_01_pirate",
+      "file": "SM_Veh_Extra_Gun_01_Pirate.glb",
+      "label": "海盗 · Extra Gun 01 Pirate",
+      "defaultScale": 1
     }
   ]
 }
