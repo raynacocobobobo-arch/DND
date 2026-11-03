@@ -44,7 +44,7 @@ input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=
 .asset-manager-actions button{flex:1;min-width:76px;font-size:11px}
 #asset-remove-selected{background:#8b3038;border-color:#c85a5c;color:white}
 #asset-remove-selected:disabled{opacity:.48}
-#asset-manager-show-removed-label{display:flex;gap:6px;align-items:center;margin:0;font-size:11px}
+#asset-manager-show-removed-label{display:none;gap:6px;align-items:center;margin:0;font-size:11px}
 #asset-manager-show-removed{width:auto}
 .asset-card-wrap{position:relative;min-width:0}
 .asset-card-wrap .asset-card{width:100%;height:100%}
@@ -136,7 +136,7 @@ a{color:#b2d8cf}
 </header>
 <aside id="left">
  <div class="section" id="asset-section">
-  <div class="asset-toolbar-header"><h2>素材资源库</h2><button id="asset-manage-toggle" type="button">移除素材</button></div>
+  <div class="asset-toolbar-header"><h2>素材资源库</h2><button id="asset-manage-toggle" type="button">删除素材</button></div>
    <div id="asset-manager-tools" hidden>
     <div class="asset-manager-actions"><button id="asset-select-visible" type="button">全选当前筛选</button><button id="asset-remove-selected" type="button" disabled>删除选中 (0)</button><button id="asset-manage-exit" type="button">完成</button></div>
     <label id="asset-manager-show-removed-label"><input id="asset-manager-show-removed" type="checkbox">显示已移除素材（可恢复）</label>
