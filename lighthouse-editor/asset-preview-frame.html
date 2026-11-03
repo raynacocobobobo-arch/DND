@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script></head>
+<body style="margin:0;background:#172b35">
+<script type="module">
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const size=[224,168];
+const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true,alpha:true,powerPreference:'low-power'});
+renderer.setSize(size[0],size[1],false);
+renderer.setPixelRatio(1);
+renderer.outputColorSpace=T.SRGBColorSpace;
+renderer.toneMapping=T.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+document.body.appendChild(renderer.domElement);
+const loader=new GLTFLoader();
+const scene=new T.Scene(),camera=new T.PerspectiveCamera(39,size[0]/size[1],0.01,10000);
+scene.add(new T.HemisphereLight(0xe3f4f6,0x4a5863,2.1));
+const light=new T.DirectionalLight(0xffe4c9,2.4);light.position.set(-4,8,6);scene.add(light);
+window.addEventListener('message',async event=>{
+ if(event.source!==parent||event.data?.type!=='render-glb'||typeof event.data.key!=='string')return;
+ const {key,buffer}=event.data;
+ try{
+  if(!(buffer instanceof ArrayBuffer)||buffer.byteLength>30*1024*1024)throw Error('GLB 体积超限');
+  const gltf=await loader.parseAsync(buffer,'');
+  const obj=gltf.scene,box=new T.Box3().setFromObject(obj);
+  if(box.isEmpty())throw Error('Empty model');
+  const dims=box.getSize(new T.Vector3()),center=box.getCenter(new T.Vector3());
+  obj.position.sub(center);
+  scene.add(obj);
+  const radius=Math.max(.001,dims.length()/2),distance=radius/Math.sin(T.MathUtils.degToRad(camera.fov/2))*1.20;
+  camera.position.set(distance*.82,distance*.6,distance*.96);
+  camera.lookAt(0,0,0);camera.near=Math.max(.001,distance/1000);camera.far=distance*10;camera.updateProjectionMatrix();
+  renderer.render(scene,camera);
+  const dataUrl=renderer.domElement.toDataURL('image/png');
+  scene.remove(obj);
+  obj.traverse(child=>{
+   if(!child.isMesh)return;
+   child.geometry?.dispose?.();
+   for(const material of (Array.isArray(child.material)?child.material:[child.material])){
+    if(!material)continue;
+    for(const value of Object.values(material))if(value?.isTexture)value.dispose?.();
+    material.dispose?.();
+   }
+  });
+  parent.postMessage({type:'render-result',key,dataUrl},'*');
+ }catch(e){parent.postMessage({type:'render-result',key,error:String(e?.message||e)},'*');}
+});
+parent.postMessage({type:'preview-ready'},'*');
+</script></body></html>
