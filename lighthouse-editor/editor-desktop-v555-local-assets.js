@@ -2,7 +2,7 @@ import {mountEditorManagement} from './editor-management-local.js?v=555-backups-
 import {createEditorStorage} from './editor-storage.js?v=1';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {createExternalGLBLibrary} from './external-glb-library-local.js?v=555-shared-local-db';
+import {createExternalGLBLibrary} from './external-glb-library-local.js?v=555-shared-local-db-2';
 import {TransformControls} from 'three/addons/controls/TransformControls.js';
 import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
