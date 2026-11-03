@@ -10,6 +10,15 @@ let token='',connected=false,assets=[],allTree=new Map(),selected=new Set(),usag
 let store=null,guardReady=false,guardError='',busy=false,previewReady=false,previewBusy=false,epoch=0;
 let previews=[],previewObserver=null,previewMemory=new Map();
 const displayNumber=n=>new Intl.NumberFormat('zh-CN').format(n);
+const ASSEMBLIES={
+ 'cliffy_coast_complete_house1_red':['cliffy_coast_house1_exterior_only','cliffy_coast_house1_interiour','cliffy_coast_roof_red'],
+ 'cliffy_coast_complete_house1_blue':['cliffy_coast_house1_exterior_only','cliffy_coast_house1_interiour','cliffy_coast_roof_blue'],
+ 'cliffy_coast_complete_house1_grey':['cliffy_coast_house1_exterior_only','cliffy_coast_house1_interiour','cliffy_coast_roof_grey'],
+ 'cliffy_coast_complete_house2_red':['cliffy_coast_house2_exteriour_only','cliffy_coast_house2_interiour','cliffy_coast_roof_red'],
+ 'cliffy_coast_complete_house2_blue':['cliffy_coast_house2_exteriour_only','cliffy_coast_house2_interiour','cliffy_coast_roof_blue'],
+ 'cliffy_coast_complete_house3_grey':['cliffy_coast_house3_exteriour_only','cliffy_coast_roof_grey']
+};
+
 function status(message,error=false){
  const el=$('status');el.textContent=message;el.classList.toggle('error',!!error);
 }
@@ -106,8 +115,11 @@ async function readGuard(){
   if(!world||typeof world!=='object')return;
   for(const o of world.objects||[]){
    if(typeof o.asset!=='string')continue;
-   const entry=usage.get(o.asset)||[];
-   entry.push(label);usage.set(o.asset,entry);
+   for(const id of [o.asset,...(ASSEMBLIES[o.asset]||[])]){
+    const entry=usage.get(id)||[];
+    entry.push(label+(id===o.asset?'':'（完整房屋构件）'));
+    usage.set(id,entry);
+   }
   }
  };
  try{
