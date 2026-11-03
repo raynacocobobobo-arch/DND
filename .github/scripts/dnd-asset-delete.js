@@ -94,7 +94,7 @@ function execute(){
   }else if(id.startsWith('coastal_tree_')){
    const match=palms.assets.find(x=>x.id===id);
    if(!match)fail('Palm asset no longer registered: '+id);
-   if(!/^[A-Za-z0-9][A-Za-z0-9_.-]*\\.glb$/.test(match.file))fail('Invalid palm filename');
+   if(!/^[A-Za-z0-9][A-Za-z0-9_.-]*\.glb$/.test(match.file))fail('Invalid palm filename');
    const location=ensureInside(base+'palms/'+match.file);
    if(!fs.existsSync(location))fail('Missing palm model '+match.file);
    toRemove.push({id,location,source:'palms'});
