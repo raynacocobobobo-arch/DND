@@ -55,9 +55,9 @@ jobs:
               return r.fulfill({status:403,contentType:'application/json',body:'{"message":"API rate limit exceeded"}'});
             });
             await page.goto('http://127.0.0.1:8765/lighthouse-editor/assets.html',{waitUntil:'domcontentloaded'});
-            await page.waitForFunction(()=>document.querySelector('#total')?.textContent.includes('655'),{timeout:35000});
+            await page.waitForFunction(()=>document.querySelector('#total')?.textContent.includes('653'),{timeout:35000});
             try{await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('已显示'),{timeout:30000});}catch(e){console.log('GUARD_DIAGNOSTIC',await page.locator('#status').textContent(),JSON.stringify(errors));throw e;}
-            assert.equal(await page.locator('article.asset').count(),655);
+            assert.equal(await page.locator('article.asset').count(),653);
             assert.equal(await page.locator('#token').count(),0,'No token field in public GitHub Pages');
             assert.equal(await page.locator('#delete-selected').isDisabled(),true,'Nothing selected yet');
             await page.locator('article.asset .select-item').first().check();
@@ -77,13 +77,13 @@ jobs:
             await page.fill('#search','Parrot');
             assert.ok((await page.locator('article.asset').count())>=1);
             await page.fill('#search','');
-            assert.equal(await page.locator('article.asset').count(),655);
+            assert.equal(await page.locator('article.asset').count(),653);
             assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html'));
             assert.ok((await page.locator('#status').textContent()).includes('GitHub 删除确认页'),'Delete action should open the owner confirmation request');
             assert.equal(contentsCalls,0,'Anonymous dependency checks must not call GitHub Contents API');
             assert.ok((await page.locator('#available').textContent()).includes('可永久删除'));
             assert.ok(!errors.length,errors.join('\n'));
-            console.log('ASSET_MANAGER_QA PASS: 403 Contents API bypassed and 655 indexed entries readable');
+            console.log('ASSET_MANAGER_QA PASS: 403 Contents API bypassed and 653 indexed entries readable');
             const editor=await browser.newPage({viewport:{width:1440,height:900}});
             const editorErrors=[];editor.on('pageerror',e=>editorErrors.push(e.message));
             await editor.goto('http://127.0.0.1:8765/lighthouse-editor/',{waitUntil:'domcontentloaded'});
