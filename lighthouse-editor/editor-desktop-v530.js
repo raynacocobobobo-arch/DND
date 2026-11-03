@@ -54,6 +54,8 @@ let transformMode='translate',syncingProxy=false,transformLast=new T.Vector3(),d
 setRenderer(renderer);renderer.localClippingEnabled=true;
 scene.add(gameGroup);
 const originalSea=buildCutaway();buildIsland();buildSite();const originalReefs=createOffshoreReefs();
+// The original scene remains a prefab source, but a new map starts as open sea.
+gameGroup.visible=false;
 // Start drawing before awaiting optional GLB downloads, so slow mobile networks do
 // not show an empty 3D canvas. The final editor loop replaces this boot renderer.
 renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
@@ -73,8 +75,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正�
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.2.2] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.2.2',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.3.4] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.3.4',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
@@ -84,8 +86,9 @@ let editorStorage=null;
 try{editorStorage=await createEditorStorage();}catch(e){console.error('Editor IndexedDB unavailable:',e);}
 const hiddenAssets=new Set(editorStorage?await editorStorage.readHidden().catch(()=>[]):[]);
 let saveChain=Promise.resolve();
+let previousWorkingMap=null,previousWorkingMapArchived=false;
 if(catalog.types.length<80)throw Error('游戏场景模型扫描不完整: '+catalog.types.length);
-gameGroup.visible=true; // original V35 island, lighthouse, trees and props remain the editable scene
+gameGroup.visible=false; // empty-sea editor by default; original scene is only an optional reference
 const nativeTargets=nativeGameTargets();
 const root=new T.Group();scene.add(root);
 const openSea=addOpenOcean(root);
@@ -236,12 +239,26 @@ function applyAllNativeAppearance(){
 function setDirty(v){dirty=v;$('dirty').textContent=v?'有未导出修改':'已导出';}
 function saveLocal(){
  const w=JSON.parse(snapshot());
- try{savePreviewMap(w);}catch(e){console.warn('Legacy map save unavailable',e);}
  if(editorStorage){
-  saveChain=saveChain.catch(()=>{}).then(()=>editorStorage.saveCurrent(w)).catch(e=>{
+  saveChain=saveChain.catch(()=>{}).then(async()=>{
+   // Preserve the previous session's autosave before a blank map can overwrite it.
+   if(previousWorkingMap&&!previousWorkingMapArchived){
+    const older=JSON.stringify(previousWorkingMap);
+    const existing=await editorStorage.listBackups();
+    if(!existing.some(b=>JSON.stringify(b.world)===older)){
+     await editorStorage.createBackup('自动保护 · 上次地图 '+new Date().toLocaleString('zh-CN',{hour12:false}),previousWorkingMap);
+    }
+    previousWorkingMapArchived=true;
+    await editorFeatures?.refreshBackups?.();
+   }
+   await editorStorage.saveCurrent(w);
+   try{savePreviewMap(w);}catch(e){console.warn('Legacy preview map write failed',e);}
+  }).catch(e=>{
    console.error('IndexedDB map auto-save failed',e);
    $('backup-status').textContent='自动保存失败：'+e.message+'。请导出地图 JSON。';
   });
+ }else{
+  try{savePreviewMap(w);}catch(e){console.warn('Local map save unavailable',e);}
  }
  return saveChain;
 }
@@ -1106,14 +1123,33 @@ function fit(){
  camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);
 }
 new ResizeObserver(fit).observe(view);fit();
+// Never implicitly restore or overwrite an existing map on page open.
+// The previous autosave and named backups remain available in the backup panel.
 try{
  const persisted=editorStorage?await editorStorage.loadCurrent().catch(e=>{console.warn('IndexedDB map recovery failed',e);return null;}):null;
- const current=persisted||readPreviewMap(),old=localStorage.getItem('dnd-lighthouse-map-editor-v1');
- world=current?validWorld(current):old?validWorld(JSON.parse(old)):emptyMap();
-}
-catch(err){world=emptyMap();console.warn('Map recovery fallback',err);}
-syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(false);setTool('select');await editorFeatures.refreshBackups();await editorFeatures.refreshAssets();
-if(editorStorage)saveLocal();
+ const legacy=readPreviewMap()||(()=>{
+  try{const raw=localStorage.getItem('dnd-lighthouse-map-editor-v1');return raw?JSON.parse(raw):null;}catch{return null;}
+ })();
+ previousWorkingMap=persisted||legacy?validWorld(persisted||legacy):null;
+}catch(err){previousWorkingMap=null;console.warn('Last project recovery unavailable',err);}
+world=emptyMap(); // default: all water, zero placed objects and zero terrain regions
+const resumeButton=$('resume-last');
+resumeButton.disabled=!previousWorkingMap;
+resumeButton.onclick=async()=>{
+ if(!previousWorkingMap)return;
+ if(world.objects.length||world.types.some(t=>t!=='water')||world.heights.some(h=>h>-3)){
+  if(!confirm('恢复上次自动存档？将替换当前空海面和未备份的修改。'))return;
+ }
+ try{
+  history();world=validWorld(previousWorkingMap);previousWorkingMapArchived=true;
+  selected=null;selectedIds.clear();redraw();renderAssetLibrary();
+  await saveLocal();
+  toast('已恢复上次编辑的地图');
+ }catch(err){alert('恢复上次编辑失败：'+err.message);}
+};
+syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();
+setDirty(false);setTool('select');await editorFeatures.refreshBackups();await editorFeatures.refreshAssets();
+// Deliberately do not autosave the empty startup canvas over a previous session.
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
  heights:world.heights.length,regions:world.regions?.length||0,assetDefaults:Object.keys(world.assetDefaults||{}).length,tool:activeTool,selected,selectedIds:[...selectedIds],transformMode,history:hist.length,
