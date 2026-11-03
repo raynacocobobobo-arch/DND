@@ -1,3 +1,4 @@
+import {openGithubAssetDeletion} from './github-delete-request.js?v=1';
 // Asset manager and verified quick backups for the live editor.
 export function mountEditorManagement(ctx){
  const {catalog,glbLibrary,editorStorage,hiddenAssets,getWorld,
@@ -54,57 +55,50 @@ export function mountEditorManagement(ctx){
   if(deleting||!managing)return {removed:[],blocked:[]};
   const ids=[...new Set(requested)].filter(id=>catalog.all[id]&&!hiddenAssets.has(id));
   if(!ids.length)return {removed:[],blocked:[]};
-  if(!editorStorage){alert('持久存储不可用，无法安全移除素材。');return {removed:[],blocked:ids};}
-  deleting=true;updateAssetControls('正在检查素材使用情况与地图备份…');
+  const local=ids.filter(id=>id.startsWith('ext_glb_'));
+  const repoIds=new Set();
+  const unsupported=[];
+  for(const id of ids){
+   if(id.startsWith('ext_glb_'))continue;
+   const meta=catalog.all[id];
+   if(Array.isArray(meta?.assemblyParts)&&meta.assemblyParts.length){
+    meta.assemblyParts.forEach(part=>repoIds.add(part));
+   }else if(/^(?:pirates|cliffy_coast|coastal_tree)_[a-z0-9_]+$/.test(id)){
+    repoIds.add(id);
+   }else unsupported.push(id);
+  }
+  if(unsupported.length){
+   alert('以下素材不是独立 GitHub 模型文件，无法直接删除：'+unsupported.slice(0,4).join('、'));
+   return {removed:[],blocked:unsupported};
+  }
+  const preview=ids.slice(0,3).map(id=>catalog.all[id]?.label||id).join('、');
+  const message='确定删除 '+ids.length+' 个选中素材（'+preview+(ids.length>3?'等':'')+'）？'+
+    (repoIds.size?'\\nGitHub 模型将在你登录 GitHub 并提交删除请求后，从仓库永久移除。':'')+
+    (local.length?'\\n本机导入 GLB 会立即从当前浏览器删除。':'')+
+    '\\n已有备份如引用这些模型，之后可能无法还原模型。';
+  if(!confirm(message))return {removed:[],blocked:[]};
+  deleting=true;updateAssetControls('正在处理删除操作…');
   try{
-   // A referenced asset cannot disappear from the scene or any saved backup.
-   const world=getWorld();
-   const backups=await editorStorage.listBackups();
-   const references=new Map();
-   for(const obj of world?.objects||[])references.set(obj.asset,(references.get(obj.asset)||0)+1);
-   const protectedBackup=new Map();
-   for(const backup of backups){
-    const used=new Set((backup.world?.objects||[]).map(obj=>obj.asset));
-    for(const id of used)protectedBackup.set(id,(protectedBackup.get(id)||0)+1);
+   let requestedGithub=0;
+   if(repoIds.size){
+    const result=openGithubAssetDeletion([...repoIds]);
+    requestedGithub=result.count;
+    updateAssetControls('已打开 GitHub 删除确认页，请在 GitHub 提交请求后再刷新编辑器。'+
+      (result.remaining?'还有 '+result.remaining+' 件需下一批提交。':''));
    }
-   const blocked=ids.filter(id=>references.has(id)||protectedBackup.has(id));
-   const eligible=ids.filter(id=>!blocked.includes(id));
-   if(!eligible.length){
-    const detail=blocked.slice(0,3).map(id=>(catalog.all[id]?.label||id)+
-     (references.has(id)?'：地图使用 '+references.get(id)+' 次':'：'+protectedBackup.get(id)+' 份备份引用')).join('；');
-    alert('无法删除：所选素材都在使用中。'+detail+(blocked.length>3?'；另有 '+(blocked.length-3)+' 个':''));
-    updateAssetControls('已阻止删除 '+blocked.length+' 个正在使用的素材');return {removed:[],blocked};
-   }
-   const permanently=eligible.filter(id=>id.startsWith('ext_glb_'));
-   const locally=eligible.filter(id=>!id.startsWith('ext_glb_'));
-   const preview=eligible.slice(0,3).map(id=>catalog.all[id]?.label||id).join('、');
-   const ask=(eligible.length===1?'移除「'+preview+'」？':'移除 '+eligible.length+' 个素材（'+preview+(eligible.length>3?'等':'')+'）？')+
-    (permanently.length?'\n其中 '+permanently.length+' 个本机导入 GLB 将从当前浏览器数据库永久删除。':'')+
-    (locally.length?'\n其中 '+locally.length+' 个内置 / GitHub 素材只在本浏览器资源库隐藏，可恢复。':'')+
-    (blocked.length?'\n另有 '+blocked.length+' 个正在使用的素材将跳过，不删除。':'');
-   if(!confirm(ask)){updateAssetControls('已取消素材移除');return {removed:[],blocked};}
    const removed=[],errors=[];
-   // Persist the non-destructive portion in one checked IndexedDB write.
-   if(locally.length){
+   for(const id of local){
     try{
-     await editorStorage.writeHidden([...hiddenAssets,...locally]);
-     for(const id of locally){hiddenAssets.add(id);removed.push(id);afterDelete(id);}
-    }catch(e){errors.push('素材库移除失败：'+e.message);}
+     await glbLibrary.removeAsset(id);
+     removed.push(id);afterDelete(id);
+    }catch(err){errors.push((catalog.all[id]?.label||id)+'：'+err.message);}
    }
-   // GLB deletes are individually committed; a failure never clears scene data.
-   for(const id of permanently){
-    try{await glbLibrary.removeAsset(id);removed.push(id);afterDelete(id);}
-    catch(e){errors.push((catalog.all[id]?.label||id)+'：'+e.message);}
-   }
-   for(const id of removed)chosen.delete(id);
-   refreshLibrary();updateAssetControls(
-    '已移除 '+removed.length+' 个'+(blocked.length?'；保护 '+blocked.length+' 个使用中的素材':'')+
-    (errors.length?'；失败 '+errors.length+' 个':''));
-   if(errors.length)alert('部分素材未删除：'+errors.join('；'));
-   else toast('已移除 '+removed.length+' 个素材'+(blocked.length?'，跳过 '+blocked.length+' 个使用中的素材':''));
-   if(blocked.length)alert('有 '+blocked.length+' 个素材未删除，因为当前地图或备份仍在使用。');
-   return {removed,blocked,errors};
-  }catch(e){alert('删除前检查失败，未继续：'+e.message);return {removed:[],blocked:ids};}
+   removed.forEach(id=>chosen.delete(id));
+   refreshLibrary();
+   if(errors.length)alert('部分本机素材未删除：'+errors.join('；'));
+   else if(!requestedGithub)toast('已永久删除 '+removed.length+' 个本机 GLB');
+   return {removed,githubRequested:requestedGithub,blocked:[],errors};
+  }catch(e){alert('删除请求失败：'+e.message);return {removed:[],blocked:ids};}
   finally{deleting=false;updateAssetControls();}
  }
  const removeOne=id=>removeAssets([id]);
