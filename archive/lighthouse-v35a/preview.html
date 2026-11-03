@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1926">
+<title>灯塔地图试玩 · 已导出地图预览 | DND</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1b29;color:#f0e8dc;font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+#viewport{position:fixed;inset:0;touch-action:none;background:radial-gradient(ellipse at 48% 27%,#314d63 0%,#1d3448 38%,#091925 100%)}
+#viewport canvas{display:block;width:100%;height:100%}
+
+
+
+nav{position:fixed;right:clamp(12px,2vw,28px);top:clamp(14px,2vw,28px);display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:70vw}
+button{cursor:pointer;appearance:none;background:#0a1926c9;backdrop-filter:blur(15px);border:1px solid #ffffff35;border-radius:8px;color:#f4eadc;padding:10px 13px;font:12px system-ui,sans-serif;transition:background .15s,border .15s}
+button:hover,button[aria-pressed=true]{background:#386476d9;border-color:#bcd6df77}
+nav a{cursor:pointer;text-decoration:none;display:inline-block;background:#0a1926c9;border:1px solid #ffffff35;border-radius:8px;padding:10px 13px;color:#f4eadc;font:12px system-ui,sans-serif}
+nav a:hover{background:#386476d9;border-color:#bcd6df77}
+#map-preview-label{position:fixed;left:18px;top:18px;pointer-events:none;background:#0b2535d9;border:1px solid #7fb5b86b;border-radius:8px;padding:11px 14px;color:#d6eceb;font-size:12px;line-height:1.65;box-shadow:0 4px 30px #0003}
+
+#status{position:fixed;right:20px;bottom:22px;color:#e8dfc8;background:#101f2bd9;border:1px solid #b4c7d03c;border-radius:8px;padding:10px 14px;font-size:12px}
+#status[hidden]{display:none}
+button[aria-pressed=true]{background:#446f89;border-color:#d8e7f2}a{color:inherit}
+@media(max-width:680px){nav{top:auto;bottom:18px;right:10px;left:10px;max-width:none;justify-content:center}nav button{padding:11px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="viewport"></div>
+<div id="map-preview-label"><b>地图试玩预览</b><div>使用已发布的地图 JSON · 不影响正式游戏</div></div>
+
+<nav aria-label="三维场景控制">
+<a href="../lighthouse-editor/">返回地图编辑器</a>
+<a href="./">打开原版游戏</a>
+<button id="reset" type="button">重置视角</button>
+<button id="rotate" type="button" aria-pressed="false">自动旋转</button>
+<button id="mode-day" type="button" aria-pressed="true">白天</button>
+<button id="mode-night" type="button" aria-pressed="false">夜晚</button>
+<button id="capture" type="button">保存画面</button>
+<button id="fullscreen" type="button">全屏</button>
+</nav>
+
+<audio id="game-background-music" src="./audio/lighthouse_background_music.mp3?v=music4" autoplay loop preload="auto" playsinline></audio>
+<div id="status" role="status">正在加载地图 JSON 与 V35 原版场景…</div>
+<script>
+if(new URLSearchParams(location.search).get('source')==='local'){
+ document.querySelector('#map-preview-label div').textContent='使用本浏览器的编辑器草稿 · 不影响正式游戏';
+}
+</script>
+<script type="module" src="./v35-preview-scene.js?v=cliffy-permanent-removed-v1"></script>
+<script type="module" src="./background-music.js?v=4a"></script>
+<script>window.addEventListener('error',function(e){let s=document.getElementById('status'); if(s){s.hidden=false;s.textContent='无法加载三维场景，请确认网络能访问 jsDelivr。'+(e.message||'')}});</script>
+</body></html>
