@@ -2,73 +2,59 @@
 <html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>灯塔世界 · 全屏素材管理 V5.5.4</title>
+<title>灯塔世界 · 本地素材管理器 V5.5.5</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6f0ee;background:#0d1820;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;min-height:100vh}
-button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #45616c;background:#203740;border-radius:9px;padding:10px 12px}button:hover:not(:disabled){background:#31505b}button:disabled{opacity:.45;cursor:not-allowed}
+button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #45616c;background:#203740;border-radius:9px;padding:9px 12px}
+button:hover:not(:disabled){background:#31505b}button:disabled{opacity:.42;cursor:not-allowed}
 a{color:#a6d6cf;text-decoration:none}a:hover{text-decoration:underline}
-header{position:sticky;top:0;z-index:20;background:#12252eef;border-bottom:1px solid #35515c;backdrop-filter:blur(12px);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.brand{font-weight:700;font-size:19px}.sub{font-size:12px;color:#93afb6;margin-top:3px}.toplinks{display:flex;gap:10px;align-items:center}
-.primary{background:#276d69;border-color:#4b9990}.danger{background:#822d3a;border-color:#b74e59}.danger:hover:not(:disabled){background:#a53d4c}
-main{padding:22px 25px 55px;max-width:1800px;margin:auto}
-.summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.count{font-size:12px;color:#a6bfbe;padding:7px 11px;border-radius:7px;background:#1c3039;border:1px solid #34525e}
-.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-.bar input,.bar select,.auth input{background:#142831;border:1px solid #48616a;color:#ecf5f2;padding:11px 12px;border-radius:9px;min-height:42px}
-.bar input{flex:2;min-width:240px}.bar select{min-width:160px}
-.bar .spacer{flex:1}
-.auth{background:#152831;border:1px solid #395965;border-radius:10px;padding:13px 16px;display:flex;flex-wrap:wrap;gap:11px;align-items:center;margin-bottom:20px}
-.auth .desc{flex:1;min-width:230px;font-size:12px;line-height:1.55;color:#b3cacb}
-.auth input{min-width:260px;flex:1;max-width:360px}
-#auth-state{font-size:12px;color:#b3cacb}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:14px}
-.asset{position:relative;border:1px solid #35515b;background:#152932;border-radius:11px;overflow:hidden;min-width:0;transition:border-color .15s,transform .15s}
-.asset:hover{border-color:#6daba5}.asset.selected{outline:2px solid #b4ded1;border-color:#b4ded1}
-.asset.blocked{opacity:.73}
+header{position:sticky;top:0;z-index:20;background:#12252eef;border-bottom:1px solid #35515c;backdrop-filter:blur(12px);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:19px}.sub{font-size:12px;color:#93afb6;margin-top:3px}.toplinks{display:flex;gap:9px;align-items:center}
+main{padding:18px 22px 92px;max-width:1800px;margin:auto}
+.summary{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.count{font-size:12px;color:#a6bfbe;padding:7px 11px;border-radius:7px;background:#1c3039;border:1px solid #34525e}
+.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.toolbar input,.toolbar select{background:#142831;border:1px solid #48616a;color:#ecf5f2;padding:10px 12px;border-radius:9px;min-height:40px}
+.toolbar input{flex:1;min-width:220px}.toolbar select{min-width:160px}
+.primary{background:#276d69;border-color:#4b9990}.danger{background:#822d3a;border-color:#b74e59}
+.status{margin:8px 0 14px;color:#bcd5d5;line-height:1.5;font-size:12px}.status.error{color:#ffb8b8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:14px}
+.asset{position:relative;border:1px solid #35515b;background:#152932;border-radius:11px;overflow:hidden;min-width:0}
+.asset.selected{outline:2px solid #b4ded1;border-color:#b4ded1}
 .preview{position:relative;width:100%;aspect-ratio:4/3;background:radial-gradient(circle at 45% 35%,#32505b,#13242e);display:flex;justify-content:center;align-items:center;overflow:hidden}
 .preview img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.preview .placeholder{font-size:12px;color:#8ca6b1;text-align:center;max-width:90%}
-.meta{padding:9px 10px 12px}.name{font-size:12px;line-height:1.4;font-weight:600;word-break:break-word;min-height:34px}
-.details{font-size:10px;color:#a1b6ba;margin-top:5px;line-height:1.55}
-.select-item{position:absolute;left:8px;top:8px;width:25px;height:25px;accent-color:#4aa7a0;z-index:2}
-.remove-one{position:absolute;right:7px;top:7px;width:28px;height:28px;padding:0;border-radius:6px;color:white;font-size:20px;line-height:1;background:#963b45;border-color:#c45a60;z-index:2}
-.remove-one:disabled{opacity:.35}
-.status{margin:10px 0 18px;color:#bcd5d5;line-height:1.5;font-size:12px}
-.status.error{color:#ffb8b8}
-.empty{grid-column:1/-1;text-align:center;color:#a4b8be;padding:44px}
-.bottom{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#10242ff2;border-top:1px solid #46616a;padding:11px 24px;z-index:30;flex-wrap:wrap}
-.bottom .info{font-size:12px;color:#b5caca}
-#frame{display:none}
-@media(max-width:600px){header{padding:12px}main{padding:13px 12px 60px}.bar{gap:8px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.auth input{min-width:0;width:100%}.asset .meta{padding:8px}.bottom{padding:10px 12px}}
-</style>
-</head><body>
+.preview .placeholder{font-size:12px;color:#8ca6b1;text-align:center}
+.select-item{position:absolute;left:9px;top:9px;width:23px;height:23px;accent-color:#4aa7a0;z-index:3}
+.used-tag{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:6px;background:#6b5232e8;border:1px solid #d3b987;color:#ffe6ac;font-size:10px}
+.meta{padding:10px 11px 12px}.name{font-size:13px;line-height:1.4;font-weight:650;word-break:break-word;min-height:19px}
+.category{font-size:11px;color:#a6d6cf;margin-top:4px}.details{font-size:10px;color:#a1b6ba;margin-top:5px;line-height:1.5}
+.actions{display:flex;gap:6px;margin-top:9px}.actions button{flex:1;font-size:11px;padding:7px 5px}
+.empty{grid-column:1/-1;text-align:center;color:#a4b8be;padding:64px 18px;border:1px dashed #46616a;border-radius:14px;background:#12242d}
+.empty-icon{font-size:34px;color:#8bc9b9;margin-bottom:8px}.empty p{font-size:12px;line-height:1.6}
+.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#10242ff2;border-top:1px solid #46616a;padding:11px 22px;z-index:30;flex-wrap:wrap}
+.bottom .info{font-size:12px;color:#b5caca}#frame{display:none}
+@media(max-width:650px){header{padding:12px}main{padding:13px 12px 100px}.toolbar{gap:7px}.toolbar input{min-width:100%;}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.asset .meta{padding:8px}.bottom{padding:10px 12px}}
+</style></head><body>
 <header>
- <div><div class="brand">灯塔世界 / 素材管理</div><div class="sub">全屏资产库 · 与地图编辑器共用 GitHub gh-pages 素材源</div></div>
- <nav class="toplinks"><a href="./">返回地图编辑器</a><button id="reload" type="button">刷新仓库</button></nav>
+ <div><div class="brand">灯塔世界 / 全屏素材管理器</div><div class="sub">本地 GLB 资产库 · 与地图编辑器共用同一份 IndexedDB</div></div>
+ <nav class="toplinks"><a href="./">返回地图编辑器</a><button id="reload" type="button">刷新本地素材</button></nav>
 </header>
 <main>
- <div class="summary"><span id="total" class="count">正在读取素材…</span><span id="available" class="count">可删除 —</span><span id="used" class="count">当前地图使用 —</span></div>
- <div class="auth">
-  <div class="desc"><strong>GitHub 登录确认删除（无需 Token）</strong>
-   <div>选中素材后点击「去 GitHub 确认删除」，在 GitHub 登录的账号下提交删除请求。仓库所有者确认后，GitHub Actions 会从 gh-pages 永久删除 GLB、更新素材清单，并单独重打包压缩包模型。旧地图或备份如引用被删模型，恢复后可能缺少该模型。</div>
-  </div>
-  <a href="https://github.com/raynacocobobobo-arch/DND/issues" target="_blank" rel="noopener noreferrer" style="white-space:nowrap">查看 GitHub 删除记录</a>
+ <div class="summary">
+  <span id="total" class="count">读取中…</span><span id="visible" class="count">当前显示 —</span>
+  <span id="used" class="count">被地图引用 —</span><span id="storage" class="count">本地数据库连接中…</span>
  </div>
- <div class="bar">
-  <input id="search" placeholder="搜索名称、文件名或资产 ID" aria-label="搜索素材">
-  <select id="source" aria-label="来源"><option value="all">全部来源</option><option value="pirates">POLYGON Pirates</option><option value="cliffy">Cliffy Coast</option><option value="palms">海岸椰树</option></select>
-  <select id="category" aria-label="分类"><option value="all">全部分类</option></select>
-  <select id="state" aria-label="文件状态"><option value="all">所有状态</option><option value="direct">独立 GLB</option><option value="packed">压缩包资产</option><option value="used">正在使用</option><option value="missing">仓库文件缺失</option></select>
-  <div class="spacer"></div><button id="select-all">选中当前可删除项</button><button id="clear-selection">清空选择</button>
+ <div class="toolbar">
+  <input id="search" placeholder="搜索模型名称或 ID" aria-label="搜索模型">
+  <select id="category" aria-label="素材分类"><option value="all">全部分类</option></select>
+  <button id="select-all" type="button">全选可删除项</button><button id="clear-selection" type="button">清空选择</button>
+  <input id="files" type="file" accept=".glb,model/gltf-binary" multiple hidden>
+  <button id="import" class="primary" type="button">导入 GLB</button>
  </div>
- <div id="status" class="status" role="status">读取中…</div>
+ <div id="status" class="status" role="status">正在连接本地素材库…</div>
  <div id="grid" class="grid"></div>
 </main>
-<div class="bottom">
- <span id="selection-info" class="info">已选中 0 项</span>
- <div><button id="delete-selected" class="danger" type="button" disabled>永久删除所选 GitHub 素材</button></div>
-</div>
-<iframe id="frame" sandbox="allow-scripts" src="./asset-preview-frame.html" title="隔离模型预览"></iframe>
-<script type="module" src="./asset-manager-page.js?v=554-hide-missing-usage-guard"></script>
+<div class="bottom"><span id="selection-info" class="info">已选 0 项</span><button id="delete-selected" class="danger" type="button" disabled>删除所选本地素材</button></div>
+<iframe id="frame" sandbox="allow-scripts" src="./asset-preview-frame.html" title="本地模型预览"></iframe>
+<script type="module" src="./asset-manager-page-local.js?v=555-local-db"></script>
 </body></html>
