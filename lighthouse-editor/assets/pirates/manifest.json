@@ -2106,6 +2106,12 @@
       "file": "SM_Bld_Shanty_Roof_05.glb",
       "label": "海盗 · Bld Shanty Roof 05",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_item_coins_04",
+      "file": "SM_Item_Coins_04.glb",
+      "label": "海盗 · Coins 04",
+      "defaultScale": 1
     }
   ]
 }
