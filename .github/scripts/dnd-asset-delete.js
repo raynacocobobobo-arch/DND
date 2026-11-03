@@ -31,7 +31,7 @@ function getEvent(){
  if(!lines.length||lines.length>150)fail('Choose 1–150 assets per request');
  const ids=new Set();
  for(const id of lines){
-  if(!/^(pirates|cliffy_coast)_[a-z0-9_]+$/.test(id))fail('Invalid asset ID: '+id);
+  if(!/^(pirates|cliffy_coast|coastal_tree)_[a-z0-9_]+$/.test(id))fail('Invalid asset ID: '+id);
   if(ids.has(id))fail('Duplicate ID: '+id);
   ids.add(id);
  }
@@ -78,8 +78,9 @@ function execute(){
  const piratesPath=ensureInside(base+'pirates/manifest.json');
  const cliffyPath=ensureInside(base+'cliffy-coast/asset-manager-index.json');
  const removedPath=ensureInside(base+'cliffy-coast/removed.json');
- const pirate=readJson(piratesPath),cliffy=readJson(cliffyPath),removed=readJson(removedPath);
- if(!Array.isArray(pirate.assets)||!Array.isArray(cliffy.assets)||!Array.isArray(removed.ids))
+ const palmsPath=ensureInside(base+'palms/manifest.json');
+ const pirate=readJson(piratesPath),cliffy=readJson(cliffyPath),removed=readJson(removedPath),palms=readJson(palmsPath);
+ if(!Array.isArray(pirate.assets)||!Array.isArray(cliffy.assets)||!Array.isArray(removed.ids)||!Array.isArray(palms.assets))
   fail('Malformed repository indices');
  const removedSet=new Set(removed.ids),toRemove=[],packs=new Map();
  for(const id of ids){
@@ -90,6 +91,13 @@ function execute(){
    const location=ensureInside(base+'pirates/'+match.file);
    if(!fs.existsSync(location))fail('Missing pirate GLB: '+match.file);
    toRemove.push({id,location,source:'pirates'});
+  }else if(id.startsWith('coastal_tree_')){
+   const match=palms.assets.find(x=>x.id===id);
+   if(!match)fail('Palm asset no longer registered: '+id);
+   if(!/^[A-Za-z0-9][A-Za-z0-9_.-]*\\.glb$/.test(match.file))fail('Invalid palm filename');
+   const location=ensureInside(base+'palms/'+match.file);
+   if(!fs.existsSync(location))fail('Missing palm model '+match.file);
+   toRemove.push({id,location,source:'palms'});
   }else{
    const match=cliffy.assets.find(x=>x.id===id);
    if(!match||removedSet.has(id))fail('Cliffy asset no longer registered: '+id);
@@ -120,11 +128,14 @@ function execute(){
   for(const [p,data] of repacked)fs.writeFileSync(p,data);
  }
  pirate.assets=pirate.assets.filter(x=>!ids.includes(x.id));
+ palms.assets=palms.assets.filter(x=>!ids.includes(x.id));
  for(const id of ids)if(id.startsWith('cliffy_coast_'))removedSet.add(id);
  removed.ids=[...removedSet].sort();
  saveJson(piratesPath,pirate);
+ saveJson(palmsPath,palms);
  saveJson(removedPath,removed);
  const result={deletedIds:ids,pirates:toRemove.filter(x=>x.source==='pirates').length,
+  palms:toRemove.filter(x=>x.source==='palms').length,
   cliffyDirect:toRemove.filter(x=>x.source==='cliffy'&&!x.packed).length,
   cliffyPacked:toRemove.filter(x=>x.packed).length,
   updatedPacks:[...repacked.keys()].map(x=>path.basename(x)),dryRun:DRY_RUN};
