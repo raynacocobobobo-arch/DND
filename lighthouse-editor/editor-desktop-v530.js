@@ -1,4 +1,4 @@
-import {mountEditorManagement} from './editor-management.js?v=5-usage-guard';
+import {mountEditorManagement} from './editor-management.js?v=6-usage-guard';
 import {createEditorStorage} from './editor-storage.js?v=1';
 import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
@@ -18,7 +18,7 @@ import {SHARED_MAP_KEY,emptyMap,normalizeMap,readPreviewMap,savePreviewMap,
  createTerrainMesh,addOpenOcean,createEditorOceanGeometry,applyNativeEdits,applyModelAppearance,MAX_EDITOR_GRID,
  BASE_ASSETS,MIN_OBJECT_Y,MAX_OBJECT_Y,SEA as GAME_SEA,groundY as gameGroundY} from '../lighthouse/shared-map.js?v=vertex-color-hsb-v3';
 const $=id=>document.getElementById(id),view=$('view');
-const EDITOR_BUILD_ID='desktop-20261103-v553-prune-deleted';
+const EDITOR_BUILD_ID='desktop-20261103-v554-prune-deleted';
 document.documentElement.dataset.editorBuild=EDITOR_BUILD_ID;
 const bootElement=$('startup-status'),bootMessage=$('startup-message');
 const loadingText=message=>{if(bootElement&&!bootElement.dataset.error){bootElement.hidden=false;bootMessage.textContent=message;}};
@@ -69,8 +69,8 @@ const cliffyBatch05=await registerCliffyCoastBatch05(catalog);loadingText('正�
 const cliffyBatch06_07=await registerCliffyCoastBatch06_07(catalog).catch(err=>{console.error('Cliffy Coast 06-07 bundle not loaded:',err);return {loaded:0};});
 const cliffyBatch08_10=await registerCliffyCoastBatch08_10(catalog).catch(err=>{console.error('Cliffy Coast 08-10 bundle not loaded:',err);return {loaded:0};});
 const cliffyHouses=registerCliffyCoastHouses(catalog);
-console.info('[Lighthouse V5.5.3] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
-window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.3',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
+console.info('[Lighthouse V5.5.4] complete houses registered:',cliffyHouses.loaded,cliffyHouses.ids);
+window.__LIGHTHOUSE_HOUSES_STATUS__={version:'V5.5.4',loaded:cliffyHouses.loaded,ids:cliffyHouses.ids};
 loadingText('正在读取素材库 · 海盗模型…');
 const piratesAssets=await registerPiratePrefabs(catalog).catch(err=>{console.error('Pirates manifest unavailable:',err);return {loaded:0,total:0,errors:[String(err)]};});
 window.__LIGHTHOUSE_PIRATES_STATUS__=piratesAssets;
