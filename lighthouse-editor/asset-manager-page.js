@@ -47,13 +47,11 @@ async function authorize(){
  try{
   token=value;
   // The current user's login and repository metadata are the only authentication probes.
-  const response=await fetch('https://api.github.com/user',{headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},cache:'no-store'});
-  if(!response.ok)throw Error('GitHub 令牌无效或已过期（HTTP '+response.status+'）');
-  const identity=await response.json();
   const repository=await gh('GET','');
+  if(repository.full_name!==REPO)throw Error('仓库授权范围错误');
   connected=true;input.value='';
   $('logout').disabled=false;
-  $('auth-state').textContent='已授权：'+identity.login+(repository.permissions?.push?' · 仓库可写':' · 提交时验证写入权限');
+  $('auth-state').textContent='仓库访问已验证'+(repository.permissions?.push?' · 具有推送权限':' · 写入权限将在提交时再次核实');
   status('授权通过。删除只会提交到 '+BRANCH+'，不会修改正式 V35 游戏源文件。');
  }catch(e){
   token='';connected=false;input.value='';
