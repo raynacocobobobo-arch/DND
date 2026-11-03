@@ -670,13 +670,14 @@ function renderAssetLibrary(){
   const grid=document.createElement('div');grid.className='asset-grid';
   for(const id of ids){
    const meta=catalog.all[id],removed=hiddenAssets.has(id);
+   const uses=world?.objects?.filter(obj=>obj.asset===id).length||0;
    const marked=!!editorFeatures?.isSelected(id);
    const wrap=document.createElement('div');wrap.className='asset-card-wrap'+
     (removed?' is-removed':'')+(marked?' is-marked':'');
    wrap.dataset.asset=id;
    const btn=document.createElement('button');
    btn.type='button';btn.className='asset-card';btn.dataset.asset=id;
-   btn.title=meta.label+' · '+id+(removed?' · 已从资源库移除':'');
+   btn.title=meta.label+' · '+id+(removed?' · 已从资源库移除':'')+(uses?' · 地图使用 '+uses+' 次，禁止删除':'');
    const img=document.createElement('img');img.className='asset-preview';
    img.alt=meta.label+' 模型缩略图';img.dataset.asset=id;
    img.loading='lazy';img.width=160;img.height=120;
@@ -695,6 +696,11 @@ function renderAssetLibrary(){
    };
    wrap.append(btn);
    if(managing){
+    if(uses){
+     const used=document.createElement('span');used.className='asset-used-tag';
+     used.textContent='使用 '+uses;used.title='已在地图中使用，不能移除';
+     wrap.append(used);
+    }
     const mark=document.createElement('span');mark.className='asset-mark';
     mark.textContent=marked?'✓':'';mark.setAttribute('aria-hidden','true');wrap.append(mark);
     const action=document.createElement('button');action.type='button';
@@ -1025,7 +1031,7 @@ function renderMinimap(){
 }
 editorFeatures=mountEditorManagement({
  catalog,glbLibrary,editorStorage,hiddenAssets,getWorld:()=>world,
- refreshLibrary:renderAssetLibrary,
+ refreshLibrary:renderAssetLibrary,exitPlacementMode:()=>setTool('select'),
  afterDelete:id=>{
   previewCache.delete(id);
   if(activeTool==='asset:'+id)setTool('select');
