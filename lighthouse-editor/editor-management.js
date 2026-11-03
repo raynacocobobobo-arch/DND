@@ -51,6 +51,23 @@ export function mountEditorManagement(ctx){
   }catch(e){alert('素材恢复失败：'+e.message);return false;}
   finally{deleting=false;updateAssetControls();}
  }
+ async function findAssetUsage(ids){
+  const refs=[];
+  const scan=(data,label)=>{
+   for(const object of data?.objects||[]){
+    const asset=object.asset;
+    const parts=catalog.all[asset]?.assemblyParts||[];
+    if(ids.has(asset)||parts.some(part=>ids.has(part))){
+     refs.push(label+'：'+(object.name||catalog.all[asset]?.label||asset));
+    }
+   }
+  };
+  scan(getWorld?.(),'当前地图');
+  if(!editorStorage?.listBackups)throw Error('无法读取本机备份，暂时不能安全删除素材');
+  const backups=await editorStorage.listBackups();
+  for(const backup of backups||[])scan(backup.world,'备份「'+(backup.name||'未命名')+'」');
+  return refs;
+ }
  async function removeAssets(requested){
   if(deleting||!managing)return {removed:[],blocked:[]};
   const ids=[...new Set(requested)].filter(id=>catalog.all[id]&&!hiddenAssets.has(id));
@@ -70,6 +87,18 @@ export function mountEditorManagement(ctx){
   if(unsupported.length){
    alert('以下素材不是独立 GitHub 模型文件，无法直接删除：'+unsupported.slice(0,4).join('、'));
    return {removed:[],blocked:unsupported};
+  }
+  const deletionIds=new Set([...ids,...repoIds]);
+  let references;
+  try{references=await findAssetUsage(deletionIds);}
+  catch(error){
+   alert('无法确认素材是否仍被地图或备份使用，因此暂不删除：'+error.message);
+   return {removed:[],blocked:ids};
+  }
+  if(references.length){
+   alert('以下素材仍被当前地图或本机备份使用，不能删除：\\n'+references.slice(0,6).join('\\n')+
+    (references.length>6?'\\n另有 '+(references.length-6)+' 处引用':''));
+   return {removed:[],blocked:ids};
   }
   const preview=ids.slice(0,3).map(id=>catalog.all[id]?.label||id).join('、');
   const message='确定删除 '+ids.length+' 个选中素材（'+preview+(ids.length>3?'等':'')+'）？'+
