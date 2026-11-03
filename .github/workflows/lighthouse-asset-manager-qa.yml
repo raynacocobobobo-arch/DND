@@ -69,7 +69,7 @@ jobs:
             assert.ok(fs.readFileSync('lighthouse-editor/index.html','utf8').includes('href="./assets.html'));
             await page.waitForFunction(()=>document.querySelector('#status')?.textContent.includes('已显示'),{timeout:30000});
             assert.equal(contentsCalls,0,'Anonymous dependency checks must not call GitHub Contents API');
-            assert.ok((await page.locator('#available').textContent()).includes('可安全删除'));
+            assert.ok((await page.locator('#available').textContent()).includes('可永久删除'));
             assert.ok(!errors.length,errors.join('\n'));
             console.log('ASSET_MANAGER_QA PASS: 403 Contents API bypassed and 655 indexed entries readable');
             const editor=await browser.newPage({viewport:{width:1440,height:900}});
