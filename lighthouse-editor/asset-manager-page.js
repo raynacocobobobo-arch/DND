@@ -1,4 +1,5 @@
 import {createEditorStorage} from './editor-storage.js?v=1';
+import {openGithubAssetDeletion} from './github-delete-request.js?v=1';
 
 const REPO='raynacocobobobo-arch/DND';
 const API='https://api.github.com/repos/'+REPO;
@@ -37,12 +38,13 @@ function pirateCategory(filename){
  return '海盗 · 其他';
 }
 async function loadAssets(){
- const [pirate,cliffy,removed]=await Promise.all([
+ const [pirate,cliffy,removed,palms]=await Promise.all([
   jsonFetch('./assets/pirates/manifest.json'),
   jsonFetch('./assets/cliffy-coast/asset-manager-index.json'),
-  jsonFetch('./assets/cliffy-coast/removed.json')
+  jsonFetch('./assets/cliffy-coast/removed.json'),
+  jsonFetch('./assets/palms/manifest.json')
  ]);
- if(!Array.isArray(pirate.assets)||!Array.isArray(cliffy.assets)||!Array.isArray(removed.ids))
+ if(!Array.isArray(pirate.assets)||!Array.isArray(cliffy.assets)||!Array.isArray(removed.ids)||!Array.isArray(palms.assets))
   throw Error('仓库的素材索引格式不正确');
  // Gallery remains available even if GitHub's anonymous API is rate-limited.
  let tree=null;
@@ -69,6 +71,14 @@ async function loadAssets(){
    category:String(x.category||'Cliffy Coast'),kind:direct?'direct':'packed',
    pack:x.pack,size:direct?(allTree.get(path)?.size||0):0,
    missing:direct&&inventoryKnown&&!allTree.has(path),url:direct?'./assets/cliffy-coast/'+encodeURIComponent(x.file):null});
+ }
+ for(const x of palms.assets){
+  if(!/^coastal_tree_t0[1-4]$/.test(x.id)||!/^[A-Za-z0-9_.-]+\.glb$/.test(x.file))continue;
+  const path='lighthouse-editor/assets/palms/'+x.file;
+  out.push({id:x.id,path,label:String(x.label||x.file),file:x.file,source:'palms',
+   category:String(x.category||'树木与植被'),kind:'direct',
+   size:allTree.get(path)?.size||0,missing:inventoryKnown&&!allTree.has(path),
+   url:'./assets/palms/'+encodeURIComponent(x.file)});
  }
  assets=out;
  selected=new Set([...selected].filter(id=>out.some(a=>a.id===id)));
@@ -163,7 +173,7 @@ function makeCard(a){
  const meta=document.createElement('div');meta.className='meta';
  const label=document.createElement('div');label.className='name';label.textContent=a.label;
  const details=document.createElement('div');details.className='details';
- details.textContent=(a.source==='pirates'?'POLYGON Pirates':'Cliffy Coast')+' · '+
+ details.textContent=(a.source==='pirates'?'POLYGON Pirates':a.source==='palms'?'海岸椰树':'Cliffy Coast')+' · '+
   (a.kind==='packed'?'压缩包':a.missing?'仓库缺失':(Math.round(a.size/1024)+' KB'))+
   (usage.has(a.id)?' · 已使用 '+usage.get(a.id).length+' 次':'')+
   (a.kind==='packed'?' · 可单独从压缩包移除':'');
@@ -253,11 +263,7 @@ function runDelete(requested){
  if(!confirm('将请求永久删除 '+batch.length+' 件 GitHub 素材（'+names+(batch.length>3?'等':'')+
   '）。\n删除会影响引用这些模型的旧存档，但不修改已经定版的正式岛屿游戏。继续前往 GitHub 确认？'))return;
  if(batch.length>1&&prompt('批量永久删除 '+batch.length+' 件素材，请输入「删除」确认')!=='删除')return;
- const body=['DND_ASSET_DELETE_V1',...batch].join('\n');
- const url='https://github.com/'+REPO+'/issues/new?title='+
-  encodeURIComponent('[DND-ASSET-DELETE]')+'&body='+encodeURIComponent(body);
- const opened=window.open(url,'_blank','noopener,noreferrer');
- if(!opened)location.href=url;
+ openGithubAssetDeletion(batch);
  status('已打开 GitHub 删除确认页。请登录仓库所有者账号并点击「Submit new issue」；工作流随后删除 GLB 并更新索引。'+
   (ids.length>batch.length?'本次提交前 100 件；剩余 '+(ids.length-batch.length)+' 件请再次操作。':''));
 }
