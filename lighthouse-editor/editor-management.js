@@ -1,7 +1,7 @@
 // Asset manager and verified quick backups for the live editor.
 export function mountEditorManagement(ctx){
  const {catalog,glbLibrary,editorStorage,hiddenAssets,getWorld,
-  refreshLibrary,afterDelete,loadWorld,downloadJSON,toast}=ctx;
+  refreshLibrary,exitPlacementMode,afterDelete,loadWorld,downloadJSON,toast}=ctx;
  const $=id=>document.getElementById(id);
  // One integrated management mode inside the thumbnail palette.
  // Native and repository models are only hidden locally; imported GLBs
@@ -27,8 +27,8 @@ export function mountEditorManagement(ctx){
  function setManaging(value){
   managing=!!value;chosen.clear();showRemoved=false;
   if(managing){
-   const active=getWorld()?.objects;
-   // No placement command must remain armed when deleting thumbnails.
+   // Remove mode must never leave a prefab placement brush armed.
+   exitPlacementMode?.();
    document.querySelectorAll('.asset-card.active').forEach(el=>el.classList.remove('active'));
   }
   updateAssetControls();refreshLibrary();
