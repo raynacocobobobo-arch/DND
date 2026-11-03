@@ -1,4 +1,4 @@
-import {mountEditorManagement} from './editor-management.js?v=1';
+import {mountEditorManagement} from './editor-management.js?v=2-thumbnail-management';
 import {createEditorStorage} from './editor-storage.js?v=1';
 import {registerPiratePrefabs} from './pirates-prefabs.js?v=parrot-colors-v2';
 import {registerCliffyCoastHouses} from './cliffy-coast-houses.js?v=2';
@@ -622,11 +622,14 @@ function schedulePreview(){
   if(pendingPreviews.length)schedulePreview();
  });
 }
+let editorFeatures=null;
 function renderAssetLibrary(){
+ const managing=!!editorFeatures?.isManaging();
+ const showRemoved=!!editorFeatures?.isShowingRemoved();
  const query=$('asset-search').value.trim().toLowerCase();
  const mode=$('asset-filter').value;
  const found=catalog.types.filter(id=>{
-  if(hiddenAssets.has(id))return false;
+  if(hiddenAssets.has(id)&&!showRemoved)return false;
   const meta=catalog.all[id]||{},category=assetCategory(id,meta);
   const filter=mode==='complete'?meta.kind!=='detail':
    mode==='parts'?meta.kind==='detail':
@@ -666,19 +669,47 @@ function renderAssetLibrary(){
   title.append(count);section.append(title);
   const grid=document.createElement('div');grid.className='asset-grid';
   for(const id of ids){
-   const meta=catalog.all[id],btn=document.createElement('button');
+   const meta=catalog.all[id],removed=hiddenAssets.has(id);
+   const marked=!!editorFeatures?.isSelected(id);
+   const wrap=document.createElement('div');wrap.className='asset-card-wrap'+
+    (removed?' is-removed':'')+(marked?' is-marked':'');
+   wrap.dataset.asset=id;
+   const btn=document.createElement('button');
    btn.type='button';btn.className='asset-card';btn.dataset.asset=id;
-   btn.title=meta.label+' · '+id;
+   btn.title=meta.label+' · '+id+(removed?' · 已从资源库移除':'');
    const img=document.createElement('img');img.className='asset-preview';
-   img.alt=meta.label+' 原版模型缩略图';img.dataset.asset=id;
+   img.alt=meta.label+' 模型缩略图';img.dataset.asset=id;
    img.loading='lazy';img.width=160;img.height=120;
    const label=document.createElement('span');label.className='asset-label';
-   label.textContent=meta.label;
+   label.textContent=meta.label+(removed?'（已移除）':'');
    btn.append(img,label);
-    if(world?.assetDefaults?.[id]){const badge=document.createElement('span');badge.className='asset-overridden';badge.textContent='已覆盖';btn.append(badge);}
-   btn.onclick=()=>{setTool('asset:'+id);if(touchMedia.matches)setTouchInteraction('edit');document.querySelectorAll('.asset-card')
-     .forEach(item=>item.classList.toggle('active',item===btn));};
-   grid.append(btn);
+   if(world?.assetDefaults?.[id]){
+    const badge=document.createElement('span');badge.className='asset-overridden';
+    badge.textContent='已覆盖';btn.append(badge);
+   }
+   btn.onclick=()=>{
+    if(managing){if(!removed)editorFeatures?.toggleSelect(id);return;}
+    if(removed)return;
+    setTool('asset:'+id);if(touchMedia.matches)setTouchInteraction('edit');
+    document.querySelectorAll('.asset-card').forEach(item=>item.classList.toggle('active',item===btn));
+   };
+   wrap.append(btn);
+   if(managing){
+    const mark=document.createElement('span');mark.className='asset-mark';
+    mark.textContent=marked?'✓':'';mark.setAttribute('aria-hidden','true');wrap.append(mark);
+    const action=document.createElement('button');action.type='button';
+    action.className='asset-action-corner'+(removed?' restore':'');
+    action.textContent=removed?'↺':'×';
+    action.title=removed?'恢复此素材':'移除此素材';
+    action.setAttribute('aria-label',(removed?'恢复 ':'删除 ')+meta.label);
+    action.onclick=e=>{
+     e.stopPropagation();
+     if(removed)editorFeatures?.restoreAsset(id);
+     else editorFeatures?.removeOne(id);
+    };
+    wrap.append(action);
+   }
+   grid.append(wrap);
    const cached=previewCache.get(id);
    if(cached)img.src=cached;else previewObserver.observe(img);
   }
@@ -992,7 +1023,7 @@ function renderMinimap(){
  ctx.beginPath();ctx.moveTo(cx-6,cy);ctx.lineTo(cx+6,cy);ctx.moveTo(cx,cy-6);ctx.lineTo(cx,cy+6);ctx.stroke();
  ctx.fillStyle='#d5f2f2';ctx.font='10px sans-serif';ctx.fillText('N',g.w/2-3,10);
 }
-const editorFeatures=mountEditorManagement({
+editorFeatures=mountEditorManagement({
  catalog,glbLibrary,editorStorage,hiddenAssets,getWorld:()=>world,
  refreshLibrary:renderAssetLibrary,
  afterDelete:id=>{
