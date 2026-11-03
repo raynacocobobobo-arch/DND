@@ -138,13 +138,14 @@ async function readGuard(){
   // and return 403. Read the publicly published map from our own origin while
   // browsing; immediately before a destructive commit, token-backed GitHub API
   // access rechecks the current branch contents.
+  // Public read-only dependency checking MUST NOT depend on the token's
+  // Contents API permission or GitHub's anonymous API quota.
+  // We always read the published same-origin map, with a raw GitHub fallback.
   let publishedMap;
-  if(token){
-   const published=await gh('GET','/contents/lighthouse/editor-preview-map.json?ref='+BRANCH);
-   if(published.encoding!=='base64')throw Error('GitHub 发布地图编码不受支持');
-   publishedMap=JSON.parse(readBase64Utf8(published.content));
-  }else{
-   publishedMap=await jsonFetch('../lighthouse/editor-preview-map.json');
+  try{
+   publishedMap=await jsonFetch('../lighthouse/editor-preview-map.json?v='+Date.now());
+  }catch(primary){
+   publishedMap=await jsonFetch('https://raw.githubusercontent.com/'+REPO+'/'+BRANCH+'/lighthouse/editor-preview-map.json');
   }
   if(!publishedMap||typeof publishedMap!=='object'||!Array.isArray(publishedMap.objects))
    throw Error('已发布地图格式不正确，无法安全判断素材引用');
@@ -321,6 +322,23 @@ async function runDelete(ids){
   const commit=await gh('GET','/git/commits/'+head);
   const tree=await gh('GET','/git/trees/'+commit.tree.sha+'?recursive=1');
   if(tree.truncated)throw Error('GitHub 文件清单被截断，拒绝删除');
+  // A cached GitHub Pages JSON is sufficient for browsing, not for deleting.
+  // Recheck the published map against the exact branch tree being modified.
+  const mapNode=tree.tree.find(x=>x.path==='lighthouse/editor-preview-map.json'&&x.type==='blob');
+  if(!mapNode)throw Error('GitHub 分支中的正式地图缺失，已中止删除');
+  const mapBlob=await gh('GET','/git/blobs/'+mapNode.sha);
+  if(mapBlob.encoding!=='base64')throw Error('正式地图 Git Blob 无法解析');
+  const latestPublishedMap=JSON.parse(readBase64Utf8(mapBlob.content));
+  if(!Array.isArray(latestPublishedMap.objects))throw Error('正式地图结构异常，已中止删除');
+  const currentReferences=new Set();
+  for(const object of latestPublishedMap.objects){
+   if(typeof object.asset==='string'){
+    currentReferences.add(object.asset);
+    for(const dependency of (ASSEMBLIES[object.asset]||[]))currentReferences.add(dependency);
+   }
+  }
+  const stillUsed=items.filter(x=>currentReferences.has(x.id));
+  if(stillUsed.length)throw Error('GitHub 最新正式地图仍使用 '+stillUsed.length+' 件所选素材，已阻止删除');
   const present=new Set(tree.tree.filter(x=>x.type==='blob').map(x=>x.path));
   for(const item of items)if(!present.has(item.path))throw Error('仓库中已经不存在文件：'+item.path);
   const pirateIds=new Set(items.filter(a=>a.source==='pirates').map(a=>a.id));
