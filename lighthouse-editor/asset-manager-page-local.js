@@ -54,6 +54,14 @@ async function readUsage(){
   for(const id of await liveUsage()){
    const refs=usage.get(id)||[];refs.push('当前打开的地图（实时检查）');usage.set(id,refs);
   }
+  // In the Mac localhost build, also inspect Finder-backed Mac projects and
+  // their backups. The hosted web version never calls this local-only endpoint.
+  if(location.hostname==='127.0.0.1'&&location.port==='18765'){
+   const response=await fetch('/DND/_mac/api/assets/usage',{cache:'no-store'});
+   if(!response.ok)throw Error('无法检查 Mac 磁盘工程的模型引用');
+   const data=await response.json();
+   for(const [id,refs] of Object.entries(data.usage||{}))usage.set(id,[...(usage.get(id)||[]),...(Array.isArray(refs)?refs:[])]);
+  }
   usageReady=true;
  }catch(error){console.warn('本地地图依赖检查失败',error);usageReady=false;}
 }
