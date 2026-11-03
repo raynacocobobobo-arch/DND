@@ -2,7 +2,7 @@
 <html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>灯塔世界 · 全屏素材管理</title>
+<title>灯塔世界 · 全屏素材管理 V5.4.0</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6f0ee;background:#0d1820;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;min-height:100vh}
@@ -50,11 +50,10 @@ main{padding:22px 25px 55px;max-width:1800px;margin:auto}
 <main>
  <div class="summary"><span id="total" class="count">正在读取素材…</span><span id="available" class="count">可删除 —</span><span id="used" class="count">当前地图使用 —</span></div>
  <div class="auth">
-  <div class="desc"><strong>GitHub 仓库删除授权</strong><div>删除会真正移除 gh-pages 的 GLB 并更新编辑器注册索引。写入授权仅保存在此页面的运行内存，刷新即清除，不会保存到文件、浏览器存储或发往 GitHub 以外的服务。</div></div>
-  <input id="token" type="password" autocomplete="off" placeholder="GitHub 细粒度写入令牌（仅限 DND）" aria-label="GitHub 仓库写入令牌">
-  <button id="authorize" type="button">验证授权</button>
-  <button id="logout" type="button" disabled>断开</button>
-  <span id="auth-state">未授权：可浏览，不能删除 GitHub 文件</span>
+  <div class="desc"><strong>GitHub 登录确认删除（无需 Token）</strong>
+   <div>选中素材后点击「去 GitHub 确认删除」，在 GitHub 登录的账号下提交删除请求。仓库所有者确认后，GitHub Actions 会从 gh-pages 永久删除 GLB、更新素材清单，并单独重打包压缩包模型。旧地图或备份如引用被删模型，恢复后可能缺少该模型。</div>
+  </div>
+  <a href="https://github.com/raynacocobobobo-arch/DND/issues" target="_blank" rel="noopener noreferrer" style="white-space:nowrap">查看 GitHub 删除记录</a>
  </div>
  <div class="bar">
   <input id="search" placeholder="搜索名称、文件名或资产 ID" aria-label="搜索素材">
@@ -71,5 +70,5 @@ main{padding:22px 25px 55px;max-width:1800px;margin:auto}
  <div><button id="delete-selected" class="danger" type="button" disabled>永久删除所选 GitHub 素材</button></div>
 </div>
 <iframe id="frame" sandbox="allow-scripts" src="./asset-preview-frame.html" title="隔离模型预览"></iframe>
-<script type="module" src="./asset-manager-page.js?v=5-guard"></script>
+<script type="module" src="./asset-manager-page.js?v=540-issue-delete"></script>
 </body></html>
