@@ -40,7 +40,7 @@ jobs:
           const tree=[];
           for(const dir of ['pirates','cliffy-coast','palms']){
             for(const f of fs.readdirSync(ROOT+dir)){
-              if(!f.endsWith('.glb'))continue;
+              if(!f.endsWith('.glb')&&!f.endsWith('.glbpack.gz'))continue;
               tree.push({path:ROOT+dir+'/'+f,type:'blob',size:fs.statSync(ROOT+dir+'/'+f).size});
             }
           }
