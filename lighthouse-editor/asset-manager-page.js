@@ -37,7 +37,6 @@ async function authorize(){
  $('authorize').disabled=true;status('正在向 GitHub 检查授权…');
  try{
   token=value;
-  const user=await gh('GET','/collaborators/does-not-exist-permission-check-placeholder').catch(()=>null);
   // The current user's login and repository metadata are the only authentication probes.
   const response=await fetch('https://api.github.com/user',{headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},cache:'no-store'});
   if(!response.ok)throw Error('GitHub 令牌无效或已过期（HTTP '+response.status+'）');
@@ -162,7 +161,7 @@ function makeCard(a){
   box.append(placeholder);
  }
  if(img.src)box.append(img);
- else if(removable(a)){img.dataset.path=a.path;img.dataset.url=a.url;box.append(img);img.hidden=true;}
+ else if(removable(a)){img.dataset.path=a.path;img.dataset.url=a.url;img.style.opacity='0';box.append(img);}
  const checkbox=document.createElement('input');checkbox.type='checkbox';
  checkbox.className='select-item';checkbox.checked=selected.has(a.id);checkbox.disabled=!removable(a);
  checkbox.setAttribute('aria-label','选择 '+a.label);
@@ -247,7 +246,7 @@ window.addEventListener('message',event=>{
  if(j&&j.item.path===event.data.key&&event.data.dataUrl){
   previewMemory.set(j.item.path,event.data.dataUrl);
   if(j.img.isConnected&&j.epoch===epoch){
-   j.img.src=event.data.dataUrl;j.img.hidden=false;
+   j.img.src=event.data.dataUrl;j.img.style.opacity='1';
    if(j.placeholder)j.placeholder.remove();
   }
  }
