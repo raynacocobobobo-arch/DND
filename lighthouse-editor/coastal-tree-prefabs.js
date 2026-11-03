@@ -16,7 +16,11 @@ export async function registerCoastalPalms(catalog){
  const loader=new GLTFLoader();
  const templates=new Map();
  // Load once before populating the palette, since catalog.create() is sync.
- const loaded=await Promise.all(SPECS.map(async spec=>{
+ const resp=await fetch(new URL('./assets/palms/manifest.json',import.meta.url),{cache:'no-store'});
+ if(!resp.ok)throw Error('Palm manifest unavailable');
+ const index=await resp.json();
+ const enabled=new Set(Array.isArray(index.assets)?index.assets.map(x=>x.id):[]);
+ const loaded=await Promise.all(SPECS.filter(spec=>enabled.has(spec.id)).map(async spec=>{
   const url=new URL('./assets/palms/'+spec.slug+'.glb',import.meta.url).href;
   const gltf=await loader.loadAsync(url);
   const model=gltf.scene;
@@ -40,5 +44,5 @@ export async function registerCoastalPalms(catalog){
   const template=templates.get(asset);
   return template?template.clone(true):previousCreate(asset);
  };
- return SPECS.map(({id,label})=>({id,label}));
+ return loaded.map(({spec})=>({id:spec.id,label:spec.label}));
 }
