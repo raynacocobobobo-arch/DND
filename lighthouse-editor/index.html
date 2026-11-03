@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.5.4 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V5.5.5 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -36,27 +36,6 @@ input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=
 #assets button .asset-label{font-size:10px;margin:0}
 .asset-toolbar-header{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:9px}
 .asset-toolbar-header h2{margin:0}
-#asset-manage-toggle{padding:6px 9px;font-size:11px}
-#asset-manage-toggle.active{background:#9c4042;border-color:#ef9595;color:white}
-#asset-manager-tools{margin:8px 0 12px;padding:9px;border:1px solid #6d454c;background:#301f29;border-radius:7px;display:flex;flex-direction:column;gap:8px}
-#asset-manager-tools[hidden]{display:none!important}
-.asset-manager-actions{display:flex;gap:6px;flex-wrap:wrap}
-.asset-manager-actions button{flex:1;min-width:76px;font-size:11px}
-#asset-remove-selected{background:#8b3038;border-color:#c85a5c;color:white}
-#asset-remove-selected:disabled{opacity:.48}
-#asset-manager-show-removed-label{display:none;gap:6px;align-items:center;margin:0;font-size:11px}
-#asset-manager-show-removed{width:auto}
-.asset-card-wrap{position:relative;min-width:0}
-.asset-card-wrap .asset-card{width:100%;height:100%}
-.asset-card-wrap.is-marked .asset-card{outline:2px solid #ffbd86;border-color:#ffbd86}
-.asset-card-wrap.is-removed .asset-card{opacity:.5}
-.asset-action-corner{position:absolute;top:5px;right:5px;z-index:3;width:25px;height:25px;display:grid;place-items:center;border-radius:6px;border:1px solid #ffd7d7;background:#bd3339;color:white;font:bold 19px/1 system-ui;padding:0;cursor:pointer}
-.asset-action-corner:hover{background:#e34b4f}
-.asset-action-corner.restore{background:#237e6b;border-color:#9bd6c8;color:white}
-.asset-mark{position:absolute;top:6px;left:6px;z-index:2;background:#142c36e8;border:1px solid #d2e3dc;color:#fff;border-radius:4px;display:grid;place-items:center;width:21px;height:21px;font-size:13px;pointer-events:none}
-.asset-card-wrap.is-marked .asset-mark{background:#d77d38;border-color:#ffcd8c}
-.asset-card-wrap .asset-overridden{right:34px}
-.asset-used-tag{position:absolute;bottom:31px;left:5px;z-index:2;padding:2px 4px;border-radius:4px;background:#6b5232e8;border:1px solid #d3b987;color:#ffe6ac;font-size:10px;pointer-events:none}
 #scene-search{margin:0 0 9px}
 #scene-list{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:5px;padding-right:2px}
 .scene-group-toggle{width:100%;display:block;text-align:left;border:0;border-radius:6px;padding:9px;background:#203842;color:#d0e5e2;position:sticky;top:0;z-index:2;font-size:12px;white-space:normal}
@@ -124,9 +103,9 @@ a{color:#b2d8cf}
 </head><body>
 <div id="app">
 <header>
- <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.5.4 · DND</div></div>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.5.5 · DND</div></div>
  <div class="hdr-actions">
-  <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button><a href="./assets.html?v=552-owner-confirmation" class="primary" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid #4b9990;border-radius:8px;padding:9px 12px;font-size:12px;text-decoration:none">全屏素材管理</a>
+  <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button><a href="./assets.html?v=555-local-db" class="primary" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid #4b9990;border-radius:8px;padding:9px 12px;font-size:12px;text-decoration:none">全屏素材管理</a>
   <button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
   <button id="play-map" class="primary">试玩地图</button><button id="open-game">原版游戏</button>
   <button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label>
@@ -136,22 +115,15 @@ a{color:#b2d8cf}
 </header>
 <aside id="left">
  <div class="section" id="asset-section">
-  <div class="asset-toolbar-header"><h2>素材资源库</h2><button id="asset-manage-toggle" type="button">删除素材</button></div>
-   <div id="asset-manager-tools" hidden>
-    <div class="asset-manager-actions"><button id="asset-select-visible" type="button">全选当前筛选</button><button id="asset-remove-selected" type="button" disabled>删除选中 (0)</button><button id="asset-manage-exit" type="button">完成</button></div>
-    <label id="asset-manager-show-removed-label"><input id="asset-manager-show-removed" type="checkbox">显示已移除素材（可恢复）</label>
-    <div id="asset-manage-status" class="muted" role="status">点击缩略图多选，或点右上角红色 × 删除。使用中的素材不可删除。</div>
-   </div>
-   <input id="asset-search" type="text" placeholder="搜索模型">
-  <select id="asset-filter"><option value="complete" selected>完整元件</option><option value="">全部素材</option><option value="parts">细节零件</option></select>
+  <div class="asset-toolbar-header"><h2>本地素材库</h2></div>
+   <div class="muted" style="margin:0 0 8px">素材导入、改名和删除统一在全屏素材管理器完成。这里仅选择模型并放置到地图。</div>
+   <input id="asset-search" type="text" placeholder="搜索本地模型">
+  <select id="asset-filter"><option value="">全部素材</option></select>
   <div class="stats" style="margin:8px 0"><span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">加载中…</div></div>
   <div id="assets"></div>
  </div>
  <div class="section" id="glb-section">
-  <h2>导入 GLB</h2>
-  <label for="import-glb" class="filelabel" style="display:block;text-align:center">选择 GLB 文件</label>
-  <input id="import-glb" type="file" accept=".glb,model/gltf-binary" multiple hidden>
-  <div id="glb-status" class="muted" style="margin:8px 0"></div>
+  <h2>工程工具</h2>
   <div class="toolgrid"><button id="export-portable">导出完整工程</button><button id="snap-neighbor">模型外框贴边</button></div>
  </div>
  <div class="section" id="backup-section">
@@ -223,6 +195,6 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
-<footer>地图编辑器 V5.5.4 · 已连接全屏素材管理</footer>
-</div><script type="module" src="./editor-desktop-v530.js?v=554-prune-deleted"></script>
+<footer>地图编辑器 V5.5.5 · 本地素材库由全屏素材管理器统一管理</footer>
+</div><script type="module" src="./editor-desktop-v555-local-assets.js?v=555-local-assets"></script>
 </body></html>
