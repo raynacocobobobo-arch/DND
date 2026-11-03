@@ -129,10 +129,14 @@ function execute(){
  }
  pirate.assets=pirate.assets.filter(x=>!ids.includes(x.id));
  palms.assets=palms.assets.filter(x=>!ids.includes(x.id));
- for(const id of ids)if(id.startsWith('cliffy_coast_'))removedSet.add(id);
+ // Remove Cliffy entries from the source index itself; removed.json remains
+ // a tombstone for editor maps and any cached/static registration modules.
+ cliffy.assets=cliffy.assets.filter(x=>!ids.includes(x.id));
+ for(const id of ids)removedSet.add(id);
  removed.ids=[...removedSet].sort();
  saveJson(piratesPath,pirate);
  saveJson(palmsPath,palms);
+ saveJson(cliffyPath,cliffy);
  saveJson(removedPath,removed);
  const result={deletedIds:ids,pirates:toRemove.filter(x=>x.source==='pirates').length,
   palms:toRemove.filter(x=>x.source==='palms').length,
