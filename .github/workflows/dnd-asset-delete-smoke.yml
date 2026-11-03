@@ -1,0 +1,64 @@
+name: DND asset deletion dry-run QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/dnd-asset-delete.js'
+      - '.github/workflows/dnd-owner-asset-delete.yml'
+      - '.github/workflows/dnd-asset-delete-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate safe isolated asset deletion fixture
+        run: |
+          node --check .github/scripts/dnd-asset-delete.js
+          node <<'NODE'
+          const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+          const cp=require('node:child_process'),zlib=require('node:zlib'),assert=require('node:assert/strict');
+          const owner='raynacocobobobo-arch';
+          const root=fs.mkdtempSync(path.join(os.tmpdir(),'dnd-delete-fixture-'));
+          const dir=p=>path.join(root,'site',p);
+          function json(p,data){fs.mkdirSync(path.dirname(dir(p)),{recursive:true});fs.writeFileSync(dir(p),JSON.stringify(data));}
+          function bin(p,bytes){fs.mkdirSync(path.dirname(dir(p)),{recursive:true});fs.writeFileSync(dir(p),bytes);}
+          const base='lighthouse-editor/assets/';
+          const fake=Buffer.alloc(24);fake.write('glTF');
+          bin(base+'pirates/SM_Prop_Parrot_01.glb',fake);
+          bin(base+'palms/t01_seabreeze_tall.glb',fake);
+          bin(base+'cliffy-coast/anvil.glb',fake);
+          json(base+'pirates/manifest.json',{schemaVersion:1,assets:[{id:'pirates_sm_prop_parrot_01',file:'SM_Prop_Parrot_01.glb'}]});
+          json(base+'palms/manifest.json',{schemaVersion:1,assets:[{id:'coastal_tree_t01',file:'t01_seabreeze_tall.glb'}]});
+          json(base+'cliffy-coast/asset-manager-index.json',{version:1,assets:[
+           {id:'cliffy_coast_anvil',kind:'direct',file:'anvil.glb'},
+           {id:'cliffy_coast_roof_red',kind:'packed',file:'roof_red.glb',pack:'cliffy_batch08_10.glbpack.gz'}
+          ]});
+          json(base+'cliffy-coast/removed.json',{schemaVersion:1,ids:[]});
+          const name=Buffer.from('roof_red.glb');
+          const head=Buffer.alloc(12);head.write('LCGB');head.writeUInt32LE(1,4);head.writeUInt32LE(1,8);
+          const n=Buffer.alloc(2);n.writeUInt16LE(name.length);
+          const sz=Buffer.alloc(4);sz.writeUInt32LE(fake.length);
+          bin(base+'cliffy-coast/cliffy_batch08_10.glbpack.gz',zlib.gzipSync(Buffer.concat([head,n,name,sz,fake])));
+          const event=path.join(root,'event.json');
+          const ids=['pirates_sm_prop_parrot_01','coastal_tree_t01','cliffy_coast_anvil','cliffy_coast_roof_red'];
+          fs.writeFileSync(event,JSON.stringify({issue:{user:{login:owner},title:'[DND-ASSET-DELETE]',state:'open',body:'DND_ASSET_DELETE_V1\n'+ids.join('\n')},sender:{login:owner}}));
+          const env={...process.env,GITHUB_EVENT_PATH:event,GITHUB_REPOSITORY_OWNER:owner,GITHUB_REPOSITORY:owner+'/DND'};
+          const script=path.resolve('.github/scripts/dnd-asset-delete.js');
+          cp.execFileSync(process.execPath,[script,path.join(root,'site')],{env,stdio:'inherit'});
+          for(const p of ['pirates/SM_Prop_Parrot_01.glb','palms/t01_seabreeze_tall.glb','cliffy-coast/anvil.glb'])
+            assert(!fs.existsSync(dir(base+p)),p+' should be gone');
+          const pack=zlib.gunzipSync(fs.readFileSync(dir(base+'cliffy-coast/cliffy_batch08_10.glbpack.gz')));
+          assert.equal(pack.readUInt32LE(8),0,'packed model removed, preserving archive structure');
+          assert.deepEqual(JSON.parse(fs.readFileSync(dir(base+'cliffy-coast/removed.json'))).ids,['cliffy_coast_anvil','cliffy_coast_roof_red']);
+          assert.equal(JSON.parse(fs.readFileSync(dir(base+'pirates/manifest.json'))).assets.length,0);
+          assert.equal(JSON.parse(fs.readFileSync(dir(base+'palms/manifest.json'))).assets.length,0);
+          fs.writeFileSync(event,JSON.stringify({issue:{user:{login:'attacker'},title:'[DND-ASSET-DELETE]',state:'open',body:'DND_ASSET_DELETE_V1\npirates_sm_prop_parrot_01'},sender:{login:'attacker'}}));
+          const denied=cp.spawnSync(process.execPath,[script,path.join(root,'site')],{env,encoding:'utf8'});
+          assert.notEqual(denied.status,0,'non-owner issue must be rejected');
+          console.log('ASSET_DELETE_FIXTURE PASS: physical direct deletion, bundle re-pack, indices, owner protection');
+          NODE
