@@ -14,7 +14,7 @@ export function mountEditorManagement(ctx){
  const isSelected=id=>chosen.has(id);
  function updateAssetControls(message=''){
   $('asset-manage-toggle').classList.toggle('active',managing);
-  $('asset-manage-toggle').textContent=managing?'退出移除':'移除素材';
+  $('asset-manage-toggle').textContent=managing?'退出删除模式':'删除素材';
   $('asset-manage-toggle').setAttribute('aria-pressed',String(managing));
   $('asset-manager-tools').hidden=!managing;
   $('asset-remove-selected').disabled=!managing||deleting||chosen.size===0;
