@@ -152,15 +152,7 @@ function validWorld(w){
  const count=normalized.objects.length;
  normalized.objects=normalized.objects.filter(object=>{
   const id=String(object.asset||'');
-  if(deletedAssetIds.has(id))return false;
-  if(id.startsWith('ext_glb_'))return glbLibrary.has(id);
-  if(/^(?:pirates|cliffy_coast|coastal_tree)_/.test(id)){
-   const meta=catalog.all[id];
-   if(!meta)return false;
-   const parts=meta.assemblyParts;
-   if(Array.isArray(parts)&&parts.some(part=>deletedAssetIds.has(part)||!catalog.all[part]))return false;
-  }
-  return true;
+  return glbLibrary.has(id);
  });
  if(normalized.objects.length!==count){
   console.info('[Lighthouse] Removed '+(count-normalized.objects.length)+' map object(s) whose asset files were deleted');
@@ -218,23 +210,7 @@ function rebuildObjects(){
  if(selected&&!selectedIds.has(selected))selectedIds.add(selected);
  updateInspector();$('object-count').textContent=world.objects.length+' 新增 / '+Object.keys(nativeTargets).length+' 原版';
 }
-function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();
-const localAssetChannel=typeof BroadcastChannel!=='undefined'?new BroadcastChannel('lighthouse-local-assets-v1'):null;
-localAssetChannel?.addEventListener('message',async event=>{
- const message=event.data||{};
- if(message.type==='usage-request'){
-  const ids=[...new Set((world?.objects||[]).map(obj=>obj.asset).filter(x=>typeof x==='string'))];
-  localAssetChannel.postMessage({type:'usage-response',requestId:message.requestId,ids});
-  return;
- }
- if(message.type==='assets-changed'){
-  try{
-   await glbLibrary.refresh();previewCache.clear();renderAssetLibrary();
-   rebuildObjects();updateInspector();toast('本地素材库已更新');
-  }catch(error){toast('本地素材库刷新失败：'+error.message);}
- }
-});
-setDirty(true);}
+function redraw(){syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();setDirty(true);}
 function applyAllNativeAppearance(){
  for(const [id,node] of Object.entries(nativeTargets))
   applyModelAppearance(node,world.baseEdits?.[id]||{});
@@ -894,7 +870,7 @@ $('input-json').onchange=async e=>{
   const imported=await glbLibrary.importPortable(raw);
   const input=validWorld(raw);
   history();world=input;selected=null;selectedIds.clear();
-  renderAssetLibrary();redraw();saveLocal();updateGLBStatus();
+  renderAssetLibrary();redraw();saveLocal();
   const missing=new Set(world.objects.filter(o=>o.asset.startsWith('ext_glb_')&&!glbLibrary.has(o.asset)).map(o=>o.asset));
   toast('地图已导入'+(imported.added.length?'，恢复 '+imported.added.length+' 个 GLB':'')
    +(missing.size?'；缺少 '+missing.size+' 个 GLB，请重新导入文件':'')
@@ -1086,6 +1062,23 @@ $('new-blank').onclick=async()=>{
 };
 syncWorldDimensions();rebuildTerrain();rebuildObjects();applyNativeEdits(world,gameGroup);applyAllNativeAppearance();
 setDirty(false);setTool('select');await editorFeatures.refreshBackups();
+const localAssetChannel=typeof BroadcastChannel!=='undefined'?new BroadcastChannel('lighthouse-local-assets-v1'):null;
+localAssetChannel?.addEventListener('message',async event=>{
+ const message=event.data||{};
+ if(message.type==='usage-request'){
+  const ids=[...new Set((world?.objects||[]).map(obj=>obj.asset).filter(x=>typeof x==='string'))];
+  localAssetChannel.postMessage({type:'usage-response',requestId:message.requestId,ids});
+  return;
+ }
+ if(message.type==='assets-changed'){
+  try{
+   await glbLibrary.refresh();previewCache.clear();renderAssetLibrary();
+   if(activeTool.startsWith('asset:')&&!glbLibrary.has(activeTool.slice(6)))setTool('select');
+   rebuildObjects();updateInspector();toast('本地素材库已更新');
+  }catch(error){toast('本地素材库刷新失败：'+error.message);}
+ }
+});
+
 // Deliberately do not autosave the empty startup canvas over a previous session.
 window.__lighthouseEditor={
  getState:()=>({schema:world.schema,size:[WIDTH,DEPTH],grid:[GW,GH],objects:world.objects.length,resizeBounds:[MIN_WIDTH,MIN_DEPTH,MAX_SIZE],expandable:true,
