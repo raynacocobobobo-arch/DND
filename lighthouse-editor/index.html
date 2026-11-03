@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.3.0 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V5.3.1 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -34,6 +34,28 @@ input[type=range]{width:100%;accent-color:#86c9b5}input[type=number],input[type=
 .asset-card .asset-label{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:10px;line-height:1.35;min-height:27px;word-break:break-word;padding:0 2px}
 .asset-card.active{outline:2px solid #8ed1c2;border-color:#b5e9d6}
 #assets button .asset-label{font-size:10px;margin:0}
+.asset-toolbar-header{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:9px}
+.asset-toolbar-header h2{margin:0}
+#asset-manage-toggle{padding:6px 9px;font-size:11px}
+#asset-manage-toggle.active{background:#9c4042;border-color:#ef9595;color:white}
+#asset-manager-tools{margin:8px 0 12px;padding:9px;border:1px solid #6d454c;background:#301f29;border-radius:7px;display:flex;flex-direction:column;gap:8px}
+#asset-manager-tools[hidden]{display:none!important}
+.asset-manager-actions{display:flex;gap:6px;flex-wrap:wrap}
+.asset-manager-actions button{flex:1;min-width:76px;font-size:11px}
+#asset-remove-selected{background:#8b3038;border-color:#c85a5c;color:white}
+#asset-remove-selected:disabled{opacity:.48}
+#asset-manager-show-removed-label{display:flex;gap:6px;align-items:center;margin:0;font-size:11px}
+#asset-manager-show-removed{width:auto}
+.asset-card-wrap{position:relative;min-width:0}
+.asset-card-wrap .asset-card{width:100%;height:100%}
+.asset-card-wrap.is-marked .asset-card{outline:2px solid #ffbd86;border-color:#ffbd86}
+.asset-card-wrap.is-removed .asset-card{opacity:.5}
+.asset-action-corner{position:absolute;top:5px;right:5px;z-index:3;width:25px;height:25px;display:grid;place-items:center;border-radius:6px;border:1px solid #ffd7d7;background:#bd3339;color:white;font:bold 19px/1 system-ui;padding:0;cursor:pointer}
+.asset-action-corner:hover{background:#e34b4f}
+.asset-action-corner.restore{background:#237e6b;border-color:#9bd6c8;color:white}
+.asset-mark{position:absolute;top:6px;left:6px;z-index:2;background:#142c36e8;border:1px solid #d2e3dc;color:#fff;border-radius:4px;display:grid;place-items:center;width:21px;height:21px;font-size:13px;pointer-events:none}
+.asset-card-wrap.is-marked .asset-mark{background:#d77d38;border-color:#ffcd8c}
+.asset-card-wrap .asset-overridden{right:34px}
 #scene-search{margin:0 0 9px}
 #scene-list{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:5px;padding-right:2px}
 .scene-group-toggle{width:100%;display:block;text-align:left;border:0;border-radius:6px;padding:9px;background:#203842;color:#d0e5e2;position:sticky;top:0;z-index:2;font-size:12px;white-space:normal}
@@ -113,7 +135,13 @@ a{color:#b2d8cf}
 </header>
 <aside id="left">
  <div class="section" id="asset-section">
-  <h2>素材资源库</h2><input id="asset-search" type="text" placeholder="搜索模型">
+  <div class="asset-toolbar-header"><h2>素材资源库</h2><button id="asset-manage-toggle" type="button">移除素材</button></div>
+   <div id="asset-manager-tools" hidden>
+    <div class="asset-manager-actions"><button id="asset-select-visible" type="button">全选当前筛选</button><button id="asset-remove-selected" type="button" disabled>删除选中 (0)</button><button id="asset-manage-exit" type="button">完成</button></div>
+    <label id="asset-manager-show-removed-label"><input id="asset-manager-show-removed" type="checkbox">显示已移除素材（可恢复）</label>
+    <div id="asset-manage-status" class="muted" role="status">点击缩略图多选，或点右上角红色 × 删除。使用中的素材不可删除。</div>
+   </div>
+   <input id="asset-search" type="text" placeholder="搜索模型">
   <select id="asset-filter"><option value="complete" selected>完整元件</option><option value="">全部素材</option><option value="parts">细节零件</option></select>
   <div class="stats" style="margin:8px 0"><span id="selected-asset" class="value">无</span><div id="asset-result" class="muted">加载中…</div></div>
   <div id="assets"></div>
@@ -124,14 +152,6 @@ a{color:#b2d8cf}
   <input id="import-glb" type="file" accept=".glb,model/gltf-binary" multiple hidden>
   <div id="glb-status" class="muted" style="margin:8px 0"></div>
   <div class="toolgrid"><button id="export-portable">导出完整工程</button><button id="snap-neighbor">模型外框贴边</button></div>
- </div>
- <div class="section" id="asset-manager-section">
-  <h2>素材管理</h2>
-  <input id="manage-asset-search" type="text" placeholder="搜索要管理的模型">
-  <select id="manage-asset-list" size="7" style="width:100%;min-height:146px;margin-top:8px" aria-label="选择素材"></select>
-  <div class="muted" id="manage-asset-status" style="margin:7px 0">选择素材以查看使用状态</div>
-  <div class="toolgrid"><button id="manage-asset-delete">删除 / 移除素材</button><button id="manage-asset-restore">恢复已移除</button></div>
-  <p class="muted">正在地图中使用的素材不可删除。本机 GLB 将从浏览器数据库删除；内置和 GitHub 模型仅从当前浏览器素材库移除，不删除远程文件。</p>
  </div>
  <div class="section" id="backup-section">
   <h2>地图备份</h2>
@@ -198,5 +218,5 @@ a{color:#b2d8cf}
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
 <footer>地图编辑器 V5.3.0</footer>
-</div><script type="module" src="./editor-desktop-v530.js"></script>
+</div><script type="module" src="./editor-desktop-v530.js?v=531"></script>
 </body></html>
