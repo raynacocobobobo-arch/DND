@@ -39,7 +39,7 @@ function decodeBundle(buffer){
  const take16=()=>{if(pos+2>d.byteLength)throw Error('Truncated Cliffy bundle');const v=d.getUint16(pos,true);pos+=2;return v;};
  if(take32()!==1)throw Error('Unknown Cliffy bundle format');
  const count=take32();
- if(count!==CLIFFY_BATCH06_07_SPECS.length)throw Error('Cliffy asset count mismatch');
+ if(count>CLIFFY_BATCH06_07_SPECS.length)throw Error('Cliffy asset count exceeds original set');
  const decoder=new TextDecoder();
  const result=new Map();
  for(let i=0;i<count;i++){
@@ -66,7 +66,11 @@ export async function registerCliffyCoastBatch06_07(catalog){
  const meshes=decodeBundle(data);
  const loader=new GLTFLoader(),templates=new Map();
  const existingCreate=catalog.create.bind(catalog);
- const parsed=await Promise.allSettled(CLIFFY_BATCH06_07_SPECS.map(async spec=>{
+ const deleted=await fetch(new URL('./assets/cliffy-coast/removed.json',import.meta.url),{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw Error('Missing Cliffy deletion manifest');return r.json();})
+  .then(d=>new Set(Array.isArray(d.ids)?d.ids:[]));
+ const activeSpecs=CLIFFY_BATCH06_07_SPECS.filter(spec=>!deleted.has(spec.id));
+ const parsed=await Promise.allSettled(activeSpecs.map(async spec=>{
   const glb=meshes.get(spec.file);
   if(!glb)throw Error('Missing bundled GLB: '+spec.file);
   const parsed=await loader.parseAsync(glb,url);
