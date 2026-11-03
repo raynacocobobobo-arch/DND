@@ -205,6 +205,7 @@ $('clear-selection').onclick=()=>{selected.clear();render();};
 $('search').addEventListener('input',render);
 $('category').addEventListener('change',render);
 $('reload').onclick=reload;
+frame.contentWindow?.postMessage({type:'preview-ping'},'*');
 await readUsage();
 render();
 status(library.persistent?'已连接本地素材库。导入、改名和删除都只在本机生效。':'本地数据库不可用，请使用支持 IndexedDB 的浏览器。',!library.persistent);
