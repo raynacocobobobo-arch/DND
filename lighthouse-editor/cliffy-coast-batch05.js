@@ -23,7 +23,10 @@ export const CLIFFY_BATCH05_SPECS=[
 export async function registerCliffyCoastBatch05(catalog){
  const loader=new GLTFLoader(),templates=new Map();
  const previousCreate=catalog.create.bind(catalog);
- const loaded=await Promise.allSettled(CLIFFY_BATCH05_SPECS.map(async spec=>{
+ const deletedCliffyIds=await fetch(new URL('./assets/cliffy-coast/removed.json',import.meta.url),{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw Error('Cliffy Coast removed index unavailable');return r.json();})
+  .then(data=>new Set(Array.isArray(data.ids)?data.ids:[]));
+ const loaded=await Promise.allSettled(CLIFFY_BATCH05_SPECS.filter(spec=>!deletedCliffyIds.has(spec.id)).map(async spec=>{
   const src=new URL('./assets/cliffy-coast/'+spec.file,import.meta.url).href;
   const gltf=await loader.loadAsync(src);
   const box=new T.Box3().setFromObject(gltf.scene);
