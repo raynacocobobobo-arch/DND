@@ -2706,6 +2706,348 @@
       "file": "SM_Veh_Extra_Gun_01_Pirate.glb",
       "label": "海盗 · Extra Gun 01 Pirate",
       "defaultScale": 1
+    },
+    {
+      "id": "pirates_characters",
+      "file": "Characters.glb",
+      "label": "海盗 · Characters",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_fx_boatwateremitter_01",
+      "file": "FX_BoatWaterEmitter_01.glb",
+      "label": "海盗 · FX BoatWaterEmitter 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_fish",
+      "file": "Fish.glb",
+      "label": "海盗 · Fish",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_veh_boat_large_01_hull",
+      "file": "SM_Veh_Veh_Boat_Large_01_Hull.glb",
+      "label": "海盗 · Veh Veh Boat Large 01 Hull",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_veh_veh_boat_large_01_hull_pirate",
+      "file": "SM_Veh_Veh_Boat_Large_01_Hull_Pirate.glb",
+      "label": "海盗 · Veh Veh Boat Large 01 Hull Pirate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_axe_01",
+      "file": "SM_Wep_Axe_01.glb",
+      "label": "海盗 · Wep Axe 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_blunderbuss_01",
+      "file": "SM_Wep_BlunderBuss_01.glb",
+      "label": "海盗 · Wep BlunderBuss 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_blunderbuss_01_separate",
+      "file": "SM_Wep_BlunderBuss_01_Separate.glb",
+      "label": "海盗 · Wep BlunderBuss 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_blunderbuss_02",
+      "file": "SM_Wep_BlunderBuss_02.glb",
+      "label": "海盗 · Wep BlunderBuss 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_blunderbuss_02_separate",
+      "file": "SM_Wep_BlunderBuss_02_Separate.glb",
+      "label": "海盗 · Wep BlunderBuss 02 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_boarding_spear_01",
+      "file": "SM_Wep_Boarding_Spear_01.glb",
+      "label": "海盗 · Wep Boarding Spear 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_broken_01",
+      "file": "SM_Wep_Broken_01.glb",
+      "label": "海盗 · Wep Broken 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_01",
+      "file": "SM_Wep_Cutlass_01.glb",
+      "label": "海盗 · Wep Cutlass 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_02",
+      "file": "SM_Wep_Cutlass_02.glb",
+      "label": "海盗 · Wep Cutlass 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_02_sheath",
+      "file": "SM_Wep_Cutlass_02_Sheath.glb",
+      "label": "海盗 · Wep Cutlass 02 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_03",
+      "file": "SM_Wep_Cutlass_03.glb",
+      "label": "海盗 · Wep Cutlass 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_03_sheath",
+      "file": "SM_Wep_Cutlass_03_Sheath.glb",
+      "label": "海盗 · Wep Cutlass 03 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_04",
+      "file": "SM_Wep_Cutlass_04.glb",
+      "label": "海盗 · Wep Cutlass 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_cutlass_05",
+      "file": "SM_Wep_Cutlass_05.glb",
+      "label": "海盗 · Wep Cutlass 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_dagger_01",
+      "file": "SM_Wep_Dagger_01.glb",
+      "label": "海盗 · Wep Dagger 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_dagger_01_sheath",
+      "file": "SM_Wep_Dagger_01_Sheath.glb",
+      "label": "海盗 · Wep Dagger 01 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_dagger_02",
+      "file": "SM_Wep_Dagger_02.glb",
+      "label": "海盗 · Wep Dagger 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_01",
+      "file": "SM_Wep_MusketPistol_01.glb",
+      "label": "海盗 · Wep MusketPistol 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_01_separate",
+      "file": "SM_Wep_MusketPistol_01_Separate.glb",
+      "label": "海盗 · Wep MusketPistol 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_02",
+      "file": "SM_Wep_MusketPistol_02.glb",
+      "label": "海盗 · Wep MusketPistol 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_02_separate",
+      "file": "SM_Wep_MusketPistol_02_Separate.glb",
+      "label": "海盗 · Wep MusketPistol 02 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_03",
+      "file": "SM_Wep_MusketPistol_03.glb",
+      "label": "海盗 · Wep MusketPistol 03",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_03_separate",
+      "file": "SM_Wep_MusketPistol_03_Separate.glb",
+      "label": "海盗 · Wep MusketPistol 03 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_04",
+      "file": "SM_Wep_MusketPistol_04.glb",
+      "label": "海盗 · Wep MusketPistol 04",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_04_separate",
+      "file": "SM_Wep_MusketPistol_04_Separate.glb",
+      "label": "海盗 · Wep MusketPistol 04 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_05",
+      "file": "SM_Wep_MusketPistol_05.glb",
+      "label": "海盗 · Wep MusketPistol 05",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_05_separate",
+      "file": "SM_Wep_MusketPistol_05_Separate.glb",
+      "label": "海盗 · Wep MusketPistol 05 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_doublebarrel_01",
+      "file": "SM_Wep_MusketPistol_DoubleBarrel_01.glb",
+      "label": "海盗 · Wep MusketPistol DoubleBarrel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_doublebarrel_01_separate",
+      "file": "SM_Wep_MusketPistol_DoubleBarrel_01_Separate.glb",
+      "label": "海盗 · Wep MusketPistol DoubleBarrel 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_doublebarrel_02",
+      "file": "SM_Wep_MusketPistol_DoubleBarrel_02.glb",
+      "label": "海盗 · Wep MusketPistol DoubleBarrel 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_musketpistol_doublebarrel_02_separate",
+      "file": "SM_Wep_MusketPistol_DoubleBarrel_02_Separate.glb",
+      "label": "海盗 · Wep MusketPistol DoubleBarrel 02 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_01",
+      "file": "SM_Wep_Pistol_01.glb",
+      "label": "海盗 · Wep Pistol 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_01_separate",
+      "file": "SM_Wep_Pistol_01_Separate.glb",
+      "label": "海盗 · Wep Pistol 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_02",
+      "file": "SM_Wep_Pistol_02.glb",
+      "label": "海盗 · Wep Pistol 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_02_separate",
+      "file": "SM_Wep_Pistol_02_Separate.glb",
+      "label": "海盗 · Wep Pistol 02 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_doublebarrel_01",
+      "file": "SM_Wep_Pistol_DoubleBarrel_01.glb",
+      "label": "海盗 · Wep Pistol DoubleBarrel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_pistol_doublebarrel_01_separate",
+      "file": "SM_Wep_Pistol_DoubleBarrel_01_Separate.glb",
+      "label": "海盗 · Wep Pistol DoubleBarrel 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rapier_01",
+      "file": "SM_Wep_Rapier_01.glb",
+      "label": "海盗 · Wep Rapier 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rapier_01_sheath",
+      "file": "SM_Wep_Rapier_01_Sheath.glb",
+      "label": "海盗 · Wep Rapier 01 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rifle_01",
+      "file": "SM_Wep_Rifle_01.glb",
+      "label": "海盗 · Wep Rifle 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rifle_01_separate",
+      "file": "SM_Wep_Rifle_01_Separate.glb",
+      "label": "海盗 · Wep Rifle 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rifle_doublebarrel_01",
+      "file": "SM_Wep_Rifle_DoubleBarrel_01.glb",
+      "label": "海盗 · Wep Rifle DoubleBarrel 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_rifle_doublebarrel_01_separate",
+      "file": "SM_Wep_Rifle_DoubleBarrel_01_Separate.glb",
+      "label": "海盗 · Wep Rifle DoubleBarrel 01 Separate",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_sabre_01",
+      "file": "SM_Wep_Sabre_01.glb",
+      "label": "海盗 · Wep Sabre 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_sabre_02",
+      "file": "SM_Wep_Sabre_02.glb",
+      "label": "海盗 · Wep Sabre 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_sabre_02_sheath",
+      "file": "SM_Wep_Sabre_02_Sheath.glb",
+      "label": "海盗 · Wep Sabre 02 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_shortsword_01",
+      "file": "SM_Wep_Shortsword_01.glb",
+      "label": "海盗 · Wep Shortsword 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_shortsword_01_sheath",
+      "file": "SM_Wep_Shortsword_01_Sheath.glb",
+      "label": "海盗 · Wep Shortsword 01 Sheath",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_shortsword_02",
+      "file": "SM_Wep_Shortsword_02.glb",
+      "label": "海盗 · Wep Shortsword 02",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_sm_wep_wooden_01",
+      "file": "SM_Wep_Wooden_01.glb",
+      "label": "海盗 · Wep Wooden 01",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_shark",
+      "file": "Shark.glb",
+      "label": "海盗 · Shark",
+      "defaultScale": 1
+    },
+    {
+      "id": "pirates_skydome",
+      "file": "SkyDome.glb",
+      "label": "海盗 · SkyDome",
+      "defaultScale": 1
     }
   ]
 }
