@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=1160,viewport-fit=cover">
-<title>灯塔世界 · 游戏地图编辑器 V5.3.4 | DND</title>
+<title>灯塔世界 · 游戏地图编辑器 V5.5.1 | DND</title>
 <style>
 :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6eee9;background:#0c1920;color-scheme:dark}
 *{box-sizing:border-box}html,body{height:100%;margin:0}button,input,select{font:inherit}
@@ -124,10 +124,10 @@ a{color:#b2d8cf}
 </head><body>
 <div id="app">
 <header>
- <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.3.4 · DND</div></div>
+ <div><div class="brand">灯塔世界 <span style="font-weight:400;color:#bbd6d1">/ 地图编辑器</span></div><div class="muted">Map Editor V5.5.1 · DND</div></div>
  <div class="hdr-actions">
-  <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button><a href="./assets.html?v=5-guard" class="primary" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid #4b9990;border-radius:8px;padding:9px 12px;font-size:12px;text-decoration:none">全屏素材管理</a>
-  <button id="toggle-original" aria-pressed="false">显示原版岛屿</button><button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
+  <button id="undo">撤销</button><button id="redo">重做</button><button id="quick-backup" class="primary">快速备份</button><a href="./assets.html?v=551-owner-confirmation" class="primary" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid #4b9990;border-radius:8px;padding:9px 12px;font-size:12px;text-decoration:none">全屏素材管理</a>
+  <button id="camera">切换俯视</button><button id="reset-view">重置视角</button>
   <button id="play-map" class="primary">试玩地图</button><button id="open-game">原版游戏</button>
   <button id="save">导出 JSON</button><label for="input-json" class="filelabel">导入地图</label>
   <input id="input-json" type="file" accept=".json,application/json">
@@ -160,7 +160,7 @@ a{color:#b2d8cf}
    <button id="resume-last" type="button" disabled>恢复上次编辑</button>
    <button id="new-blank" type="button">新建空海面</button>
   </div>
-  <div class="muted" style="margin:5px 0 8px">每次打开默认空海面；以前的地图不会自动覆盖当前画布，可从这里或备份列表恢复。</div>
+  <div class="muted" style="margin:5px 0 8px">地图编辑器只保留空海面和素材库。原版岛屿已退出编辑器，正式游戏不受影响；旧地图需手动恢复。</div>
   <button id="backup-create" class="primary" style="width:100%">快速备份</button>
   <label for="backup-list">选择备份</label>
   <select id="backup-list"><option value="">暂无备份</option></select>
@@ -223,6 +223,6 @@ a{color:#b2d8cf}
  </div>
 </aside>
 <div id="internal-status" hidden aria-hidden="true"><span id="size"></span><span id="grid-size"></span><span id="object-count"></span><span id="tool-name"></span><span id="cursor"></span><span id="dirty"></span></div>
-<footer>地图编辑器 V5.3.4 · 已连接全屏素材管理</footer>
-</div><script type="module" src="./editor-desktop-v530.js?v=534b-blank-ocean"></script>
+<footer>地图编辑器 V5.5.1 · 已连接全屏素材管理</footer>
+</div><script type="module" src="./editor-desktop-v530.js?v=551-no-native-scenes"></script>
 </body></html>
