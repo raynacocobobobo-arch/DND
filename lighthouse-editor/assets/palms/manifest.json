@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "coastal_tree_t01",
+      "file": "t01_seabreeze_tall.glb",
+      "label": "T01 海风高椰",
+      "category": "树木与植被"
+    },
+    {
+      "id": "coastal_tree_t02",
+      "file": "t02_compact_wide.glb",
+      "label": "T02 矮冠椰树",
+      "category": "树木与植被"
+    },
+    {
+      "id": "coastal_tree_t03",
+      "file": "t03_windswept_lean.glb",
+      "label": "T03 迎风斜椰",
+      "category": "树木与植被"
+    },
+    {
+      "id": "coastal_tree_t04",
+      "file": "t04_young_palm.glb",
+      "label": "T04 幼年小椰",
+      "category": "树木与植被"
+    }
+  ]
+}
