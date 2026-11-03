@@ -90,7 +90,7 @@ async function loadAssets(){
  render();
 }
 async function readGuard(){
- guardReady=true;guardError='';usage=new Map();
+ guardReady=false;guardError='';usage=new Map();
  const note=(world,label)=>{
   if(!world||typeof world!=='object')return;
   for(const o of world.objects||[]){
@@ -127,15 +127,16 @@ async function readGuard(){
    throw Error('已发布地图格式不正确，无法安全判断素材引用');
   note(publishedMap,'GitHub 已发布地图');
   guardReady=true;
- }catch(e){guardError=e.message;guardReady=true;console.warn('可选的地图引用信息不可用',e);}
+ }catch(e){guardError=e.message;guardReady=false;console.warn('地图或备份引用检查失败，已禁止删除',e);}
  render();
 }
 function reason(a){
+ if(!guardReady)return '地图和备份检查未通过，暂不可删除';
  if(a.missing)return 'GitHub 中找不到对应文件';
  const refs=usage.get(a.id)||[];
  return refs.length?'当前地图或备份正在使用，不能删除':'从 GitHub 永久删除对应文件或压缩包中的模型';
 }
-function removable(a){return !a.missing&&!usage.has(a.id)&&(a.kind==='direct'||a.kind==='packed');}
+function removable(a){return guardReady&&!guardError&&!a.missing&&!usage.has(a.id)&&(a.kind==='direct'||a.kind==='packed');}
 function populateCategories(){
  const keep=$('category').value;
  const categories=[...new Set(assets.map(a=>a.category))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
@@ -203,7 +204,7 @@ function render(){
  $('total').textContent='仓库素材 '+displayNumber(assets.length)+' 项';
  $('available').textContent='可永久删除 '+displayNumber(assets.filter(removable).length)+' 项';
  $('used').textContent='地图/备份引用 '+displayNumber(assets.filter(x=>usage.has(x.id)).length)+' 项';
- status('已显示 '+displayNumber(items.length)+' 项。未被地图或备份使用的素材可删除；已不存在的文件不会显示为素材，需在 GitHub 登录后提交确认；不会再要求 Token。'+(guardError?' 本地备份信息未全部读取，但不阻止删除。':''));
+ status(guardReady?'已显示 '+displayNumber(items.length)+' 项。未被地图或备份使用的素材可删除；已不存在的文件不会显示为素材。':'地图/备份检查未通过，已暂时禁用删除：'+guardError);
  updateButtons();
  previewObserver=new IntersectionObserver(entries=>{
   for(const e of entries)if(e.isIntersecting){
