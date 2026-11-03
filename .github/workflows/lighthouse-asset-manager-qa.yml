@@ -62,6 +62,17 @@ jobs:
             await page.locator('article.asset .select-item').first().check();
             assert.equal(await page.locator('#delete-selected').isDisabled(),false,'Selection should be deletable without PAT');
             await page.locator('#clear-selection').click();
+            // Intercept the prefilled GitHub issue URL; do not submit an issue.
+            await page.evaluate(()=>{
+              HTMLAnchorElement.prototype.click=function(){window.__githubDeleteUrl=this.href;};
+            });
+            page.on('dialog',d=>d.accept());
+            await page.locator('article.asset .remove-one').first().click();
+            const request=await page.evaluate(()=>window.__githubDeleteUrl);
+            assert.ok(request?.startsWith('https://github.com/raynacocobobobo-arch/DND/issues/new?'));
+            assert.ok(decodeURIComponent(request).includes('DND_ASSET_DELETE_V1'));
+            assert.ok(decodeURIComponent(request).includes('pirates_'));
+            assert.equal(await page.locator('#token').count(),0);
             await page.fill('#search','Parrot');
             assert.ok((await page.locator('article.asset').count())>=1);
             await page.fill('#search','');
