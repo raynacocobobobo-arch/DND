@@ -134,10 +134,21 @@ async function readGuard(){
    const raw=localStorage.getItem(key);
    if(raw)note(JSON.parse(raw),'浏览器历史地图');
   }
-  const published=token?await gh('GET','/contents/lighthouse/editor-preview-map.json?ref='+BRANCH):
-   await jsonFetch(API+'/contents/lighthouse/editor-preview-map.json?ref='+BRANCH);
-  if(published.encoding!=='base64')throw Error('GitHub 发布地图编码不受支持');
-  note(JSON.parse(readBase64Utf8(published.content)),'GitHub 已发布地图');
+  // Anonymous Contents API requests regularly hit GitHub's shared rate limit
+  // and return 403. Read the publicly published map from our own origin while
+  // browsing; immediately before a destructive commit, token-backed GitHub API
+  // access rechecks the current branch contents.
+  let publishedMap;
+  if(token){
+   const published=await gh('GET','/contents/lighthouse/editor-preview-map.json?ref='+BRANCH);
+   if(published.encoding!=='base64')throw Error('GitHub 发布地图编码不受支持');
+   publishedMap=JSON.parse(readBase64Utf8(published.content));
+  }else{
+   publishedMap=await jsonFetch('../lighthouse/editor-preview-map.json');
+  }
+  if(!publishedMap||typeof publishedMap!=='object'||!Array.isArray(publishedMap.objects))
+   throw Error('已发布地图格式不正确，无法安全判断素材引用');
+  note(publishedMap,'GitHub 已发布地图');
   guardReady=true;
  }catch(e){guardError=e.message;guardReady=false;}
  render();
