@@ -13,11 +13,11 @@ import {normalizeMap,readPreviewMap,nativePrefabCatalog,
  createTerrainMesh,createPlacementLayer,addOpenOcean,applyNativeEdits,BASE_ASSETS}
  from './shared-map.js?v=vertex-color-hsb-v3';
 import {registerCoastalPalms} from '../lighthouse-editor/coastal-tree-prefabs.js?v=1a';
-import {registerCliffyCoastTrees} from '../lighthouse-editor/cliffy-coast-prefabs.js?v=2-batch01';
-import {registerCliffyCoastBatch02} from '../lighthouse-editor/cliffy-coast-batch02.js?v=1';
-import {registerCliffyCoastBatch03} from '../lighthouse-editor/cliffy-coast-batch03.js?v=1';
-import {registerCliffyCoastBatch04} from '../lighthouse-editor/cliffy-coast-batch04.js?v=1';
-import {registerCliffyCoastBatch05} from '../lighthouse-editor/cliffy-coast-batch05.js?v=1';
+import {registerCliffyCoastTrees} from '../lighthouse-editor/cliffy-coast-prefabs.js?v=permanent-deletion-v1';
+import {registerCliffyCoastBatch02} from '../lighthouse-editor/cliffy-coast-batch02.js?v=permanent-deletion-v1';
+import {registerCliffyCoastBatch03} from '../lighthouse-editor/cliffy-coast-batch03.js?v=permanent-deletion-v1';
+import {registerCliffyCoastBatch04} from '../lighthouse-editor/cliffy-coast-batch04.js?v=permanent-deletion-v1';
+import {registerCliffyCoastBatch05} from '../lighthouse-editor/cliffy-coast-batch05.js?v=permanent-deletion-v1';
 import {registerCliffyCoastBatch06_07} from '../lighthouse-editor/cliffy-coast-batch06-07.js?v=2-house-pivot';
 import {registerCliffyCoastBatch08_10} from '../lighthouse-editor/cliffy-coast-batch08-10.js?v=2-house-pivot';
 import {createExternalGLBLibrary} from '../lighthouse-editor/external-glb-library.js?v=1';
