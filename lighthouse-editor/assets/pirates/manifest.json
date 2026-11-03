@@ -20,18 +20,6 @@
       "defaultScale": 1
     },
     {
-      "id": "pirates_sm_prop_barrel_02",
-      "file": "SM_Prop_Barrel_02.glb",
-      "label": "海盗 · Barrel 02",
-      "defaultScale": 1
-    },
-    {
-      "id": "pirates_sm_prop_barrel_03",
-      "file": "SM_Prop_Barrel_03.glb",
-      "label": "海盗 · Barrel 03",
-      "defaultScale": 1
-    },
-    {
       "id": "pirates_sm_prop_barrel_04",
       "file": "SM_Prop_Barrel_04.glb",
       "label": "海盗 · Barrel 04",
