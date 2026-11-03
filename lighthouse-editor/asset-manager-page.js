@@ -170,11 +170,12 @@ function makeCard(a){
  card.className='asset'+(selected.has(a.id)?' selected':'')+(removable(a)?'':' blocked');
  card.dataset.id=a.id;
  const box=document.createElement('div');box.className='preview';
+ let placeholder=null;
  const img=document.createElement('img');img.alt=a.label+' GLB 预览';img.loading='lazy';
  if(previewMemory.has(a.path)&&a.kind==='direct'){
   img.src=previewMemory.get(a.path);
  }else{
-  const placeholder=document.createElement('span');placeholder.className='placeholder';
+  placeholder=document.createElement('span');placeholder.className='placeholder';
   placeholder.textContent=a.kind==='packed'?'压缩包模型':a.missing?'文件缺失':'GLB 模型';
   box.append(placeholder);
  }
