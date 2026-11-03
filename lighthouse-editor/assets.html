@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>灯塔世界 · 全屏素材管理</title>
+<style>
+:root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e6f0ee;background:#0d1820;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:1px solid #45616c;background:#203740;border-radius:9px;padding:10px 12px}button:hover:not(:disabled){background:#31505b}button:disabled{opacity:.45;cursor:not-allowed}
+a{color:#a6d6cf;text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:20;background:#12252eef;border-bottom:1px solid #35515c;backdrop-filter:blur(12px);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:19px}.sub{font-size:12px;color:#93afb6;margin-top:3px}.toplinks{display:flex;gap:10px;align-items:center}
+.primary{background:#276d69;border-color:#4b9990}.danger{background:#822d3a;border-color:#b74e59}.danger:hover:not(:disabled){background:#a53d4c}
+main{padding:22px 25px 55px;max-width:1800px;margin:auto}
+.summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.count{font-size:12px;color:#a6bfbe;padding:7px 11px;border-radius:7px;background:#1c3039;border:1px solid #34525e}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.bar input,.bar select,.auth input{background:#142831;border:1px solid #48616a;color:#ecf5f2;padding:11px 12px;border-radius:9px;min-height:42px}
+.bar input{flex:2;min-width:240px}.bar select{min-width:160px}
+.bar .spacer{flex:1}
+.auth{background:#152831;border:1px solid #395965;border-radius:10px;padding:13px 16px;display:flex;flex-wrap:wrap;gap:11px;align-items:center;margin-bottom:20px}
+.auth .desc{flex:1;min-width:230px;font-size:12px;line-height:1.55;color:#b3cacb}
+.auth input{min-width:260px;flex:1;max-width:360px}
+#auth-state{font-size:12px;color:#b3cacb}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:14px}
+.asset{position:relative;border:1px solid #35515b;background:#152932;border-radius:11px;overflow:hidden;min-width:0;transition:border-color .15s,transform .15s}
+.asset:hover{border-color:#6daba5}.asset.selected{outline:2px solid #b4ded1;border-color:#b4ded1}
+.asset.blocked{opacity:.73}
+.preview{width:100%;aspect-ratio:4/3;background:radial-gradient(circle at 45% 35%,#32505b,#13242e);display:flex;justify-content:center;align-items:center;overflow:hidden}
+.preview img{width:100%;height:100%;object-fit:contain}
+.preview .placeholder{font-size:12px;color:#8ca6b1;text-align:center;max-width:90%}
+.meta{padding:9px 10px 12px}.name{font-size:12px;line-height:1.4;font-weight:600;word-break:break-word;min-height:34px}
+.details{font-size:10px;color:#a1b6ba;margin-top:5px;line-height:1.55}
+.select-item{position:absolute;left:8px;top:8px;width:25px;height:25px;accent-color:#4aa7a0;z-index:2}
+.remove-one{position:absolute;right:7px;top:7px;width:28px;height:28px;padding:0;border-radius:6px;color:white;font-size:20px;line-height:1;background:#963b45;border-color:#c45a60;z-index:2}
+.remove-one:disabled{opacity:.35}
+.status{margin:10px 0 18px;color:#bcd5d5;line-height:1.5;font-size:12px}
+.status.error{color:#ffb8b8}
+.empty{grid-column:1/-1;text-align:center;color:#a4b8be;padding:44px}
+.bottom{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#10242ff2;border-top:1px solid #46616a;padding:11px 24px;z-index:30;flex-wrap:wrap}
+.bottom .info{font-size:12px;color:#b5caca}
+#frame{display:none}
+@media(max-width:600px){header{padding:12px}main{padding:13px 12px 60px}.bar{gap:8px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.auth input{min-width:0;width:100%}.asset .meta{padding:8px}.bottom{padding:10px 12px}}
+</style>
+</head><body>
+<header>
+ <div><div class="brand">灯塔世界 / 素材管理</div><div class="sub">全屏资产库 · 与地图编辑器共用 GitHub gh-pages 素材源</div></div>
+ <nav class="toplinks"><a href="./">返回地图编辑器</a><button id="reload" type="button">刷新仓库</button></nav>
+</header>
+<main>
+ <div class="summary"><span id="total" class="count">正在读取素材…</span><span id="available" class="count">可删除 —</span><span id="used" class="count">当前地图使用 —</span></div>
+ <div class="auth">
+  <div class="desc"><strong>GitHub 仓库删除授权</strong><div>删除会真正移除 gh-pages 的 GLB 并更新编辑器注册索引。写入授权仅保存在此页面的运行内存，刷新即清除，不会保存到文件、浏览器存储或发往 GitHub 以外的服务。</div></div>
+  <input id="token" type="password" autocomplete="off" placeholder="GitHub 细粒度写入令牌（仅限 DND）" aria-label="GitHub 仓库写入令牌">
+  <button id="authorize" type="button">验证授权</button>
+  <button id="logout" type="button" disabled>断开</button>
+  <span id="auth-state">未授权：可浏览，不能删除 GitHub 文件</span>
+ </div>
+ <div class="bar">
+  <input id="search" placeholder="搜索名称、文件名或资产 ID" aria-label="搜索素材">
+  <select id="source" aria-label="来源"><option value="all">全部来源</option><option value="pirates">POLYGON Pirates</option><option value="cliffy">Cliffy Coast</option></select>
+  <select id="category" aria-label="分类"><option value="all">全部分类</option></select>
+  <select id="state" aria-label="文件状态"><option value="all">所有状态</option><option value="direct">独立 GLB</option><option value="packed">压缩包资产</option><option value="used">正在使用</option><option value="missing">仓库文件缺失</option></select>
+  <div class="spacer"></div><button id="select-all">选中当前可删除项</button><button id="clear-selection">清空选择</button>
+ </div>
+ <div id="status" class="status" role="status">读取中…</div>
+ <div id="grid" class="grid"></div>
+</main>
+<div class="bottom">
+ <span id="selection-info" class="info">已选中 0 项</span>
+ <div><button id="delete-selected" class="danger" type="button" disabled>永久删除所选 GitHub 素材</button></div>
+</div>
+<iframe id="frame" sandbox="allow-scripts" src="./asset-preview-frame.html" title="隔离模型预览"></iframe>
+<script type="module" src="./asset-manager-page.js?v=1"></script>
+</body></html>
