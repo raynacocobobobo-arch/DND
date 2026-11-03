@@ -138,6 +138,7 @@ function dispatchPreview(){
  previewBusy=true;
  frame.contentWindow.postMessage({type:'render-glb',key:job.id,buffer},'*',[buffer]);
 }
+frame.addEventListener('load',()=>{previewReady=true;dispatchPreview();});
 window.addEventListener('message',event=>{
  if(event.source!==frame.contentWindow)return;
  if(event.data?.type==='preview-ready'){previewReady=true;dispatchPreview();return;}
