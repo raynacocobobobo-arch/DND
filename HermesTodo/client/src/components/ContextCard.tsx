@@ -6,7 +6,7 @@ import { ContextIcon } from "./ContextIcon";
 
 export function ContextCard({ context, onEdit, onCopy, onDelete }: { context: ContextRecord; onEdit(): void; onCopy(): void; onDelete(): void }) {
   return (
-    <li className="context-card" style={{ "--context-color": context.color } as React.CSSProperties}>
+    <li className="context-card">
       <Link className="context-card-link" to={`/contexts/${context.id}`}>
         <span className="context-card-top">
           <span className="context-icon"><ContextIcon name={context.icon} size={48} /></span>
