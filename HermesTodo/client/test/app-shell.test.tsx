@@ -45,6 +45,20 @@ describe("responsive authenticated shell", () => {
     expect(screen.getByRole("link", { name: "AI" })).not.toHaveAttribute("aria-current");
   });
 
+  test("resets the previous page scroll before showing another tab", async () => {
+    window.history.replaceState({}, "", "/contexts/example-id");
+    vi.stubGlobal("fetch", authenticatedFetch());
+    const user = userEvent.setup();
+    render(<App />);
+    const inbox = await screen.findByRole("link", { name: "待办清单" });
+    document.documentElement.scrollTop = 360;
+    document.body.scrollTop = 360;
+    await user.click(inbox);
+    await waitFor(() => expect(window.location.pathname).toBe("/inbox"));
+    expect(document.documentElement.scrollTop).toBe(0);
+    expect(document.body.scrollTop).toBe(0);
+  });
+
   test("provides a keyboard skip link and a focusable main target", async () => {
     vi.stubGlobal("fetch", authenticatedFetch());
     render(<App />);
