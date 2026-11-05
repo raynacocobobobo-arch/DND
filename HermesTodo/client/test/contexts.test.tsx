@@ -98,13 +98,14 @@ describe("lists and scenes interface", () => {
     await user.click(screen.getByRole("button", { name: "添加场景" }));
     expect(await screen.findByRole("dialog", { name: "新建场景" })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /^(金狮|百合花|罗盘|生命树|典籍|双剑|王冠|羽笔卷轴)$/ })).toHaveLength(8);
+    expect(screen.queryByRole("radio")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "取消" }));
 
     await user.type(quickName, "工作项目");
     await user.click(screen.getByRole("button", { name: "添加场景" }));
     expect(await screen.findByRole("link", { name: /工作项目/ })).toBeInTheDocument();
     const createCall = fetchMock.mock.calls.find(([request, init]) => request === "/api/lists" && init?.method === "POST");
-    expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作项目", icon: "compass", color: "#8CAABA" });
+    expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作项目", icon: "compass", color: "#B79A68" });
 
     await user.click(screen.getByRole("button", { name: "编辑 工作项目" }));
     const name = screen.getByLabelText("场景名称");
