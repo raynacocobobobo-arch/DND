@@ -10,6 +10,7 @@ import { FleurDeLis } from "../components/HeraldicArt";
 import { HeraldicIcon } from "../components/HeraldicIcon";
 import { useContexts, useCreateContext, useDeleteContext, useUpdateContext, type ContextRecord } from "../hooks/useContexts";
 import { useLists } from "../hooks/useLists";
+import { DEFAULT_SCENE_COLOR } from "../sceneAppearance";
 
 export function ListDetailPage() {
   const { id = "" } = useParams();
@@ -35,7 +36,7 @@ export function ListDetailPage() {
     if(!name){setEditing(undefined);setFormOpen(true);return;}
     setError("");
     try{
-      await create.mutateAsync({name,icon:"folder",color:"#8CAABA",listId:id});
+      await create.mutateAsync({name,icon:"folder",color:DEFAULT_SCENE_COLOR,listId:id});
       setQuickName("");
     }catch(e){setError(e instanceof Error?e.message:"分类创建失败，请重试");}
   }
@@ -69,7 +70,7 @@ export function ListDetailPage() {
     <section className="scene-home-index" aria-label="分类目录">
       <div className="scene-home-index-heading">
         <div><span>CHAPTER II · CATEGORIES</span><h2>分类目录</h2></div>
-        <span className="scene-home-index-count">{sceneCount} SCENES</span>
+        <span className="scene-home-index-count">{sceneCount} CATEGORIES</span>
       </div>
       <form className="quick-add scene-home-quickadd" onSubmit={(e)=>void quickCreate(e)}>
         {error?<p className="quick-add-error" role="alert">{error}</p>:null}
