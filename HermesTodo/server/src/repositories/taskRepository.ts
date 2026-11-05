@@ -57,10 +57,12 @@ export type TaskSort = "priority" | "dueDate" | "createdAt";
 
 export class SubtaskDepthError extends Error {}
 
-function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = [],now:Date = new Date()): TaskRecord {
+function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = [],
+  now:Date = new Date(), schedule:TaskRow = row): TaskRecord {
+  const recurring=schedule.repeat_interval!=="none";
   const progress=repeatProgress({
-    repeatInterval:row.repeat_interval,repeatRule:row.repeat_rule,
-    dueAt:row.due_at,createdAt:row.created_at
+    repeatInterval:schedule.repeat_interval,repeatRule:schedule.repeat_rule,
+    dueAt:schedule.due_at,createdAt:schedule.created_at
   },records,now);
   return {
     id: row.id,
@@ -68,8 +70,8 @@ function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = 
     notes: row.notes,
     priority: row.priority,
     dueAt: row.due_at,
-    isCompleted: row.repeat_interval !== "none" ? progress.cycleCompleted : row.is_completed === 1,
-    completedAt: row.repeat_interval !== "none"
+    isCompleted: recurring ? progress.cycleCompleted : row.is_completed === 1,
+    completedAt: recurring
       ? records.find(x=>x.cycleAt===progress.cycleAt)?.completedAt??null : row.completed_at,
     contextId: row.context_id,
     parentTaskId: row.parent_task_id,
@@ -88,9 +90,11 @@ export function createTaskRepository(db: Database.Database, clock:()=>Date = ()=
   const selectChildren = db.prepare("SELECT * FROM tasks WHERE parent_task_id = ? ORDER BY created_at ASC");
   const selectCheckins = db.prepare("SELECT task_id,cycle_at,completed_at FROM task_checkins WHERE task_id = ? ORDER BY cycle_at ASC");
   function convert(row:TaskRow,subtasks:TaskRecord[]=[]):TaskRecord{
+    const parent=row.parent_task_id ? selectById.get(row.parent_task_id) as TaskRow|undefined : undefined;
+    const schedule=row.repeat_interval==="none" && parent?.repeat_interval!=="none" && parent ? parent : row;
     const records=(selectCheckins.all(row.id) as Array<{task_id:string;cycle_at:string;completed_at:string}>)
       .map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at}));
-    return mapRow(row,subtasks,records,clock());
+    return mapRow(row,subtasks,records,clock(),schedule);
   }
 
   function find(id: string): TaskRecord | null {
@@ -198,7 +202,9 @@ export function createTaskRepository(db: Database.Database, clock:()=>Date = ()=
     const existing=find(id);
     if(!existing)return null;
     db.transaction(()=>{
-      if(existing.repeatInterval!=="none"){
+      const parent=existing.parentTaskId ? find(existing.parentTaskId) : null;
+      const effectiveRepeat=existing.repeatInterval!=="none" || (parent?.repeatInterval??"none")!=="none";
+      if(effectiveRepeat){
         if(!existing.cycleAt)throw new Error("循环尚未开始，当前没有可打卡的周期");
         if(existing.isCompleted){
           db.prepare("DELETE FROM task_checkins WHERE task_id = ? AND cycle_at = ?")
