@@ -57,11 +57,11 @@ export type TaskSort = "priority" | "dueDate" | "createdAt";
 
 export class SubtaskDepthError extends Error {}
 
-function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = []): TaskRecord {
+function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = [],now:Date = new Date()): TaskRecord {
   const progress=repeatProgress({
     repeatInterval:row.repeat_interval,repeatRule:row.repeat_rule,
     dueAt:row.due_at,createdAt:row.created_at
-  },records);
+  },records,now);
   return {
     id: row.id,
     title: row.title,
@@ -83,14 +83,14 @@ function mapRow(row: TaskRow, subtasks: TaskRecord[] = [], records: Checkin[] = 
   };
 }
 
-export function createTaskRepository(db: Database.Database) {
+export function createTaskRepository(db: Database.Database, clock:()=>Date = ()=>new Date()) {
   const selectById = db.prepare("SELECT * FROM tasks WHERE id = ?");
   const selectChildren = db.prepare("SELECT * FROM tasks WHERE parent_task_id = ? ORDER BY created_at ASC");
   const selectCheckins = db.prepare("SELECT task_id,cycle_at,completed_at FROM task_checkins WHERE task_id = ? ORDER BY cycle_at ASC");
   function convert(row:TaskRow,subtasks:TaskRecord[]=[]):TaskRecord{
     const records=(selectCheckins.all(row.id) as Array<{task_id:string;cycle_at:string;completed_at:string}>)
       .map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at}));
-    return mapRow(row,subtasks,records);
+    return mapRow(row,subtasks,records,clock());
   }
 
   function find(id: string): TaskRecord | null {
