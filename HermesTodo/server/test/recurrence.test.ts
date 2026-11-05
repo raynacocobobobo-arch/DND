@@ -130,9 +130,9 @@ describe("recurring task API", () => {
     const upcoming = dependencies.db.prepare(
       "SELECT title,is_completed FROM tasks WHERE parent_task_id = ? ORDER BY created_at ASC"
     ).all(projects[1].id) as Array<{title:string;is_completed:number}>;
-    expect(previous.map(row=>row.title).sort()).toEqual(["检查公积金","核对银行卡"]);
+    expect(previous.map(row=>row.title).sort()).toEqual(["核对银行卡","检查公积金"]);
     expect(previous.some(row=>row.is_completed===1)).toBe(true);
-    expect(upcoming.map(row=>row.title).sort()).toEqual(["检查公积金","核对银行卡"]);
+    expect(upcoming.map(row=>row.title).sort()).toEqual(["核对银行卡","检查公积金"]);
     expect(upcoming.every(row=>row.is_completed===0)).toBe(true);
     expect(second.body.id).not.toBe(projects[1].id);
   });
