@@ -80,7 +80,7 @@ describe("lists and scenes interface", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const list = await screen.findByRole("list", { name: "清单列表" });
+    const list = await screen.findByRole("list", { name: "场景列表" });
     expect(list).toHaveClass("context-grid");
     expect(screen.getByRole("button", { name: "移动 出国旅行" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "编辑 出国旅行" })).toBeInTheDocument();
@@ -89,19 +89,19 @@ describe("lists and scenes interface", () => {
     expect(screen.getByRole("button", { name: "一键勾选 出国旅行" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "删除 出国旅行" }));
-    expect(screen.getByRole("alertdialog", { name: "删除清单？" })).toHaveTextContent("任务不会删除");
+    expect(screen.getByRole("alertdialog", { name: "删除场景？" })).toHaveTextContent("任务不会删除");
     await user.click(screen.getByRole("button", { name: "取消" }));
 
     const quickName = screen.getByLabelText("快速新建清单");
-    expect(quickName).toHaveAttribute("placeholder", "新建清单，例如：国内旅行、工作项目…");
+    expect(quickName).toHaveAttribute("placeholder", "新建场景，例如：国内旅行、工作项目…");
 
-    await user.click(screen.getByRole("button", { name: "添加清单" }));
-    expect(await screen.findByRole("dialog", { name: "新建清单" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "添加场景" }));
+    expect(await screen.findByRole("dialog", { name: "新建场景" })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /^(金狮|百合花|罗盘|生命树|典籍|双剑|王冠|羽笔卷轴)$/ })).toHaveLength(8);
     await user.click(screen.getByRole("button", { name: "取消" }));
 
     await user.type(quickName, "工作项目");
-    await user.click(screen.getByRole("button", { name: "添加清单" }));
+    await user.click(screen.getByRole("button", { name: "添加场景" }));
     expect(await screen.findByRole("link", { name: /工作项目/ })).toBeInTheDocument();
     const createCall = fetchMock.mock.calls.find(([request, init]) => request === "/api/lists" && init?.method === "POST");
     expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作项目", icon: "compass", color: "#8CAABA" });
@@ -139,12 +139,12 @@ describe("lists and scenes interface", () => {
     expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/lists/travel-list/complete" && init?.method === "POST")).toHaveLength(0);
 
     await user.click(screen.getByRole("button", { name: "确认全部完成" }));
-    await waitFor(() => expect(screen.getByText("1 个场景 · 0 件待办")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("1 个分类 · 0 件待办")).toBeInTheDocument());
 
     await user.click(screen.getByRole("button", { name: "一键勾选 出国旅行" }));
     expect(screen.getByRole("alertdialog", { name: "全部恢复为未完成？" })).toHaveTextContent("恢复为未完成");
     await user.click(screen.getByRole("button", { name: "确认恢复未完成" }));
-    await waitFor(() => expect(screen.getByText("1 个场景 · 2 件待办")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("1 个分类 · 2 件待办")).toBeInTheDocument());
 
     expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/lists/travel-list/complete" && init?.method === "POST")).toHaveLength(2);
   });
@@ -168,8 +168,8 @@ describe("lists and scenes interface", () => {
     render(<App />);
 
     await user.click(await screen.findByRole("button", { name: "删除 旅行" }));
-    const dialog = screen.getByRole("alertdialog", { name: "删除场景？" });
-    expect(dialog).toHaveTextContent("场景内的任务不会被删除，将返回收集箱");
+    const dialog = screen.getByRole("alertdialog", { name: "删除分类？" });
+    expect(dialog).toHaveTextContent("分类内的任务不会删除，会移入独立的待办清单");
     await user.click(screen.getByRole("button", { name: "确认删除" }));
     await waitFor(() => expect(screen.queryByRole("link", { name: /旅行/ })).not.toBeInTheDocument());
   });
@@ -224,10 +224,10 @@ describe("lists and scenes interface", () => {
       throw new Error(`Unexpected request: ${path}`);
     }));
     render(<App />);
-    expect(await screen.findByRole("heading", { name: "我的清单" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "清单目录" })).toBeInTheDocument();
-    expect(await screen.findByRole("list", { name: "清单列表" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /进入收集箱/ })).toHaveAttribute("href", "/inbox");
+    expect(await screen.findByRole("heading", { name: "我的场景" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "场景目录" })).toBeInTheDocument();
+    expect(await screen.findByRole("list", { name: "场景列表" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /进入待办清单/ })).toHaveAttribute("href", "/inbox");
     expect(screen.getByRole("link", { name: /出国旅行/ })).toHaveAttribute("href", "/lists/travel-list");
   });
 });
