@@ -52,6 +52,12 @@ function initialOccurrence(task:RecurringInput):Date {
   return new Date(localIso(y,m,Math.min(n,cap),p.hour,p.minute));
 }
 
+/** Normalize PostgREST's timestamptz formats into the same UTC millisecond instant. */
+export function canonicalCycleAt(value:string):string|null {
+  const instant=Date.parse(value);
+  return Number.isFinite(instant)?new Date(instant).toISOString():null;
+}
+
 /** Determine which scheduled period is current; count missed and completed periods.
  * Checkins are unique by task and cycle, preventing duplicate credit.
  */
@@ -77,8 +83,10 @@ export function repeatProgress(task:RecurringInput, records:Checkin[],now:Date =
     if (!next || next.getTime()<=candidate.getTime()) break;
     candidate=next;
   }
-  const unique=new Set(records.map(x=>x.cycleAt));
-  const completed=records.filter((x,i)=>unique.has(x.cycleAt)&&records.findIndex(y=>y.cycleAt===x.cycleAt)===i).length;
+  // Supabase timestamptz may be returned with "+00:00" and variable fractional
+  // precision, while local ISO uses "Z". Compare instants, not raw strings.
+  const unique=new Set(records.map(x=>canonicalCycleAt(x.cycleAt)).filter((x):x is string=>x!==null));
+  const completed=unique.size;
   const cycleCompleted=!!current&&unique.has(current);
   return {
     cycleAt:current,cycleCompleted,checkinCount:completed,scheduledCount:scheduled,
