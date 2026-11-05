@@ -1,113 +1,98 @@
-import { useState, type FormEvent } from "react";
-import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
-
+import { useState } from "react";
+import { formatInTimeZone } from "date-fns-tz";
 import { useUpdateTask, type TaskRecord } from "../hooks/useTasks";
 
-const zone = "Asia/Shanghai";
-const weekdays = [
-  { label:"周一", word:"一" }, {label:"周二",word:"二"}, {label:"周三",word:"三"},
-  { label:"周四",word:"四" }, {label:"周五",word:"五"}, {label:"周六",word:"六"},
-  { label:"周日",word:"日" }
+const DAYS=[
+  {label:"周一",word:"一"},{label:"周二",word:"二"},{label:"周三",word:"三"},
+  {label:"周四",word:"四"},{label:"周五",word:"五"},{label:"周六",word:"六"},
+  {label:"周日",word:"日"}
 ];
-const choices = [
-  { key:"daily",name:"每天" },{key:"weekly",name:"每周"},
-  { key:"monthly",name:"每月" },{key:"yearly",name:"每年"}
-] as const;
+const ZONE="Asia/Shanghai";
+type Rule={repeatInterval:"none"|"weekly"|"monthly"|"custom";repeatRule:string};
 
-function initialChoice(task: TaskRecord): string {
-  if (task.repeatInterval === "custom" && /^每周[一二三四五六日天]$/.test(task.repeatRule)) {
-    return "week-" + task.repeatRule.replace("每周", "").replace("天", "日");
+function selectedRule(task:TaskRecord) {
+  if(task.repeatInterval==="custom"){
+    const match=/^每周([一二三四五六日])$/.exec(task.repeatRule);
+    if(match)return "day-"+match[1];
   }
-  if (task.repeatInterval === "custom" && /^每月\d{1,2}日$/.test(task.repeatRule)) return "month-" + task.repeatRule.slice(2,-1);
-  return task.repeatInterval;
+  if(task.repeatInterval==="weekly") return "weekly";
+  if(task.repeatInterval==="monthly" || /^每月\d{1,2}日$/.test(task.repeatRule))return "monthly";
+  return "";
+}
+function ruleFor(value:string,task:TaskRecord):Rule {
+  if(value.startsWith("day-"))return {repeatInterval:"custom",repeatRule:"每周"+value.slice(4)};
+  if(value==="weekly")return {repeatInterval:"weekly",repeatRule:""};
+  if(value==="monthly"){
+    // Preserve an existing monthly-N rule if it was already selected.
+    if(/^每月\d{1,2}日$/.test(task.repeatRule))return {repeatInterval:"custom",repeatRule:task.repeatRule};
+    return {repeatInterval:"monthly",repeatRule:""};
+  }
+  return {repeatInterval:"none",repeatRule:""};
 }
 
-export function ProjectRepeatDialog({ task, onClose }: { task: TaskRecord; onClose():void }) {
-  const update = useUpdateTask();
-  const starting = task.dueAt ? new Date(task.dueAt) : new Date();
-  const [choice,setChoice] = useState<string>(initialChoice(task));
-  const [startDate,setStartDate] = useState(formatInTimeZone(starting,zone,"yyyy-MM-dd"));
-  const [startTime,setStartTime] = useState(task.dueAt ? formatInTimeZone(starting,zone,"HH:mm") : "09:00");
-  const [error,setError] = useState("");
-
-  async function save(event:FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    const repeatInterval = (choice.startsWith("week-") || choice.startsWith("month-")) ? "custom" : choice as "none" | "daily" | "weekly" | "monthly" | "yearly";
-    const repeatRule = choice.startsWith("week-") ? "每周" + choice.slice(5) : choice.startsWith("month-") ? "每月" + choice.slice(6) + "日" : "";
-    const dueAt = fromZonedTime(startDate + "T" + startTime + ":00",zone);
-    if (!Number.isFinite(dueAt.getTime())) { setError("执行日期或时间无效"); return; }
-    try {
-      await update.mutateAsync({id:task.id,repeatInterval,repeatRule,dueAt:dueAt.toISOString()});
+/** Screenshot-matched compact 3x3 recurrence sheet.
+ * Choosing a cell saves immediately, rather than requiring a second Save action.
+ */
+export function ProjectRepeatDialog({task,onClose}:{task:TaskRecord;onClose():void}) {
+  const update=useUpdateTask();
+  const [selected,setSelected]=useState(selectedRule(task));
+  const [error,setError]=useState("");
+  const [pending,setPending]=useState(false);
+  const active=task.repeatInterval!=="none";
+  async function choose(value:string){
+    if(pending)return;
+    setPending(true);setError("");
+    setSelected(value);
+    try{
+      const rule=ruleFor(value,task);
+      await update.mutateAsync({id:task.id,...rule,
+        // Anchor the first check-in from creation time unless the user already scheduled it.
+        dueAt:task.dueAt ?? task.createdAt});
       onClose();
-    } catch(reason) {
-      setError(reason instanceof Error ? reason.message : "循环设置保存失败");
-    }
+    }catch(reason){
+      setError(reason instanceof Error?reason.message:"设置循环失败");
+      setSelected(selectedRule(task));
+    }finally{setPending(false);}
   }
-
-  async function pause() {
-    setError("");
-    try {
-      await update.mutateAsync({id:task.id,repeatInterval:"none",repeatRule:""});
-      onClose();
-    } catch(reason) {
-      setError(reason instanceof Error ? reason.message : "暂停循环失败");
-    }
+  async function pause(){
+    if(pending)return;
+    setPending(true);setError("");
+    try{await update.mutateAsync({id:task.id,repeatInterval:"none",repeatRule:""});onClose();}
+    catch(reason){setError(reason instanceof Error?reason.message:"暂停循环失败");}
+    finally{setPending(false);}
   }
-
-  return (
-    <div className="tp-repeat-overlay" role="presentation" onMouseDown={(event) => {
-      if (event.target === event.currentTarget && !update.isPending) onClose();
-    }}>
-      <section role="dialog" aria-modal="true" aria-label="循环设置" className="tp-repeat-dialog">
-        <header className="tp-repeat-dialog-head">
-          <span className="tp-repeat-mark" aria-hidden="true">↻</span>
-          <div><span className="tp-kicker">HERMES · RECURRENCE</span><h2>按时间循环</h2></div>
-          <button type="button" aria-label="关闭循环设置" onClick={onClose} disabled={update.isPending}>×</button>
-        </header>
-        <p className="tp-repeat-project-name">{task.title}</p>
-        <form onSubmit={(event) => void save(event)}>
-          <div className="tp-repeat-fields">
-            <label>首次执行日期
-              <input type="date" aria-label="首次执行日期" required value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
-            </label>
-            <label>执行时间
-              <input type="time" aria-label="执行时间" required value={startTime} onChange={(e)=>setStartTime(e.target.value)}/>
-            </label>
-          </div>
-          <div className="tp-repeat-caption">选择固定星期</div>
-          <div className="tp-repeat-weekdays" role="group" aria-label="每周固定日期">
-            {weekdays.map(day => <button key={day.word} type="button"
-              aria-pressed={choice === "week-" + day.word}
-              className={choice === "week-" + day.word ? "tp-repeat-active" : ""}
-              onClick={()=>setChoice("week-" + day.word)}>{day.label}</button>)}
-          </div>
-          <div className="tp-repeat-caption">选择循环周期</div>
-          <div className="tp-repeat-periods" role="group" aria-label="循环周期">
-            {choices.map(option => <button key={option.key} type="button"
-              aria-pressed={choice === option.key || (option.key === "monthly" && choice.startsWith("month-"))}
-              className={choice === option.key || (option.key === "monthly" && choice.startsWith("month-")) ? "tp-repeat-active" : ""}
-              onClick={()=>setChoice(option.key)}>{option.name}</button>)}
-          </div>
-          <p className="tp-repeat-explanation">
-            {choice.startsWith("week-") ? "每周" + choice.slice(5) + "执行，完成本轮后建立下一轮。"
-            : choice.startsWith("month-") ? "按原有规则每月" + choice.slice(6) + "日执行；月末不足时按最后一天执行。"
-            : choice === "monthly" ? "每月同一天执行；月末不足该日期时按当月最后一天执行。"
-            : choice === "weekly" ? "按首次执行日期的星期，每隔一周循环。"
-            : choice === "daily" ? "每天循环一次。"
-            : choice === "yearly" ? "每年同一日期循环。"
-            : "当前未启用循环。"}
-            {" "}本轮完成记录会保留，下一轮子待办重新变为未完成。
-          </p>
-          {error ? <p className="tp-error" role="alert">{error}</p> : null}
-          <div className="tp-repeat-dialog-actions">
-            <button type="button" className="tp-repeat-pause" onClick={() => void pause()}
-              disabled={update.isPending || task.repeatInterval === "none"}>暂停循环</button>
-            <button type="button" className="tp-repeat-cancel" onClick={onClose} disabled={update.isPending}>取消</button>
-            <button type="submit" className="tp-repeat-save" disabled={update.isPending}>{update.isPending ? "保存中…" : "保存设置"}</button>
-          </div>
-        </form>
-      </section>
-    </div>
-  );
+  const times=task.scheduledCount??0;
+  const completed=task.checkinCount??0;
+  return <div className="tp-repeat-overlay" role="presentation" onMouseDown={e=>{
+    if(e.target===e.currentTarget&&!pending)onClose();
+  }}>
+    <section className="tp-repeat-dialog tp-repeat-compact" role="dialog" aria-modal="true" aria-label="循环设置">
+      <header className="tp-repeat-reference-head">
+        <p>建立日期{formatInTimeZone(task.createdAt,ZONE,"M/d EEE")} · 重复了{times}次</p>
+        <p>完成了{completed} / {times}项</p>
+      </header>
+      <div className="tp-repeat-reference-grid" role="group" aria-label="循环周期">
+        {DAYS.map(day=><button key={day.word} type="button"
+          disabled={pending} aria-pressed={selected==="day-"+day.word}
+          className={selected==="day-"+day.word?"tp-repeat-active":""}
+          onClick={()=>void choose("day-"+day.word)}>{day.label}</button>)}
+        <button type="button" disabled={pending} aria-pressed={selected==="weekly"}
+          className={selected==="weekly"?"tp-repeat-active":""}
+          onClick={()=>void choose("weekly")}>每周</button>
+        <button type="button" disabled={pending} aria-pressed={selected==="monthly"}
+          className={selected==="monthly"?"tp-repeat-active":""}
+          onClick={()=>void choose("monthly")}>每月</button>
+      </div>
+      <p className="tp-repeat-rule-description">
+        {selected==="monthly"?"按月度计划重复打卡。":selected==="weekly"?"每周按原定星期重复打卡。":
+          selected.startsWith("day-")?"每"+selected.slice(4)+"重复打卡。":"选择一个循环规则开始记录。"}
+        {" "}按周期记录完成情况，不复制任务。
+      </p>
+      {error?<p className="tp-error" role="alert">{error}</p>:null}
+      <div className="tp-repeat-reference-actions">
+        <button type="button" disabled={pending} onClick={onClose}>取消</button>
+        <button type="button" disabled={pending||!active} onClick={()=>void pause()}>暂停</button>
+      </div>
+    </section>
+  </div>;
 }
