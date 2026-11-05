@@ -23,8 +23,7 @@ function ruleFor(value:string,task:TaskRecord):Rule {
   if(value.startsWith("day-"))return {repeatInterval:"custom",repeatRule:"每周"+value.slice(4)};
   if(value==="weekly")return {repeatInterval:"weekly",repeatRule:""};
   if(value==="monthly"){
-    // Preserve an existing monthly-N rule if it was already selected.
-    if(/^每月\d{1,2}日$/.test(task.repeatRule))return {repeatInterval:"custom",repeatRule:task.repeatRule};
+    // Tapping "每月" explicitly starts a new monthly cadence from the tap instant.
     return {repeatInterval:"monthly",repeatRule:""};
   }
   return {repeatInterval:"none",repeatRule:""};
@@ -45,9 +44,10 @@ export function ProjectRepeatDialog({task,onClose}:{task:TaskRecord;onClose():vo
     setSelected(value);
     try{
       const rule=ruleFor(value,task);
+      const clickedAt=new Date();
       await update.mutateAsync({id:task.id,...rule,
-        // Anchor the first check-in from creation time unless the user already scheduled it.
-        dueAt:task.dueAt ?? task.createdAt});
+        // The selected monthly cycle begins at this tap's exact date/time, not creation or prior due date.
+        dueAt:value==="monthly"?clickedAt.toISOString():task.dueAt??task.createdAt});
       onClose();
     }catch(reason){
       setError(reason instanceof Error?reason.message:"设置循环失败");
