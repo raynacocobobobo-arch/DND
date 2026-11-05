@@ -120,6 +120,27 @@ describe("recurring task API", () => {
     expect(item.subtasks[0]).toMatchObject({id:child.body.id,isCompleted:true,checkinCount:1});
   });
 
+  test("unconfigured subtasks inherit project cycles and reset next period without copying", async () => {
+    currentTime=new Date("2026-10-27T04:00:00.000Z");
+    const root=await agent.post("/api/tasks").send({
+      title:"项目自动跟随",dueAt:"2026-10-27T01:30:00.000Z",repeatInterval:"daily"
+    }).expect(201);
+    const child=await agent.post("/api/tasks").send({
+      title:"子待办自动跟随",parentTaskId:root.body.id
+    }).expect(201);
+    expect(child.body.repeatInterval).toBe("none");
+    const first=await agent.post("/api/tasks/"+child.body.id+"/toggle").expect(200);
+    expect(first.body).toMatchObject({isCompleted:true,checkinCount:1,scheduledCount:1});
+    currentTime=new Date("2026-10-28T04:00:00.000Z");
+    const next=await agent.get("/api/tasks?scope=inbox").expect(200);
+    const parent=next.body.find((x:{id:string})=>x.id===root.body.id);
+    expect(parent.subtasks[0]).toMatchObject({
+      id:child.body.id,isCompleted:false,checkinCount:1,scheduledCount:2
+    });
+    expect(dependencies.db.prepare("SELECT count(*) as count FROM tasks WHERE parent_task_id=?")
+      .get(root.body.id)).toEqual({count:1});
+  });
+
   test("rejects an unsupported custom recurrence rule", async () => {
     const response = await agent
       .post("/api/tasks")
