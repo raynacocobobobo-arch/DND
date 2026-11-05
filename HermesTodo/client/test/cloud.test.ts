@@ -133,6 +133,59 @@ describe("browser cloud bridge", () => {
     expect(new Date(records[0].cycle_at).getTime()).toBe(new Date(cycle).getTime());
   });
 
+  it("updates a known nonrecurring checkbox with exactly one REST PATCH and no preflight GET",async()=>{
+    saveCloudConfig(project,publishable);
+    localStorage.setItem("hermestodo-supabase-session-v1",JSON.stringify({
+      access_token:"user-jwt",refresh_token:"refresh",expires_at:now+3600,
+      user_id:"owner-1",project_url:project
+    }));
+    const network=vi.fn(async(url:string|URL|Request,init?:RequestInit)=>{
+      expect(String(url)).toBe(project+"/rest/v1/hermes_tasks?id=eq.task-1");
+      expect(init?.method).toBe("PATCH");
+      expect(JSON.parse(String(init?.body))).toMatchObject({
+        is_completed:true
+      });
+      return new Response(JSON.stringify([{
+        id:"task-1",is_completed:true,completed_at:"2026-11-05T10:30:00.000Z"
+      }]),{status:200,headers:{"content-type":"application/json"}});
+    });
+    vi.stubGlobal("fetch",network);
+    expect(installCloudBridge()).toBe(true);
+    const response=await fetch("/api/tasks/task-1/toggle",{method:"POST",body:JSON.stringify({
+      desiredCompleted:true,recurring:false,cycleAt:null
+    })});
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({id:"task-1",isCompleted:true});
+    expect(network).toHaveBeenCalledTimes(1);
+  });
+
+  it("checks a known recurring task in one REST write without querying the entire checklist",async()=>{
+    saveCloudConfig(project,publishable);
+    localStorage.setItem("hermestodo-supabase-session-v1",JSON.stringify({
+      access_token:"user-jwt",refresh_token:"refresh",expires_at:now+3600,
+      user_id:"owner-1",project_url:project
+    }));
+    const cycle="2026-11-05T10:30:00.000Z";
+    const network=vi.fn(async(url:string|URL|Request,init?:RequestInit)=>{
+      expect(String(url)).toContain("/hermes_task_checkins?on_conflict=");
+      expect(init?.method).toBe("POST");
+      expect((init?.headers as Record<string,string>).Prefer).toBe("return=minimal,resolution=ignore-duplicates");
+      const body=JSON.parse(String(init?.body));
+      expect(body).toMatchObject({
+        user_id:"owner-1",task_id:"task-1",cycle_at:cycle
+      });
+      return new Response(null,{status:204});
+    });
+    vi.stubGlobal("fetch",network);
+    expect(installCloudBridge()).toBe(true);
+    const response=await fetch("/api/tasks/task-1/toggle",{method:"POST",body:JSON.stringify({
+      desiredCompleted:true,recurring:true,cycleAt:cycle
+    })});
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({id:"task-1",isCompleted:true});
+    expect(network).toHaveBeenCalledTimes(1);
+  });
+
   it("never falls back to demo data when signed out from cloud", async () => {
     saveCloudConfig(project, publishable);
     const network = vi.fn(async () => { throw new Error("Must not contact network"); });
