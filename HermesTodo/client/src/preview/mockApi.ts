@@ -121,10 +121,14 @@ function getLists() {
 function taskRecord(task: TaskItem) {
   const decorate=(item:TaskItem) => {
     const history=store.checkins.filter(x=>x.taskId===item.id);
-    const progress=repeatProgress(item,history);
+    const parent=item.parentTaskId ? store.tasks.find(x=>x.id===item.parentTaskId) : null;
+    const schedule=item.repeatInterval==="none" && parent?.repeatInterval!=="none" && parent ? parent : item;
+    const recurring=schedule.repeatInterval!=="none";
+    const progress=repeatProgress(schedule,history);
     return {...item,
-      isCompleted:item.repeatInterval==="none"?item.isCompleted:progress.cycleCompleted,
-      completedAt:item.repeatInterval==="none"?item.completedAt:history.find(x=>x.cycleAt===progress.cycleAt)?.completedAt??null,
+      isCompleted:recurring?progress.cycleCompleted:item.isCompleted,
+      completedAt:recurring?history.find(x=>x.cycleAt===progress.cycleAt)?.completedAt??null:item.completedAt,
+      inheritsRepeat:schedule!==item,
       checkinCount:progress.checkinCount,scheduledCount:progress.scheduledCount,
       completionRate:progress.completionRate,cycleAt:progress.cycleAt
     };
@@ -249,8 +253,10 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     const t = store.tasks.find(x => x.id === tm[1]);
     if (!t) return error("任务不存在", 404);
     if (tm[2] === "/toggle" && method === "POST") {
-      if (t.repeatInterval !== "none") {
-        const progress=repeatProgress(t,store.checkins);
+      const parent=t.parentTaskId ? store.tasks.find(x=>x.id===t.parentTaskId) : null;
+      const schedule=t.repeatInterval==="none" && parent?.repeatInterval!=="none" && parent ? parent : t;
+      if (schedule.repeatInterval !== "none") {
+        const progress=repeatProgress(schedule,store.checkins.filter(x=>x.taskId===t.id));
         if (!progress.cycleAt) return error("首次循环日期尚未到来",400);
         if(progress.cycleCompleted) {
           store.checkins=store.checkins.filter(x=>x.taskId!==t.id||x.cycleAt!==progress.cycleAt);
