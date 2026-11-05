@@ -3,6 +3,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { TaskDetail } from "../components/TaskDetail";
+import { ProjectRepeatDialog } from "../components/ProjectRepeatDialog";
 import { useCreateTask, useDeleteTask, useTasks, useToggleTask, useUpdateTask } from "../hooks/useTasks";
 import type { TaskRecord } from "../hooks/useTasks";
 
@@ -28,6 +29,7 @@ export function TodoProjectDetailPage() {
   const [filter,setFilter] = useState<StatusFilter>("active");
   const [newTitle,setNewTitle] = useState("");
   const [editing,setEditing] = useState(false);
+  const [repeatOpen,setRepeatOpen] = useState(false);
   const [editingChild,setEditingChild] = useState<string|null>(null);
   const [editingTitle,setEditingTitle] = useState("");
   const [deletingChild,setDeletingChild] = useState<string|null>(null);
@@ -92,7 +94,12 @@ export function TodoProjectDetailPage() {
     <section className="tp-detail">
       <Link className="tp-back" to="/inbox">← 返回待办清单</Link>
       <header className="tp-detail-header">
-        <span className="tp-kicker">HERMES · PROJECT RECORD</span>
+        <div className="tp-detail-heading-bar">
+          <span className="tp-kicker">HERMES · PROJECT RECORD</span>
+          <button type="button" className={"tp-repeat-trigger" + (project.repeatInterval !== "none" ? " tp-repeat-enabled" : "")}
+            aria-label={"设置循环 " + project.title} title="按时间循环"
+            onClick={() => setRepeatOpen(true)}>↻</button>
+        </div>
         <div className="tp-detail-title-row">
           <button type="button" className="tp-check tp-detail-master-check" disabled={toggle.isPending}
             aria-label={(project.isCompleted ? "重新打开 " : "完成 ") + project.title}
@@ -107,7 +114,7 @@ export function TodoProjectDetailPage() {
           {project.completedAt ? <span>完成于 {displayTime(project.completedAt)}</span> : null}
         </div>
         <div className="tp-detail-actions">
-          <button type="button" onClick={() => setEditing(true)}>编辑项目与循环规则</button>
+          <button type="button" onClick={() => setEditing(true)}>编辑项目</button>
           <button type="button" onClick={() => setDeletingProject(true)} className="tp-danger-text">删除项目</button>
         </div>
       </header>
@@ -156,6 +163,7 @@ export function TodoProjectDetailPage() {
       </section>
 
       {editing ? <TaskDetail task={project} contexts={[]} onClose={() => setEditing(false)}/> : null}
+      {repeatOpen ? <ProjectRepeatDialog task={project} onClose={() => setRepeatOpen(false)}/> : null}
 
       {editingChild ? <div className="tp-confirm-overlay" role="presentation">
         <section className="tp-confirm-box" role="dialog" aria-modal="true" aria-label="编辑子待办">
