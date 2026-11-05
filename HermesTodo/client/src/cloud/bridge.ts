@@ -4,6 +4,7 @@
  * All database access is scoped by Supabase RLS; no privileged key is used.
  */
 import { DEMO_DATA_KEY, readCloudConfig, type CloudConfig } from "./config";
+import { nextOccurrence } from "./recurrence";
 
 type JsonObject = Record<string, unknown>;
 type Session = {
@@ -233,32 +234,51 @@ const demoTaskTitles = new Set([
 async function migrateLegacyLocalData(config: CloudConfig): Promise<void> {
   const session = await accessToken(config);
   const migrationKey = LEGACY_MIGRATION_PREFIX + session.user_id;
-  if (localStorage.getItem(migrationKey) === "1") return;
 
-  let legacy: { contexts?: JsonObject[]; tasks?: JsonObject[] } | null = null;
+  let legacy: { lists?: JsonObject[]; contexts?: JsonObject[]; tasks?: JsonObject[] } | null = null;
   try {
     const raw = localStorage.getItem(DEMO_DATA_KEY);
-    if (raw) legacy = JSON.parse(raw) as { contexts?: JsonObject[]; tasks?: JsonObject[] };
+    if (raw) legacy = JSON.parse(raw) as { lists?: JsonObject[]; contexts?: JsonObject[]; tasks?: JsonObject[] };
   } catch {}
   if (!legacy || !Array.isArray(legacy.contexts) || !Array.isArray(legacy.tasks)) {
     localStorage.setItem(migrationKey, "1");
     return;
   }
 
-  const legacyContexts = legacy.contexts.filter((item) => {
-    const name = String(item.name ?? "").trim();
-    const id = String(item.id ?? "");
-    return name && !(["work","life","creative"].includes(id) && demoContextNames.has(name));
-  });
   const legacyTasks = legacy.tasks.filter((item) => {
     const title = String(item.title ?? "").trim();
     return title && !demoTaskTitles.has(title);
+  });
+  const legacyContexts = legacy.contexts.filter((item) => {
+    const name = String(item.name ?? "").trim();
+    const id = String(item.id ?? "");
+    const isSample = ["work","life","creative"].includes(id) && demoContextNames.has(name);
+    return name && (!isSample || legacyTasks.some((task) => String(task.contextId ?? "") === id));
   });
   if (!legacyContexts.length && !legacyTasks.length) {
     localStorage.setItem(migrationKey, "1");
     return;
   }
 
+  // Re-run safe idempotent migration after each login: local PWA data may have changed.
+  const cloudLists = await allLists(config);
+  const destinationListsByName = new Map(cloudLists.map((item) => [item.name.trim(), item.id]));
+  const legacyListIdMap = new Map<string, string>();
+  for (const old of Array.isArray(legacy.lists) ? legacy.lists : []) {
+    const name = String(old.name ?? "").trim().slice(0, 40);
+    if (!name) continue;
+    let destination = destinationListsByName.get(name);
+    if (!destination) {
+      const created = await createList(config, {
+        name,
+        icon: String(old.icon ?? "compass"),
+        color: /^#[0-9a-fA-F]{6}$/.test(String(old.color ?? "")) ? old.color : "#8CAABA"
+      });
+      destination = String(created.id);
+      destinationListsByName.set(name, destination);
+    }
+    legacyListIdMap.set(String(old.id ?? ""), destination);
+  }
   const cloudContexts = await rest<DbContext[]>(config, "hermes_contexts?select=*&order=sort_order.asc");
   const cloudTasks = await allTasks(config);
   const contextByName = new Map(cloudContexts.map((item) => [item.name.trim(), item]));
@@ -272,6 +292,7 @@ async function migrateLegacyLocalData(config: CloudConfig): Promise<void> {
     if (!target) {
       const created = await createContext(config, {
         name,
+        listId: legacyListIdMap.get(String(old.listId ?? "")),
         icon: String(old.icon ?? "folder").slice(0,40),
         color: /^#[0-9a-fA-F]{6}$/.test(String(old.color ?? "")) ? old.color : "#8CAABA"
       });
@@ -640,11 +661,42 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     const id = encodeURIComponent(tm[1]!);
     if (tm[2] && method === "POST") {
       const old = await oneTask(config, tm[1]!);
-      const update = {
-        is_completed: !old.is_completed,
-        completed_at: old.is_completed ? null : new Date().toISOString()
-      };
-      const changed = await rest<DbTask[]>(config, "hermes_tasks?id=eq." + id, { method: "PATCH", body: JSON.stringify(update) });
+      const now = new Date();
+      const turningCompleted = !old.is_completed;
+      const next = turningCompleted && old.repeat_interval !== "none"
+        ? nextOccurrence(
+            { interval: old.repeat_interval as "none" | "daily" | "weekly" | "monthly" | "yearly" | "custom",
+              customRule: old.repeat_rule },
+            old.due_at ? new Date(old.due_at) : null,
+            now,
+            "Asia/Shanghai"
+          )
+        : null;
+      const endpoint = "hermes_tasks?id=eq." + id;
+      const changed = await rest<DbTask[]>(config, endpoint, { method: "PATCH", body: JSON.stringify({
+        is_completed: turningCompleted,
+        completed_at: turningCompleted ? now.toISOString() : null,
+        updated_at: now.toISOString()
+      }) });
+      if (next) {
+        try {
+          const all = await allTasks(config);
+          const exists = all.some((task) =>
+            !task.is_completed && !task.parent_task_id &&
+            task.title === old.title && task.context_id === old.context_id &&
+            task.due_at === next.toISOString() && task.repeat_interval === old.repeat_interval
+          );
+          if (!exists) await createTask(config, {
+            title: old.title, notes: old.notes, priority: old.priority,
+            dueAt: next.toISOString(), contextId: old.context_id,
+            repeatInterval: old.repeat_interval, repeatRule: old.repeat_rule
+          });
+        } catch (error) {
+          await rest(config, endpoint, { method:"PATCH",
+            body: JSON.stringify({is_completed:false, completed_at:null, updated_at:now.toISOString()}) }).catch(() => undefined);
+          throw error;
+        }
+      }
       return jsonResponse(toTask(changed[0]!, await allTasks(config)));
     }
     if (method === "PATCH") {
