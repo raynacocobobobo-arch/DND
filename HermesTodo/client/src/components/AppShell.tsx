@@ -1,4 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 import { useAuth } from "../auth/AuthProvider";
 import { isCloudMode } from "../cloud/config";
@@ -17,6 +18,12 @@ export function AppShell() {
   const { logout } = useAuth();
   const { pathname } = useLocation();
   const cloudMode = isCloudMode();
+  // Route changes must not inherit a previous screen's scroll offset, which
+  // can place the next screen's controls behind fixed iPhone navigation bars.
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname]);
   return (
     <div className="app-shell" style={{
       "--art-skyline": `url("${import.meta.env.BASE_URL}art/gothic-architecture.avif")`,
