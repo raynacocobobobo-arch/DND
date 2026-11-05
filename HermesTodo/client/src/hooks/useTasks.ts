@@ -54,10 +54,23 @@ export function useUpdateTask() {
   );
 }
 
+// Coalesce repeated taps on the same task while the first request is in flight.
+// This works across the timeline and project-detail components.
+const pendingTaskToggles = new Map<string, Promise<TaskRecord>>();
+
 export function useToggleTask() {
-  return useTaskMutation((id: string) =>
-    apiRequest<TaskRecord>(`/api/tasks/${id}/toggle`, { method: "POST" })
-  );
+  return useTaskMutation((id: string) => {
+    const existing = pendingTaskToggles.get(id);
+    if (existing) return existing;
+    const request = apiRequest<TaskRecord>(`/api/tasks/${id}/toggle`, { method: "POST" });
+    pendingTaskToggles.set(id, request);
+    // Register both outcomes so a failed write can be retried without a page reload.
+    const clear = () => {
+      if (pendingTaskToggles.get(id) === request) pendingTaskToggles.delete(id);
+    };
+    void request.then(clear, clear);
+    return request;
+  });
 }
 
 export function useDeleteTask() {
