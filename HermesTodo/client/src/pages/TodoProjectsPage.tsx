@@ -119,7 +119,7 @@ export function TodoProjectsPage() {
                           <strong>{task.title}</strong>
                           <span className="tp-project-meta">
                             {total > 0 ? <span>{finished}/{total} 项子待办</span> : <span>点击添加子待办</span>}
-                            {repeat ? <span className="tp-repeat">↻ {repeat}</span> : null}
+                            {repeat ? <span className="tp-repeat">↻ {repeat} · 完成 {task.checkinCount ?? 0} / {task.scheduledCount ?? 0} 次</span> : null}
                             {task.isCompleted ? <span>已完成</span> : null}
                           </span>
                           {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
@@ -145,15 +145,21 @@ export function TodoProjectsPage() {
                                 aria-pressed={child.isCompleted} onClick={() => void completeChild(child)}>
                                 {child.isCompleted ? "✓" : ""}
                               </button>
-                              <span>{child.title}</span>
-                              <time dateTime={child.isCompleted ? child.completedAt ?? child.updatedAt : child.createdAt}>
-                                {formatInTimeZone(child.isCompleted ? child.completedAt ?? child.updatedAt : child.createdAt, zone, "M/d HH:mm")}
-                              </time>
+                              <span className="tp-inline-child-detail">
+                                <span>{child.title}</span>
+                                {child.notes ? <small>{child.notes}</small> : null}
+                                {child.repeatInterval !== "none" ?
+                                  <small className="tp-repeat">已打卡 {child.checkinCount ?? 0} / {child.scheduledCount ?? 0} 次</small> : null}
+                              </span>
+                              <button type="button"
+                                className={"tp-inline-repeat" + (child.repeatInterval !== "none" ? " tp-inline-repeat-active" : "")}
+                                title="按时间循环" aria-label={"设置循环 " + child.title}
+                                onClick={() => setRepeatTask(child)}>↻</button>
                             </li>
                           ))}
                         </ul>
                         {filter === "active" && finished === total ? <p>子待办已全部完成，可切换「全部」查看记录。</p> : null}
-                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>管理子待办</Link>
+                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>查看完整项目记录</Link>
                       </div> : null}
                     </div>
                   </li>
