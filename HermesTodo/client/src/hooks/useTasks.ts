@@ -58,6 +58,21 @@ export function useUpdateTask() {
 // Keep one in-flight write per ID and optimistically update every cached task list.
 const pendingTaskToggles = new Map<string, Promise<TaskRecord>>();
 const activeOptimisticToggles = new Set<string>();
+let reconcileTimer: ReturnType<typeof setTimeout> | null = null;
+function reconcileAfterQuietPeriod(client: ReturnType<typeof useQueryClient>) {
+  if(reconcileTimer!==null)clearTimeout(reconcileTimer);
+  reconcileTimer=setTimeout(()=>{
+    reconcileTimer=null;
+    if(activeOptimisticToggles.size || pendingTaskToggles.size) {
+      reconcileAfterQuietPeriod(client);
+      return;
+    }
+    // One server refresh per burst, instead of two full REST queries per tick.
+    void client.invalidateQueries({queryKey:["tasks"]});
+    void client.invalidateQueries({queryKey:["contexts"]});
+  },1200);
+}
+
 type CompletionState = Pick<TaskRecord, "isCompleted" | "completedAt" | "checkinCount" | "completionRate">;
 type ToggleContext = {
   duplicate: boolean;
@@ -115,10 +130,13 @@ export function useToggleTask() {
       void request.then(clear,clear);
       return request;
     },
-    onMutate:async id=>{
+    onMutate:id=>{
       if(activeOptimisticToggles.has(id))return {duplicate:true,snapshots:[]};
       activeOptimisticToggles.add(id);
-      await queryClient.cancelQueries({queryKey:["tasks"]});
+      // Cancel existing refreshes without awaiting the network before painting.
+      // cancelQueries immediately notifies observers; the cache change below is
+      // synchronous within the click handler.
+      void queryClient.cancelQueries({queryKey:["tasks"]});
       const snapshots:ToggleContext["snapshots"]=[];
       for(const [key,items] of queryClient.getQueriesData<TaskRecord[]>({queryKey:["tasks"]})){
         if(!items)continue;
@@ -152,9 +170,11 @@ export function useToggleTask() {
     onSettled:(_data,_error,id,context)=>{
       if(context?.duplicate)return;
       activeOptimisticToggles.delete(id);
-      // Reconcile silently. Do not block a checkbox on two full network refreshes.
-      void queryClient.invalidateQueries({queryKey:["tasks"]});
-      void queryClient.invalidateQueries({queryKey:["contexts"]});
+      // The returned server row already reconciles this checkbox. Mark cached
+      // lists stale now; refresh once after rapid check-ins have finished.
+      void queryClient.invalidateQueries({queryKey:["tasks"],refetchType:"none"});
+      void queryClient.invalidateQueries({queryKey:["contexts"],refetchType:"none"});
+      reconcileAfterQuietPeriod(queryClient);
     }
   });
 }
