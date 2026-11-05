@@ -62,14 +62,17 @@ export function ProjectRepeatDialog({task,onClose}:{task:TaskRecord;onClose():vo
     finally{setPending(false);}
   }
   const times=task.scheduledCount??0;
-  const completed=task.checkinCount??0;
+  const completed=task.subtasks.length
+    ? task.subtasks.reduce((sum,child)=>sum+(child.checkinCount??(child.isCompleted?1:0)),0)
+    : task.checkinCount??0;
+  const totalItems=task.subtasks.length ? times*task.subtasks.length : times;
   return <div className="tp-repeat-overlay" role="presentation" onMouseDown={e=>{
     if(e.target===e.currentTarget&&!pending)onClose();
   }}>
     <section className="tp-repeat-dialog tp-repeat-compact" role="dialog" aria-modal="true" aria-label="循环设置">
       <header className="tp-repeat-reference-head">
         <p>建立日期{formatInTimeZone(task.createdAt,ZONE,"M/d EEE")} · 重复了{times}次</p>
-        <p>完成了{completed} / {times}项</p>
+        <p>完成了{completed} / {totalItems}项</p>
       </header>
       <div className="tp-repeat-reference-grid" role="group" aria-label="循环周期">
         {DAYS.map(day=><button key={day.word} type="button"
