@@ -166,19 +166,24 @@ function toTask(t: DbTask, all: DbTask[], includeChildren = true, checkins: DbCh
   const records: Checkin[] = checkins.filter(x => x.task_id === t.id).map(x => ({
     taskId: x.task_id, cycleAt: x.cycle_at, completedAt: x.completed_at
   }));
+  const parent = t.parent_task_id ? all.find(x=>x.id === t.parent_task_id) : null;
+  const schedule = t.repeat_interval === "none" && parent?.repeat_interval !== "none" && parent
+    ? parent : t;
+  const inherits = schedule !== t;
+  const recurring = schedule.repeat_interval !== "none";
   const progress = repeatProgress({
-    repeatInterval:t.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
-    repeatRule:t.repeat_rule,dueAt:t.due_at,createdAt:t.created_at
+    repeatInterval:schedule.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
+    repeatRule:schedule.repeat_rule,dueAt:schedule.due_at,createdAt:schedule.created_at
   },records);
   return {
     id: t.id, title: t.title, notes: t.notes, priority: t.priority,
-    dueAt: t.due_at, isCompleted: t.repeat_interval !== "none" ? progress.cycleCompleted : t.is_completed,
-    completedAt: t.repeat_interval !== "none"
+    dueAt: t.due_at, isCompleted: recurring ? progress.cycleCompleted : t.is_completed,
+    completedAt: recurring
       ? records.find(x=>x.cycleAt === progress.cycleAt)?.completedAt ?? null : t.completed_at,
     contextId: t.context_id, parentTaskId: t.parent_task_id,
     repeatInterval: t.repeat_interval, repeatRule: t.repeat_rule,
     createdAt: t.created_at, updatedAt: t.updated_at,
-    checkinCount:progress.checkinCount,scheduledCount:progress.scheduledCount,
+    checkinCount:progress.checkinCount,scheduledCount:progress.scheduledCount,inheritsRepeat:inherits,
     completionRate:progress.completionRate,cycleAt:progress.cycleAt,
     subtasks: includeChildren
       ? all.filter(x => x.parent_task_id === t.id).map(x => toTask(x,all,false,checkins))
@@ -680,13 +685,16 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     const id = encodeURIComponent(tm[1]!);
     if (tm[2] && method === "POST") {
       const old = await oneTask(config, tm[1]!);
-      if (old.repeat_interval !== "none") {
+      const parent=old.parent_task_id ? await oneTask(config,old.parent_task_id) : null;
+      const schedule=old.repeat_interval === "none" && parent?.repeat_interval !== "none" && parent
+        ? parent : old;
+      if (schedule.repeat_interval !== "none") {
         const now = new Date();
         const endpoint = "hermes_task_checkins";
         const current = await rest<DbCheckin[]>(config,endpoint+"?select=task_id,cycle_at,completed_at&task_id=eq."+id);
         const progress=repeatProgress({
-          repeatInterval:old.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
-          repeatRule:old.repeat_rule,dueAt:old.due_at,createdAt:old.created_at
+          repeatInterval:schedule.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
+          repeatRule:schedule.repeat_rule,dueAt:schedule.due_at,createdAt:schedule.created_at
         },current.map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at})),now);
         if(!progress.cycleAt) throw new Error("首次循环日期尚未到来，请选择有效日期");
         if(progress.cycleCompleted) {
