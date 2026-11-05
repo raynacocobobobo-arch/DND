@@ -27,9 +27,9 @@ export function ListCard({
           <strong>{list.sceneCount}</strong>
         </span>
         <span className="context-name">{list.name}</span>
-        <span className="context-count">{list.sceneCount} 个场景 · {list.incompleteCount} 件待办</span>
+        <span className="context-count">{list.sceneCount} 个分类 · {list.incompleteCount} 件待办</span>
       </Link>
-      <div className="context-card-actions list-card-actions" aria-label={`${list.name} 清单操作`}>
+      <div className="context-card-actions list-card-actions" aria-label={`${list.name} 场景操作`}>
         <button type="button" className="list-text-action list-drag-handle" draggable
           aria-label={`移动 ${list.name}`} title="按住拖动排序"
           onDragStart={(event)=>{event.stopPropagation(); onDragStart();}}
