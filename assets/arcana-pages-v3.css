@@ -34,3 +34,102 @@ main{min-height:calc(100dvh - 150px)}footer{border-top:1px solid var(--line);tex
   .library-card .card-title,.library-card .caption{max-width:100%;overflow-wrap:anywhere}
   .top-inner,.nav,.nav a{min-width:0}
 }
+
+
+/* 2026-11-05: opening-first landing. The existing approved artwork is untouched. */
+.opening-home{padding-top:14px;padding-bottom:24px}
+.opening-frame{display:grid;grid-template-columns:minmax(0,1.07fr) minmax(0,.93fr);gap:clamp(28px,5vw,88px);align-items:center;min-height:calc(100svh - 150px)}
+.opening-art{height:clamp(450px,70svh,750px);position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;min-width:0;background:radial-gradient(ellipse at 50% 50%,#20323a55,transparent 61%)}
+.opening-art:before{content:"";position:absolute;inset:7% 1%;pointer-events:none;background:radial-gradient(ellipse 33% 43% at center,#bba06c21 0%,#6c8c8c12 44%,transparent 78%);filter:blur(18px);z-index:-1}
+.opening-halo{position:absolute;left:50%;top:47%;width:min(87%,590px);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid #c9a46b41;border-radius:50%;box-shadow:0 0 0 36px #c8a46b0b,0 0 0 82px #c8a46b08;pointer-events:none}
+.opening-halo:before,.opening-halo:after{content:"";position:absolute;border:1px solid #d7b1782b;border-radius:50%;inset:13%}
+.opening-halo:after{inset:32%;border-style:dashed;opacity:.75}
+.opening-arcana,.opening-card-trigger{position:absolute;left:50%;top:47%;width:clamp(190px,20vw,310px);aspect-ratio:9/16;border-radius:12px;transform-origin:center;box-shadow:0 28px 55px #000b}
+.opening-arcana img,.opening-card-trigger img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+.opening-arcana-left{z-index:1;transform:translate(-92%,-47%) rotate(-19deg) scale(.85);filter:brightness(.68)}
+.opening-arcana-right{z-index:2;transform:translate(-8%,-47%) rotate(19deg) scale(.85);filter:brightness(.78)}
+.opening-card-trigger{z-index:3;transform:translate(-50%,-50%) rotate(-1deg);border:0;padding:0;background:none;cursor:pointer;transition:transform .3s ease,filter .3s ease;filter:drop-shadow(0 19px 36px #03090d)}
+.opening-card-trigger:hover,.opening-card-trigger:focus-visible{transform:translate(-50%,-52%) rotate(0deg) scale(1.035);filter:drop-shadow(0 22px 38px #020506)}
+.opening-ornament{position:absolute;z-index:0;font-size:29px;color:#cfae71;opacity:.65;pointer-events:none}
+.opening-ornament-a{top:14%;left:14%}.opening-ornament-b{bottom:21%;right:12%}
+.opening-art-caption{position:absolute;bottom:5%;left:0;width:100%;text-align:center;letter-spacing:.19em;font-size:10px;color:#c7ae7b;font-family:Georgia,serif}
+.opening-info{padding:16px 0 36px;max-width:600px}
+.opening-index{font:11px/1.5 Georgia,serif;letter-spacing:.19em;color:#c7ab7c;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.opening-index-line{display:inline-block;width:28px;height:1px;background:#c7ab7c}
+.opening-index-star{font-size:15px;line-height:1}
+.opening-info h1{font-size:clamp(66px,7.1vw,112px);font-weight:400;letter-spacing:.025em;line-height:1.13;margin:22px 0 22px;color:#f5e8d6}
+.opening-info h1 em{font-style:normal;color:#dabd82;text-shadow:0 0 36px #b0944740}
+.opening-lead{font-size:clamp(15px,1.35vw,18px);line-height:1.95;color:#cbc1b2;margin:0;letter-spacing:.045em}
+.opening-picker{margin-top:clamp(25px,3.4vw,48px);padding-top:21px;border-top:1px solid #c5aa7657}
+.opening-picker-heading{display:flex;justify-content:space-between;color:#d5b883;letter-spacing:.1em;font-size:13px;margin-bottom:13px}
+.opening-picker-heading span:last-child{color:#827969;font:11px/1.6 Georgia,serif}
+.opening-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.opening-modes button{min-width:0;min-height:87px;background:#0c151ecc;border:1px solid #a78b5b77;color:#e4d6bd;text-align:left;padding:15px 12px;transition:background .2s,border-color .2s,transform .2s;position:relative}
+.opening-modes button strong{display:block;font-size:clamp(13px,1.15vw,16px);font-weight:400;white-space:nowrap}
+.opening-modes button small{display:block;margin-top:8px;font-size:11px;color:#a9a294;line-height:1.4}
+.opening-modes button.active{border-color:#deb977;background:linear-gradient(135deg,#3a3020b5,#171f24);box-shadow:inset 0 0 0 1px #ccae6c30}
+.opening-modes button.active:before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:#d7b97f}
+.opening-modes button:hover{transform:translateY(-2px);border-color:#ead1a1}
+.opening-primary{width:100%;min-height:66px;padding:15px 23px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(100deg,#d9c08d,#b99a63);color:#17140f;border:1px solid #e6ce9c;font-size:clamp(18px,1.8vw,22px);letter-spacing:.16em;margin-top:14px;text-align:left;box-shadow:0 12px 34px #0007;transition:filter .2s,transform .2s}
+.opening-primary:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.opening-primary-arrow{font-size:29px;line-height:1;font-family:Arial,sans-serif}
+.opening-help{font-size:12px;color:#9e9586;line-height:1.7;margin:14px 0 0}
+.opening-help a,.opening-journal a{color:#dec18c;border-bottom:1px solid #8a7452;padding-bottom:2px}
+.opening-help a:hover,.opening-journal a:hover{color:#fff2d4}
+.opening-journal{font-size:12px;color:#8f8b84;margin:27px 0 0;line-height:1.7}
+.opening-journal a{margin-left:8px}
+.opening-more{border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:23px 0 3px;font-size:12px;letter-spacing:.09em;color:#afa596}
+.opening-more>div{display:flex;gap:27px;flex-wrap:wrap}
+.opening-more a{color:#d0ba95;border-bottom:1px solid #6c5b40;padding-bottom:3px}
+.opening-more a:hover{color:white}
+.opening-literature{margin-top:32px}
+.opening-literature-label{color:#c7ae80;font:11px Georgia,serif;letter-spacing:.16em}
+.opening-literature h2{margin-top:12px}
+#reading-result{scroll-margin-top:100px}
+@media(max-width:860px){
+  .opening-home{padding-top:4px}
+  .opening-frame{display:flex;flex-direction:column;gap:0;min-height:0}
+  .opening-art{order:0;width:100%;height:340px;flex:none}
+  .opening-arcana,.opening-card-trigger{width:175px}
+  .opening-halo{width:305px;box-shadow:0 0 0 22px #c8a46b0a,0 0 0 48px #c8a46b07}
+  .opening-info{order:1;align-self:stretch;max-width:540px;width:100%;margin:0 auto;padding:5px 0 26px;text-align:center}
+  .opening-index{justify-content:center}
+  .opening-info h1{font-size:clamp(56px,9.5vw,82px);margin:14px 0;line-height:1.1}
+  .opening-lead{font-size:14px;line-height:1.65}
+  .opening-picker{margin-top:22px}
+  .opening-picker-heading{text-align:left}
+  .opening-modes button{text-align:center}
+  .opening-primary{min-height:57px;margin-top:12px}
+  .opening-journal{margin-top:16px}
+  .opening-art-caption{bottom:0}
+}
+@media(max-width:500px){
+  .opening-home{padding-left:17px;padding-right:17px;padding-bottom:10px}
+  .opening-art{height:246px}
+  .opening-arcana,.opening-card-trigger{width:134px}
+  .opening-halo{width:220px}
+  .opening-ornament{font-size:18px}
+  .opening-ornament-a{top:12%;left:10%}
+  .opening-ornament-b{bottom:15%;right:9%}
+  .opening-art-caption{bottom:-3px;font-size:8px;letter-spacing:.1em}
+  .opening-info{padding-top:13px}
+  .opening-index{font-size:9px;letter-spacing:.12em;gap:8px}
+  .opening-index-line{width:16px}
+  .opening-info h1{font-size:clamp(53px,13.5vw,70px);margin:12px 0 9px}
+  .opening-lead{font-size:13px;line-height:1.65}
+  .opening-picker{margin-top:17px;padding-top:14px}
+  .opening-picker-heading{margin-bottom:8px;font-size:12px}
+  .opening-modes{gap:7px}
+  .opening-modes button{min-height:75px;padding:10px 5px}
+  .opening-modes button strong{font-size:13px}
+  .opening-modes button small{font-size:10px;margin-top:7px}
+  .opening-primary{min-height:54px;font-size:19px;padding:13px 17px}
+  .opening-help{font-size:11px;margin-top:9px}
+  .opening-journal{font-size:11px;margin-top:14px}
+  .opening-more{font-size:11px;justify-content:center;text-align:center;gap:12px;padding-top:15px}
+  .opening-more>div{gap:15px}
+  .opening-literature{margin-top:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .opening-card-trigger,.opening-modes button,.opening-primary{transition:none}
+}
