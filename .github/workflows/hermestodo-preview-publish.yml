@@ -127,6 +127,18 @@ jobs:
               assert browser.find_element(By.CSS_SELECTOR,'.tp-workspace .tp-switch').is_displayed()
               browser.find_element(By.CSS_SELECTOR,'.tp-back').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-inline-child')))
+              inline=browser.find_element(By.CSS_SELECTOR,'.tp-inline-child')
+              project_with_children=browser.find_element(By.CSS_SELECTOR,'.tp-project:has(.tp-inline-child)')
+              project_with_children.find_element(By.CSS_SELECTOR,'.tp-collapse-trigger').click()
+              assert not inline.is_displayed(), 'Folded checklist remains visible'
+              project_with_children.find_element(By.CSS_SELECTOR,'.tp-collapse-trigger').click()
+              assert inline.is_displayed(), 'Expanded checklist remains hidden'
+              project_with_children.find_element(By.CSS_SELECTOR,'.tp-repeat-trigger').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-repeat-dialog')))
+              browser.find_element(By.CSS_SELECTOR,'.tp-repeat-weekdays button:nth-child(3)').click()
+              browser.find_element(By.CSS_SELECTOR,'.tp-repeat-save').click()
+              wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR,'.tp-repeat-dialog')))
               browser.find_element(By.CSS_SELECTOR,'.tp-primary-action').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-form')))
               field=browser.find_element(By.CSS_SELECTOR,'.task-form input[maxlength="200"]')
