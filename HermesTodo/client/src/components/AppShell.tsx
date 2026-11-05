@@ -8,8 +8,8 @@ import { MedievalCrest } from "./MedievalCrest";
 import { AILogo } from "./AILogo";
 
 const links = [
-  { to: "/", label: "清单", end: true, glyph: "fleur" },
-  { to: "/inbox", label: "时间线", end: true, glyph: "inbox" },
+  { to: "/", label: "场景", end: true, glyph: "fleur" },
+  { to: "/inbox", label: "待办清单", end: true, glyph: "inbox" },
   { to: "/ai", label: "AI", end: false, glyph: "ai" }
 ] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
@@ -29,7 +29,7 @@ export function AppShell() {
       ) : null}
       <a className="skip-link" href="#main-content">跳到主要内容</a>
       <aside className="hermes-sidebar">
-        <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回清单首页">
+        <Link to="/" className="hermes-brand" aria-label="HermesTodo · 返回场景首页">
           <FleurDeLis className="brand-fleur" size={38}/>
           <span className="brand-name"><span>HERMES</span><span>TODO</span></span>
           <span className="brand-subtitle">THE DAILY CHRONICLE</span>
@@ -40,7 +40,7 @@ export function AppShell() {
           {links.map((link) => {
             const active = link.to === "/"
               ? pathname === "/" || pathname === "/contexts" || pathname.startsWith("/contexts/")
-              : pathname === link.to;
+              : pathname === link.to || (link.to === "/inbox" && pathname.startsWith("/inbox/"));
             return (
               <Link key={link.to} to={link.to}
                 aria-current={active ? "page" : undefined}
