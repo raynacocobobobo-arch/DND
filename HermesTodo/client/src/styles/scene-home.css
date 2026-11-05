@@ -474,3 +474,13 @@
     scroll-margin-bottom:calc(130px + env(safe-area-inset-bottom));
   }
 }
+
+
+@media(max-width:760px){
+  /* In the two-column grid, open first-column menus inward rather than
+     clipping them against a narrow iPhone's left edge. */
+  .scene-home .scene-home-grid .list-card:nth-child(odd) .list-card-menu{
+    right:auto;
+    left:0;
+  }
+}
