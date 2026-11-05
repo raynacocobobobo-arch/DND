@@ -22,7 +22,7 @@ function project(id: string, title: string, extra: Record<string,unknown> = {}) 
   return {...base, id, title, ...extra};
 }
 function apiMock(initial: Array<Record<string,any>>) {
-  const roots = initial.map(item => ({...item, subtasks:[...(item.subtasks ?? [])]}));
+  const roots: Array<Record<string,any>> = initial.map(item => ({...item, subtasks:[...(item.subtasks ?? [])]}));
   const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
     const path = String(input);
     const method = init?.method ?? "GET";
