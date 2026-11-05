@@ -184,7 +184,17 @@ jobs:
               assert hero_height < 370, f'Mobile hero still too tall: {hero_height}'
               assert browser.execute_script('return getComputedStyle(document.querySelector(".scene-home-art")).objectFit')=='contain', 'Mobile artwork must remain uncropped'
               mobile_card=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .list-card')
-              mobile_card.find_element(By.CSS_SELECTOR,'.list-more-trigger').click()
+              mobile_more=mobile_card.find_element(By.CSS_SELECTOR,'.list-more-trigger')
+              # Mobile has a fixed bottom tab bar: scroll buttons into the safe
+              # part of the viewport before exercising a tap.
+              browser.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})',mobile_more)
+              visibility=browser.execute_script("""
+                const button=arguments[0].getBoundingClientRect();
+                const nav=document.querySelector('.main-navigation').getBoundingClientRect();
+                return {buttonBottom:button.bottom,navTop:nav.top};
+              """,mobile_more)
+              assert visibility['buttonBottom']<visibility['navTop']-8, f'Scene actions covered after scroll: {visibility}'
+              mobile_more.click()
               wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'.list-card-menu')))
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Opened menu horizontal overflow: {measure}'
