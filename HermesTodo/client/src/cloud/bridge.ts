@@ -684,6 +684,45 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
   if (tm) {
     const id = encodeURIComponent(tm[1]!);
     if (tm[2] && method === "POST") {
+      // The UI supplies the intended final state, after an immediate local
+      // checkbox update. With a known cycle, write it directly in a single
+      // PostgREST request, instead of 3-5 serialized network round trips.
+      // RLS and the composite task-owner FK still enforce authorization.
+      if (typeof data.desiredCompleted === "boolean" && typeof data.recurring === "boolean") {
+        const completed = data.desiredCompleted;
+        const now = new Date().toISOString();
+        if (!data.recurring) {
+          const changed = await rest<DbTask[]>(config,"hermes_tasks?id=eq."+id,{
+            method:"PATCH",
+            body:JSON.stringify({is_completed:completed,completed_at:completed?now:null})
+          });
+          if(!changed[0])throw new Error("任务不存在或无权更新");
+          return jsonResponse({
+            id:changed[0].id,isCompleted:changed[0].is_completed,
+            completedAt:changed[0].completed_at
+          });
+        }
+        const cycle=typeof data.cycleAt==="string"?canonicalCycleAt(data.cycleAt):null;
+        if (cycle) {
+          const endpoint="hermes_task_checkins";
+          if (completed) {
+            const session=await accessToken(config);
+            await rest(config,endpoint+"?on_conflict=user_id,task_id,cycle_at",{
+              method:"POST",
+              headers:{Prefer:"return=minimal,resolution=ignore-duplicates"},
+              body:JSON.stringify({
+                user_id:session.user_id,task_id:tm[1]!,cycle_at:cycle,completed_at:now
+              })
+            });
+          } else {
+            await rest(config,endpoint+"?task_id=eq."+id+"&cycle_at=eq."+encodeURIComponent(cycle),{
+              method:"DELETE",headers:{Prefer:"return=minimal"}
+            });
+          }
+          return jsonResponse({id:tm[1]!,isCompleted:completed,completedAt:completed?now:null});
+        }
+      }
+      // Compatibility fallback for older clients or missing first cycle.
       const old = await oneTask(config, tm[1]!);
       const parent=old.parent_task_id ? await oneTask(config,old.parent_task_id) : null;
       const schedule=old.repeat_interval === "none" && parent?.repeat_interval !== "none" && parent
