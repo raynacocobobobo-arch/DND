@@ -1,5 +1,5 @@
 import { describe,expect,it } from "vitest";
-import { repeatProgress } from "../src/cloud/checkins";
+import { canonicalCycleAt, repeatProgress } from "../src/cloud/checkins";
 
 describe("monthly check-in calendar anchoring",()=>{
   const monthly={repeatInterval:"monthly" as const,repeatRule:"",
@@ -22,6 +22,28 @@ describe("monthly check-in calendar anchoring",()=>{
       .toMatchObject({cycleAt:"2026-11-05T06:40:41.000Z",scheduledCount:1});
     expect(repeatProgress(task,[],new Date("2026-12-05T06:40:41.000Z")))
       .toMatchObject({cycleAt:"2026-12-05T06:40:41.000Z",scheduledCount:2});
+  });
+
+  it("recognizes an existing Postgres +00:00 check-in as completed, not another insert",()=>{
+    const task={...monthly,dueAt:"2026-11-05T06:40:41.000Z"};
+    const records=[
+      {taskId:"one",cycleAt:"2026-11-05T06:40:41+00:00",completedAt:"2026-11-05T06:45:00+00:00"}
+    ];
+    expect(repeatProgress(task,records,new Date("2026-11-05T06:50:00.000Z")))
+      .toMatchObject({cycleAt:"2026-11-05T06:40:41.000Z",cycleCompleted:true,
+        scheduledCount:1,checkinCount:1,completionRate:100});
+    expect(canonicalCycleAt("2026-11-05T14:40:41+08:00")).toBe("2026-11-05T06:40:41.000Z");
+  });
+
+  it("counts different textual representations of the same cycle only once",()=>{
+    const task={...monthly,dueAt:"2026-11-05T06:40:41.000Z"};
+    const records=[
+      {taskId:"one",cycleAt:"2026-11-05T06:40:41.000Z",completedAt:"2026-11-05T06:45:00Z"},
+      {taskId:"one",cycleAt:"2026-11-05T06:40:41+00:00",completedAt:"2026-11-05T06:46:00Z"},
+      {taskId:"one",cycleAt:"2026-11-05T14:40:41+08:00",completedAt:"2026-11-05T06:47:00Z"}
+    ];
+    expect(repeatProgress(task,records,new Date("2026-11-05T06:50:00.000Z")))
+      .toMatchObject({checkinCount:1,scheduledCount:1,completionRate:100,cycleCompleted:true});
   });
 
   it("does not lose February 29 when a future leap year returns",()=>{
