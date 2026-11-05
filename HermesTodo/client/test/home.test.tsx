@@ -85,7 +85,7 @@ describe("task activity timeline", () => {
     const user = userEvent.setup();
     render(<App />);
     expect(await screen.findByRole("button", {name:"未完成任务"})).toBeInTheDocument();
-    await user.click(screen.getByRole("button", {name:"已完成", exact:true}));
+    await user.click(screen.getByRole("button", {name:"已完成"}));
     expect(await screen.findByRole("button", {name:"已完成任务"})).toBeInTheDocument();
     expect(screen.queryByRole("button", {name:"未完成任务"})).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", {name:"全部记录"}));
