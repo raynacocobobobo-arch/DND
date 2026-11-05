@@ -33,7 +33,7 @@ function storedCloudConfig(): CloudConfig | null {
 export function readCloudConfig(): CloudConfig | null {
   // The public Pages site is a private single-user tool: always bind it to the
   // approved Supabase project so the owner never has to configure "cloud mode".
-  if (import.meta.env.VITE_STATIC_PREVIEW === "true") return HOSTED_CLOUD_CONFIG;
+  if (isHostedHermesTodo()) return HOSTED_CLOUD_CONFIG;
   return storedCloudConfig();
 }
 
