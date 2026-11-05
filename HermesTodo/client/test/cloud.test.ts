@@ -44,6 +44,9 @@ describe("browser cloud bridge", () => {
     }));
     const network = vi.fn(async (input: string | URL | Request) => {
       const request = String(input);
+      if (request === project + "/rest/v1/hermes_task_checkins?select=task_id,cycle_at,completed_at") {
+        return new Response("[]", {status:200,headers:{"content-type":"application/json"}});
+      }
       if (request === project + "/rest/v1/hermes_tasks?select=*&order=created_at.desc") {
         return new Response(JSON.stringify([{
           id: "task-1", title: "云端待办", notes: "", priority: "medium",
@@ -60,8 +63,8 @@ describe("browser cloud bridge", () => {
     expect(res.status).toBe(200);
     const tasks = await res.json() as Array<{ title: string; subtasks: unknown[] }>;
     expect(tasks).toMatchObject([{ title: "云端待办", subtasks: [] }]);
-    expect(network).toHaveBeenCalledTimes(1);
-    const options = network.mock.calls[0] as unknown as [string, RequestInit];
+    expect(network).toHaveBeenCalledTimes(2);
+    const options = network.mock.calls.find(([url])=>String(url).includes("hermes_tasks?")) as unknown as [string, RequestInit];
     expect(options[1].headers).toMatchObject({
       apikey: publishable,
       Authorization: "Bearer user-jwt"
