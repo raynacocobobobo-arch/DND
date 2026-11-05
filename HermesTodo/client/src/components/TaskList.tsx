@@ -5,11 +5,13 @@ import { TaskRow } from "./TaskRow";
 export function TaskList({
   tasks,
   contexts,
-  onOpen
+  onOpen,
+  expandCompleted = false
 }: {
   tasks: TaskRecord[];
   contexts: ContextRecord[];
   onOpen?: (task: TaskRecord) => void;
+  expandCompleted?: boolean;
 }) {
   const open = tasks.filter((task) => !task.isCompleted);
   const completed = tasks.filter((task) => task.isCompleted);
@@ -17,7 +19,9 @@ export function TaskList({
   return (
     <div className="task-list-groups">
       {open.length ? <ul className="task-list" aria-label="未完成任务">{open.map((task) => <TaskRow key={task.id} task={task} contexts={contexts} onOpen={onOpen} />)}</ul> : null}
-      {completed.length ? (
+      {completed.length ? expandCompleted ? (
+        <ul className="task-list" aria-label="已完成任务">{completed.map((task) => <TaskRow key={task.id} task={task} contexts={contexts} onOpen={onOpen} />)}</ul>
+      ) : (
         <details className="completed-tasks">
           <summary>已完成 {completed.length}</summary>
           <ul className="task-list" aria-label="已完成任务">{completed.map((task) => <TaskRow key={task.id} task={task} contexts={contexts} onOpen={onOpen} />)}</ul>

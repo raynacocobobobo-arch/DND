@@ -80,26 +80,65 @@ describe("recurring task API", () => {
     rmSync(directory, { force: true, recursive: true });
   });
 
-  test("completing an overdue recurring task creates one independent future task", async () => {
-    const created = await agent
-      .post("/api/tasks")
-      .send({
-        title: "每日复习",
-        dueAt: "2026-10-20T01:30:00.000Z",
-        repeatInterval: "daily"
-      })
-      .expect(201);
+  test("repeated checkins keep the same ID and record one completion per scheduled cycle", async () => {
+    const created = await agent.post("/api/tasks").send({
+      title:"每日复习",dueAt:"2026-10-20T01:30:00.000Z",repeatInterval:"daily"
+    }).expect(201);
+    const id=created.body.id;
+    const first=await agent.post("/api/tasks/"+id+"/toggle").expect(200);
+    expect(first.body).toMatchObject({id,isCompleted:true,checkinCount:1,scheduledCount:6});
+    const rows=dependencies.db.prepare("SELECT id FROM tasks WHERE title=?").all("每日复习");
+    expect(rows).toHaveLength(1);
+    const undone=await agent.post("/api/tasks/"+id+"/toggle").expect(200);
+    expect(undone.body).toMatchObject({id,isCompleted:false,checkinCount:0});
+    await agent.post("/api/tasks/"+id+"/toggle").expect(200);
+    currentTime=new Date("2026-10-26T04:00:00.000Z");
+    const next=await agent.get("/api/tasks?scope=inbox").expect(200);
+    const record=next.body.find((x:{id:string})=>x.id===id);
+    expect(record).toMatchObject({id,isCompleted:false,checkinCount:1,scheduledCount:7});
+  });
 
-    const completed = await agent.post(`/api/tasks/${created.body.id}/toggle`).expect(200);
-    expect(completed.body).toMatchObject({ id: created.body.id, isCompleted: true });
+  test("projects and child tasks can repeat independently without cloning their checklist", async () => {
+    const root=await agent.post("/api/tasks").send({
+      title:"每月对账项目",dueAt:"2026-10-25T01:30:00.000Z",repeatInterval:"monthly"
+    }).expect(201);
+    const child=await agent.post("/api/tasks").send({
+      title:"检查公积金",parentTaskId:root.body.id
+    }).expect(201);
+    const repeated=await agent.patch("/api/tasks/"+child.body.id).send({
+      repeatInterval:"weekly",dueAt:"2026-10-25T01:30:00.000Z"
+    }).expect(200);
+    expect(repeated.body.repeatInterval).toBe("weekly");
+    await agent.post("/api/tasks/"+child.body.id+"/toggle").expect(200);
+    await agent.post("/api/tasks/"+root.body.id+"/toggle").expect(200);
+    const projects=dependencies.db.prepare("SELECT id FROM tasks WHERE title=?").all("每月对账项目");
+    expect(projects).toHaveLength(1);
+    const record=await agent.get("/api/tasks?scope=inbox").expect(200);
+    const item=record.body.find((x:{id:string})=>x.id===root.body.id);
+    expect(item).toMatchObject({id:root.body.id,isCompleted:true,checkinCount:1});
+    expect(item.subtasks).toHaveLength(1);
+    expect(item.subtasks[0]).toMatchObject({id:child.body.id,isCompleted:true,checkinCount:1});
+  });
 
-    const rows = dependencies.db
-      .prepare("SELECT id, due_at, is_completed FROM tasks WHERE title = ? ORDER BY created_at ASC")
-      .all("每日复习");
-    expect(rows).toEqual([
-      { id: created.body.id, due_at: "2026-10-20T01:30:00.000Z", is_completed: 1 },
-      expect.objectContaining({ due_at: "2026-10-26T01:30:00.000Z", is_completed: 0 })
-    ]);
+  test("unconfigured subtasks inherit project cycles and reset next period without copying", async () => {
+    currentTime=new Date("2026-10-27T04:00:00.000Z");
+    const root=await agent.post("/api/tasks").send({
+      title:"项目自动跟随",dueAt:"2026-10-27T01:30:00.000Z",repeatInterval:"daily"
+    }).expect(201);
+    const child=await agent.post("/api/tasks").send({
+      title:"子待办自动跟随",parentTaskId:root.body.id
+    }).expect(201);
+    expect(child.body.repeatInterval).toBe("none");
+    const first=await agent.post("/api/tasks/"+child.body.id+"/toggle").expect(200);
+    expect(first.body).toMatchObject({isCompleted:true,checkinCount:1,scheduledCount:1});
+    currentTime=new Date("2026-10-28T04:00:00.000Z");
+    const next=await agent.get("/api/tasks?scope=inbox").expect(200);
+    const parent=next.body.find((x:{id:string})=>x.id===root.body.id);
+    expect(parent.subtasks[0]).toMatchObject({
+      id:child.body.id,isCompleted:false,checkinCount:1,scheduledCount:2
+    });
+    expect(dependencies.db.prepare("SELECT count(*) as count FROM tasks WHERE parent_task_id=?")
+      .get(root.body.id)).toEqual({count:1});
   });
 
   test("rejects an unsupported custom recurrence rule", async () => {

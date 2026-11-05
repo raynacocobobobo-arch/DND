@@ -1,5 +1,7 @@
 # HermesTodo Web
 
+> **2026-10-26 实际服务器校正**：现有腾讯云 HermesTodo 使用 **systemd + Node.js**，不是 Docker。下面原有的 Docker 部署、备份、回滚命令是过时文档，**不要在这台服务器上执行**。应用曾因旧 Node 进程占用 3020 端口而反复重启，冲突已由服务器管理员排除。下一次更新前须先确认真实 systemd 单元名称、WorkingDirectory、ExecStart、运行用户和 SQLite 文件位置，并保留当前健康运行状态。GitHub 上的新版清单首页不等于服务器已经发布。
+
 HermesTodo 的个人云端网页版。React 前端、Node.js API 和 SQLite 使用同一个服务，电脑和 iPhone 访问同一份数据。正式入口固定为 `https://82.156.85.52:8443/`。
 
 部署边界很明确：Node 只映射到宿主机 `127.0.0.1:3020`；独立 Caddy 只监听 `8443`。不要改动、停止或重启占用 `443` 的 xray、占用 `7890` 的 mihomo，以及已有 Hermes WebUI/ACLI 配置。

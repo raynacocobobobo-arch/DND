@@ -46,6 +46,12 @@ function statefulFetch(initialTasks: Array<ReturnType<typeof task>>) {
     if (path === "/api/session") return jsonResponse({ authenticated: true });
     if (path === "/api/contexts") return jsonResponse(contexts);
     if (path.startsWith("/api/tasks") && (!init?.method || init.method === "GET")) return jsonResponse(tasks);
+    if (path === "/api/tasks/child-id/toggle" && init?.method === "POST") {
+      const child = tasks[0]?.subtasks[0];
+      if (!child) throw new Error("Missing subtask");
+      child.isCompleted = !child.isCompleted;
+      return jsonResponse(child);
+    }
     if (path === "/api/tasks/task-id" && init?.method === "PATCH") {
       Object.assign(tasks[0]!, JSON.parse(String(init.body)));
       return jsonResponse(tasks[0]);
@@ -71,7 +77,7 @@ afterEach(() => {
 });
 
 describe("task interactions", () => {
-  test("edits title, note, priority, date/time, repeat, and context", async () => {
+  test("edits title, note, date/time, repeat, and context without changing legacy priority", async () => {
     window.history.replaceState({}, "", "/contexts/travel-id");
     const { fetchMock } = statefulFetch([task()]);
     vi.stubGlobal("fetch", fetchMock);
@@ -86,8 +92,8 @@ describe("task interactions", () => {
     const notes = screen.getByLabelText("备注");
     await user.clear(notes);
     await user.type(notes, "核对登机口和时间");
-    await user.selectOptions(screen.getByLabelText("优先级"), "high");
-    await user.selectOptions(screen.getByLabelText("所属情境"), "work-id");
+    expect(screen.queryByLabelText("优先级")).not.toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText("任务归属"), "work-id");
     await user.clear(screen.getByLabelText("截止日期"));
     await user.type(screen.getByLabelText("截止日期"), "2026-11-03");
     await user.clear(screen.getByLabelText("截止时间"));
@@ -101,11 +107,11 @@ describe("task interactions", () => {
       expect(body).toMatchObject({
         title: "确认返程航班",
         notes: "核对登机口和时间",
-        priority: "high",
         contextId: "work-id",
         repeatInterval: "weekly"
       });
       expect(body.dueAt).toBe("2026-11-03T06:20:00.000Z");
+      expect(body.priority).toBeUndefined();
     });
   });
 
@@ -147,7 +153,23 @@ describe("task interactions", () => {
     await waitFor(() => expect(fetchMock.mock.calls.some(([path, init]) => path === "/api/tasks/task-id" && init?.method === "DELETE")).toBe(true));
   });
 
-  test("supports search, all three sort modes, and a completed section", async () => {
+  test("lets users complete and reopen a subtask in task details", async () => {
+    window.history.replaceState({}, "", "/contexts/travel-id");
+    const subtask = task({ id: "child-id", title: "下载登机牌", parentTaskId: "task-id", dueAt: null, contextId: null });
+    const { fetchMock } = statefulFetch([task({ subtasks: [subtask] })]);
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(await screen.findByRole("button", { name: "确认航班" }));
+    await user.click(screen.getByRole("button", { name: "完成子任务 下载登机牌" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "重新打开子任务 下载登机牌" })).toBeInTheDocument());
+    await user.click(screen.getByRole("button", { name: "重新打开子任务 下载登机牌" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "完成子任务 下载登机牌" })).toBeInTheDocument());
+    expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/tasks/child-id/toggle" && init?.method === "POST")).toHaveLength(2);
+  });
+
+  test("supports search, simple date/newest sorting, and a completed section", async () => {
     window.history.replaceState({}, "", "/contexts/travel-id");
     const done = task({ id: "done-id", title: "预订酒店", isCompleted: true, completedAt: stamp });
     const { fetchMock } = statefulFetch([task(), done]);
@@ -156,7 +178,7 @@ describe("task interactions", () => {
     render(<App />);
 
     const sort = await screen.findByLabelText("任务排序");
-    expect(Array.from((sort as HTMLSelectElement).options).map((option) => option.value)).toEqual(["priority", "dueDate", "createdAt"]);
+    expect(Array.from((sort as HTMLSelectElement).options).map((option) => option.value)).toEqual(["createdAt", "dueDate"]);
     await user.selectOptions(sort, "dueDate");
     await waitFor(() => expect(fetchMock.mock.calls.some(([path]) => String(path).includes("sort=dueDate"))).toBe(true));
     await user.type(screen.getByLabelText("搜索任务"), "航班");

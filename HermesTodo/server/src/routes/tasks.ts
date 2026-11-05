@@ -22,6 +22,7 @@ const updateSchema = createSchema.omit({ parentTaskId: true }).partial();
 const listSchema = z.object({
   search: z.string().max(200).optional(),
   contextId: z.string().min(1).optional(),
+  scope: z.enum(["inbox"]).optional(),
   sort: z.enum(["priority", "dueDate", "createdAt"]).default("priority")
 });
 
@@ -35,12 +36,12 @@ function invalidRelation(error: unknown): boolean {
 
 export function createTasksRouter(dependencies: AppDependencies): Router {
   const router = Router();
-  const repository = createTaskRepository(dependencies.db);
   const now = () => (dependencies.now ?? (() => new Date()))();
+  const repository = createTaskRepository(dependencies.db,now);
 
   router.get("/", (request, response) => {
     const parsed = listSchema.safeParse(request.query);
-    if (!parsed.success) {
+    if (!parsed.success || (parsed.data.scope === "inbox" && parsed.data.contextId)) {
       response.status(400).json({ error: { code: "INVALID_REQUEST", message: "筛选条件无效" } });
       return;
     }

@@ -1,12 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowUpCircle, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { HeraldicIcon } from "../components/HeraldicIcon";
 import { useState, type FormEvent } from "react";
 
 import type { AIPlanResult, AISuggestion } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
 import { AIConversation, type ConversationTurn } from "../components/AIConversation";
 import { AISuggestionList } from "../components/AISuggestionList";
+import { HeraldicDivider } from "../components/HeraldicArt";
+import { AILogo } from "../components/AILogo";
 import { ImportListDialog } from "../components/ImportListDialog";
+import { DataExchangeDialog } from "../components/DataExchangeDialog";
 
 function suggestionKey(title: string): string {
   return title.normalize("NFKC").toLocaleLowerCase("zh-CN").replace(/[\p{P}\p{S}\s]+/gu, "");
@@ -21,6 +24,7 @@ export function AIPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [exchangeOpen, setExchangeOpen] = useState(false);
   const [commitMessage, setCommitMessage] = useState("");
 
   function applyResult(result: AIPlanResult) {
@@ -66,7 +70,7 @@ export function AIPage() {
 
   async function importList(raw: string, contextHint: string) {
     setLoading(true);
-    setMessages((current) => [...current, { role: "user", content: `导入清单：${contextHint || "未命名情境"}` }]);
+    setMessages((current) => [...current, { role: "user", content: `导入清单：${contextHint || "未命名清单"}` }]);
     try {
       const result = await apiRequest<AIPlanResult>("/api/ai/import-list", {
         method: "POST",
@@ -109,11 +113,12 @@ export function AIPage() {
   return (
     <section className="page-stack ai-page">
       <header className="ios-page-header">
-        <Sparkles className="ai-title-icon" aria-hidden="true" size={19} />
+        <AILogo className="ai-title-logo" size={32}/>
         <h1>AI 规划器</h1>
-        <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" onClick={() => setImportOpen(true)}><Upload aria-hidden="true" size={18} /></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><RotateCcw aria-hidden="true" size={18} /></button></div>
+        <div className="header-actions"><button type="button" className="icon-button" aria-label="导入长清单" title="DeepSeek 导入清单" onClick={() => setImportOpen(true)}><HeraldicIcon name="upload" size={22}/></button><button type="button" className="icon-button" aria-label="ChatGPT / AI 清单交换" title="ChatGPT / AI 清单交换" onClick={() => setExchangeOpen(true)}><HeraldicIcon name="copy" size={22}/></button><button type="button" className="icon-button" aria-label="清空对话" disabled={!messages.length && !suggestions.length} onClick={clearConversation}><HeraldicIcon name="reset" size={22}/></button></div>
       </header>
       <section className="ai-workspace">
+        {messages.length === 0 ? <HeraldicDivider className="ai-ornament"/> : null}
         <AIConversation messages={messages} options={options} loading={loading} onOption={(option) => void send(option)} />
         <AISuggestionList suggestions={suggestions} />
         {commitMessage ? <p className="success-message" role="status">{commitMessage}</p> : null}
@@ -121,10 +126,16 @@ export function AIPage() {
         <form className="ai-composer" onSubmit={submit}>
           <label className="sr-only" htmlFor="ai-input">告诉 AI 你的目标</label>
           <textarea id="ai-input" value={input} onChange={(event) => setInput(event.target.value)} disabled={loading} rows={1} placeholder="我想完成什么？" />
-          <button type="submit" aria-label={loading ? "规划中…" : "发送"} disabled={loading || !input.trim()}><ArrowUpCircle aria-hidden="true" size={27} /></button>
+          <button type="submit" aria-label={loading ? "规划中…" : "发送"} disabled={loading || !input.trim()}><HeraldicIcon name="send" size={27}/></button>
         </form>
       </section>
       {importOpen ? <ImportListDialog loading={loading} onCancel={() => setImportOpen(false)} onImport={(raw, contextHint) => void importList(raw, contextHint)} /> : null}
+      {exchangeOpen ? <DataExchangeDialog onClose={() => setExchangeOpen(false)} onImported={() => {
+        void Promise.all([
+          queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+          queryClient.invalidateQueries({ queryKey: ["contexts"] })
+        ]);
+      }} /> : null}
     </section>
   );
 }

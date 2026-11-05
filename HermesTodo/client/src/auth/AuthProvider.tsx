@@ -5,7 +5,11 @@ import { apiRequest } from "../api/client";
 interface AuthContextValue {
   authenticated: boolean;
   loading: boolean;
-  login(password: string): Promise<void>;
+  login(password: string, email?: string): Promise<void>;
+  signup(email: string, password: string): Promise<boolean>;
+  sendMagicLink(email: string): Promise<void>;
+  acceptMagicLink(link: string): Promise<void>;
+  recoverRedirect(redirectedUrl: string): Promise<void>;
   logout(): Promise<void>;
 }
 
@@ -36,10 +40,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       authenticated,
       loading,
-      async login(password: string) {
+      async login(password: string, email?: string) {
         await apiRequest<{ authenticated: true }>("/api/auth/login", {
           method: "POST",
-          body: JSON.stringify({ password })
+          body: JSON.stringify({ password, email })
+        });
+        setAuthenticated(true);
+      },
+      async signup(email: string, password: string) {
+        const result = await apiRequest<{ authenticated: boolean; confirmationRequired: boolean }>("/api/auth/signup", {
+          method: "POST", body: JSON.stringify({ email, password })
+        });
+        if (result.authenticated) setAuthenticated(true);
+        return result.confirmationRequired;
+      },
+      async sendMagicLink(email: string) {
+        await apiRequest<{ sent: true }>("/api/auth/magic-send", {
+          method: "POST", body: JSON.stringify({ email })
+        });
+      },
+      async acceptMagicLink(link: string) {
+        await apiRequest<{ authenticated: true }>("/api/auth/magic-accept", {
+          method: "POST", body: JSON.stringify({ link })
+        });
+        setAuthenticated(true);
+      },
+      async recoverRedirect(redirectedUrl: string) {
+        await apiRequest<{ authenticated: true }>("/api/auth/recover-redirect", {
+          method: "POST", body: JSON.stringify({ redirectedUrl })
         });
         setAuthenticated(true);
       },

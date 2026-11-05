@@ -55,6 +55,19 @@ const migrations: Migration[] = [
         value TEXT NOT NULL
       );
     `
+  },
+  {
+    version: 2,
+    sql: `
+      CREATE TABLE IF NOT EXISTS task_checkins (
+        id TEXT PRIMARY KEY,
+        task_id TEXT NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+        cycle_at TEXT NOT NULL,
+        completed_at TEXT NOT NULL,
+        UNIQUE (task_id, cycle_at)
+      );
+      CREATE INDEX IF NOT EXISTS task_checkins_task_cycle_idx ON task_checkins (task_id, cycle_at);
+    `
   }
 ];
 

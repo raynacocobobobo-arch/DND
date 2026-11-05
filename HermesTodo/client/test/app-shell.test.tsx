@@ -40,9 +40,23 @@ describe("responsive authenticated shell", () => {
     const navigation = await screen.findByRole("navigation", { name: "主导航" });
     expect(navigation).toBeInTheDocument();
     expect(navigation).toHaveClass("floating-tab-bar");
-    expect(screen.getByRole("link", { name: "首页" })).not.toHaveAttribute("aria-current");
-    expect(screen.getByRole("link", { name: "情境" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "场景" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "待办清单" })).not.toHaveAttribute("aria-current");
     expect(screen.getByRole("link", { name: "AI" })).not.toHaveAttribute("aria-current");
+  });
+
+  test("resets the previous page scroll before showing another tab", async () => {
+    window.history.replaceState({}, "", "/contexts/example-id");
+    vi.stubGlobal("fetch", authenticatedFetch());
+    const user = userEvent.setup();
+    render(<App />);
+    const inbox = await screen.findByRole("link", { name: "待办清单" });
+    document.documentElement.scrollTop = 360;
+    document.body.scrollTop = 360;
+    await user.click(inbox);
+    await waitFor(() => expect(window.location.pathname).toBe("/inbox"));
+    expect(document.documentElement.scrollTop).toBe(0);
+    expect(document.body.scrollTop).toBe(0);
   });
 
   test("provides a keyboard skip link and a focusable main target", async () => {
@@ -79,8 +93,8 @@ describe("responsive authenticated shell", () => {
     vi.stubGlobal("fetch", authenticatedFetch());
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "首页" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /我的场景/ })).toBeInTheDocument();
     await waitFor(() => expect(window.location.pathname).toBe("/"));
-    expect(screen.getByRole("link", { name: "首页" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "场景" })).toHaveAttribute("aria-current", "page");
   });
 });

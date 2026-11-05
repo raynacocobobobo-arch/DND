@@ -1,0 +1,231 @@
+/* HermesTodo / pictorial art direction
+   The painting is an independent, locally served WebP; controls remain real HTML.
+   Subject and ribbon movement establish visual hierarchy.  Graphic ornament is subordinate. */
+:root {
+  --art-ink: #101d25;
+  --art-night: #111c23;
+  --art-parchment: #f2eadd;
+  --art-gold: #c5a36d;
+  --art-red: #8d3431;
+}
+body {
+  background: #111d25;
+}
+.hermes-main-frame {
+  background:
+    radial-gradient(ellipse at 79% -18%, #33425142 0, transparent 51%),
+    linear-gradient(180deg, #14232c 0, #111e26 60%, #17252e 100%);
+}
+.hermes-sidebar {
+  background: linear-gradient(180deg, #0e1b23, #101b24 55%, #181e22);
+}
+.hermes-brand { gap:8px; margin-top:33px; }
+.brand-name { font: 25px/1.1 Georgia, "Times New Roman", serif; letter-spacing:.015em; }
+.brand-subtitle { color:#a89a80; }
+.sidebar-art {
+  flex:1; min-height:170px; margin:18px 12px 0;
+  border-top:1px solid #b89c654f;
+  border-bottom:1px solid #b89c6547;
+  mask-image:linear-gradient(180deg, transparent 0%,black 17%,black 85%,transparent);
+  background:
+    linear-gradient(0deg,#131c24 2%,transparent 70%),
+    linear-gradient(90deg,#101a238f,#101a2322),
+    url('/art/hero-standard-bearer.webp') 92% center / auto 100% no-repeat;
+}
+.sidebar-art-sigil {
+  display:block; position:absolute; bottom:21px; left:0; right:0;
+  color:#e6ce9b; opacity:.82; text-align:center;
+  font:9px Georgia,serif; letter-spacing:.33em;
+}
+.sidebar-motto { padding-top:16px; }
+.sidebar-motto p { margin-top:13px; }
+.hermes-sidebar .nav-link { font-size:14px; }
+.app-content { padding-top:13px; }
+.app-utility-row { margin-bottom:11px; }
+
+.dashboard-hero {
+  min-height:322px;
+  border:1px solid #c1a37375;
+  border-radius:6px;
+  background:#162632;
+  box-shadow:0 19px 42px #02091147;
+}
+.dashboard-hero::before {
+  inset:13px;
+  border:1px solid #ebc98c6d;
+  border-radius:2px;
+  z-index:3;
+}
+.dashboard-hero::after {
+  content:""; position:absolute; z-index:1; inset:0; pointer-events:none;
+  background:
+    linear-gradient(90deg, #0c1b2806 0%, #0d1b280d 26%, #0d1a26c9 62%, #0c1a25e8 100%),
+    linear-gradient(0deg,#0b17255b,transparent 30%,transparent 86%,#0b17252b);
+}
+.dashboard-hero-art {
+  position:absolute; width:100%; height:100%; inset:0;
+  object-fit:cover; object-position:43% 39%;
+  opacity:1; filter:saturate(.9) contrast(1.02);
+}
+.hero-content {
+  min-height:322px; width:51%; margin-left:auto;
+  padding:33px clamp(27px,4.3vw,59px) 32px 26px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.dashboard-hero .ios-page-header {
+  display:flex; flex-wrap:wrap; justify-content:flex-start; gap:13px;
+}
+.hero-overline { color:#f1d69e; letter-spacing:.22em; }
+.dashboard-hero .ios-page-header h1 {
+  font:11px/1.3 "PingFang SC",sans-serif; opacity:.75;
+}
+.dashboard-hero .page-date { display:none; }
+.dashboard-greeting { padding:19px 0 0; }
+.dashboard-greeting h2 {
+  color:#fff4dc; font:500 clamp(40px,4.3vw,61px)/1.13 "Songti SC","Noto Serif CJK SC",serif;
+  text-shadow:0 2px 18px #0c111c;
+  letter-spacing:.085em;
+}
+.dashboard-greeting p {
+  color:#eadfce; font-size:15px; line-height:1.8; letter-spacing:.09em;
+}
+.hero-divider { margin-top:24px; color:#ddad69; }
+.hero-divider > span { width:56px; }
+
+/* Editorial content surfaces: move away from ornate faux-game panels */
+.parchment-panel,.summary-card,.progress-card,.context-card {
+  background:#f2e9da;
+  border:1px solid #d0bfa3;
+  border-radius:6px;
+  box-shadow:0 8px 20px #030b151c;
+}
+.parchment-panel::before,
+.summary-card::before,
+.progress-card::before { display:none; }
+.summary-grid { gap:14px; }
+.summary-card { min-height:100px; padding:18px 20px 17px 72px; }
+.summary-card::after {
+  content:""; position:absolute; left:18px; right:18px; bottom:0;
+  height:2px; background:linear-gradient(90deg,#ab874ea1,transparent);
+  opacity:.45;
+}
+.summary-symbol {
+  left:16px; top:24px; background:#e8dbc4;
+  border:1px solid #d3ba90;
+}
+.summary-card strong { color:#7f3230; }
+.summary-card > span:not(.summary-symbol) { color:#746757; font-size:13px; }
+.dashboard-layout { gap:17px; }
+.dashboard-task-board { padding:27px 29px 25px; }
+.board-eyebrow svg, .contexts-entry-section h2 svg, .progress-ornament { color:#a68a5c; }
+.board-heading { border-color:#d5c7b2; }
+.board-heading h2 { letter-spacing:.035em; }
+.dashboard-quick-add .quick-add {
+  border:1px solid #d1c0a6; background:#fff9ee;
+  box-shadow:0 2px 7px #6651350d;
+}
+.dashboard-task-board .task-row {
+  padding:16px 8px; min-height:67px;
+  border-color:#dbd2c1;
+}
+.dashboard-task-board .task-row:hover { background:#e7dfd082; }
+.dashboard-task-board .task-title-button { font-weight:550; }
+.priority-badge { font-weight:500; }
+.dashboard-overdue .task-row { border-left-color:#a84a42; background:#f0dfd7a1; }
+.progress-card { min-height:157px; }
+.contexts-entry-section { background:#f2e9da; }
+.context-entry {
+  border-color:#2f404d;
+  background:#1b303c; box-shadow:none;
+}
+.context-entry:hover { background:#2b414c; }
+.ai-teaser {
+  box-shadow:none; border-color:#907345;
+  background:linear-gradient(105deg,#192731,#101b25);
+}
+.ai-teaser::after { opacity:.5; }
+.ai-teaser:hover { background:linear-gradient(105deg,#2a3942,#18242e); }
+
+/* Distinct supporting page banners with the flag-and-tower portion of the mural;
+   portraits are not stamped repeatedly on task cards. */
+.contexts-page > .ios-page-header,
+.context-detail-page > .ios-page-header,
+.ai-page > .ios-page-header {
+  background:
+    linear-gradient(90deg,#13232cf4 10%,#152731c9 52%,#15242db5),
+    url('/art/hero-standard-bearer.webp') 85% 42% / cover no-repeat;
+  border-color:#ae875d87;
+  box-shadow:0 10px 24px #02091225;
+}
+.context-card::after { display:none; }
+.context-card { background:#f2e9da; }
+.context-icon { background:#e4d6bf; }
+.context-detail-page .task-section,.ai-workspace {
+  background:#f4ebdc; border-color:#c9b79b;
+}
+.ai-workspace { box-shadow:inset 0 0 0 4px #fdf5e6,0 8px 21px #030b1521; }
+.form-dialog,.confirm-dialog {
+  background:#f2e9da; border-color:#c2ae8a; box-shadow:0 24px 70px #0006;
+}
+.form-dialog::before,.confirm-dialog::before { display:none; }
+.login-page {
+  justify-content:flex-end;
+  background:linear-gradient(115deg,#13222b,#0c1a23);
+}
+.login-page::after {
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent 0%,#0d1b25ad 54%,#101c26ed 100%);
+}
+.login-scene {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:30% 37%;
+  opacity:.84;
+}
+.login-card { position:relative;z-index:2;margin-right:clamp(12px,5.5vw,100px); }
+
+/* Tablet uses the painting as a background with the subject to the left of real text. */
+@media (max-width: 1200px) and (min-width:761px) {
+  .dashboard-hero { min-height:286px; }
+  .hero-content { min-height:286px; width:55%; }
+  .dashboard-greeting h2 { font-size:46px; }
+}
+@media (max-width: 980px) and (min-width:761px) {
+  .hero-content { width:57%;padding-right:24px; }
+  .dashboard-hero::after { background:linear-gradient(90deg,transparent 2%,#101e2954 32%,#0e1b28d7 59%,#0c1a25ee 100%); }
+  .hero-overline { font-size:9px; }
+  .dashboard-greeting h2 { font-size:38px; }
+}
+/* Mobile crops toward the protagonist; live HTML moves to the lower third,
+   away from face and halo. */
+@media (max-width: 760px) {
+  .dashboard-hero { min-height:365px; }
+  .dashboard-hero-art { object-fit:cover; object-position:30% 41%; }
+  .dashboard-hero::after {
+    background:linear-gradient(180deg,#101b2510 0%,#0d1a252b 35%,#0b1726b5 65%,#07111bf2 100%);
+  }
+  .dashboard-hero::before { inset:9px; }
+  .hero-content {
+    display:flex; flex-direction:column; justify-content:flex-end;
+    width:100%; min-height:365px; margin:0; padding:21px 23px 30px;
+  }
+  .dashboard-hero .ios-page-header { gap:10px; }
+  .hero-overline { font-size:9px; }
+  .dashboard-hero .page-date { display:none; }
+  .dashboard-greeting { padding-top:10px; }
+  .dashboard-greeting h2 { font-size:38px; }
+  .dashboard-greeting p { font-size:13px; margin-top:7px; }
+  .hero-divider { margin-top:14px; }
+  .summary-card { min-height:100px; padding:12px 9px; }
+  .summary-symbol { position:static; margin-bottom:0; }
+  .dashboard-task-board { padding:21px 17px; }
+  .login-page { justify-content:center; }
+  .login-scene { object-position:39% center; opacity:.66; }
+  .login-page::after { background:#09172382; }
+  .login-card { margin-right:0; }
+}
+@media (max-width:390px) {
+  .dashboard-hero { min-height:343px; }
+  .hero-content { min-height:343px; padding:16px 20px 27px; }
+  .dashboard-greeting h2 { font-size:34px; }
+  .dashboard-hero-art { object-position:29% 40%; }
+}
