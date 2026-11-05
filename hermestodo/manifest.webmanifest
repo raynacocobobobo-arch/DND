@@ -3,7 +3,7 @@
   "short_name": "Hermes To Do",
   "description": "你的个人情境待办与 AI 任务规划器",
   "lang": "zh-CN",
-  "start_url": "./",
+  "start_url": "./?app=standalone",
   "scope": "./",
   "display": "standalone",
   "background_color": "#F7F1E7",
