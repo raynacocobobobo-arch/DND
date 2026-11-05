@@ -10,21 +10,21 @@ describe("PWA package", () => {
   test("declares standalone root metadata and both required icons", () => {
     const manifest = JSON.parse(readFileSync(resolve(clientRoot, "public/manifest.webmanifest"), "utf8"));
     expect(manifest).toMatchObject({
-      name: "HermesTodo",
-      short_name: "HermesTodo",
-      start_url: "/",
-      scope: "/",
+      name: "Hermes To Do",
+      short_name: "Hermes To Do",
+      start_url: "./?app=standalone",
+      scope: "./",
       display: "standalone",
       background_color: "#F7F1E7",
       theme_color: "#F7F1E7"
     });
     expect(manifest.icons).toEqual(expect.arrayContaining([
-      expect.objectContaining({ src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }),
-      expect.objectContaining({ src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" })
+      expect.objectContaining({ src: "./icons/icon-192.png", sizes: "192x192", type: "image/png" }),
+      expect.objectContaining({ src: "./icons/icon-512.png", sizes: "512x512", type: "image/png" })
     ]));
     const html = readFileSync(resolve(clientRoot, "index.html"), "utf8");
-    expect(html).toContain('rel="manifest" href="/manifest.webmanifest"');
-    expect(html).toContain('rel="apple-touch-icon" href="/icons/icon-192.png"');
+    expect(html).toContain('rel="manifest" href="./manifest.webmanifest"');
+    expect(html).toContain('rel="apple-touch-icon" href="./icons/icon-192.png"');
   });
 
   test.each([
