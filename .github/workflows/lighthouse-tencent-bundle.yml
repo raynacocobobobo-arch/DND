@@ -1,0 +1,61 @@
+name: Package Lighthouse Camp for Tencent Cloud
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'scripts/build_lighthouse_tencent_bundle.py'
+      - '.github/workflows/lighthouse-tencent-bundle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lighthouse-camp-tencent-package
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser engine files to bundle (local Three.js r160)
+        run: |
+          mkdir -p /tmp/lighthouse-web-deps
+          npm --prefix /tmp/lighthouse-web-deps install --no-save --no-audit --no-fund three@0.160.1
+      - name: Build and verify independent campsite ZIP
+        run: |
+          python scripts/build_lighthouse_tencent_bundle.py
+          unzip -t dist/lighthouse-camp-tencent-lean-20261105.zip | tail -n 2
+          ls -lh dist/lighthouse-camp-tencent-lean-20261105.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-camp-tencent-lean-20261105
+          path: dist/lighthouse-camp-tencent-lean-20261105.zip
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - name: Publish public standalone deployment ZIP
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="lighthouse-camp-tencent-lean-20261105"
+          FILE="dist/lighthouse-camp-tencent-lean-20261105.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --clobber
+          else
+            gh release create "$TAG" "$FILE" \
+              --target gh-pages \
+              --title "灯塔营地 · 腾讯云精简部署包 (2026-11-05)" \
+              --notes "V35a 独立静态网页；采用上传的新白底 Low Poly 灯塔 Logo；保留昼夜、海盗船、触手与原背景音乐。只含运行时需要的文件并内置 Three.js，不包含地图编辑器或历史版本。ZIP 含 Nginx 配置示例与 SHA-256 校验。"
+          fi
+          gh release view "$TAG" --json url,assets
