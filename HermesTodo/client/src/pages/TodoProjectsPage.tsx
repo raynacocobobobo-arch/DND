@@ -105,7 +105,7 @@ export function TodoProjectsPage() {
                         </span>
                         {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
                       </Link>
-                      <Link className="tp-project-arrow" to={"/inbox/" + encodeURIComponent(task.id)} aria-label={"打开项目 " + task.title}>›</Link>
+                      <span className="tp-project-arrow" aria-hidden="true">›</span>
                     </div>
                   </li>
                 );
