@@ -334,3 +334,134 @@
   .scene-home .list-card-actions .list-text-action{height:29px;padding:0 8px;font-size:11px}
   .list-order-help{font-size:10px}
 }
+
+
+/* Compact scene-card actions: routine edit/reorder stay visible; destructive
+   and infrequent commands live behind one intentionally quiet disclosure. */
+.scene-home .list-card-actions{
+  position:relative;
+  flex-wrap:nowrap;
+  gap:6px;
+  align-items:center;
+}
+.scene-home .list-card-actions .list-text-action{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  min-height:34px;
+  height:34px;
+  white-space:nowrap;
+}
+.scene-home .list-card-more{
+  position:relative;
+  flex:0 0 auto;
+  margin-left:auto;
+}
+.scene-home .list-card-actions .list-more-trigger{
+  padding-inline:9px;
+  color:#665542;
+}
+.list-card.list-card-menu-open,
+.list-card:focus-within{z-index:15}
+.scene-home .list-card-menu{
+  position:absolute;
+  z-index:30;
+  right:0;
+  bottom:calc(100% + 7px);
+  display:grid;
+  width:max-content;
+  min-width:159px;
+  max-width:min(228px,80vw);
+  gap:3px;
+  padding:5px;
+  border:1px solid #b99d71;
+  border-radius:3px;
+  background:#fcf5e9;
+  box-shadow:0 10px 27px #201b1d42;
+}
+.scene-home .list-card-actions .list-card-menu button{
+  display:block;
+  width:100%;
+  height:auto;
+  min-height:39px;
+  padding:8px 12px;
+  border:0;
+  border-radius:2px;
+  background:transparent;
+  color:#4e483d;
+  text-align:left;
+  font:500 13px/1.4 "PingFang SC","Noto Sans CJK SC",sans-serif;
+  cursor:pointer;
+}
+.scene-home .list-card-actions .list-card-menu button:hover,
+.scene-home .list-card-actions .list-card-menu button:focus-visible{
+  background:#efe1c9;
+}
+.scene-home .list-card-actions .list-card-menu button:disabled{
+  color:#a6a099;
+  opacity:.6;
+  cursor:not-allowed;
+}
+.scene-home .list-card-actions .list-card-menu .list-menu-danger{
+  border-top:1px solid #e0cbb4;
+  border-radius:0;
+  color:#8a3d35;
+}
+@media(max-width:760px){
+  /* Keep the approved 16:9 painting entirely visible. Compress only the copy
+     underneath it, so the actual directory appears sooner on mobile. */
+  .lists-page .scene-home-hero-copy{
+    padding:9px 15px 11px;
+  }
+  .lists-page .scene-home-hero p{
+    display:none;
+  }
+  .lists-page .scene-home-hero h1{
+    margin:4px 0 3px;
+    font-size:28px;
+    line-height:1.18;
+  }
+  .lists-page .scene-home-stats{
+    gap:13px;
+    margin-top:4px;
+    padding-top:5px;
+    font-size:10px;
+    line-height:1.2;
+  }
+  .lists-page .scene-home-stats strong{
+    font-size:16px;
+    margin-right:3px;
+  }
+  .lists-page .scene-home-inbox{
+    left:auto;
+    right:14px;
+    bottom:32px;
+    min-height:31px;
+    padding:0 9px;
+  }
+  .scene-home .list-card-actions{
+    padding:0 9px 11px;
+    gap:4px;
+  }
+  .scene-home .list-card-actions .list-text-action{
+    height:32px;
+    min-height:32px;
+    padding:0 7px;
+    font-size:11px;
+  }
+  .scene-home .list-card-actions .list-more-trigger{
+    padding-inline:6px;
+    gap:3px;
+  }
+  .scene-home .list-card-actions .list-more-trigger svg{
+    width:15px;
+    height:15px;
+  }
+}
+@media(max-width:355px){
+  .lists-page .scene-home-stats{gap:8px}
+  .lists-page .scene-home-inbox{right:10px;padding-inline:7px}
+  .scene-home .list-card-actions{padding-inline:6px;gap:3px}
+  .scene-home .list-card-actions .list-text-action{padding-inline:5px;font-size:10px}
+}
