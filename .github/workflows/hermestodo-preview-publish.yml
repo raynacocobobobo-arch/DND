@@ -60,7 +60,7 @@ jobs:
               wait=WebDriverWait(browser,25)
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home')))
               assert '演示模式 · 任务仅保存在本浏览器' in browser.find_element(By.TAG_NAME,'body').text
-              assert '我的清单' in browser.find_element(By.TAG_NAME,'body').text
+              assert '我的场景' in browser.find_element(By.TAG_NAME,'body').text
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.scene-home-grid .context-card')))
               assert browser.find_element(By.CSS_SELECTOR,'.scene-home-hero').is_displayed()
               crest=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .context-card .medieval-crest')
@@ -108,22 +108,31 @@ jobs:
               wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
               assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
 
-              # Timeline includes all tasks, preserves completed history and opens the editor.
+              # The to-do section is independent of Scenes and uses project -> checklist navigation.
               browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ht-timeline')))
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ht-record-title')))
-              assert '待办记录时间线' in browser.find_element(By.TAG_NAME,'body').text
-              assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
-              assert '检查 HermesTodo 新版交互' in browser.find_element(By.TAG_NAME,'body').text
-              browser.find_element(By.CSS_SELECTOR,'.ht-record-title').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
-              browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
-              browser.find_element(By.CSS_SELECTOR,'.ht-counts button').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-project-link')))
+              body=browser.find_element(By.TAG_NAME,'body').text
+              assert '待办清单' in body
+              assert '记下一个临时想法' in body
+              assert '检查 HermesTodo 新版交互' not in body
+              assert browser.find_element(By.CSS_SELECTOR,'.tp-switch button[aria-pressed="true"]').text == '未完成的'
+              browser.find_element(By.CSS_SELECTOR,'.tp-project-link').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-detail')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-add-child input')))
+              field=browser.find_element(By.CSS_SELECTOR,'.tp-add-child input')
+              field.send_keys('验证项目子待办')
+              browser.find_element(By.CSS_SELECTOR,'.tp-add-child button').click()
+              wait.until(lambda b: '验证项目子待办' in b.find_element(By.TAG_NAME,'body').text)
+              assert browser.find_element(By.CSS_SELECTOR,'.tp-workspace .tp-switch').is_displayed()
+              browser.find_element(By.CSS_SELECTOR,'.tp-back').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page')))
+              browser.find_element(By.CSS_SELECTOR,'.tp-primary-action').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-form')))
               field=browser.find_element(By.CSS_SELECTOR,'.task-form input[maxlength="200"]')
-              field.send_keys('浏览器交互验收任务')
+              field.send_keys('浏览器交互验收大项目')
               browser.find_element(By.CSS_SELECTOR,'.task-form button[type="submit"]').click()
-              wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
+              wait.until(lambda b: '浏览器交互验收大项目' in b.find_element(By.TAG_NAME,'body').text)
               browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
 
@@ -161,7 +170,7 @@ jobs:
               browser.save_screenshot('/tmp/hermestodo-cloud-login.png')
               browser.execute_script("localStorage.removeItem('hermestodo-supabase-public-v1')")
               print('CLOUD LOGIN BOOT PASSED: fixed single-user password screen renders normally',flush=True)
-              print('BROWSER SMOKE PASSED: list hierarchy, scene details, inbox tasks, AI, mobile',flush=True)
+              print('BROWSER SMOKE PASSED: scenes, independent project checklist, AI, mobile',flush=True)
           finally:
               try: print('VISIBLE URL',browser.current_url,flush=True)
               except Exception: pass
