@@ -1,4 +1,5 @@
 import { repeatProgress, type Checkin } from "../cloud/checkins";
+import { DEFAULT_SCENE_COLOR } from "../sceneAppearance";
 /**
  * Standalone, browser-only API for the public HermesTodo preview.
  * Does not call the production API or handle real credentials.
@@ -31,12 +32,12 @@ const today = shanghaiDate();
 const due = (offset: number) => new Date(`${today}T09:00:00+08:00`).getTime() + offset * 86400000;
 const isoDue = (offset: number) => new Date(due(offset)).toISOString();
 const demoLists: ListItem[] = [
-  { id: "travel-list", name: "出国旅行", icon: "compass", color: "#8CAABA", sortOrder: 0, createdAt: nowISO(), updatedAt: nowISO() }
+  { id: "travel-list", name: "出国旅行", icon: "compass", color: DEFAULT_SCENE_COLOR, sortOrder: 0, createdAt: nowISO(), updatedAt: nowISO() }
 ];
 const demoContexts: ContextItem[] = [
-  { id: "work", name: "工作项目", icon: "briefcase", color: "#8CAABA", sortOrder: 0, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
-  { id: "life", name: "个人生活", icon: "house", color: "#9AB898", sortOrder: 1, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
-  { id: "creative", name: "创作灵感", icon: "book-open", color: "#C0A8C8", sortOrder: 2, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() }
+  { id: "work", name: "工作项目", icon: "briefcase", color: DEFAULT_SCENE_COLOR, sortOrder: 0, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
+  { id: "life", name: "个人生活", icon: "house", color: DEFAULT_SCENE_COLOR, sortOrder: 1, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() },
+  { id: "creative", name: "创作灵感", icon: "book-open", color: DEFAULT_SCENE_COLOR, sortOrder: 2, listId: "travel-list", createdAt: nowISO(), updatedAt: nowISO() }
 ];
 const makeTask = (title: string, contextId: string | null, dueAt: string | null, priority: TaskItem["priority"] = "medium"): TaskItem => ({
   id: id(), title, notes: "", priority, dueAt, isCompleted: false, completedAt: null,
@@ -167,7 +168,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   if (path === "/api/lists" && method === "POST") {
     const name=String(data.name ?? "").trim();
     if(!name) return error("请输入清单名称");
-    const item: ListItem = { id:id(), name, icon:String(data.icon||"compass"), color:String(data.color||"#8CAABA"),
+    const item: ListItem = { id:id(), name, icon:String(data.icon||"compass"), color:String(data.color||DEFAULT_SCENE_COLOR),
       sortOrder:store.lists.length, createdAt:nowISO(), updatedAt:nowISO() };
     store.lists.push(item); persist();
     return reply({ ...item, sceneCount:0, taskCount:0, incompleteCount:0 },201);
@@ -224,7 +225,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     if (!String(data.name ?? "").trim()) return error("请输入情境名称");
     const listId=String(data.listId || store.lists[0]?.id || "");
     const item: ContextItem = { id: id(), name: data.name.trim(), icon: data.icon || "folder",
-      color: data.color || "#8CAABA", sortOrder: store.contexts.filter(x=>x.listId===listId).length,
+      color: data.color || DEFAULT_SCENE_COLOR, sortOrder: store.contexts.filter(x=>x.listId===listId).length,
       listId: listId || null, createdAt: nowISO(), updatedAt: nowISO() };
     store.contexts.push(item); persist(); return reply({ ...item, incompleteCount: 0 }, 201);
   }
@@ -311,7 +312,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
       let context = store.contexts.find(x => x.name === item.context);
       if (!context) {
         context = { id: id(), name: String(item.context || "AI 任务").slice(0, 40),
-          icon: "folder", color: "#8CAABA", sortOrder: store.contexts.length,
+          icon: "folder", color: DEFAULT_SCENE_COLOR, sortOrder: store.contexts.length,
           listId: store.lists[0]?.id ?? null, createdAt: nowISO(), updatedAt: nowISO() };
         store.contexts.push(context);
       }
