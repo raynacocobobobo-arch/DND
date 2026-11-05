@@ -513,3 +513,89 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
  .tp-repeat-reference-head{padding:16px 8px 12px}
  .tp-repeat-reference-head p{font-size:14px}
 }
+
+
+/* Hermes minimal activity rail — inspired by the supplied black vertical timeline.
+   One clear time axis; no ornamental cards. Tasks and their children stay visible. */
+.tp-page{
+  --tp-rail:clamp(102px,30vw,143px);
+  padding:27px clamp(14px,4vw,32px) calc(165px + env(safe-area-inset-bottom));
+  min-height:100dvh;
+  color:#f1f1ef;
+  background:#17191b;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.tp-page .tp-header,.tp-page .tp-toolbar,.tp-page .tp-timeline{max-width:760px;margin-left:auto;margin-right:auto}
+.tp-page .tp-header{padding:0 0 14px;border-bottom:1px solid #414345}
+.tp-page .tp-header-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.tp-page .tp-header h1{font:600 25px/1.3 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;letter-spacing:0;margin:0;color:#f0f0ee}
+.tp-page .tp-header-caption{margin:5px 0 0;color:#a7a8a8;font-size:12px;line-height:1.55}
+.tp-page .tp-primary-action{margin:0;background:#262a2b;border:1px solid #555b58;border-radius:7px;color:#e7e9e3;padding:9px 12px;font-size:12px;min-height:39px;white-space:nowrap}
+.tp-page .tp-primary-action:hover{background:#343b37}
+.tp-page .tp-toolbar{margin-top:13px;margin-bottom:9px;padding:0;gap:8px;justify-content:space-between}
+.tp-page .tp-switch{background:#232628;border:1px solid #3d4242;border-radius:9px;gap:2px;padding:3px}
+.tp-page .tp-switch button{padding:6px 15px;min-height:34px;font-size:12px;color:#a5a9a6;border-radius:7px}
+.tp-page .tp-switch button.tp-switch-active{background:#484c4b;color:#f7f7f5;box-shadow:none}
+.tp-page .tp-toolbar-count{color:#777e7e;font-size:11px}
+.tp-page .tp-timeline{padding-top:2px}
+.tp-page .tp-date-group{position:relative;margin:0;padding:0 0 24px}
+.tp-page .tp-date-group::before{content:"";position:absolute;top:0;bottom:0;left:var(--tp-rail);width:1px;background:#73797a99;pointer-events:none}
+.tp-page .tp-date-head{position:relative;display:block;margin:0;min-height:49px;padding:0}
+.tp-page .tp-date-head::before{display:none}
+.tp-page .tp-date-head h2{position:absolute;left:0;top:14px;width:calc(var(--tp-rail) - 28px);text-align:right;font:500 12px/1.4 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#c0c1bf;letter-spacing:0;margin:0;white-space:normal}
+.tp-page .tp-date-glyph{position:absolute;left:calc(var(--tp-rail) - 17px);top:6px;z-index:1;width:35px;height:35px;min-width:35px;background:#aebd80;box-shadow:0 0 0 5px #17191b;border-radius:50%;font-size:19px;color:#262f26;line-height:1}
+.tp-page .tp-project-list{margin:0 0 0 calc(var(--tp-rail) + 23px);padding:0 0 3px;border:0;list-style:none}
+.tp-page .tp-project{position:relative;padding:5px 0 16px;margin:0;min-width:0}
+.tp-page .tp-project-dot{position:absolute;top:24px;left:-27px;width:8px;height:8px;background:#9ca98b;box-shadow:0 0 0 4px #17191b}
+.tp-page .tp-project-time{position:absolute;top:18px;left:calc(-1 * (var(--tp-rail) + 14px));width:calc(var(--tp-rail) - 23px);text-align:right;font:12px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;color:#9c9e9e}
+.tp-page .tp-project-shell{min-width:0}
+.tp-page .tp-project-card{min-height:34px;display:flex;align-items:flex-start;gap:8px;padding:2px 0 3px;border:0;background:transparent;box-shadow:none}
+.tp-page .tp-check{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;min-height:20px;margin:2px 0 0;background:transparent;border:1.5px solid #919697;color:#eaf2df;border-radius:3px;font-size:13px;cursor:pointer;line-height:1}
+.tp-page .tp-check[aria-pressed="true"]{border-color:#9fc970;background:#86aa65;color:#141b12}
+.tp-page .tp-project-link{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px;text-decoration:none;color:#f0f0ef;padding:0}
+.tp-page .tp-project-link>strong{font:500 17px/1.45 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#f0f0ee;overflow-wrap:anywhere}
+.tp-page .tp-project-done .tp-project-link>strong{color:#989e99;text-decoration:line-through}
+.tp-page .tp-project-meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;line-height:1.5;color:#919897}
+.tp-page .tp-progress-track{display:none}
+.tp-page .tp-repeat{color:#a2ca6f!important}
+.tp-page .tp-project-tools{display:flex;flex:0 0 auto;flex-direction:row;align-items:flex-start;gap:2px;margin:0}
+.tp-page .tp-repeat-trigger{display:grid;place-items:center;min-width:31px;min-height:31px;width:31px;height:31px;border:0;border-radius:4px;background:transparent;color:#828b82;font:600 24px/1 system-ui,sans-serif;padding:0}
+.tp-page .tp-repeat-trigger.tp-repeat-enabled{color:#9fd268;background:transparent;border:0}
+.tp-page .tp-collapse-trigger{min-width:26px;min-height:31px;width:26px;height:31px;border:0;border-radius:4px;background:transparent;color:#b0b4b0;font-size:21px;line-height:1;padding:0}
+.tp-page .tp-repeat-trigger:hover,.tp-page .tp-collapse-trigger:hover{background:#2a322e}
+.tp-page .tp-inline-children{margin:5px 0 0;padding:0 0 1px 2px;background:transparent;border:0;box-shadow:none}
+.tp-page .tp-inline-children[hidden]{display:none!important}
+.tp-page .tp-inline-children>ul{list-style:none;margin:0;padding:0}
+.tp-page .tp-inline-child{display:flex;align-items:flex-start;min-height:35px;gap:9px;padding:5px 0;border:0}
+.tp-page .tp-inline-child .tp-check{margin-top:1px;flex:0 0 19px;width:19px;height:19px;min-height:19px}
+.tp-page .tp-inline-child-detail{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding-top:0}
+.tp-page .tp-inline-child-detail>span{font:400 15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#e3e5e3;overflow-wrap:anywhere}
+.tp-page .tp-inline-child-done .tp-inline-child-detail>span{color:#858d89;text-decoration:line-through}
+.tp-page .tp-inline-child-detail>small{color:#888f8c;font-size:11px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.tp-page .tp-inline-repeat{flex:0 0 28px;min-width:28px;min-height:28px;width:28px;height:28px;background:transparent;border:0;color:#757c76;font:600 22px/1 system-ui,sans-serif;padding:0;cursor:pointer}
+.tp-page .tp-inline-repeat.tp-inline-repeat-active{color:#a3d66c}
+.tp-page .tp-inline-edit{display:inline-block;margin:8px 0 0 29px;color:#9baf91;text-decoration:none;font-size:11px}
+.tp-page .tp-inline-children>p{font-size:11px;color:#999f9a;margin:5px 0 0 29px;background:transparent}
+.tp-page .tp-empty{margin:18px auto;padding:14px;color:#9c9f9d;border:0;background:transparent;font-size:13px}
+.tp-page .tp-error{max-width:760px}
+@media(max-width:760px){
+  .tp-page{--tp-rail:clamp(95px,26vw,117px);padding:25px 14px calc(168px + env(safe-area-inset-bottom))}
+  .tp-page .tp-header h1{font-size:23px}
+  .tp-page .tp-primary-action{padding:8px;font-size:11px}
+  .tp-page .tp-date-head h2{font-size:11px;width:calc(var(--tp-rail) - 21px)}
+  .tp-page .tp-project-list{margin-left:calc(var(--tp-rail) + 17px)}
+  .tp-page .tp-project-dot{left:-21px}
+  .tp-page .tp-project-time{left:calc(-1 * (var(--tp-rail) + 9px));width:calc(var(--tp-rail) - 17px);font-size:11px}
+  .tp-page .tp-project-card{gap:6px}
+  .tp-page .tp-project-link>strong{font-size:15px}
+  .tp-page .tp-project-tools{gap:0}
+  .tp-page .tp-repeat-trigger{min-width:28px;width:28px;font-size:22px}
+  .tp-page .tp-collapse-trigger{min-width:22px;width:22px;font-size:18px}
+  .tp-page .tp-inline-child{gap:6px}
+  .tp-page .tp-inline-child-detail>span{font-size:14px}
+  .tp-page .tp-inline-repeat{flex-basis:27px;width:27px;min-width:27px}
+}
+@media(max-width:350px){
+  .tp-page{--tp-rail:85px;padding-left:10px;padding-right:10px}
+  .tp-page .tp-project-tools{flex-direction:column}
+}
