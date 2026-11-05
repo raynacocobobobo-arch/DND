@@ -61,4 +61,15 @@ jobs:
             exit 0
           fi
           git commit -m "Reduce tarot artwork download size without altering approved compositions"
-          git push origin HEAD:gh-pages
+          for attempt in 1 2 3 4 5; do
+            # Other web apps publish to gh-pages concurrently. Rebase, never force-push.
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+            if git push origin HEAD:gh-pages; then
+              echo "Pushed compressed artwork on attempt $attempt"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Failed to push after 5 safe retries" >&2
+          exit 1
