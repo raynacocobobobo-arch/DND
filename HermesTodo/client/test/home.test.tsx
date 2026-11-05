@@ -113,7 +113,7 @@ describe("task activity timeline", () => {
     await user.click(await screen.findByRole("button",{name:"完成 对公账户"}));
     await waitFor(() => expect(fetchMock.mock.calls.some(([input,init]) =>
       String(input)==="/api/tasks/toggle/toggle" && init?.method==="POST")).toBe(true));
-    await user.click(screen.getByRole("button",{name:"已完成",exact:true}));
+    await user.click(screen.getByRole("button",{name:"已完成"}));
     expect(await screen.findByRole("button",{name:"对公账户"})).toBeInTheDocument();
   });
 
