@@ -14,13 +14,11 @@ const choices = [
   { key:"monthly",name:"每月" },{key:"yearly",name:"每年"}
 ] as const;
 
-type Choice = "daily" | "weekly" | "monthly" | "yearly" | "none" | "weekday";
-
-function initialChoice(task: TaskRecord): Choice | string {
+function initialChoice(task: TaskRecord): string {
   if (task.repeatInterval === "custom" && /^每周[一二三四五六日天]$/.test(task.repeatRule)) {
     return "week-" + task.repeatRule.replace("每周", "").replace("天", "日");
   }
-  if (task.repeatInterval === "custom" && /^每月\d{1,2}日$/.test(task.repeatRule)) return "monthly";
+  if (task.repeatInterval === "custom" && /^每月\d{1,2}日$/.test(task.repeatRule)) return "month-" + task.repeatRule.slice(2,-1);
   return task.repeatInterval;
 }
 
@@ -35,8 +33,8 @@ export function ProjectRepeatDialog({ task, onClose }: { task: TaskRecord; onClo
   async function save(event:FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    const repeatInterval = choice.startsWith("week-") ? "custom" : choice as "none" | "daily" | "weekly" | "monthly" | "yearly";
-    const repeatRule = choice.startsWith("week-") ? "每周" + choice.replace("week-","") : "";
+    const repeatInterval = (choice.startsWith("week-") || choice.startsWith("month-")) ? "custom" : choice as "none" | "daily" | "weekly" | "monthly" | "yearly";
+    const repeatRule = choice.startsWith("week-") ? "每周" + choice.slice(5) : choice.startsWith("month-") ? "每月" + choice.slice(6) + "日" : "";
     const dueAt = fromZonedTime(startDate + "T" + startTime + ":00",zone);
     if (!Number.isFinite(dueAt.getTime())) { setError("执行日期或时间无效"); return; }
     try {
@@ -87,12 +85,13 @@ export function ProjectRepeatDialog({ task, onClose }: { task: TaskRecord; onClo
           <div className="tp-repeat-caption">选择循环周期</div>
           <div className="tp-repeat-periods" role="group" aria-label="循环周期">
             {choices.map(option => <button key={option.key} type="button"
-              aria-pressed={choice === option.key}
-              className={choice === option.key ? "tp-repeat-active" : ""}
+              aria-pressed={choice === option.key || (option.key === "monthly" && choice.startsWith("month-"))}
+              className={choice === option.key || (option.key === "monthly" && choice.startsWith("month-")) ? "tp-repeat-active" : ""}
               onClick={()=>setChoice(option.key)}>{option.name}</button>)}
           </div>
           <p className="tp-repeat-explanation">
             {choice.startsWith("week-") ? "每周" + choice.slice(5) + "执行，完成本轮后建立下一轮。"
+            : choice.startsWith("month-") ? "按原有规则每月" + choice.slice(6) + "日执行；月末不足时按最后一天执行。"
             : choice === "monthly" ? "每月同一天执行；月末不足该日期时按当月最后一天执行。"
             : choice === "weekly" ? "按首次执行日期的星期，每隔一周循环。"
             : choice === "daily" ? "每天循环一次。"
