@@ -4,6 +4,7 @@ import { zhCN } from "date-fns/locale";
 import { Link } from "react-router-dom";
 
 import { TaskCreateDialog } from "../components/TaskCreateDialog";
+import { ProjectRepeatDialog } from "../components/ProjectRepeatDialog";
 import { useTasks, useToggleTask, type TaskRecord } from "../hooks/useTasks";
 
 type StatusFilter = "active" | "all";
@@ -25,6 +26,8 @@ export function TodoProjectsPage() {
   const toggle = useToggleTask();
   const [filter,setFilter] = useState<StatusFilter>("active");
   const [creating,setCreating] = useState(false);
+  const [repeatTask,setRepeatTask] = useState<TaskRecord | null>(null);
+  const [collapsedIds,setCollapsedIds] = useState<Set<string>>(new Set());
   const [error,setError] = useState("");
   const all = query.data ?? [];
   const pending = all.filter(task => !task.isCompleted);
@@ -46,6 +49,21 @@ export function TodoProjectsPage() {
     setError("");
     try { await toggle.mutateAsync(task.id); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "更新项目失败"); }
+  }
+
+  function toggleFold(id:string) {
+    setCollapsedIds(current => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  async function completeChild(child: TaskRecord) {
+    setError("");
+    try { await toggle.mutateAsync(child.id); }
+    catch (reason) { setError(reason instanceof Error ? reason.message : "更新子待办失败"); }
   }
 
   return (
@@ -92,20 +110,51 @@ export function TodoProjectsPage() {
                   <li key={task.id} className={"tp-project" + (task.isCompleted ? " tp-project-done" : "")}>
                     <time className="tp-project-time" dateTime={eventDate(task)}>{formatInTimeZone(eventDate(task), zone, "HH:mm")}</time>
                     <span className="tp-project-dot" aria-hidden="true"/>
-                    <div className="tp-project-card">
-                      <button type="button" className="tp-check" disabled={toggle.isPending}
-                        aria-pressed={task.isCompleted} aria-label={(task.isCompleted ? "重新打开 " : "完成 ") + task.title}
-                        onClick={() => void completeTask(task)}>{task.isCompleted ? "✓" : ""}</button>
-                      <Link className="tp-project-link" to={"/inbox/" + encodeURIComponent(task.id)}>
-                        <strong>{task.title}</strong>
-                        <span className="tp-project-meta">
-                          {total > 0 ? <span>{finished}/{total} 项子待办</span> : <span>点击添加子待办</span>}
-                          {repeat ? <span className="tp-repeat">↻ {repeat}</span> : null}
-                          {task.isCompleted ? <span>已完成</span> : null}
-                        </span>
-                        {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
-                      </Link>
-                      <span className="tp-project-arrow" aria-hidden="true">›</span>
+                    <div className="tp-project-shell">
+                      <div className="tp-project-card">
+                        <button type="button" className="tp-check" disabled={toggle.isPending}
+                          aria-pressed={task.isCompleted} aria-label={(task.isCompleted ? "重新打开 " : "完成 ") + task.title}
+                          onClick={() => void completeTask(task)}>{task.isCompleted ? "✓" : ""}</button>
+                        <Link className="tp-project-link" to={"/inbox/" + encodeURIComponent(task.id)}>
+                          <strong>{task.title}</strong>
+                          <span className="tp-project-meta">
+                            {total > 0 ? <span>{finished}/{total} 项子待办</span> : <span>点击添加子待办</span>}
+                            {repeat ? <span className="tp-repeat">↻ {repeat}</span> : null}
+                            {task.isCompleted ? <span>已完成</span> : null}
+                          </span>
+                          {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
+                        </Link>
+                        <div className="tp-project-tools">
+                          <button type="button" className={"tp-repeat-trigger" + (repeat ? " tp-repeat-enabled" : "")}
+                            aria-label={"设置循环 " + task.title} title="设置循环周期"
+                            onClick={()=>setRepeatTask(task)}>↻</button>
+                          {total > 0 ? <button type="button" className="tp-collapse-trigger"
+                            aria-label={(collapsedIds.has(task.id) ? "展开" : "折叠") + "子待办 " + task.title}
+                            aria-expanded={!collapsedIds.has(task.id)} aria-controls={"tp-children-" + task.id}
+                            onClick={()=>toggleFold(task.id)}>
+                            <span aria-hidden="true">{collapsedIds.has(task.id) ? "⌄" : "⌃"}</span>
+                          </button> : null}
+                        </div>
+                      </div>
+                      {total > 0 ? <div className="tp-inline-children" id={"tp-children-" + task.id} hidden={collapsedIds.has(task.id)}>
+                        <ul aria-label={task.title + " 子待办"}>
+                          {task.subtasks.filter(child => filter === "all" || !child.isCompleted).map(child => (
+                            <li key={child.id} className={"tp-inline-child" + (child.isCompleted ? " tp-inline-child-done" : "")}>
+                              <button type="button" className="tp-check" disabled={toggle.isPending}
+                                aria-label={(child.isCompleted ? "重新打开 " : "完成 ") + child.title}
+                                aria-pressed={child.isCompleted} onClick={() => void completeChild(child)}>
+                                {child.isCompleted ? "✓" : ""}
+                              </button>
+                              <span>{child.title}</span>
+                              <time dateTime={child.isCompleted ? child.completedAt ?? child.updatedAt : child.createdAt}>
+                                {formatInTimeZone(child.isCompleted ? child.completedAt ?? child.updatedAt : child.createdAt, zone, "M/d HH:mm")}
+                              </time>
+                            </li>
+                          ))}
+                        </ul>
+                        {filter === "active" && finished === total ? <p>子待办已全部完成，可切换「全部」查看记录。</p> : null}
+                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>管理子待办</Link>
+                      </div> : null}
                     </div>
                   </li>
                 );
@@ -114,6 +163,7 @@ export function TodoProjectsPage() {
           </section>
         ))}
       </div>
+      {repeatTask ? <ProjectRepeatDialog task={repeatTask} onClose={() => setRepeatTask(null)} /> : null}
       {creating ? <TaskCreateDialog contexts={[]} allowContextSelection={false} onClose={() => setCreating(false)} /> : null}
     </section>
   );
