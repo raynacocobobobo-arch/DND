@@ -84,7 +84,8 @@ describe("independent project-based to-do list", () => {
     expect(await screen.findByRole("link",{name:/每月账务核对/})).toBeInTheDocument();
     expect(screen.queryByText("场景内部任务")).not.toBeInTheDocument();
     expect(screen.getByRole("button",{name:"未完成的"})).toHaveAttribute("aria-pressed","true");
-    expect(screen.getByText("0/1 项子待办")).toBeInTheDocument();
+    expect(screen.queryByText(/\d+\/\d+ 项子待办/)).not.toBeInTheDocument();
+    expect(screen.queryByText("进入项目详情")).not.toBeInTheDocument();
   });
 
   test("opens a project page with its own subtask checklist and two-state filter", async () => {
@@ -253,6 +254,30 @@ describe("independent project-based to-do list", () => {
     expect(screen.getByRole("button",{name:"每月"})).toHaveAttribute("aria-pressed","true");
     await user.click(screen.getByRole("button",{name:"取消"}));
     expect(fetchMock.mock.calls.filter(([url,init])=>url==="/api/tasks/existing"&&init?.method==="PATCH")).toHaveLength(0);
+  });
+
+  test("recurring parent owns one loop control, children show no duplicate cycle captions", async () => {
+    const children=[
+      project("c1","第一个子项目",{parentTaskId:"root",repeatInterval:"none",notes:"完整备注"}),
+      project("c2","第二个子项目",{parentTaskId:"root",repeatInterval:"daily",checkinCount:3,scheduledCount:5})
+    ];
+    vi.stubGlobal("fetch",apiMock([
+      project("root","888",{repeatInterval:"monthly",dueAt:stamp,subtasks:children})
+    ]));
+    const user=userEvent.setup();
+    render(<App />);
+    const title=await screen.findByRole("link",{name:/888/});
+    expect(title).toHaveAttribute("href","/inbox/root");
+    expect(screen.getByText("完整备注")).toBeInTheDocument();
+    expect(screen.queryByText(/项子待办/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/已打卡/)).not.toBeInTheDocument();
+    expect(screen.queryByText("进入项目详情")).not.toBeInTheDocument();
+    expect(screen.getByRole("button",{name:"设置循环 888"}).querySelector("svg")).not.toBeNull();
+    expect(screen.queryByRole("button",{name:"设置循环 第一个子项目"})).not.toBeInTheDocument();
+    expect(screen.queryByRole("button",{name:"设置循环 第二个子项目"})).not.toBeInTheDocument();
+    await user.click(title);
+    expect(await screen.findByRole("heading",{name:"子待办"})).toBeInTheDocument();
+    expect(screen.queryByRole("button",{name:"设置循环 第一个子项目"})).not.toBeInTheDocument();
   });
 
   test("each subtask has a visible independent recurrence button", async () => {
