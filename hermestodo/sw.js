@@ -1,11 +1,11 @@
 // Bump this whenever a release changes the application shell so previously
 // installed clients cannot fall back to an older cached interface.
-const CACHE_NAME = "hermestodo-shell-v3";
+const CACHE_NAME = "hermestodo-shell-v4-timeline";
 const APP_SHELL = [
-  "/",
-  "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png"
+  "/DND/hermestodo/",
+  "/DND/hermestodo/manifest.webmanifest",
+  "/DND/hermestodo/icons/icon-192.png",
+  "/DND/hermestodo/icons/icon-512.png"
 ];
 const STATIC_DESTINATIONS = new Set(["document", "script", "style", "image", "font", "manifest"]);
 
@@ -16,7 +16,7 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((names) => Promise.all(names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))))
+    caches.keys().then((names) => Promise.all(names.filter((name) => name.startsWith("hermestodo-shell-") && name !== CACHE_NAME).map((name) => caches.delete(name))))
   );
   self.clients.claim();
 });
@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
       .catch(async () => {
         const cached = await caches.match(request);
         if (cached) return cached;
-        if (request.mode === "navigate") return caches.match("/");
+        if (request.mode === "navigate") return caches.match("/DND/hermestodo/");
         throw new Error("offline");
       })
   );
