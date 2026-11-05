@@ -90,3 +90,31 @@ create policy "hermes_tasks_delete_own" on public.hermes_tasks
 
 revoke all on public.hermes_contexts, public.hermes_tasks from anon;
 grant select, insert, update, delete on public.hermes_contexts, public.hermes_tasks to authenticated;
+
+
+-- Per-period recurring task check-ins. Keeps the original task ID and preserves history.
+create table if not exists public.hermes_task_checkins (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  task_id uuid not null,
+  cycle_at timestamptz not null,
+  completed_at timestamptz not null default now(),
+  constraint hermes_task_checkins_unique unique (user_id, task_id, cycle_at),
+  constraint hermes_task_checkins_task_owner
+    foreign key (user_id, task_id) references public.hermes_tasks (user_id,id) on delete cascade
+);
+create index if not exists hermes_task_checkins_owner_task
+  on public.hermes_task_checkins (user_id,task_id,cycle_at);
+alter table public.hermes_task_checkins enable row level security;
+alter table public.hermes_task_checkins force row level security;
+drop policy if exists "hermes_checkins_select_own" on public.hermes_task_checkins;
+drop policy if exists "hermes_checkins_insert_own" on public.hermes_task_checkins;
+drop policy if exists "hermes_checkins_delete_own" on public.hermes_task_checkins;
+create policy "hermes_checkins_select_own" on public.hermes_task_checkins
+  for select to authenticated using ((select auth.uid()) = user_id);
+create policy "hermes_checkins_insert_own" on public.hermes_task_checkins
+  for insert to authenticated with check ((select auth.uid()) = user_id);
+create policy "hermes_checkins_delete_own" on public.hermes_task_checkins
+  for delete to authenticated using ((select auth.uid()) = user_id);
+revoke all on public.hermes_task_checkins from anon;
+grant select,insert,delete on public.hermes_task_checkins to authenticated;
