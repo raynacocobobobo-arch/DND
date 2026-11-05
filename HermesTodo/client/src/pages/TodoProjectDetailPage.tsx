@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { RefreshCcw } from "lucide-react";
 
 import { TaskDetail } from "../components/TaskDetail";
 import { ProjectRepeatDialog } from "../components/ProjectRepeatDialog";
@@ -98,7 +99,7 @@ export function TodoProjectDetailPage() {
           <span className="tp-kicker">HERMES · PROJECT RECORD</span>
           <button type="button" className={"tp-repeat-trigger" + (project.repeatInterval !== "none" ? " tp-repeat-enabled" : "")}
             aria-label={"设置循环 " + project.title} title="按时间循环"
-            onClick={() => setRepeatTask(project)}>↻</button>
+            onClick={() => setRepeatTask(project)}><RefreshCcw size={18} strokeWidth={1.6} aria-hidden="true"/></button>
         </div>
         <div className="tp-detail-title-row">
           <button type="button" className="tp-check tp-detail-master-check"
@@ -151,9 +152,10 @@ export function TodoProjectDetailPage() {
                 <span>{child.title}</span>
                 <small>{child.isCompleted && child.completedAt ? "完成于 " + displayTime(child.completedAt) : "添加于 " + displayTime(child.createdAt)}</small>
               </div>
-              <button type="button" className={"tp-inline-repeat" + (child.repeatInterval !== "none" ? " tp-inline-repeat-active" : "")}
+              {project.repeatInterval === "none" ? <button type="button"
+                className={"tp-inline-repeat" + (child.repeatInterval !== "none" ? " tp-inline-repeat-active" : "")}
                 aria-label={"设置循环 " + child.title} title="按时间循环"
-                onClick={() => setRepeatTask(child)}>↻</button>
+                onClick={() => setRepeatTask(child)}><RefreshCcw size={17} strokeWidth={1.6} aria-hidden="true" /></button> : null}
               <button type="button" className="tp-child-action"
                 aria-label={"编辑子待办 " + child.title} onClick={() => {setEditingChild(child.id);setEditingTitle(child.title);}}>编辑</button>
               <button type="button" className="tp-child-action tp-danger-text"
