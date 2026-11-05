@@ -137,6 +137,69 @@ describe("independent project-based to-do list", () => {
     expect(await screen.findByRole("link",{name:/已完成项目/})).toBeInTheDocument();
   });
 
+  test("shows subtasks directly on the timeline and folds them without leaving the page", async () => {
+    const open = project("first","核对银行账户",{parentTaskId:"monthly"});
+    const finished = project("second","核对余额",{parentTaskId:"monthly",isCompleted:true,completedAt:stamp});
+    vi.stubGlobal("fetch",apiMock([
+      project("monthly","月度核算",{subtasks:[open,finished]})
+    ]));
+    const user=userEvent.setup();
+    render(<App />);
+    const group=await screen.findByRole("list",{name:"月度核算 子待办"});
+    expect(group).toBeVisible();
+    expect(screen.getByText("核对银行账户")).toBeInTheDocument();
+    expect(screen.queryByText("核对余额")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"折叠子待办 月度核算"}));
+    expect(screen.getByRole("button",{name:"展开子待办 月度核算"})).toHaveAttribute("aria-expanded","false");
+    expect(group).not.toBeVisible();
+    await user.click(screen.getByRole("button",{name:"展开子待办 月度核算"}));
+    expect(group).toBeVisible();
+    await user.click(screen.getByRole("button",{name:"全部"}));
+    expect(screen.getByText("核对余额")).toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"未完成的"}));
+    await user.click(screen.getByRole("button",{name:"完成 核对银行账户"}));
+    await waitFor(()=>expect(screen.queryByText("核对银行账户")).not.toBeInTheDocument());
+  });
+
+  test("repeat glyph opens a dedicated schedule picker and saves a selected weekday", async () => {
+    const fetchMock=apiMock([
+      project("weekly","每周核算",{dueAt:"2026-11-05T01:00:00.000Z"})
+    ]);
+    vi.stubGlobal("fetch",fetchMock);
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:"设置循环 每周核算"}));
+    expect(await screen.findByRole("dialog",{name:"循环设置"})).toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"周三"}));
+    expect(screen.getByRole("button",{name:"周三"})).toHaveAttribute("aria-pressed","true");
+    await user.click(screen.getByRole("button",{name:"保存设置"}));
+    await waitFor(()=>{
+      const call=fetchMock.mock.calls.find(([url,init])=>url==="/api/tasks/weekly"&&init?.method==="PATCH");
+      expect(call).toBeTruthy();
+      expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({
+        repeatInterval:"custom",repeatRule:"每周三",dueAt:"2026-11-05T01:00:00.000Z"
+      });
+    });
+    await user.click(await screen.findByRole("button",{name:"设置循环 每周核算"}));
+    expect(screen.getByRole("button",{name:"周三"})).toHaveAttribute("aria-pressed","true");
+    await user.click(screen.getByRole("button",{name:"暂停循环"}));
+    await waitFor(()=>{
+      const calls=fetchMock.mock.calls.filter(([url,init])=>url==="/api/tasks/weekly"&&init?.method==="PATCH");
+      expect(JSON.parse(String(calls.at(-1)?.[1]?.body))).toMatchObject({repeatInterval:"none",repeatRule:""});
+    });
+  });
+
+  test("project detail also opens the recurrence dialog via the top-right icon", async () => {
+    vi.stubGlobal("fetch",apiMock([project("monthly","每月对账")]));
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("link",{name:/每月对账/}));
+    await user.click(screen.getByRole("button",{name:"设置循环 每月对账"}));
+    expect(await screen.findByRole("dialog",{name:"循环设置"})).toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"取消"}));
+    expect(screen.queryByRole("dialog",{name:"循环设置"})).not.toBeInTheDocument();
+  });
+
   test("creates a root project with no scene assignment and opens its recurrence editor", async () => {
     const fetchMock=apiMock([project("monthly","每月账务核对")]);
     vi.stubGlobal("fetch",fetchMock);
@@ -158,7 +221,7 @@ describe("independent project-based to-do list", () => {
       });
     });
     await user.click(await screen.findByRole("link",{name:/每月账务核对/}));
-    await user.click(screen.getByRole("button",{name:"编辑项目与循环规则"}));
+    await user.click(screen.getByRole("button",{name:"编辑项目"}));
     expect(await screen.findByRole("dialog",{name:"任务详情"})).toBeInTheDocument();
     expect(screen.getByLabelText("重复")).toBeInTheDocument();
   });
