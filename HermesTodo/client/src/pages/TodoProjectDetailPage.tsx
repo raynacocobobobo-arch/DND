@@ -101,7 +101,7 @@ export function TodoProjectDetailPage() {
             onClick={() => setRepeatTask(project)}>↻</button>
         </div>
         <div className="tp-detail-title-row">
-          <button type="button" className="tp-check tp-detail-master-check" disabled={toggle.isPending}
+          <button type="button" className="tp-check tp-detail-master-check"
             aria-label={(project.isCompleted ? "重新打开 " : "完成 ") + project.title}
             aria-pressed={project.isCompleted} onClick={() => void toggleProject()}>{project.isCompleted ? "✓" : ""}</button>
           <h1>{project.title}</h1>
@@ -144,7 +144,7 @@ export function TodoProjectDetailPage() {
         <ul className="tp-child-list" aria-label="子待办列表">
           {visible.map(child => (
             <li key={child.id} className={"tp-child" + (child.isCompleted ? " tp-child-done" : "")}>
-              <button type="button" className="tp-check" disabled={toggle.isPending}
+              <button type="button" className="tp-check"
                 aria-label={(child.isCompleted ? "重新打开 " : "完成 ") + child.title}
                 aria-pressed={child.isCompleted} onClick={() => void toggleChild(child)}>{child.isCompleted ? "✓" : ""}</button>
               <div className="tp-child-content">
