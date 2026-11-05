@@ -108,18 +108,21 @@ jobs:
               wait.until(lambda b: '检查 HermesTodo 新版交互' in b.find_element(By.TAG_NAME,'body').text)
               assert '记下一个临时想法' not in browser.find_element(By.TAG_NAME,'body').text
 
-              # Inbox remains a separate, functioning route.
+              # Timeline includes all tasks, preserves completed history and opens the editor.
               browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ios-dashboard')))
-              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-title-button')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ht-timeline')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ht-record-title')))
+              assert '待办记录时间线' in browser.find_element(By.TAG_NAME,'body').text
               assert '记下一个临时想法' in browser.find_element(By.TAG_NAME,'body').text
-              assert '检查 HermesTodo 新版交互' not in browser.find_element(By.TAG_NAME,'body').text
-              browser.find_element(By.CSS_SELECTOR,'.task-title-button').click()
+              assert '检查 HermesTodo 新版交互' in browser.find_element(By.TAG_NAME,'body').text
+              browser.find_element(By.CSS_SELECTOR,'.ht-record-title').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-detail')))
               browser.find_element(By.CSS_SELECTOR,'.task-detail .dialog-heading button').click()
-              field=wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.v7-capture-row .quick-add input')))
+              browser.find_element(By.CSS_SELECTOR,'.ht-counts button').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.task-form')))
+              field=browser.find_element(By.CSS_SELECTOR,'.task-form input[maxlength="200"]')
               field.send_keys('浏览器交互验收任务')
-              browser.find_element(By.CSS_SELECTOR,'.v7-capture-row .quick-add button').click()
+              browser.find_element(By.CSS_SELECTOR,'.task-form button[type="submit"]').click()
               wait.until(lambda b: '浏览器交互验收任务' in b.find_element(By.TAG_NAME,'body').text)
               browser.find_element(By.CSS_SELECTOR,'a[href="#/ai"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.ai-page')))
