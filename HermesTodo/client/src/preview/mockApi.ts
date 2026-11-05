@@ -1,3 +1,4 @@
+import { nextOccurrence } from "../cloud/recurrence";
 /**
  * Standalone, browser-only API for the public HermesTodo preview.
  * Does not call the production API or handle real credentials.
@@ -241,9 +242,31 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     const t = store.tasks.find(x => x.id === tm[1]);
     if (!t) return error("任务不存在", 404);
     if (tm[2] === "/toggle" && method === "POST") {
+      const timestamp = nowISO();
+      const next = !t.isCompleted && t.repeatInterval !== "none"
+        ? nextOccurrence(
+          {interval: t.repeatInterval, customRule: t.repeatRule},
+          t.dueAt ? new Date(t.dueAt) : null,
+          new Date(timestamp), "Asia/Shanghai"
+        ) : null;
       t.isCompleted = !t.isCompleted;
-      t.completedAt = t.isCompleted ? nowISO() : null;
-      t.updatedAt = nowISO(); persist(); return reply(taskRecord(t));
+      t.completedAt = t.isCompleted ? timestamp : null;
+      t.updatedAt = timestamp;
+      if (next) {
+        const upcoming = createTask({
+          title: t.title, notes: t.notes, priority: t.priority,
+          dueAt: next.toISOString(), contextId: t.contextId,
+          repeatInterval: t.repeatInterval, repeatRule: t.repeatRule
+        });
+        for (const child of store.tasks.filter(item => item.parentTaskId === t.id)) {
+          createTask({
+            title: child.title, notes: child.notes, priority: child.priority,
+            parentTaskId: upcoming.id
+          });
+        }
+      }
+      persist();
+      return reply(taskRecord(t));
     }
     if (method === "PATCH") {
       Object.assign(t, data, { updatedAt: nowISO() }); persist(); return reply(taskRecord(t));
