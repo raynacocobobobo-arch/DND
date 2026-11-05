@@ -201,7 +201,7 @@ export function createTaskRepository(db: Database.Database) {
           "Asia/Shanghai"
         );
         if (next) {
-          create(
+          const upcoming = create(
             {
               title: existing.title,
               notes: existing.notes,
@@ -213,6 +213,15 @@ export function createTaskRepository(db: Database.Database) {
             },
             now
           );
+          // Keep the previous checklist as history and reset the next cycle.
+          for (const child of existing.subtasks) {
+            create({
+              title: child.title,
+              notes: child.notes,
+              priority: child.priority,
+              parentTaskId: upcoming.id
+            }, now);
+          }
         }
       }
     })();
