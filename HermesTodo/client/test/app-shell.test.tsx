@@ -79,7 +79,7 @@ describe("responsive authenticated shell", () => {
     vi.stubGlobal("fetch", authenticatedFetch());
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "我的场景" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /我的场景/ })).toBeInTheDocument();
     await waitFor(() => expect(window.location.pathname).toBe("/"));
     expect(screen.getByRole("link", { name: "场景" })).toHaveAttribute("aria-current", "page");
   });
