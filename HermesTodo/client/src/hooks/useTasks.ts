@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Priority, RepeatInterval, Task } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
 
-export type TaskRecord = Task & { subtasks: TaskRecord[] };
+export type TaskRecord = Task & { subtasks: TaskRecord[]; checkinCount?:number; scheduledCount?:number; completionRate?:number;cycleAt?:string|null };
 export type TaskSort = "priority" | "dueDate" | "createdAt";
 
 export interface TaskInput {
