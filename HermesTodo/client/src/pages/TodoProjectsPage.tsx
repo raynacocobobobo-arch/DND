@@ -17,6 +17,8 @@ function dayKey(value: string) {
   return formatInTimeZone(value, zone, "yyyy-MM-dd");
 }
 function repeatLabel(task: TaskRecord) {
+  if (task.repeatInterval === "monthly" && task.dueAt)
+    return "每月" + formatInTimeZone(task.dueAt, zone, "d日 HH:mm");
   if (task.repeatInterval === "custom") return task.repeatRule || "自定义循环";
   return ({ daily: "每天", weekly: "每周", monthly: "每月", yearly: "每年" } as Record<string,string>)[task.repeatInterval] ?? "";
 }
@@ -115,7 +117,7 @@ export function TodoProjectsPage() {
                           <strong>{task.title}</strong>
                           <span className="tp-project-meta">
                             {total > 0 ? <span>{finished}/{total} 项子待办</span> : <span>点击添加子待办</span>}
-                            {repeat ? <span className="tp-repeat">↻ {repeat} · 完成 {task.checkinCount ?? 0} / {task.scheduledCount ?? 0} 次</span> : null}
+                            {repeat ? <span className="tp-repeat">↻ {repeat}</span> : null}
                             {task.isCompleted ? <span>已完成</span> : null}
                           </span>
                           {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
