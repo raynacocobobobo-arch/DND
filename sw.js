@@ -1,11 +1,11 @@
 // Forbidden Arcana: small offline shell, on-demand card image caching.
 // Never pre-download the full tarot deck during first visit.
-const CACHE_NAME = 'forbidden-arcana-v5-moonlit-20261105';
+const CACHE_NAME = 'forbidden-arcana-v6-editorial-20261105';
 const PRECACHE = [
   './',
   './index.html',
-  './assets/opening-card-back-v5.svg',
-  './assets/opening-world-v5.svg'
+  './assets/card-back.svg',
+  './assets/cards-thumb/arcana-00.webp'
 ];
 
 self.addEventListener('install', event => {
