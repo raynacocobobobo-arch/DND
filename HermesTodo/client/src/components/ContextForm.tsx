@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { MedievalCrest, canonicalCrestName } from "./MedievalCrest";
 
 import type { ContextRecord } from "../hooks/useContexts";
+import { DEFAULT_SCENE_COLOR } from "../sceneAppearance";
 
 const icons = [
   {value:"lion",label:"金狮"}, {value:"fleur",label:"百合花"},
@@ -9,14 +10,13 @@ const icons = [
   {value:"book",label:"典籍"}, {value:"swords",label:"双剑"},
   {value:"crown",label:"王冠"}, {value:"scroll",label:"羽笔卷轴"}
 ];
-const colors = ["#E09890", "#CEB068", "#9AB898", "#8CAABA", "#C0A8C8", "#C89870", "#E8B898", "#90B8A8"];
 
 export function ContextForm({
   context,
   pending,
   onSubmit,
   onCancel,
-  entityLabel = "清单"
+  entityLabel = "分类"
 }: {
   context?: ContextRecord;
   pending?: boolean;
@@ -26,7 +26,7 @@ export function ContextForm({
 }) {
   const [name, setName] = useState(context?.name ?? "");
   const [icon, setIcon] = useState(canonicalCrestName(context?.icon ?? "folder"));
-  const [color, setColor] = useState(context?.color ?? "#8CAABA");
+  const color = context?.color ?? DEFAULT_SCENE_COLOR;
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,7 +47,6 @@ export function ContextForm({
     </button>)}
   </div>
 </div>
-          <fieldset><legend>颜色</legend><div className="color-options">{colors.map((value) => <label key={value} style={{ backgroundColor: value }}><input type="radio" name="context-color" value={value} checked={color === value} onChange={() => setColor(value)} /><span className="sr-only">{value}</span></label>)}</div></fieldset>
           <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button><button type="submit" className="primary-button" disabled={pending || !name.trim()}>{context ? "保存" : `创建${entityLabel}`}</button></div>
         </form>
       </section>
