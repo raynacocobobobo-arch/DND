@@ -37,7 +37,7 @@ export function ListForm({
           <div className="heraldic-icon-picker" role="group" aria-labelledby="list-crest-picker-label">
             {icons.map(({value,label})=><button type="button" className="heraldic-icon-choice" key={value}
               aria-label={label} aria-pressed={icon===value} onClick={()=>setIcon(canonicalCrestName(value))}>
-              <MedievalCrest name={value} size={45}/><span>{label}</span>
+              <MedievalCrest name={value} size={38}/><span>{label}</span>
             </button>)}
           </div>
         </div>
