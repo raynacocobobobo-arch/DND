@@ -6,7 +6,8 @@ import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { AppShell } from "./components/AppShell";
 import { LoginPage } from "./pages/LoginPage";
 import { HomePage } from "./pages/HomePage";
-import { TimelinePage } from "./pages/TimelinePage";
+import { TodoProjectsPage } from "./pages/TodoProjectsPage";
+import { TodoProjectDetailPage } from "./pages/TodoProjectDetailPage";
 import { ListsPage } from "./pages/ListsPage";
 import { ListDetailPage } from "./pages/ListDetailPage";
 import { ContextDetailPage } from "./pages/ContextDetailPage";
@@ -24,7 +25,8 @@ function AuthenticatedApp() {
     <Routes>
       <Route element={<AppShell />}>
         <Route index element={<ListsPage />} />
-        <Route path="inbox" element={<TimelinePage />} />
+        <Route path="inbox" element={<TodoProjectsPage />} />
+        <Route path="inbox/:id" element={<TodoProjectDetailPage />} />
         <Route path="contexts" element={<Navigate to="/" replace />} />
         <Route path="lists/:id" element={<ListDetailPage />} />
         <Route path="contexts/:id" element={<ContextDetailPage />} />
