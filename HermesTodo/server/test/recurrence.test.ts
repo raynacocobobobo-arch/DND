@@ -102,6 +102,41 @@ describe("recurring task API", () => {
     ]);
   });
 
+  test("a repeating project clones its child checklist and resets their completion states", async () => {
+    const root = await agent.post("/api/tasks").send({
+      title:"每月对账项目",dueAt:"2026-10-25T01:30:00.000Z",repeatInterval:"monthly"
+    }).expect(201);
+    const first = await agent.post("/api/tasks").send({
+      title:"检查公积金",parentTaskId:root.body.id
+    }).expect(201);
+    const second = await agent.post("/api/tasks").send({
+      title:"核对银行卡",parentTaskId:root.body.id
+    }).expect(201);
+
+    await agent.post("/api/tasks/" + first.body.id + "/toggle").expect(200);
+    await agent.post("/api/tasks/" + root.body.id + "/toggle").expect(200);
+
+    const projects = dependencies.db.prepare(
+      "SELECT id, is_completed, due_at FROM tasks WHERE title = ? AND parent_task_id IS NULL ORDER BY due_at ASC"
+    ).all("每月对账项目") as Array<{id:string;is_completed:number;due_at:string}>;
+    expect(projects).toHaveLength(2);
+    expect(projects[0].is_completed).toBe(1);
+    expect(projects[1].is_completed).toBe(0);
+    expect(projects[1].due_at).toBe("2026-11-25T01:30:00.000Z");
+
+    const previous = dependencies.db.prepare(
+      "SELECT title,is_completed FROM tasks WHERE parent_task_id = ? ORDER BY created_at ASC"
+    ).all(root.body.id) as Array<{title:string;is_completed:number}>;
+    const upcoming = dependencies.db.prepare(
+      "SELECT title,is_completed FROM tasks WHERE parent_task_id = ? ORDER BY created_at ASC"
+    ).all(projects[1].id) as Array<{title:string;is_completed:number}>;
+    expect(previous.map(row=>row.title).sort()).toEqual(["检查公积金","核对银行卡"]);
+    expect(previous.some(row=>row.is_completed===1)).toBe(true);
+    expect(upcoming.map(row=>row.title).sort()).toEqual(["检查公积金","核对银行卡"]);
+    expect(upcoming.every(row=>row.is_completed===0)).toBe(true);
+    expect(second.body.id).not.toBe(projects[1].id);
+  });
+
   test("rejects an unsupported custom recurrence rule", async () => {
     const response = await agent
       .post("/api/tasks")
