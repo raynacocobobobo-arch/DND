@@ -8,6 +8,7 @@ import { HeraldicIcon } from "../components/HeraldicIcon";
 import { ListCard } from "../components/ListCard";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ListForm } from "../components/ListForm";
+import { DEFAULT_SCENE_COLOR } from "../sceneAppearance";
 import { useCompleteList, useCreateList, useDeleteList, useLists, useReorderLists, useUpdateList, type ListRecord } from "../hooks/useLists";
 
 export function ListsPage() {
@@ -35,7 +36,7 @@ export function ListsPage() {
     if(!name){setEditing(undefined);setFormOpen(true);return;}
     setError("");
     try{
-      await create.mutateAsync({name,icon:"compass",color:"#8CAABA"});
+      await create.mutateAsync({name,icon:"compass",color:DEFAULT_SCENE_COLOR});
       setQuickName("");
     }catch(e){setError(e instanceof Error?e.message:"场景创建失败，请重试");}
   }
@@ -107,7 +108,7 @@ export function ListsPage() {
     <section className="scene-home-index" aria-label="场景目录">
       <div className="scene-home-index-heading">
         <div><span>CHAPTER I · SCENES</span><h2>场景目录</h2></div>
-        <span className="scene-home-index-count">{ordered.length} LISTS</span>
+        <span className="scene-home-index-count">{ordered.length} SCENES</span>
       </div>
       <form className="quick-add scene-home-quickadd" onSubmit={(e)=>void quickCreate(e)}>
         {error?<p className="quick-add-error" role="alert">{error}</p>:null}
