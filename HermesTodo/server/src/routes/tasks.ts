@@ -36,8 +36,8 @@ function invalidRelation(error: unknown): boolean {
 
 export function createTasksRouter(dependencies: AppDependencies): Router {
   const router = Router();
-  const repository = createTaskRepository(dependencies.db);
   const now = () => (dependencies.now ?? (() => new Date()))();
+  const repository = createTaskRepository(dependencies.db,now);
 
   router.get("/", (request, response) => {
     const parsed = listSchema.safeParse(request.query);
