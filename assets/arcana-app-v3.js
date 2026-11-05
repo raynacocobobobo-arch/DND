@@ -15,6 +15,7 @@
   const clean=s=>escapeText(s);
   const urlCard=id=>`#/card/${id}`;
   let drawResult=null, currentSpread=1, isDaily=false, currentQuestion='', drawPool='all';
+  let homeMode='single',homeRevealOnRoute=false;
   const cardContext=()=>new URLSearchParams((location.hash.split('?')[1]||''));
   const drawnCardUrl=id=>urlCard(id)+(drawResult?.historyId?'?from=draw&record='+encodeURIComponent(drawResult.historyId):'');
   let lastView='';
@@ -64,23 +65,67 @@
       if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
   }
-  function cover(){
-    const c=C[0];
-    return `<section class="page home">
-      <div class="home-copy"><div class="eyebrow">THE FORBIDDEN ARCANA / COMPLETE 78-CARD DECK</div>
-        <h1 class="title">禁忌之书<br>深渊塔罗</h1>
-        <p class="sub">七十八张原画，五组牌面，贯穿洛夫克拉夫特世界的禁忌故事。你可以在完整图鉴中探索它们，也可以从一次抽牌开始，把自己的思考留在命运档案。</p>
-        <div class="actions"><a class="btn" href="#/draw">开始抽牌 <span aria-hidden="true">↗</span></a><a class="btn outline" href="#/explore">探索78张全牌图鉴 →</a></div>
-        <p class="kicker" style="margin-top:34px">78张完整牌组 · 原著故事 · 正逆位 · 命运档案 · 个人收藏</p><p class="home-recent">你的命运档案已保存 ${J.count()} 次抽牌。<a href="#/history">打开记录 →</a></p>
+function cover(){
+    return `<section class="page opening-home">
+      <div class="opening-frame">
+        <div class="opening-art">
+          <div class="opening-halo" aria-hidden="true"></div>
+          <div class="opening-arcana opening-arcana-left" aria-hidden="true"><img src="./assets/card-back.svg" alt="" width="540" height="960" decoding="async"></div>
+          <div class="opening-arcana opening-arcana-right" aria-hidden="true"><img src="./assets/card-back.svg" alt="" width="540" height="960" decoding="async"></div>
+          <button class="opening-card-trigger" type="button" id="opening-card-trigger" aria-label="点击中央牌背，立即开牌"><img src="./assets/card-back.svg" alt="" width="540" height="960"></button>
+          <div class="opening-ornament opening-ornament-a" aria-hidden="true">✦</div>
+          <div class="opening-ornament opening-ornament-b" aria-hidden="true">✧</div>
+          <div class="opening-art-caption">THE VEIL AWAITS YOUR HAND · 78 CARDS</div>
+        </div>
+        <div class="opening-info">
+          <div class="opening-index"><span class="opening-index-line"></span>THE FORBIDDEN ARCANA <span class="opening-index-star" aria-hidden="true">✧</span> DIVINATION</div>
+          <h1>现在，<br><em>开牌。</em></h1>
+          <p class="opening-lead">默念一个想要探索的问题。<br>选好牌阵，翻开属于你的启示。</p>
+          <div class="opening-picker">
+            <div class="opening-picker-heading"><span>选择开牌方式</span><span>01 / 02</span></div>
+            <div class="opening-modes" role="group" aria-label="选择开牌方式">
+              <button type="button" data-home-mode="single" aria-pressed="true"><strong>单张启示</strong><small>一个问题</small></button>
+              <button type="button" data-home-mode="three" aria-pressed="false"><strong>三张牌阵</strong><small>过去 · 现在 · 未来</small></button>
+              <button type="button" data-home-mode="daily" aria-pressed="false"><strong>每日之牌</strong><small>今天的讯息</small></button>
+            </div>
+          </div>
+          <button type="button" id="opening-reveal" class="opening-primary"><span class="opening-primary-label">立即开牌</span><span class="opening-primary-arrow" aria-hidden="true">↗</span></button>
+          <p class="opening-help">一键洗牌、翻牌并查看解读 <span aria-hidden="true">·</span> <a href="#/draw">先写下问题 / 更多设置</a></p>
+          <p class="opening-journal">你的命运档案已有 ${J.count()} 次记录。<a href="#/history">查看记录 →</a></p>
+        </div>
       </div>
-      <div class="home-visual">
-        <a href="${urlCard(c.id)}" aria-label="阅读愚者牌的完整故事"><img src="${c.img}" fetchpriority="high" alt="愚者 · 高清克苏鲁塔罗牌"></a>
-        <span class="art-caption">THE FOOL / 00 — 点击进入这张牌</span>
-      </div>
-    </section><div class="home-bottom"><a href="#/library/1">翻阅大阿卡纳档案 →</a><a href="#/draw">以单张、三张或每日牌阵抽取启示 →</a><a href="#/library/cups">圣杯十四张牌 →</a><a href="#/library/wands">权杖组：已收录${W.length}张 →</a><a href="#/library/swords">宝剑组：已收录${S.length}张 →</a><a href="#/library/pentacles">星币组：已收录${P.length}张 →</a><span>22 张大阿卡纳 · 14 张圣杯 · ${W.length} 张权杖 · ${S.length} 张宝剑 · ${P.length} 张星币</span></div>
-    <section class="home-novellas"><h2>四部禁忌故事 · 从原著进入牌面</h2>
+      <div class="opening-more"><span>22 张大阿卡纳 · 56 张小阿卡纳</span><div><a href="#/explore">浏览完整牌库 ↗</a><a href="#/history">我的命运档案 ↗</a></div></div>
+    </section>
+    <section class="home-novellas opening-literature"><div class="opening-literature-label">BEYOND THE CARDS / GRIMOIRE</div><h2>翻牌之后，再探索牌背后的禁忌故事</h2>
     <div class="home-novella-links">${Object.entries(G).map(([suit,j])=>'<a href="#/story/'+suit+'">'+clean(j.name)+' · '+clean(j.work)+'<span>'+clean(j.tagline)+' →</span></a>').join('')}</div></section>`;
   }
+  function installHome(){
+    const choices=[...root.querySelectorAll('[data-home-mode]')];
+    const reveal=root.querySelector('#opening-reveal');
+    const labels={single:'立即开牌',three:'翻开三张牌',daily:'揭示今日之牌'};
+    function select(mode){
+      homeMode=mode;
+      choices.forEach(button=>{
+        const active=button.dataset.homeMode===mode;
+        button.classList.toggle('active',active);
+        button.setAttribute('aria-pressed',String(active));
+      });
+      reveal.querySelector('.opening-primary-label').textContent=labels[mode];
+    }
+    function openCards(){
+      currentSpread=homeMode==='three'?3:1;
+      isDaily=homeMode==='daily';
+      drawPool='all';
+      performDraw('');
+      homeRevealOnRoute=true;
+      location.hash='#/draw?resume='+encodeURIComponent(drawResult.historyId);
+    }
+    choices.forEach(button=>button.addEventListener('click',()=>select(button.dataset.homeMode)));
+    reveal.addEventListener('click',openCards);
+    root.querySelector('#opening-card-trigger').addEventListener('click',openCards);
+    select(homeMode);
+  }
+
   function library(page){
     const start=0,end=C.length;
     const items=C.slice(start,end).map(c=>{
@@ -414,6 +459,13 @@
     document.querySelector('#draw-copy')?.addEventListener('click',()=>J.copySummary(r));
     document.querySelector('#draw-image')?.addEventListener('click',()=>J.exportCardImage(r));
   }
+  function performDraw(question){
+    currentQuestion=String(question||'').trim();
+    drawResult={cards:pickCards(currentSpread,isDaily),question:currentQuestion,n:currentSpread,daily:isDaily,pool:drawPool};
+    drawResult.synthesis=drawResult.n===3?R.synthesis(drawResult.cards):'';
+    const saved=J.addReading(drawResult);
+    drawResult.historyId=saved.record.id;drawResult.saved=saved.saved;
+  }
   function installDraw(){
     document.querySelectorAll('.spread-select:not(.pool-select) button').forEach(button=>{
       button.onclick=()=>{
@@ -431,11 +483,7 @@
     const input=document.getElementById('question');
     input.oninput=()=>currentQuestion=input.value;
     document.getElementById('go-draw').onclick=()=>{
-      currentQuestion=input.value.trim();
-      drawResult={cards:pickCards(currentSpread,isDaily),question:currentQuestion,n:currentSpread,daily:isDaily,pool:drawPool};
-      drawResult.synthesis=drawResult.n===3?R.synthesis(drawResult.cards):'';
-      const saved=J.addReading(drawResult);
-      drawResult.historyId=saved.record.id;drawResult.saved=saved.saved;
+      performDraw(input.value);
       const holder=document.querySelector('#reading-result');
       holder.classList.remove('empty');
       holder.innerHTML=renderDrawResult();
@@ -480,7 +528,7 @@
   function render(){
     const route=routeParts(), key=route.screen;
     updateNav(key);
-    if(key==='home'){root.innerHTML=cover();document.title=docTitle;}
+    if(key==='home'){root.innerHTML=cover();installHome();document.title=docTitle;}
     else if(key==='library'){root.innerHTML=library(route.page);document.title='二十二张牌库 · '+docTitle;}
     else if(key==='card'){root.innerHTML=detail(route.id);document.title=C[route.id].zh+' · '+docTitle;}
     else if(key==='draw'){const rid=cardContext().get('resume');if(rid)restoreDrawFromHistory(rid);root.innerHTML=drawScreen();installDraw();document.title='命运占卜 · '+docTitle;}
@@ -502,6 +550,10 @@
     lastView=key;
     window.scrollTo({top:0,left:0,behavior:'instant'});
     root.focus({preventScroll:true});
+    if(key==='draw'&&homeRevealOnRoute){
+      homeRevealOnRoute=false;
+      requestAnimationFrame(()=>root.querySelector('#reading-result')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
   }
   window.addEventListener('hashchange',render);
   render();
