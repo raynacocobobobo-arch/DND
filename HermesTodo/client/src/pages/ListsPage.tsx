@@ -37,7 +37,7 @@ export function ListsPage() {
     try{
       await create.mutateAsync({name,icon:"compass",color:"#8CAABA"});
       setQuickName("");
-    }catch(e){setError(e instanceof Error?e.message:"清单创建失败，请重试");}
+    }catch(e){setError(e instanceof Error?e.message:"场景创建失败，请重试");}
   }
 
   function moveDragged(targetId:string){
@@ -69,7 +69,7 @@ export function ListsPage() {
       else for(const task of tasks) lines.push(`${task.isCompleted?"●":"○"} ${task.title}`);
     }
     await navigator.clipboard.writeText(lines.join("\n"));
-    setActionMessage(`已复制“${list.name}”清单内容`);
+    setActionMessage(`已复制“${list.name}”场景内容`);
   }
 
   async function toggleListCompletion(list: ListRecord) {
@@ -77,7 +77,7 @@ export function ListsPage() {
     const result=await complete.mutateAsync(list.id);
     setCompletionTarget(undefined);
     if (!result.updatedCount) {
-      setActionMessage("这份清单没有可切换的待办");
+      setActionMessage("这份场景没有可切换的待办");
     } else {
       setActionMessage(result.completed
         ? `已全部标为完成，共 ${result.updatedCount} 项`
@@ -92,32 +92,32 @@ export function ListsPage() {
     <header className="scene-home-hero">
       <img className="scene-home-art" src={`${import.meta.env.BASE_URL}art/joan-fleur-hero-hq.avif`} alt="" aria-hidden="true" loading="eager" decoding="async"/>
       <div className="scene-home-hero-copy">
-        <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · THE BOOK OF LISTS</span>
-        <h1>我的清单<span aria-hidden="true">。</span></h1>
-        <p>先建立清单，再把不同场景归进去。<br/>名称、纹章与顺序，都由你自己决定。</p>
+        <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · THE BOOK OF SCENES</span>
+        <h1>我的场景<span aria-hidden="true">。</span></h1>
+        <p>先建立场景，再把不同分类归进去。<br/>名称、纹章与顺序，都由你自己决定。</p>
         <div className="scene-home-stats">
-          <span><strong>{lists.isLoading?"—":ordered.length}</strong> 份清单</span>
-          <span><strong>{lists.isLoading?"—":sceneCount}</strong> 个场景</span>
+          <span><strong>{lists.isLoading?"—":ordered.length}</strong> 份场景</span>
+          <span><strong>{lists.isLoading?"—":sceneCount}</strong> 个分类</span>
           <span><strong>{lists.isLoading?"—":pendingCount}</strong> 件待办</span>
         </div>
       </div>
-      <Link to="/inbox" className="scene-home-inbox"><HeraldicIcon name="inbox" size={23}/><span>进入收集箱</span><HeraldicIcon name="arrow" size={20}/></Link>
+      <Link to="/inbox" className="scene-home-inbox"><HeraldicIcon name="inbox" size={23}/><span>进入待办清单</span><HeraldicIcon name="arrow" size={20}/></Link>
     </header>
 
-    <section className="scene-home-index" aria-label="清单目录">
+    <section className="scene-home-index" aria-label="场景目录">
       <div className="scene-home-index-heading">
-        <div><span>CHAPTER I · LISTS</span><h2>清单目录</h2></div>
+        <div><span>CHAPTER I · SCENES</span><h2>场景目录</h2></div>
         <span className="scene-home-index-count">{ordered.length} LISTS</span>
       </div>
       <form className="quick-add scene-home-quickadd" onSubmit={(e)=>void quickCreate(e)}>
         {error?<p className="quick-add-error" role="alert">{error}</p>:null}
-        <label className="sr-only" htmlFor="quick-add-list">快速新建清单</label>
-        <input id="quick-add-list" value={quickName} onChange={(e)=>{setQuickName(e.target.value);setError("");}} placeholder="新建清单，例如：国内旅行、工作项目…"/>
-        <button type="submit" aria-label="添加清单" disabled={create.isPending}><HeraldicIcon name="add" size={26}/></button>
+        <label className="sr-only" htmlFor="quick-add-list">快速新建场景</label>
+        <input id="quick-add-list" value={quickName} onChange={(e)=>{setQuickName(e.target.value);setError("");}} placeholder="新建场景，例如：国内旅行、工作项目…"/>
+        <button type="submit" aria-label="添加场景" disabled={create.isPending}><HeraldicIcon name="add" size={26}/></button>
       </form>
-      {lists.isError?<p role="alert" className="dashboard-empty">清单读取失败。<button type="button" onClick={()=>void lists.refetch()}>重试</button></p>
-      :lists.isLoading?<p className="dashboard-empty">正在读取清单…</p>
-      :ordered.length?<ul className="context-grid scene-home-grid" aria-label="清单列表">
+      {lists.isError?<p role="alert" className="dashboard-empty">场景读取失败。<button type="button" onClick={()=>void lists.refetch()}>重试</button></p>
+      :lists.isLoading?<p className="dashboard-empty">正在读取场景…</p>
+      :ordered.length?<ul className="context-grid scene-home-grid" aria-label="场景列表">
         {ordered.map(list=><ListCard key={list.id} list={list} dragging={draggingId===list.id}
           onEdit={()=>{setEditing(list);setFormOpen(true);}}
           onDelete={()=>setDeleting(list)}
@@ -127,8 +127,8 @@ export function ListsPage() {
           onDragOver={()=>moveDragged(list.id)}
           onDrop={()=>void finishDrag()}
           onDragEnd={()=>setDraggingId(undefined)}/>)}
-      </ul>:<p className="empty-state dashboard-empty">还没有清单。先创建第一份清单。</p>}
-      <p className="list-order-help">按住“移动”拖动调整清单顺序。</p>
+      </ul>:<p className="empty-state dashboard-empty">还没有场景。先创建第一份场景。</p>}
+      <p className="list-order-help">按住“移动”拖动调整场景顺序。</p>
       {actionMessage?<p className="copy-toast list-action-toast" role="status">{actionMessage}</p>:null}
     </section>
 
@@ -141,11 +141,11 @@ export function ListsPage() {
       pending={complete.isPending}
       onCancel={()=>setCompletionTarget(undefined)}
       onConfirm={()=>void toggleListCompletion(completionTarget)}/>:null}
-    {deleting?<ConfirmDialog title="删除清单？"
-      message={`确定删除“${deleting.name}”吗？清单和场景目录会删除，但其中任务不会删除，会回到收集箱。`}
+    {deleting?<ConfirmDialog title="删除场景？"
+      message={`确定删除“${deleting.name}”吗？场景和场景目录会删除，但其中任务不会删除，会移入待办清单。`}
       pending={remove.isPending}
       onCancel={()=>setDeleting(undefined)}
-      onConfirm={()=>void remove.mutateAsync(deleting.id).then(()=>{setDeleting(undefined);setActionMessage("清单已删除，原任务已返回收集箱");})}/>:null}
+      onConfirm={()=>void remove.mutateAsync(deleting.id).then(()=>{setDeleting(undefined);setActionMessage("场景已删除，原任务已转入待办清单");})}/>:null}
     {formOpen?<ListForm list={editing} pending={create.isPending||update.isPending}
       onCancel={()=>setFormOpen(false)}
       onSubmit={(input)=>{
