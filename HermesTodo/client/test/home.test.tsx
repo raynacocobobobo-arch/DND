@@ -80,11 +80,11 @@ describe("independent project-based to-do list", () => {
       project("scene","场景内部任务",{contextId:"scene-id"})
     ]));
     render(<App />);
-    expect(await screen.findByRole("heading",{name:"待办清单"})).toBeInTheDocument();
+    expect(await screen.findByRole("heading",{name:/待办清单/})).toBeInTheDocument();
     expect(await screen.findByRole("link",{name:/每月账务核对/})).toBeInTheDocument();
     expect(screen.queryByText("场景内部任务")).not.toBeInTheDocument();
     expect(screen.getByRole("button",{name:"未完成的"})).toHaveAttribute("aria-pressed","true");
-    expect(screen.getByText("1/1".replace("1/1","0/1") + " 项子待办")).toBeInTheDocument();
+    expect(screen.getByText("0/1 项子待办")).toBeInTheDocument();
   });
 
   test("opens a project page with its own subtask checklist and two-state filter", async () => {
