@@ -44,7 +44,7 @@ describe("scene and category appearance",()=>{
     await user.type(screen.getByLabelText("分类名称"),"行前准备");
     await user.click(screen.getByRole("button",{name:"创建分类"}));
     expect(onSubmit).toHaveBeenCalledWith({
-      name:"行前准备",icon:"compass",color:DEFAULT_SCENE_COLOR
+      name:"行前准备",icon:"fleur",color:DEFAULT_SCENE_COLOR
     });
   });
 
