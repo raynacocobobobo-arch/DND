@@ -1,4 +1,4 @@
-import { repeatProgress, type Checkin } from "./checkins";
+import { canonicalCycleAt, repeatProgress, type Checkin } from "./checkins";
 /**
  * Browser-only Supabase adapter for the public GitHub Pages build.
  * Maps the existing HermesTodo JSON API onto PostgREST and Supabase Auth.
@@ -179,7 +179,7 @@ function toTask(t: DbTask, all: DbTask[], includeChildren = true, checkins: DbCh
     id: t.id, title: t.title, notes: t.notes, priority: t.priority,
     dueAt: t.due_at, isCompleted: recurring ? progress.cycleCompleted : t.is_completed,
     completedAt: recurring
-      ? records.find(x=>x.cycleAt === progress.cycleAt)?.completedAt ?? null : t.completed_at,
+      ? records.find(x=>canonicalCycleAt(x.cycleAt) === progress.cycleAt)?.completedAt ?? null : t.completed_at,
     contextId: t.context_id, parentTaskId: t.parent_task_id,
     repeatInterval: t.repeat_interval, repeatRule: t.repeat_rule,
     createdAt: t.created_at, updatedAt: t.updated_at,
@@ -701,9 +701,16 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
           await rest(config,endpoint+"?task_id=eq."+id+"&cycle_at=eq."+encodeURIComponent(progress.cycleAt),{method:"DELETE"});
         } else {
           const session=await accessToken(config);
-          await rest(config,endpoint,{method:"POST",body:JSON.stringify({
-            user_id:session.user_id,task_id:old.id,cycle_at:progress.cycleAt,completed_at:now.toISOString()
-          })});
+          // Atomic conflict-safe write: other tabs/devices may have checked in
+          // the same task and period since our initial SELECT. Preserve the
+          // first checkin; never overwrite its completed_at or drop the UNIQUE.
+          await rest(config,endpoint+"?on_conflict=user_id,task_id,cycle_at",{
+            method:"POST",
+            headers:{Prefer:"return=minimal,resolution=ignore-duplicates"},
+            body:JSON.stringify({
+              user_id:session.user_id,task_id:old.id,cycle_at:progress.cycleAt,completed_at:now.toISOString()
+            })
+          });
         }
         const [rows,records]=await Promise.all([allTasks(config),
           rest<DbCheckin[]>(config,endpoint+"?select=task_id,cycle_at,completed_at")]);
