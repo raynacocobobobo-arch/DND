@@ -1,0 +1,54 @@
+name: Build Forbidden Arcana Tencent Cloud lean ZIP
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'scripts/build_tarot_tencent_bundle.py'
+      - '.github/workflows/tarot-tencent-bundle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forbidden-arcana-tencent-bundle
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build and verify lean website ZIP
+        run: |
+          python scripts/build_tarot_tencent_bundle.py
+          unzip -t dist/forbidden-arcana-tencent-lean-20261105.zip | tail -n 2
+          ls -lh dist/forbidden-arcana-tencent-lean-20261105.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forbidden-arcana-tencent-lean-20261105
+          path: dist/forbidden-arcana-tencent-lean-20261105.zip
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+      - name: Publish directly downloadable public release asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="forbidden-arcana-tencent-lean-20261105"
+          FILE="dist/forbidden-arcana-tencent-lean-20261105.zip"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --clobber
+          else
+            gh release create "$TAG" "$FILE" \
+              --target gh-pages \
+              --title "禁忌之书 · 腾讯云精简部署包 (2026-11-05)" \
+              --notes "独立静态站点 ZIP；78 张正式塔罗牌、78 张缩略图及完整网页；排除其他项目和旧版牌面。包含腾讯云部署说明与 SHA-256 校验清单。"
+          fi
+          gh release view "$TAG" --json url,assets
