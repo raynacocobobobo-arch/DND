@@ -110,7 +110,7 @@ export function TodoProjectsPage() {
                     <span className="tp-project-dot" aria-hidden="true"/>
                     <div className="tp-project-shell">
                       <div className="tp-project-card">
-                        <button type="button" className="tp-check" disabled={toggle.isPending}
+                        <button type="button" className="tp-check"
                           aria-pressed={task.isCompleted} aria-label={(task.isCompleted ? "重新打开 " : "完成 ") + task.title}
                           onClick={() => void completeTask(task)}>{task.isCompleted ? "✓" : ""}</button>
                         <Link className="tp-project-link" to={"/inbox/" + encodeURIComponent(task.id)}>
@@ -138,7 +138,7 @@ export function TodoProjectsPage() {
                         <ul aria-label={task.title + " 子待办"}>
                           {task.subtasks.filter(child => filter === "all" || !child.isCompleted).map(child => (
                             <li key={child.id} className={"tp-inline-child" + (child.isCompleted ? " tp-inline-child-done" : "")}>
-                              <button type="button" className="tp-check" disabled={toggle.isPending}
+                              <button type="button" className="tp-check"
                                 aria-label={(child.isCompleted ? "重新打开 " : "完成 ") + child.title}
                                 aria-pressed={child.isCompleted} onClick={() => void completeChild(child)}>
                                 {child.isCompleted ? "✓" : ""}
