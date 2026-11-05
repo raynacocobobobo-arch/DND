@@ -29,7 +29,7 @@ export function TodoProjectDetailPage() {
   const [filter,setFilter] = useState<StatusFilter>("active");
   const [newTitle,setNewTitle] = useState("");
   const [editing,setEditing] = useState(false);
-  const [repeatOpen,setRepeatOpen] = useState(false);
+  const [repeatTask,setRepeatTask] = useState<TaskRecord|null>(null);
   const [editingChild,setEditingChild] = useState<string|null>(null);
   const [editingTitle,setEditingTitle] = useState("");
   const [deletingChild,setDeletingChild] = useState<string|null>(null);
@@ -98,7 +98,7 @@ export function TodoProjectDetailPage() {
           <span className="tp-kicker">HERMES · PROJECT RECORD</span>
           <button type="button" className={"tp-repeat-trigger" + (project.repeatInterval !== "none" ? " tp-repeat-enabled" : "")}
             aria-label={"设置循环 " + project.title} title="按时间循环"
-            onClick={() => setRepeatOpen(true)}>↻</button>
+            onClick={() => setRepeatTask(project)}>↻</button>
         </div>
         <div className="tp-detail-title-row">
           <button type="button" className="tp-check tp-detail-master-check" disabled={toggle.isPending}
@@ -151,6 +151,9 @@ export function TodoProjectDetailPage() {
                 <span>{child.title}</span>
                 <small>{child.isCompleted && child.completedAt ? "完成于 " + displayTime(child.completedAt) : "添加于 " + displayTime(child.createdAt)}</small>
               </div>
+              <button type="button" className={"tp-inline-repeat" + (child.repeatInterval !== "none" ? " tp-inline-repeat-active" : "")}
+                aria-label={"设置循环 " + child.title} title="按时间循环"
+                onClick={() => setRepeatTask(child)}>↻</button>
               <button type="button" className="tp-child-action"
                 aria-label={"编辑子待办 " + child.title} onClick={() => {setEditingChild(child.id);setEditingTitle(child.title);}}>编辑</button>
               <button type="button" className="tp-child-action tp-danger-text"
@@ -159,11 +162,11 @@ export function TodoProjectDetailPage() {
           ))}
         </ul>
         {visible.length === 0 ? <p className="tp-empty tp-empty-inline">{children.length && filter === "active" ? "子待办已全部完成。切换到「全部」查看记录。" : "还没有子待办，在上方添加第一项。"}</p> : null}
-        {project.repeatInterval !== "none" ? <p className="tp-cycle-hint">循环规则作用于整个大项目。完成本轮后，会保留本次记录并按规则创建下一轮，子待办恢复为未完成。</p> : null}
+        {project.repeatInterval !== "none" ? <p className="tp-cycle-hint">每个周期单独打卡，保留同一项目与全部子待办，历史统计持续累计。</p> : null}
       </section>
 
       {editing ? <TaskDetail task={project} contexts={[]} onClose={() => setEditing(false)}/> : null}
-      {repeatOpen ? <ProjectRepeatDialog task={project} onClose={() => setRepeatOpen(false)}/> : null}
+      {repeatTask ? <ProjectRepeatDialog task={repeatTask} onClose={() => setRepeatTask(null)}/> : null}
 
       {editingChild ? <div className="tp-confirm-overlay" role="presentation">
         <section className="tp-confirm-box" role="dialog" aria-modal="true" aria-label="编辑子待办">
