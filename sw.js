@@ -1,82 +1,65 @@
-// The Forbidden Arcana offline cache, V2.
-const CACHE_NAME = 'forbidden-arcana-v2-20261025';
+// Forbidden Arcana: small offline shell, on-demand card image caching.
+// Never pre-download the full tarot deck during first visit.
+const CACHE_NAME = 'forbidden-arcana-v3-optimized-20261105';
 const PRECACHE = [
-  "./",
-  "./index.html",
-  "./assets/card-back.svg",
-  "./assets/cards/img-00.webp",
-  "./assets/cards/img-01.webp",
-  "./assets/cards/img-02.webp",
-  "./assets/cards/img-03.webp",
-  "./assets/cards/img-04.webp",
-  "./assets/cards/img-05.webp",
-  "./assets/cards/img-06.webp",
-  "./assets/cards/img-07.webp",
-  "./assets/cards/img-08.webp",
-  "./assets/cards/img-09.webp",
-  "./assets/cards/img-10.webp",
-  "./assets/cards/img-11.webp",
-  "./assets/cards/img-12.webp",
-  "./assets/cards/img-13.webp",
-  "./assets/cards/img-14.webp",
-  "./assets/cards/img-15.webp",
-  "./assets/cards/img-16.webp",
-  "./assets/cards/img-17.webp",
-  "./assets/cards/img-18.webp",
-  "./assets/cards/img-19.webp",
-  "./assets/cards/img-20.webp",
-  "./assets/cards/img-21.webp"
+  './',
+  './index.html',
+  './assets/card-back.svg',
+  './assets/cards-thumb/arcana-00.webp'
 ];
+
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    const results = await Promise.allSettled(PRECACHE.map(async url => {
-      const response = await fetch(new Request(url, {cache:'reload'}));
-      if (!response.ok) throw new Error('Precache HTTP '+response.status+' '+url);
-      await cache.put(url, response);
+    const results = await Promise.allSettled(PRECACHE.map(async path => {
+      const response = await fetch(new Request(path, {cache: 'reload'}));
+      if (!response.ok) throw new Error('Precache failed: ' + path);
+      await cache.put(path, response);
     }));
-    const critical = results.slice(0,3);
-    if (critical.some(r => r.status !== 'fulfilled')) throw new Error('Offline core assets unavailable');
-    self.skipWaiting();
+    if (results.slice(0, 3).some(r => r.status !== 'fulfilled')) {
+      throw new Error('Offline shell unavailable');
+    }
+    await self.skipWaiting();
   })());
 });
+
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k.startsWith('forbidden-arcana-') && k !== CACHE_NAME).map(k => caches.delete(k)));
+    await Promise.all(keys.filter(k =>
+      k.startsWith('forbidden-arcana-') && k !== CACHE_NAME
+    ).map(k => caches.delete(k)));
     await self.clients.claim();
   })());
 });
+
 self.addEventListener('fetch', event => {
-  const req = event.request;
-  const url = new URL(req.url);
-  if(req.method !== 'GET' || url.origin !== self.location.origin) return;
-  if(req.mode === 'navigate'){
+  const request = event.request;
+  const url = new URL(request.url);
+  if (request.method !== 'GET' || url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        const res = await fetch(req);
-        if(res.ok) {
-          const cache = await caches.open(CACHE_NAME);
-          cache.put('./index.html',res.clone()).catch(()=>{});
-          return res;
-        }
-        throw new Error('Offline');
+        const response = await fetch(request);
+        if (!response.ok) throw new Error('Navigation unavailable');
+        return response;
       } catch {
-        return (await caches.match('./index.html')) || Response.error();
+        return await caches.match('./index.html') || Response.error();
       }
     })());
     return;
   }
+
+  // Artwork loads only when a page actually uses it. Subsequent visits use the cache.
   event.respondWith((async () => {
-    const cached = await caches.match(req, {ignoreSearch:true});
-    if(cached) return cached;
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(request, {ignoreSearch: true});
+    if (cached) return cached;
     try {
-      const res=await fetch(req);
-      if(res.ok){
-        const cache=await caches.open(CACHE_NAME);
-        cache.put(req,res.clone()).catch(()=>{});
-      }
-      return res;
+      const response = await fetch(request);
+      if (response.ok) cache.put(request, response.clone()).catch(() => {});
+      return response;
     } catch {
       return Response.error();
     }
