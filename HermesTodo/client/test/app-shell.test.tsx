@@ -41,7 +41,7 @@ describe("responsive authenticated shell", () => {
     expect(navigation).toBeInTheDocument();
     expect(navigation).toHaveClass("floating-tab-bar");
     expect(screen.getByRole("link", { name: "清单" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "收集箱" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("link", { name: "时间线" })).not.toHaveAttribute("aria-current");
     expect(screen.getByRole("link", { name: "AI" })).not.toHaveAttribute("aria-current");
   });
 
