@@ -9,7 +9,7 @@ import { AILogo } from "./AILogo";
 
 const links = [
   { to: "/", label: "清单", end: true, glyph: "fleur" },
-  { to: "/inbox", label: "收集箱", end: true, glyph: "inbox" },
+  { to: "/inbox", label: "时间线", end: true, glyph: "inbox" },
   { to: "/ai", label: "AI", end: false, glyph: "ai" }
 ] satisfies Array<{ to: string; label: string; end: boolean; glyph: string }>;
 
