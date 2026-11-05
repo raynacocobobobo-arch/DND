@@ -18,7 +18,6 @@ export function ListCard({
 }) {
   return (
     <li className={`context-card list-card${dragging ? " list-card-dragging" : ""}`}
-      style={{ "--context-color": list.color } as React.CSSProperties}
       onDragOver={(event)=>{event.preventDefault(); onDragOver();}}
       onDrop={(event)=>{event.preventDefault(); onDrop();}}>
       <Link className="context-card-link" to={`/lists/${list.id}`}>
