@@ -29,11 +29,11 @@ export function ListForm({
 
   return <div className="dialog-backdrop" role="presentation">
     <section className="form-dialog" role="dialog" aria-modal="true" aria-labelledby="list-form-title">
-      <div className="dialog-heading"><h2 id="list-form-title">{list ? "编辑清单" : "新建清单"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
+      <div className="dialog-heading"><h2 id="list-form-title">{list ? "编辑场景" : "新建场景"}</h2><button type="button" aria-label="关闭" onClick={onCancel}>×</button></div>
       <form className="stacked-form" onSubmit={submit}>
-        <label>清单名称<input value={name} onChange={(e)=>setName(e.target.value)} maxLength={40} autoFocus placeholder="例如：出国旅行"/></label>
+        <label>场景名称<input value={name} onChange={(e)=>setName(e.target.value)} maxLength={40} autoFocus placeholder="例如：出国旅行"/></label>
         <div className="context-crest-field">
-          <div className="context-crest-label" id="list-crest-picker-label">选择清单纹章</div>
+          <div className="context-crest-label" id="list-crest-picker-label">选择场景纹章</div>
           <div className="heraldic-icon-picker" role="group" aria-labelledby="list-crest-picker-label">
             {icons.map(({value,label})=><button type="button" className="heraldic-icon-choice" key={value}
               aria-label={label} aria-pressed={icon===value} onClick={()=>setIcon(canonicalCrestName(value))}>
@@ -45,7 +45,7 @@ export function ListForm({
           <input type="radio" name="list-color" value={value} checked={color===value} onChange={()=>setColor(value)}/><span className="sr-only">{value}</span>
         </label>)}</div></fieldset>
         <div className="dialog-actions"><button type="button" className="secondary-button" onClick={onCancel}>取消</button>
-          <button type="submit" className="primary-button" disabled={pending||!name.trim()}>{list ? "保存" : "创建清单"}</button></div>
+          <button type="submit" className="primary-button" disabled={pending||!name.trim()}>{list ? "保存" : "创建场景"}</button></div>
       </form>
     </section>
   </div>;
