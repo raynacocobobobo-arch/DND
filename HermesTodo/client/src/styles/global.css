@@ -284,3 +284,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .ht-modal-scrim{align-items:end;padding:0}
   .ht-modal{width:100%;max-height:91dvh;padding:20px 18px calc(26px + env(safe-area-inset-bottom))}
 }
+
+/* iPhone standalone magic-link continuation: keep credentials on-device. */
+.login-magic-fallback{margin:12px 0 14px;padding:13px 15px;border:1px solid #b89b6c8c;background:#132632;color:#e5d5b8;line-height:1.6}
+.login-magic-fallback summary{cursor:pointer;color:#e5c58f;font-size:13px;font-weight:600}
+.login-magic-fallback p{font-size:12px;line-height:1.7;color:#c0b5a5}
+.login-magic-fallback label{display:block;font-size:12px;margin:8px 0}
+.login-magic-fallback input{width:100%;padding:12px 10px;min-width:0;color:#f9edd4;border:1px solid #c1a46f;background:#0c1921;border-radius:3px;font-size:13px}
+.login-magic-fallback button{margin-top:10px;padding:12px;min-height:44px;color:#fae6c4;background:#792e2d;border:1px solid #ad865b;cursor:pointer}
+.login-magic-fallback button:disabled{opacity:.55}
