@@ -100,7 +100,21 @@ jobs:
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.heraldic-icon-picker')))
               assert len(browser.find_elements(By.CSS_SELECTOR,'.heraldic-icon-picker .medieval-crest')) == 8
               assert 'briefcase' not in browser.find_element(By.CSS_SELECTOR,'.form-dialog').text
+              crest_grid_height=browser.execute_script("""
+                return document.querySelector('.heraldic-icon-picker').getBoundingClientRect().height
+              """)
+              assert crest_grid_height <= 170, f'Crest picker is still oversized: {crest_grid_height}'
               browser.find_element(By.CSS_SELECTOR,'.form-dialog button[aria-label="关闭"]').click()
+              # Less-frequent scene actions are available in the disclosure, not five stacked buttons.
+              card=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .list-card')
+              card.find_element(By.CSS_SELECTOR,'.list-more-trigger').click()
+              wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'.list-card-menu')))
+              assert len(card.find_elements(By.CSS_SELECTOR,'.list-card-menu button'))==3
+              assert card.find_element(By.CSS_SELECTOR,'.list-more-trigger').get_attribute('aria-expanded')=='true'
+              card.find_element(By.CSS_SELECTOR,'.list-card-menu .list-menu-danger').click()
+              wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'.confirm-dialog')))
+              browser.find_element(By.CSS_SELECTOR,'.confirm-dialog .secondary-button').click()
+              assert browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .list-card').is_displayed()
               # Top-level list opens its scene directory; the existing demo scene remains intact.
               browser.find_element(By.CSS_SELECTOR,'a[href="#/lists/travel-list"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.list-detail-page .scene-home-grid')))
@@ -166,6 +180,15 @@ jobs:
               wait.until(lambda b: b.execute_script(
                   'return arguments[0].complete && arguments[0].naturalWidth >= 1600', mobile_art))
               browser.save_screenshot('/tmp/hermestodo-mobile.png')
+              hero_height=browser.execute_script('return document.querySelector(".lists-page .scene-home-hero").getBoundingClientRect().height')
+              assert hero_height < 370, f'Mobile hero still too tall: {hero_height}'
+              assert browser.execute_script('return getComputedStyle(document.querySelector(".scene-home-art")).objectFit')=='contain', 'Mobile artwork must remain uncropped'
+              mobile_card=browser.find_element(By.CSS_SELECTOR,'.scene-home-grid .list-card')
+              mobile_card.find_element(By.CSS_SELECTOR,'.list-more-trigger').click()
+              wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'.list-card-menu')))
+              measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
+              assert measure[1]<=measure[0]+2, f'Opened menu horizontal overflow: {measure}'
+              mobile_card.find_element(By.CSS_SELECTOR,'.list-more-trigger').click()
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'Mobile horizontal overflow: {measure}'
               first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
