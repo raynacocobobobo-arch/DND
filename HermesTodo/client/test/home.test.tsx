@@ -189,6 +189,25 @@ describe("independent project-based to-do list", () => {
     });
   });
 
+  test("opening the repeat dialog does not silently rewrite an existing monthly day rule", async () => {
+    const fetchMock=apiMock([
+      project("existing","每月22日账单",{dueAt:"2026-11-05T01:00:00.000Z",
+        repeatInterval:"custom",repeatRule:"每月22日"})
+    ]);
+    vi.stubGlobal("fetch",fetchMock);
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:"设置循环 每月22日账单"}));
+    expect(screen.getByText(/按原有规则每月22日执行/)).toBeInTheDocument();
+    expect(screen.getByRole("button",{name:"每月"})).toHaveAttribute("aria-pressed","true");
+    await user.click(screen.getByRole("button",{name:"保存设置"}));
+    await waitFor(()=>{
+      const call=fetchMock.mock.calls.find(([url,init])=>url==="/api/tasks/existing"&&init?.method==="PATCH");
+      expect(call).toBeTruthy();
+      expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({repeatInterval:"custom",repeatRule:"每月22日"});
+    });
+  });
+
   test("project detail also opens the recurrence dialog via the top-right icon", async () => {
     vi.stubGlobal("fetch",apiMock([project("monthly","每月对账")]));
     const user=userEvent.setup();
