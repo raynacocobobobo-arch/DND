@@ -60,7 +60,8 @@ export function repeatProgress(task:RecurringInput, records:Checkin[],now:Date =
     cycleAt:null,cycleCompleted:false,checkinCount:records.length,scheduledCount:0,completionRate:0
   };
   const rule={interval:task.repeatInterval,customRule:task.repeatRule};
-  let candidate=initialOccurrence(task);
+  const initial=initialOccurrence(task);
+  let candidate=initial;
   // Never allow a broken schedule to hang the UI.
   if (!Number.isFinite(candidate.getTime())) return {cycleAt:null,cycleCompleted:false,checkinCount:records.length,scheduledCount:0,completionRate:0};
   let current:string|null=null,scheduled=0;
@@ -68,7 +69,11 @@ export function repeatProgress(task:RecurringInput, records:Checkin[],now:Date =
   for(let i=0;i<60000 && candidate.getTime()<=end;i++){
     current=candidate.toISOString();
     scheduled++;
-    const next=nextOccurrence(rule,candidate,new Date(candidate.getTime()+1),ZONE);
+    // Always compute monthly/yearly dates from the original anchor.
+    // Otherwise Jan 31 -> Feb 28 would incorrectly drift to Mar 28.
+    const anchored=task.repeatInterval==="monthly" || task.repeatInterval==="yearly" ||
+      (task.repeatInterval==="custom" && /^每月\d{1,2}日$/.test(task.repeatRule));
+    const next=nextOccurrence(rule,anchored?initial: candidate,new Date(candidate.getTime()+1),ZONE);
     if (!next || next.getTime()<=candidate.getTime()) break;
     candidate=next;
   }
