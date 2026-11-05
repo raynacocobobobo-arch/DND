@@ -229,7 +229,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ht-date-line h2{color:#f4e6cd;font-size:15px;font-weight:600;letter-spacing:.06em;margin:0}
 .ht-date-total{color:#a6a496;font-size:12px;margin-left:auto}
 .ht-day-records{margin:0 0 0 124px;padding:2px 0 3px 0;list-style:none;border-left:1px solid #aa936d6e}
-.ht-record{display:grid;grid-template-columns:1px minmax(0,1fr);position:relative;margin:0 0 15px 0;padding-left:28px}
+.ht-record{display:grid;grid-template-columns:minmax(0,1fr);position:relative;margin:0 0 15px 0;padding-left:28px}
 .ht-record-clock{position:absolute;left:-123px;top:19px;width:95px;text-align:right;color:#b3a18a;font:13px Georgia,serif}
 .ht-record-dot{position:absolute;top:23px;left:-5px;width:9px;height:9px;background:#c5a36d;border-radius:50%;box-shadow:0 0 0 4px #152631}
 .ht-record-card{min-width:0;border:1px solid #8d784f64;background:linear-gradient(135deg,#172c37,#17242e);padding:16px 19px 14px;box-shadow:0 8px 18px #0002}
