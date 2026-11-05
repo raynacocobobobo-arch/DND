@@ -8,13 +8,15 @@ const PRIVATE_ACCOUNT_NAME = "rui";
 const PRIVATE_ACCOUNT_EMAIL = "raynacocobobobo@gmail.com";
 
 export function LoginPage() {
-  const { login, sendMagicLink } = useAuth();
+  const { login, sendMagicLink, acceptMagicLink } = useAuth();
   const cloudMode = isCloudMode();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [sendingLink, setSendingLink] = useState(false);
+  const [pastedLink, setPastedLink] = useState("");
+  const [verifyingLink, setVerifyingLink] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,6 +49,20 @@ export function LoginPage() {
       setError(reason instanceof Error ? reason.message : "登录邮件发送失败，请稍后重试");
     } finally {
       setSendingLink(false);
+    }
+  }
+
+  async function loginFromCopiedLink() {
+    setError("");
+    setNotice("");
+    setVerifyingLink(true);
+    try {
+      await acceptMagicLink(pastedLink.trim());
+      setPastedLink("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "邮件验证失败，请重试");
+    } finally {
+      setVerifyingLink(false);
     }
   }
 
@@ -105,6 +121,23 @@ export function LoginPage() {
             >
               {sendingLink ? "正在发送…" : "首次登录 / 忘记密码？用邮件登录一次"}
             </button>
+            <details className="login-magic-fallback">
+              <summary>邮箱链接在 Safari 打开？在桌面应用中验证</summary>
+              <p>在 Gmail 中长按验证按钮并复制原始链接，粘贴到这里。该链接仅用于当前设备登录，不要发给其他人。</p>
+              <label htmlFor="magic-login-url">登录邮件原始链接</label>
+              <input
+                id="magic-login-url"
+                type="url"
+                autoComplete="off"
+                value={pastedLink}
+                placeholder="https://…supabase.co/auth/v1/verify?…"
+                onChange={(event) => setPastedLink(event.target.value)}
+              />
+              <button type="button" disabled={verifyingLink || !pastedLink.trim()}
+                onClick={() => void loginFromCopiedLink()}>
+                {verifyingLink ? "正在验证…" : "在当前设备完成邮件登录"}
+              </button>
+            </details>
             <p className="login-persist-note">
               除非主动退出此设备或清除浏览器站点数据，否则无需重复登录。
             </p>
