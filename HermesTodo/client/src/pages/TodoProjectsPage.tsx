@@ -148,7 +148,7 @@ export function TodoProjectsPage() {
                               <span className="tp-inline-child-detail">
                                 <span>{child.title}</span>
                                 {child.notes ? <small>{child.notes}</small> : null}
-                                {child.repeatInterval !== "none" ?
+                                {(child.repeatInterval !== "none" || (child.scheduledCount??0)>0) ?
                                   <small className="tp-repeat">已打卡 {child.checkinCount ?? 0} / {child.scheduledCount ?? 0} 次</small> : null}
                               </span>
                               <button type="button"
