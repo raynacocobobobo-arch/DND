@@ -70,6 +70,69 @@ describe("browser cloud bridge", () => {
       Authorization: "Bearer user-jwt"
     });
   });
+  it("handles existing Postgres +00:00 checkins and safely reverses/reattaches them", async () => {
+    saveCloudConfig(project, publishable);
+    localStorage.setItem("hermestodo-supabase-session-v1", JSON.stringify({
+      access_token:"user-jwt",refresh_token:"refresh",expires_at:now+3600,
+      user_id:"owner-1",project_url:project
+    }));
+    const cycle=new Date(Date.now()-60_000).toISOString();
+    const postgresCycle=cycle.replace(/Z$/, "+00:00");
+    const task={
+      id:"task-1",title:"月度对账",notes:"",priority:"medium",
+      due_at:cycle,is_completed:false,completed_at:null,context_id:null,
+      parent_task_id:null,repeat_interval:"monthly",repeat_rule:"",
+      created_at:cycle,updated_at:cycle
+    };
+    const records: Array<{task_id:string;cycle_at:string;completed_at:string}>=[
+      {task_id:"task-1",cycle_at:postgresCycle,completed_at:new Date().toISOString()}
+    ];
+    const network=vi.fn(async (input:string | URL | Request,init?:RequestInit) => {
+      const url=String(input);
+      const method=init?.method??"GET";
+      const ok=(value:unknown)=>new Response(JSON.stringify(value),{
+        status:200,headers:{"content-type":"application/json"}
+      });
+      if(url.includes("/hermes_tasks?select="))return ok([task]);
+      if(url.includes("/hermes_task_checkins")) {
+        if(method==="GET")return ok([...records]);
+        if(method==="DELETE"){
+          records.length=0;
+          return new Response(null,{status:204});
+        }
+        if(method==="POST"){
+          expect(url).toContain("on_conflict=user_id,task_id,cycle_at");
+          expect((init?.headers as Record<string,string>).Prefer)
+            .toBe("return=minimal,resolution=ignore-duplicates");
+          const payload=JSON.parse(String(init?.body));
+          if(!records.some(item=>item.task_id===payload.task_id&&
+             Date.parse(item.cycle_at)===Date.parse(payload.cycle_at))){
+            records.push({...payload});
+          }
+          return new Response(null,{status:204});
+        }
+      }
+      throw new Error("Unexpected REST request "+method+" "+url);
+    });
+    vi.stubGlobal("fetch",network);
+    expect(installCloudBridge()).toBe(true);
+
+    // A checkin already exists in Supabase's +00:00 representation:
+    // clicking a checked task must DELETE, not try a duplicate POST.
+    const undone=await fetch("/api/tasks/task-1/toggle",{method:"POST"});
+    expect(undone.status).toBe(200);
+    expect(await undone.json()).toMatchObject({isCompleted:false,checkinCount:0});
+    expect(network.mock.calls.filter(([,options])=>options?.method==="POST")).toHaveLength(0);
+
+    // Rechecking inserts exactly one new checkin using conflict-safe semantics.
+    const redone=await fetch("/api/tasks/task-1/toggle",{method:"POST"});
+    expect(redone.status).toBe(200);
+    expect(await redone.json()).toMatchObject({isCompleted:true,checkinCount:1});
+    expect(records).toHaveLength(1);
+    expect(network.mock.calls.filter(([,options])=>options?.method==="POST")).toHaveLength(1);
+    expect(new Date(records[0].cycle_at).getTime()).toBe(new Date(cycle).getTime());
+  });
+
   it("never falls back to demo data when signed out from cloud", async () => {
     saveCloudConfig(project, publishable);
     const network = vi.fn(async () => { throw new Error("Must not contact network"); });
