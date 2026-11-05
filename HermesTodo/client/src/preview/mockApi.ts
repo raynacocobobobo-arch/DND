@@ -1,4 +1,4 @@
-import { nextOccurrence } from "../cloud/recurrence";
+import { repeatProgress, type Checkin } from "../cloud/checkins";
 /**
  * Standalone, browser-only API for the public HermesTodo preview.
  * Does not call the production API or handle real credentials.
@@ -20,7 +20,7 @@ type TaskItem = {
   repeatInterval: "none" | "daily" | "weekly" | "monthly" | "yearly" | "custom";
   repeatRule: string; createdAt: string; updatedAt: string;
 };
-type DemoStore = { lists: ListItem[]; contexts: ContextItem[]; tasks: TaskItem[] };
+type DemoStore = { lists: ListItem[]; contexts: ContextItem[]; tasks: TaskItem[]; checkins: Checkin[] };
 const STORAGE_KEY = "hermestodo-public-preview-v1";
 const nowISO = () => new Date().toISOString();
 const id = () => crypto.randomUUID();
@@ -46,6 +46,7 @@ const makeTask = (title: string, contextId: string | null, dueAt: string | null,
 const seed: DemoStore = {
   lists: demoLists,
   contexts: demoContexts,
+  checkins: [],
   tasks: [
     makeTask("记下一个临时想法", null, null),
     makeTask("买咖啡豆", null, null),
@@ -64,7 +65,7 @@ function read(): DemoStore {
         const lists = Array.isArray(parsed.lists) && parsed.lists.length ? parsed.lists : demoLists;
         const defaultListId = lists[0]?.id ?? "travel-list";
         const contexts = parsed.contexts.map((item) => ({ ...item, listId: item.listId ?? defaultListId }));
-        return { lists, contexts, tasks: parsed.tasks };
+        return { lists, contexts, tasks: parsed.tasks,checkins:Array.isArray(parsed.checkins)?parsed.checkins:[] };
       }
     }
   } catch {
@@ -90,10 +91,7 @@ function getTasks(search: URLSearchParams) {
     if (sort === "dueDate") return (a.dueAt ?? "9999").localeCompare(b.dueAt ?? "9999") || weight[a.priority] - weight[b.priority];
     return weight[a.priority] - weight[b.priority] || (a.dueAt ?? "9999").localeCompare(b.dueAt ?? "9999");
   });
-  return records.map(t => ({
-    ...t,
-    subtasks: store.tasks.filter(child => child.parentTaskId === t.id).sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map(child => ({ ...child, subtasks: [] }))
-  }));
+  return records.map(taskRecord);
 }
 function getContexts(search = new URLSearchParams()) {
   const listId = search.get("listId");
@@ -121,15 +119,24 @@ function getLists() {
   });
 }
 function taskRecord(task: TaskItem) {
-  return { ...task, subtasks: store.tasks.filter(t => t.parentTaskId === task.id).map(t => ({ ...t, subtasks: [] })) };
+  const decorate=(item:TaskItem) => {
+    const history=store.checkins.filter(x=>x.taskId===item.id);
+    const progress=repeatProgress(item,history);
+    return {...item,
+      isCompleted:item.repeatInterval==="none"?item.isCompleted:progress.cycleCompleted,
+      completedAt:item.repeatInterval==="none"?item.completedAt:history.find(x=>x.cycleAt===progress.cycleAt)?.completedAt??null,
+      checkinCount:progress.checkinCount,scheduledCount:progress.scheduledCount,
+      completionRate:progress.completionRate,cycleAt:progress.cycleAt
+    };
+  };
+  return {...decorate(task),subtasks:store.tasks.filter(t=>t.parentTaskId===task.id).map(t=>({...decorate(t),subtasks:[]}))};
 }
 function createTask(data: Partial<TaskItem>) {
   const task = { ...makeTask(String(data.title ?? "").trim(), data.contextId ?? null, data.dueAt ?? null), ...data };
   if (task.parentTaskId) {
     task.contextId = null;
     task.dueAt = null;
-    task.repeatInterval = "none";
-    task.repeatRule = "";
+
   }
   store.tasks.push(task);
   persist();
@@ -242,34 +249,25 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
     const t = store.tasks.find(x => x.id === tm[1]);
     if (!t) return error("任务不存在", 404);
     if (tm[2] === "/toggle" && method === "POST") {
-      const timestamp = nowISO();
-      const next = !t.isCompleted && t.repeatInterval !== "none"
-        ? nextOccurrence(
-          {interval: t.repeatInterval, customRule: t.repeatRule},
-          t.dueAt ? new Date(t.dueAt) : null,
-          new Date(timestamp), "Asia/Shanghai"
-        ) : null;
-      t.isCompleted = !t.isCompleted;
-      t.completedAt = t.isCompleted ? timestamp : null;
-      t.updatedAt = timestamp;
-      if (next) {
-        const upcoming = createTask({
-          title: t.title, notes: t.notes, priority: t.priority,
-          dueAt: next.toISOString(), contextId: t.contextId,
-          repeatInterval: t.repeatInterval, repeatRule: t.repeatRule
-        });
-        for (const child of store.tasks.filter(item => item.parentTaskId === t.id)) {
-          createTask({
-            title: child.title, notes: child.notes, priority: child.priority,
-            parentTaskId: upcoming.id
-          });
+      if (t.repeatInterval !== "none") {
+        const progress=repeatProgress(t,store.checkins);
+        if (!progress.cycleAt) return error("首次循环日期尚未到来",400);
+        if(progress.cycleCompleted) {
+          store.checkins=store.checkins.filter(x=>x.taskId!==t.id||x.cycleAt!==progress.cycleAt);
+        } else {
+          store.checkins.push({taskId:t.id,cycleAt:progress.cycleAt,completedAt:nowISO()});
         }
+        persist();
+        return reply(taskRecord(t));
       }
-      persist();
-      return reply(taskRecord(t));
+      t.isCompleted = !t.isCompleted;
+      t.completedAt = t.isCompleted ? nowISO() : null;
+      t.updatedAt = nowISO(); persist(); return reply(taskRecord(t));
     }
     if (method === "PATCH") {
-      Object.assign(t, data, { updatedAt: nowISO() }); persist(); return reply(taskRecord(t));
+      Object.assign(t, data, { updatedAt: nowISO() });
+      if(data.repeatInterval&&data.repeatInterval!=="none"){t.isCompleted=false;t.completedAt=null;}
+      persist(); return reply(taskRecord(t));
     }
     if (method === "DELETE") {
       store.tasks = store.tasks.filter(x => x.id !== t.id && x.parentTaskId !== t.id);
