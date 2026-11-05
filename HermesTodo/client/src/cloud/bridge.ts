@@ -697,13 +697,18 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
           repeatRule:schedule.repeat_rule,dueAt:schedule.due_at,createdAt:schedule.created_at
         },current.map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at})),now);
         if(!progress.cycleAt) throw new Error("首次循环日期尚未到来，请选择有效日期");
+        // The toggle endpoint only needs to return its changed completion fields.
+        // Avoid fetching every task and every checkin again after the write; the
+        // UI keeps the existing tree and reconciles in the background.
+        let updated=progress.cycleCompleted
+          ? current.filter(x=>canonicalCycleAt(x.cycle_at)!==progress.cycleAt)
+          : current;
         if(progress.cycleCompleted) {
-          await rest(config,endpoint+"?task_id=eq."+id+"&cycle_at=eq."+encodeURIComponent(progress.cycleAt),{method:"DELETE"});
+          await rest(config,endpoint+"?task_id=eq."+id+"&cycle_at=eq."+encodeURIComponent(progress.cycleAt),
+            {method:"DELETE",headers:{Prefer:"return=minimal"}});
         } else {
           const session=await accessToken(config);
-          // Atomic conflict-safe write: other tabs/devices may have checked in
-          // the same task and period since our initial SELECT. Preserve the
-          // first checkin; never overwrite its completed_at or drop the UNIQUE.
+          // Atomic conflict-safe write; preserve the original completed_at.
           await rest(config,endpoint+"?on_conflict=user_id,task_id,cycle_at",{
             method:"POST",
             headers:{Prefer:"return=minimal,resolution=ignore-duplicates"},
@@ -711,17 +716,32 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
               user_id:session.user_id,task_id:old.id,cycle_at:progress.cycleAt,completed_at:now.toISOString()
             })
           });
+          updated=[...current,{task_id:old.id,cycle_at:progress.cycleAt,completed_at:now.toISOString()}];
         }
-        const [rows,records]=await Promise.all([allTasks(config),
-          rest<DbCheckin[]>(config,endpoint+"?select=task_id,cycle_at,completed_at")]);
-        return jsonResponse(toTask(old,rows,true,records));
+        const nextProgress=repeatProgress({
+          repeatInterval:schedule.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
+          repeatRule:schedule.repeat_rule,dueAt:schedule.due_at,createdAt:schedule.created_at
+        },updated.map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at})),now);
+        return jsonResponse({
+          id:old.id,isCompleted:nextProgress.cycleCompleted,
+          completedAt:nextProgress.cycleCompleted
+            ? updated.find(x=>canonicalCycleAt(x.cycle_at)===nextProgress.cycleAt)?.completed_at??null
+            : null,
+          checkinCount:nextProgress.checkinCount,
+          scheduledCount:nextProgress.scheduledCount,
+          completionRate:nextProgress.completionRate,
+          cycleAt:nextProgress.cycleAt
+        });
       }
       const changed=await rest<DbTask[]>(config,"hermes_tasks?id=eq."+id,{
         method:"PATCH",body:JSON.stringify({
           is_completed:!old.is_completed,completed_at:old.is_completed?null:new Date().toISOString()
         })
       });
-      return jsonResponse(toTask(changed[0]!,await allTasks(config)));
+      if(!changed[0])throw new Error("任务不存在");
+      return jsonResponse({
+        id:changed[0].id,isCompleted:changed[0].is_completed,completedAt:changed[0].completed_at
+      });
     }
     if (method === "PATCH") {
       const previous=await oneTask(config,tm[1]!);
