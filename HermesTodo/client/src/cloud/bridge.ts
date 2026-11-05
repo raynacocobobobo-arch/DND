@@ -470,6 +470,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     if (!email) throw new Error("请输入云端账户邮箱");
     const session = await publicAuth(config, "token?grant_type=password", { email, password: data.password });
     saveSession(config, session);
+    await migrateLegacyLocalData(config);
     return jsonResponse({ authenticated: true });
   }
   if (endpoint === "/api/auth/signup" && method === "POST") {
@@ -477,6 +478,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     const response = await publicAuth(config, "signup", { email, password: data.password });
     if (response.access_token) {
       saveSession(config, response);
+      await migrateLegacyLocalData(config);
       return jsonResponse({ authenticated: true, confirmationRequired: false });
     }
     return jsonResponse({ authenticated: false, confirmationRequired: true });
@@ -509,6 +511,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
       type
     });
     saveSession(config, token);
+    await migrateLegacyLocalData(config);
     return jsonResponse({ authenticated: true });
   }
   if (endpoint === "/api/auth/recover-redirect" && method === "POST") {
@@ -543,6 +546,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
       access_token: access, refresh_token: refresh,
       expires_in: Number.isFinite(expires) && expires > 0 ? expires : 3600
     });
+    await migrateLegacyLocalData(config);
     return jsonResponse({ authenticated: true });
   }
   if (endpoint === "/api/auth/logout" && method === "POST") {
