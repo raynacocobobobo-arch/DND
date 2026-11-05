@@ -207,6 +207,8 @@ jobs:
               # iPhone-sized to-do overview and detail remain scrollable above the fixed tab bar.
               browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page .tp-project-link')))
+              # Changing tabs should not carry over the scene page's scroll.
+              wait.until(lambda b: b.execute_script('return Math.abs(document.documentElement.scrollTop) < 5'))
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-inline-child')))
               mobile_child_offset=browser.execute_script("""
                 const project=document.querySelector('.tp-project:has(.tp-inline-child)');
@@ -217,7 +219,9 @@ jobs:
               assert mobile_child_offset>=12, f'Mobile subtask checkbox not indented: {mobile_child_offset}'
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'To-do overview horizontal overflow: {measure}'
-              browser.find_element(By.CSS_SELECTOR,'.tp-project-link').click()
+              project_link=browser.find_element(By.CSS_SELECTOR,'.tp-project-link')
+              browser.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})',project_link)
+              project_link.click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-detail .tp-workspace')))
               browser.execute_script('window.scrollTo(0,document.documentElement.scrollHeight)')
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
