@@ -150,6 +150,24 @@ jobs:
               first=browser.execute_script("return document.querySelector('.scene-home-grid .context-card').getBoundingClientRect().top")
               viewport=browser.execute_script("return window.innerHeight")
               assert first < viewport - 45, f'First scene card below fold: top={first}, viewport={viewport}'
+              # iPhone-sized to-do overview and detail remain scrollable above the fixed tab bar.
+              browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page .tp-project-link')))
+              measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
+              assert measure[1]<=measure[0]+2, f'To-do overview horizontal overflow: {measure}'
+              browser.find_element(By.CSS_SELECTOR,'.tp-project-link').click()
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-detail .tp-workspace')))
+              browser.execute_script('window.scrollTo(0,document.documentElement.scrollHeight)')
+              measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
+              assert measure[1]<=measure[0]+2, f'Project detail horizontal overflow: {measure}'
+              boundary=browser.execute_script("""
+                const workspace=document.querySelector('.tp-workspace').getBoundingClientRect();
+                const navigation=document.querySelector('.main-navigation').getBoundingClientRect();
+                return {contentBottom:workspace.bottom,navTop:navigation.top};
+              """)
+              assert boundary['contentBottom'] < boundary['navTop']-5, f'Bottom tab covers checklist: {boundary}'
+              browser.save_screenshot('/tmp/hermestodo-todo-mobile.png')
+
               # Cloud mode must stay intentionally simple: fixed username + password only.
               browser.execute_script('''localStorage.setItem('hermestodo-supabase-public-v1',
                 JSON.stringify({url:'https://arnrlepjuqdmvbipswci.supabase.co',
@@ -185,6 +203,7 @@ jobs:
           path: |
             /tmp/hermestodo-desktop.png
             /tmp/hermestodo-mobile.png
+            /tmp/hermestodo-todo-mobile.png
             /tmp/hermestodo-cloud-login.png
       - name: Publish preview under existing docs folder
         run: |
