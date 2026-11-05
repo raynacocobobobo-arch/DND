@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { formatInTimeZone } from "date-fns-tz";
 import { zhCN } from "date-fns/locale";
 import { Link } from "react-router-dom";
+import { RefreshCcw } from "lucide-react";
 
 import { TaskCreateDialog } from "../components/TaskCreateDialog";
 import { ProjectRepeatDialog } from "../components/ProjectRepeatDialog";
@@ -101,7 +102,6 @@ export function TodoProjectsPage() {
             </header>
             <ul className="tp-project-list">
               {group.records.map(task => {
-                const finished = task.subtasks.filter(child => child.isCompleted).length;
                 const total = task.subtasks.length;
                 const repeat = repeatLabel(task);
                 return (
@@ -116,16 +116,15 @@ export function TodoProjectsPage() {
                         <Link className="tp-project-link" to={"/inbox/" + encodeURIComponent(task.id)}>
                           <strong>{task.title}</strong>
                           <span className="tp-project-meta">
-                            {total > 0 ? <span>{finished}/{total} 项子待办</span> : <span>点击添加子待办</span>}
+                            {total === 0 ? <span>点击添加子待办</span> : null}
                             {repeat ? <span className="tp-repeat">↻ {repeat}</span> : null}
                             {task.isCompleted ? <span>已完成</span> : null}
                           </span>
-                          {total > 0 ? <span className="tp-progress-track" aria-label={"子待办完成 " + finished + "/" + total}><span style={{width: Math.round(finished / total * 100) + "%"}}/></span> : null}
                         </Link>
                         <div className="tp-project-tools">
                           <button type="button" className={"tp-repeat-trigger" + (repeat ? " tp-repeat-enabled" : "")}
                             aria-label={"设置循环 " + task.title} title="设置循环周期"
-                            onClick={()=>setRepeatTask(task)}>↻</button>
+                            onClick={()=>setRepeatTask(task)}><RefreshCcw size={18} strokeWidth={1.6} aria-hidden="true" /></button>
                           {total > 0 ? <button type="button" className="tp-collapse-trigger"
                             aria-label={(collapsedIds.has(task.id) ? "展开" : "折叠") + "子待办 " + task.title}
                             aria-expanded={!collapsedIds.has(task.id)} aria-controls={"tp-children-" + task.id}
@@ -146,18 +145,15 @@ export function TodoProjectsPage() {
                               <span className="tp-inline-child-detail">
                                 <span>{child.title}</span>
                                 {child.notes ? <small>{child.notes}</small> : null}
-                                {(child.repeatInterval !== "none" || (child.scheduledCount??0)>0) ?
-                                  <small className="tp-repeat">已打卡 {child.checkinCount ?? 0} / {child.scheduledCount ?? 0} 次</small> : null}
                               </span>
-                              <button type="button"
+                              {task.repeatInterval === "none" ? <button type="button"
                                 className={"tp-inline-repeat" + (child.repeatInterval !== "none" ? " tp-inline-repeat-active" : "")}
                                 title="按时间循环" aria-label={"设置循环 " + child.title}
-                                onClick={() => setRepeatTask(child)}>↻</button>
+                                onClick={() => setRepeatTask(child)}><RefreshCcw size={17} strokeWidth={1.6} aria-hidden="true" /></button> : null}
                             </li>
                           ))}
                         </ul>
-                        {filter === "active" && finished === total ? <p>子待办已全部完成，可切换「全部」查看记录。</p> : null}
-                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>进入项目详情</Link>
+                        {filter === "active" && task.subtasks.every(child => child.isCompleted) ? <p>子待办已完成，可切换「全部」查看记录。</p> : null}
                       </div> : null}
                     </div>
                   </li>
