@@ -130,6 +130,16 @@ jobs:
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-inline-child')))
               inline=browser.find_element(By.CSS_SELECTOR,'.tp-inline-child')
               project_with_children=browser.find_element(By.CSS_SELECTOR,'.tp-project:has(.tp-inline-child)')
+              child_offset=browser.execute_script("""
+                const project=document.querySelector('.tp-project:has(.tp-inline-child)');
+                const top=project.querySelector('.tp-project-card .tp-check').getBoundingClientRect();
+                const child=project.querySelector('.tp-inline-child .tp-check').getBoundingClientRect();
+                return child.left-top.left;
+              """)
+              assert child_offset>=18, f'Subtask checkbox not indented from parent: {child_offset}'
+              assert '项子待办' not in project_with_children.text
+              assert '已打卡' not in project_with_children.text
+              assert '进入项目详情' not in project_with_children.text
               project_with_children.find_element(By.CSS_SELECTOR,'.tp-collapse-trigger').click()
               assert not inline.is_displayed(), 'Folded checklist remains visible'
               project_with_children.find_element(By.CSS_SELECTOR,'.tp-collapse-trigger').click()
@@ -164,6 +174,14 @@ jobs:
               # iPhone-sized to-do overview and detail remain scrollable above the fixed tab bar.
               browser.find_element(By.CSS_SELECTOR,'a[href="#/inbox"]').click()
               wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-page .tp-project-link')))
+              wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.tp-inline-child')))
+              mobile_child_offset=browser.execute_script("""
+                const project=document.querySelector('.tp-project:has(.tp-inline-child)');
+                const top=project.querySelector('.tp-project-card .tp-check').getBoundingClientRect();
+                const child=project.querySelector('.tp-inline-child .tp-check').getBoundingClientRect();
+                return child.left-top.left;
+              """)
+              assert mobile_child_offset>=12, f'Mobile subtask checkbox not indented: {mobile_child_offset}'
               measure=browser.execute_script('return [innerWidth,document.documentElement.scrollWidth]')
               assert measure[1]<=measure[0]+2, f'To-do overview horizontal overflow: {measure}'
               browser.find_element(By.CSS_SELECTOR,'.tp-project-link').click()
