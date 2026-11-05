@@ -1,3 +1,4 @@
+import { repeatProgress, type Checkin } from "./checkins";
 /**
  * Browser-only Supabase adapter for the public GitHub Pages build.
  * Maps the existing HermesTodo JSON API onto PostgREST and Supabase Auth.
@@ -30,6 +31,7 @@ type DbTask = {
   repeat_interval: string; repeat_rule: string;
   created_at: string; updated_at: string;
 };
+type DbCheckin = {task_id:string;cycle_at:string;completed_at:string};
 const SESSION_KEY = "hermestodo-supabase-session-v1";
 
 function readSession(config: CloudConfig): Session | null {
@@ -160,15 +162,26 @@ function toContext(c: DbContext, tasks: DbTask[]) {
     incompleteCount: tasks.filter(t => t.context_id === c.id && !t.is_completed).length
   };
 }
-function toTask(t: DbTask, all: DbTask[], includeChildren = true): JsonObject {
+function toTask(t: DbTask, all: DbTask[], includeChildren = true, checkins: DbCheckin[] = []): JsonObject {
+  const records: Checkin[] = checkins.filter(x => x.task_id === t.id).map(x => ({
+    taskId: x.task_id, cycleAt: x.cycle_at, completedAt: x.completed_at
+  }));
+  const progress = repeatProgress({
+    repeatInterval:t.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
+    repeatRule:t.repeat_rule,dueAt:t.due_at,createdAt:t.created_at
+  },records);
   return {
     id: t.id, title: t.title, notes: t.notes, priority: t.priority,
-    dueAt: t.due_at, isCompleted: t.is_completed, completedAt: t.completed_at,
+    dueAt: t.due_at, isCompleted: t.repeat_interval !== "none" ? progress.cycleCompleted : t.is_completed,
+    completedAt: t.repeat_interval !== "none"
+      ? records.find(x=>x.cycleAt === progress.cycleAt)?.completedAt ?? null : t.completed_at,
     contextId: t.context_id, parentTaskId: t.parent_task_id,
     repeatInterval: t.repeat_interval, repeatRule: t.repeat_rule,
     createdAt: t.created_at, updatedAt: t.updated_at,
+    checkinCount:progress.checkinCount,scheduledCount:progress.scheduledCount,
+    completionRate:progress.completionRate,cycleAt:progress.cycleAt,
     subtasks: includeChildren
-      ? all.filter(x => x.parent_task_id === t.id).map(x => toTask(x, all, false))
+      ? all.filter(x => x.parent_task_id === t.id).map(x => toTask(x,all,false,checkins))
       : []
   };
 }
@@ -356,7 +369,9 @@ async function migrateLegacyLocalData(config: CloudConfig): Promise<void> {
   localStorage.setItem(migrationKey, "1");
 }
 async function tasksForDisplay(config: CloudConfig, search: URLSearchParams): Promise<JsonObject[]> {
-  const all = await allTasks(config);
+  const [all,checkins] = await Promise.all([
+    allTasks(config),rest<DbCheckin[]>(config,"hermes_task_checkins?select=task_id,cycle_at,completed_at")
+  ]);
   let tasks = all.filter(t => !t.parent_task_id);
   const context = search.get("contextId");
   if (context !== null) tasks = tasks.filter(t => t.context_id === context);
@@ -370,7 +385,7 @@ async function tasksForDisplay(config: CloudConfig, search: URLSearchParams): Pr
     if (sort === "priority") return weight(a.priority) - weight(b.priority) || (a.due_at ?? "9999").localeCompare(b.due_at ?? "9999");
     return b.created_at.localeCompare(a.created_at);
   });
-  return tasks.map(t => toTask(t, all));
+  return tasks.map(t => toTask(t, all, true, checkins));
 }
 async function oneTask(config: CloudConfig, id: string): Promise<DbTask> {
   const found = await rest<DbTask[]>(config, "hermes_tasks?select=*&id=eq." + encodeURIComponent(id));
@@ -665,65 +680,43 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
     const id = encodeURIComponent(tm[1]!);
     if (tm[2] && method === "POST") {
       const old = await oneTask(config, tm[1]!);
-      const now = new Date();
-      const turningCompleted = !old.is_completed;
-      const next = turningCompleted && old.repeat_interval !== "none"
-        ? nextOccurrence(
-            { interval: old.repeat_interval as "none" | "daily" | "weekly" | "monthly" | "yearly" | "custom",
-              customRule: old.repeat_rule },
-            old.due_at ? new Date(old.due_at) : null,
-            now,
-            "Asia/Shanghai"
-          )
-        : null;
-      const endpoint = "hermes_tasks?id=eq." + id;
-      const changed = await rest<DbTask[]>(config, endpoint, { method: "PATCH", body: JSON.stringify({
-        is_completed: turningCompleted,
-        completed_at: turningCompleted ? now.toISOString() : null,
-        updated_at: now.toISOString()
-      }) });
-      if (next) {
-        let newlyCreatedId: string | null = null;
-        try {
-          const all = await allTasks(config);
-          const exists = all.some((task) =>
-            !task.is_completed && !task.parent_task_id &&
-            task.title === old.title && task.context_id === old.context_id &&
-            task.due_at === next.toISOString() && task.repeat_interval === old.repeat_interval
-          );
-          if (!exists) {
-            const upcoming = await createTask(config, {
-              title: old.title, notes: old.notes, priority: old.priority,
-              dueAt: next.toISOString(), contextId: old.context_id,
-              repeatInterval: old.repeat_interval, repeatRule: old.repeat_rule
-            });
-            newlyCreatedId = String(upcoming.id);
-            // Copy the checklist template, but never carry completed checkmarks to the next cycle.
-            for (const child of all.filter((task) => task.parent_task_id === old.id)) {
-              await createTask(config, {
-                title: child.title, notes: child.notes, priority: child.priority,
-                parentTaskId: newlyCreatedId
-              });
-            }
-          }
-        } catch (error) {
-          if (newlyCreatedId) {
-            // Compensate a partially-created cycle rather than leaving an orphan checklist.
-            const ids = await rest<DbTask[]>(config, "hermes_tasks?select=id&parent_task_id=eq." + encodeURIComponent(newlyCreatedId)).catch(() => []);
-            for (const child of ids) {
-              await rest(config, "hermes_tasks?id=eq." + encodeURIComponent(child.id), { method: "DELETE" }).catch(() => undefined);
-            }
-            await rest(config, "hermes_tasks?id=eq." + encodeURIComponent(newlyCreatedId), { method:"DELETE" }).catch(() => undefined);
-          }
-          await rest(config, endpoint, { method:"PATCH",
-            body: JSON.stringify({is_completed:false, completed_at:null, updated_at:now.toISOString()}) }).catch(() => undefined);
-          throw error;
+      if (old.repeat_interval !== "none") {
+        const now = new Date();
+        const endpoint = "hermes_task_checkins";
+        const current = await rest<DbCheckin[]>(config,endpoint+"?select=task_id,cycle_at,completed_at&task_id=eq."+id);
+        const progress=repeatProgress({
+          repeatInterval:old.repeat_interval as "none"|"daily"|"weekly"|"monthly"|"yearly"|"custom",
+          repeatRule:old.repeat_rule,dueAt:old.due_at,createdAt:old.created_at
+        },current.map(x=>({taskId:x.task_id,cycleAt:x.cycle_at,completedAt:x.completed_at})),now);
+        if(!progress.cycleAt) throw new Error("首次循环日期尚未到来，请选择有效日期");
+        if(progress.cycleCompleted) {
+          await rest(config,endpoint+"?task_id=eq."+id+"&cycle_at=eq."+encodeURIComponent(progress.cycleAt),{method:"DELETE"});
+        } else {
+          const session=await accessToken(config);
+          await rest(config,endpoint,{method:"POST",body:JSON.stringify({
+            user_id:session.user_id,task_id:old.id,cycle_at:progress.cycleAt,completed_at:now.toISOString()
+          })});
         }
+        const [rows,records]=await Promise.all([allTasks(config),
+          rest<DbCheckin[]>(config,endpoint+"?select=task_id,cycle_at,completed_at")]);
+        return jsonResponse(toTask(old,rows,true,records));
       }
-      return jsonResponse(toTask(changed[0]!, await allTasks(config)));
+      const changed=await rest<DbTask[]>(config,"hermes_tasks?id=eq."+id,{
+        method:"PATCH",body:JSON.stringify({
+          is_completed:!old.is_completed,completed_at:old.is_completed?null:new Date().toISOString()
+        })
+      });
+      return jsonResponse(toTask(changed[0]!,await allTasks(config)));
     }
     if (method === "PATCH") {
-      const changed = await rest<DbTask[]>(config, "hermes_tasks?id=eq." + id, { method: "PATCH", body: JSON.stringify(fields(data, taskFields)) });
+      const previous=await oneTask(config,tm[1]!);
+      const updates=fields(data,taskFields);
+      // Switching to a recurring check-in must not inherit the prior permanent tick.
+      if (previous.repeat_interval === "none" && data.repeatInterval && data.repeatInterval !== "none") {
+        updates.is_completed=false;
+        updates.completed_at=null;
+      }
+      const changed = await rest<DbTask[]>(config, "hermes_tasks?id=eq." + id, { method: "PATCH", body: JSON.stringify(updates) });
       if (!changed[0]) throw new Error("任务不存在");
       return jsonResponse(toTask(changed[0], await allTasks(config)));
     }
