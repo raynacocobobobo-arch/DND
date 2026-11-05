@@ -92,7 +92,7 @@ describe("lists and scenes interface", () => {
     expect(screen.getByRole("alertdialog", { name: "删除场景？" })).toHaveTextContent("任务不会删除");
     await user.click(screen.getByRole("button", { name: "取消" }));
 
-    const quickName = screen.getByLabelText("快速新建清单");
+    const quickName = screen.getByLabelText("快速新建场景");
     expect(quickName).toHaveAttribute("placeholder", "新建场景，例如：国内旅行、工作项目…");
 
     await user.click(screen.getByRole("button", { name: "添加场景" }));
@@ -107,7 +107,7 @@ describe("lists and scenes interface", () => {
     expect(JSON.parse(String(createCall?.[1]?.body))).toMatchObject({ name: "工作项目", icon: "compass", color: "#8CAABA" });
 
     await user.click(screen.getByRole("button", { name: "编辑 工作项目" }));
-    const name = screen.getByLabelText("清单名称");
+    const name = screen.getByLabelText("场景名称");
     await user.clear(name);
     await user.type(name, "客户项目");
     await user.click(screen.getByRole("button", { name: "保存" }));
@@ -203,7 +203,7 @@ describe("lists and scenes interface", () => {
     await user.click(screen.getByRole("button", { name: "复制待办" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledWith("【旅行】\n○ 确认航班\n● 预订酒店"));
 
-    await user.type(screen.getByLabelText("快速添加清单任务"), "购买转换插头");
+    await user.type(screen.getByLabelText("快速添加分类任务"), "购买转换插头");
     await user.click(screen.getByRole("button", { name: "添加" }));
     await waitFor(() => {
       const post = fetchMock.mock.calls.find(([request, init]) => request === "/api/tasks" && init?.method === "POST");
@@ -224,7 +224,7 @@ describe("lists and scenes interface", () => {
       throw new Error(`Unexpected request: ${path}`);
     }));
     render(<App />);
-    expect(await screen.findByRole("heading", { name: "我的场景" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /我的场景/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "场景目录" })).toBeInTheDocument();
     expect(await screen.findByRole("list", { name: "场景列表" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /进入待办清单/ })).toHaveAttribute("href", "/inbox");
