@@ -122,3 +122,27 @@
 .exchange-import-label textarea{width:100%;resize:vertical;border:1px solid #c6af87;border-radius:5px;background:#fff9ee;color:#26333b;padding:11px;line-height:1.55}
 .exchange-dialog .success-message{margin:12px 0 0;color:#536c4f;font-size:12px}
 @media(max-width:520px){.exchange-actions{grid-template-columns:1fr}}
+
+
+/* Preserve all eight heraldic choices; use tighter 4 × 2 cells. */
+.context-crest-field .heraldic-icon-picker{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin-top:5px;
+}
+.context-crest-field .heraldic-icon-choice{
+  min-height:72px;
+  padding:5px 3px;
+  gap:3px;
+}
+.context-crest-field .heraldic-icon-choice .medieval-crest{
+  margin-bottom:0;
+}
+.context-crest-field .heraldic-icon-choice span{
+  font-size:11px;
+  line-height:1.15;
+}
+@media(max-width:760px){
+  .context-crest-field .heraldic-icon-picker{gap:5px}
+  .context-crest-field .heraldic-icon-choice{min-height:69px;padding:4px 2px}
+}
