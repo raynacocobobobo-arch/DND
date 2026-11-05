@@ -1,6 +1,6 @@
 // Forbidden Arcana: small offline shell, on-demand card image caching.
 // Never pre-download the full tarot deck during first visit.
-const CACHE_NAME = 'forbidden-arcana-v3-optimized-20261105';
+const CACHE_NAME = 'forbidden-arcana-v4-opening-20261105';
 const PRECACHE = [
   './',
   './index.html',
@@ -38,14 +38,19 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
-  if (request.mode === 'navigate') {
+  // App shell must update when a new homepage is published; cache is offline fallback.
+  if (request.mode === 'navigate' || /\.(?:js|css)$/.test(url.pathname)) {
     event.respondWith((async () => {
       try {
-        const response = await fetch(request);
-        if (!response.ok) throw new Error('Navigation unavailable');
+        const response = await fetch(new Request(request, {cache: 'no-cache'}));
+        if (!response.ok) throw new Error('Page resource unavailable');
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(request, response.clone()).catch(() => {});
         return response;
       } catch {
-        return await caches.match('./index.html') || Response.error();
+        return await caches.match(request)
+          || (request.mode === 'navigate' ? await caches.match('./index.html') : null)
+          || Response.error();
       }
     })());
     return;
