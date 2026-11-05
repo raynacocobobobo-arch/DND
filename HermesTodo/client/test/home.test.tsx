@@ -124,6 +124,39 @@ describe("independent project-based to-do list", () => {
     expect(await screen.findByText("检查公积金")).toBeInTheDocument();
   });
 
+  test("two visible checkboxes react independently before either cloud write finishes", async () => {
+    const waiting: Record<string,(response:Response)=>void>={};
+    const input=[project("first","立即勾选一"),project("second","立即勾选二")];
+    const network=vi.fn(async (url:string | URL | Request,init?:RequestInit)=>{
+      const path=String(url);
+      if(path==="/api/session")return reply({authenticated:true});
+      if(path.startsWith("/api/tasks?"))return reply(input);
+      if(path.startsWith("/api/tasks/") && path.endsWith("/toggle") && init?.method==="POST"){
+        const id=path.split("/")[3];
+        return await new Promise<Response>(resolve=>{waiting[id]=resolve;});
+      }
+      if(path==="/api/contexts")return reply([]);
+      throw new Error("Unexpected request "+path);
+    });
+    vi.stubGlobal("fetch",network);
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:"全部"}));
+    await user.click(await screen.findByRole("button",{name:"完成 立即勾选一"}));
+    expect(await screen.findByRole("button",{name:"重新打开 立即勾选一"}))
+      .toHaveAttribute("aria-pressed","true");
+    const other=screen.getByRole("button",{name:"完成 立即勾选二"});
+    expect(other).toBeEnabled();
+    await user.click(other);
+    expect(await screen.findByRole("button",{name:"重新打开 立即勾选二"}))
+      .toHaveAttribute("aria-pressed","true");
+    await waitFor(()=>expect(Object.keys(waiting).sort()).toEqual(["first","second"]));
+    waiting.first(reply({id:"first",isCompleted:true,completedAt:new Date().toISOString()}));
+    waiting.second(reply({id:"second",isCompleted:true,completedAt:new Date().toISOString()}));
+    await waitFor(()=>expect(screen.getByRole("button",{name:"重新打开 立即勾选二"}))
+      .toHaveAttribute("aria-pressed","true"));
+  });
+
   test("switches the main list between unfinished and all projects", async () => {
     vi.stubGlobal("fetch",apiMock([
       project("active","待办项目"),
