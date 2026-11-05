@@ -161,51 +161,52 @@ describe("independent project-based to-do list", () => {
     await waitFor(()=>expect(screen.queryByText("核对银行账户")).not.toBeInTheDocument());
   });
 
-  test("repeat glyph opens a dedicated schedule picker and saves a selected weekday", async () => {
-    const fetchMock=apiMock([
-      project("weekly","每周核算",{dueAt:"2026-11-05T01:00:00.000Z"})
-    ]);
+  test("reference nine-cell picker saves weekday immediately and can pause", async () => {
+    const fetchMock=apiMock([project("weekly","每周核算",{dueAt:"2026-11-05T01:00:00.000Z"})]);
     vi.stubGlobal("fetch",fetchMock);
     const user=userEvent.setup();
     render(<App />);
     await user.click(await screen.findByRole("button",{name:"设置循环 每周核算"}));
     expect(await screen.findByRole("dialog",{name:"循环设置"})).toBeInTheDocument();
+    expect(screen.getAllByRole("button").filter(x=>["周一","周二","周三","周四","周五","周六","周日","每周","每月"].includes(x.textContent||""))).toHaveLength(9);
     await user.click(screen.getByRole("button",{name:"周三"}));
-    expect(screen.getByRole("button",{name:"周三"})).toHaveAttribute("aria-pressed","true");
-    await user.click(screen.getByRole("button",{name:"保存设置"}));
     await waitFor(()=>{
       const call=fetchMock.mock.calls.find(([url,init])=>url==="/api/tasks/weekly"&&init?.method==="PATCH");
       expect(call).toBeTruthy();
-      expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({
-        repeatInterval:"custom",repeatRule:"每周三",dueAt:"2026-11-05T01:00:00.000Z"
-      });
+      expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({repeatInterval:"custom",repeatRule:"每周三"});
     });
+    expect(screen.queryByRole("dialog",{name:"循环设置"})).not.toBeInTheDocument();
     await user.click(await screen.findByRole("button",{name:"设置循环 每周核算"}));
     expect(screen.getByRole("button",{name:"周三"})).toHaveAttribute("aria-pressed","true");
-    await user.click(screen.getByRole("button",{name:"暂停循环"}));
+    await user.click(screen.getByRole("button",{name:"暂停"}));
     await waitFor(()=>{
       const calls=fetchMock.mock.calls.filter(([url,init])=>url==="/api/tasks/weekly"&&init?.method==="PATCH");
       expect(JSON.parse(String(calls.at(-1)?.[1]?.body))).toMatchObject({repeatInterval:"none",repeatRule:""});
     });
   });
 
-  test("opening the repeat dialog does not silently rewrite an existing monthly day rule", async () => {
-    const fetchMock=apiMock([
-      project("existing","每月22日账单",{dueAt:"2026-11-05T01:00:00.000Z",
-        repeatInterval:"custom",repeatRule:"每月22日"})
-    ]);
+  test("existing monthly day rule is preserved when dialog is cancelled", async () => {
+    const fetchMock=apiMock([project("existing","每月22日账单",{
+      repeatInterval:"custom",repeatRule:"每月22日"
+    })]);
     vi.stubGlobal("fetch",fetchMock);
     const user=userEvent.setup();
     render(<App />);
     await user.click(await screen.findByRole("button",{name:"设置循环 每月22日账单"}));
-    expect(screen.getByText(/按原有规则每月22日执行/)).toBeInTheDocument();
     expect(screen.getByRole("button",{name:"每月"})).toHaveAttribute("aria-pressed","true");
-    await user.click(screen.getByRole("button",{name:"保存设置"}));
-    await waitFor(()=>{
-      const call=fetchMock.mock.calls.find(([url,init])=>url==="/api/tasks/existing"&&init?.method==="PATCH");
-      expect(call).toBeTruthy();
-      expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({repeatInterval:"custom",repeatRule:"每月22日"});
-    });
+    await user.click(screen.getByRole("button",{name:"取消"}));
+    expect(fetchMock.mock.calls.filter(([url,init])=>url==="/api/tasks/existing"&&init?.method==="PATCH")).toHaveLength(0);
+  });
+
+  test("each subtask has a visible independent recurrence button", async () => {
+    vi.stubGlobal("fetch",apiMock([
+      project("root","对账清单",{subtasks:[project("child","浦发银行卡",{parentTaskId:"root",notes:"核对余额与账单"})]})
+    ]));
+    const user=userEvent.setup();
+    render(<App />);
+    expect(await screen.findByText("核对余额与账单")).toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"设置循环 浦发银行卡"}));
+    expect(await screen.findByRole("dialog",{name:"循环设置"})).toBeInTheDocument();
   });
 
   test("project detail also opens the recurrence dialog via the top-right icon", async () => {
