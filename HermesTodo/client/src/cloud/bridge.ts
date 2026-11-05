@@ -683,6 +683,7 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
         updated_at: now.toISOString()
       }) });
       if (next) {
+        let newlyCreatedId: string | null = null;
         try {
           const all = await allTasks(config);
           const exists = all.some((task) =>
@@ -690,12 +691,30 @@ async function api(config: CloudConfig, endpoint: string, method: string, data: 
             task.title === old.title && task.context_id === old.context_id &&
             task.due_at === next.toISOString() && task.repeat_interval === old.repeat_interval
           );
-          if (!exists) await createTask(config, {
-            title: old.title, notes: old.notes, priority: old.priority,
-            dueAt: next.toISOString(), contextId: old.context_id,
-            repeatInterval: old.repeat_interval, repeatRule: old.repeat_rule
-          });
+          if (!exists) {
+            const upcoming = await createTask(config, {
+              title: old.title, notes: old.notes, priority: old.priority,
+              dueAt: next.toISOString(), contextId: old.context_id,
+              repeatInterval: old.repeat_interval, repeatRule: old.repeat_rule
+            });
+            newlyCreatedId = String(upcoming.id);
+            // Copy the checklist template, but never carry completed checkmarks to the next cycle.
+            for (const child of all.filter((task) => task.parent_task_id === old.id)) {
+              await createTask(config, {
+                title: child.title, notes: child.notes, priority: child.priority,
+                parentTaskId: newlyCreatedId
+              });
+            }
+          }
         } catch (error) {
+          if (newlyCreatedId) {
+            // Compensate a partially-created cycle rather than leaving an orphan checklist.
+            const ids = await rest<DbTask[]>(config, "hermes_tasks?select=id&parent_task_id=eq." + encodeURIComponent(newlyCreatedId)).catch(() => []);
+            for (const child of ids) {
+              await rest(config, "hermes_tasks?id=eq." + encodeURIComponent(child.id), { method: "DELETE" }).catch(() => undefined);
+            }
+            await rest(config, "hermes_tasks?id=eq." + encodeURIComponent(newlyCreatedId), { method:"DELETE" }).catch(() => undefined);
+          }
           await rest(config, endpoint, { method:"PATCH",
             body: JSON.stringify({is_completed:false, completed_at:null, updated_at:now.toISOString()}) }).catch(() => undefined);
           throw error;
