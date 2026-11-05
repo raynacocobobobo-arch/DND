@@ -69,14 +69,11 @@ export function TodoProjectsPage() {
   return (
     <section className="tp-page">
       <header className="tp-header">
-        <span className="tp-kicker">HERMES · THE BOOK OF DEEDS</span>
-        <h1>待办清单<span className="tp-heading-punctuation">。</span></h1>
-        <p>每一个大项目都有自己的子待办。按时间记录，逐项完成。</p>
-        <div className="tp-header-actions">
-          <span>未完成 <strong>{pending.length}</strong></span>
-          <span>全部项目 <strong>{all.length}</strong></span>
+        <div className="tp-header-top">
+          <h1>待办清单</h1>
           <button type="button" className="tp-primary-action" onClick={() => setCreating(true)}>＋ 新建大项目</button>
         </div>
+        <p className="tp-header-caption">{pending.length} 个未完成项目 · 共 {all.length} 个项目</p>
       </header>
       <div className="tp-toolbar">
         <div className="tp-switch" role="group" aria-label="待办显示范围">
@@ -97,9 +94,8 @@ export function TodoProjectsPage() {
         {grouped.map(group => (
           <section key={group.day} className="tp-date-group">
             <header className="tp-date-head">
-              <span className="tp-date-glyph" aria-hidden="true">✥</span>
-              <h2>{group.title}</h2>
-              <time dateTime={group.day}>{group.day}</time>
+              <span className="tp-date-glyph" aria-hidden="true">▦</span>
+              <h2><time dateTime={group.day}>{group.title}</time></h2>
             </header>
             <ul className="tp-project-list">
               {group.records.map(task => {
@@ -159,7 +155,7 @@ export function TodoProjectsPage() {
                           ))}
                         </ul>
                         {filter === "active" && finished === total ? <p>子待办已全部完成，可切换「全部」查看记录。</p> : null}
-                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>查看完整项目记录</Link>
+                        <Link className="tp-inline-edit" to={"/inbox/" + encodeURIComponent(task.id)}>进入项目详情</Link>
                       </div> : null}
                     </div>
                   </li>
