@@ -84,11 +84,19 @@ describe("lists and scenes interface", () => {
     expect(list).toHaveClass("context-grid");
     expect(screen.getByRole("button", { name: "移动 出国旅行" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "编辑 出国旅行" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "删除 出国旅行" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "复制 出国旅行" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "一键勾选 出国旅行" })).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "删除 出国旅行" }));
+    const more = screen.getByRole("button", { name: "更多操作 出国旅行" });
+    expect(more).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("button", { name: "删除场景" })).not.toBeInTheDocument();
+    await user.click(more);
+    expect(more).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("group", { name: "出国旅行 更多场景操作" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "复制场景内容" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "一键勾选" })).toBeEnabled();
+    await user.keyboard("{Escape}");
+    expect(more).toHaveFocus();
+    expect(more).toHaveAttribute("aria-expanded", "false");
+    await user.click(more);
+    await user.click(screen.getByRole("button", { name: "删除场景" }));
     expect(screen.getByRole("alertdialog", { name: "删除场景？" })).toHaveTextContent("任务不会删除");
     await user.click(screen.getByRole("button", { name: "取消" }));
 
@@ -134,15 +142,17 @@ describe("lists and scenes interface", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const toggle = await screen.findByRole("button", { name: "一键勾选 出国旅行" });
-    await user.click(toggle);
+    const more = await screen.findByRole("button", { name: "更多操作 出国旅行" });
+    await user.click(more);
+    await user.click(screen.getByRole("button", { name: "一键勾选" }));
     expect(screen.getByRole("alertdialog", { name: "一键勾选全部待办？" })).toHaveTextContent("全部待办标记为完成");
     expect(fetchMock.mock.calls.filter(([path, init]) => path === "/api/lists/travel-list/complete" && init?.method === "POST")).toHaveLength(0);
 
     await user.click(screen.getByRole("button", { name: "确认全部完成" }));
     await waitFor(() => expect(screen.getByText("1 个分类 · 0 件待办")).toBeInTheDocument());
 
-    await user.click(screen.getByRole("button", { name: "一键勾选 出国旅行" }));
+    await user.click(more);
+    await user.click(screen.getByRole("button", { name: "一键勾选" }));
     expect(screen.getByRole("alertdialog", { name: "全部恢复为未完成？" })).toHaveTextContent("恢复为未完成");
     await user.click(screen.getByRole("button", { name: "确认恢复未完成" }));
     await waitFor(() => expect(screen.getByText("1 个分类 · 2 件待办")).toBeInTheDocument());
