@@ -27,7 +27,7 @@ export function ListDetailPage() {
   const list=lists.data?.find(item=>item.id===id);
 
   if(!lists.isLoading && !list) return <Navigate to="/" replace/>;
-  if(!list) return <p>正在读取清单…</p>;
+  if(!list) return <p>正在读取分类…</p>;
 
   async function quickCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,7 +37,7 @@ export function ListDetailPage() {
     try{
       await create.mutateAsync({name,icon:"folder",color:"#8CAABA",listId:id});
       setQuickName("");
-    }catch(e){setError(e instanceof Error?e.message:"场景创建失败，请重试");}
+    }catch(e){setError(e instanceof Error?e.message:"分类创建失败，请重试");}
   }
 
   async function copyContext(context: ContextRecord) {
@@ -55,44 +55,44 @@ export function ListDetailPage() {
     <header className="scene-home-hero list-detail-hero">
       <img className="scene-home-art" src={`${import.meta.env.BASE_URL}art/joan-fleur-hero-hq.avif`} alt="" aria-hidden="true" loading="eager" decoding="async"/>
       <div className="scene-home-hero-copy">
-        <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · SCENES</span>
+        <span className="scene-home-eyebrow"><FleurDeLis size={16} aria-hidden="true"/> HERMES · CATEGORIES</span>
         <h1>{list.name}<span aria-hidden="true">。</span></h1>
-        <p>这份清单里的场景与任务独立保存。<br/>新增场景不会影响其它清单。</p>
+        <p>这处场景里的分类与任务独立保存。<br/>新增分类不会影响其它场景。</p>
         <div className="scene-home-stats">
-          <span><strong>{contexts.isLoading?"—":sceneCount}</strong> 个场景</span>
+          <span><strong>{contexts.isLoading?"—":sceneCount}</strong> 个分类</span>
           <span><strong>{contexts.isLoading?"—":pendingCount}</strong> 件待办</span>
         </div>
       </div>
-      <Link to="/" className="scene-home-inbox"><HeraldicIcon name="scroll" size={23}/><span>返回清单</span><HeraldicIcon name="arrow" size={20}/></Link>
+      <Link to="/" className="scene-home-inbox"><HeraldicIcon name="scroll" size={23}/><span>返回场景</span><HeraldicIcon name="arrow" size={20}/></Link>
     </header>
 
-    <section className="scene-home-index" aria-label="场景目录">
+    <section className="scene-home-index" aria-label="分类目录">
       <div className="scene-home-index-heading">
-        <div><span>CHAPTER II · SCENES</span><h2>场景目录</h2></div>
+        <div><span>CHAPTER II · CATEGORIES</span><h2>分类目录</h2></div>
         <span className="scene-home-index-count">{sceneCount} SCENES</span>
       </div>
       <form className="quick-add scene-home-quickadd" onSubmit={(e)=>void quickCreate(e)}>
         {error?<p className="quick-add-error" role="alert">{error}</p>:null}
-        <label className="sr-only" htmlFor="quick-add-scene">快速新建场景</label>
+        <label className="sr-only" htmlFor="quick-add-scene">快速新建分类</label>
         <input id="quick-add-scene" value={quickName} onChange={(e)=>{setQuickName(e.target.value);setError("");}}
-          placeholder="新建场景，例如：证件、药品、服装…"/>
-        <button type="submit" aria-label="添加场景" disabled={create.isPending}><HeraldicIcon name="add" size={26}/></button>
+          placeholder="新建分类，例如：证件、药品、服装…"/>
+        <button type="submit" aria-label="添加分类" disabled={create.isPending}><HeraldicIcon name="add" size={26}/></button>
       </form>
-      {copiedId?<p className="copy-toast" role="status">已复制场景待办</p>:null}
-      {contexts.isError?<p role="alert" className="dashboard-empty">场景读取失败。<button type="button" onClick={()=>void contexts.refetch()}>重试</button></p>
-      :contexts.isLoading?<p className="dashboard-empty">正在读取场景…</p>
-      :contexts.data?.length?<ul className="context-grid scene-home-grid" aria-label="场景列表">
+      {copiedId?<p className="copy-toast" role="status">已复制分类待办</p>:null}
+      {contexts.isError?<p role="alert" className="dashboard-empty">分类读取失败。<button type="button" onClick={()=>void contexts.refetch()}>重试</button></p>
+      :contexts.isLoading?<p className="dashboard-empty">正在读取分类…</p>
+      :contexts.data?.length?<ul className="context-grid scene-home-grid" aria-label="分类列表">
         {contexts.data.map(context=><ContextCard key={context.id} context={context}
           onEdit={()=>{setEditing(context);setFormOpen(true);}}
           onCopy={()=>void copyContext(context)}
           onDelete={()=>setDeleting(context)}/>)}
-      </ul>:<p className="empty-state dashboard-empty">这份清单还没有场景。创建第一个场景后，再往里面添加任务。</p>}
+      </ul>:<p className="empty-state dashboard-empty">这份场景还没有分类。创建第一个分类后，再往里面添加任务。</p>}
     </section>
 
-    {deleting?<ConfirmDialog title="删除场景？" message="场景内的任务不会被删除，将返回收集箱。"
+    {deleting?<ConfirmDialog title="删除分类？" message="分类内的任务不会删除，会移入独立的待办清单。"
       pending={remove.isPending} onCancel={()=>setDeleting(undefined)}
       onConfirm={()=>void remove.mutateAsync(deleting.id).then(()=>setDeleting(undefined))}/>:null}
-    {formOpen?<ContextForm context={editing} entityLabel="场景" pending={create.isPending||update.isPending}
+    {formOpen?<ContextForm context={editing} entityLabel="分类" pending={create.isPending||update.isPending}
       onCancel={()=>setFormOpen(false)}
       onSubmit={(input)=>{
         const action=editing
