@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient, type QueryKey } from "@tanstack/
 import type { Priority, RepeatInterval, Task } from "../../../shared/contracts";
 import { apiRequest } from "../api/client";
 
-export type TaskRecord = Task & { subtasks: TaskRecord[]; checkinCount?:number; scheduledCount?:number; completionRate?:number;cycleAt?:string|null };
+export type TaskRecord = Task & { subtasks: TaskRecord[]; checkinCount?:number; scheduledCount?:number; completionRate?:number;cycleAt?:string|null;inheritsRepeat?:boolean };
 export type TaskSort = "priority" | "dueDate" | "createdAt";
 
 export interface TaskInput {
@@ -94,7 +94,7 @@ function findTask(task: TaskRecord, id: string): TaskRecord | undefined {
   return undefined;
 }
 function isRepeating(task: TaskRecord) {
-  return task.repeatInterval !== "none" || (task.scheduledCount ?? 0) > 0;
+  return task.repeatInterval !== "none" || task.inheritsRepeat === true || (task.scheduledCount ?? 0) > 0;
 }
 function optimisticCompletion(task: TaskRecord): TaskRecord {
   const isCompleted = !task.isCompleted;
@@ -122,7 +122,20 @@ export function useToggleTask() {
     mutationFn: id => {
       const existing = pendingTaskToggles.get(id);
       if (existing) return existing;
-      const request=apiRequest<TaskRecord>("/api/tasks/"+id+"/toggle",{method:"POST"});
+      const cached=queryClient.getQueriesData<TaskRecord[]>({queryKey:["tasks"]})
+        .flatMap(([,items])=>(items??[]).map(item=>findTask(item,id)))
+        .find((item):item is TaskRecord=>!!item);
+      // Optimistic onMutate has already set the intended state. Supabase can
+      // apply it idempotently in a single REST write; no task/preflight GET.
+      const fast=!!cached && (!isRepeating(cached) || !!cached.cycleAt);
+      const body=fast ? JSON.stringify({
+        desiredCompleted:cached.isCompleted,
+        recurring:isRepeating(cached),
+        cycleAt:cached.cycleAt??null
+      }) : undefined;
+      const request=apiRequest<TaskRecord>("/api/tasks/"+id+"/toggle",{
+        method:"POST", ...(body?{body}:{})
+      });
       pendingTaskToggles.set(id,request);
       const clear=()=>{
         if(pendingTaskToggles.get(id)===request)pendingTaskToggles.delete(id);
