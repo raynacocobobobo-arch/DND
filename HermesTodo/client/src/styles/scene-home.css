@@ -465,3 +465,12 @@
   .scene-home .list-card-actions{padding-inline:6px;gap:3px}
   .scene-home .list-card-actions .list-text-action{padding-inline:5px;font-size:10px}
 }
+
+
+/* Give keyboard focus and programmatic scrolling a safe landing area above
+   the iPhone's fixed bottom navigation. */
+@media(max-width:760px){
+  .scene-home .list-card-actions button{
+    scroll-margin-bottom:calc(130px + env(safe-area-inset-bottom));
+  }
+}
