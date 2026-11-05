@@ -5,204 +5,136 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { App } from "../src/App";
+import { queryClient } from "../src/api/queryClient";
 
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(status === 204 ? null : JSON.stringify(body), {
-    status,
-    headers: status === 204 ? undefined : { "content-type": "application/json" }
+    status, headers: status === 204 ? undefined : { "content-type": "application/json" }
   });
 }
-
-const context = {
-  id: "travel-id",
-  name: "旅行",
-  icon: "suitcase",
-  color: "#EEB0A8",
-  sortOrder: 0,
-  incompleteCount: 2,
-  createdAt: "2026-10-01T00:00:00.000Z",
-  updatedAt: "2026-10-01T00:00:00.000Z"
-};
 
 const baseTask = {
-  notes: "",
-  priority: "medium" as const,
-  completedAt: null,
-  contextId: null,
-  parentTaskId: null,
-  repeatInterval: "none" as const,
-  repeatRule: "",
-  createdAt: "2026-10-20T00:00:00.000Z",
-  updatedAt: "2026-10-20T00:00:00.000Z",
+  notes: "", priority: "medium" as const, completedAt: null,
+  contextId: null, parentTaskId: null, repeatInterval: "none" as const,
+  repeatRule: "", dueAt: null, isCompleted: false,
+  createdAt: "2026-11-05T01:00:00.000Z", updatedAt: "2026-11-05T01:00:00.000Z",
   subtasks: []
 };
-
-function createFetch(tasks: Array<Record<string, unknown>>) {
-  return vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+const context = {
+  id: "travel-id", name: "旅行", icon: "suitcase", color: "#EEB0A8",
+  sortOrder: 0, incompleteCount: 2,
+  createdAt: "2026-10-01T00:00:00.000Z", updatedAt: "2026-10-01T00:00:00.000Z"
+};
+function apiMock(initial: Array<Record<string, unknown>>) {
+  const rows = [...initial];
+  const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
     const path = String(input);
+    const method = init?.method ?? "GET";
     if (path === "/api/session") return jsonResponse({ authenticated: true });
     if (path === "/api/contexts") return jsonResponse([context]);
-    if (path.startsWith("/api/tasks") && (!init?.method || init.method === "GET")) {
-      const query = new URL(path, "http://localhost").searchParams;
-      return jsonResponse(tasks.filter((t) =>
-        query.get("scope") === "inbox" ? t.contextId === null
-          : query.has("contextId") ? t.contextId === query.get("contextId")
-          : true
-      ));
+    if (path.startsWith("/api/tasks?") && method === "GET") return jsonResponse(rows);
+    if (path === "/api/tasks" && method === "POST") {
+      const body = JSON.parse(String(init?.body));
+      rows.push({ ...baseTask, ...body, id: "new-task" });
+      return jsonResponse(rows.at(-1), 201);
     }
-    throw new Error(`Unexpected request: ${init?.method ?? "GET"} ${path}`);
+    if (/^\/api\/tasks\/[^/]+\/toggle$/.test(path) && method === "POST") {
+      const id = path.split("/")[3];
+      const task = rows.find((row) => row.id === id);
+      if (!task) return jsonResponse({error:{code:"NOT_FOUND",message:"未找到"}},404);
+      task.isCompleted = !task.isCompleted;
+      task.completedAt = task.isCompleted ? "2026-11-05T08:00:00.000Z" : null;
+      return jsonResponse(task);
+    }
+    throw new Error("Unexpected request: " + method + " " + path);
   });
+  return fetchMock;
 }
 
+beforeEach(() => {
+  window.history.replaceState({}, "", "/inbox");
+  queryClient.clear();
+});
 afterEach(() => {
-  vi.useRealTimers();
+  queryClient.clear();
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
 
-beforeEach(() => window.history.replaceState({}, "", "/inbox"));
-
-describe("inbox dashboard", () => {
-  test("shows all pending tasks in a single to-do list regardless of due date", async () => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
-    const tasks = [
-      { ...baseTask, id: "today", title: "今天完成", dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false },
-      { ...baseTask, id: "late", title: "已经逾期", dueAt: "2026-10-24T04:00:00.000Z", isCompleted: false },
-      { ...baseTask, id: "open", title: "没有日期", dueAt: null, isCompleted: false },
-      { ...baseTask, id: "done", title: "已经完成", dueAt: "2026-10-25T02:00:00.000Z", isCompleted: true, completedAt: "2026-10-25T03:00:00.000Z" }
-    ];
-    vi.stubGlobal("fetch", createFetch(tasks));
-    render(<App />);
-
-    expect(await screen.findByRole("heading", { name: /早上好|下午好|晚上好/ })).toBeInTheDocument();
-    expect(screen.getByText("2026 · 10 · 25")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /^下午好/ })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "我的待办" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "未完成" })).toBeInTheDocument();
-    expect(screen.getByText(/这里收集尚未分类的待办/)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "清单目录" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "今日进度" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "最近七日" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("region", { name: "任务概览" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
-    await waitFor(() => {
-      expect(screen.queryByRole("heading", { name: "逾期待处理" })).not.toBeInTheDocument();
-      expect(screen.queryByText("高优先级")).not.toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "已经逾期" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "今天完成" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "没有日期" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "已经完成" })).toBeInTheDocument();
-    });
-  });
-
-  test("shows every due-today task without silently dropping items after the fifth", async () => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
-    const tasks = Array.from({ length: 7 }, (_, index) => ({
-      ...baseTask, id: `task-${index}`, title: `今天任务${index + 1}`,
-      dueAt: "2026-10-25T04:00:00.000Z", isCompleted: false
-    }));
-    vi.stubGlobal("fetch", createFetch(tasks));
-    render(<App />);
-    expect(await screen.findByRole("button", { name: "今天任务7" })).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /^今天任务\d+$/ })).toHaveLength(7);
-  });
-
-  test("keeps quick-add input and reports a failed create request", async () => {
-    const fetchMock = createFetch([]);
-    fetchMock.mockImplementation(async (input, init) => {
-      const path = String(input);
-      if (path === "/api/tasks" && init?.method === "POST") {
-        return jsonResponse({ error: { code: "UNAVAILABLE", message: "网络暂时不可用" } }, 503);
-      }
-      if (path === "/api/session") return jsonResponse({ authenticated: true });
-      if (path === "/api/contexts") return jsonResponse([context]);
-      if (path.startsWith("/api/tasks")) return jsonResponse([]);
-      throw new Error(`Unexpected request: ${path}`);
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    render(<App />);
-    await user.type(await screen.findByLabelText("快速添加任务"), "保留这条草稿");
-    await user.click(screen.getByRole("button", { name: "添加" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("网络暂时不可用");
-    expect(screen.getByLabelText("快速添加任务")).toHaveValue("保留这条草稿");
-  });
-
-  test("quick-add creates a simple task without assigning a due date or priority", async () => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
-    const fetchMock = createFetch([]);
-    fetchMock.mockImplementationOnce(async () => jsonResponse({ authenticated: true }));
-    fetchMock.mockImplementationOnce(async () => jsonResponse([context]));
-    fetchMock.mockImplementationOnce(async () => jsonResponse([]));
-    fetchMock.mockImplementationOnce(async (_input, init) =>
-      jsonResponse({ ...baseTask, id: "new", title: "买咖啡豆", dueAt: JSON.parse(String(init?.body)).dueAt, isCompleted: false }, 201)
-    );
-    fetchMock.mockImplementation(async (input) => String(input).startsWith("/api/tasks") ? jsonResponse([]) : jsonResponse([context]));
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    render(<App />);
-
-    await user.type(await screen.findByLabelText("快速添加任务"), "买咖啡豆");
-    await user.click(screen.getByRole("button", { name: "添加" }));
-
-    await waitFor(() => {
-      const call = fetchMock.mock.calls.find(([, init]) => init?.method === "POST");
-      expect(call).toBeTruthy();
-      const body = JSON.parse(String(call?.[1]?.body));
-      expect(body.title).toBe("买咖啡豆");
-      expect(body.dueAt).toBeNull();
-      expect(body.priority).toBeUndefined();
-    });
-  });
-
-  test("opens the full task editor from an empty home add button", async () => {
-    vi.stubGlobal("fetch", createFetch([]));
-    const user = userEvent.setup();
-    render(<App />);
-
-    const add = await screen.findByRole("button", { name: "添加" });
-    expect(add).toBeEnabled();
-    await user.click(add);
-    expect(await screen.findByRole("dialog", { name: "新建任务" })).toBeInTheDocument();
-    expect(screen.getByLabelText("任务标题")).toBeInTheDocument();
-    expect(screen.queryByLabelText("任务归属")).not.toBeInTheDocument();
-  });
-
-  test("home never lists or edits a context's nested tasks; clicking its context opens them", async () => {
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date("2026-10-25T08:00:00.000Z"));
-    const tasks = [
-      { ...baseTask, id: "inbox", title: "收集箱灵感", dueAt: null, isCompleted: false },
-      { ...baseTask, id: "context-task", title: "确认航班", dueAt: null, isCompleted: false, contextId: context.id,
-        subtasks: [{ ...baseTask, id: "child", title: "获取登机牌", parentTaskId: "context-task", isCompleted: false, dueAt: null }] }
-    ];
-    const fetchMock = createFetch(tasks);
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    render(<App />);
-    expect(await screen.findByRole("button", { name: "收集箱灵感" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "确认航班" })).not.toBeInTheDocument();
-    expect(screen.queryByText("获取登机牌")).not.toBeInTheDocument();
-    expect(fetchMock.mock.calls.some(([path]) => String(path).includes("scope=inbox"))).toBe(true);
-    expect(fetchMock.mock.calls.some(([path, init]) => String(path).includes("toggle") && init?.method === "POST")).toBe(false);
-
-    await user.click(screen.getAllByRole("link", { name: /旅行/ })[0]);
-    expect(window.location.pathname).toBe("/contexts/travel-id");
-    expect(await screen.findByRole("button", { name: "确认航班" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "收集箱灵感" })).not.toBeInTheDocument();
-  });
-
-  test("the inbox remains empty when only scene tasks exist", async () => {
-    vi.stubGlobal("fetch", createFetch([
-      { ...baseTask, id: "scene-only", title: "情境私有任务", dueAt: null, isCompleted: false, contextId: context.id }
+describe("task activity timeline", () => {
+  test("groups incomplete tasks by date and includes tasks inside scenes", async () => {
+    vi.stubGlobal("fetch", apiMock([
+      { ...baseTask, id:"today", title:"今天完成", dueAt:"2026-11-05T04:00:00.000Z" },
+      { ...baseTask, id:"late", title:"已经逾期", dueAt:"2026-11-04T04:00:00.000Z" },
+      { ...baseTask, id:"context", title:"确认航班", contextId:context.id },
+      { ...baseTask, id:"done", title:"已经完成", isCompleted:true, completedAt:"2026-11-05T06:00:00.000Z" }
     ]));
     render(<App />);
-    expect(await screen.findByText(/收集箱是空的/)).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "情境私有任务" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /旅行/ })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", {name:"待办记录时间线"})).toBeInTheDocument();
+    expect(await screen.findByRole("button", {name:"确认航班"})).toBeInTheDocument();
+    expect(screen.getByRole("button", {name:"已经逾期"})).toBeInTheDocument();
+    expect(screen.queryByRole("button", {name:"已经完成"})).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", {name:/11月5日/})).toBeInTheDocument();
   });
 
+  test("filters completed records without deleting task history", async () => {
+    vi.stubGlobal("fetch", apiMock([
+      { ...baseTask, id:"active", title:"未完成任务" },
+      { ...baseTask, id:"done", title:"已完成任务", isCompleted:true, completedAt:"2026-11-05T06:00:00.000Z" }
+    ]));
+    const user = userEvent.setup();
+    render(<App />);
+    expect(await screen.findByRole("button", {name:"未完成任务"})).toBeInTheDocument();
+    await user.click(screen.getByRole("button", {name:"已完成", exact:true}));
+    expect(await screen.findByRole("button", {name:"已完成任务"})).toBeInTheDocument();
+    expect(screen.queryByRole("button", {name:"未完成任务"})).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", {name:"全部记录"}));
+    expect(await screen.findByRole("button", {name:"未完成任务"})).toBeInTheDocument();
+  });
+
+  test("shows recurrence metadata and opens task editor", async () => {
+    vi.stubGlobal("fetch", apiMock([
+      { ...baseTask, id:"repeating", title:"检查公积金", dueAt:"2026-11-22T01:00:00.000Z",
+        repeatInterval:"custom", repeatRule:"每月22日" }
+    ]));
+    const user = userEvent.setup();
+    render(<App />);
+    expect(await screen.findByText(/每月22日/)).toBeInTheDocument();
+    await user.click(screen.getByRole("button",{name:"检查公积金"}));
+    expect(await screen.findByRole("dialog",{name:"任务详情"})).toBeInTheDocument();
+    expect(screen.getByDisplayValue("每月22日")).toBeInTheDocument();
+  });
+
+  test("marks a task completed and moves it into its completion date", async () => {
+    const fetchMock = apiMock([{...baseTask,id:"toggle",title:"对公账户"}]);
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:"完成 对公账户"}));
+    await waitFor(() => expect(fetchMock.mock.calls.some(([input,init]) =>
+      String(input)==="/api/tasks/toggle/toggle" && init?.method==="POST")).toBe(true));
+    await user.click(screen.getByRole("button",{name:"已完成",exact:true}));
+    expect(await screen.findByRole("button",{name:"对公账户"})).toBeInTheDocument();
+  });
+
+  test("creates a dated recurring task through the editor", async () => {
+    const fetchMock=apiMock([]);
+    vi.stubGlobal("fetch",fetchMock);
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:/新建任务/}));
+    expect(await screen.findByRole("dialog",{name:"新建任务"})).toBeInTheDocument();
+    await user.type(screen.getByLabelText("任务标题"),"每月检查账单");
+    await user.type(screen.getByLabelText("截止日期"),"2026-11-22");
+    await user.click(screen.getByText("更多选项",{exact:false}));
+    await user.selectOptions(screen.getByLabelText("重复"),"monthly");
+    await user.click(screen.getByRole("button",{name:"保存任务"}));
+    await waitFor(() => {
+      const call=fetchMock.mock.calls.find(([input,init])=>String(input)==="/api/tasks"&&init?.method==="POST");
+      expect(call).toBeTruthy();
+      const body=JSON.parse(String(call?.[1]?.body));
+      expect(body.repeatInterval).toBe("monthly");
+      expect(body.dueAt).toBe("2026-11-22T01:00:00.000Z");
+    });
+  });
 });
