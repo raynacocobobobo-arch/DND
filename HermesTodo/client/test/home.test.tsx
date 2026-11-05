@@ -185,6 +185,30 @@ describe("independent project-based to-do list", () => {
     });
   });
 
+  test("tapping monthly starts the cycle at the real tap instant, never an old due date", async () => {
+    const fetchMock=apiMock([project("monthly-tap","每月归档",{
+      dueAt:"2024-01-08T01:00:00.000Z"
+    })]);
+    vi.stubGlobal("fetch",fetchMock);
+    const user=userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole("button",{name:"设置循环 每月归档"}));
+    const before=Date.now();
+    await user.click(screen.getByRole("button",{name:"每月"}));
+    const after=Date.now();
+    await waitFor(()=>{
+      const call=fetchMock.mock.calls.find(([url,init])=>url==="/api/tasks/monthly-tap"&&init?.method==="PATCH");
+      expect(call).toBeTruthy();
+      const payload=JSON.parse(String(call?.[1]?.body));
+      expect(payload).toMatchObject({repeatInterval:"monthly",repeatRule:""});
+      const clicked=new Date(payload.dueAt).getTime();
+      expect(clicked).toBeGreaterThanOrEqual(before);
+      expect(clicked).toBeLessThanOrEqual(after);
+      expect(payload.dueAt).not.toBe("2024-01-08T01:00:00.000Z");
+    });
+    expect(screen.queryByRole("dialog",{name:"循环设置"})).not.toBeInTheDocument();
+  });
+
   test("existing monthly day rule is preserved when dialog is cancelled", async () => {
     const fetchMock=apiMock([project("existing","每月22日账单",{
       repeatInterval:"custom",repeatRule:"每月22日"
