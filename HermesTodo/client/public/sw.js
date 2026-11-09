@@ -1,11 +1,11 @@
 // Bump this whenever a release changes the application shell so previously
 // installed clients cannot fall back to an older cached interface.
-const CACHE_NAME = "hermestodo-shell-v2";
+const CACHE_NAME = "hermestodo-shell-v3";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
   "/icons/icon-192.png",
-  "/icons/icon-512.png"
+  "/icons/icon-512.webp"
 ];
 const STATIC_DESTINATIONS = new Set(["document", "script", "style", "image", "font", "manifest"]);
 
