@@ -85,14 +85,12 @@ jobs:
               before = path.stat().st_size
               original_bytes += before
               tmp = path.with_name(path.stem + ".opt" + path.suffix)
-              # The historical joan-dragon-scene-hq file is not decodable by Pillow and
-    # is not referenced by the live site's bundles. Preserve it until it can be
-    # reviewed rather than aborting all real mobile-image optimizations.
-    if filename == "joan-dragon-scene-hq.avif":
-        optimized_bytes += before
-        print(f"{filename}: {before:,} bytes (retained; old source is not decodable)")
-        continue
-    with Image.open(path) as source:
+              # Skip a historical, non-decodable art file used only by an inactive page.
+              if filename == "joan-dragon-scene-hq.avif":
+                  optimized_bytes += before
+                  print(f"{filename}: {before:,} bytes (retained: cannot decode)")
+                  continue
+              with Image.open(path) as source:
                   image = ImageOps.exif_transpose(source)
                   image.load()
                   image.thumbnail(max_size, Image.Resampling.LANCZOS)
