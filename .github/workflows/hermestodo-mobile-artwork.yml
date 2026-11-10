@@ -1,0 +1,123 @@
+name: HermesTodo mobile artwork optimization
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/hermestodo-mobile-artwork.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hermestodo-mobile-artwork-optimization
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    if: github.repository == 'raynacocobobobo-arch/DND'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Prepare image encoder
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install AVIF and WebP image support
+        run: python -m pip install --disable-pip-version-check "Pillow==12.0.0"
+
+      - name: Compress both deployed and source artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for branch in gh-pages feature/hermestodo-dashboard-subtasks-20261025; do
+            echo "::group::Optimizing $branch"
+            git fetch origin "$branch"
+            git switch -C hermestodo-mobile-optimization "origin/$branch"
+            if [[ "$branch" == "gh-pages" ]]; then
+              ART_DIR="hermestodo/art"
+            else
+              ART_DIR="HermesTodo/client/public/art"
+            fi
+            python - "$ART_DIR" <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps, features
+          import sys
+
+          assert features.check("avif"), "AVIF encoder unavailable"
+          assert features.check("webp"), "WebP encoder unavailable"
+
+          art = Path(sys.argv[1])
+          profiles = {
+              "hero-mobile.avif": ((980, 1600), 47),
+              "hero-desktop.avif": ((1600, 1200), 49),
+              "joan-fleur-hero-hq.avif": ((1200, 1600), 49),
+              "standard-bearer-foreground.webp": ((1200, 1600), 55),
+              "gothic-architecture.avif": ((1200, 1200), 51),
+              "medieval-crests.avif": ((1100, 1100), 56),
+              "action-crests-v4.webp": ((1024, 1024), 63),
+              "joan-dragon-scene-hq.avif": ((1200, 1600), 51),
+              "hero-standard-bearer.webp": ((1000, 1000), 61),
+          }
+
+          existing = {p.name for p in art.iterdir() if p.is_file()}
+          missing = set(profiles) - existing
+          if missing:
+              raise RuntimeError(f"Missing required production art: {sorted(missing)}")
+          extras = existing - set(profiles)
+          if extras:
+              raise RuntimeError(f"Unexpected or legacy art files require review: {sorted(extras)}")
+
+          original_bytes = 0
+          optimized_bytes = 0
+          for filename, (max_size, quality) in profiles.items():
+              path = art / filename
+              before = path.stat().st_size
+              original_bytes += before
+              tmp = path.with_name(path.stem + ".opt" + path.suffix)
+              with Image.open(path) as source:
+                  image = ImageOps.exif_transpose(source)
+                  image.load()
+                  image.thumbnail(max_size, Image.Resampling.LANCZOS)
+                  image = image.convert("RGBA" if "A" in image.getbands() else "RGB")
+                  if path.suffix == ".avif":
+                      image.save(tmp, format="AVIF", quality=quality, speed=6)
+                  else:
+                      image.save(tmp, format="WEBP", quality=quality, method=6)
+              with Image.open(tmp) as verified:
+                  verified.load()
+                  if verified.width < 320 and filename.startswith(("hero-", "joan-fleur-")):
+                      raise RuntimeError(f"Unexpectedly small optimized hero image: {filename}")
+              new_size = tmp.stat().st_size
+              if new_size <= before * .97:
+                  tmp.replace(path)
+                  after = new_size
+                  status = "optimized"
+              else:
+                  tmp.unlink()
+                  after = before
+                  status = "already efficient"
+              optimized_bytes += after
+              print(f"{filename}: {before:,} -> {after:,} bytes ({status})")
+          print(f"TOTAL: {original_bytes:,} -> {optimized_bytes:,} bytes, reduction {(1-optimized_bytes/original_bytes)*100:.1f}%")
+          PY
+
+            git add -- "$ART_DIR"
+            if ! git diff --cached --quiet; then
+              git commit -m "Optimize mobile HermesTodo artwork without changing visuals"
+              git push origin "HEAD:refs/heads/$branch"
+            else
+              echo "No further image size improvements possible."
+            fi
+            echo "::endgroup::"
+          done
