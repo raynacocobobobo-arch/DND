@@ -52,5 +52,24 @@
     $$('.page-outline a,.rail-sub a').forEach(a=>a.classList.toggle('active',a.hash==='#'+id));
     try{localStorage.setItem('ember-last-read',JSON.stringify({page:location.pathname.split('/').pop(),chapter,anchor:id,time:Date.now()}))}catch{}
   },{rootMargin:'-115px 0px -72% 0px',threshold:0});heads.forEach(h=>obs.observe(h));}
-  const continueLink=$('#continue-reading');if(continueLink){try{const v=JSON.parse(localStorage.getItem('ember-last-read')||'null');if(v?.page){continueLink.href='chapters/'+v.page+(v.anchor?'#'+v.anchor:'');continueLink.hidden=false;continueLink.textContent='继续上次阅读 · '+(v.chapter||'档案')}}catch{}}
+
+  // Independent scroll position for each document, with an explicit continue action.
+  const pageName=location.pathname.split('/').pop()||'index.html';
+  const currentChapter=document.querySelector('.reader-main');
+  const toTop=$('#back-to-top');
+  let lastSaved=0;
+  function updateReadingScroll(){
+    toTop?.classList.toggle('show',window.scrollY>520);
+    if(!currentChapter)return;
+    const now=Date.now();if(now-lastSaved<650)return;lastSaved=now;
+    try{localStorage.setItem('ember-scroll',JSON.stringify({page:pageName,y:Math.round(window.scrollY),time:now}));}catch{}
+  }
+  window.addEventListener('scroll',updateReadingScroll,{passive:true});updateReadingScroll();
+  toTop?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  if(currentChapter && new URLSearchParams(location.search).has('resume')){
+    try{const previous=JSON.parse(localStorage.getItem('ember-scroll')||'null');if(previous?.page===pageName && previous.y>0)window.requestAnimationFrame(()=>window.scrollTo(0,previous.y));}catch{}
+  }
+  // Close the mobile inline table of contents after choosing a chapter section.
+  document.querySelectorAll('.chapter-quicknav a').forEach(a=>a.addEventListener('click',()=>a.closest('details')?.removeAttribute('open')));
+  const continueLink=$('#continue-reading');if(continueLink){try{const v=JSON.parse(localStorage.getItem('ember-last-read')||'null');if(v?.page){continueLink.href='chapters/'+v.page+'?resume=1';continueLink.hidden=false;continueLink.textContent='继续上次阅读 · '+(v.chapter||'档案')}}catch{}}
 })();
