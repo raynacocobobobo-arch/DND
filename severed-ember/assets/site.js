@@ -5,7 +5,7 @@
   const msg=$('#status-toast');let toastTimer;
   function notify(s){if(!msg)return;msg.textContent=s;msg.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>msg.classList.remove('show'),2100)}
   const root=document.documentElement;
-  let night=localStorage.getItem('ember-reader-mode')==='night';
+  let night=localStorage.getItem('ember-reader-mode')!=='paper';
   if(night)root.dataset.mode='night';
   let fscale=Math.min(1.22,Math.max(.88,Number(localStorage.getItem('ember-font-scale')||1)));
   root.style.setProperty('--font-scale',fscale.toFixed(2));

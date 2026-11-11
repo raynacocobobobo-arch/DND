@@ -99,3 +99,22 @@ html[data-mode='night']{--paper:#1c2824;--ink:#e2dbc9}html[data-mode='night'] .c
  .back-to-top{right:12px;bottom:16px;padding:11px}
 }
 @media print{.back-to-top,.chapter-quicknav,.campaign-docket{display:none!important}}
+
+/* V3.1 editorial style convergence to the dark codex. Chapter source wording is untouched. */
+.site-header{height:66px;background:#101816;box-shadow:0 5px 18px #0008}
+.article-progress{top:64px}
+.reader-shell{max-width:1770px;grid-template-columns:238px minmax(0,1fr) 205px;gap:22px;padding-top:18px}
+.reader-top{min-height:280px;background-color:#0d1615;background-image:linear-gradient(90deg,#0c1416 0%,rgba(12,20,22,.94) 30%,rgba(12,20,22,.15) 78%),var(--chapter-banner);background-size:cover,auto 100%;background-position:center,right center;background-repeat:no-repeat}
+.reader-top h1{color:#f0d6aa}.reader-top p{color:#e7ceaa}
+.archive-plate{margin:22px 0 30px;border:1px solid #a38b64;background:#151e1b}
+.archive-plate img{width:100%;height:auto;display:block;object-fit:contain}
+.archive-plate figcaption{background:#18231f;padding:12px 17px;color:#dfcfb4}
+.event-illustration{scroll-margin-top:105px}
+.event-illustration figcaption{display:grid;gap:5px}
+.event-illustration figcaption small{font-size:11px;color:#98a99a}
+.chapter-frontispiece img{aspect-ratio:auto!important;object-fit:contain!important}
+@media(max-width:900px){.reader-shell{grid-template-columns:minmax(0,1fr)}.reader-meta{display:none}}
+@media(max-width:620px){.site-header{height:60px}.article-progress{top:58px}.mobile-drawer{top:60px}.drawer-shade{top:60px}.reader-top{min-height:230px;padding:25px 20px;background-size:cover,auto 100%;background-position:center,right center}.reader-top h1{font-size:28px}.reader-top p{letter-spacing:.05em}.reader-shell{padding:14px 11px 48px}}
+
+/* V3.2: preserve aspect of chapter frontispieces, no artificial crop or upscaling */
+.chapter-frontispiece img{height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;max-width:100%}
