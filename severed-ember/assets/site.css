@@ -143,3 +143,14 @@ html[data-mode='night']{--paper:#1c2824;--ink:#e2dbc9}html[data-mode='night'] .c
 .event-note-label{display:block;color:#bda577;font:10px Georgia,serif;letter-spacing:.1em;margin-bottom:6px}
 .event-note p{font:13px/1.75 Georgia,'Songti SC','STSong',serif;color:#bfbfb3;margin:0}
 @media(max-width:620px){.campaign-vector-plate{margin:17px -9px 22px}.campaign-vector-plate figcaption{padding:12px 15px}.campaign-vector-plate figcaption strong{font-size:15px}.campaign-vector-plate figcaption span{font-size:11px}.event-note{padding:12px;margin:16px 0}}
+
+/* V3.7 chapter top art appears in banner only. */
+.archive-text-lead{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 22px;border-top:1px solid #a48b5a8a;border-bottom:1px solid #a48b5a5f;padding:18px 4px;margin:7px 0 27px}
+.archive-text-lead__vol{font:12px Georgia,serif;letter-spacing:.16em;color:#806a47}
+.archive-text-lead__name{font:21px Georgia,'Songti SC','STSong',serif;color:#47463b}
+.archive-text-lead p{flex-basis:100%;font:12px/1.8 Georgia,'Songti SC','STSong',serif;color:#716858;margin:0}
+html[data-mode='night'] .archive-text-lead__vol{color:#c7a979}
+html[data-mode='night'] .archive-text-lead__name{color:#e9d4b2}
+html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
+.codex-body img,.archive-plate img{max-width:100%;height:auto}
+@media(max-width:620px){.archive-text-lead{padding:13px 0;margin:4px 0 22px;gap:7px}.archive-text-lead__name{font-size:18px}.archive-text-lead p{font-size:11px}.reader-shell{padding:12px 10px 44px}.chapter-paper{max-width:100%;overflow-wrap:anywhere}.codex-body{font-size:calc(15.5px * var(--font-scale));line-height:1.93}.codex-body table{max-width:100%;overflow:auto}.chapter-paper :target{scroll-margin-top:76px}}

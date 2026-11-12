@@ -60,3 +60,23 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 @media(max-width:767px){.hero{height:auto;min-height:340px}.hero-copy{max-width:100%;padding:30px 20px 35px}.hero-bg{background-image:linear-gradient(0deg,#091313f7,#091313b8 67%,#09131350),url('assets/p0/H-01.webp')}.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category-title{padding:11px}.category-title small{font-size:9px}.section-head{margin-top:23px;align-items:flex-start}.section-head>span{display:none}.events.deeds-editorial{gap:10px}.deeds-editorial .deed-card .deed-visual img{object-position:center}.codex-shortcuts{grid-template-columns:1fr}.codex-shortcuts .shortcut-title{grid-column:auto}.codex-shortcuts a{padding:13px 14px;border-right:0;border-bottom:1px solid #8e795640}.codex-shortcuts a:last-child{border-bottom:none}}
 @media(max-width:360px){.category-title{font-size:14px}.category-title small{letter-spacing:.08em}.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{grid-template-columns:1fr}.deeds-editorial .deed-card--watch .deed-visual,.deeds-editorial .deed-card--bridge .deed-visual,.deeds-editorial .deed-card--phase .deed-visual{height:145px}}
 @media(prefers-reduced-motion:reduce){.category img,.btn,.codex-shortcuts a{transition:none}}
+
+/* V3.7 reading-first, no repeated volume thumbnails. */
+.view#view-reader .subhero .archive-abstract,.view#view-places .subhero .archive-abstract{opacity:.93;background-image:radial-gradient(ellipse at 75% 45%,#917a5135,transparent 45%),repeating-radial-gradient(circle at 70% 48%,transparent 0 36px,#c8ab7625 37px 38px,transparent 39px 60px),linear-gradient(120deg,#172522,#0b1719)}
+.view#view-places .subhero .archive-abstract--siofra{background-image:radial-gradient(ellipse at 75% 45%,#76959c25,transparent 45%),repeating-linear-gradient(90deg,transparent 0 80px,#b8a17618 81px 83px),linear-gradient(125deg,#142522,#0d1619)}
+.reading-volume{grid-template-columns:112px minmax(0,1fr);min-height:162px}
+.reading-volume .volume-monogram{min-height:162px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:radial-gradient(circle at center,#52634c44,transparent 64%),#10201f;border-right:1px solid #b397675c;position:relative}
+.reading-volume .volume-monogram:before{content:'';position:absolute;inset:10px;border:1px solid #a58d6159}
+.reading-volume .volume-monogram b{font:46px Georgia,serif;font-weight:400;color:#e4d0a5}
+.reading-volume .volume-monogram small{font:9px Georgia,serif;letter-spacing:.18em;color:#a2afa7}
+.reading-volume .volume-meta{padding:18px 16px}
+.archive-symbol{height:205px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:repeating-radial-gradient(circle at center,transparent 0 36px,#bc9d7024 37px 38px,transparent 39px 64px),#152320;border-bottom:1px solid #927e575b}
+.archive-symbol span,.archive-symbol small{color:#bdaa84;letter-spacing:.17em;font:10px Georgia,serif}
+.archive-symbol b{font:70px Georgia,serif;font-weight:400;color:#e5d1a9}
+.gallery-context{display:flex;align-items:center;gap:18px;margin:15px 0;padding:18px 21px;background:#15211f;border:1px solid #8e79565f}
+.gallery-context strong{color:#e7d0a5;font:19px Georgia,'Songti SC','STSong',serif;white-space:nowrap}
+.gallery-context p{flex:1;color:#b6c2b8;font-size:12px;line-height:1.75;margin:0}
+.gallery-context span{font:10px Georgia,serif;color:#b09770;letter-spacing:.08em}
+@media(max-width:850px){.reading-grid{grid-template-columns:1fr}.gallery-context{flex-wrap:wrap;gap:8px}.gallery-context span{display:none}}
+@media(max-width:767px){.reading-volume{grid-template-columns:90px minmax(0,1fr);min-height:145px}.reading-volume .volume-monogram{min-height:145px}.reading-volume .volume-monogram b{font-size:41px}.menu-grid .category img{height:auto!important;aspect-ratio:16/10;object-fit:cover}.topbar{padding-inline:max(10px,env(safe-area-inset-left)) max(10px,env(safe-area-inset-right))}.top-actions button,.mobile-menu,.filterbar button{min-height:44px;min-width:44px}.subhero .sub-content{max-width:100%}.subhero h1{overflow-wrap:anywhere}}
+@media(max-width:400px){.reading-volume{grid-template-columns:74px minmax(0,1fr)}.reading-volume .volume-monogram b{font-size:34px}.reading-volume .volume-meta{padding:12px}.reading-volume .volume-meta strong{font-size:17px}.reading-volume .volume-meta p{font-size:11px}.gallery-context{padding:14px}}
