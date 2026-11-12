@@ -95,3 +95,20 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 .menu-grid .category img{object-fit:cover;aspect-ratio:16/10;filter:saturate(.84) contrast(1.02) brightness(.86)}
 .dossier-tile .campaign-art{object-fit:cover;aspect-ratio:16/9}
 @media(max-width:767px){.topbar .crest{width:45px;height:48px}.topbar .crest img{width:42px;height:42px}.menu-grid .category img{height:auto!important;aspect-ratio:16/10}}
+
+/* V4.1 — organization page: manuscript-grounded images and complete five-group navigation */
+.organization-hero .sub-img{background-size:cover;background-position:center 42%;filter:saturate(.86) contrast(1.05)}
+.organization-hero .sub-shade{background:linear-gradient(90deg,#0a1416ee,#0a1416cf 35%,#0a141666 70%,#0a14161a)}
+.org-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.org-grid .org-card{display:flex;flex-direction:column;min-width:0;background:#111b1b;border-color:#927b5679;overflow:hidden;transition:border-color .2s,transform .2s}
+.org-grid .org-card:hover{transform:translateY(-2px);border-color:#d7b582}
+.org-grid .org-card img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;filter:contrast(1.06) saturate(.89);border-bottom:1px solid #927b5679}
+.org-grid .org-card .tilebody{padding:16px 17px 20px;flex:1}
+.org-grid .org-card .tilebody small{font:10px Georgia,serif;letter-spacing:.14em;color:#c4ab7c;display:block;margin-bottom:8px}
+.org-grid .org-card .tilebody strong{font:22px Georgia,'Songti SC','STSong',serif;color:#efdab3}
+.org-grid .org-card .tilebody p{color:#b4bdb0;font:12px/1.8 var(--sans);margin:10px 0 0}
+.organization-note{font-size:11px;line-height:1.7;color:#a5b4a9;padding:15px 4px;border-top:1px solid #82715154;margin:20px 0 0}
+.restricted-entry{background:linear-gradient(140deg,#1a2321,#101819);border-color:#89734b80}
+@media(max-width:1020px){.org-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.org-grid{grid-template-columns:1fr;gap:12px}.org-grid .org-card .tilebody{padding:14px 15px 16px}.org-grid .org-card .tilebody strong{font-size:20px}.organization-hero .sub-img{background-position:55% center}.organization-hero .sub-shade{background:linear-gradient(0deg,#0a1416ee,#0a141699 70%,#0a141650)}}
+@media(prefers-reduced-motion:reduce){.org-grid .org-card{transition:none}.org-grid .org-card:hover{transform:none}}
