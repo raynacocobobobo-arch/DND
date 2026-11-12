@@ -118,3 +118,16 @@ html[data-mode='night']{--paper:#1c2824;--ink:#e2dbc9}html[data-mode='night'] .c
 
 /* V3.2: preserve aspect of chapter frontispieces, no artificial crop or upscaling */
 .chapter-frontispiece img{height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;max-width:100%}
+
+/* V2 harmonization with codex homepage, 2026-11-12 */
+:root{--bg:#0b1213;--bg2:#121d1c;--panel:#15211f;--panel2:#202d28;--line:#88755669;--brass:#c3a16b;--brass2:#e5cf9f;--muted:#aeb7ad;--text:#e9e5d9;--accent:#c3a16b}
+.site-header{background:linear-gradient(180deg,#121c1aed,#0c1514f5);border-bottom:1px solid #8e785858}
+.desktop-nav a:hover,.desktop-nav .active{background:#c3a16b18;color:#e5cf9f}
+.btn-primary{background:#c3a16b;color:#16201b;border-color:#ae9064}
+.btn-primary:hover{background:#ecd19e}
+.btn-secondary{background:#1b2722;color:#f1dfbe;border-color:#ae9064}
+.btn-secondary:hover{background:#374235}
+.read-chip,.icon-button,.chapter-nav a,.volume,.deed,.campaign-docket,.reader-side,.meta-card,.reader-top{border-color:var(--line)}
+.reader-top h1,.section-intro h2,.cover h1{font-family:Georgia,'Songti SC','STSong','Noto Serif CJK SC',serif}
+.read-chip:hover,.chapter-nav a:hover,.volume:hover,.deed:hover{border-color:#caaa72}
+@media(max-width:620px){.reader-top{min-height:220px}.reader-top h1{line-height:1.27}.chapter-paper{padding:24px 19px}}

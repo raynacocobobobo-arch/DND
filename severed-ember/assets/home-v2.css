@@ -1,0 +1,62 @@
+
+/* HOME V2 · Unified codex design tokens, independent deed plates and image de-duplication. */
+:root{--void:#0b1213;--panel:#15211f;--panel2:#202d28;--brass:#c3a16b;--low:#8d7954;--bone:#e9e5d9;--ash:#adb8ae;--line:#88755669;--r:2px}
+body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent 65%),#0b1213}
+.topbar{background:linear-gradient(180deg,#121c1aed,#0c1514f5);border-bottom-color:#8e785858}
+.brand strong,.side-title,.section-head h2,.fact h3{font-family:Georgia,'Songti SC','STSong','Noto Serif CJK SC',serif}
+.frame{gap:16px}
+.left-rail,.right-rail .fact,.panel,.hero,.subhero,.category,.reading-volume,.archive-tile{border-color:var(--line)}
+.hero{height:clamp(325px,27vw,440px);background-color:#101a1b}
+.hero-bg{background-image:linear-gradient(90deg,#091314f8 0%,#0b1517ea 30%,#111d1b74 62%,#0a111024 100%),linear-gradient(0deg,#091313dc 0%,transparent 54%),url('assets/p0/H-01.webp');background-position:center,center,center 44%}
+.hero-copy{padding:clamp(28px,4vw,58px);max-width:min(670px,69%)}
+.hero h1{font-size:clamp(33px,3.2vw,55px)}
+.btn{border-color:#ae9064;background:#1b2722;color:#f1dfbe;transition:background .2s,border-color .2s}
+.btn:hover{background:#374235;border-color:#e3bb78}
+.btn.strong{background:#c3a16b;color:#16201b}
+.btn.strong:hover{background:#ecd19e}
+.menu-grid{gap:13px;margin-top:16px}
+.category{min-height:0;background:#111c1b;text-align:left}
+.category img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;filter:saturate(.75) contrast(1.07) brightness(.82)}
+.category:hover,.reading-volume:hover{border-color:#caaa72}
+.category-title{padding:13px 15px 14px;font-size:17px;letter-spacing:.055em}
+.category-title small{font-size:10px;letter-spacing:.16em;margin-top:6px;color:#aaafa4}
+.section-head{margin:33px 0 14px;border:0;border-top:1px solid #b4996d70;border-bottom:1px solid #7f71575b;padding:15px 6px 14px;background:transparent}
+.section-head h2{font-size:23px;font-weight:500;line-height:1.35}
+.section-head h2 span{display:inline-block;margin-left:10px;letter-spacing:.13em}
+.section-head>span{font-size:11px;line-height:1.7}
+.events.deeds-editorial{gap:14px}
+.deeds-editorial .deed-card{border-color:#85704e85;background:#101918}
+.deeds-editorial .deed-card .deed-visual{background:#0c1616}
+.deeds-editorial .deed-card .deed-visual img{object-fit:cover;filter:none}
+.deeds-editorial .deed-card--watch .deed-visual img,.deeds-editorial .deed-card--bridge .deed-visual img,.deeds-editorial .deed-card--phase .deed-visual img{filter:none}
+.deeds-editorial .deed-card--rift .deed-visual:after{background:linear-gradient(0deg,#071113 0%,#071113d0 28%,#0711131a 84%)}
+.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{background:#111b1a}
+.deeds-editorial .deed-card .ev-body h3{font-family:Georgia,'Songti SC','STSong',serif;letter-spacing:.055em;font-weight:500;color:#eed7b2}
+.deeds-editorial .deed-kicker{color:#c1b399;letter-spacing:.065em}
+.deeds-editorial .deed-cta{color:#dfc091}
+.deeds-editorial .deed-card--watch{border-top:2px solid #a27b49}
+.deeds-editorial .deed-card--bridge{border-top:2px solid #799394}
+.deeds-editorial .deed-card--phase{border-top:2px solid #8b7993}
+.deeds-editorial .deed-card--rift{border-top:2px solid #759b94}
+.codex-shortcuts{margin-top:22px;display:grid;grid-template-columns:1.1fr repeat(3,minmax(0,1fr));gap:0;background:#101917;border:1px solid #8e795656}
+.codex-shortcuts>*{display:flex;align-items:center;gap:9px;min-width:0;padding:17px 16px;border-right:1px solid #8e795640}
+.codex-shortcuts>*:last-child{border-right:none}
+.codex-shortcuts .shortcut-title{font:17px Georgia,'Songti SC','STSong',serif;color:#e8d1a5;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px}
+.codex-shortcuts .shortcut-title small{font:9px Georgia,serif;letter-spacing:.15em;color:#b3ab97}
+.codex-shortcuts a{font-size:12px;color:#d1d4c8;transition:background .2s}
+.codex-shortcuts a:hover{background:#9e865426}
+.codex-shortcuts em{font:10px Georgia,serif;letter-spacing:.08em;color:#bba072;font-style:normal;white-space:nowrap}
+.codex-shortcuts a b{font:16px Georgia,serif;color:#c7a574;margin-left:auto}
+.right-rail .fact-emblem{background:none;display:flex;align-items:center;gap:12px;height:auto;min-height:96px;justify-content:flex-start;border-bottom:1px solid #9e865e5e;padding:13px 0;color:#e1c79d;font-size:18px}
+.fact-emblem img{width:52px;height:52px;flex:none;opacity:.85}
+.fact-emblem span{line-height:1.35}
+.fact-emblem small{display:block;font:9px Georgia,serif;letter-spacing:.13em;color:#9fae9e;margin-top:5px}
+.right-quote{border:1px solid var(--line);margin:0;background:linear-gradient(140deg,#1a2622,#101a1a);color:#d1c6ad;font:14px/1.9 Georgia,'Songti SC','STSong',serif;padding:28px 21px}
+.right-quote small{display:block;color:#a88d64;font:10px Georgia,serif;letter-spacing:.11em;margin-top:14px}
+.subhero{background:#111b1a}
+.subhero .sub-shade{background:linear-gradient(90deg,#0a1515f6,#101a19d0 48%,#0a101052)}
+@media(max-width:1330px){.frame{gap:12px}}
+@media(max-width:940px){.menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-shortcuts .shortcut-title{grid-column:1/-1;border-right:0;border-bottom:1px solid #8e795640;padding:12px 14px}}
+@media(max-width:767px){.hero{height:auto;min-height:340px}.hero-copy{max-width:100%;padding:30px 20px 35px}.hero-bg{background-image:linear-gradient(0deg,#091313f7,#091313b8 67%,#09131350),url('assets/p0/H-01.webp')}.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category-title{padding:11px}.category-title small{font-size:9px}.section-head{margin-top:23px;align-items:flex-start}.section-head>span{display:none}.events.deeds-editorial{gap:10px}.deeds-editorial .deed-card .deed-visual img{object-position:center}.codex-shortcuts{grid-template-columns:1fr}.codex-shortcuts .shortcut-title{grid-column:auto}.codex-shortcuts a{padding:13px 14px;border-right:0;border-bottom:1px solid #8e795640}.codex-shortcuts a:last-child{border-bottom:none}}
+@media(max-width:360px){.category-title{font-size:14px}.category-title small{letter-spacing:.08em}.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{grid-template-columns:1fr}.deeds-editorial .deed-card--watch .deed-visual,.deeds-editorial .deed-card--bridge .deed-visual,.deeds-editorial .deed-card--phase .deed-visual{height:145px}}
+@media(prefers-reduced-motion:reduce){.category img,.btn,.codex-shortcuts a{transition:none}}
