@@ -87,3 +87,11 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 .deeds-editorial .deed-card--watch .deed-visual img{filter:saturate(.80) contrast(1.05)}
 .deeds-editorial .deed-card--bridge .deed-visual img,.deeds-editorial .deed-card--phase .deed-visual img{filter:saturate(.75) contrast(1.08)}
 @media(max-width:767px){.deeds-editorial .deed-card--watch .deed-visual img,.deeds-editorial .deed-card--bridge .deed-visual img,.deeds-editorial .deed-card--phase .deed-visual img{object-position:center}}
+
+/* V4 original art, category and winged-sword crest */
+.topbar .crest{width:56px;height:56px;display:flex;align-items:center;justify-content:center}
+.topbar .crest img{width:49px;height:49px;object-fit:contain;filter:drop-shadow(0 0 7px #c39b6259)}
+.fact-emblem img{width:54px;height:54px;object-fit:contain}
+.menu-grid .category img{object-fit:cover;aspect-ratio:16/10;filter:saturate(.84) contrast(1.02) brightness(.86)}
+.dossier-tile .campaign-art{object-fit:cover;aspect-ratio:16/9}
+@media(max-width:767px){.topbar .crest{width:45px;height:48px}.topbar .crest img{width:42px;height:42px}.menu-grid .category img{height:auto!important;aspect-ratio:16/10}}

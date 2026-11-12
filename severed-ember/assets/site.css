@@ -163,3 +163,8 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
 .campaign-photo-plate figcaption strong{font:17px Georgia,'Songti SC','STSong',serif;color:#ecd5aa}
 .campaign-photo-plate figcaption span{color:#bac4b8;font:12px/1.75 Georgia,'Songti SC','STSong',serif}
 @media(max-width:620px){.campaign-photo-plate{margin:15px -9px 24px}.campaign-photo-plate figcaption{padding:12px 14px}.campaign-photo-plate figcaption strong{font-size:15px}}
+
+/* V4 shared original-art heraldry */
+.site-header .brand img{object-fit:contain;flex-shrink:0;width:46px;height:46px;filter:drop-shadow(0 0 7px #aa8b573a)}
+.original-notice img{object-fit:contain}
+@media(max-width:620px){.site-header .brand img{width:35px;height:35px}}
