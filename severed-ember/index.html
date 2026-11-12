@@ -125,6 +125,73 @@
 
 /* V3.5: all campaign plates keep full original composition; no cover cropping */
 .dossier-tile img.campaign-art{aspect-ratio:16/9;object-fit:contain;background:#0c1414}
+
+/* V3.7.1 — distinct editorial treatments for four fact-checked deeds.
+   Each image retains its own original D-01..04 source and original manuscript link. */
+.events.deeds-editorial{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;margin-top:12px}
+.deeds-editorial .deed-card{isolation:isolate;display:flex;min-width:0;min-height:270px;flex-direction:column;position:relative;transition:border-color .2s ease,transform .2s ease;border:1px solid #816b4c;background:#101818}
+.deeds-editorial .deed-card:hover{transform:translateY(-2px);border-color:#d6ac70}
+.deeds-editorial .deed-card:focus-visible{outline:2px solid #f0d3a0;outline-offset:3px}
+.deeds-editorial .deed-card .deed-visual{position:relative;overflow:hidden;min-width:0;flex:none}
+.deeds-editorial .deed-card .deed-visual img{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;filter:none;transition:transform .45s ease}
+.deeds-editorial .deed-card:hover .deed-visual img{transform:scale(1.035)}
+.deeds-editorial .deed-card .ev-body{position:relative;min-height:0;padding:17px 20px 19px;flex:1}
+.deeds-editorial .deed-card .ev-body h3{font-size:22px;margin:9px 0 7px;line-height:1.2}
+.deeds-editorial .deed-card .ev-body small{font-size:11px;letter-spacing:.02em}
+.deeds-editorial .deed-card .ev-body p{font-size:12px;line-height:1.75;min-height:0;margin:10px 0 15px;color:#c5c8be}
+.deeds-editorial .deed-kicker{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.09em;color:#bdb9ae}
+.deeds-editorial .deed-kicker b{font:15px Georgia,serif;color:#dbc08d;letter-spacing:0}
+.deeds-editorial .deed-cta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;color:#dfbd87;font-size:11px;letter-spacing:.04em}
+.deeds-editorial .deed-cta>span{font-size:18px}
+.deeds-editorial .deed-card--rift{grid-column:span 7;min-height:306px;justify-content:flex-end}
+.deeds-editorial .deed-card--rift .deed-visual{position:absolute;inset:0}
+.deeds-editorial .deed-card--rift .deed-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#071113 0%,#071113d7 29%,#07111315 90%),linear-gradient(90deg,#06121344,transparent 75%)}
+.deeds-editorial .deed-card--rift .deed-visual img{object-position:center 56%}
+.deeds-editorial .deed-card--rift .ev-body{flex:0 0 auto;max-width:88%;padding:32px 25px 23px}
+.deeds-editorial .deed-card--rift .ev-body h3{font-size:28px}
+.deeds-editorial .deed-card--rift .ev-body p{max-width:370px}
+.deeds-editorial .deed-card--watch{grid-column:span 5;background:linear-gradient(135deg,#251d15,#121719)}
+.deeds-editorial .deed-card--watch .deed-visual{height:170px}
+.deeds-editorial .deed-card--watch .deed-visual img{object-position:center 33%;filter:sepia(.13) contrast(1.08)}
+.deeds-editorial .deed-card--watch .ev-body{padding-top:15px}
+.deeds-editorial .deed-card--bridge{grid-column:span 5;display:grid;grid-template-columns:52% 48%;min-height:260px;background:#121b20}
+.deeds-editorial .deed-card--bridge .deed-visual{height:100%}
+.deeds-editorial .deed-card--bridge .deed-visual img{object-position:35% center;filter:saturate(.75) hue-rotate(5deg)}
+.deeds-editorial .deed-card--bridge .ev-body{padding:21px 15px 15px;display:flex;flex-direction:column}
+.deeds-editorial .deed-card--bridge .ev-body h3{font-size:20px}
+.deeds-editorial .deed-card--bridge .deed-kicker{display:block;line-height:1.6}
+.deeds-editorial .deed-card--bridge .deed-kicker b{display:block}
+.deeds-editorial .deed-card--phase{grid-column:span 7;display:grid;grid-template-columns:54% 46%;min-height:260px;background:linear-gradient(130deg,#231c1c,#101718)}
+.deeds-editorial .deed-card--phase .deed-visual{order:2;height:100%}
+.deeds-editorial .deed-card--phase .deed-visual img{object-position:66% center;filter:contrast(1.13) saturate(.78)}
+.deeds-editorial .deed-card--phase .deed-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1c1a1a 0%,transparent 28%)}
+.deeds-editorial .deed-card--phase .ev-body{order:1;padding:28px 22px 18px;display:flex;flex-direction:column}
+.deeds-editorial .deed-card--phase .ev-body h3{font-size:24px}
+@media(max-width:1100px){
+ .events.deeds-editorial{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .deeds-editorial .deed-card--rift,.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{grid-column:span 1;min-height:295px}
+ .deeds-editorial .deed-card--bridge{grid-template-columns:48% 52%}
+ .deeds-editorial .deed-card--phase{grid-template-columns:50% 50%}
+}
+@media(max-width:767px){
+ .events.deeds-editorial{grid-template-columns:1fr;gap:9px}
+ .deeds-editorial .deed-card--rift,.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{grid-column:span 1;min-height:0}
+ .deeds-editorial .deed-card--rift{min-height:245px}
+ .deeds-editorial .deed-card--rift .ev-body{padding:46px 18px 18px;max-width:100%}
+ .deeds-editorial .deed-card--rift .ev-body h3{font-size:23px}
+ .deeds-editorial .deed-card--watch{display:grid;grid-template-columns:43% 57%;min-height:175px}
+ .deeds-editorial .deed-card--watch .deed-visual{height:100%}
+ .deeds-editorial .deed-card--bridge{grid-template-columns:45% 55%;min-height:185px}
+ .deeds-editorial .deed-card--phase{grid-template-columns:57% 43%;min-height:185px}
+ .deeds-editorial .deed-card .ev-body{padding:13px 12px 12px}
+ .deeds-editorial .deed-card .ev-body h3,.deeds-editorial .deed-card--phase .ev-body h3{font-size:17px;margin:6px 0}
+ .deeds-editorial .deed-card .ev-body p{font-size:11px;line-height:1.6;margin:7px 0}
+ .deeds-editorial .deed-card .ev-body small{font-size:10px}
+ .deeds-editorial .deed-kicker{font-size:9px;gap:6px;line-height:1.5}
+ .deeds-editorial .deed-kicker b{font-size:13px}
+ .deeds-editorial .deed-cta{font-size:10px;margin-top:5px}
+}
+@media(prefers-reduced-motion:reduce){.deeds-editorial .deed-card,.deeds-editorial .deed-card .deed-visual img{transition:none}.deeds-editorial .deed-card:hover{transform:none}.deeds-editorial .deed-card:hover .deed-visual img{transform:none}}
 </style></head><body>
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><svg fill="none" stroke="#d0ad73" stroke-width="2.5" viewbox="0 0 64 64"><path d="M32 4V57M14 21H50M26 17L32 4L38 17M18 48L32 57L46 48"></path><path d="M15 18L3 10L10 31L27 26M49 18L61 10L54 31L37 26"></path><path d="M23 36L32 45L41 36" stroke-width="1.2"></path></svg></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="people" href="#people">人物志</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="places" href="#places">基地与舰船</a><a data-nav="restricted" href="#restricted">禁阅卷宗</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
@@ -145,8 +212,8 @@
 <section class="view" id="view-home">
 <div class="hero cornered"><div class="hero-bg"></div><div class="hero-copy"><div class="eyebrow">CODEX SEVERED EMBER · ARCHIVE PRIME</div><h1>破碎余烬隐修会<small>CENOBIUM OF THE SEVERED EMBER</small></h1><p class="hero-sub">「即便律法已碎，余烬尤存。」</p><p>自帝国档案判定全员推定阵亡之后，守望仍未终止。阅读希芙拉的遗迹、远征、人物与无人承认的令状。</p><a class="btn strong" href="chapters/01-overview.html">开启第一卷</a><a class="btn" href="#campaigns">浏览远征</a></div></div>
 <div class="menu-grid"><a class="category" data-asset="H-03" href="#organization"><img src="assets/p0/C-03.webp" alt="战团薪传与全副装甲军阵" decoding="async" loading="lazy" width="480" height="300"/><div class="category-title">战团构成<small>ORGANIZATION</small></div></a><a class="category" data-asset="H-04" href="#people"><img src="assets/p0/C-09.webp" alt="隐修会主要人物群像" decoding="async" loading="lazy" width="480" height="300"/><div class="category-title">人物志<small>PERSONAE</small></div></a><a class="category" data-asset="H-05" href="#campaigns"><img src="assets/p1/vilos-evacuation.webp" alt="维洛斯撤离的远征战役" decoding="async" loading="lazy" width="480" height="300"/><div class="category-title">战役档案<small>CAMPAIGNS</small></div></a><a class="category" data-asset="H-06" href="#armory"><img src="assets/p1/armory-full.webp" alt="隐修会哥特式军械库" decoding="async" loading="lazy" width="480" height="300"/><div class="category-title">武装与遗物<small>ARMAMENTS</small></div></a><a class="category" data-asset="H-07" href="#places"><img src="assets/p1/ember-ship.webp" alt="余烬号航行于星海" decoding="async" loading="lazy" width="480" height="300"/><div class="category-title">基地与舰船<small>BASES &amp; FLEET</small></div></a></div>
-<div class="section-head"><h2>◇ 典型事迹 <span style="font:12px Georgia;color:#ad9e82">NOTABLE DEEDS</span></h2><span>四项优先展示，其他在原文章节与人物志中展开</span></div>
-<div class="events"><a class="event-card" href="chapters/06-secrets.html#h-4-4"><img alt="加勒隆十三秒力场压制" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 45vw, 260px" src="assets/p0/D-01-thumb.webp" srcset="assets/p0/D-01-thumb.webp 960w, assets/p0/D-01.webp 1586w"/><div class="ev-body"><h3>加勒隆 · 十三秒</h3><small>567.M34 · 大裂变</small><p>将自身接入失控力场回路；十三秒后扩张停止，遗体未归。</p></div></a><a class="event-card" href="chapters/05-campaigns.html#event-D-02"><img alt="塞巴斯蒂安独守三个失控抑制节点" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 45vw, 260px" src="assets/p0/D-02-thumb.webp" srcset="assets/p0/D-02-thumb.webp 960w, assets/p0/D-02.webp 1586w"/><div class="ev-body"><h3>塞巴斯蒂安 · 九小时</h3><small>799.M38 · 第二次三伪星之战</small><p>独守三组应急抑制节点，两个战术小队相继全灭。<br/></p></div></a><a class="event-card" href="chapters/05-campaigns.html#event-D-03"><img alt="塞维林在断裂升降架前抢救伤员" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 45vw, 260px" src="assets/p0/D-03-thumb.webp" srcset="assets/p0/D-03-thumb.webp 960w, assets/p0/D-03.webp 1586w"/><div class="ev-body"><h3>塞维林 · 伤员桥</h3><small>075.M42 · 深渊之井</small><p>切断吊索，让失控升降架成为伤员桥，错过反击。<br/></p></div></a><a class="event-card" href="chapters/05-campaigns.html#event-D-04"><img alt="雷金纳德支撑坍塌支架、左半身陷入力场" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 45vw, 260px" src="assets/p0/D-04-thumb.webp" srcset="assets/p0/D-04-thumb.webp 960w, assets/p0/D-04.webp 1586w"/><div class="ev-body"><h3>雷金纳德 · 半相态</h3><small>051.M42 · 熵火熔铸</small><p>用战甲和盾撑住断裂支架，左半身永久无法正常修复。<br/></p></div></a></div>
+<div class="section-head"><h2>◇ 典型事迹 <span style="font:12px Georgia;color:#ad9e82">NOTABLE DEEDS</span></h2><span>四种行动与代价 · 点击进入对应原文记录</span></div>
+<div class="events deeds-editorial"><a class="event-card deed-card deed-card--rift" data-deed="01" href="chapters/06-secrets.html#h-4-4"><div class="deed-visual"><img alt="加勒隆在崩溃的力场回路中进行十三秒压制" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 48vw, 650px" src="assets/p0/D-01-thumb.webp" srcset="assets/p0/D-01-thumb.webp 960w, assets/p0/D-01.webp 1586w"/></div><div class="ev-body"><span class="deed-kicker"><b>01</b> 失控力场 · 自我牺牲</span><h3>加勒隆 · 十三秒</h3><small>567.M34 · 大裂变</small><p>将自身接入失控力场回路；十三秒后扩张停止，遗体未归。</p><span class="deed-cta" aria-hidden="true">查看守秘记录 <span>↗</span></span></div></a><a class="event-card deed-card deed-card--watch" data-deed="02" href="chapters/05-campaigns.html#event-D-02"><div class="deed-visual"><img alt="塞巴斯蒂安独守三个失控抑制节点" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 48vw, 650px" src="assets/p0/D-02-thumb.webp" srcset="assets/p0/D-02-thumb.webp 960w, assets/p0/D-02.webp 1586w"/></div><div class="ev-body"><span class="deed-kicker"><b>02</b> 九小时防御 · 三处节点</span><h3>塞巴斯蒂安 · 九小时</h3><small>799.M38 · 第二次三伪星之战</small><p>独守三组应急抑制节点，两个战术小队相继全灭。</p><span class="deed-cta" aria-hidden="true">查看战役记录 <span>↗</span></span></div></a><a class="event-card deed-card deed-card--bridge" data-deed="03" href="chapters/05-campaigns.html#event-D-03"><div class="deed-visual"><img alt="塞维林在断裂升降架前抢救伤员" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 48vw, 650px" src="assets/p0/D-03-thumb.webp" srcset="assets/p0/D-03-thumb.webp 960w, assets/p0/D-03.webp 1586w"/></div><div class="ev-body"><span class="deed-kicker"><b>03</b> 深渊救援 · 伤员转运</span><h3>塞维林 · 伤员桥</h3><small>075.M42 · 深渊之井</small><p>切断吊索，让失控升降架成为伤员桥，错过反击。</p><span class="deed-cta" aria-hidden="true">查看战役记录 <span>↗</span></span></div></a><a class="event-card deed-card deed-card--phase" data-deed="04" href="chapters/05-campaigns.html#event-D-04"><div class="deed-visual"><img alt="雷金纳德以装甲与盾牌支撑坍塌支架，身体陷入力场" decoding="async" loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1400px) 48vw, 650px" src="assets/p0/D-04-thumb.webp" srcset="assets/p0/D-04-thumb.webp 960w, assets/p0/D-04.webp 1586w"/></div><div class="ev-body"><span class="deed-kicker"><b>04</b> 坍塌支架 · 半相态损伤</span><h3>雷金纳德 · 半相态</h3><small>051.M42 · 熵火熔铸</small><p>用战甲和盾撑住断裂支架，左半身永久无法正常修复。</p><span class="deed-cta" aria-hidden="true">查看战役记录 <span>↗</span></span></div></a></div>
 <div class="panel bottom-strip"><b>▤ 精选卷宗</b><div class="bottom-items"><a class="last-item" href="#reader"><img alt="" src="assets/chapter-art/01-overview.webp"/><span>第一卷 · 战团概览</span></a><a class="last-item" href="#campaigns"><img alt="" src="assets/chapter-art/05-campaigns.webp"/><span>第五卷 · 11 场远征</span></a><a class="last-item" href="#people"><img alt="隐修会纹章" src="assets/emblem.svg"/><span>第九卷 · 知名人物</span></a></div></div>
 </section>
 <section class="view" id="view-reader"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/p1/siofra-full.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">FULL MANUSCRIPT · V3.7</div><h1>十卷完整档案</h1><p>十卷独立页面完整收录 V3.7 原稿的章节、注释和引文，并提供小节导航、全文检索与阅读进度恢复。</p><a class="btn strong" href="chapters/01-overview.html">从第一卷开始阅读 →</a></div></div><div class="reading-grid"><a class="reading-volume" href="chapters/01-overview.html"><img src="assets/thumbs/01-overview.webp" alt="战团概览章节插图" loading="lazy"><div class="volume-meta"><span>卷 01 · V3.7 原文</span><strong>战团概览</strong><p>起源、格言与建军令</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/02-siofra.html"><img src="assets/thumbs/02-siofra.webp" alt="驻地 · 希芙拉章节插图" loading="lazy"><div class="volume-meta"><span>卷 02 · V3.7 原文</span><strong>驻地 · 希芙拉</strong><p>矿井、环区、黑河与余烬号</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/03-organization.html"><img src="assets/thumbs/03-organization.webp" alt="战团构成章节插图" loading="lazy"><div class="volume-meta"><span>卷 03 · V3.7 原文</span><strong>战团构成</strong><p>薪传议会与各编制</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/04-arsenal.html"><img src="assets/thumbs/04-arsenal.webp" alt="特殊武装章节插图" loading="lazy"><div class="volume-meta"><span>卷 04 · V3.7 原文</span><strong>特殊武装</strong><p>第一军团造物与封存遗物</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/05-campaigns.html"><img src="assets/thumbs/05-campaigns.webp" alt="远征战役章节插图" loading="lazy"><div class="volume-meta"><span>卷 05 · V3.7 原文</span><strong>远征战役</strong><p>十一场远征原始记录</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/06-secrets.html"><img src="assets/thumbs/06-secrets.webp" alt="万年守秘章节插图" loading="lazy"><div class="volume-meta"><span>卷 06 · V3.7 原文</span><strong>万年守秘</strong><p>迟到的命令与关键时刻</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/07-other-histories.html"><img src="assets/thumbs/07-other-histories.webp" alt="他者的战史章节插图" loading="lazy"><div class="volume-meta"><span>卷 07 · V3.7 原文</span><strong>他者的战史</strong><p>来自帝国与异族的旁证</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/08-rites.html"><img src="assets/thumbs/08-rites.webp" alt="原则与仪礼章节插图" loading="lazy"><div class="volume-meta"><span>卷 08 · V3.7 原文</span><strong>原则与仪礼</strong><p>旧誓、甲色与真名</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/09-characters.html"><img src="assets/thumbs/09-characters.webp" alt="知名人物章节插图" loading="lazy"><div class="volume-meta"><span>卷 09 · V3.7 原文</span><strong>知名人物</strong><p>九人的命运与典型事迹</p><em>打开完整章节 →</em></div></a><a class="reading-volume" href="chapters/10-restricted.html"><img src="assets/thumbs/10-restricted.webp" alt="禁阅卷宗章节插图" loading="lazy"><div class="volume-meta"><span>卷 10 · V3.7 原文</span><strong>禁阅卷宗</strong><p>井底抄本与监听残页</p><em>打开完整章节 →</em></div></a></div></section>
