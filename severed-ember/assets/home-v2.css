@@ -80,3 +80,10 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 @media(max-width:850px){.reading-grid{grid-template-columns:1fr}.gallery-context{flex-wrap:wrap;gap:8px}.gallery-context span{display:none}}
 @media(max-width:767px){.reading-volume{grid-template-columns:90px minmax(0,1fr);min-height:145px}.reading-volume .volume-monogram{min-height:145px}.reading-volume .volume-monogram b{font-size:41px}.menu-grid .category img{height:auto!important;aspect-ratio:16/10;object-fit:cover}.topbar{padding-inline:max(10px,env(safe-area-inset-left)) max(10px,env(safe-area-inset-right))}.top-actions button,.mobile-menu,.filterbar button{min-height:44px;min-width:44px}.subhero .sub-content{max-width:100%}.subhero h1{overflow-wrap:anywhere}}
 @media(max-width:400px){.reading-volume{grid-template-columns:74px minmax(0,1fr)}.reading-volume .volume-monogram b{font-size:34px}.reading-volume .volume-meta{padding:12px}.reading-volume .volume-meta strong{font-size:17px}.reading-volume .volume-meta p{font-size:11px}.gallery-context{padding:14px}}
+
+/* V3.9: photographic deed artwork across all four cards. */
+.deeds-editorial .deed-card .deed-visual{background-color:#0a1516}
+.deeds-editorial .deed-card .deed-visual img{image-rendering:auto;filter:saturate(.84) contrast(1.05);object-fit:cover}
+.deeds-editorial .deed-card--watch .deed-visual img{filter:saturate(.80) contrast(1.05)}
+.deeds-editorial .deed-card--bridge .deed-visual img,.deeds-editorial .deed-card--phase .deed-visual img{filter:saturate(.75) contrast(1.08)}
+@media(max-width:767px){.deeds-editorial .deed-card--watch .deed-visual img,.deeds-editorial .deed-card--bridge .deed-visual img,.deeds-editorial .deed-card--phase .deed-visual img{object-position:center}}
