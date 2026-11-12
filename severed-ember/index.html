@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/><meta content="dark" name="color-scheme"/><meta name="description" content="破碎余烬隐修会 · 完整 V3.7 原稿、十卷编年、十一场战役、人物与禁阅卷宗。"/><title>破碎余烬隐修会 · 数字圣典 V3.4.2 · 远征图像补全</title>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/><meta content="dark" name="color-scheme"/><meta name="description" content="破碎余烬隐修会 · 完整 V3.7 原稿、十卷编年、十一场战役、人物与禁阅卷宗。"/><title>破碎余烬隐修会 · 数字圣典 V3.5 · 十一场战役图版</title>
 <style>
 :root{--void:#090f11;--panel:#11191a;--panel2:#1c2925;--brass:#c3a16b;--low:#806a48;--bone:#e9ddc7;--ash:#aeb3ad;--spectral:#7e91ae;--rift:#6e557b;--red:#a3634f;--line:#856d494d;--head:Georgia,'Noto Serif SC','Songti SC','STSong',serif;--sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;--r:3px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 56% 0%,#25302c 0%,transparent 52%),repeating-linear-gradient(90deg,transparent 0,transparent 109px,#bd9f6a06 110px),var(--void);color:var(--bone);font-family:var(--sans)}a{color:inherit;text-decoration:none}a:hover{color:#f7db9e}button{font:inherit;cursor:pointer}img{max-width:100%;display:block}::selection{background:#bfa16c;color:#111}*:focus-visible{outline:2px solid #edd1a0;outline-offset:2px}
@@ -122,6 +122,9 @@
 .person-dossier:focus-within{outline:1px solid #e5bd87;outline-offset:2px}
 @media(max-width:800px){.menu-grid .category img{height:142px}.hero-bg{background-image:linear-gradient(0deg,#081113fa,#081316c9 35%,#0d1a1730 85%),url('assets/portraits/08-gavriel-full.webp');background-position:center,center 33%}}
 @media(max-width:480px){.menu-grid .category img{height:125px}.person-dossier .persona-cover{height:auto;padding:0}.person-dossier .persona-no{font-size:9px;padding:6px 7px}.person-dossier .persona-tag{font-size:10px;padding:4px 5px}.person-dossier .personname{padding:10px;min-height:155px}}
+
+/* V3.5: all campaign plates keep full original composition; no cover cropping */
+.dossier-tile img.campaign-art{aspect-ratio:16/9;object-fit:contain;background:#0c1414}
 </style></head><body>
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><svg fill="none" stroke="#d0ad73" stroke-width="2.5" viewbox="0 0 64 64"><path d="M32 4V57M14 21H50M26 17L32 4L38 17M18 48L32 57L46 48"></path><path d="M15 18L3 10L10 31L27 26M49 18L61 10L54 31L37 26"></path><path d="M23 36L32 45L41 36" stroke-width="1.2"></path></svg></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="people" href="#people">人物志</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="places" href="#places">基地与舰船</a><a data-nav="restricted" href="#restricted">禁阅卷宗</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
@@ -165,7 +168,7 @@ const chronology=[["021.M31","迟到的命令：署名狮王的令状抵达","ch
 const pageTitles={home:'总览',reader:'卷宗阅读',campaigns:'战役档案',people:'人物志',organization:'战团构成',armory:'武装与遗物',places:'基地与舰船',chronicle:'编年史',restricted:'禁阅卷宗'};
 function renderCampaigns(filter='all'){
  const el=document.getElementById('campaign-grid');
- const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',3:'assets/p0/D-02.webp',4:'assets/p1/vilos-evacuation.webp',10:'assets/p0/D-04.webp',11:'assets/p0/D-03.webp'};
+ const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',2:'assets/campaigns/02-first-false-stars-thumb.webp',3:'assets/p0/D-02.webp',4:'assets/p1/vilos-evacuation.webp',5:'assets/campaigns/05-nameless-blood-thumb.webp',6:'assets/campaigns/06-forge-silence-thumb.webp',7:'assets/campaigns/07-silent-corroboration-thumb.webp',8:'assets/campaigns/08-black-iron-accord-thumb.webp',9:'assets/campaigns/09-ash-furnace-line-thumb.webp',10:'assets/p0/D-04.webp',11:'assets/p0/D-03.webp'};
  el.replaceChildren();
  campaignData.forEach((c,i)=>{
   if(filter!=='all'&&c[2]!==filter)return;
