@@ -131,3 +131,15 @@ html[data-mode='night']{--paper:#1c2824;--ink:#e2dbc9}html[data-mode='night'] .c
 .reader-top h1,.section-intro h2,.cover h1{font-family:Georgia,'Songti SC','STSong','Noto Serif CJK SC',serif}
 .read-chip:hover,.chapter-nav a:hover,.volume:hover,.deed:hover{border-color:#caaa72}
 @media(max-width:620px){.reader-top{min-height:220px}.reader-top h1{line-height:1.27}.chapter-paper{padding:24px 19px}}
+
+/* Campaign V3.6: dedicated archive scene plates and no duplicate incident photos. */
+.campaign-vector-plate{margin:24px 0 26px;background:#0f1919;border-color:#9f8660}
+.campaign-vector-plate a{display:block;overflow:hidden;background:#0a1213}
+.campaign-vector-plate img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;filter:none}
+.campaign-vector-plate figcaption{display:grid;gap:6px;background:#18231f;padding:12px 17px;line-height:1.6}
+.campaign-vector-plate figcaption strong{font-family:Georgia,'Songti SC','STSong',serif;font-size:17px;color:#e8d5af}
+.campaign-vector-plate figcaption span{font-size:12px;color:#b9c0b1}
+.event-note{scroll-margin-top:92px;border-left:2px solid #a88b60;background:#88704c13;padding:14px 18px;margin:19px 0 22px;color:#baafa0}
+.event-note-label{display:block;color:#bda577;font:10px Georgia,serif;letter-spacing:.1em;margin-bottom:6px}
+.event-note p{font:13px/1.75 Georgia,'Songti SC','STSong',serif;color:#bfbfb3;margin:0}
+@media(max-width:620px){.campaign-vector-plate{margin:17px -9px 22px}.campaign-vector-plate figcaption{padding:12px 15px}.campaign-vector-plate figcaption strong{font-size:15px}.campaign-vector-plate figcaption span{font-size:11px}.event-note{padding:12px;margin:16px 0}}

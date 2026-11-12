@@ -235,13 +235,13 @@ const chronology=[["021.M31","迟到的命令：署名狮王的令状抵达","ch
 const pageTitles={home:'总览',reader:'卷宗阅读',campaigns:'战役档案',people:'人物志',organization:'战团构成',armory:'武装与遗物',places:'基地与舰船',chronicle:'编年史',restricted:'禁阅卷宗'};
 function renderCampaigns(filter='all'){
  const el=document.getElementById('campaign-grid');
- const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',2:'assets/campaigns/02-first-false-stars-thumb.webp',3:'assets/p0/D-02.webp',4:'assets/p1/vilos-evacuation.webp',5:'assets/campaigns/05-nameless-blood-thumb.webp',6:'assets/campaigns/06-forge-silence-thumb.webp',7:'assets/campaigns/07-silent-corroboration-thumb.webp',8:'assets/campaigns/08-black-iron-accord-thumb.webp',9:'assets/campaigns/09-ash-furnace-line-thumb.webp',10:'assets/p0/D-04.webp',11:'assets/p0/D-03.webp'};
+ const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',2:'assets/campaigns/02-first-false-stars-thumb.webp',3:'assets/campaigns/03-second-false-stars.svg',4:'assets/campaigns/04-steel-storm.svg',5:'assets/campaigns/05-nameless-blood-thumb.webp',6:'assets/campaigns/06-forge-silence-thumb.webp',7:'assets/campaigns/07-silent-corroboration-thumb.webp',8:'assets/campaigns/08-black-iron-accord-thumb.webp',9:'assets/campaigns/09-ash-furnace-line-thumb.webp',10:'assets/campaigns/10-entropy-forge.svg',11:'assets/campaigns/11-abyssal-well.svg'};
  el.replaceChildren();
  campaignData.forEach((c,i)=>{
   if(filter!=='all'&&c[2]!==filter)return;
   const number=i+1, link=document.createElement('a');link.className='archive-tile dossier-tile';link.href='chapters/05-campaigns.html#h-4-'+(number+1);
   if(pics[number]){
-   const img=document.createElement('img');img.src=pics[number];img.alt=c[0]+'：'+c[3]+'（原文事件相关概念插画）';img.loading='lazy';img.decoding='async';img.className='campaign-art';link.append(img);
+   const img=document.createElement('img');img.src=pics[number];img.alt=c[0]+'：'+c[3]+'（事件对应档案画面）';img.loading='lazy';img.decoding='async';img.className='campaign-art';link.append(img);
   } else {
    const face=document.createElement('div');face.className='dossier-face';face.innerHTML='<span>CAMPAIGN FILE / '+String(number).padStart(2,'0')+'</span><b>'+c[1]+'</b>';link.append(face);
   }
