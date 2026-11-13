@@ -114,7 +114,7 @@ html[data-mode='night']{--paper:#1c2824;--ink:#e2dbc9}html[data-mode='night'] .c
 .event-illustration figcaption small{font-size:11px;color:#98a99a}
 .chapter-frontispiece img{aspect-ratio:auto!important;object-fit:contain!important}
 @media(max-width:900px){.reader-shell{grid-template-columns:minmax(0,1fr)}.reader-meta{display:none}}
-@media(max-width:620px){.site-header{height:60px}.article-progress{top:58px}.mobile-drawer{top:60px}.drawer-shade{top:60px}.reader-top{min-height:230px;padding:25px 20px;background-size:cover,auto 100%;background-position:center,right center}.reader-top h1{font-size:28px}.reader-top p{letter-spacing:.05em}.reader-shell{padding:14px 11px 48px}}
+@media(max-width:620px){.site-header{height:60px}.article-progress{top:58px}.mobile-drawer{top:60px}.drawer-shade{top:60px}.reader-top{min-height:230px;padding:25px 20px;background-size:cover;background-position:center}.reader-top h1{font-size:28px}.reader-top p{letter-spacing:.05em}.reader-shell{padding:14px 11px 48px}}
 
 /* V3.2: preserve aspect of chapter frontispieces, no artificial crop or upscaling */
 .chapter-frontispiece img{height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;max-width:100%}
