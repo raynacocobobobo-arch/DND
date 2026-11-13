@@ -192,6 +192,44 @@
  .deeds-editorial .deed-cta{font-size:10px;margin-top:5px}
 }
 @media(prefers-reduced-motion:reduce){.deeds-editorial .deed-card,.deeds-editorial .deed-card .deed-visual img{transition:none}.deeds-editorial .deed-card:hover{transform:none}.deeds-editorial .deed-card:hover .deed-visual img{transform:none}}
+
+/* V4.3: three restored small-format heritage plates in the order archive. */
+.org-heritage{
+  margin:15px 0 18px;
+  padding:14px 16px 16px;
+  border:1px solid #806b4a;
+  background:#141e1c;
+}
+.org-heritage-head{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:4px 15px;
+  margin:0 0 11px;
+  font-size:13px;
+  color:#e1ca9f;
+}
+.org-heritage-head small{font-size:11px;line-height:1.7;color:#aeb7a9}
+.org-heritage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.org-heritage-card{
+  display:block;
+  min-width:0;
+  border:1px solid #766449;
+  background:#1b2722;
+  overflow:hidden;
+}
+.org-heritage-card:hover{border-color:#c4a36b}
+.org-heritage-card img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover}
+.org-heritage-card span{display:block;padding:8px 11px;font-size:12px;line-height:1.55;color:#e5d2ab}
+.org-heritage-card span small{display:block;margin-top:2px;font-size:10px;color:#aab4aa}
+@media(max-width:620px){
+  .org-heritage{padding:12px;margin:14px 0}
+  .org-heritage-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:9px;padding-bottom:3px}
+  .org-heritage-card{flex:0 0 min(63vw,205px);scroll-snap-align:start}
+  .org-heritage-head small{font-size:10px}
+}
+
 </style><link rel="stylesheet" href="assets/home-v2.css?v=20261113-r5"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/></head><body>
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="48" height="48" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="people" href="#people">人物志</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="places" href="#places">基地与舰船</a><a data-nav="restricted" href="#restricted">禁阅卷宗</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
@@ -228,6 +266,14 @@
 <a class="archive-tile org-card" href="chapters/03-organization.html#h-4-5"><img src="assets/organization/assault-veterans.webp" alt="重装突击老兵在被占领的舰舱交火" loading="lazy" decoding="async" width="960" height="600"><div class="tilebody"><small>04 / VETERANS</small><strong>突击老兵</strong><p>暗夜骑兵侦察、黑剑破甲、余烬刺客清道，另有遗迹铁匠、审判者与巡礼骑士。</p></div></a>
 <a class="archive-tile org-card" href="chapters/03-organization.html#h-4-6"><img src="assets/organization/caliban-agents.webp" alt="凡人书记员在战团星图与命令档案前记录文书" loading="lazy" decoding="async" width="960" height="600"><div class="tilebody"><small>05 / AGENTS</small><strong>卡利班代行者</strong><p>不穿阿斯塔特动力甲，不记入战斗兄弟人数：碎律修女、指头女巫与无名扈从。</p></div></a>
 </div><p class="organization-note">编制图为编辑性场景示意：角色身份、数量及武装以 V3.7 原文为准，不将画中人物冒充正式战团名册。</p>
+<div class="org-heritage" aria-label="战团历史美术选页">
+  <div class="org-heritage-head"><strong>历史画稿选页 · HERITAGE PLATES</strong><small>三张早期构图复用，不作为特定人物或编制的定稿外观</small></div>
+  <div class="org-heritage-grid">
+    <a class="org-heritage-card" href="chapters/03-organization.html#h-4-3"><img src="assets/p0/H-03-thumb.webp" alt="旧画稿：战团武士在哥特圣堂内列队" width="480" height="300" loading="lazy" decoding="async"><span>军阵与旧誓<small>早期战团群像</small></span></a>
+    <a class="org-heritage-card" href="chapters/03-organization.html#h-4-4"><img src="assets/p0/H-04-thumb.webp" alt="旧画稿：三位着重甲的骑士站在圣所前" width="480" height="300" loading="lazy" decoding="async"><span>重装骑士<small>早期造型概念</small></span></a>
+    <a class="org-heritage-card" href="chapters/05-campaigns.html"><img src="assets/p0/H-05-thumb.webp" alt="旧画稿：战团战士在山地废墟中行军" width="480" height="300" loading="lazy" decoding="async"><span>战场行军<small>早期战争概念</small></span></a>
+  </div>
+</div>
 </section>
 <section class="view" id="view-armory"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-art/04-arsenal.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">RELIQUARY · VOLUME IV</div><h1>武装与遗物</h1><p>按 V3.7 原稿登记武装与遗物的名称、形制及出处；现有插画为武库环境，不冒充任何具体器物的实物图。</p><a class="btn strong" href="chapters/04-arsenal.html">阅读第四卷原文 →</a></div></div><div class="gallery-context"><strong>军械档案</strong><p>下列条目只陈列原稿确证的武器名称与特征。页头为武库环境示意，不作为具体器物实物图。</p><span>RELIQUARY / VOL. IV</span></div><div class="relic-grid"><a class="relic-entry" href="chapters/04-arsenal.html#h-4-2"><span>Ⅰ · FIRST LEGION</span><strong>暗鸦凝视者</strong><p>精工动力剑；柄中封有透明的古卡利班叶片。</p></a><a class="relic-entry" href="chapters/04-arsenal.html#h-4-2"><span>Ⅰ · FIRST LEGION</span><strong>余烬之髓</strong><p>精工动力拳套；指节嵌有七片从希芙拉穹顶坠落的碎晶。</p></a><a class="relic-entry" href="chapters/04-arsenal.html#h-4-3"><span>Ⅱ · EXPEDITION RELIC</span><strong>希芙拉之盾</strong><p>盾面有灵能抑制器；数面并列时，盾沿会出现不规则黑线。</p></a><a class="relic-entry" href="chapters/04-arsenal.html#h-4-5"><span>Ⅳ · SEALED</span><strong>沉默之刃</strong><p>军械库内部登记名；长戟仍封在封蜡与锁链内。</p></a></div></section>
 <section class="view" id="view-places"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-art/02-siofra.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">SIOFRA · BASES & FLEET</div><h1>希芙拉与舰船</h1><p>希芙拉的黑河、断桥、金穹与矿井设施构成战团的地下驻地；余烬号停泊于高轨道暗面。</p><a class="btn strong" href="chapters/02-siofra.html">阅读第二卷原文 →</a></div></div><div class="visual-columns"><a href="chapters/02-siofra.html#h-4-2" class="archive-tile"><img src="assets/p1/siofra-full.webp" alt="希芙拉深渊圣城的独立概念插图" loading="lazy"><div class="tilebody"><strong>希芙拉 · 驻地全景</strong><p>地下城市和伪星穹顶的示意视觉；未知环区不补画确定地图。</p></div></a><a href="chapters/02-siofra.html#h-4-6" class="archive-tile"><img src="assets/p1/ember-ship.webp" alt="余烬号暗灰近黑拼修哥特战舰" loading="lazy"><div class="tilebody"><strong>余烬号 · 核心舰船</strong><p>由多种残舰结构拼修而成。另可查阅盲星号与悔泣者号的原文记录。</p></div></a></div><div class="dossier-note"><strong>地理图未确认</strong> 黑河—旧渠—金穹—深渊之井的相对关系仍需根据 V3.7 整理，现阶段不以猜测性剖面图替代设定。</div></section>
