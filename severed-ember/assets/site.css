@@ -546,3 +546,90 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
   .reader-shell .reader-main .reader-top.chapter-visual-header{height:265px}
   .reader-shell .reader-main .reader-top.chapter-visual-header .chapter-visual-header__caption{padding:11px 15px 14px}
 }
+
+
+/* V6.1 · archive artwork alternates for campaign and order-of-battle dossiers. */
+.codex-body > figure.archive-plate.campaign-alt-plate{
+  width:100%;
+  max-width:380px;
+  display:grid;
+  grid-template-columns:148px minmax(0,1fr);
+  gap:0;
+  margin:7px 0 29px;
+  border:1px solid #a48a5e;
+  background:#1a2421;
+  box-shadow:none;
+  overflow:hidden;
+}
+.codex-body > figure.archive-plate.campaign-alt-plate > a{
+  display:block;
+  min-width:0;
+  background:#111918;
+}
+.codex-body > figure.archive-plate.campaign-alt-plate img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:114px;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  background:#111918;
+}
+.codex-body > figure.archive-plate.campaign-alt-plate figcaption{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:4px;
+  min-width:0;
+  padding:10px 12px;
+  line-height:1.6;
+  background:#1a2421;
+  color:#c3c6b9;
+}
+.codex-body > figure.archive-plate.campaign-alt-plate figcaption strong{
+  font:600 12px/1.55 system-ui,-apple-system,'PingFang SC',sans-serif;
+  color:#e7cd9c;
+}
+.codex-body > figure.archive-plate.campaign-alt-plate figcaption span{
+  font:11px/1.6 system-ui,-apple-system,'PingFang SC',sans-serif;
+  color:#b5bdb4;
+  min-width:0;
+}
+.codex-body > figure.archive-plate.legacy-battle-scene{
+  max-width:590px;
+  margin:21px 0 36px;
+  box-shadow:none;
+  border:1px solid #9c845c;
+}
+.codex-body > figure.archive-plate.legacy-battle-scene img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:auto;
+  object-fit:contain;
+}
+.codex-body > figure.archive-plate.legacy-battle-scene figcaption{
+  display:block;
+  padding:10px 14px;
+  background:#1a2521;
+  font:12px/1.7 system-ui,-apple-system,'PingFang SC',sans-serif;
+  color:#bec1b4;
+}
+.codex-body > figure.archive-plate.legacy-battle-scene figcaption strong{
+  display:block;
+  margin:0 0 2px;
+  font-size:12px;
+  color:#e7ce9c;
+}
+@media(max-width:620px){
+  .codex-body > figure.archive-plate.campaign-alt-plate{
+    max-width:100%;
+    grid-template-columns:minmax(105px,43%) minmax(0,1fr);
+    margin:6px 0 23px;
+  }
+  .codex-body > figure.archive-plate.campaign-alt-plate img{min-height:100px}
+  .codex-body > figure.archive-plate.campaign-alt-plate figcaption{padding:8px 9px}
+  .codex-body > figure.archive-plate.campaign-alt-plate figcaption span{font-size:10px}
+  .codex-body > figure.archive-plate.legacy-battle-scene{max-width:100%;margin:17px 0 28px}
+}
