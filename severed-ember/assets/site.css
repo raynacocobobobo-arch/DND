@@ -257,3 +257,182 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
   .reader-shell .reader-main .reader-top > h1{font-size:30px;line-height:1.2;margin:5px 0}
   .reader-shell .reader-main .reader-top > p{font-size:11px;align-self:flex-start;text-align:left;margin:0;max-width:100%}
 }
+
+/* V5.0: typography-only chapter title pages; art moves to editorial gaps. */
+.reader-shell .reader-main .reader-top.reader-title-page{
+  display:grid;
+  grid-template-columns:minmax(112px,0.24fr) minmax(0,1fr);
+  grid-template-rows:auto;
+  align-items:stretch;
+  justify-items:stretch;
+  align-content:initial;
+  justify-content:initial;
+  gap:clamp(22px,3vw,48px);
+  min-height:0;
+  padding:clamp(38px,4.5vw,72px) clamp(28px,4.5vw,70px);
+  background:#10191a;
+  background-image:none;
+  background-size:auto;
+  border:1px solid #8d775446;
+  overflow:hidden;
+  isolation:isolate;
+}
+.reader-shell .reader-main .reader-top.reader-title-page::before,
+.reader-shell .reader-main .reader-top.reader-title-page::after{
+  display:none;
+  content:none;
+}
+.reader-title-page__folio{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  align-self:stretch;
+  padding:2px clamp(15px,2.5vw,38px) 0 0;
+  border-right:1px solid rgba(199,170,119,.32);
+  min-width:0;
+}
+.reader-title-page__series{
+  color:#b99f70;
+  font:10px/1.5 Georgia,'Times New Roman',serif;
+  letter-spacing:.16em;
+  white-space:nowrap;
+}
+.reader-title-page__number{
+  color:#dfc494;
+  font:500 clamp(44px,4.6vw,76px)/1 Georgia,'Times New Roman',serif;
+  letter-spacing:-.04em;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+.reader-title-page__total{
+  margin-top:auto;
+  color:#9c8b6c;
+  font:10px/1.4 Georgia,'Times New Roman',serif;
+  letter-spacing:.12em;
+}
+.reader-title-page__copy{
+  min-width:0;
+  max-width:900px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+}
+.reader-title-page__label{
+  margin:0 0 clamp(15px,2vw,27px);
+  font:11px/1.5 Georgia,'Songti SC','STSong',serif;
+  letter-spacing:.19em;
+  color:#bda77d;
+}
+.reader-shell .reader-main .reader-top.reader-title-page h1{
+  margin:0;
+  padding:0;
+  color:#efd4a4;
+  font:600 clamp(38px,4.15vw,68px)/1.18 Georgia,'Songti SC','STSong','Noto Serif CJK SC',serif;
+  letter-spacing:.065em;
+  text-shadow:none;
+  overflow-wrap:break-word;
+}
+.reader-shell .reader-main .reader-top.reader-title-page .reader-title-page__subtitle{
+  margin:17px 0 0;
+  color:#d1c4ae;
+  font:400 clamp(13px,1.25vw,17px)/1.7 Georgia,'Songti SC','STSong',serif;
+  letter-spacing:.08em;
+  overflow-wrap:anywhere;
+}
+.reader-shell .reader-main .reader-top.reader-title-page .reader-title-page__deck{
+  margin:21px 0 0;
+  padding:16px 0 0;
+  border-top:1px solid rgba(199,170,119,.24);
+  max-width:60ch;
+  color:#9eaaa1;
+  font:400 13px/1.9 Georgia,'Songti SC','STSong',serif;
+  letter-spacing:.035em;
+  overflow-wrap:anywhere;
+}
+.codex-body > .chapter-inline-art{
+  max-width:100%;
+  margin:32px 0 43px;
+  background:#121b1c;
+  border:1px solid #9d8867;
+}
+.codex-body > .chapter-inline-art img{
+  display:block;
+  width:100%;
+  height:auto!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  background:#10191a;
+}
+.codex-body > .chapter-inline-art figcaption{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px 20px;
+  padding:11px 16px;
+  background:#18221f;
+  color:#b7c0b6;
+  font:12px/1.7 Georgia,'Songti SC','STSong',serif;
+}
+.codex-body > .chapter-inline-art figcaption strong{
+  font-size:13px;
+  color:#e3c997;
+  font-weight:600;
+}
+@media(max-width:1180px){
+  .reader-shell .reader-main .reader-top.reader-title-page{
+    grid-template-columns:1fr;
+    gap:22px;
+    padding:42px clamp(25px,4vw,44px);
+  }
+  .reader-title-page__folio{
+    flex-direction:row;
+    align-items:baseline;
+    gap:15px;
+    padding:0 0 15px;
+    border-right:0;
+    border-bottom:1px solid rgba(199,170,119,.32);
+  }
+  .reader-title-page__number{font-size:43px;order:-1}
+  .reader-title-page__total{margin:0 0 0 auto}
+  .reader-title-page__label{margin-bottom:13px}
+  .reader-shell .reader-main .reader-top.reader-title-page h1{font-size:clamp(37px,5vw,55px)}
+}
+@media(max-width:620px){
+  .reader-shell .reader-main .reader-top.reader-title-page{
+    display:grid;
+    grid-template-columns:1fr;
+    min-height:0;
+    gap:22px;
+    padding:29px 22px 35px;
+  }
+  .reader-title-page__folio{gap:12px;padding-bottom:13px}
+  .reader-title-page__series{font-size:9px;letter-spacing:.08em;white-space:normal}
+  .reader-title-page__number{font-size:36px}
+  .reader-title-page__total{font-size:9px;letter-spacing:.04em}
+  .reader-title-page__label{font-size:10px;margin:0 0 12px}
+  .reader-shell .reader-main .reader-top.reader-title-page h1{
+    font-size:clamp(30px,8.4vw,43px);
+    line-height:1.24;
+    letter-spacing:.035em;
+  }
+  .reader-shell .reader-main .reader-top.reader-title-page .reader-title-page__subtitle{
+    margin-top:12px;
+    font-size:13px;
+    line-height:1.65;
+    letter-spacing:.035em;
+  }
+  .reader-shell .reader-main .reader-top.reader-title-page .reader-title-page__deck{
+    margin-top:15px;
+    padding-top:12px;
+    font-size:12px;
+    line-height:1.8;
+  }
+  .codex-body > .chapter-inline-art{margin:20px -6px 28px}
+  .codex-body > .chapter-inline-art figcaption{display:block;padding:10px 12px;font-size:11px}
+  .codex-body > .chapter-inline-art figcaption strong{display:block;font-size:12px;margin-bottom:2px}
+}
+@media print{
+  .reader-shell .reader-main .reader-top.reader-title-page{display:none!important}
+}
