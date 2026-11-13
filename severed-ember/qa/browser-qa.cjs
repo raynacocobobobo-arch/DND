@@ -112,6 +112,19 @@ const cases=[
     if(ch==='05-campaigns'&&['desktop','iphone'].includes(v.name))
       await page.screenshot({path:path.join(OUT,v.name+'-chapter-05.png'),fullPage:false});
   }
+  if(v.name==='desktop'){
+    const samples=[
+      ['/assets/p0/D-03.webp','旧版人物事件：塞维林'],
+      ['/assets/p0/D-04.webp','旧版人物事件：雷金纳德'],
+      ['/assets/deeds/D-03.svg','当前首页 SVG：塞维林'],
+      ['/assets/deeds/D-04.svg','当前首页 SVG：雷金纳德'],
+      ['/assets/campaigns/11-abyssal-well-v4-full.webp','V4 第十一场战役'],
+      ['/assets/campaigns/10-entropy-forge-v4-full.webp','V4 第十场战役']
+    ];
+    await page.setContent('<html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#101918;color:#e4d1ae;font:20px sans-serif"><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">'+samples.map(([src,label])=>'<figure style="margin:0;border:1px solid #8e7756"><img src="'+HOST+src+'" style="display:block;width:100%;height:350px;object-fit:contain;background:#111"/><figcaption style="padding:12px">'+label+'</figcaption></figure>').join('')+'</div></body></html>');
+    await page.waitForFunction(()=>[...document.images].every(x=>x.complete),{timeout:12000});
+    await page.screenshot({path:path.join(OUT,'artwork-candidate-comparison.png'),fullPage:true});
+  }
   for(const e of [...new Set(errors)])fail(v.name+':JS',e);
   for(const e of [...new Set(http404)])fail(v.name+':HTTP',e);
   await page.close();
