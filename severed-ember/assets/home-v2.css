@@ -7,7 +7,7 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 .frame{gap:16px}
 .left-rail,.right-rail .fact,.panel,.hero,.subhero,.category,.reading-volume,.archive-tile{border-color:var(--line)}
 .hero{height:clamp(325px,27vw,440px);background-color:#101a1b}
-.hero-bg{background-image:linear-gradient(90deg,#091314f8 0%,#0b1517ea 30%,#111d1b74 62%,#0a111024 100%),linear-gradient(0deg,#091313dc 0%,transparent 54%),url('assets/p0/H-01.webp');background-position:center,center,center 44%}
+.hero-bg{background-image:linear-gradient(90deg,#091314f8 0%,#0b1517ea 30%,#111d1b74 62%,#0a111024 100%),linear-gradient(0deg,#091313dc 0%,transparent 54%),url('p0/H-01.webp');background-position:center,center,center 44%}
 .hero-copy{padding:clamp(28px,4vw,58px);max-width:min(670px,69%)}
 .hero h1{font-size:clamp(33px,3.2vw,55px)}
 .btn{border-color:#ae9064;background:#1b2722;color:#f1dfbe;transition:background .2s,border-color .2s}
@@ -57,7 +57,7 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 .subhero .sub-shade{background:linear-gradient(90deg,#0a1515f6,#101a19d0 48%,#0a101052)}
 @media(max-width:1330px){.frame{gap:12px}}
 @media(max-width:940px){.menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.codex-shortcuts .shortcut-title{grid-column:1/-1;border-right:0;border-bottom:1px solid #8e795640;padding:12px 14px}}
-@media(max-width:767px){.hero{height:auto;min-height:340px}.hero-copy{max-width:100%;padding:30px 20px 35px}.hero-bg{background-image:linear-gradient(0deg,#091313f7,#091313b8 67%,#09131350),url('assets/p0/H-01.webp')}.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category-title{padding:11px}.category-title small{font-size:9px}.section-head{margin-top:23px;align-items:flex-start}.section-head>span{display:none}.events.deeds-editorial{gap:10px}.deeds-editorial .deed-card .deed-visual img{object-position:center}.codex-shortcuts{grid-template-columns:1fr}.codex-shortcuts .shortcut-title{grid-column:auto}.codex-shortcuts a{padding:13px 14px;border-right:0;border-bottom:1px solid #8e795640}.codex-shortcuts a:last-child{border-bottom:none}}
+@media(max-width:767px){.hero{height:auto;min-height:340px}.hero-copy{max-width:100%;padding:30px 20px 35px}.hero-bg{background-image:linear-gradient(0deg,#091313f7,#091313b8 67%,#09131350),url('p0/H-01.webp')}.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.category-title{padding:11px}.category-title small{font-size:9px}.section-head{margin-top:23px;align-items:flex-start}.section-head>span{display:none}.events.deeds-editorial{gap:10px}.deeds-editorial .deed-card .deed-visual img{object-position:center}.codex-shortcuts{grid-template-columns:1fr}.codex-shortcuts .shortcut-title{grid-column:auto}.codex-shortcuts a{padding:13px 14px;border-right:0;border-bottom:1px solid #8e795640}.codex-shortcuts a:last-child{border-bottom:none}}
 @media(max-width:360px){.category-title{font-size:14px}.category-title small{letter-spacing:.08em}.deeds-editorial .deed-card--watch,.deeds-editorial .deed-card--bridge,.deeds-editorial .deed-card--phase{grid-template-columns:1fr}.deeds-editorial .deed-card--watch .deed-visual,.deeds-editorial .deed-card--bridge .deed-visual,.deeds-editorial .deed-card--phase .deed-visual{height:145px}}
 @media(prefers-reduced-motion:reduce){.category img,.btn,.codex-shortcuts a{transition:none}}
 
