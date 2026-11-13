@@ -112,3 +112,36 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 @media(max-width:1020px){.org-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.org-grid{grid-template-columns:1fr;gap:12px}.org-grid .org-card .tilebody{padding:14px 15px 16px}.org-grid .org-card .tilebody strong{font-size:20px}.organization-hero .sub-img{background-position:55% center}.organization-hero .sub-shade{background:linear-gradient(0deg,#0a1416ee,#0a141699 70%,#0a141650)}}
 @media(prefers-reduced-motion:reduce){.org-grid .org-card{transition:none}.org-grid .org-card:hover{transform:none}}
+
+/* V4.2: explicitly size the scene image track. Percentage heights alone collapsed
+   on auto-sized grid rows, rendering deeds 03/04 as empty dark blocks. */
+.deeds-editorial .deed-card--bridge .deed-visual,
+.deeds-editorial .deed-card--phase .deed-visual{
+  position:relative;align-self:stretch;height:auto;min-height:255px;overflow:hidden
+}
+.deeds-editorial .deed-card--bridge .deed-visual img,
+.deeds-editorial .deed-card--phase .deed-visual img{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  max-width:none;object-fit:cover;opacity:1
+}
+@media(max-width:767px){
+  .deeds-editorial .deed-card--bridge,
+  .deeds-editorial .deed-card--phase{
+    display:flex;flex-direction:column;min-height:0
+  }
+  .deeds-editorial .deed-card--bridge .deed-visual,
+  .deeds-editorial .deed-card--phase .deed-visual{
+    order:0;flex:none;width:100%;height:auto;min-height:0;aspect-ratio:16/8
+  }
+  .deeds-editorial .deed-card--bridge .ev-body,
+  .deeds-editorial .deed-card--phase .ev-body{
+    order:1;min-height:0;padding:15px 17px 17px
+  }
+  .deeds-editorial .deed-card--bridge .deed-kicker b{
+    display:inline
+  }
+  .deeds-editorial .deed-card--bridge .ev-body h3,
+  .deeds-editorial .deed-card--phase .ev-body h3{font-size:20px;line-height:1.35}
+  .deeds-editorial .deed-card--bridge .ev-body p,
+  .deeds-editorial .deed-card--phase .ev-body p{font-size:12px;line-height:1.75}
+}

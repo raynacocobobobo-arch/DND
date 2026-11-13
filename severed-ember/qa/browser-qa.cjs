@@ -42,6 +42,16 @@ const cases=[
         });
       }));
     });
+    if(view==='home'){
+      const deedImages=await page.evaluate(()=>[...document.querySelectorAll('#view-home .deed-card .deed-visual img')].map(im=>{
+        const r=im.getBoundingClientRect();
+        return {src:im.getAttribute('src'),width:r.width,height:r.height,naturalWidth:im.naturalWidth};
+      }));
+      deedImages.forEach((im,i)=>{
+        if(im.width<90||im.height<80||!im.naturalWidth)
+          fail(v.name+':deed:'+String(i+1),'invisible image '+JSON.stringify(im));
+      });
+    }
     const r=await page.evaluate(view=>{
       const el=document.querySelector('#view-'+view),active=document.querySelectorAll('.view.active');
       const html=document.documentElement;
