@@ -29,6 +29,19 @@ const cases=[
   for(const view of views){
     await page.goto(HOST+'/index.html#'+view,{waitUntil:'domcontentloaded',timeout:30000});
     await page.waitForTimeout(120);
+    // Load below-fold images before screenshots and broken-image assertions.
+    await page.evaluate(async()=>{
+      const images=[...document.querySelectorAll('.view.active img')];
+      await Promise.all(images.map(im=>{
+        im.loading='eager';
+        if(im.complete)return Promise.resolve();
+        return new Promise(resolve=>{
+          im.addEventListener('load',resolve,{once:true});
+          im.addEventListener('error',resolve,{once:true});
+          setTimeout(resolve,9000);
+        });
+      }));
+    });
     const r=await page.evaluate(view=>{
       const el=document.querySelector('#view-'+view),active=document.querySelectorAll('.view.active');
       const html=document.documentElement;
@@ -52,8 +65,17 @@ const cases=[
     records.push({viewport:v.name,view,...r});
   }
   await page.goto(HOST+'/index.html#home',{waitUntil:'domcontentloaded'});
-  await page.evaluate(()=>{for(const im of document.images)im.loading='eager'});
-  await page.waitForTimeout(1000);
+  await page.evaluate(async()=>{
+    await Promise.all([...document.images].map(im=>{
+      im.loading='eager';
+      if(im.complete)return Promise.resolve();
+      return new Promise(resolve=>{
+        im.addEventListener('load',resolve,{once:true});
+        im.addEventListener('error',resolve,{once:true});
+        setTimeout(resolve,9000);
+      });
+    }));
+  });
   const summary=await page.evaluate(()=>({
     categories:document.querySelectorAll('#view-home .menu-grid .category').length,
     deeds:document.querySelectorAll('#view-home .deed-card').length,
@@ -68,8 +90,17 @@ const cases=[
   records.push({viewport:v.name,type:'content',...summary});
   for(const ch of chapters){
     let response=await page.goto(HOST+'/chapters/'+ch+'.html',{waitUntil:'domcontentloaded',timeout:30000});
-    await page.evaluate(()=>{for(const im of document.images)im.loading='eager'});
-    await page.waitForTimeout(60);
+    await page.evaluate(async()=>{
+    await Promise.all([...document.images].map(im=>{
+      im.loading='eager';
+      if(im.complete)return Promise.resolve();
+      return new Promise(resolve=>{
+        im.addEventListener('load',resolve,{once:true});
+        im.addEventListener('error',resolve,{once:true});
+        setTimeout(resolve,9000);
+      });
+    }));
+  });
     const vres=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,
       win:window.innerWidth,heading:document.querySelector('h1')?.textContent,
       images:[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.getAttribute('src'))}));

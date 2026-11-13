@@ -17,8 +17,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install browser
+      - name: Install browser and Chinese fonts
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          fc-cache -f
           npm --prefix /tmp/ember-qa install --no-audit --no-fund playwright@1.56.1
           /tmp/ember-qa/node_modules/.bin/playwright install chromium
       - name: Verify all nine views, 10 chapters, image loads and viewport overflow
