@@ -324,9 +324,11 @@ function renderPeople(){
  const slugs=["01-iserin","02-alex","03-aurek","04-galeron","05-sebastian","06-reginald","07-severin","08-gavriel","09-cole"];
  personDetails.forEach((p,i)=>{
   const assetBase=slugs[i]==='08-gavriel'?'assets/portraits/':'assets/portraits/revised-20261114/';
+  const fullAsset=slugs[i]==='03-aurek'?'assets/portraits/revised-20261114/03-aurek-original01-helmet-only.png':assetBase+slugs[i]+'-full.webp';
+  const thumbAsset=slugs[i]==='03-aurek'?'assets/portraits/revised-20261114/03-aurek-original01-helmet-only-thumb.webp':assetBase+slugs[i]+'-thumb.webp';
   const card=document.createElement('article');card.className='person person-dossier';
-  const cover=document.createElement('a');cover.className='persona-cover';cover.href=assetBase+slugs[i]+'-full.webp';cover.target='_blank';cover.rel='noopener noreferrer';cover.setAttribute('aria-label','查看'+p[0]+'高清原画');
-  const img=document.createElement('img');img.src=assetBase+slugs[i]+'-thumb.webp';img.alt=p[0]+'独立场景原画';img.loading='lazy';img.decoding='async';img.width=520;img.height=650;
+  const cover=document.createElement('a');cover.className='persona-cover';cover.href=fullAsset;cover.target='_blank';cover.rel='noopener noreferrer';cover.setAttribute('aria-label','查看'+p[0]+'高清原画');
+  const img=document.createElement('img');img.src=thumbAsset;img.alt=p[0]+'独立场景原画';img.loading='lazy';img.decoding='async';img.width=520;img.height=650;
   const no=document.createElement('span');no.className='persona-no';no.textContent='PERSONA / '+String(i+1).padStart(2,'0');
   const tag=document.createElement('span');tag.className='persona-tag';tag.textContent='查看原画 ↗';
   cover.append(img,no,tag);
