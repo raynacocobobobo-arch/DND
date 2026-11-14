@@ -633,3 +633,67 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
   .codex-body > figure.archive-plate.campaign-alt-plate figcaption span{font-size:10px}
   .codex-body > figure.archive-plate.legacy-battle-scene{max-width:100%;margin:17px 0 28px}
 }
+
+/* V6.2: native 3:1 organization dossier panoramas — no crop. */
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate {
+  width:100%;
+  max-width:100%;
+  margin:20px 0 34px;
+  background:#0c1515;
+  border:1px solid rgba(190,160,103,.62);
+  box-shadow:none;
+  overflow:hidden;
+}
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate > a {
+  display:block;
+  width:100%;
+  line-height:0;
+}
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate img {
+  display:block;
+  width:100%;
+  height:auto!important;
+  aspect-ratio:3/1!important;
+  object-fit:contain!important;
+  object-position:center;
+  filter:none;
+}
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:4px 20px;
+  padding:9px 13px;
+  background:#17221f;
+  color:#b9bfb3;
+  font:12px/1.6 system-ui,-apple-system,"PingFang SC",sans-serif;
+}
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption strong {
+  color:#e2c697;
+  font-size:12px;
+  font-weight:600;
+}
+.reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption span {
+  flex:none;
+  min-width:0;
+  font-size:11px;
+}
+@media(max-width:620px) {
+  .reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate {
+    margin:15px 0 24px;
+  }
+  .reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption {
+    padding:8px 10px;
+    display:block;
+    font-size:11px;
+  }
+  .reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption strong {
+    display:block;
+    margin-bottom:2px;
+  }
+  .reader-shell .reader-main .codex-body > figure.archive-plate.org-panoramic-plate figcaption span {
+    display:block;
+    font-size:10px;
+  }
+}
