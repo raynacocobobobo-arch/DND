@@ -290,7 +290,7 @@ const chronology=[["021.M31","迟到的命令：署名狮王的令状抵达","ch
 const pageTitles={home:'总览',reader:'卷宗阅读',campaigns:'战役档案',people:'人物志',organization:'战团构成',armory:'武装与遗物',places:'基地与舰船',chronicle:'编年史',restricted:'禁阅卷宗'};
 function renderCampaigns(filter='all'){
  const el=document.getElementById('campaign-grid');
- const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',2:'assets/campaigns/02-first-false-stars-thumb.webp',3:'assets/campaigns/03-second-false-stars-v4-thumb.webp',4:'assets/campaigns/04-steel-storm-v4-thumb.webp',5:'assets/campaigns/05-nameless-blood-thumb.webp',6:'assets/campaigns/06-forge-silence-thumb.webp',7:'assets/campaigns/07-silent-corroboration-thumb.webp',8:'assets/campaigns/08-black-iron-accord-thumb.webp',9:'assets/campaigns/09-ash-furnace-line-thumb.webp',10:'assets/campaigns/10-entropy-forge-v4-thumb.webp',11:'assets/campaigns/11-abyssal-well-v4-thumb.webp'};
+ const pics={1:'assets/campaigns/01-silent-expedition-thumb.webp',2:'assets/campaigns/02-first-false-stars-thumb.webp',3:'assets/campaigns/03-second-false-stars-v4-thumb.webp',4:'assets/campaigns/04-steel-storm-v4-thumb.webp',5:'assets/campaigns/05-nameless-blood-thumb.webp',6:'assets/campaigns/06-forge-silence-thumb.webp',7:'assets/campaigns/07-silent-corroboration-thumb.webp',8:'assets/campaigns/08-black-iron-accord-thumb.webp',9:'assets/campaigns/09-ash-furnace-line-thumb.webp',10:'assets/campaigns/10-entropy-forge-v4-thumb.webp',11:'assets/editorial-20261114/08-abyssal-well-decisive-duel-thumb.webp'};
  el.replaceChildren();
  campaignData.forEach((c,i)=>{
   if(filter!=='all'&&c[2]!==filter)return;
