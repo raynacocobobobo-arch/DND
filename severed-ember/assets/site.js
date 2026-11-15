@@ -6,11 +6,9 @@
   function notify(s){if(!msg)return;msg.textContent=s;msg.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>msg.classList.remove('show'),2100)}
   const safeStorage={getItem:(k)=>{try{return window.localStorage.getItem(k)}catch{return null}},setItem:(k,v)=>{try{window.localStorage.setItem(k,v)}catch{}}};
   const root=document.documentElement;
-  let night=safeStorage.getItem('ember-reader-mode')!=='paper';
-  if(night)root.dataset.mode='night';
+  root.dataset.mode='night';
   let fscale=Math.min(1.22,Math.max(.88,Number(safeStorage.getItem('ember-font-scale')||1)));
   root.style.setProperty('--font-scale',fscale.toFixed(2));
-  $('#theme-button')?.addEventListener('click',()=>{night=!night;root.dataset.mode=night?'night':'';safeStorage.setItem('ember-reader-mode',night?'night':'paper');notify(night?'切换至夜间阅读':'切换至羊皮纸阅读')});
   $('#font-button')?.addEventListener('click',()=>{fscale=fscale>=1.20?.90:Math.round((fscale+.08)*100)/100;root.style.setProperty('--font-scale',fscale.toFixed(2));safeStorage.setItem('ember-font-scale',String(fscale));notify('正文比例 '+Math.round(fscale*100)+'%')});
   const modal=$('#search-backdrop'), field=$('#search-field'), results=$('#search-results');
   function showSearch(){modal?.classList.add('open');modal?.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>field?.focus(),40);renderSearch()}
