@@ -1,0 +1,18 @@
+{
+  "release": "2026-11-15",
+  "artwork": [
+    "ember-guard-ten-20261115.webp",
+    "banished-ash-knights-heavy-20261115.webp",
+    "crucible-knights-four-phase-20261115.webp"
+  ],
+  "old_art_zip": "../../backups/20261115-replaced-originals.zip",
+  "aspect_ratio": "3:1",
+  "dimensions": [
+    2172,
+    724
+  ],
+  "source_pages": [
+    "index.html",
+    "chapters/03-organization.html"
+  ]
+}
