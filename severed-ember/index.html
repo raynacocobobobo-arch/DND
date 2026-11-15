@@ -193,6 +193,55 @@
 }
 @media(prefers-reduced-motion:reduce){.deeds-editorial .deed-card,.deeds-editorial .deed-card .deed-visual img{transition:none}.deeds-editorial .deed-card:hover{transform:none}.deeds-editorial .deed-card:hover .deed-visual img{transform:none}}
 
+/* V4.7 — Notable Deeds layout correction (2026-11-15).
+   Keep approved artwork; remove row-height stretching and wasted text space. */
+.events.deeds-editorial{align-items:start}
+.deeds-editorial .deed-card--watch,
+.deeds-editorial .deed-card--phase{min-height:0}
+.deeds-editorial .deed-card--watch .deed-visual{
+  width:100%;height:auto;aspect-ratio:16/9
+}
+.deeds-editorial .deed-card--watch .deed-visual img{
+  object-fit:contain;object-position:center;filter:none
+}
+.deeds-editorial .deed-card--watch .ev-body{
+  flex:0 0 auto;min-height:0;padding:16px 18px 18px
+}
+.deeds-editorial .deed-card--watch .deed-cta{margin-top:16px}
+.deeds-editorial .deed-card--phase{
+  grid-template-columns:minmax(0,57fr) minmax(0,43fr);
+  align-items:center
+}
+.deeds-editorial .deed-card--phase .deed-visual{
+  height:auto;aspect-ratio:1104/1400;align-self:center
+}
+.deeds-editorial .deed-card--phase .deed-visual img{
+  object-fit:contain;object-position:center;filter:none
+}
+.deeds-editorial .deed-card--phase .ev-body{
+  height:auto;min-height:0;align-self:center;
+  padding:22px 23px;justify-content:flex-start
+}
+.deeds-editorial .deed-card--phase .deed-cta{margin-top:22px}
+@media(max-width:767px){
+  .deeds-editorial .deed-card--watch{
+    grid-template-columns:43% 57%;align-items:stretch
+  }
+  .deeds-editorial .deed-card--watch .deed-visual{
+    height:100%;aspect-ratio:auto
+  }
+  .deeds-editorial .deed-card--watch .deed-visual img{
+    object-fit:cover
+  }
+  .deeds-editorial .deed-card--phase{
+    grid-template-columns:57% 43%
+  }
+  .deeds-editorial .deed-card--phase .ev-body{
+    padding:14px 12px
+  }
+  .deeds-editorial .deed-card--phase .deed-cta{margin-top:12px}
+}
+
 /* V4.3: three restored small-format heritage plates in the order archive. */
 .org-heritage{
   margin:15px 0 18px;
