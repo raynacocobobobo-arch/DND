@@ -312,3 +312,55 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
   }
   .events.deeds-editorial>.deed-card--watch>.ev-body h3{font-size:23px}
 }
+
+/* V5.2 — 03/04 full-image cards match 01/02; all organization art 3:1. */
+.events.deeds-editorial>.deed-card--bridge,
+.events.deeds-editorial>.deed-card--phase{
+  grid-column:span 1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-self:stretch;position:relative;aspect-ratio:15/16;min-height:306px
+}
+.events.deeds-editorial>.deed-card--bridge>.deed-visual,
+.events.deeds-editorial>.deed-card--phase>.deed-visual{
+  position:absolute;inset:0;order:0;width:100%;height:100%;
+  min-height:0;aspect-ratio:auto;flex:none;align-self:auto;overflow:hidden
+}
+.events.deeds-editorial>.deed-card--bridge>.deed-visual img,
+.events.deeds-editorial>.deed-card--phase>.deed-visual img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;filter:none;opacity:1
+}
+.events.deeds-editorial>.deed-card--phase>.deed-visual img{object-position:center 25%}
+.events.deeds-editorial>.deed-card--bridge>.deed-visual:after,
+.events.deeds-editorial>.deed-card--phase>.deed-visual:after{
+ content:"";display:block;position:absolute;inset:0;z-index:1;
+ background:linear-gradient(0deg,#071113 0%,#071113d0 28%,#0711131a 84%)
+}
+.events.deeds-editorial>.deed-card--bridge>.ev-body,
+.events.deeds-editorial>.deed-card--phase>.ev-body{
+ order:1;position:relative;z-index:2;width:auto;height:auto;
+ min-height:0;max-width:88%;display:block;flex:0 0 auto;align-self:auto;
+ padding:32px 25px 23px
+}
+.events.deeds-editorial>.deed-card--bridge>.ev-body h3,
+.events.deeds-editorial>.deed-card--phase>.ev-body h3{font-size:28px}
+.events.deeds-editorial>.deed-card--bridge .deed-kicker{
+ display:flex;align-items:center;line-height:normal
+}
+.events.deeds-editorial>.deed-card--bridge .deed-kicker b{display:inline}
+.events.deeds-editorial>.deed-card--bridge>.ev-body .deed-cta,
+.events.deeds-editorial>.deed-card--phase>.ev-body .deed-cta{
+ margin-top:0;padding-top:0
+}
+.org-grid .org-card img{aspect-ratio:3/1;object-fit:contain;background:#101919}
+@media(max-width:767px){
+ .events.deeds-editorial>.deed-card--bridge,
+ .events.deeds-editorial>.deed-card--phase{aspect-ratio:4/5;min-height:280px}
+ .events.deeds-editorial>.deed-card--bridge>.deed-visual,
+ .events.deeds-editorial>.deed-card--phase>.deed-visual{
+  position:absolute;inset:0;width:100%;height:100%;min-height:0;aspect-ratio:auto
+ }
+ .events.deeds-editorial>.deed-card--bridge>.ev-body,
+ .events.deeds-editorial>.deed-card--phase>.ev-body{max-width:100%;padding:46px 18px 18px}
+ .events.deeds-editorial>.deed-card--bridge>.ev-body h3,
+ .events.deeds-editorial>.deed-card--phase>.ev-body h3{font-size:23px}
+}
