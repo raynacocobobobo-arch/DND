@@ -541,6 +541,11 @@
 .anchor-alias{display:block;scroll-margin-top:110px;position:relative;height:0}
 #view-overview .lore-volume-title a,#view-enemies .lore-volume-title a,#view-rites .lore-volume-title a{font-size:12px}
 @media(max-width:670px){.codex-jumps,.enemy-war-links{gap:6px}.codex-jumps a,.enemy-war-links a{padding:8px 9px}}
+
+/* Full-width chronological mosaic: no 520px limit or inset frame */
+#view-overview .lore-paper .lore-prose>figure.codex-golden-overview{display:block!important;box-sizing:border-box;width:calc(100% + 2*var(--art-edge))!important;max-width:none!important;margin:22px calc(-1*var(--art-edge)) 30px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:hidden}
+#view-overview .lore-paper .lore-prose>figure.codex-golden-overview>img{display:block!important;width:100%!important;max-width:none!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
+#view-people .subhero .sub-img{background-image:none!important;background:linear-gradient(135deg,#172822,#10191a)!important}
 </style><link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
 /* 2026-11-15: VOL.09 panoramic personae plates, preserve uploaded 2048x682 sources. */
 .lore-prose>figure.v09-persona-panorama,.codex-body>figure.v09-persona-panorama{display:block!important;width:100%!important;max-width:100%!important;margin:22px auto 32px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
@@ -552,7 +557,7 @@
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="48" height="48" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="enemies" href="#enemies">仇敌录</a><a data-nav="people" href="#people">人物志</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="places" href="#places">基地与舰船</a><a data-nav="restricted" href="#restricted">禁阅卷宗</a><a data-nav="reader" href="#reader">卷宗</a><a data-nav="rules" href="#rules">桌面规则</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
 <aside class="left-rail" id="drawer"><div class="side-title">战团圣典 <small style="font:11px Georgia;color:#c3a16b">· V3.7</small></div>
-<a class="sideline" href="#codex-v01"><b>I</b> 一·战团概览</a><div class="rail-mini"><a href="original-edition.html">· 初版设定</a></div>
+<a class="sideline" href="#codex-v01"><b>I</b> 一·战团概览</a>
 <a class="sideline" href="#codex-v02"><b>II</b> 二·驻地 · 希芙拉</a>
 <a class="sideline" href="#codex-v03"><b>III</b> 三·战团构成</a>
 <a class="sideline" href="#codex-v04"><b>IV</b> 四·特殊武装</a>
@@ -578,7 +583,7 @@
 <section class="lore-volume" id="codex-v01" data-integrated-volume="01"><div class="lore-volume-title"><span>卷 01 · 战团概览</span><a href="#reader">目录</a></div><article class="lore-paper"><div class="codex-body lore-prose"><h1 id="codex-v01-h-1-1">破碎余烬隐修会</h1>
 <p>Cenobium of the Severed Ember</p>
 <h3 id="codex-v01-h-3-2">一、战团概览</h3>
-<figure class="codex-golden-overview" style="width:min(100%,520px);margin:24px auto 30px;border:1px solid rgba(195,161,107,.38);background:#0b1415"><img src="assets/overview/golden-mosaic-chapter-chronicle-20261115.webp" alt="破碎余烬隐修会万年战团圣史：九比十六黄金马赛克壁画" width="941" height="1672" loading="lazy" decoding="async" style="display:block;width:100%;height:auto" /></figure>
+<figure class="codex-golden-overview"><img src="assets/overview/golden-mosaic-chapter-chronicle-20261115.webp" alt="破碎余烬隐修会万年战团圣史：九比十六黄金马赛克壁画" width="941" height="1672" loading="lazy" decoding="async" /></figure>
 <ul>
 <li><strong>战团名称：</strong> 破碎余烬隐修会</li>
 <li><strong>建军时间</strong>：021.M31，第二次建军</li>
@@ -613,7 +618,7 @@
 <p>那道旧信号的末端，与井底脉动在同一段频率上重叠。卷宗没有署名；页边只留一行后添的墨迹：<strong>我们是因那道命令，才在此处成为了我们。</strong></p>
 <p><strong>〔令状背面·无日期〕</strong></p>
 <p>任务终止栏留下一个未写完的字。奥兰多之后，再无人动笔。</p>
-</div></article><nav class="chapter-related-link"><a href="original-edition.html">初版战团档案 · 旧誓与起源</a></nav></section>
+</div></article></section>
 </section>
 
 <section class="view" id="view-reader"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-titles/01-overview.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">FULL MANUSCRIPT · V3.7</div><h1>十卷完整档案</h1><p></p><a class="btn strong" href="#codex-v01">第一卷 · 战团概览</a></div></div><div class="reading-grid"><a class="reading-volume" href="#codex-v01"><span class="volume-monogram" aria-hidden="true"><b>I</b><small>CODEX</small></span><div class="volume-meta"><span>卷 01</span><strong>战团概览</strong><p>起源、格言与建军令</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v02"><span class="volume-monogram" aria-hidden="true"><b>II</b><small>CODEX</small></span><div class="volume-meta"><span>卷 02</span><strong>驻地 · 希芙拉</strong><p>矿井、环区、黑河与余烬号</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v03"><span class="volume-monogram" aria-hidden="true"><b>III</b><small>CODEX</small></span><div class="volume-meta"><span>卷 03</span><strong>战团构成</strong><p>薪传议会与各编制</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v04"><span class="volume-monogram" aria-hidden="true"><b>IV</b><small>CODEX</small></span><div class="volume-meta"><span>卷 04</span><strong>特殊武装</strong><p>第一军团造物与封存遗物</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v05"><span class="volume-monogram" aria-hidden="true"><b>V</b><small>CODEX</small></span><div class="volume-meta"><span>卷 05</span><strong>远征战役</strong><p>十一场远征原始记录</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v06"><span class="volume-monogram" aria-hidden="true"><b>VI</b><small>CODEX</small></span><div class="volume-meta"><span>卷 06</span><strong>万年守秘</strong><p>迟到的命令与关键时刻</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v07"><span class="volume-monogram" aria-hidden="true"><b>VII</b><small>CODEX</small></span><div class="volume-meta"><span>卷 07</span><strong>他者的战史</strong><p>来自帝国与异族的旁证</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v08"><span class="volume-monogram" aria-hidden="true"><b>VIII</b><small>CODEX</small></span><div class="volume-meta"><span>卷 08</span><strong>原则与仪礼</strong><p>旧誓、甲色与真名</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v09"><span class="volume-monogram" aria-hidden="true"><b>IX</b><small>CODEX</small></span><div class="volume-meta"><span>卷 09</span><strong>知名人物</strong><p>九人的命运与典型事迹</p><em>进入本卷</em></div></a><a class="reading-volume" href="#codex-v10"><span class="volume-monogram" aria-hidden="true"><b>X</b><small>CODEX</small></span><div class="volume-meta"><span>卷 10</span><strong>禁阅卷宗</strong><p>井底抄本与监听残页</p><em>进入本卷</em></div></a><a class="reading-volume reading-volume-rules" href="#rules"><span class="volume-monogram" aria-hidden="true"><b>R</b><small>RULES</small></span><div class="volume-meta"><span>桌面战团规则</span><strong>战斗数据卡 · 战役模组</strong><p>己方与敌军单位、装备数值、援军及五场任务。</p><em>桌面战团规则</em></div></a></div></section>
@@ -748,7 +753,7 @@
 </div></article></section>
 </section>
 
-<section class="view" id="view-people"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/p1/people-full.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">PERSONAE · VOLUME IX</div><h1>知名人物</h1><p>九名记录在案的人物：院长、观星者、告解者、阵亡者和仍在守望的骑士。</p><a class="btn strong archive-entry" href="#codex-v09">人物卷宗</a></div></div><nav class="codex-jumps" aria-label="本卷目录"><a href="#codex-v09-h-4-5">加勒隆</a><a href="#codex-v09-h-4-6">塞巴斯蒂安</a><a href="#codex-v09-h-4-7">雷金纳德</a><a href="#codex-v09-h-4-8">塞维林</a><a href="#codex-v09-h-4-9">加弗里尔</a><a href="#codex-v09-h-4-10">科尔</a><a href="#codex-v09-h-4-11">伊瑟林</a><a href="#codex-v09-h-4-12">阿历克斯</a><a href="#codex-v09-h-4-13">奥瑞克</a></nav>
+<section class="view" id="view-people"><div class="subhero cornered"><div class="sub-img" style="background-image:none"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">PERSONAE · VOLUME IX</div><h1>知名人物</h1><p>九名记录在案的人物：院长、观星者、告解者、阵亡者和仍在守望的骑士。</p><a class="btn strong archive-entry" href="#codex-v09">人物卷宗</a></div></div><nav class="codex-jumps" aria-label="本卷目录"><a href="#codex-v09-h-4-5">加勒隆</a><a href="#codex-v09-h-4-6">塞巴斯蒂安</a><a href="#codex-v09-h-4-7">雷金纳德</a><a href="#codex-v09-h-4-8">塞维林</a><a href="#codex-v09-h-4-9">加弗里尔</a><a href="#codex-v09-h-4-10">科尔</a><a href="#codex-v09-h-4-11">伊瑟林</a><a href="#codex-v09-h-4-12">阿历克斯</a><a href="#codex-v09-h-4-13">奥瑞克</a></nav>
 <section class="lore-volume" id="codex-v09" data-integrated-volume="09"><div class="lore-volume-title"><span>卷 09 · 知名人物</span><a href="#reader">目录</a></div><article class="lore-paper"><div class="codex-body lore-prose"><h3 id="codex-v09-h-3-1">九、知名人物</h3>
 <h4 id="codex-v09-h-4-2">战后的人</h4>
 <p>深渊之井战后的第十三天，远征名单被退回，整页盖着“暂缓”。一名余火守卫要求拆下自己的动力甲，为伤员修复另一套。遗迹铁匠把甲架推回原处。他们争执了很久，最后一起去搬运净水阀。</p>
@@ -761,7 +766,7 @@
 <p>余烬号下层餐厅的庆功时刻排在换班之后。厨师把热食留到第二轮；负责登记战果的战斗兄弟漏写了货船的名字，一名轮机手替他补上。两人争执了一会儿，直到最后一锅热食端来。</p>
 <p>静滞地库的维修员曾说：“名字都在里面。有人醒来以后，不愿承认那还是自己的名字。”</p>
 <h4 id="codex-v09-h-4-5">1. 加勒隆·虚空行者（567.M34）</h4>
-<figure class="archive-plate v09-persona-panorama" data-approved-art="20261115-v09-01-galeron-writs"><a href="assets/portraits/revised-20261114/04-galeron-full.webp" target="_blank" rel="noopener noreferrer" aria-label="查看加勒隆·虚空行者完整人物图版"><img src="assets/organization/panoramas-20261114/25-council-three-writs-no-guards.webp" alt="加勒隆·虚空行者的图版：深绿动力甲战士走向三份令状与环绕的空席" width="2172" height="724" loading="lazy" decoding="async"></a><figcaption><strong>加勒隆·虚空行者</strong></figcaption></figure>
+<figure class="archive-plate v09-persona-panorama" data-approved-art="20261115-v09-01-galeron-writs"><a href="assets/organization/panoramas-20261114/25-council-three-writs-no-guards.webp" target="_blank" rel="noopener noreferrer" aria-label="查看加勒隆·虚空行者完整人物图版"><img src="assets/organization/panoramas-20261114/25-council-three-writs-no-guards.webp" alt="加勒隆·虚空行者的图版：深绿动力甲战士走向三份令状与环绕的空席" width="2172" height="724" loading="lazy" decoding="async"></a><figcaption><strong>加勒隆·虚空行者</strong></figcaption></figure>
 
 <p>567.M34。加勒隆将自身接入失控的力场回路。十三秒后，井口扩张停止。遗体未归。最后一句话是：“井口会吞掉一切。希芙拉。废星。我们。”<br/>
 M42的监听簿里，十三秒的引力脉冲仍在。</p>
