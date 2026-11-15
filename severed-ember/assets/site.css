@@ -761,3 +761,16 @@ html[data-mode='night'] .reader-shell .reader-main .chapter-paper .codex-body > 
   .reader-shell .reader-main .chapter-paper{--art-edge:0px}
   .reader-shell .reader-main .chapter-paper .codex-body > figure{break-inside:avoid}
 }
+
+/* Approved portrait: retain original vertical composition without stretching the frame */
+.reader-shell .reader-main .chapter-paper .codex-body > figure.archive-portrait-plate{
+  width:min(100%,760px)!important;max-width:760px!important;margin:27px auto 35px!important;
+  display:block!important;box-shadow:none!important;border:0!important;background:transparent!important;
+}
+.reader-shell .reader-main .chapter-paper .codex-body > figure.archive-portrait-plate > a{display:block!important;width:100%!important;line-height:0}
+.reader-shell .reader-main .chapter-paper .codex-body > figure.archive-portrait-plate img{
+  display:block!important;width:100%!important;max-width:100%!important;height:auto!important;
+  aspect-ratio:1122/1402!important;object-fit:contain!important;background:transparent!important;
+  border:1px solid #b39a70!important;box-sizing:border-box
+}
+@media(max-width:620px){.reader-shell .reader-main .chapter-paper .codex-body > figure.archive-portrait-plate{width:100%!important;margin:19px auto 28px!important}}
