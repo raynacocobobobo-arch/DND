@@ -67,8 +67,8 @@ for page in [root / "index.html", root / "chapters/03-organization.html"]:
            "骨白重甲灰烬失乡骑士在哥特废墟列阵，全员使用星际战士重型火器", 1)
     change("灰烬失乡骑士 · 狭阵决斗", "灰烬失乡骑士 · 骨白重火力小队", 2)
     if "3:1 横向场景插画 · 依据 V3.7 章节内容绘制" in s:
-        change("3:1 横向场景插画 · 依据 V3.7 章节内容绘制",
-               "3:1 正式图版 · 骨白装甲 · 全员重武器", 1)
+        change("<strong>战团构成图版｜灰烬失乡骑士 · 骨白重火力小队</strong><span>3:1 横向场景插画 · 依据 V3.7 章节内容绘制</span>",
+               "<strong>战团构成图版｜灰烬失乡骑士 · 骨白重火力小队</strong><span>3:1 正式图版 · 骨白装甲 · 全员重武器</span>", 1)
     prefix = "../" if "chapters/" in str(page) else ""
     figure = (
         '<figure class="archive-plate org-panoramic-plate" data-approved-art="20261115-crucible-four">'
