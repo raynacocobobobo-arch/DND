@@ -543,7 +543,11 @@
 @media(max-width:670px){.codex-jumps,.enemy-war-links{gap:6px}.codex-jumps a,.enemy-war-links a{padding:8px 9px}}
 
 /* Full-width chronological mosaic: no 520px limit or inset frame */
-#view-overview .lore-paper .lore-prose>figure.codex-golden-overview{display:block!important;box-sizing:border-box;width:calc(100% + var(--art-edge) + var(--art-edge))!important;max-width:none!important;margin:22px calc(0px - var(--art-edge)) 30px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:hidden}
+/* First-volume chronicle: true viewport-wide artwork, not merely article-wide.
+   Keep the original portrait ratio visible, without cropping or a 520px cap. */
+html,body{overflow-x:clip}
+.frame>.left-rail,.frame>.right-rail{z-index:3}
+#view-overview .lore-paper .lore-prose>figure.codex-golden-overview{display:block!important;box-sizing:border-box;position:relative!important;left:50%!important;transform:translateX(-50%)!important;z-index:1;width:100vw!important;max-width:100vw!important;margin:22px 0 30px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:hidden}
 #view-overview .lore-paper .lore-prose>figure.codex-golden-overview>img{display:block!important;width:100%!important;max-width:none!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
 #view-people .subhero .sub-img{background-image:none!important;background:linear-gradient(135deg,#172822,#10191a)!important}
 </style><link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
