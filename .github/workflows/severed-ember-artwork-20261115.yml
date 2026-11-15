@@ -1,0 +1,50 @@
+name: Publish approved Severed Ember unit artwork (2026-11-15)
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/severed-ember-artwork-20261115.yml'
+      - 'scripts/publish_severed_ember_20261115.py'
+      - 'severed-ember/assets/organization/_staging-20261115/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-severed-ember-artwork-20261115
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install WebP encoder
+        run: python -m pip install --disable-pip-version-check 'Pillow>=11,<13'
+      - name: Convert, archive and replace three approved unit plates
+        run: python scripts/publish_severed_ember_20261115.py
+      - name: Commit changes without force-push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A severed-ember/assets/organization/_staging-20261115
+          git add severed-ember/assets/organization/approved-20261115 severed-ember/backups/20261115-replaced-originals.zip severed-ember/index.html severed-ember/chapters/03-organization.html
+          git commit -m "Publish approved three unit plates and archive replaced originals"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+            if git push origin HEAD:gh-pages; then
+              exit 0
+            fi
+            sleep 3
+          done
+          exit 1
