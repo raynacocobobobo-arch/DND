@@ -74,6 +74,20 @@ const cases=[
     }
     records.push({viewport:v.name,view,...r});
   }
+  // The golden mosaic in Volume I must span the viewport, rather than the text column.
+  await page.goto(HOST+'/index.html#codex-v01',{waitUntil:'domcontentloaded',timeout:30000});
+  await page.waitForTimeout(180);
+  const mural=await page.evaluate(()=>{
+    const fig=document.querySelector('#view-overview figure.codex-golden-overview');
+    const img=fig?.querySelector('img'),r=fig?.getBoundingClientRect();
+    return {visible:!!fig&&getComputedStyle(fig).display!=='none',
+      width:r?.width,left:r?.left,viewport:window.innerWidth,
+      src:img?.getAttribute('src'),ratio:img?.getAttribute('width')/img?.getAttribute('height')};
+  });
+  if(!mural.visible||!mural.width||Math.abs(mural.width-mural.viewport)>mural.viewport*.02||
+     Math.abs(mural.left)>Math.max(24,mural.viewport*.02)||!mural.src)
+    fail(v.name+':overview','mosaic not viewport-wide '+JSON.stringify(mural));
+  records.push({viewport:v.name,type:'overview',...mural});
   await page.goto(HOST+'/index.html#home',{waitUntil:'domcontentloaded'});
   await page.evaluate(async()=>{
     await Promise.all([...document.images].map(im=>{
@@ -89,13 +103,20 @@ const cases=[
   const summary=await page.evaluate(()=>({
     categories:document.querySelectorAll('#view-home .menu-grid .category').length,
     deeds:document.querySelectorAll('#view-home .deed-card').length,
-    campaigns:document.querySelectorAll('#campaign-grid .dossier-tile').length,
-    portraits:document.querySelectorAll('#people-grid .person-dossier').length,
-    organization:document.querySelectorAll('#view-organization .org-card').length,
+    panoramas:[...document.querySelectorAll('#codex-v09 figure.v09-persona-panorama img')].map(im=>({
+      src:im.getAttribute('src'),link:im.closest('a')?.getAttribute('href'),
+      width:Number(im.getAttribute('width')),height:Number(im.getAttribute('height')),
+    })),
     failed:[...document.images].filter(x=>x.complete&&x.naturalWidth===0).map(x=>x.getAttribute('src')),
   }));
-  if([summary.categories,summary.deeds,summary.campaigns,summary.portraits,summary.organization].join(',')!=='5,4,11,9,5')
-    fail(v.name+':count','counts '+JSON.stringify(summary));
+  if(summary.categories!==5||summary.deeds!==4||summary.panoramas.length!==9)
+    fail(v.name+':count','current-layout counts '+JSON.stringify({
+      categories:summary.categories,deeds:summary.deeds,panoramas:summary.panoramas.length,
+    }));
+  summary.panoramas.forEach((im,i)=>{
+    if(!im.src||im.src!==im.link||!im.width||!im.height||Math.abs(im.width/im.height-3)>.015)
+      fail(v.name+':panorama:'+String(i+1),'invalid 3:1 source/link '+JSON.stringify(im));
+  });
   if(summary.failed.length)fail(v.name+':images','broken '+JSON.stringify(summary.failed));
   records.push({viewport:v.name,type:'content',...summary});
   for(const ch of chapters){
