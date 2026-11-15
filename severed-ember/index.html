@@ -542,13 +542,38 @@
 #view-overview .lore-volume-title a,#view-enemies .lore-volume-title a,#view-rites .lore-volume-title a{font-size:12px}
 @media(max-width:670px){.codex-jumps,.enemy-war-links{gap:6px}.codex-jumps a,.enemy-war-links a{padding:8px 9px}}
 
-/* Full-width chronological mosaic: no 520px limit or inset frame */
-/* First-volume chronicle: true viewport-wide artwork, not merely article-wide.
-   Keep the original portrait ratio visible, without cropping or a 520px cap. */
-html,body{overflow-x:clip}
-.frame>.left-rail,.frame>.right-rail{z-index:3}
-#view-overview .lore-paper .lore-prose>figure.codex-golden-overview{display:block!important;box-sizing:border-box;position:relative!important;left:50%!important;transform:translateX(-50%)!important;z-index:1;width:100vw!important;max-width:100vw!important;margin:22px 0 30px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:hidden}
-#view-overview .lore-paper .lore-prose>figure.codex-golden-overview>img{display:block!important;width:100%!important;max-width:none!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
+/* Chapter I portrait mosaic: keep the entire illustration within the text column.
+   No 100vw breakout, clipping under side rails, or oversized rendering. */
+#view-overview .lore-paper .lore-prose>figure.codex-golden-overview{
+  display:block!important;
+  position:static!important;
+  z-index:auto!important;
+  box-sizing:border-box!important;
+  width:min(100%, 440px)!important;
+  max-width:100%!important;
+  margin:22px auto 28px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  left:auto!important;
+  transform:none!important;
+}
+#view-overview .lore-paper .lore-prose>figure.codex-golden-overview>img{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+}
 #view-people .subhero .sub-img{background-image:none!important;background:linear-gradient(135deg,#172822,#10191a)!important}
 </style><link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
 /* 2026-11-15: VOL.09 panoramic personae plates, preserve uploaded 2048x682 sources. */
