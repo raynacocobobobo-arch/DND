@@ -3367,7 +3367,12 @@ document.querySelectorAll('.rail-group').forEach(group=>{
   const summary=group.querySelector('summary.rail-summary');
   summary?.addEventListener('click',event=>{
     event.preventDefault();
-    // A volume title opens its complete chapter and expands the subsection navigation.
+    // An expanded top-level chapter can be collapsed without changing the reading position.
+    // Click again to reopen it; a newly opened chapter still navigates to its beginning.
+    if(group.open){
+      group.open=false;
+      return;
+    }
     group.open=true;
     const target='#codex-v'+group.dataset.volume;
     if(location.hash===target)route();
