@@ -3357,7 +3357,7 @@ const active=group.dataset.volume===activeVolume;
 group.classList.toggle('active',active);
 if(active)group.open=true;
 });
-document.querySelectorAll('.rail-subitem').forEach(a=>a.classList.toggle('active',a.hash==='#'+key));document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}));}
+document.querySelectorAll('.rail-subitem').forEach(a=>a.classList.toggle('active',a.hash==='#'+key));document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else if(matched&&!isParagraph){/* First-level chapters always open at their own hero, clear of the sticky top bar. */const current=document.getElementById('view-'+k);const chapterTop=current?.querySelector(':scope > .subhero')||current;const stickyHeader=document.querySelector('.topbar');const offset=(stickyHeader?.getBoundingClientRect().height||0)+8;if(chapterTop){const top=window.scrollY+chapterTop.getBoundingClientRect().top-offset;window.scrollTo({top:Math.max(0,top),behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}else{window.scrollTo({top:0,behavior:'instant'});}}));}
 
 // Continue reading from chapter-side tracking, do not fabricate progress.
 try{const v=JSON.parse(localStorage.getItem('ember-last-read')||'null');const a=document.getElementById('v32-continue');if(v?.page && /^\d\d-[\w-]+\.html$/.test(v.page)){a.href='chapters/'+v.page+'?resume=1'+(v.anchor?'#'+encodeURIComponent(v.anchor):'');a.textContent='继续上次阅读 · '+(v.chapter||'档案');a.hidden=false}}catch{}
@@ -3368,13 +3368,9 @@ document.querySelectorAll('.rail-group').forEach(group=>{
   const summary=group.querySelector('summary.rail-summary');
   summary?.addEventListener('click',event=>{
     event.preventDefault();
-    // An expanded top-level chapter can be collapsed without changing the reading position.
-    // Click again to reopen it; a newly opened chapter still navigates to its beginning.
-    if(group.open){
-      group.open=false;
-      return;
-    }
-    group.open=true;
+    // Every first-level click navigates to the chapter start, even when already expanded.
+    // Subchapter links retain their own deep anchors.
+    if(!group.open)group.open=true;
     const target='#codex-v'+group.dataset.volume;
     if(location.hash===target)route();
     else location.hash=target;
