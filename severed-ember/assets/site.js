@@ -55,6 +55,11 @@
   // Independent scroll position for each document, with an explicit continue action.
   const pageName=location.pathname.split('/').pop()||'index.html';
   const currentChapter=document.querySelector('.reader-main');
+  // Start chapter navigation at its first paragraph; only explicit resume or section links retain an offset.
+  if(currentChapter && !location.hash && !new URLSearchParams(location.search).has('resume')){
+    try{history.scrollRestoration='manual'}catch{}
+    window.addEventListener('pageshow',()=>requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'})));
+  }
   const toTop=$('#back-to-top');
   let lastSaved=0;
   function updateReadingScroll(){
