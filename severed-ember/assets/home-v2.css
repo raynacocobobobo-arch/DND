@@ -227,3 +227,88 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
   .events.deeds-editorial>.deed-card--watch>.ev-body h3,
   .events.deeds-editorial>.deed-card--phase>.ev-body h3{font-size:19px}
 }
+
+/* V5.0 — Deeds 01/02: identical full-bleed editorial treatment.
+   Both cards follow 01: full-height art, bottom gradient, overlaid text and CTA.
+   The aspect ratio preserves the original tall gallery design after 02 stops
+   contributing a separate photo track plus tall text panel. */
+.events.deeds-editorial{grid-auto-rows:auto}
+.events.deeds-editorial>.deed-card--rift,
+.events.deeds-editorial>.deed-card--watch{
+  grid-column:span 1;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-self:stretch;
+  aspect-ratio:15/16;
+  min-height:306px;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual{
+  position:absolute;
+  inset:0;
+  order:0;
+  width:100%;
+  height:100%;
+  min-height:0;
+  aspect-ratio:auto;
+  flex:none;
+  align-self:auto;
+  overflow:hidden;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 56%;
+  filter:none;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(0deg,#071113 0%,#071113d0 28%,#0711131a 84%);
+}
+.events.deeds-editorial>.deed-card--watch>.ev-body{
+  order:1;
+  position:relative;
+  z-index:2;
+  display:block;
+  width:auto;
+  height:auto;
+  min-height:0;
+  max-width:88%;
+  padding:32px 25px 23px;
+  flex:0 0 auto;
+  align-self:auto;
+}
+.events.deeds-editorial>.deed-card--watch>.ev-body h3{
+  font-size:28px;
+}
+.events.deeds-editorial>.deed-card--watch>.ev-body p{max-width:370px}
+.events.deeds-editorial>.deed-card--watch>.ev-body .deed-cta{
+  margin-top:0;
+  padding-top:0;
+}
+@media(max-width:767px){
+  .events.deeds-editorial>.deed-card--rift,
+  .events.deeds-editorial>.deed-card--watch{
+    aspect-ratio:4/5;
+    min-height:280px;
+  }
+  .events.deeds-editorial>.deed-card--watch>.deed-visual{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    min-height:0;
+    aspect-ratio:auto;
+  }
+  .events.deeds-editorial>.deed-card--watch>.ev-body{
+    max-width:100%;
+    padding:46px 18px 18px;
+  }
+  .events.deeds-editorial>.deed-card--watch>.ev-body h3{font-size:23px}
+}
