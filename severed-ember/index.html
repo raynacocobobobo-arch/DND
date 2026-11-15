@@ -631,6 +631,21 @@
 .true-name-gallery .true-name-card figcaption{padding:8px 7px 10px!important}
 .true-name-gallery .true-name-card figcaption strong{font-size:13px!important}
 .true-name-gallery .true-name-card figcaption .true-name-note{font-size:11px!important}}
+
+/* Complete accordion table of contents, one expanded volume at a time. */
+.rail-group{border:0;margin:0;padding:0}
+.rail-group>summary.rail-summary{cursor:pointer;list-style:none;user-select:none;align-items:flex-start}
+.rail-group>summary.rail-summary::-webkit-details-marker{display:none}
+.rail-group>summary.rail-summary::marker{content:""}
+.rail-chapter-title{flex:1;min-width:0;line-height:1.5}
+.rail-chevron{font:21px/1 Georgia,serif;color:#c7a977;margin-left:auto;transition:transform .18s ease}
+.rail-group[open] .rail-chevron{transform:rotate(90deg)}
+.rail-group.active>summary.rail-summary,.rail-group[open]>summary.rail-summary{background:#5d593224;color:#f0d49f;box-shadow:inset 3px 0 #b79b6b}
+.rail-group .rail-mini{font-size:12px;line-height:1.5;padding:5px 10px 11px 38px}
+.rail-group .rail-mini a{display:block;padding:7px 8px 7px 10px;border-left:1px solid #79644560;color:#bdc5bb;overflow-wrap:anywhere}
+.rail-group .rail-mini a:hover,.rail-group .rail-mini a.active{color:#f0d49f;background:#816d4133;border-left-color:#c7a977}
+.rail-group .rail-mini a.rail-depth-5{padding-left:20px;font-size:11px;color:#a8b5ac}
+.rail-group .rail-mini a.rail-overview-link{font-size:11px;color:#d6b985;border-left-color:#a58c5d}
 </style><link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
 /* 2026-11-15: VOL.09 panoramic personae plates, preserve uploaded 2048x682 sources. */
 .lore-prose>figure.v09-persona-panorama,.codex-body>figure.v09-persona-panorama{display:block!important;width:100%!important;max-width:100%!important;margin:22px auto 32px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
@@ -642,17 +657,124 @@
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="48" height="48" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="enemies" href="#enemies">仇敌录</a><a data-nav="people" href="#people">人物志</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="places" href="#places">基地与舰船</a><a data-nav="restricted" href="#restricted">禁阅卷宗</a><a data-nav="reader" href="#reader">卷宗</a><a data-nav="rules" href="#rules">桌面规则</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
 <aside class="left-rail" id="drawer"><div class="side-title">战团圣典 <small style="font:11px Georgia;color:#c3a16b">· V3.7</small></div>
-<a class="sideline" href="#codex-v01"><b>I</b> 一·战团概览</a>
-<a class="sideline" href="#codex-v02"><b>II</b> 二·驻地 · 希芙拉</a>
-<a class="sideline" href="#codex-v03"><b>III</b> 三·战团构成</a>
-<a class="sideline" href="#codex-v04"><b>IV</b> 四·特殊武装</a>
-<a class="sideline" href="#codex-v05"><b>V</b> 五·远征战役</a>
-<div class="rail-mini"><a href="#codex-v05-h-4-2">· 沉默远征 · 156.M35</a><a href="#codex-v05-h-4-3">· 第一次三伪星之战 · 892.M35</a><a href="#codex-v05-h-4-4">· 第二次三伪星之战 · 799.M38</a><a href="#codex-v05-h-4-5">· 钢铁风暴 · 622.M41</a><a href="#codex-v05-h-4-10">· 灰炉防线 · 850.M41</a><a href="#codex-v05-h-4-12">· 深渊之井 · 75.M42</a><a href="#codex-v05-h-4-2">··· 共 11 场，详见战役页</a></div>
-<a class="sideline" href="#codex-v06"><b>VI</b> 六·万年守秘</a><div class="rail-mini"><a href="#chronicle">· M31—M42 时间线</a></div>
-<a class="sideline" href="#codex-v07"><b>VII</b> 七·他者的战史</a><div class="rail-mini"><a href="#enemies">· 仇敌录</a></div>
-<a class="sideline" href="#codex-v08"><b>VIII</b> 八·原则与仪礼</a>
-<a class="sideline" href="#codex-v09"><b>IX</b> 九·知名人物</a>
-<a class="sideline" href="#codex-v10"><b>X</b> 十·禁阅卷宗</a><a class="sideline rules-rail-last" href="#rules"><b>R</b> 桌面战团规则</a>
+<details class="rail-group" name="codex-volumes" data-volume="01">
+<summary class="sideline rail-summary"><b>I</b><span class="rail-chapter-title">一·战团概览</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="一·战团概览的小节"><a class="rail-subitem rail-overview-link" href="#codex-v01">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v01-h-3-2">一、战团概览</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="02">
+<summary class="sideline rail-summary"><b>II</b><span class="rail-chapter-title">二·驻地 · 希芙拉</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="二·驻地 · 希芙拉的小节"><a class="rail-subitem rail-overview-link" href="#codex-v02">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-2">希芙拉</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-3">环区、属民与地底的生活</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-4">金穹与石廊</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-5">核心舰船：余烬号</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-6">辅助舰船</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v02-h-5-7">盲星号：</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v02-h-5-8">悔泣者号：</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v02-h-4-9">残舰航志</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="03">
+<summary class="sideline rail-summary"><b>III</b><span class="rail-chapter-title">三·战团构成</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="三·战团构成的小节"><a class="rail-subitem rail-overview-link" href="#codex-v03">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-2">薪传议会 (The Council of the Ember)</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-3">余火守卫：守线的人</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-4">内环精锐（Inner Circle）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-5">突击老兵（Veterans）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-6">卡利班代行者（Agents of Caliban）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v03-h-4-7">封禁令</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="04">
+<summary class="sideline rail-summary"><b>IV</b><span class="rail-chapter-title">四·特殊武装</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="四·特殊武装的小节"><a class="rail-subitem rail-overview-link" href="#codex-v04">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v04-h-4-2">第一军团原初造物</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v04-h-4-3">通用远征遗物</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v04-h-4-4">死亡守望的沉默礼物</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v04-h-4-5">灰骑士的遗物</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v04-h-4-6">无畏机甲</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="05">
+<summary class="sideline rail-summary"><b>V</b><span class="rail-chapter-title">五·远征战役</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="五·远征战役的小节"><a class="rail-subitem rail-overview-link" href="#codex-v05">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-2">1. 沉默远征（约156.M35）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-3">2. 第一次三伪星之战（约892.M35）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-4">3. 第二次三伪星之战（约799.M38）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-5">4. 钢铁风暴（约622.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-6">5. 无名血泊（约745.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-7">6. 熔炉止语（约753.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-8">7. 沉默互证（约757.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-9">8. 黑铁条约（约800.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-10">9. 灰炉防线（约850.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-11">10. 熵火熔铸（约51.M42）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v05-h-4-12">11. 深渊之井（约75.M42）</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="06">
+<summary class="sideline rail-summary"><b>VI</b><span class="rail-chapter-title">六·万年守秘</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="六·万年守秘的小节"><a class="rail-subitem rail-overview-link" href="#codex-v06">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-2">第一刻：迟到的命令（021.M31）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-3">第二刻：倾听，而非消灭（444.M32）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-4">第三刻：大裂变（567.M34）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-5">银河大裂隙与失联航路（999.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-6">第四刻：隐匿的基石（M42）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v06-h-4-7">第五刻：塞佛领主（M42，仅限薪传议会）</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="07">
+<summary class="sideline rail-summary"><b>VII</b><span class="rail-chapter-title">七·他者的战史</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="七·他者的战史的小节"><a class="rail-subitem rail-overview-link" href="#codex-v07">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-2">灰炉防线：克里格人的撤退令（约850.M41）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-3">机械教：费尔萨姆-9与两份报告</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-4">暗黑天使：未签收的移交令</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-5">其他第一军团血脉：四封未寄出的信</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-6">帝国行政与国教：一支返航的布道舰队</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-7">审判庭：空缺的调查人</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-8">死亡守望：兽人堡垒内的另一支小队</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-9">灰骑士：阿格里斯裂谷</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-10">战斗修女：第六个空名</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-11">灵族：未译出的短讯</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-12">仇敌：不同战争留下的名字</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="08">
+<summary class="sideline rail-summary"><b>VIII</b><span class="rail-chapter-title">八·原则与仪礼</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="八·原则与仪礼的小节"><a class="rail-subitem rail-overview-link" href="#codex-v08">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v08-h-4-2">五条旧誓</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v08-h-4-3">甲色与归航</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v08-h-4-4">旧渠的候选人</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v08-h-4-5">真名</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v08-true-name-ledger">内环誊本 · 八份真名刻录</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v08-h-4-6">石廊边缘的词</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="09">
+<summary class="sideline rail-summary"><b>IX</b><span class="rail-chapter-title">九·知名人物</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="九·知名人物的小节"><a class="rail-subitem rail-overview-link" href="#codex-v09">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-2">战后的人</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-3">画匠的争执</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-4">一次无关井口的胜利</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-5">1. 加勒隆·虚空行者（567.M34）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-6">2. 塞巴斯蒂安·寂静之刃（799.M38）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-7">3. 雷金纳德·负井者（51.M42）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-8">4. 塞维林·断索（75.M42）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-9">5. 加弗里尔·井底之目（M39末–M41初）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-10">6. 科尔·烬誓（567.M34）</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-11">7. 现任隐修院长：伊瑟林·灰烬行者</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-12">8. 首席深渊观星者：阿历克斯·镜影</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-13">9. 沉渊告解者：奥瑞克·寂静之言</a></div>
+</details>
+<details class="rail-group" name="codex-volumes" data-volume="10">
+<summary class="sideline rail-summary"><b>X</b><span class="rail-chapter-title">十·禁阅卷宗</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
+<div class="rail-mini" role="group" aria-label="十·禁阅卷宗的小节"><a class="rail-subitem rail-overview-link" href="#codex-v10">本卷开篇 · 完整正文</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v10-h-4-2">井底抄本</a>
+<a class="rail-subitem rail-depth-4" href="#codex-v10-h-4-3">深渊之数：监听残页</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-4">条目一：始鸣</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-5">条目二：第一周期特征</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-6">条目三：无名血泊遗物</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-7">条目四：加弗里尔抄本</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-8">条目五：停止</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-9">条目六：重启</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-10">条目七：第二周期推测</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-11">条目八：奥瑞克监听</a>
+<a class="rail-subitem rail-depth-5" href="#codex-v10-h-5-12">条目九：Σ-7与Σ-9静滞舱</a></div>
+</details>
+<a class="sideline rules-rail-last" href="#rules"><b>R</b> 桌面战团规则</a>
 <div class="rail-footer"><strong>上次阅读</strong><a class="btn" href="#codex-v01" style="margin:0;width:100%">开始阅读</a></div></aside>
 <main class="main">
 <section class="view" id="view-home">
@@ -3206,10 +3328,20 @@ function renderTimeline(){
  const box=document.getElementById('timeline-items');box.replaceChildren();
  chronology.forEach(c=>{const a=document.createElement('a');a.href=c[2];a.className='chronicle-entry';const t=document.createElement('span');t.textContent=c[0];const d=document.createElement('span');d.textContent=c[1];a.append(t,d);box.append(a)});
 }
-function route(){const key=(location.hash||'#home').slice(1).split('?')[0];const matched=key.match(/^codex-v(0[1-9]|10)(?:-|$)/);const codexView={"10":"restricted","01":"overview","02":"places","03":"organization","04":"armory","05":"campaigns","06":"chronicle","07":"enemies","08":"rites","09":"people"};const inEnemyArchive=key==='enemies';const inRulesArchive=/^rules-(?:friendly|enemy-units|scenarios|start)$/.test(key);const k=inEnemyArchive?'enemies':(inRulesArchive?'rules':(pageTitles[key]?key:(matched?codexView[matched[1]]:'home')));document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+k));document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.getAttribute('data-nav')===k));document.querySelectorAll('.sideline').forEach(a=>{const volume=a.hash.match(/^#codex-v(\d{2})$/);a.classList.toggle('active',a.hash==='#'+k||(volume&&codexView[volume[1]]===k));});document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}));}
+function route(){const key=(location.hash||'#home').slice(1).split('?')[0];const matched=key.match(/^codex-v(0[1-9]|10)(?:-|$)/);const codexView={"10":"restricted","01":"overview","02":"places","03":"organization","04":"armory","05":"campaigns","06":"chronicle","07":"enemies","08":"rites","09":"people"};const inEnemyArchive=key==='enemies';const inRulesArchive=/^rules-(?:friendly|enemy-units|scenarios|start)$/.test(key);const k=inEnemyArchive?'enemies':(inRulesArchive?'rules':(pageTitles[key]?key:(matched?codexView[matched[1]]:'home')));document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+k));document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.getAttribute('data-nav')===k));document.querySelectorAll('.sideline[href]').forEach(a=>a.classList.toggle('active',a.hash==='#'+k));
+const activeVolume=matched?.[1]||Object.keys(codexView).find(v=>codexView[v]===k);
+document.querySelectorAll('.rail-group').forEach(group=>{
+const active=group.dataset.volume===activeVolume;
+group.classList.toggle('active',active);
+if(active)group.open=true;
+});
+document.querySelectorAll('.rail-subitem').forEach(a=>a.classList.toggle('active',a.hash==='#'+key));document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}));}
 
 // Continue reading from chapter-side tracking, do not fabricate progress.
 try{const v=JSON.parse(localStorage.getItem('ember-last-read')||'null');const a=document.getElementById('v32-continue');if(v?.page && /^\d\d-[\w-]+\.html$/.test(v.page)){a.href='chapters/'+v.page+'?resume=1'+(v.anchor?'#'+encodeURIComponent(v.anchor):'');a.textContent='继续上次阅读 · '+(v.chapter||'档案');a.hidden=false}}catch{}
+document.querySelectorAll('.rail-group').forEach(group=>group.addEventListener('toggle',()=>{
+if(group.open)document.querySelectorAll('.rail-group[open]').forEach(other=>{if(other!==group)other.open=false;});
+}));
 try{history.scrollRestoration='manual'}catch{}route();window.addEventListener('hashchange',route);window.addEventListener('pageshow',route);document.addEventListener('click',e=>{const a=e.target.closest?.('a[href^="#"]');if(a&&a.hash===location.hash)route();});const menuButton=document.getElementById('menubutton'),menuDrawer=document.getElementById('drawer');
 function setDrawer(open){menuDrawer.classList.toggle('open',open);menuButton.setAttribute('aria-expanded',String(open));}
 menuButton.addEventListener('click',()=>setDrawer(!menuDrawer.classList.contains('open')));
