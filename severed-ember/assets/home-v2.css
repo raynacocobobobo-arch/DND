@@ -145,3 +145,85 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
   .deeds-editorial .deed-card--bridge .ev-body p,
   .deeds-editorial .deed-card--phase .ev-body p{font-size:12px;line-height:1.75}
 }
+
+
+/* V4.9 — enforce equal Deeds 02/04 card geometry in the LAST loaded stylesheet.
+   This supersedes V4.2 min-height and old media grid rules. Images are unchanged. */
+.events.deeds-editorial{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-auto-rows:auto;
+  align-items:stretch;
+}
+.events.deeds-editorial>.deed-card--watch,
+.events.deeds-editorial>.deed-card--phase{
+  grid-column:span 1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual,
+.events.deeds-editorial>.deed-card--phase>.deed-visual{
+  position:relative;
+  order:0;
+  width:100%;
+  height:auto;
+  min-height:0;
+  aspect-ratio:16/9;
+  flex:0 0 auto;
+  align-self:auto;
+  overflow:hidden;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual img,
+.events.deeds-editorial>.deed-card--phase>.deed-visual img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:1;
+}
+.events.deeds-editorial>.deed-card--watch>.deed-visual img{object-position:center}
+.events.deeds-editorial>.deed-card--phase>.deed-visual img{object-position:center 20%}
+.events.deeds-editorial>.deed-card--phase>.deed-visual:after{display:none}
+.events.deeds-editorial>.deed-card--watch>.ev-body,
+.events.deeds-editorial>.deed-card--phase>.ev-body{
+  order:1;
+  align-self:stretch;
+  width:100%;
+  height:auto;
+  min-height:0;
+  padding:17px 19px 19px;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.events.deeds-editorial>.deed-card--watch>.ev-body h3,
+.events.deeds-editorial>.deed-card--phase>.ev-body h3{font-size:22px}
+.events.deeds-editorial>.deed-card--watch>.ev-body .deed-cta,
+.events.deeds-editorial>.deed-card--phase>.ev-body .deed-cta{
+  margin-top:auto;
+  padding-top:12px;
+}
+@media(max-width:767px){
+  .events.deeds-editorial{
+    grid-template-columns:minmax(0,1fr);
+    grid-auto-rows:auto;
+  }
+  .events.deeds-editorial>.deed-card--watch,
+  .events.deeds-editorial>.deed-card--phase{
+    grid-template-columns:none;
+    min-height:0;
+  }
+  .events.deeds-editorial>.deed-card--watch>.deed-visual,
+  .events.deeds-editorial>.deed-card--phase>.deed-visual{
+    width:100%;
+    height:auto;
+    min-height:0;
+    aspect-ratio:16/9;
+  }
+  .events.deeds-editorial>.deed-card--watch>.ev-body,
+  .events.deeds-editorial>.deed-card--phase>.ev-body{padding:14px 15px 16px}
+  .events.deeds-editorial>.deed-card--watch>.ev-body h3,
+  .events.deeds-editorial>.deed-card--phase>.ev-body h3{font-size:19px}
+}
