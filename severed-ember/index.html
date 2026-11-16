@@ -838,6 +838,27 @@
  .v07-enemy-record{grid-template-columns:minmax(0,1fr);gap:14px;padding:15px}
  .v07-enemy-records{gap:13px}
 }
+
+/* Chapter relationship and searchable metadata navigation - 2026-11-16 */
+.rail-group-label{padding:11px 13px 5px;color:#dfba83;font:600 11px/1.4 Georgia,'Songti SC',serif;letter-spacing:.06em;border-top:1px solid #88714b55;margin-top:7px}
+.v07-tagged-link{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:2px}
+.v07-tagged-link .v07-rel-tag{display:block;color:#a6b8ae;font:10px/1.4 sans-serif;opacity:.9}
+.v07-rel-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;margin-top:12px}
+.v07-rel-cluster{min-width:0;background:#14201dcc;border:1px solid #987c5470;padding:13px}
+.v07-rel-cluster>strong,.v09-nav-section>strong{display:block;color:#ecd1a0;font:600 15px/1.5 'Songti SC',serif}
+.v07-rel-cluster>p{font:11px/1.55 sans-serif;color:#b6bfb4;margin:5px 0 10px}
+.v07-rel-links,.v09-nav-section>div{display:flex;gap:7px;flex-wrap:wrap}
+.v07-rel-links>a,.v09-nav-section a{display:inline-block;padding:7px 9px;border:1px solid #89714c70;background:#1b2c27;color:#e1d1b4;font:12px/1.5 sans-serif}
+.v09-index-nav{display:grid!important;grid-template-columns:1fr;gap:11px!important}
+.v09-nav-section{padding:12px 15px;background:#16231f;border:1px solid #89714c70}
+.v09-nav-section>strong{margin-bottom:9px}
+.codex-search-filters{display:grid;grid-template-columns:1fr 1fr auto;align-items:end;gap:10px;margin:10px 15px}
+.codex-search-filters label{display:flex;flex-direction:column;gap:5px;min-width:0;font:11px/1.5 sans-serif;color:#c5b89b}
+.codex-search-filters select,.codex-search-filters button{height:38px;min-width:0;width:100%;background:#14231f;color:#f0dfbf;border:1px solid #9f8459;padding:7px;font:12px sans-serif}
+.codex-search-filters button{width:auto;white-space:nowrap;cursor:pointer}
+.codex-search-count{margin:0 15px 6px;color:#cdb889;font:12px/1.5 sans-serif}
+@media(max-width:700px){.v07-rel-nav{grid-template-columns:1fr}.codex-search-filters{grid-template-columns:1fr 1fr}.codex-search-filters button{grid-column:1/-1}}
+
 </style></head><body>
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="48" height="48" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="rules" href="#rules">桌面规则</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
@@ -899,17 +920,17 @@
 </details>
 <details class="rail-group" name="codex-volumes" data-volume="07">
 <summary class="sideline rail-summary"><b>VII</b><span class="rail-chapter-title">七·他者的战史</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
-<div class="rail-mini" role="group" aria-label="七·他者的战史的小节"><a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-2">灰炉防线：克里格人的撤退令（约850.M41）</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-3">机械教：费尔萨姆-9与两份报告</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-4">暗黑天使：未签收的移交令</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-5">其他第一军团血脉：四封未寄出的信</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-6">帝国行政与国教：一支返航的布道舰队</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-7">审判庭：空缺的调查人</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-8">死亡守望：兽人堡垒内的另一支小队</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-9">灰骑士：阿格里斯裂谷</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-10">战斗修女：第六个空名</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-11">灵族：未译出的短讯</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v07-h-4-12">仇敌：不同战争留下的名字</a></div>
+<div class="rail-mini" role="group" aria-label="七·他者的战史的小节"><a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-2"><span>灰炉防线：克里格人的撤退令（约850.M41）</span><small class="v07-rel-tag">共同战区与往来</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-3"><span>机械教：费尔萨姆-9与两份报告</span><small class="v07-rel-tag">共同战区与往来</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-4"><span>暗黑天使：未签收的移交令</span><small class="v07-rel-tag">帝国关系未结</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-5"><span>其他第一军团血脉：四封未寄出的信</span><small class="v07-rel-tag">帝国关系未结</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-6"><span>帝国行政与国教：一支返航的布道舰队</span><small class="v07-rel-tag">帝国关系未结</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-7"><span>审判庭：空缺的调查人</span><small class="v07-rel-tag">帝国关系未结</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-8"><span>死亡守望：兽人堡垒内的另一支小队</span><small class="v07-rel-tag">共同战区与往来</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-9"><span>灰骑士：阿格里斯裂谷</span><small class="v07-rel-tag">共同战区与往来</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-10"><span>战斗修女：第六个空名</span><small class="v07-rel-tag">共同战区与往来</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-11"><span>灵族：未译出的短讯</span><small class="v07-rel-tag">未确认接触</small></a>
+<a class="rail-subitem rail-depth-4 v07-tagged-link" href="#codex-v07-h-4-12"><span>仇敌：不同战争留下的名字</span><small class="v07-rel-tag">交战、警戒与待核验</small></a></div>
 </details>
 <details class="rail-group" name="codex-volumes" data-volume="08">
 <summary class="sideline rail-summary"><b>VIII</b><span class="rail-chapter-title">八·原则与仪礼</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
@@ -922,10 +943,10 @@
 </details>
 <details class="rail-group" name="codex-volumes" data-volume="09">
 <summary class="sideline rail-summary"><b>IX</b><span class="rail-chapter-title">九·知名人物</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
-<div class="rail-mini" role="group" aria-label="九·知名人物的小节"><a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-2">战后的人</a>
+<div class="rail-mini" role="group" aria-label="九·知名人物的小节"><div class="rail-group-label">卷首纪事 · 3篇</div><a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-2">战后的人</a>
 <a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-3">画匠的争执</a>
 <a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-4">一次无关井口的胜利</a>
-<a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-5">1. 加勒隆·虚空行者（567.M34）</a>
+<div class="rail-group-label">人物档案 · 9名</div><a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-5">1. 加勒隆·虚空行者（567.M34）</a>
 <a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-6">2. 塞巴斯蒂安·寂静之刃（799.M38）</a>
 <a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-7">3. 雷金纳德·负井者（51.M42）</a>
 <a class="rail-subitem rail-depth-4" href="#codex-v09-h-4-8">4. 塞维林·断索（75.M42）</a>
@@ -989,7 +1010,7 @@
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g05">机械教护教军</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g06">机械教大主教</a>
 </div>
-<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-enemy-units">敌对势力军册</a>
+<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-enemy-units">敌军与战役对立方</a>
 <details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-enemy-units-g01">混沌恶魔</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
 <a class="rail-subitem rules-nav-level4" href="#rules-enemy-units-g01-u01">亚空间掠食实体</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-enemy-units-g01-u02">恶魔王子</a>
@@ -1236,7 +1257,7 @@
 </div></article></section>
 </section>
 
-<section class="view" id="view-people"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-banners-20261115/09-personae-group-approved-3x1.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">PERSONAE · VOLUME IX</div><h1>知名人物</h1><p>九名记录在案的人物：院长、观星者、告解者、阵亡者和仍在守望的骑士。</p><a class="btn strong archive-entry" href="#codex-v09">人物卷宗</a></div></div><nav class="codex-jumps" aria-label="本卷目录"><a href="#codex-v09-h-4-5">加勒隆</a><a href="#codex-v09-h-4-6">塞巴斯蒂安</a><a href="#codex-v09-h-4-7">雷金纳德</a><a href="#codex-v09-h-4-8">塞维林</a><a href="#codex-v09-h-4-9">加弗里尔</a><a href="#codex-v09-h-4-10">科尔</a><a href="#codex-v09-h-4-11">伊瑟林</a><a href="#codex-v09-h-4-12">阿历克斯</a><a href="#codex-v09-h-4-13">奥瑞克</a></nav>
+<section class="view" id="view-people"><div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-banners-20261115/09-personae-group-approved-3x1.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">PERSONAE · VOLUME IX</div><h1>知名人物</h1><p>九名记录在案的人物：院长、观星者、告解者、阵亡者和仍在守望的骑士。</p><a class="btn strong archive-entry" href="#codex-v09">人物卷宗</a></div></div><nav class="codex-jumps v09-index-nav" aria-label="第九卷纪事及九名人物导航"><section class="v09-nav-section"><strong>卷首纪事 · 3篇</strong><div><a href="#codex-v09-h-4-2">战后的人</a><a href="#codex-v09-h-4-3">画匠的争执</a><a href="#codex-v09-h-4-4">一次无关井口的胜利</a></div></section><section class="v09-nav-section"><strong>人物档案 · 9名</strong><div><a href="#codex-v09-h-4-5">加勒隆</a><a href="#codex-v09-h-4-6">塞巴斯蒂安</a><a href="#codex-v09-h-4-7">雷金纳德</a><a href="#codex-v09-h-4-8">塞维林</a><a href="#codex-v09-h-4-9">加弗里尔</a><a href="#codex-v09-h-4-10">科尔</a><a href="#codex-v09-h-4-11">伊瑟林</a><a href="#codex-v09-h-4-12">阿历克斯</a><a href="#codex-v09-h-4-13">奥瑞克</a></div></section></nav>
 <section class="lore-volume" id="codex-v09" data-integrated-volume="09"><div class="lore-volume-title"><span>卷 09 · 知名人物</span><a href="#reader">目录</a></div><article class="lore-paper"><div class="codex-body lore-prose"><h3 id="codex-v09-h-3-1">九、知名人物</h3>
 <h4 id="codex-v09-h-4-2">战后的人</h4>
 <p>深渊之井战后的第十三天，远征名单被退回，整页盖着“暂缓”。一名余火守卫要求拆下自己的动力甲，为伤员修复另一套。遗迹铁匠把甲架推回原处。他们争执了很久，最后一起去搬运净水阀。</p>
@@ -1635,7 +1656,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 </section>
 <section class="view" id="view-enemies">
-<div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-banners-20261115/07-other-histories.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">OTHER HISTORIES · VOLUME VII</div><h1>他者的战史</h1><p>帝国友军、失落战团、未签收的文件，以及共同战争留下的不同证词。</p><a class="btn strong archive-entry" href="#codex-v07">阅读卷宗</a></div></div><nav class="codex-jumps" aria-label="本卷目录"><a href="#codex-v07-h-4-2">灰炉防线</a><a href="#codex-v07-h-4-3">机械教</a><a href="#codex-v07-h-4-4">暗黑天使</a><a href="#codex-v07-h-4-8">死亡守望</a><a href="#codex-v07-h-4-9">灰骑士</a><a href="#codex-v07-h-4-10">战斗修女</a><a href="#codex-v07-h-4-12">仇敌</a></nav>
+<div class="subhero cornered"><div class="sub-img" style="background-image:url('assets/chapter-banners-20261115/07-other-histories.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">OTHER HISTORIES · VOLUME VII</div><h1>他者的战史</h1><p>帝国友军、失落战团、未签收的文件，以及共同战争留下的不同证词。</p><a class="btn strong archive-entry" href="#codex-v07">阅读卷宗</a></div></div><nav class="codex-jumps v07-rel-nav" aria-label="第七卷按关系分类的11处正文入口"><section class="v07-rel-cluster"><strong>共同战区与往来</strong><p>协同行动、技术往来与战后记录</p><div class="v07-rel-links"><a href="#codex-v07-h-4-2">克里格</a><a href="#codex-v07-h-4-3">机械教</a><a href="#codex-v07-h-4-8">死亡守望</a><a href="#codex-v07-h-4-9">灰骑士</a><a href="#codex-v07-h-4-10">战斗修女</a></div></section><section class="v07-rel-cluster"><strong>帝国关系与未结调查</strong><p>并非一律视为敌人</p><div class="v07-rel-links"><a href="#codex-v07-h-4-4">暗黑天使</a><a href="#codex-v07-h-4-5">其他第一军团血脉</a><a href="#codex-v07-h-4-6">帝国行政与国教</a><a href="#codex-v07-h-4-7">审判庭</a></div></section><section class="v07-rel-cluster"><strong>未确认接触</strong><p>信号来源及立场均未确定</p><div class="v07-rel-links"><a href="#codex-v07-h-4-11">灵族短讯</a></div></section><section class="v07-rel-cluster"><strong>交战与警戒档案</strong><p>本节还记载未定性接触，并非全部已开战</p><div class="v07-rel-links"><a href="#codex-v07-h-4-12">仇敌、警戒与待核验记录</a></div></section></nav>
 <section class="lore-volume" id="codex-v07" data-integrated-volume="07"><div class="lore-volume-title"><span>卷 07 · 他者的战史</span><a href="#reader">目录</a></div><article class="lore-paper"><div class="codex-body lore-prose"><h3 id="codex-v07-h-3-1">七、他者的战史</h3>
 <h4 id="codex-v07-h-4-2">灰炉防线：克里格人的撤退令（约850.M41）</h4>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261114-06-krieg-retreat"><a href="assets/editorial-20261114/03-krieg-retreat-approved-20261114.webp" target="_blank" rel="noopener noreferrer" aria-label="查看灰炉防线 · 克里格人的撤退令通过版原画"><img src="assets/editorial-20261114/03-krieg-retreat-approved-20261114.webp" alt="灰炉防线：克里格军官指挥防毒面具士兵撤离伤员，黑甲白兜帽的灰烬遗忘骑士持死亡守望式盾牌与长剑阻挡邪教徒" width="1672" height="941" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain"></a><figcaption><strong>灰炉防线 · 克里格人的撤退令</strong></figcaption></figure>
@@ -1856,19 +1877,19 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 </section>
 <section class="view" id="view-rules">
 <div class="subhero cornered rules-subhero"><div class="sub-img" style="background-image:url('assets/rules/rules-top-battle-hd-20261116.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">BATTLE CODEX · TABLETOP RULES</div><h1>桌面战团规则</h1><p>第三章编制军册、剧情援军、敌对势力、单位速查与战役任务。</p><a class="btn strong" href="#rules-friendly">隐修会军册</a><a class="btn" href="#rules-atlas">单位速查</a><a class="btn" href="#rules-scenarios">战役任务</a></div></div>
-<nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌对势力军册</a><a href="#rules-scenarios">战役任务</a><a href="#rules-atlas">单位速查</a></nav>
+<nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌军与战役对立方</a><a href="#rules-scenarios">战役任务</a><a href="#rules-atlas">单位速查</a></nav>
 <section class="rules-hub" aria-label="桌面规则六大入口">
 <a href="#rules-start"><small>01 / RULES</small><strong>规则总览</strong><span>通用能力与规则使用说明</span></a>
 <a href="#rules-friendly"><small>02 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 18 张数据卡</span></a>
 <a href="#rules-reinforcements"><small>03 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教 · 6 张</span></a>
-<a href="#rules-enemy-units"><small>04 / OPPOSITION</small><strong>敌对势力军册</strong><span>混沌、兽人、战役对立方 · 40 张</span></a>
+<a href="#rules-enemy-units"><small>04 / OPPOSITION</small><strong>敌军与战役对立方</strong><span>混沌、兽人、战役对立方 · 40 张</span></a>
 <a href="#rules-scenarios"><small>05 / MISSIONS</small><strong>战役任务</strong><span>五场原始任务模组</span></a>
 <a href="#rules-atlas"><small>06 / FIELD INDEX</small><strong>单位速查</strong><span>图片图鉴及多条件筛选</span></a>
 </section>
 <section class="rules-atlas" id="rules-atlas" aria-label="单位速查图鉴"><div class="rules-atlas-head"><div><small>FIELD INDEX / MINIATURE ATLAS</small><h2>单位速查图鉴</h2><p>编制归属取自第三章；职能标签仅供检索，原始数据卡不变。</p></div><a href="#rules-friendly">隐修会军册</a></div>
 <div class="rules-atlas-filters">
 <label>关键词<input id="atlas-q" type="search" placeholder="名称、组织、武器、特殊规则"/></label>
-<label>所属阵营<select id="atlas-side"><option value="all">全部阵营</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="enemy">敌对势力</option></select></label>
+<label>所属阵营／任务关系<select id="atlas-side"><option value="all">全部阵营与任务关系</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="enemy">敌对势力</option><option value="opposition">战役对立方</option></select></label>
 <label>组织 / 势力<select id="atlas-group"><option value="all">全部组织</option></select></label>
 <label>战场职能<select id="atlas-role"><option value="all">全部职能</option></select></label>
 <label>分值下限<input id="atlas-min" type="number" min="0" placeholder="不限"/></label>
@@ -1876,7 +1897,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <label>排序<select id="atlas-sort"><option value="original">原目录顺序</option><option value="up">分值升序</option><option value="down">分值降序</option><option value="name">名称排序</option></select></label>
 <button type="button" id="atlas-reset">重置筛选</button></div>
 <p id="atlas-count" class="rules-atlas-count" aria-live="polite"></p><div class="rules-atlas-grid" id="atlas-grid"></div><p id="atlas-empty" class="rules-atlas-empty" hidden>没有匹配的数据卡。</p>
-<p class="rules-atlas-note">分值从原始数据卡提取，部分单位以每台或每只计；筛选不进行组军总价计算。余火守卫在第三章单独列编，但当前没有独立规则数据卡。</p></section>
+<p class="rules-atlas-note">分值从原始数据卡提取，部分单位以每台或每只计；筛选不进行组军总价计算。余火守卫在第三章单独列编，但当前没有独立规则数据卡。40张敌方相关数据卡中有39张敌对势力卡、1张暗黑天使战役对立方卡，后者只表示任务立场。</p></section>
 <div class="rules-reading"><article class="rules-document" id="rules-start"><h3>规则总览</h3><details class="rules-howto"><summary>如何使用规则与单位图鉴</summary><p>从所属组织或战役势力选择数据卡，按关键词、职能与原文分值筛选，再打开原始数据卡核对属性和特殊规则。五个战役模组保留原文。</p></details>
 <p>通用规则：<br>破碎律法的余烬</p>
 <p>模型被摧毁时，移除前可立即进行一次射击（仅限手枪或爆弹枪）或近战，命中骰加一。</p>
@@ -2255,7 +2276,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <ul>
 <li><strong>精工造物</strong>：自身获得 5+ 特保。</li>
 </ul>
-<h4 id="rules-enemy-units">敌对势力军册</h4><p class="rules-codex-note">此处按战役中的对立方归档；暗黑天使在这里表示剧情对立方，不代表将其永久定义为敌对阵营。</p>
+<h4 id="rules-enemy-units">敌军与战役对立方</h4><p class="rules-codex-note">此处按战役中的对立方归档；暗黑天使在这里表示剧情对立方，不代表将其永久定义为敌对阵营。</p>
 <h5 id="rules-enemy-units-g01">混沌恶魔</h5>
 <h6 id="rules-enemy-units-g01-u01">亚空间掠食实体</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u01" data-zip-1111="rules-enemy-units-g01-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看亚空间掠食实体完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" alt="亚空间掠食实体单位配图" loading="lazy" decoding="async"></a></figure>
@@ -2898,7 +2919,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <tr><td>碎屑枪</td><td>远程</td><td>12&quot;</td><td>2</td><td>4+</td><td>4</td><td>-1</td><td>1</td></tr>
 </table></div>
 <p><strong>规则：</strong> 机械修护（每回合修复一台兽人载具 D3 伤）；强化载具（9&quot;内兽人载具命中+1）。</p>
-<h5 id="rules-enemy-units-g06">暗黑天使</h5>
+<h5 id="rules-enemy-units-g06">暗黑天使</h5><p class="rules-codex-note">分类提示：暗黑天使战术小队在本规则中仅作为特定战役的对立方使用，不意味着暗黑天使战团整体被定义为永久敌人。单位属性和分值保持不变。</p>
 <h6 id="rules-enemy-units-g06-u01">暗黑天使战术小队</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g06-u01" data-zip-1111="rules-enemy-units-g06-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g06-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看暗黑天使战术小队完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g06-u01.webp" alt="暗黑天使战术小队单位配图" loading="lazy" decoding="async"></a></figure>
 <p>5人，中立敌对 _100 分_</p>
@@ -3648,7 +3669,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 </main>
 <aside class="right-rail"><div class="fact"><div class="fact-emblem"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="54" height="54"/><span>战团档案<small>ARCHIVE · FACT SHEET</small></span></div><h3>战团概览</h3><div class="fact-row"><strong>建军</strong><span>021.M31 · 第二次建军</span></div><div class="fact-row"><strong>原体</strong><span>莱恩·艾尔庄森</span></div><div class="fact-row"><strong>驻地</strong><span>希芙拉修道院</span></div><div class="fact-row"><strong>星域</strong><span>远东星域（567.M34 前位于朦胧星域）</span></div><div class="fact-row"><strong>规模</strong><span>M41 末约 200–300 人；75.M42 后进一步减少</span></div><div class="fact-row"><strong>现状</strong><span>567.M34 后失联；帝国标注“全员推定阵亡”</span></div><div class="fact-row"><strong>初编</strong><span>约 1000 人；567.M34 后未恢复旧编制</span></div><div class="fact-row"><strong>主要敌人</strong><span>混沌战帮、异形</span></div><div class="fact-row"><strong>格言</strong><span>即便律法已碎，余烬尤存。</span></div><a class="btn" href="#reader">阅读原文档案 →</a></div><blockquote class="right-quote">“上方有星。脚下有河。桥在我们走到以前已经断了。”<small>希芙拉卷宗 · 引文</small></blockquote></aside>
 </div><a id="v32-continue" class="v32-continue" href="#codex-v01" hidden>继续阅读</a>
-<div class="search-overlay" hidden="" id="codex-search"><div aria-label="全文检索" aria-modal="true" class="search-surface" role="dialog"><div class="search-title"><span>圣典全文检索</span><button id="search-close-v31" type="button">关闭</button></div><input autocomplete="off" id="codex-query" placeholder="搜索 V3.7 原文中的人名、地点、战役、年代" type="search"/><div id="codex-search-results"></div></div></div>
+<div class="search-overlay" hidden="" id="codex-search"><div aria-label="全文检索" aria-modal="true" class="search-surface" role="dialog"><div class="search-title"><span>圣典全文检索</span><button id="search-close-v31" type="button">关闭</button></div><input autocomplete="off" id="codex-query" placeholder="搜索名称、地点、战役及年代；可输入多个关键词" type="search"/><div class="codex-search-filters"><label>来源卷<select id="codex-search-volume"><option value="all">全部十卷</option><option value="01">01 · 战团概览</option><option value="02">02 · 驻地 · 希芙拉</option><option value="03">03 · 战团构成</option><option value="04">04 · 特殊武装</option><option value="05">05 · 远征战役</option><option value="06">06 · 万年守秘</option><option value="07">07 · 他者的战史</option><option value="08">08 · 战团仪礼</option><option value="09">09 · 知名人物</option><option value="10">10 · 禁阅卷宗</option></select></label><label>记录性质<select id="codex-search-kind"><option value="all">全部记录</option><option value="full">全章概览</option><option value="entry">所有卷内条目</option><option value="campaign">远征战役记录</option><option value="other">第七卷全部他者记录</option><option value="collaboration">共同战区与往来</option><option value="imperial">帝国关系与未结调查</option><option value="uncertain">未确认接触</option><option value="watchlist">交战与警戒记录</option><option value="preface">第九卷卷首纪事</option><option value="people">九名人物档案</option><option value="restricted">禁阅资料</option></select></label><button type="button" id="codex-search-reset">清除筛选</button></div><p id="codex-search-count" class="codex-search-count" aria-live="polite"></p><div id="codex-search-results"></div></div></div>
 <script>
 const campaignData=[["沉默远征","156.M35","M35","机械教探测舰的装置已激活；突击队熔毁装置后未归，死者呼号被井底脉动频率回送十一秒。","06-secrets"],["第一次三伪星之战","892.M35","M35","变途者夺取三处引力平衡点；亚希米恩失踪，第九年敌军撤走后九颗伪星变为盲点。","02-siofra"],["第二次三伪星之战","799.M38","M38","卡利基努斯污染九十九颗伪星，两支满编小队全灭；塞巴斯蒂安守抑制台九小时后失声，九组数据外泄。","03-organization"],["钢铁风暴","622.M41","M41","黑剑与死亡守望在兽人堡垒中相遇，毁掉燃料总管；余火守卫掩护四百六十七名守军撤离，旧记录板未移交。","05-campaigns"],["无名血泊","745.M41","M41","暗夜骑兵取走第一军团旧静滞舱遗物；暗黑天使在格伦霍姆搜查六个月，外围伤员转运被迫中断。","10-restricted"],["熔炉止语","753.M41","M41","熔炉祭司干扰布道舰队的星语频道；卢修斯把沉默理解为帝皇显圣，带领无人伤亡的舰队返航。","07-other-histories"],["沉默互证","757.M41","M41","隐修会与灰骑士共同进入阿格里斯灵能迷宫；失乡骑士被疑似狮王之声迷惑并出现伤亡，瓦拉克最终遭放逐。","06-secrets"],["黑铁条约","800.M41","M41","伊瑟林率队突入铁喉巢穴，卡拉恩逃脱；伤员由拆解重武器制成的担架送离，后封存于Σ-7。","05-campaigns"],["灰炉防线","850.M41","M41","破碎圣言试图将地质稳定器改造为信标；费尔萨姆-9反转控制矩阵，克里格工兵打开撤离支路，东侧骑兵伤亡未清。","05-campaigns"],["熵火熔铸","51.M42","M42","萨拉米斯去向不明；雷金纳德为撤伤者挡住坍塌设施而陷入半相态，七名战斗修女仅一人生还且未加入战团。","04-arsenal"],["深渊之井","75.M42","M42","休伦势力支援克拉能突袭井口，伊瑟林与阿历克斯阻止其突破；守军七十七人阵亡，第一环区毁，克拉能身份比对未结。","02-siofra"]];
 const persons=[['伊瑟林·灰烬行者','隐修院长','黑铁条约、第二次护航令'],['阿历克斯·镜影','首席深渊观星者','截断克拉能传送、三份相同读数'],['奥瑞克·寂静之言','沉渊告解者','被涂去的壁画之手'],['加勒隆·虚空行者','战团牺牲者','567.M34 · 十三秒'],['塞巴斯蒂安·寂静之刃','生还者','799.M38 · 九小时'],['雷金纳德·负井者','生还者','51.M42 · 左半相态'],['塞维林·断索','战团骑士','75.M42 · 伤员桥'],['加弗里尔·井底之目','井底见证者','停在第七分钟的计时器'],['科尔·烬誓','阵亡者','567.M34 · 回响走廊']];
@@ -3710,7 +3731,7 @@ function setupUnitAtlas(){
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物',
  'enemy-units-g05':'指挥 步兵 载具 技术','enemy-units-g06':'步兵'};
  const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
-  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':'enemy';
+  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':h.id.startsWith('rules-enemy-units-g06-')?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
   const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
   const role=(roles[groupKey]||'').split(' ')[sequence]||'其他';
@@ -3726,7 +3747,7 @@ function setupUnitAtlas(){
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
  const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使'];
- const sideNames={all:'全部阵营',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力'};
+ const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
   const selected=select.value;
@@ -3773,7 +3794,7 @@ function setupUnitAtlas(){
   empty.textContent=g.value==='余火守卫'?'余火守卫在第三章有独立组织章节，但规则页暂无独立数据卡。':(low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。');
   const factionTotal=all.filter(x=>side.value==='all'||x.side===side.value).length;
   const selection=[sideNames[side.value],g.value==='all'?null:g.value,role.value==='all'?null:role.value].filter(Boolean).join(' / ');
-  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 张数据卡'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对 '+all.filter(x=>x.side==='enemy').length+'）':'');
+  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 张数据卡'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+'）':'');
  }
  side.addEventListener('change',()=>{updateGroups();updateRoles();render()});
  g.addEventListener('change',()=>{updateRoles();render()});
@@ -3818,17 +3839,46 @@ menuDrawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setDr
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setDrawer(false)});
 document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-pressed','false')});btn.classList.add('on');btn.setAttribute('aria-pressed','true');renderCampaigns(btn.dataset.filter)}));
 const searchPanel=document.getElementById('codex-search'), searchInput=document.getElementById('codex-query'), searchOut=document.getElementById('codex-search-results');
+const searchVolume=document.getElementById('codex-search-volume'),searchKind=document.getElementById('codex-search-kind'),searchCount=document.getElementById('codex-search-count');
 function openSearch(){searchPanel.hidden=false;searchInput.focus();renderSearch()}
-function closeSearch(){searchPanel.hidden=true;searchInput.value='';searchOut.innerHTML=''}
-function renderSearch(){const q=searchInput.value.trim().toLocaleLowerCase();const entries=window.EMBER_SEARCH||[];
- if(!q){searchOut.innerHTML='<p class="search-dim">输入姓名、远征、地点或年代，例如：塞维林、799.M38。</p>';return}
- const matches=entries.filter(d=>(d.title+' '+d.body).toLocaleLowerCase().includes(q)).slice(0,25);
- searchOut.innerHTML='';if(!matches.length){searchOut.textContent='没有找到匹配的原文。';return}
- for(const d of matches){const el=document.createElement('a');el.href=d.url;el.className='search-item';const title=document.createElement('b');title.textContent=d.title;const sub=document.createElement('small');sub.textContent=d.chapter;const p=document.createElement('p');const loc=d.body.toLocaleLowerCase().indexOf(q);p.textContent=d.body.slice(Math.max(0,loc-28),loc+95);el.append(title,sub,p);searchOut.append(el)}
+function closeSearch(){searchPanel.hidden=true;searchInput.value='';searchVolume.value='all';searchKind.value='all';searchOut.replaceChildren();searchCount.textContent=''}
+function renderSearch(){
+ const query=searchInput.value.trim().toLocaleLowerCase(),terms=query.split(/\s+/).filter(Boolean);
+ const entries=window.EMBER_SEARCH||[],volume=searchVolume.value,kind=searchKind.value;
+ if(!terms.length&&volume==='all'&&kind==='all'){searchOut.innerHTML='<p class="search-dim">输入人名、地点、战役、年代或多个关键词；也可以先选择来源卷和记录性质。</p>';searchCount.textContent='';return;}
+ const vol=d=>(d.chapter.match(/^\d{2}/)||[])[0]||'',full=d=>!d.url.includes('#');
+ const section=d=>+(d.url.match(/#h-4-(\d+)/)?.[1]||0);
+ const matchingKind=d=>{
+  if(kind==='all')return true;
+  if(kind==='full')return full(d);
+  if(kind==='entry')return !full(d);
+  if(full(d))return false;
+  const v=vol(d),n=section(d);
+  return (kind==='campaign'&&v==='05')||(kind==='other'&&v==='07')||
+   (kind==='collaboration'&&v==='07'&&[2,3,8,9,10].includes(n))||
+   (kind==='imperial'&&v==='07'&&[4,5,6,7].includes(n))||
+   (kind==='uncertain'&&v==='07'&&n===11)||(kind==='watchlist'&&v==='07'&&n===12)||
+   (kind==='preface'&&v==='09'&&n>=2&&n<=4)||
+   (kind==='people'&&v==='09'&&n>=5&&n<=13)||(kind==='restricted'&&v==='10');
+ };
+ const list=entries.filter(d=>(volume==='all'||vol(d)===volume)&&matchingKind(d)&&terms.every(t=>(d.title+' '+d.chapter+' '+d.body).toLocaleLowerCase().includes(t)));
+ const rank=d=>{const title=d.title.toLocaleLowerCase(),chapter=d.chapter.toLocaleLowerCase();return !query?0:title===query?0:title.startsWith(query)?1:terms.every(t=>title.includes(t))?2:chapter.includes(query)?3:4;};
+ list.sort((a,b)=>rank(a)-rank(b)||(a.order||0)-(b.order||0));searchOut.replaceChildren();
+ searchCount.textContent='匹配 '+list.length+' 条'+(list.length>30?' · 显示前30条':'');
+ if(!list.length){const p=document.createElement('p');p.className='search-dim';p.textContent='筛选条件下没有匹配记录，请清除筛选或扩大范围。';searchOut.append(p);return;}
+ for(const d of list.slice(0,30)){
+  const el=document.createElement('a');el.href=d.url;el.className='search-item';
+  const title=document.createElement('b');title.textContent=d.title;
+  const sub=document.createElement('small');sub.textContent=d.chapter+' · '+(full(d)?'全章':'卷内条目');
+  const p=document.createElement('p'),body=d.body||'',lower=body.toLocaleLowerCase();
+  const hits=terms.length?terms.map(t=>lower.indexOf(t)).filter(i=>i>=0).sort((a,b)=>a-b):[0];
+  const at=hits.length?hits[0]:0;p.textContent=body.slice(Math.max(0,at-35),Math.min(body.length,at+115));
+  el.append(title,sub,p);searchOut.append(el);
+ }
 }
 document.getElementById('searchbutton').addEventListener('click',openSearch);
 document.getElementById('search-close-v31').addEventListener('click',closeSearch);
-searchInput.addEventListener('input',renderSearch);searchPanel.addEventListener('click',e=>{if(e.target===searchPanel)closeSearch()});
+searchInput.addEventListener('input',renderSearch);searchVolume.addEventListener('change',renderSearch);searchKind.addEventListener('change',renderSearch);document.getElementById('codex-search-reset').addEventListener('click',()=>{searchInput.value='';searchVolume.value='all';searchKind.value='all';renderSearch();searchInput.focus();});searchPanel.addEventListener('click',e=>{if(e.target===searchPanel)closeSearch()});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch()}else if(e.key==='Escape')closeSearch()});
 </script>
 <script src="assets/search-index.js"></script></body></html>
