@@ -1,0 +1,109 @@
+name: Severed Ember delete archived unused assets
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/severed-ember-delete-archived-unused-assets.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: severed-ember-archived-unused-delete
+  cancel-in-progress: false
+
+jobs:
+  delete:
+    if: github.repository == 'raynacocobobobo-arch/DND'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout trusted audit script
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: controller
+          persist-credentials: false
+
+      - name: Checkout website branch for authenticated deletion
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Require exact archived site revision
+        run: |
+          test "$(git -C site rev-parse HEAD)" = "3601b1689176c4831b322837e242c8dea22c6d6d"
+          test -z "$(git -C site status --porcelain)"
+
+      - name: Download previously preserved archive manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p original-manifest
+          gh release download severed-ember-unused-assets-20261116 --repo "$GITHUB_REPOSITORY" --pattern manifest-unused.csv --dir original-manifest
+          test -s original-manifest/manifest-unused.csv
+
+      - name: Regenerate audit and match archived inventory byte for byte
+        run: |
+          python3 controller/.github/scripts/severed-ember-archive-unused.py
+          cmp original-manifest/manifest-unused.csv output/manifest-unused.csv
+
+      - name: Delete only archived and audited unused assets
+        run: |
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          from pathlib import Path
+          root=Path('site').resolve()
+          manifest=Path('original-manifest/manifest-unused.csv')
+          with manifest.open('r', encoding='utf-8-sig', newline='') as f:
+              rows=list(csv.DictReader(f))
+          if len(rows)!=137:
+              raise RuntimeError(f'Expected 137 archived assets, found {len(rows)}')
+          if sum(int(r['bytes']) for r in rows)!=33327831:
+              raise RuntimeError('Unexpected total archived size')
+          checked=[]
+          for row in rows:
+              rel=Path(row['path'])
+              if not row['path'].startswith('assets/') and not row['path'].startswith('downloads/') and not row['path'].startswith('backups/'):
+                  raise RuntimeError(f'Unsafe archive path: {rel}')
+              p=(root/'severed-ember'/rel).resolve()
+              p.relative_to(root/'severed-ember')
+              if not p.is_file() or p.is_symlink():
+                  raise RuntimeError(f'Unsafe or missing file: {rel}')
+              data=p.read_bytes()
+              if len(data)!=int(row['bytes']) or hashlib.sha256(data).hexdigest()!=row['sha256']:
+                  raise RuntimeError(f'Content changed since archive: {rel}')
+              checked.append(p)
+          for p in checked:
+              p.unlink()
+          print(f'Removed {len(checked)} verified archived assets, {sum(int(r["bytes"]) for r in rows)} bytes')
+          PY
+
+      - name: Verify staged deletion only and publish to gh-pages
+        run: |
+          git -C site config user.name "github-actions[bot]"
+          git -C site config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C site add -u -- severed-ember
+          python3 - <<'PY'
+          import subprocess
+          rows=subprocess.check_output(['git','-C','site','diff','--cached','--name-status'],text=True).splitlines()
+          if len(rows)!=137 or not all(x.startswith('D\tsevered-ember/') for x in rows):
+              raise RuntimeError(f'Unexpected staged changes: {len(rows)} entries, preview={rows[:10]}')
+          print('Verified 137 deletions only')
+          PY
+          git -C site commit -m "Remove 137 archived unused Severed Ember assets"
+          git -C site push origin HEAD:gh-pages
+          echo "SITE_SHA=$(git -C site rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Request Pages rebuild after authenticated branch push
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages API did not accept manual rebuild; gh-pages commit is already pushed"
+          echo "Published commit: $SITE_SHA"
