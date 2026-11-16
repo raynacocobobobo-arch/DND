@@ -737,6 +737,46 @@
  height:auto!important;max-height:none!important;
  object-fit:contain!important;object-position:center!important;
 }
+
+/* Rulebook index, aligned with Chapter III; the original army cards remain untouched. */
+#view-rules .rules-hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:19px 0 24px}
+#view-rules .rules-hub>a{display:flex;flex-direction:column;gap:8px;min-width:0;padding:17px 15px;background:linear-gradient(125deg,#20342d,#111d1b);border:1px solid #a58e6573;text-decoration:none}
+#view-rules .rules-hub>a:hover,#view-rules .rules-hub>a:focus-visible{border-color:#e3be86;background:#2a4034}
+#view-rules .rules-hub small{font:10px Georgia,serif;letter-spacing:.1em;color:#b79e75}
+#view-rules .rules-hub strong{font:19px/1.4 'Songti SC','STSong',serif;color:#f0d6a8}
+#view-rules .rules-hub span{font:12px/1.7 var(--sans);color:#bac8be}
+#view-rules .rules-atlas{margin:22px 0 27px;padding:clamp(14px,2vw,24px);border:1px solid #9f8a6179;background:linear-gradient(140deg,#16251f,#101d1d);scroll-margin-top:105px}
+#view-rules .rules-atlas-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:17px}
+#view-rules .rules-atlas-head small{font:10px Georgia,serif;letter-spacing:.14em;color:#c6aa7a}
+#view-rules .rules-atlas-head h2{font:26px/1.4 'Songti SC','STSong',serif;color:#f0d9b2;margin:7px 0}
+#view-rules .rules-atlas-head p,#view-rules .rules-atlas-note{font:12px/1.7 var(--sans);color:#b8c1b8;margin:5px 0}
+#view-rules .rules-atlas-head>a{flex:none;color:#f0d6ae;border:1px solid #a58a5c;padding:10px 13px;font:12px var(--sans)}
+#view-rules .rules-atlas-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:17px;align-items:end}
+#view-rules .rules-atlas-filters label{display:flex;flex-direction:column;gap:5px;color:#d9c39f;font:11px var(--sans);min-width:0}
+#view-rules .rules-atlas-filters input,#view-rules .rules-atlas-filters select{width:100%;height:39px;box-sizing:border-box;min-width:0;padding:7px 8px;background:#0c1817;color:#f1dfc0;border:1px solid #8e7d5c;font:12px var(--sans);border-radius:0}
+#view-rules #atlas-reset{height:39px;cursor:pointer;background:#25382e;color:#eddbbc;border:1px solid #967e54;font:12px var(--sans)}
+#view-rules .rules-atlas-count{font:12px var(--sans);color:#d2b68a;margin:0 0 12px}
+#view-rules .rules-atlas-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+#view-rules .rules-atlas-card{display:flex;flex-direction:column;min-width:0;background:#101c1a;border:1px solid #8e7b5b;color:#f0dbb4;text-decoration:none;overflow:hidden}
+#view-rules .rules-atlas-card:hover{border-color:#e0b77c}
+#view-rules .rules-atlas-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#f8f8f6}
+#view-rules .rules-atlas-info{display:flex;flex:1;flex-direction:column;gap:6px;padding:10px}
+#view-rules .rules-atlas-info strong{font:15px/1.4 'Songti SC','STSong',serif;color:#eedaaf;overflow-wrap:anywhere}
+#view-rules .rules-atlas-info small{font:11px/1.5 var(--sans);color:#bac5bc}
+#view-rules .rules-atlas-info em{font:11px/1.5 var(--sans);color:#deb985;font-style:normal;margin-top:auto}
+#view-rules .rules-atlas-note{margin:14px 0 0}
+#view-rules .rules-codex-note{padding:10px 14px;border-left:3px solid #ae9162;background:#d0b98e0c;font-size:13px;line-height:1.75}
+#view-rules .rules-codex-note a{color:#e4c393}
+#view-rules .rules-howto{margin:10px 0 24px;padding:11px 15px;background:#1a2923;border:1px solid #857857}
+#view-rules .rules-howto summary{cursor:pointer;color:#edd2a8;font:13px var(--sans)}
+#view-rules .rules-howto p{font:13px/1.8 var(--sans);margin:12px 0 4px}
+#view-rules .rules-mission-links{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:15px 0 23px}
+#view-rules .rules-mission-links a{padding:12px 9px;background:#192921;border:1px solid #967c55;text-align:center;font:15px/1.6 'Songti SC','STSong',serif;color:#ead1a4;text-decoration:none}
+#view-rules .rules-mission-links small{display:block;color:#c2b9a2;font:10px/1.6 var(--sans)}
+#view-rules .rules-mission-links a:hover{border-color:#e1bc82}
+#view-rules #rules-ember-guard,#view-rules #rules-scenarios{scroll-margin-top:105px}
+@media(max-width:1100px){#view-rules .rules-hub{grid-template-columns:repeat(2,minmax(0,1fr))}#view-rules .rules-atlas-filters{grid-template-columns:repeat(3,minmax(0,1fr))}#view-rules .rules-atlas-grid{grid-template-columns:repeat(3,minmax(0,1fr))}#view-rules .rules-mission-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){#view-rules .rules-hub{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#view-rules .rules-hub>a{padding:12px 10px}#view-rules .rules-hub strong{font-size:16px}#view-rules .rules-atlas-head{display:block}#view-rules .rules-atlas-head>a{display:inline-block;margin-top:9px}#view-rules .rules-atlas-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#view-rules .rules-atlas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#view-rules .rules-mission-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
 <header class="topbar"><a aria-label="返回首页" class="brand" href="#home"><span class="crest"><img src="assets/branding/severed-ember-winged-sword-v4-small.webp" alt="" width="48" height="48" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="armory" href="#armory">武装与遗物</a><a data-nav="rules" href="#rules">桌面规则</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" class="mobile-menu" id="menubutton" title="打开目录">☰</button></div></header>
 <div class="frame">
@@ -851,8 +891,8 @@
 <details class="rail-group rules-rail-group" name="codex-volumes" data-volume="rules">
 <summary class="sideline rail-summary rules-rail-last"><b>R</b><span class="rail-chapter-title">桌面战团规则</span><span class="rail-chevron" aria-hidden="true">›</span></summary>
 <div class="rail-mini rules-rail-tree" role="group" aria-label="桌面战团规则分级目录">
-<a class="rail-subitem rules-nav-level2" href="#rules-start">通用规则</a>
-<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-friendly">己方单位数据总表</a>
+<a class="rail-subitem rules-nav-level2" href="#rules-start">规则总览</a>
+<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-friendly">隐修会军册</a>
 <details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-friendly-g01">薪传议会</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u01">隐修院长</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u02">深渊观星者</a>
@@ -860,7 +900,7 @@
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u04">沉渊告解者</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u05">誓约掌旗官</a>
 </div></details>
-<details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-friendly-g02">内环精锐</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
+<a class="rail-subitem rules-nav-level3" href="#rules-ember-guard">余火守卫 · 第三章组织</a><details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-friendly-g02">内环精锐</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u01">希芙拉风暴骑士</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u02">灰烬失乡骑士</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u03">灰烬遗忘骑士</a>
@@ -880,7 +920,7 @@
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g04-u03">无名扈从</a>
 </div></details>
 </div>
-<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-reinforcements">特殊剧情任务援军</a>
+<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-reinforcements">剧情援军</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g01">死亡守望杀戮小队</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g02">灰骑士清除者小队</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g03">克里格死亡军团步兵班</a>
@@ -888,7 +928,7 @@
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g05">机械教护教军</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-reinforcements-g06">机械教大主教</a>
 </div>
-<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-enemy-units">敌军单位数据总表</a>
+<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-enemy-units">敌对势力军册</a>
 <details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-enemy-units-g01">混沌恶魔</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
 <a class="rail-subitem rules-nav-level4" href="#rules-enemy-units-g01-u01">亚空间掠食实体</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-enemy-units-g01-u02">恶魔王子</a>
@@ -942,13 +982,14 @@
 <a class="rail-subitem rules-nav-level4" href="#rules-enemy-units-g06-u01">暗黑天使战术小队</a>
 </div></details>
 </div>
-<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-scenarios">桌面任务模组</a>
+<div class="rules-nav-section"><a class="rail-subitem rules-nav-level2" href="#rules-scenarios">战役任务</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-scenarios-g01">模组 1：盲星回廊 —— 阵地防御战</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-scenarios-g02">模组 2：钢铁之心 —— 突围战</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-scenarios-g03">模组3：死亡防线 —— 突袭战</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-scenarios-g04">模组 4：铁王座 —— 联合斩首战</a>
 <a class="rail-subitem rules-nav-level3" href="#rules-scenarios-g05">模组5:深渊之井 —— 大规模阻击战</a>
 </div>
+<a class="rail-subitem rules-nav-level2" href="#rules-atlas">单位速查图鉴</a>
 </div></details>
 <div class="rail-footer"><strong>上次阅读</strong><a class="btn" href="#codex-v01" style="margin:0;width:100%">开始阅读</a></div></aside>
 <main class="main">
@@ -1756,15 +1797,35 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 </div></article></section>
 </section>
 <section class="view" id="view-rules">
-<div class="subhero cornered rules-subhero"><div class="sub-img" style="background-image:url('assets/rules/rules-top-battle-hd-20261116.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">BATTLE CODEX · TABLETOP RULES</div><h1>桌面战团规则</h1><p>己方与敌军数据卡、武器属性、特殊援军、五场桌面战役模组。</p><a class="btn strong" href="#rules-friendly">己方数据卡</a><a class="btn" href="#rules-enemy-units">敌军数据卡</a><a class="btn" href="#rules-scenarios">战役任务</a></div></div>
-<nav class="rules-section-nav" aria-label="桌面规则目录"><a href="#rules">规则首页</a><a href="#rules-friendly">己方单位</a><a href="#rules-enemy-units">敌军单位</a><a href="#rules-scenarios">任务模组</a></nav>
-<div class="rules-reading"><article class="rules-document" id="rules-start"><h3>桌面战团规则</h3>
+<div class="subhero cornered rules-subhero"><div class="sub-img" style="background-image:url('assets/rules/rules-top-battle-hd-20261116.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">BATTLE CODEX · TABLETOP RULES</div><h1>桌面战团规则</h1><p>第三章编制军册、剧情援军、敌对势力、单位速查与战役任务。</p><a class="btn strong" href="#rules-friendly">隐修会军册</a><a class="btn" href="#rules-atlas">单位速查</a><a class="btn" href="#rules-scenarios">战役任务</a></div></div>
+<nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌对势力军册</a><a href="#rules-scenarios">战役任务</a><a href="#rules-atlas">单位速查</a></nav>
+<section class="rules-hub" aria-label="桌面规则六大入口">
+<a href="#rules-start"><small>01 / RULES</small><strong>规则总览</strong><span>通用能力与规则使用说明</span></a>
+<a href="#rules-friendly"><small>02 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 18 张数据卡</span></a>
+<a href="#rules-reinforcements"><small>03 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教 · 6 张</span></a>
+<a href="#rules-enemy-units"><small>04 / OPPOSITION</small><strong>敌对势力军册</strong><span>混沌、兽人、战役对立方 · 40 张</span></a>
+<a href="#rules-scenarios"><small>05 / MISSIONS</small><strong>战役任务</strong><span>五场原始任务模组</span></a>
+<a href="#rules-atlas"><small>06 / FIELD INDEX</small><strong>单位速查</strong><span>图片图鉴及多条件筛选</span></a>
+</section>
+<section class="rules-atlas" id="rules-atlas" aria-label="单位速查图鉴"><div class="rules-atlas-head"><div><small>FIELD INDEX / MINIATURE ATLAS</small><h2>单位速查图鉴</h2><p>编制归属取自第三章；职能标签仅供检索，原始数据卡不变。</p></div><a href="#rules-friendly">隐修会军册</a></div>
+<div class="rules-atlas-filters">
+<label>关键词<input id="atlas-q" type="search" placeholder="名称、组织、武器、特殊规则"/></label>
+<label>所属阵营<select id="atlas-side"><option value="all">全部阵营</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="enemy">敌对势力</option></select></label>
+<label>组织 / 势力<select id="atlas-group"><option value="all">全部组织</option></select></label>
+<label>战场职能<select id="atlas-role"><option value="all">全部职能</option></select></label>
+<label>分值下限<input id="atlas-min" type="number" min="0" placeholder="不限"/></label>
+<label>分值上限<input id="atlas-max" type="number" min="0" placeholder="不限"/></label>
+<label>排序<select id="atlas-sort"><option value="original">原目录顺序</option><option value="up">分值升序</option><option value="down">分值降序</option><option value="name">名称排序</option></select></label>
+<button type="button" id="atlas-reset">重置筛选</button></div>
+<p id="atlas-count" class="rules-atlas-count" aria-live="polite"></p><div class="rules-atlas-grid" id="atlas-grid"></div><p id="atlas-empty" class="rules-atlas-empty" hidden>没有匹配的数据卡。</p>
+<p class="rules-atlas-note">分值从原始数据卡提取，部分单位以每台或每只计；筛选不进行组军总价计算。余火守卫在第三章单独列编，但当前没有独立规则数据卡。</p></section>
+<div class="rules-reading"><article class="rules-document" id="rules-start"><h3>规则总览</h3><details class="rules-howto"><summary>如何使用规则与单位图鉴</summary><p>从所属组织或战役势力选择数据卡，按关键词、职能与原文分值筛选，再打开原始数据卡核对属性和特殊规则。五个战役模组保留原文。</p></details>
 <p>通用规则：<br>破碎律法的余烬</p>
 <p>模型被摧毁时，移除前可立即进行一次射击（仅限手枪或爆弹枪）或近战，命中骰加一。</p>
 <p>真名禁锢<br>该单位获得5+致命伤保护。若敌人为混沌单位，则命中骰可重掷1。</p>
 <p>相位剥离<br>该单位的近战攻击忽略灵能护盾及恶魔特保。</p>
 <p>斩首者<br>对角色单位进行近战攻击时，命中骰和造伤骰各加一。</p>
-<h4 id="rules-friendly">己方单位数据总表</h4>
+<h4 id="rules-friendly">隐修会军册 · 第三章编制</h4><p class="rules-codex-note">本军册严格沿用第三章《战团构成》的五个组织：薪传议会、余火守卫、内环精锐、突击老兵和卡利班代行者。战场职能只用于筛选，不改变原编制。</p>
 <h5 id="rules-friendly-g01">薪传议会</h5>
 <h6 id="rules-friendly-g01-u01">隐修院长</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="abbot" data-zip-1111="rules-friendly-g01-u01"><a href="assets/rules/zip-1111-20261116/rules-friendly-g01-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看隐修院长完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g01-u01.webp" alt="隐修院长单位配图" loading="lazy" decoding="async"></a></figure>
@@ -1832,7 +1893,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
 </table></div>
 <p><strong>规则</strong>：领袖；旗帜光环（9&quot;内5+忽略致命伤，自动过士气）；旗帜复仇（阵亡时旗落，友军+1攻）。<br><strong>卡利班火焰</strong>：无畏光环，领导单位5+致命伤保护<br><strong>破碎律法的余烬</strong></p>
-<h5 id="rules-friendly-g02">内环精锐</h5>
+<h5 id="rules-ember-guard">余火守卫 The Ember Guardian</h5><p class="rules-codex-note">第三章中的正式组织。目前规则资料未提供该组织的独立单位数据卡，故不虚构数值。<a href="#codex-v03-h-4-3">阅读第三章·余火守卫</a></p><h5 id="rules-friendly-g02">内环精锐</h5>
 <h6 id="rules-friendly-g02-u01">希芙拉风暴骑士</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g02-u01" data-zip-2222="rules-friendly-g02-u01"><a href="assets/rules/zip-2222-20261116/rules-friendly-g02-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看希芙拉风暴骑士完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g02-u01.webp" alt="希芙拉风暴骑士单位配图" loading="lazy" decoding="async"></a></figure>
 <p>5人-重装终结者 235 分</p>
@@ -2017,7 +2078,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 </table></div>
 <p><strong>武器</strong>：无</p>
 <p><strong>规则</strong>：牺牲（被摧毁时6&quot;内友方回1损）。</p>
-<h4 id="rules-reinforcements">特殊剧情任务援军</h4>
+<h4 id="rules-reinforcements">剧情援军</h4>
 <h5 id="rules-reinforcements-g01">死亡守望杀戮小队</h5>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g01" data-zip-1111="rules-reinforcements-g01"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看死亡守望杀戮小队完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g01.webp" alt="死亡守望杀戮小队单位配图" loading="lazy" decoding="async"></a></figure>
 <p>5人 240 分</p>
@@ -2136,7 +2197,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <ul>
 <li><strong>精工造物</strong>：自身获得 5+ 特保。</li>
 </ul>
-<h4 id="rules-enemy-units">敌军单位数据总表</h4>
+<h4 id="rules-enemy-units">敌对势力军册</h4><p class="rules-codex-note">此处按战役中的对立方归档；暗黑天使在这里表示剧情对立方，不代表将其永久定义为敌对阵营。</p>
 <h5 id="rules-enemy-units-g01">混沌恶魔</h5>
 <h6 id="rules-enemy-units-g01-u01">亚空间掠食实体</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u01" data-zip-1111="rules-enemy-units-g01-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看亚空间掠食实体完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" alt="亚空间掠食实体单位配图" loading="lazy" decoding="async"></a></figure>
@@ -2795,7 +2856,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <tr><td>近战武器</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
 </table></div>
 <p><strong>规则</strong>：暗黑天使纪律（自动通过士气测试）；追猎模式（优先攻击堕天使或隐修会单位）。</p>
-<h4 id="rules-scenarios">桌面任务模组</h4>
+<h4 id="rules-scenarios">战役任务</h4><nav class="rules-mission-links" aria-label="战役模组速查"><a href="#rules-scenarios-g01"><small>01 · 阵地防御</small>盲星回廊</a><a href="#rules-scenarios-g02"><small>02 · 突围战</small>钢铁之心</a><a href="#rules-scenarios-g03"><small>03 · 突袭战</small>死亡防线</a><a href="#rules-scenarios-g04"><small>04 · 联合斩首战</small>铁王座</a><a href="#rules-scenarios-g05"><small>05 · 大规模阻击战</small>深渊之井</a></nav>
 <h5 id="rules-scenarios-g01">模组 1：盲星回廊 —— 阵地防御战</h5>
 <p>战役背景</p>
 <p>M38，奸奇术士卡利基努斯第二次入侵希芙拉，同时激活九十九颗伪星，试图将灵能构造体「九重凝视者」附着于深渊井口。深渊观星者塞勒诺斯在穹顶环区组织层层阻击。</p>
@@ -3574,6 +3635,59 @@ function renderTimeline(){
  const box=document.getElementById('timeline-items');box.replaceChildren();
  chronology.forEach(c=>{const a=document.createElement('a');a.href=c[2];a.className='chronicle-entry';const t=document.createElement('span');t.textContent=c[0];const d=document.createElement('span');d.textContent=c[1];a.append(t,d);box.append(a)});
 }
+
+function setupUnitAtlas(){
+ const target=document.getElementById('rules-atlas'),grid=document.getElementById('atlas-grid');if(!target||!grid)return;
+ const groups={'friendly-g01':'薪传议会','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使'};
+ const roles={
+ 'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
+ 'reinforcements':'精锐 灵能 步兵 机动 步兵 技术','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵',
+ 'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物',
+ 'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具',
+ 'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物',
+ 'enemy-units-g05':'指挥 步兵 载具 技术','enemy-units-g06':'步兵'};
+ const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
+  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':'enemy';
+  const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
+  const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
+  const role=(roles[groupKey]||'').split(' ')[sequence]||'其他';
+  let n=h.nextElementSibling,img='',points=null,phrases=[];
+  while(n&&!/^H[3456]$/.test(n.tagName)){
+   if(!img&&n.matches?.('figure.rules-unit-portrait'))img=n.querySelector('img')?.getAttribute('src')||'';
+   if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
+   n=n.nextElementSibling;
+  }
+  return {id:h.id,name:h.textContent.trim(),group:groups[groupKey]||'未归类',side,role,points,img,terms:phrases.join(' '),order:i};
+ });
+ const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
+ for(const name of ['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使']){const o=document.createElement('option');o.value=name;o.textContent=name==='余火守卫'?name+'（暂无数据卡）':name;g.append(o);}
+ for(const name of [...new Set(all.map(x=>x.role))].sort((a,b)=>a.localeCompare(b,'zh-CN'))){const o=document.createElement('option');o.value=name;o.textContent=name;role.append(o);}
+ const counter=ctl('atlas-count'),empty=ctl('atlas-empty');
+ function render(){
+  const query=q.value.trim().toLocaleLowerCase(),low=min.value===''?null:+min.value,high=max.value===''?null:+max.value;
+  const list=all.filter(x=>(side.value==='all'||x.side===side.value)&&(g.value==='all'||x.group===g.value)&&(role.value==='all'||x.role===role.value)&&(low===null||(x.points!==null&&x.points>=low))&&(high===null||(x.points!==null&&x.points<=high))&&(!query||(x.name+' '+x.group+' '+x.role+' '+x.terms).toLocaleLowerCase().includes(query)));
+  if(sort.value==='up')list.sort((a,b)=>(a.points??Infinity)-(b.points??Infinity)||a.order-b.order);
+  else if(sort.value==='down')list.sort((a,b)=>(b.points??-Infinity)-(a.points??-Infinity)||a.order-b.order);
+  else if(sort.value==='name')list.sort((a,b)=>a.name.localeCompare(b.name,'zh-CN'));
+  const frag=document.createDocumentFragment();
+  for(const x of list){
+   const a=document.createElement('a');a.className='rules-atlas-card';a.href='#'+x.id;a.setAttribute('aria-label','打开'+x.name+'数据卡');
+   if(x.img){const im=document.createElement('img');im.src=x.img;im.alt=x.name+'模型';im.loading='lazy';im.decoding='async';a.append(im);}
+   const body=document.createElement('div');body.className='rules-atlas-info';
+   const title=document.createElement('strong');title.textContent=x.name;
+   const desc=document.createElement('small');desc.textContent=x.group+' · '+x.role;
+   const cost=document.createElement('em');cost.textContent=x.points===null?'分值以原文为准':x.points+' 分（原文标注）';
+   body.append(title,desc,cost);a.append(body);frag.append(a);
+  }
+  grid.replaceChildren(frag);empty.hidden=!!list.length;
+  empty.textContent=g.value==='余火守卫'?'余火守卫在第三章有独立组织章节，但规则页暂无独立数据卡。':'没有匹配的数据卡，可尝试重置筛选。';
+  counter.textContent='显示 '+list.length+' / '+all.length+' 张数据卡 · 隐修会 '+all.filter(x=>x.side==='friendly').length+' · 剧情援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length;
+ }
+ for(const e of [q,side,g,role,min,max,sort])e.addEventListener(e.tagName==='SELECT'?'change':'input',render);
+ ctl('atlas-reset').addEventListener('click',()=>{q.value='';side.value='all';g.value='all';role.value='all';min.value='';max.value='';sort.value='original';render()});render();
+}
+setupUnitAtlas();
+
 function route(){const key=(location.hash||'#home').slice(1).split('?')[0];const matched=key.match(/^codex-v(0[1-9]|10)(?:-|$)/);const codexView={"10":"restricted","01":"overview","02":"places","03":"organization","04":"armory","05":"campaigns","06":"chronicle","07":"enemies","08":"rites","09":"people"};const inEnemyArchive=key==='enemies';const inRulesArchive=/^rules-[a-z0-9-]+$/.test(key);const k=inEnemyArchive?'enemies':(inRulesArchive?'rules':(pageTitles[key]?key:(matched?codexView[matched[1]]:'home')));document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+k));document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.getAttribute('data-nav')===k));document.querySelectorAll('.sideline[href]').forEach(a=>a.classList.toggle('active',a.hash==='#'+k));
 const activeVolume=k==='rules'?'rules':(matched?.[1]||Object.keys(codexView).find(v=>codexView[v]===k));
 document.querySelectorAll('.rail-group').forEach(group=>{
