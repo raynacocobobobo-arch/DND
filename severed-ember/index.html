@@ -767,6 +767,7 @@
 #view-rules .rules-atlas-note{margin:14px 0 0}
 #view-rules .rules-codex-note{padding:10px 14px;border-left:3px solid #ae9162;background:#d0b98e0c;font-size:13px;line-height:1.75}
 #view-rules .rules-codex-note a{color:#e4c393}
+#view-rules .rules-image-pending{width:min(100%,520px);min-height:110px;margin:16px auto 20px;padding:30px 14px;display:flex;justify-content:center;align-items:center;border:1px dashed #99835e;background:#151e1b;color:#bca986;text-align:center;font:13px var(--sans)}
 #view-rules .rules-howto{margin:10px 0 24px;padding:11px 15px;background:#1a2923;border:1px solid #857857}
 #view-rules .rules-howto summary{cursor:pointer;color:#edd2a8;font:13px var(--sans)}
 #view-rules .rules-howto p{font:13px/1.8 var(--sans);margin:12px 0 4px}
@@ -979,7 +980,7 @@
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u04">沉渊告解者</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g01-u05">誓约掌旗官</a>
 </div></details>
-<a class="rail-subitem rules-nav-level3" href="#rules-ember-guard">余火守卫 · 第三章组织</a><details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-friendly-g02">内环精锐</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
+<details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-ember-guard">余火守卫</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units"><a class="rail-subitem rules-nav-level4" href="#rules-friendly-g05-u01">余火守卫战术班</a></div></details><details class="rules-nav-group"><summary class="rules-nav-toggle"><a class="rail-subitem rules-nav-level3" href="#rules-friendly-g02">内环精锐</a><span class="rules-nav-caret" aria-hidden="true">›</span></summary><div class="rules-nav-units">
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u01">希芙拉风暴骑士</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u02">灰烬失乡骑士</a>
 <a class="rail-subitem rules-nav-level4" href="#rules-friendly-g02-u03">灰烬遗忘骑士</a>
@@ -1868,7 +1869,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌军与战役对立方</a><a href="#rules-scenarios">战役任务</a><a href="#rules-atlas">单位速查</a></nav>
 <section class="rules-hub" aria-label="桌面规则六大入口">
 <a href="#rules-start"><small>01 / RULES</small><strong>规则总览</strong><span>通用能力与规则使用说明</span></a>
-<a href="#rules-friendly"><small>02 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 18 张数据卡</span></a>
+<a href="#rules-friendly"><small>02 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 19 张数据卡</span></a>
 <a href="#rules-reinforcements"><small>03 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教 · 6 张</span></a>
 <a href="#rules-enemy-units"><small>04 / OPPOSITION</small><strong>敌军与战役对立方</strong><span>混沌、兽人、战役对立方 · 40 张</span></a>
 <a href="#rules-scenarios"><small>05 / MISSIONS</small><strong>战役任务</strong><span>五场原始任务模组</span></a>
@@ -1885,7 +1886,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <label>排序<select id="atlas-sort"><option value="original">原目录顺序</option><option value="up">分值升序</option><option value="down">分值降序</option><option value="name">名称排序</option></select></label>
 <button type="button" id="atlas-reset">重置筛选</button></div>
 <p id="atlas-count" class="rules-atlas-count" aria-live="polite"></p><div class="rules-atlas-grid" id="atlas-grid"></div><p id="atlas-empty" class="rules-atlas-empty" hidden>没有匹配的数据卡。</p>
-<p class="rules-atlas-note">分值从原始数据卡提取，部分单位以每台或每只计；筛选不进行组军总价计算。余火守卫在第三章单独列编，但当前没有独立规则数据卡。40张敌方相关数据卡中有39张敌对势力卡、1张暗黑天使战役对立方卡，后者只表示任务立场。</p></section>
+<p class="rules-atlas-note">分值取自现有规则卡，余火守卫战术班采用 TSM 基础参考值；部分单位以每台或每只计；筛选不进行组军总价计算。40张敌方相关数据卡中有39张敌对势力卡、1张暗黑天使战役对立方卡，后者只表示任务立场。</p></section>
 <div class="rules-reading"><article class="rules-document" id="rules-start"><h3>规则总览</h3><details class="rules-howto"><summary>如何使用规则与单位图鉴</summary><p>从所属组织或战役势力选择数据卡，按关键词、职能与原文分值筛选，再打开原始数据卡核对属性和特殊规则。五个战役模组保留原文。</p></details>
 <p>通用规则：<br>破碎律法的余烬</p>
 <p>模型被摧毁时，移除前可立即进行一次射击（仅限手枪或爆弹枪）或近战，命中骰加一。</p>
@@ -1965,7 +1966,23 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 </table></div>
 <p><strong>规则</strong>：领袖；旗帜光环（9&quot;内5+忽略致命伤，自动过士气）；旗帜复仇（阵亡时旗落，友军+1攻）。<br><strong>卡利班火焰</strong>：无畏光环，领导单位5+致命伤保护<br><strong>破碎律法的余烬</strong></p>
 <p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Ancient 掌旗官 1 人；旗帜 1 面、爆弹枪 1 支。</p>
-<h5 id="rules-ember-guard">余火守卫 The Ember Guardian</h5><p class="rules-codex-note">第三章中的正式组织。目前规则资料未提供该组织的独立单位数据卡，故不虚构数值。<a href="#codex-v03-h-4-3">阅读第三章·余火守卫</a></p><h5 id="rules-friendly-g02">内环精锐</h5>
+<h5 id="rules-ember-guard">余火守卫 The Ember Guardian</h5>
+<p class="rules-codex-note">本战团自定义单位卡，基础数值参照 Tactical Space Marines（TSM，战术星际战士）。以下10人编制与140分为规则参考，不代表实体模型已确认。<a href="#codex-v03-h-4-3">阅读第三章·余火守卫</a></p>
+<h6 id="rules-friendly-g05-u01">余火守卫战术班</h6>
+<p class="rules-image-pending">模型配图待补</p>
+<p>战术步兵 · 10人 140 分（TSM 基准）</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>6+</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>爆弹手枪</td><td>手枪</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>近战武器</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：战斗分队（宣布战斗编队时、部署前，可将10人拆成两个5人单位）；<strong>破碎律法的余烬</strong>（依本页通用规则执行）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：待提供模型照片后登记；此处的10人仅为规则编制，暂不据此推定实体模型数量或个别装备。</p><h5 id="rules-friendly-g02">内环精锐</h5>
 <h6 id="rules-friendly-g02-u01">希芙拉风暴骑士</h6>
 <figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g02-u01" data-zip-2222="rules-friendly-g02-u01"><a href="assets/rules/unit-overrides/siofra-storm-knights-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看希芙拉风暴骑士完整配图"><img src="assets/rules/unit-overrides/siofra-storm-knights-20261116.webp" alt="五名骨白色终结者装甲的希芙拉风暴骑士微缩模型，持动力剑、盾牌，并配有两名侍从模型" loading="lazy" decoding="async" width="891" height="920"></a></figure>
 <p>5人-重装终结者 235 分</p>
@@ -3725,9 +3742,9 @@ function renderTimeline(){
 
 function setupUnitAtlas(){
  const target=document.getElementById('rules-atlas'),grid=document.getElementById('atlas-grid');if(!target||!grid)return;
- const groups={'friendly-g01':'薪传议会','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使'};
+ const groups={'friendly-g01':'薪传议会','friendly-g05':'余火守卫','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使'};
  const roles={
- 'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
+ 'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g05':'步兵','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
  'reinforcements':'精锐 灵能 步兵 机动 步兵 技术','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵',
  'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物',
  'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具',
@@ -3760,8 +3777,6 @@ function setupUnitAtlas(){
  function updateGroups(){
   const valid=all.filter(x=>side.value==='all'||x.side===side.value);
   const names=new Set(valid.map(x=>x.group));
-  // Third-chapter organization with no standalone datasheet; show only on our side.
-  if(side.value==='all'||side.value==='friendly')names.add('余火守卫');
   const items=groupOrder.filter(name=>names.has(name)).map(name=>{
    const count=valid.filter(x=>x.group===name).length;
    return {name,label:count?name+'（'+count+'）':name+'（暂无数据卡）'};
@@ -3794,7 +3809,7 @@ function setupUnitAtlas(){
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
-  empty.textContent=g.value==='余火守卫'?'余火守卫在第三章有独立组织章节，但规则页暂无独立数据卡。':(low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。');
+  empty.textContent=low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。';
   const factionTotal=all.filter(x=>side.value==='all'||x.side===side.value).length;
   const selection=[sideNames[side.value],g.value==='all'?null:g.value,role.value==='all'?null:role.value].filter(Boolean).join(' / ');
   counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 张数据卡'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+'）':'');
