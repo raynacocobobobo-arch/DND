@@ -3723,12 +3723,39 @@ function setupUnitAtlas(){
   return {id:h.id,name:h.textContent.trim(),group:groups[groupKey]||'未归类',side,role,points,img,terms:phrases.join(' '),order:i};
  });
  const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
- for(const name of ['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使']){const o=document.createElement('option');o.value=name;o.textContent=name==='余火守卫'?name+'（暂无数据卡）':name;g.append(o);}
- for(const name of [...new Set(all.map(x=>x.role))].sort((a,b)=>a.localeCompare(b,'zh-CN'))){const o=document.createElement('option');o.value=name;o.textContent=name;role.append(o);}
+ // The faction is authoritative: only groups within that faction are selectable.
+ // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
+ const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使'];
+ const sideNames={all:'全部阵营',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力'};
+ const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
+ function setFacetOptions(select,placeholder,items){
+  const selected=select.value;
+  select.replaceChildren(createOption('all',placeholder),...items.map(x=>createOption(x.name,x.label)));
+  select.value=items.some(x=>x.name===selected)?selected:'all';
+ }
+ function updateGroups(){
+  const valid=all.filter(x=>side.value==='all'||x.side===side.value);
+  const names=new Set(valid.map(x=>x.group));
+  // Third-chapter organization with no standalone datasheet; show only on our side.
+  if(side.value==='all'||side.value==='friendly')names.add('余火守卫');
+  const items=groupOrder.filter(name=>names.has(name)).map(name=>{
+   const count=valid.filter(x=>x.group===name).length;
+   return {name,label:count?name+'（'+count+'）':name+'（暂无数据卡）'};
+  });
+  setFacetOptions(g,'全部组织 / 势力',items);
+ }
+ function updateRoles(){
+  const valid=all.filter(x=>(side.value==='all'||x.side===side.value)&&(g.value==='all'||x.group===g.value));
+  const counts=new Map();
+  valid.forEach(x=>counts.set(x.role,(counts.get(x.role)||0)+1));
+  const items=[...counts].sort((a,b)=>a[0].localeCompare(b[0],'zh-CN')).map(([name,n])=>({name,label:name+'（'+n+'）'}));
+  setFacetOptions(role,'全部职能',items);
+ }
+ updateGroups();updateRoles();
  const counter=ctl('atlas-count'),empty=ctl('atlas-empty');
  function render(){
-  const query=q.value.trim().toLocaleLowerCase(),low=min.value===''?null:+min.value,high=max.value===''?null:+max.value;
-  const list=all.filter(x=>(side.value==='all'||x.side===side.value)&&(g.value==='all'||x.group===g.value)&&(role.value==='all'||x.role===role.value)&&(low===null||(x.points!==null&&x.points>=low))&&(high===null||(x.points!==null&&x.points<=high))&&(!query||(x.name+' '+x.group+' '+x.role+' '+x.terms).toLocaleLowerCase().includes(query)));
+  const keywords=q.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean),low=min.value===''?null:+min.value,high=max.value===''?null:+max.value;
+  const list=all.filter(x=>(side.value==='all'||x.side===side.value)&&(g.value==='all'||x.group===g.value)&&(role.value==='all'||x.role===role.value)&&(low===null||(x.points!==null&&x.points>=low))&&(high===null||(x.points!==null&&x.points<=high))&&keywords.every(word=>(x.name+' '+x.group+' '+x.role+' '+x.terms).toLocaleLowerCase().includes(word)));
   if(sort.value==='up')list.sort((a,b)=>(a.points??Infinity)-(b.points??Infinity)||a.order-b.order);
   else if(sort.value==='down')list.sort((a,b)=>(b.points??-Infinity)-(a.points??-Infinity)||a.order-b.order);
   else if(sort.value==='name')list.sort((a,b)=>a.name.localeCompare(b.name,'zh-CN'));
@@ -3743,11 +3770,15 @@ function setupUnitAtlas(){
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
-  empty.textContent=g.value==='余火守卫'?'余火守卫在第三章有独立组织章节，但规则页暂无独立数据卡。':'没有匹配的数据卡，可尝试重置筛选。';
-  counter.textContent='显示 '+list.length+' / '+all.length+' 张数据卡 · 隐修会 '+all.filter(x=>x.side==='friendly').length+' · 剧情援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length;
+  empty.textContent=g.value==='余火守卫'?'余火守卫在第三章有独立组织章节，但规则页暂无独立数据卡。':(low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。');
+  const factionTotal=all.filter(x=>side.value==='all'||x.side===side.value).length;
+  const selection=[sideNames[side.value],g.value==='all'?null:g.value,role.value==='all'?null:role.value].filter(Boolean).join(' / ');
+  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 张数据卡'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对 '+all.filter(x=>x.side==='enemy').length+'）':'');
  }
- for(const e of [q,side,g,role,min,max,sort])e.addEventListener(e.tagName==='SELECT'?'change':'input',render);
- ctl('atlas-reset').addEventListener('click',()=>{q.value='';side.value='all';g.value='all';role.value='all';min.value='';max.value='';sort.value='original';render()});render();
+ side.addEventListener('change',()=>{updateGroups();updateRoles();render()});
+ g.addEventListener('change',()=>{updateRoles();render()});
+ for(const e of [q,role,min,max,sort])e.addEventListener(e.tagName==='SELECT'?'change':'input',render);
+ ctl('atlas-reset').addEventListener('click',()=>{q.value='';side.value='all';g.value='all';role.value='all';min.value='';max.value='';sort.value='original';updateGroups();updateRoles();render()});render();
 }
 setupUnitAtlas();
 
