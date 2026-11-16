@@ -1,0 +1,53 @@
+name: Severed Ember unused site assets archive
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/severed-ember-unused-assets-archive.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: severed-ember-unused-assets-archive
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.repository == 'raynacocobobobo-arch/DND'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout audit script
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: controller
+          persist-credentials: false
+
+      - name: Checkout published website source
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Compare website references and package unreferenced artwork
+        run: python3 controller/.github/scripts/severed-ember-archive-unused.py
+
+      - name: Release independent artwork archive without changing the website
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create severed-ember-unused-assets-20261116 \
+            output/severed-ember-unused-assets-20261116.zip \
+            output/manifest-unused.csv \
+            output/audit-all-assets.csv \
+            output/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$(git -C site rev-parse HEAD)" \
+            --title "Severed Ember unused artwork archive (2026-11-16)" \
+            --notes-file output/README.md \
+            --latest=false
