@@ -11,7 +11,26 @@
   root.style.setProperty('--font-scale',fscale.toFixed(2));
   $('#font-button')?.addEventListener('click',()=>{fscale=fscale>=1.20?.90:Math.round((fscale+.08)*100)/100;root.style.setProperty('--font-scale',fscale.toFixed(2));safeStorage.setItem('ember-font-scale',String(fscale));notify('正文比例 '+Math.round(fscale*100)+'%')});
   const modal=$('#search-backdrop'), field=$('#search-field'), results=$('#search-results');
-  function showSearch(){modal?.classList.add('open');modal?.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>field?.focus(),40);renderSearch()}
+  let searchIndexRequest;
+  function ensureSearchIndex(){
+    if(window.EMBER_SEARCH)return Promise.resolve();
+    if(!searchIndexRequest)searchIndexRequest=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      script.src=(location.pathname.includes('/chapters/')?'../':'')+'assets/search-index.js';
+      script.async=true;
+      script.onload=resolve;
+      script.onerror=()=>{searchIndexRequest=null;script.remove();reject(new Error('索引加载失败'))};
+      document.head.appendChild(script);
+    });
+    return searchIndexRequest;
+  }
+  function showSearch(){
+    modal?.classList.add('open');modal?.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';setTimeout(()=>field?.focus(),40);renderSearch();
+    ensureSearchIndex().then(()=>{if(modal?.classList.contains('open'))renderSearch()},()=>{
+      if(modal?.classList.contains('open')&&results)results.innerHTML='<div class="search-empty">检索索引加载失败，请关闭后重试。</div>';
+    });
+  }
   function hideSearch(){modal?.classList.remove('open');modal?.setAttribute('aria-hidden','true');document.body.style.overflow='';}
   $('#search-button')?.addEventListener('click',showSearch);
   $('#search-close')?.addEventListener('click',hideSearch);
@@ -19,6 +38,7 @@
   const esc=(str)=>String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   function renderSearch(){if(!results||!field)return;const q=field.value.trim().toLocaleLowerCase();results.replaceChildren();const all=window.EMBER_SEARCH||[];
     if(!q){results.innerHTML='<div class="search-empty">输入人物、战役、地点、年份，搜索 V3.7 完整原稿。<br>例如：伊瑟林、Σ-7、567.M34、深渊之数。</div>';return;}
+    if(!window.EMBER_SEARCH){results.innerHTML='<div class="search-empty">正在加载全文检索索引…</div>';return;}
     const match=[];for(const doc of all){const title=doc.title.toLocaleLowerCase(),body=doc.body.toLocaleLowerCase();let pos=body.indexOf(q),tpos=title.indexOf(q);if(pos!==-1||tpos!==-1){match.push({doc,score:(tpos!==-1?4:0)+(pos!==-1?1:0),pos});}}
     match.sort((a,b)=>b.score-a.score||a.doc.order-b.doc.order);if(!match.length){results.innerHTML='<div class="search-empty">没有找到相关档案。请尝试更短的关键词。</div>';return;}
     for(const item of match.slice(0,25)){const {doc,pos}=item;const begin=Math.max(0,pos-28),end=Math.min(doc.body.length,Math.max(pos+q.length+85,120));const sample=pos>=0?doc.body.slice(begin,end):doc.body.slice(0,120);

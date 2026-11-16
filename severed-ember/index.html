@@ -673,7 +673,8 @@
 #view-home .menu-grid>a.category>.category-title{margin-top:auto;padding:12px 5px 13px;line-height:1.3;}
 @media(max-width:800px){#view-home .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}#view-home .menu-grid>a.category:last-child{grid-column:span 2;justify-self:center;width:calc((100% - 10px)/2);}}
 @media(max-width:480px){#view-home .menu-grid{gap:8px;}#view-home .menu-grid>a.category:last-child{width:calc((100% - 8px)/2);}#view-home .menu-grid>a.category>.category-title{font-size:14px;padding:10px 4px 12px;}}
-</style><link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
+</style><link rel="preload" as="image" type="image/webp" href="assets/hero/hero-gothic-20261115.webp" fetchpriority="high"/>
+<link rel="stylesheet" href="assets/home-v2.css?v=20261115-v52"/><link rel="icon" type="image/png" href="assets/branding/apple-touch-icon.png"/><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png"/><style id="v09-persona-panorama-css">
 /* 2026-11-15: VOL.09 panoramic personae plates, preserve uploaded 2048x682 sources. */
 .lore-prose>figure.v09-persona-panorama,.codex-body>figure.v09-persona-panorama{display:block!important;width:100%!important;max-width:100%!important;margin:22px auto 32px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
 .v09-persona-panorama>a{display:block!important;width:100%;line-height:0}
@@ -3870,11 +3871,29 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')setDrawer(false)});
 document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-pressed','false')});btn.classList.add('on');btn.setAttribute('aria-pressed','true');renderCampaigns(btn.dataset.filter)}));
 const searchPanel=document.getElementById('codex-search'), searchInput=document.getElementById('codex-query'), searchOut=document.getElementById('codex-search-results');
 const searchVolume=document.getElementById('codex-search-volume'),searchKind=document.getElementById('codex-search-kind'),searchCount=document.getElementById('codex-search-count');
-function openSearch(){searchPanel.hidden=false;searchInput.focus();renderSearch()}
+let searchIndexRequest;
+function ensureSearchIndex(){
+ if(window.EMBER_SEARCH)return Promise.resolve();
+ if(!searchIndexRequest)searchIndexRequest=new Promise((resolve,reject)=>{
+  const script=document.createElement('script');
+  script.src='assets/search-index.js';script.async=true;
+  script.onload=resolve;
+  script.onerror=()=>{searchIndexRequest=null;script.remove();reject(new Error('索引加载失败'))};
+  document.head.appendChild(script);
+ });
+ return searchIndexRequest;
+}
+function openSearch(){
+ searchPanel.hidden=false;searchInput.focus();renderSearch();
+ ensureSearchIndex().then(()=>{if(!searchPanel.hidden)renderSearch()},()=>{
+  if(!searchPanel.hidden)searchOut.innerHTML='<p class="search-dim">检索索引加载失败，请关闭后重试。</p>';
+ });
+}
 function closeSearch(){searchPanel.hidden=true;searchInput.value='';searchVolume.value='all';searchKind.value='all';searchOut.replaceChildren();searchCount.textContent=''}
 function renderSearch(){
  const query=searchInput.value.trim().toLocaleLowerCase(),terms=query.split(/\s+/).filter(Boolean);
  const entries=window.EMBER_SEARCH||[],volume=searchVolume.value,kind=searchKind.value;
+ if(!window.EMBER_SEARCH&&(terms.length||volume!=='all'||kind!=='all')){searchOut.innerHTML='<p class="search-dim">正在加载全文检索索引…</p>';searchCount.textContent='';return;}
  if(!terms.length&&volume==='all'&&kind==='all'){searchOut.innerHTML='<p class="search-dim">输入人名、地点、战役、年代或多个关键词；也可以先选择来源卷和记录性质。</p>';searchCount.textContent='';return;}
  const vol=d=>(d.chapter.match(/^\d{2}/)||[])[0]||'',full=d=>!d.url.includes('#');
  const section=d=>+(d.url.match(/#h-4-(\d+)/)?.[1]||0);
@@ -3910,4 +3929,4 @@ document.getElementById('search-close-v31').addEventListener('click',closeSearch
 searchInput.addEventListener('input',renderSearch);searchVolume.addEventListener('change',renderSearch);searchKind.addEventListener('change',renderSearch);document.getElementById('codex-search-reset').addEventListener('click',()=>{searchInput.value='';searchVolume.value='all';searchKind.value='all';renderSearch();searchInput.focus();});searchPanel.addEventListener('click',e=>{if(e.target===searchPanel)closeSearch()});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch()}else if(e.key==='Escape')closeSearch()});
 </script>
-<script src="assets/search-index.js"></script></body></html>
+</body></html>
