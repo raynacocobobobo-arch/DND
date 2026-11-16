@@ -3788,7 +3788,7 @@ function setupUnitAtlas(){
    const body=document.createElement('div');body.className='rules-atlas-info';
    const title=document.createElement('strong');title.textContent=x.name;
    const desc=document.createElement('small');desc.textContent=x.group+' · '+x.role;
-   const cost=document.createElement('em');cost.textContent=x.points===null?'分值以原文为准':x.points+' 分（原文标注）';
+   const cost=document.createElement('em');cost.textContent=x.points===null?'分值以原文为准':x.points+' 分';
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
