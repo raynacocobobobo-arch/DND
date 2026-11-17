@@ -236,12 +236,18 @@ const cases=[
  // Verify a high-DPR phone requests the compressed mobile artwork, not desktop originals.
  const retina=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});
  await retina.goto(HOST+'/index.html#home',{waitUntil:'domcontentloaded',timeout:30000});
+ // This thumbnail is lazy; wait for the image request before inspecting currentSrc.
+ await retina.evaluate(async()=>{
+   const image=document.querySelector('#view-home .menu-grid img');
+   if(image){image.loading='eager';await image.decode().catch(()=>undefined)}
+ });
  const mobileChoice=await retina.evaluate(()=>{
    const images=[...document.querySelectorAll('#view-home .menu-grid img')];
    return {count:images.length,first:images[0]?.currentSrc,
      responsiveCount:document.querySelectorAll('img[srcset]').length};
  });
- if(mobileChoice.responsiveCount<100)
+ // Rules art now lives in a fragment and should not count toward the first paint.
+ if(mobileChoice.responsiveCount<85)
    fail('iphone-retina:srcset','missing responsive images '+JSON.stringify(mobileChoice));
  if(!mobileChoice.first?.includes('01-organization-mobile.webp'))
    fail('iphone-retina:selection','large image selected for menu thumbnail '+JSON.stringify(mobileChoice));
