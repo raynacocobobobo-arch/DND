@@ -1,0 +1,2556 @@
+{
+  "generated_utc": "2026-11-17T04:03:48.163472+00:00",
+  "desktop_target_bytes": 200000,
+  "mobile_target_bytes": 100000,
+  "original_webp_bytes": 45497274,
+  "optimized_full_webp_bytes": 27350056,
+  "full_webp_saved_bytes": 18147218,
+  "mobile_variant_bytes": 9306606,
+  "total_webp_bytes_after_including_mobile": 36656662,
+  "converted_images": 152,
+  "mobile_variants": 136,
+  "responsive_img_tags": 213,
+  "updated_html_files": [
+    "chapters/01-overview.html",
+    "chapters/02-siofra.html",
+    "chapters/03-organization.html",
+    "chapters/04-arsenal.html",
+    "chapters/05-campaigns.html",
+    "chapters/06-secrets.html",
+    "chapters/07-other-histories.html",
+    "chapters/08-rites.html",
+    "chapters/09-characters.html",
+    "chapters/10-restricted.html",
+    "index.html"
+  ],
+  "images": [
+    {
+      "file": "assets/campaigns/04-steel-storm-v4-full.webp",
+      "before_bytes": 376962,
+      "after_bytes": 196694,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1450,
+        816
+      ],
+      "desktop_quality": 72,
+      "mobile_bytes": 96536,
+      "mobile_file": "assets/campaigns/04-steel-storm-v4-full-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/08-black-iron-accord-approved-3x1-20261114.webp",
+      "before_bytes": 410058,
+      "after_bytes": 173898,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1700,
+        567
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 62812,
+      "mobile_file": "assets/campaigns/08-black-iron-accord-approved-3x1-20261114-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/08-black-iron-accord-approved-thumb-20261114.webp",
+      "before_bytes": 110818,
+      "after_bytes": 110818,
+      "original_dimensions": [
+        960,
+        540
+      ],
+      "desktop_dimensions": [
+        960,
+        540
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/campaigns/10-entropy-forge-v4-thumb.webp",
+      "before_bytes": 115526,
+      "after_bytes": 115526,
+      "original_dimensions": [
+        720,
+        405
+      ],
+      "desktop_dimensions": [
+        720,
+        405
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-01.webp",
+      "before_bytes": 117222,
+      "after_bytes": 73210,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 20930,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-01-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-02.webp",
+      "before_bytes": 199026,
+      "after_bytes": 134208,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 43812,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-02-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-03.webp",
+      "before_bytes": 306430,
+      "after_bytes": 189222,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1700,
+        566
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 70048,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-03-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-04.webp",
+      "before_bytes": 271450,
+      "after_bytes": 198898,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 69872,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-04-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-05.webp",
+      "before_bytes": 236816,
+      "after_bytes": 164230,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 53072,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-05-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-06.webp",
+      "before_bytes": 178906,
+      "after_bytes": 122796,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 40062,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-06-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-07.webp",
+      "before_bytes": 132858,
+      "after_bytes": 87688,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 28652,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-07-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-09.webp",
+      "before_bytes": 175996,
+      "after_bytes": 119644,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 41638,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-09-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-10.webp",
+      "before_bytes": 187730,
+      "after_bytes": 128142,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 42548,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-10-mobile.webp"
+    },
+    {
+      "file": "assets/campaigns/revised-20261116/v05-11.webp",
+      "before_bytes": 159948,
+      "after_bytes": 105174,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 33446,
+      "mobile_file": "assets/campaigns/revised-20261116/v05-11-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-art/02-siofra.webp",
+      "before_bytes": 261952,
+      "after_bytes": 196444,
+      "original_dimensions": [
+        1448,
+        1086
+      ],
+      "desktop_dimensions": [
+        1448,
+        1086
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 89782,
+      "mobile_file": "assets/chapter-art/02-siofra-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-art/04-golden-vault-relic-chant-fullbody-20261115.webp",
+      "before_bytes": 455524,
+      "after_bytes": 187046,
+      "original_dimensions": [
+        2170,
+        725
+      ],
+      "desktop_dimensions": [
+        1800,
+        601
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 59368,
+      "mobile_file": "assets/chapter-art/04-golden-vault-relic-chant-fullbody-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-art/04-old-arsenal-archive-gothic-20261115.webp",
+      "before_bytes": 436568,
+      "after_bytes": 183972,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1700,
+        567
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 63402,
+      "mobile_file": "assets/chapter-art/04-old-arsenal-archive-gothic-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-art/04-siofra-armament-ritual-20261115.webp",
+      "before_bytes": 446322,
+      "after_bytes": 188222,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 60928,
+      "mobile_file": "assets/chapter-art/04-siofra-armament-ritual-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-art/08-rites.webp",
+      "before_bytes": 297432,
+      "after_bytes": 208884,
+      "original_dimensions": [
+        1448,
+        1086
+      ],
+      "desktop_dimensions": [
+        1200,
+        900
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-art/10-listening-fragments-guarded-transfer-20261116.webp",
+      "before_bytes": 195836,
+      "after_bytes": 126366,
+      "original_dimensions": [
+        1536,
+        529
+      ],
+      "desktop_dimensions": [
+        1536,
+        529
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 56072,
+      "mobile_file": "assets/chapter-art/10-listening-fragments-guarded-transfer-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-banners-20261115/03-order-of-battle.webp",
+      "before_bytes": 190662,
+      "after_bytes": 127182,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-banners-20261115/04-arsenal-reliquary-gate-approved-3x1.webp",
+      "before_bytes": 290916,
+      "after_bytes": 130298,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-banners-20261115/06-chronicle.webp",
+      "before_bytes": 406798,
+      "after_bytes": 193902,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1600,
+        533
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-banners-20261115/07-other-histories.webp",
+      "before_bytes": 252784,
+      "after_bytes": 172352,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 61826,
+      "mobile_file": "assets/chapter-banners-20261115/07-other-histories-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-banners-20261115/08-rites.webp",
+      "before_bytes": 214988,
+      "after_bytes": 144872,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-banners-20261115/09-personae-group-approved-3x1.webp",
+      "before_bytes": 360264,
+      "after_bytes": 179822,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/chapter-titles/01-overview.webp",
+      "before_bytes": 191606,
+      "after_bytes": 191606,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": 87852,
+      "mobile_file": "assets/chapter-titles/01-overview-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/02-siofra.webp",
+      "before_bytes": 218744,
+      "after_bytes": 189082,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1500,
+        844
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 89462,
+      "mobile_file": "assets/chapter-titles/02-siofra-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/03-organization.webp",
+      "before_bytes": 261572,
+      "after_bytes": 192332,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1350,
+        760
+      ],
+      "desktop_quality": 70,
+      "mobile_bytes": 92850,
+      "mobile_file": "assets/chapter-titles/03-organization-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/04-arsenal.webp",
+      "before_bytes": 277018,
+      "after_bytes": 169208,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1200,
+        675
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 97452,
+      "mobile_file": "assets/chapter-titles/04-arsenal-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/05-campaigns.webp",
+      "before_bytes": 315854,
+      "after_bytes": 190334,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1200,
+        675
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 96960,
+      "mobile_file": "assets/chapter-titles/05-campaigns-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/06-secrets.webp",
+      "before_bytes": 245796,
+      "after_bytes": 197386,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1450,
+        816
+      ],
+      "desktop_quality": 72,
+      "mobile_bytes": 98044,
+      "mobile_file": "assets/chapter-titles/06-secrets-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/07-other-histories.webp",
+      "before_bytes": 313594,
+      "after_bytes": 191572,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1200,
+        675
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 99996,
+      "mobile_file": "assets/chapter-titles/07-other-histories-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/08-witness-golden-vault-approved-20261114.webp",
+      "before_bytes": 367322,
+      "after_bytes": 170628,
+      "original_dimensions": [
+        1916,
+        821
+      ],
+      "desktop_dimensions": [
+        1700,
+        728
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 62172,
+      "mobile_file": "assets/chapter-titles/08-witness-golden-vault-approved-20261114-mobile.webp"
+    },
+    {
+      "file": "assets/chapter-titles/10-restricted.webp",
+      "before_bytes": 289082,
+      "after_bytes": 175184,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1200,
+        675
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 99710,
+      "mobile_file": "assets/chapter-titles/10-restricted-mobile.webp"
+    },
+    {
+      "file": "assets/chronicle/007-first-command-20261115.webp",
+      "before_bytes": 479826,
+      "after_bytes": 187616,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1500,
+        500
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 88348,
+      "mobile_file": "assets/chronicle/007-first-command-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chronicle/008-listening-20261115.webp",
+      "before_bytes": 547374,
+      "after_bytes": 179252,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1350,
+        450
+      ],
+      "desktop_quality": 70,
+      "mobile_bytes": 88528,
+      "mobile_file": "assets/chronicle/008-listening-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chronicle/009-great-rift-20261115.webp",
+      "before_bytes": 524294,
+      "after_bytes": 194312,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1450,
+        483
+      ],
+      "desktop_quality": 72,
+      "mobile_bytes": 97512,
+      "mobile_file": "assets/chronicle/009-great-rift-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/chronicle/010-sefor-lord-20261115.webp",
+      "before_bytes": 438022,
+      "after_bytes": 162978,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1200,
+        400
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 96676,
+      "mobile_file": "assets/chronicle/010-sefor-lord-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261114/07-eldar-untranslated-echo.webp",
+      "before_bytes": 121946,
+      "after_bytes": 65550,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 21542,
+      "mobile_file": "assets/editorial-20261114/07-eldar-untranslated-echo-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261114/08-abyssal-well-decisive-duel-thumb.webp",
+      "before_bytes": 106478,
+      "after_bytes": 89884,
+      "original_dimensions": [
+        720,
+        405
+      ],
+      "desktop_dimensions": [
+        720,
+        405
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/editorial-20261114/11-restricted-archive-clear.webp",
+      "before_bytes": 397134,
+      "after_bytes": 170382,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1600,
+        533
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": 70676,
+      "mobile_file": "assets/editorial-20261114/11-restricted-archive-clear-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261114-v2/07-three-nodes-nine-hours-thumb.webp",
+      "before_bytes": 105330,
+      "after_bytes": 83252,
+      "original_dimensions": [
+        760,
+        428
+      ],
+      "desktop_dimensions": [
+        760,
+        428
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/editorial-20261114-v2/16-reginald-half-phase-thumb.webp",
+      "before_bytes": 123222,
+      "after_bytes": 96912,
+      "original_dimensions": [
+        520,
+        650
+      ],
+      "desktop_dimensions": [
+        520,
+        650
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/editorial-20261114-v2/16-reginald-half-phase.webp",
+      "before_bytes": 600166,
+      "after_bytes": 195956,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 107030,
+      "mobile_file": "assets/editorial-20261114-v2/16-reginald-half-phase-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261114-v2/17-storm-knights-bonewhite-five-shields-approved.webp",
+      "before_bytes": 358260,
+      "after_bytes": 184492,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 57378,
+      "mobile_file": "assets/editorial-20261114-v2/17-storm-knights-bonewhite-five-shields-approved-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261114-v3/22-archive-codex-reader.webp",
+      "before_bytes": 134076,
+      "after_bytes": 134076,
+      "original_dimensions": [
+        1536,
+        1024
+      ],
+      "desktop_dimensions": [
+        1536,
+        1024
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": 72228,
+      "mobile_file": "assets/editorial-20261114-v3/22-archive-codex-reader-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261115/02-siofra-first-survey-parchment.webp",
+      "before_bytes": 539084,
+      "after_bytes": 171030,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1500,
+        500
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 70106,
+      "mobile_file": "assets/editorial-20261115/02-siofra-first-survey-parchment-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261115/02-siofra-purple-landscape-20261115.webp",
+      "before_bytes": 279272,
+      "after_bytes": 157850,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 50694,
+      "mobile_file": "assets/editorial-20261115/02-siofra-purple-landscape-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v02-black-river-3x1-user-20261116.webp",
+      "before_bytes": 244336,
+      "after_bytes": 152388,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 51858,
+      "mobile_file": "assets/editorial-20261116/v02-black-river-3x1-user-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v02-golden-vault-3x1-user-20261116.webp",
+      "before_bytes": 343542,
+      "after_bytes": 176396,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1700,
+        566
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 62074,
+      "mobile_file": "assets/editorial-20261116/v02-golden-vault-3x1-user-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v02-siofra-subterranean-golden-vault-3x1-user-20261116.webp",
+      "before_bytes": 312846,
+      "after_bytes": 197838,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 65560,
+      "mobile_file": "assets/editorial-20261116/v02-siofra-subterranean-golden-vault-3x1-user-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-agris-rift-20261116.webp",
+      "before_bytes": 181560,
+      "after_bytes": 158726,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 51854,
+      "mobile_file": "assets/editorial-20261116/v07-agris-rift-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-ash-furnace-retreat-20261116.webp",
+      "before_bytes": 172652,
+      "after_bytes": 152764,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 52962,
+      "mobile_file": "assets/editorial-20261116/v07-ash-furnace-retreat-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-dark-angels-transfer-20261116.webp",
+      "before_bytes": 118044,
+      "after_bytes": 97504,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 33048,
+      "mobile_file": "assets/editorial-20261116/v07-dark-angels-transfer-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-felsam-two-reports-20261116.webp",
+      "before_bytes": 169178,
+      "after_bytes": 145230,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 51228,
+      "mobile_file": "assets/editorial-20261116/v07-felsam-two-reports-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-sixth-empty-name-20261116.webp",
+      "before_bytes": 187632,
+      "after_bytes": 163380,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 53558,
+      "mobile_file": "assets/editorial-20261116/v07-sixth-empty-name-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/editorial-20261116/v07-unnamed-peripheral-record-20261116.webp",
+      "before_bytes": 158226,
+      "after_bytes": 135048,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 45444,
+      "mobile_file": "assets/editorial-20261116/v07-unnamed-peripheral-record-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/hero/hero-gothic-20261115.webp",
+      "before_bytes": 199890,
+      "after_bytes": 132710,
+      "original_dimensions": [
+        2032,
+        774
+      ],
+      "desktop_dimensions": [
+        1800,
+        686
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/home-stained-glass/01-organization.webp",
+      "before_bytes": 400616,
+      "after_bytes": 226684,
+      "original_dimensions": [
+        941,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 117224,
+      "mobile_file": "assets/home-stained-glass/01-organization-mobile.webp"
+    },
+    {
+      "file": "assets/home-stained-glass/02-personae.webp",
+      "before_bytes": 423060,
+      "after_bytes": 244702,
+      "original_dimensions": [
+        941,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 126850,
+      "mobile_file": "assets/home-stained-glass/02-personae-mobile.webp"
+    },
+    {
+      "file": "assets/home-stained-glass/03-campaigns.webp",
+      "before_bytes": 401304,
+      "after_bytes": 232838,
+      "original_dimensions": [
+        940,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 121078,
+      "mobile_file": "assets/home-stained-glass/03-campaigns-mobile.webp"
+    },
+    {
+      "file": "assets/home-stained-glass/04-armaments.webp",
+      "before_bytes": 413844,
+      "after_bytes": 239398,
+      "original_dimensions": [
+        940,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 127024,
+      "mobile_file": "assets/home-stained-glass/04-armaments-mobile.webp"
+    },
+    {
+      "file": "assets/home-stained-glass/05-bases-fleet.webp",
+      "before_bytes": 473020,
+      "after_bytes": 270270,
+      "original_dimensions": [
+        940,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 135130,
+      "mobile_file": "assets/home-stained-glass/05-bases-fleet-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-A-kaliginus-three-false-stars.webp",
+      "before_bytes": 271242,
+      "after_bytes": 170066,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 50450,
+      "mobile_file": "assets/organization/antagonists-20261114/08-A-kaliginus-three-false-stars-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-B-kranon-relentless-mirrored.webp",
+      "before_bytes": 230886,
+      "after_bytes": 147292,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 44598,
+      "mobile_file": "assets/organization/antagonists-20261114/08-B-kranon-relentless-mirrored-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-C-huron-blackheart-red-corsairs.webp",
+      "before_bytes": 212732,
+      "after_bytes": 135188,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 43946,
+      "mobile_file": "assets/organization/antagonists-20261114/08-C-huron-blackheart-red-corsairs-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-D-isaya-pursuit-chaplain.webp",
+      "before_bytes": 219924,
+      "after_bytes": 152304,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 48936,
+      "mobile_file": "assets/organization/antagonists-20261114/08-D-isaya-pursuit-chaplain-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-E-karaan-warpsmith-signal-trap.webp",
+      "before_bytes": 238098,
+      "after_bytes": 160726,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 51866,
+      "mobile_file": "assets/organization/antagonists-20261114/08-E-karaan-warpsmith-signal-trap-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-F-salamis-entropy-flame.webp",
+      "before_bytes": 305634,
+      "after_bytes": 180314,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1700,
+        567
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 66944,
+      "mobile_file": "assets/organization/antagonists-20261114/08-F-salamis-entropy-flame-mobile.webp"
+    },
+    {
+      "file": "assets/organization/antagonists-20261114/08-G-silent-observer-unidentified-phase.webp",
+      "before_bytes": 222374,
+      "after_bytes": 152840,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 48736,
+      "mobile_file": "assets/organization/antagonists-20261114/08-G-silent-observer-unidentified-phase-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/002-caliban-agents-20261115.webp",
+      "before_bytes": 141294,
+      "after_bytes": 111284,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 40598,
+      "mobile_file": "assets/organization/approved-20261115/002-caliban-agents-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/abyss-astrologer-3x1.webp",
+      "before_bytes": 267274,
+      "after_bytes": 190632,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 60858,
+      "mobile_file": "assets/organization/approved-20261115/abyss-astrologer-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/ancient-standard-bearer-3x1.webp",
+      "before_bytes": 215310,
+      "after_bytes": 156500,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 52460,
+      "mobile_file": "assets/organization/approved-20261115/ancient-standard-bearer-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/banished-ash-knights-20261115.webp",
+      "before_bytes": 351026,
+      "after_bytes": 163662,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 57390,
+      "mobile_file": "assets/organization/approved-20261115/banished-ash-knights-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/black-blades-three-3x1.webp",
+      "before_bytes": 190570,
+      "after_bytes": 138738,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 48142,
+      "mobile_file": "assets/organization/approved-20261115/black-blades-three-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/cenobium-master-3x1.webp",
+      "before_bytes": 199994,
+      "after_bytes": 145960,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 51318,
+      "mobile_file": "assets/organization/approved-20261115/cenobium-master-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/cinder-adjudicators-heavy-20261115.webp",
+      "before_bytes": 233566,
+      "after_bytes": 183574,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 60460,
+      "mobile_file": "assets/organization/approved-20261115/cinder-adjudicators-heavy-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/cinder-assassins-three-white-helms-20261115.webp",
+      "before_bytes": 318856,
+      "after_bytes": 151076,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 56502,
+      "mobile_file": "assets/organization/approved-20261115/cinder-assassins-three-white-helms-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/confessor-aurek-blueblack-20261115.webp",
+      "before_bytes": 307600,
+      "after_bytes": 147950,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 53338,
+      "mobile_file": "assets/organization/approved-20261115/confessor-aurek-blueblack-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/crucible-knights-four-phase-20261115.webp",
+      "before_bytes": 363286,
+      "after_bytes": 197768,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 64660,
+      "mobile_file": "assets/organization/approved-20261115/crucible-knights-four-phase-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/crucible-presbyter-20261115.webp",
+      "before_bytes": 292326,
+      "after_bytes": 143882,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 47956,
+      "mobile_file": "assets/organization/approved-20261115/crucible-presbyter-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/ember-guard-ten-20261115.webp",
+      "before_bytes": 383724,
+      "after_bytes": 173992,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1700,
+        567
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 61412,
+      "mobile_file": "assets/organization/approved-20261115/ember-guard-ten-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/finger-maiden-20261115.webp",
+      "before_bytes": 274970,
+      "after_bytes": 117904,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 41420,
+      "mobile_file": "assets/organization/approved-20261115/finger-maiden-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/nameless-humble-watchers-workshop-20261116.webp",
+      "before_bytes": 269202,
+      "after_bytes": 142542,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 43746,
+      "mobile_file": "assets/organization/approved-20261115/nameless-humble-watchers-workshop-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/night-cavalry-three-riders-3x1.webp",
+      "before_bytes": 277828,
+      "after_bytes": 198886,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 60746,
+      "mobile_file": "assets/organization/approved-20261115/night-cavalry-three-riders-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/organization-001-council-20261115.webp",
+      "before_bytes": 204806,
+      "after_bytes": 145088,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 53024,
+      "mobile_file": "assets/organization/approved-20261115/organization-001-council-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/organization-003-guard-20261115.webp",
+      "before_bytes": 154190,
+      "after_bytes": 104564,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 37576,
+      "mobile_file": "assets/organization/approved-20261115/organization-003-guard-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/organization-004-inner-circle-20261115.webp",
+      "before_bytes": 205564,
+      "after_bytes": 144686,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 52202,
+      "mobile_file": "assets/organization/approved-20261115/organization-004-inner-circle-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/organization-005-veterans-20261115.webp",
+      "before_bytes": 241240,
+      "after_bytes": 171044,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 61716,
+      "mobile_file": "assets/organization/approved-20261115/organization-005-veterans-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/ruin-smith-servo-skulls-20261115.webp",
+      "before_bytes": 271908,
+      "after_bytes": 158746,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 53296,
+      "mobile_file": "assets/organization/approved-20261115/ruin-smith-servo-skulls-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/organization/approved-20261115/shattered-anthem-sister-3x1.webp",
+      "before_bytes": 165652,
+      "after_bytes": 111626,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 36446,
+      "mobile_file": "assets/organization/approved-20261115/shattered-anthem-sister-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/organization-assembly-20261114-approved-3x1.webp",
+      "before_bytes": 476330,
+      "after_bytes": 189884,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1700,
+        567
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 72136,
+      "mobile_file": "assets/organization/organization-assembly-20261114-approved-3x1-mobile.webp"
+    },
+    {
+      "file": "assets/organization/panoramas-20261114/06-oblivion-knights.webp",
+      "before_bytes": 317758,
+      "after_bytes": 198812,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 61906,
+      "mobile_file": "assets/organization/panoramas-20261114/06-oblivion-knights-mobile.webp"
+    },
+    {
+      "file": "assets/organization/panoramas-20261114/13-confessor-silent-plates.webp",
+      "before_bytes": 146976,
+      "after_bytes": 128934,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 44648,
+      "mobile_file": "assets/organization/panoramas-20261114/13-confessor-silent-plates-mobile.webp"
+    },
+    {
+      "file": "assets/organization/panoramas-20261114/22-sealed-bridge-approach.webp",
+      "before_bytes": 126936,
+      "after_bytes": 110462,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 34844,
+      "mobile_file": "assets/organization/panoramas-20261114/22-sealed-bridge-approach-mobile.webp"
+    },
+    {
+      "file": "assets/organization/panoramas-20261114/25-council-three-writs-no-guards.webp",
+      "before_bytes": 152658,
+      "after_bytes": 130002,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 43686,
+      "mobile_file": "assets/organization/panoramas-20261114/25-council-three-writs-no-guards-mobile.webp"
+    },
+    {
+      "file": "assets/overview/golden-mosaic-chapter-chronicle-20261115.webp",
+      "before_bytes": 656600,
+      "after_bytes": 275702,
+      "original_dimensions": [
+        941,
+        1672
+      ],
+      "desktop_dimensions": [
+        675,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 128066,
+      "mobile_file": "assets/overview/golden-mosaic-chapter-chronicle-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/overview/siofra-starry-dome-underground-20261116.webp",
+      "before_bytes": 141662,
+      "after_bytes": 77048,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 22382,
+      "mobile_file": "assets/overview/siofra-starry-dome-underground-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/p1/campaign-archive-v4.webp",
+      "before_bytes": 516662,
+      "after_bytes": 220436,
+      "original_dimensions": [
+        1586,
+        992
+      ],
+      "desktop_dimensions": [
+        1200,
+        751
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/p1/ember-ship-blue-violet-20261115.webp",
+      "before_bytes": 206302,
+      "after_bytes": 101326,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 29802,
+      "mobile_file": "assets/p1/ember-ship-blue-violet-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/p1/ember-ship.webp",
+      "before_bytes": 238790,
+      "after_bytes": 163788,
+      "original_dimensions": [
+        1672,
+        941
+      ],
+      "desktop_dimensions": [
+        1600,
+        900
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": 73328,
+      "mobile_file": "assets/p1/ember-ship-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/08-gavriel-full.webp",
+      "before_bytes": 196602,
+      "after_bytes": 196602,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": 88216,
+      "mobile_file": "assets/portraits/08-gavriel-full-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/aurek-silent-word-20261115.webp",
+      "before_bytes": 543802,
+      "after_bytes": 215286,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 115992,
+      "mobile_file": "assets/portraits/approved-20261115/aurek-silent-word-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-02-sebastian-20261115.webp",
+      "before_bytes": 173236,
+      "after_bytes": 135248,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 48328,
+      "mobile_file": "assets/portraits/approved-20261115/v09-02-sebastian-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-02-sebastian-banner-handover-20261116.webp",
+      "before_bytes": 509662,
+      "after_bytes": 195526,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1600,
+        533
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": 83012,
+      "mobile_file": "assets/portraits/approved-20261115/v09-02-sebastian-banner-handover-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-03-reginald-20261115.webp",
+      "before_bytes": 163468,
+      "after_bytes": 102256,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 36220,
+      "mobile_file": "assets/portraits/approved-20261115/v09-03-reginald-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115.webp",
+      "before_bytes": 314894,
+      "after_bytes": 126844,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 41336,
+      "mobile_file": "assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-04-severin-20261115.webp",
+      "before_bytes": 222470,
+      "after_bytes": 174066,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 59264,
+      "mobile_file": "assets/portraits/approved-20261115/v09-04-severin-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-05-gavriel-cinematic-20261115.webp",
+      "before_bytes": 208760,
+      "after_bytes": 129216,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 44246,
+      "mobile_file": "assets/portraits/approved-20261115/v09-05-gavriel-cinematic-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-05-gavriel-prayer-20261117.webp",
+      "before_bytes": 306330,
+      "after_bytes": 123618,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 42692,
+      "mobile_file": "assets/portraits/approved-20261115/v09-05-gavriel-prayer-20261117-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-06-cole-cinematic-20261115.webp",
+      "before_bytes": 207350,
+      "after_bytes": 129526,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 45994,
+      "mobile_file": "assets/portraits/approved-20261115/v09-06-cole-cinematic-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-07-iserin-20261115.webp",
+      "before_bytes": 200218,
+      "after_bytes": 156964,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 55132,
+      "mobile_file": "assets/portraits/approved-20261115/v09-07-iserin-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-08-alex-fullbody-proportions-20261115.webp",
+      "before_bytes": 358354,
+      "after_bytes": 185352,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 60088,
+      "mobile_file": "assets/portraits/approved-20261115/v09-08-alex-fullbody-proportions-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/approved-20261115/v09-09-aurek-20261115.webp",
+      "before_bytes": 331662,
+      "after_bytes": 184220,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1700,
+        566
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 71560,
+      "mobile_file": "assets/portraits/approved-20261115/v09-09-aurek-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/revised-20261114/01-iserin-full.webp",
+      "before_bytes": 260684,
+      "after_bytes": 177264,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 97354,
+      "mobile_file": "assets/portraits/revised-20261114/01-iserin-full-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/revised-20261114/02-alex-full.webp",
+      "before_bytes": 314302,
+      "after_bytes": 216574,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 118726,
+      "mobile_file": "assets/portraits/revised-20261114/02-alex-full-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/revised-20261114/03-aurek-original01-helmet-only.webp",
+      "before_bytes": 548950,
+      "after_bytes": 187614,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 106230,
+      "mobile_file": "assets/portraits/revised-20261114/03-aurek-original01-helmet-only-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/revised-20261114/04-galeron-full.webp",
+      "before_bytes": 356204,
+      "after_bytes": 246110,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 132614,
+      "mobile_file": "assets/portraits/revised-20261114/04-galeron-full-mobile.webp"
+    },
+    {
+      "file": "assets/portraits/revised-20261114/09-cole-full.webp",
+      "before_bytes": 292156,
+      "after_bytes": 199378,
+      "original_dimensions": [
+        1122,
+        1402
+      ],
+      "desktop_dimensions": [
+        960,
+        1200
+      ],
+      "desktop_quality": 69,
+      "mobile_bytes": 108660,
+      "mobile_file": "assets/portraits/revised-20261114/09-cole-full-mobile.webp"
+    },
+    {
+      "file": "assets/rites/08-old-oaths-triple-heraldry-20261116.webp",
+      "before_bytes": 315530,
+      "after_bytes": 191656,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1800,
+        600
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 58770,
+      "mobile_file": "assets/rites/08-old-oaths-triple-heraldry-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/rites/08-recruitment-rite-20261115.webp",
+      "before_bytes": 284344,
+      "after_bytes": 113274,
+      "original_dimensions": [
+        2048,
+        682
+      ],
+      "desktop_dimensions": [
+        1800,
+        599
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 37036,
+      "mobile_file": "assets/rites/08-recruitment-rite-20261115-mobile.webp"
+    },
+    {
+      "file": "assets/rules/ember-adjudicators-five-bonewhite-20261116.webp",
+      "before_bytes": 180570,
+      "after_bytes": 180570,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": null,
+      "mobile_bytes": 96862,
+      "mobile_file": "assets/rules/ember-adjudicators-five-bonewhite-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/rules/rules-top-battle-hd-20261116.webp",
+      "before_bytes": 903706,
+      "after_bytes": 182438,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1350,
+        450
+      ],
+      "desktop_quality": 70,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/scenario-panoramas-20261116/01-blind-star-corridor.webp",
+      "before_bytes": 476940,
+      "after_bytes": 190478,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1450,
+        483
+      ],
+      "desktop_quality": 72,
+      "mobile_bytes": 98868,
+      "mobile_file": "assets/rules/scenario-panoramas-20261116/01-blind-star-corridor-mobile.webp"
+    },
+    {
+      "file": "assets/rules/scenario-panoramas-20261116/02-iron-heart.webp",
+      "before_bytes": 467152,
+      "after_bytes": 194392,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1500,
+        500
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 93548,
+      "mobile_file": "assets/rules/scenario-panoramas-20261116/02-iron-heart-mobile.webp"
+    },
+    {
+      "file": "assets/rules/scenario-panoramas-20261116/03-death-line.webp",
+      "before_bytes": 515006,
+      "after_bytes": 198932,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1500,
+        500
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 87428,
+      "mobile_file": "assets/rules/scenario-panoramas-20261116/03-death-line-mobile.webp"
+    },
+    {
+      "file": "assets/rules/scenario-panoramas-20261116/04-iron-throne.webp",
+      "before_bytes": 450792,
+      "after_bytes": 183896,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1500,
+        500
+      ],
+      "desktop_quality": 74,
+      "mobile_bytes": 86330,
+      "mobile_file": "assets/rules/scenario-panoramas-20261116/04-iron-throne-mobile.webp"
+    },
+    {
+      "file": "assets/rules/scenario-panoramas-20261116/05-abyssal-well.webp",
+      "before_bytes": 391028,
+      "after_bytes": 181874,
+      "original_dimensions": [
+        2172,
+        724
+      ],
+      "desktop_dimensions": [
+        1600,
+        533
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": 71222,
+      "mobile_file": "assets/rules/scenario-panoramas-20261116/05-abyssal-well-mobile.webp"
+    },
+    {
+      "file": "assets/rules/unit-overrides/ember-guardians-20261116.webp",
+      "before_bytes": 313104,
+      "after_bytes": 190866,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 88898,
+      "mobile_file": "assets/rules/unit-overrides/ember-guardians-20261116-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp",
+      "before_bytes": 225686,
+      "after_bytes": 157874,
+      "original_dimensions": [
+        1312,
+        1199
+      ],
+      "desktop_dimensions": [
+        1312,
+        1199
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 84156,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06.webp",
+      "before_bytes": 293622,
+      "after_bytes": 193726,
+      "original_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_quality": 78,
+      "mobile_bytes": 92176,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g02-u03.webp",
+      "before_bytes": 139300,
+      "after_bytes": 103996,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g02-u05.webp",
+      "before_bytes": 103394,
+      "after_bytes": 74492,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g02-u07.webp",
+      "before_bytes": 125210,
+      "after_bytes": 90512,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g02-u08.webp",
+      "before_bytes": 129104,
+      "after_bytes": 94168,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01.webp",
+      "before_bytes": 325074,
+      "after_bytes": 190242,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 76,
+      "mobile_bytes": 96734,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04.webp",
+      "before_bytes": 197458,
+      "after_bytes": 130776,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 72268,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05.webp",
+      "before_bytes": 347686,
+      "after_bytes": 197214,
+      "original_dimensions": [
+        1312,
+        1199
+      ],
+      "desktop_dimensions": [
+        1312,
+        1199
+      ],
+      "desktop_quality": 70,
+      "mobile_bytes": 92374,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g03-u08.webp",
+      "before_bytes": 120732,
+      "after_bytes": 88398,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g04-u06.webp",
+      "before_bytes": 123702,
+      "after_bytes": 91150,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g05-u02.webp",
+      "before_bytes": 103722,
+      "after_bytes": 75846,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-enemy-units-g06-u01.webp",
+      "before_bytes": 187468,
+      "after_bytes": 137790,
+      "original_dimensions": [
+        891,
+        920
+      ],
+      "desktop_dimensions": [
+        891,
+        920
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": null,
+      "mobile_file": null
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u02.webp",
+      "before_bytes": 122698,
+      "after_bytes": 84134,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 48656,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u02-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u03.webp",
+      "before_bytes": 156512,
+      "after_bytes": 104896,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 61864,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u03-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u05.webp",
+      "before_bytes": 183826,
+      "after_bytes": 123820,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 73468,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-friendly-g01-u05-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-friendly-g03-u01.webp",
+      "before_bytes": 190606,
+      "after_bytes": 131028,
+      "original_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_dimensions": [
+        1254,
+        1254
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 77598,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-friendly-g03-u01-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-reinforcements-g02.webp",
+      "before_bytes": 215728,
+      "after_bytes": 151378,
+      "original_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 87338,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-reinforcements-g02-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-reinforcements-g05.webp",
+      "before_bytes": 219154,
+      "after_bytes": 155132,
+      "original_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 89314,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-reinforcements-g05-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-1111-20261116/rules-reinforcements-g06.webp",
+      "before_bytes": 184034,
+      "after_bytes": 124846,
+      "original_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_dimensions": [
+        1234,
+        1275
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 69786,
+      "mobile_file": "assets/rules/zip-1111-20261116/rules-reinforcements-g06-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05.webp",
+      "before_bytes": 171136,
+      "after_bytes": 148468,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 96372,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02.webp",
+      "before_bytes": 103492,
+      "after_bytes": 91110,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 65066,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07.webp",
+      "before_bytes": 109510,
+      "after_bytes": 96144,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 68438,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09.webp",
+      "before_bytes": 144268,
+      "after_bytes": 126768,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 91252,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-friendly-g01-u04.webp",
+      "before_bytes": 107858,
+      "after_bytes": 93190,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 66680,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-friendly-g01-u04-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u02.webp",
+      "before_bytes": 118856,
+      "after_bytes": 105128,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 74336,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u02-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u05.webp",
+      "before_bytes": 101220,
+      "after_bytes": 87790,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 63032,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u05-mobile.webp"
+    },
+    {
+      "file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u06.webp",
+      "before_bytes": 103654,
+      "after_bytes": 89588,
+      "original_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_dimensions": [
+        1050,
+        1050
+      ],
+      "desktop_quality": 80,
+      "mobile_bytes": 64618,
+      "mobile_file": "assets/rules/zip-2222-20261116/rules-friendly-g03-u06-mobile.webp"
+    }
+  ]
+}
