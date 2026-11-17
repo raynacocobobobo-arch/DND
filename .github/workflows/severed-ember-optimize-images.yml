@@ -1,0 +1,86 @@
+name: Optimize Severed Ember high-resolution artwork
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'scripts/optimize_severed_ember_images.py'
+      - '.github/workflows/severed-ember-optimize-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: severed-ember-one-time-image-optimization
+  cancel-in-progress: false
+
+jobs:
+  optimize-art:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install high-quality WebP encoder
+        run: python -m pip install --disable-pip-version-check 'Pillow>=11,<13'
+      - name: Compress only PNG artwork over 512 KiB, preserve dimensions, rewrite links
+        run: python scripts/optimize_severed_ember_images.py
+      - name: Verify that no image references are broken
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import re
+          root = Path('severed-ember')
+          sources = list(root.rglob('*.html')) + list(root.rglob('*.css'))
+          failures = []
+          count = 0
+          for source in sources:
+              text = source.read_text(encoding='utf-8')
+              paths = re.findall(r'(?:src|href)=["\x27](?:\.\./)?(assets/[^"\x27?#]+\.(?:png|webp|jpe?g))', text)
+              for asset in paths:
+                  if not (root / asset).is_file():
+                      failures.append(f'{source}: {asset}')
+                  else:
+                      count += 1
+          if failures:
+              raise RuntimeError('Missing referenced files: ' + '; '.join(failures[:20]))
+          report = root / 'OPTIMIZATION-20261117.json'
+          if report.exists():
+              import json
+              data = json.loads(report.read_text(encoding='utf-8'))
+              for art in data['images']:
+                  p = root / art['optimized']
+                  with Image.open(p) as img:
+                      img.verify()
+              print(f"Verified {len(data['images'])} optimized images, {count} references")
+          else:
+              print(f'No converted images; checked {count} references')
+          PY
+      - name: Commit optimized images and site links without force-push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A severed-ember
+          if git diff --cached --quiet; then
+            echo "Nothing to optimize"
+            exit 0
+          fi
+          git commit -m "Shrink high-resolution PNG artwork via quality-92 WebP, retain original pixel dimensions"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+            if git push origin HEAD:gh-pages; then
+              echo "Optimization committed"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Could not push safely" >&2
+          exit 1
