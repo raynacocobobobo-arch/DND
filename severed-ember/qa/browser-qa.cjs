@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const HOST='http://127.0.0.1:8765';
 const OUT=path.join(__dirname,'output'); fs.mkdirSync(OUT,{recursive:true});
-const views=['home','campaigns','people','organization','armory','places','chronicle','restricted','reader'];
+const views=['home','campaigns','people','organization','armory','places','chronicle','restricted','reader','rules'];
 const chapters=['01-overview','02-siofra','03-organization','04-arsenal','05-campaigns','06-secrets','07-other-histories','08-rites','09-characters','10-restricted'];
 const cases=[
   {name:'desktop',width:1440,height:900,isMobile:false},
@@ -26,6 +26,17 @@ const cases=[
   page.on('response',r=>{if(r.status()>=400)http404.push(r.status()+' '+r.url())});
   let resp=await page.goto(HOST+'/index.html',{waitUntil:'networkidle',timeout:30000});
   if(resp.status()!==200)fail(v.name+':root','status '+resp.status());
+  const firstLoad=await page.evaluate(()=>({
+    rulesPreloaded:!!document.getElementById('rules-start'),
+    hasExternalCSS:!!document.querySelector('link[href*="index-base.css"]')&&!!document.querySelector('link[href*="index-overrides.css"]'),
+    hasExternalJS:!!document.querySelector('script[src*="index-app.js"]'),
+    htmlBytes:document.documentElement.outerHTML.length
+  }));
+  if(firstLoad.rulesPreloaded)fail(v.name+':lazy','rules should not be included in the homepage');
+  if(!firstLoad.hasExternalCSS||!firstLoad.hasExternalJS)
+    fail(v.name+':cache','external cacheable CSS or JS missing');
+  if(firstLoad.htmlBytes>185000)fail(v.name+':payload','homepage HTML remains too large '+firstLoad.htmlBytes);
+  records.push({viewport:v.name,type:'first-load',...firstLoad});
   const homeLogos=await page.evaluate(()=>{
     const selectors=['.topbar .brand .crest>img','.right-rail .fact-emblem>img'];
     return selectors.map(sel=>{
@@ -42,6 +53,12 @@ const cases=[
     fail(v.name+':logo','archive logo size '+JSON.stringify(homeLogos[1]));
   for(const view of views){
     await page.goto(HOST+'/index.html#'+view,{waitUntil:'domcontentloaded',timeout:30000});
+    if(view==='rules'){
+      try{await page.locator('#rules-start').waitFor({state:'attached',timeout:15000})}
+      catch(_){fail(v.name+':rules','lazy rules fragment failed to load')}
+      const atlasCount=await page.locator('#atlas-grid .rules-atlas-card').count();
+      if(atlasCount<45)fail(v.name+':rules','unit atlas not restored after lazy load '+atlasCount);
+    }
     await page.waitForTimeout(120);
     // Load below-fold images before screenshots and broken-image assertions.
     await page.evaluate(async()=>{

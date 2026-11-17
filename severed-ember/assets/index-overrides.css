@@ -1,0 +1,222 @@
+
+/* 2026-11-15: VOL.09 panoramic personae plates, preserve uploaded 2048x682 sources. */
+.lore-prose>figure.v09-persona-panorama,.codex-body>figure.v09-persona-panorama{display:block!important;width:100%!important;max-width:100%!important;margin:22px auto 32px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.v09-persona-panorama>a{display:block!important;width:100%;line-height:0}
+.v09-persona-panorama img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:2048/682!important;object-fit:contain!important;background:#0c1414;border:1px solid #8b7858;box-sizing:border-box}
+.v09-persona-panorama figcaption{display:block!important;text-align:left!important;padding:9px 2px 1px!important;color:#c6b798!important;font:12px/1.6 Georgia,serif!important}
+.v09-pending-image{display:flex;align-items:center;justify-content:center;min-height:100px;background:#101919;color:#b8ab97;font-size:13px;letter-spacing:.05em;border:1px solid #6a5b45}
+
+/* 2026-11-15: VII/VIII chapter top plates, 3:1 and fully uncropped */
+#codex-v07 .lore-prose>figure.codex-chapter-top,
+#codex-v08 .lore-prose>figure.codex-chapter-top{
+ display:block!important;position:relative!important;
+ width:100%!important;max-width:100%!important;margin:16px auto 29px!important;
+ padding:0!important;overflow:visible!important;background:#101718!important;
+}
+#codex-v07 .lore-prose>figure.codex-chapter-top a,
+#codex-v08 .lore-prose>figure.codex-chapter-top a{display:block;width:100%}
+#codex-v07 .lore-prose>figure.codex-chapter-top img,
+#codex-v08 .lore-prose>figure.codex-chapter-top img{
+ display:block!important;width:100%!important;height:auto!important;max-height:none!important;
+ aspect-ratio:2048/682!important;object-fit:contain!important;
+}
+#view-people .subhero .sub-shade{background:linear-gradient(90deg,#0b1214df,#0c1316a8 46%,#0a101020)}
+
+/* Abbot miniature displayed centered in the tabletop rules */
+#rules-start .rules-unit-portrait[data-unit="abbot"]{display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005}
+#rules-start .rules-unit-portrait[data-unit="abbot"] a{display:block;width:100%}
+#rules-start .rules-unit-portrait[data-unit="abbot"] img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
+
+/* Rules unit miniature: Crucible Presbyter portrait, centered and uncropped */
+#rules-start .rules-unit-portrait[data-unit="crucible-presbyter"]{
+  display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;
+  border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;
+}
+#rules-start .rules-unit-portrait[data-unit="crucible-presbyter"] a{display:block;width:100%}
+#rules-start .rules-unit-portrait[data-unit="crucible-presbyter"] img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
+
+/* Abyssal Stargazer miniature centered under tabletop rules heading */
+#rules-start .rules-unit-portrait[data-unit="abyssal-stargazer"]{display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005}
+#rules-start .rules-unit-portrait[data-unit="abyssal-stargazer"] a{display:block;width:100%}
+#rules-start .rules-unit-portrait[data-unit="abyssal-stargazer"] img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
+
+/* Tabletop rules: centered Abyssal Confessor miniature */
+#rules-start .rules-unit-portrait[data-unit="abyssal-confessor"]{display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005}
+#rules-start .rules-unit-portrait[data-unit="abyssal-confessor"] a{display:block;width:100%}
+#rules-start .rules-unit-portrait[data-unit="abyssal-confessor"] img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
+
+/* 1111.zip unit miniatures - placed after matching tabletop data-card headings */
+#rules-start figure.rules-zip-portrait{
+ display:block!important;
+ position:relative!important;
+ box-sizing:border-box!important;
+ width:min(100%,520px)!important;max-width:100%!important;
+ margin:18px auto 25px!important;padding:0!important;
+ border:1px solid #8b765876;background:#111a19;
+ box-shadow:0 6px 22px #0005;
+ overflow:hidden!important;
+}
+#rules-start figure.rules-zip-portrait>a{display:block!important;width:100%!important;}
+#rules-start figure.rules-zip-portrait img{
+ display:block!important;width:100%!important;max-width:100%!important;
+ height:auto!important;max-height:none!important;
+ object-fit:contain!important;object-position:center!important;
+}
+
+/* Rulebook index, aligned with Chapter III; the original army cards remain untouched. */
+#view-rules .rules-hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:19px 0 24px}
+#view-rules .rules-hub>a{display:flex;flex-direction:column;gap:8px;min-width:0;padding:17px 15px;background:linear-gradient(125deg,#20342d,#111d1b);border:1px solid #a58e6573;text-decoration:none}
+#view-rules .rules-hub>a:hover,#view-rules .rules-hub>a:focus-visible{border-color:#e3be86;background:#2a4034}
+#view-rules .rules-hub small{font:10px Georgia,serif;letter-spacing:.1em;color:#b79e75}
+#view-rules .rules-hub strong{font:19px/1.4 'Songti SC','STSong',serif;color:#f0d6a8}
+#view-rules .rules-hub span{font:12px/1.7 var(--sans);color:#bac8be}
+#view-rules .rules-atlas{margin:22px 0 27px;padding:clamp(14px,2vw,24px);border:1px solid #9f8a6179;background:linear-gradient(140deg,#16251f,#101d1d);scroll-margin-top:105px}
+#view-rules .rules-atlas-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:17px}
+#view-rules .rules-atlas-head small{font:10px Georgia,serif;letter-spacing:.14em;color:#c6aa7a}
+#view-rules .rules-atlas-head h2{font:26px/1.4 'Songti SC','STSong',serif;color:#f0d9b2;margin:7px 0}
+#view-rules .rules-atlas-head p,#view-rules .rules-atlas-note{font:12px/1.7 var(--sans);color:#b8c1b8;margin:5px 0}
+#view-rules .rules-atlas-head>a{flex:none;color:#f0d6ae;border:1px solid #a58a5c;padding:10px 13px;font:12px var(--sans)}
+#view-rules .rules-atlas-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:17px;align-items:end}
+#view-rules .rules-atlas-filters label{display:flex;flex-direction:column;gap:5px;color:#d9c39f;font:11px var(--sans);min-width:0}
+#view-rules .rules-atlas-filters input,#view-rules .rules-atlas-filters select{width:100%;height:39px;box-sizing:border-box;min-width:0;padding:7px 8px;background:#0c1817;color:#f1dfc0;border:1px solid #8e7d5c;font:12px var(--sans);border-radius:0}
+#view-rules #atlas-reset{height:39px;cursor:pointer;background:#25382e;color:#eddbbc;border:1px solid #967e54;font:12px var(--sans)}
+#view-rules .rules-atlas-count{font:12px var(--sans);color:#d2b68a;margin:0 0 12px}
+#view-rules .rules-atlas-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+#view-rules .rules-atlas-card{display:flex;flex-direction:column;min-width:0;background:#101c1a;border:1px solid #8e7b5b;color:#f0dbb4;text-decoration:none;overflow:hidden}
+#view-rules .rules-atlas-card:hover{border-color:#e0b77c}
+#view-rules .rules-atlas-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#f8f8f6}
+#view-rules .rules-atlas-info{display:flex;flex:1;flex-direction:column;gap:6px;padding:10px}
+#view-rules .rules-atlas-info strong{font:15px/1.4 'Songti SC','STSong',serif;color:#eedaaf;overflow-wrap:anywhere}
+#view-rules .rules-atlas-info small{font:11px/1.5 var(--sans);color:#bac5bc}
+#view-rules .rules-atlas-info em{font:11px/1.5 var(--sans);color:#deb985;font-style:normal;margin-top:auto}
+#view-rules .rules-atlas-note{margin:14px 0 0}
+#view-rules .rules-codex-note{padding:10px 14px;border-left:3px solid #ae9162;background:#d0b98e0c;font-size:13px;line-height:1.75}
+#view-rules .rules-codex-note a{color:#e4c393}
+#view-rules .rules-image-pending{width:min(100%,520px);min-height:110px;margin:16px auto 20px;padding:30px 14px;display:flex;justify-content:center;align-items:center;border:1px dashed #99835e;background:#151e1b;color:#bca986;text-align:center;font:13px var(--sans)}
+#view-rules .rules-howto{margin:10px 0 24px;padding:11px 15px;background:#1a2923;border:1px solid #857857}
+#view-rules .rules-howto summary{cursor:pointer;color:#edd2a8;font:13px var(--sans)}
+#view-rules .rules-howto p{font:13px/1.8 var(--sans);margin:12px 0 4px}
+#view-rules .rules-mission-links{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:15px 0 23px}
+#view-rules .rules-mission-links a{padding:12px 9px;background:#192921;border:1px solid #967c55;text-align:center;font:15px/1.6 'Songti SC','STSong',serif;color:#ead1a4;text-decoration:none}
+#view-rules .rules-mission-links small{display:block;color:#c2b9a2;font:10px/1.6 var(--sans)}
+#view-rules .rules-mission-links a:hover{border-color:#e1bc82}
+#view-rules #rules-ember-guard,#view-rules #rules-scenarios{scroll-margin-top:105px}
+@media(max-width:1100px){#view-rules .rules-hub{grid-template-columns:repeat(2,minmax(0,1fr))}#view-rules .rules-atlas-filters{grid-template-columns:repeat(3,minmax(0,1fr))}#view-rules .rules-atlas-grid{grid-template-columns:repeat(3,minmax(0,1fr))}#view-rules .rules-mission-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){#view-rules .rules-hub{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#view-rules .rules-hub>a{padding:12px 10px}#view-rules .rules-hub strong{font-size:16px}#view-rules .rules-atlas-head{display:block}#view-rules .rules-atlas-head>a{display:inline-block;margin-top:9px}#view-rules .rules-atlas-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#view-rules .rules-atlas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#view-rules .rules-mission-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Five full-width 3:1 tabletop scenario panoramic plates, November 2026. */
+#view-rules .rules-document figure.rules-scenario-plate{
+ display:block;width:100%;max-width:100%;box-sizing:border-box;overflow:hidden;
+ margin:16px auto 28px;padding:0;background:#111a19;border:1px solid #99835e;
+}
+#view-rules .rules-document figure.rules-scenario-plate>a{display:block;width:100%;line-height:0}
+#view-rules .rules-document figure.rules-scenario-plate img{
+ display:block!important;width:100%!important;max-width:100%!important;
+ height:auto!important;aspect-ratio:3/1;object-fit:contain!important;
+ margin:0!important;padding:0!important;border:0!important;
+}
+#view-rules .rules-document figure.rules-scenario-plate figcaption{
+ display:block;padding:9px 13px 11px;color:#d4c3a6;
+ font:12px/1.55 'Songti SC','STSong','PingFang SC',serif;
+ background:#14221e;border-top:1px solid #9a835a61
+}
+#view-rules .rules-document figure.rules-scenario-plate figcaption strong{color:#efdbb9}
+@media(max-width:700px){
+ #view-rules .rules-document figure.rules-scenario-plate{margin:14px auto 22px}
+ #view-rules .rules-document figure.rules-scenario-plate figcaption{padding:8px 9px;font-size:11px}
+}
+
+
+/* Next previously-inline style group */
+
+/* 2026-11-16 / Volume VII: cohesive report plates and ordered antagonist dossiers. */
+#codex-v07 .lore-prose>figure.chapter-context-art{
+  display:block!important;box-sizing:border-box!important;
+  width:min(100%,930px)!important;max-width:930px!important;
+  margin:19px auto 28px!important;padding:0!important;
+}
+#codex-v07 .lore-prose>figure.chapter-context-art img{
+  display:block!important;width:100%!important;height:auto!important;
+  max-width:100%!important;object-fit:contain!important;
+}
+#codex-v07 .lore-prose>figure.chapter-context-art figcaption{
+  color:#c9b895!important;text-align:left!important;
+}
+.v07-enemy-records{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:1050px;margin:22px auto 26px}
+.v07-enemy-record{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:20px;
+  min-width:0;align-items:start;padding:19px 20px;
+  border:1px solid rgba(180,151,99,.38);border-left:3px solid rgba(186,156,104,.72);
+  background:linear-gradient(130deg,rgba(37,49,44,.72),rgba(14,25,25,.84));
+  box-sizing:border-box}
+.v07-enemy-copy{min-width:0;align-self:start}
+.v07-enemy-copy p{max-width:none!important;margin:0 0 12px!important;line-height:1.85!important}
+.v07-enemy-copy p:last-child{margin-bottom:0!important}
+.v07-enemy-artwork{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
+.v07-enemy-artwork>figure{display:block!important;box-sizing:border-box!important;width:100%!important;
+  max-width:100%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
+.v07-enemy-artwork>figure>a{display:block!important;width:100%!important;line-height:0!important}
+.v07-enemy-artwork>figure>a>img{display:block!important;width:100%!important;max-width:100%!important;
+  height:auto!important;aspect-ratio:3/1!important;object-fit:contain!important;
+  box-sizing:border-box!important;border:1px solid rgba(171,146,103,.72)!important}
+.v07-enemy-artwork>figure>figcaption{display:block!important;box-sizing:border-box!important;
+  width:100%!important;padding:8px 2px 0!important;margin:0!important;
+  color:#c9b895!important;font:12px/1.6 'Songti SC','STSong',serif!important}
+.v07-enemy-artwork>figure>figcaption strong{color:inherit!important;font:inherit!important}
+@media(max-width:820px){
+ .v07-enemy-record{grid-template-columns:minmax(0,1fr);gap:14px;padding:15px}
+ .v07-enemy-records{gap:13px}
+}
+
+/* Chapter relationship and searchable metadata navigation - 2026-11-16 */
+.rail-group-label{padding:11px 13px 5px;color:#dfba83;font:600 11px/1.4 Georgia,'Songti SC',serif;letter-spacing:.06em;border-top:1px solid #88714b55;margin-top:7px}
+.v07-tagged-link{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:2px}
+.v07-tagged-link .v07-rel-tag{display:block;color:#a6b8ae;font:10px/1.4 sans-serif;opacity:.9}
+.v07-rel-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important;margin-top:12px}
+.v07-rel-cluster{min-width:0;background:#14201dcc;border:1px solid #987c5470;padding:13px}
+.v07-rel-cluster>strong,.v09-nav-section>strong{display:block;color:#ecd1a0;font:600 15px/1.5 'Songti SC',serif}
+.v07-rel-cluster>p{font:11px/1.55 sans-serif;color:#b6bfb4;margin:5px 0 10px}
+.v07-rel-links,.v09-nav-section>div{display:flex;gap:7px;flex-wrap:wrap}
+.v07-rel-links>a,.v09-nav-section a{display:inline-block;padding:7px 9px;border:1px solid #89714c70;background:#1b2c27;color:#e1d1b4;font:12px/1.5 sans-serif}
+.v09-index-nav{display:grid!important;grid-template-columns:1fr;gap:11px!important}
+.v09-nav-section{padding:12px 15px;background:#16231f;border:1px solid #89714c70}
+.v09-nav-section>strong{margin-bottom:9px}
+.codex-search-filters{display:grid;grid-template-columns:1fr 1fr auto;align-items:end;gap:10px;margin:10px 15px}
+.codex-search-filters label{display:flex;flex-direction:column;gap:5px;min-width:0;font:11px/1.5 sans-serif;color:#c5b89b}
+.codex-search-filters select,.codex-search-filters button{height:38px;min-width:0;width:100%;background:#14231f;color:#f0dfbf;border:1px solid #9f8459;padding:7px;font:12px sans-serif}
+.codex-search-filters button{width:auto;white-space:nowrap;cursor:pointer}
+.codex-search-count{margin:0 15px 6px;color:#cdb889;font:12px/1.5 sans-serif}
+@media(max-width:700px){.v07-rel-nav{grid-template-columns:1fr}.codex-search-filters{grid-template-columns:1fr 1fr}.codex-search-filters button{grid-column:1/-1}}
+
+
+/* Next previously-inline style group */
+
+/* v07 enemy dossier full-width editorial layout 20261116 */
+.v07-enemy-records>.v07-enemy-record{display:block!important;width:100%!important;max-width:100%!important}
+.v07-enemy-records .v07-enemy-copy{display:block!important;width:100%!important;margin:0 0 17px!important}
+.v07-enemy-records .v07-enemy-artwork{display:block!important;width:100%!important;max-width:100%!important}
+.v07-enemy-records .v07-enemy-artwork>figure{width:100%!important;max-width:100%!important}
+.v07-enemy-records .v07-enemy-artwork>figure+figure{margin-top:18px!important}
+
+/* Next previously-inline style group */
+
+/* Keep the visible crest and its layout slot at the intended compact size. */
+.topbar .brand .crest{width:37.5px;height:36px;flex:0 0 37.5px}
+.topbar .brand .crest>img{display:block;width:36px!important;height:36px!important;max-width:36px!important;object-fit:contain!important;transform:translateX(-3px)!important}
+.right-rail .fact-emblem>img{width:40.5px!important;height:40.5px!important;max-width:40.5px!important;object-fit:contain!important;flex-shrink:0;transform:translateX(-3px)!important}
+@media(max-width:800px){.topbar .brand .crest{width:29px;height:29px;flex:0 0 29px}.topbar .brand .crest>img{width:27px!important;height:27px!important;max-width:27px!important}.right-rail .fact-emblem>img{width:30px!important;height:30px!important;max-width:30px!important}.topbar .brand .crest>img{transform:translateX(-3px)!important}}
+
+/* Next previously-inline style group */
+
+/* Keep the overview accessible in the left rail; provide a compact persistent mobile chapter control. */
+.left-rail .rail-home{display:flex;align-items:center;gap:10px;min-height:44px;padding:10px 17px;border-bottom:1px solid #a18a503d;font:13px/1.4 var(--sans);color:#d5c5a4}
+.left-rail .rail-home:hover,.left-rail .rail-home.active{color:#f4d8a5;background:#5d593224;box-shadow:inset 3px 0 #b79b6b}
+.nav-quick,.nav-shade{display:none}
+@media(min-width:801px){.frame>.left-rail{display:block;visibility:visible;transform:none}}
+@media(max-width:800px){
+  .top-actions .mobile-menu{display:flex;align-items:center;justify-content:center;gap:5px;width:auto;min-width:66px;padding:0 9px;font-size:15px}
+  .mobile-menu .mobile-menu-label{font-size:12px;white-space:nowrap}
+  .nav-quick:not([hidden]){display:flex;align-items:center;gap:7px;position:fixed;left:10px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:77;min-height:42px;padding:0 13px;color:#efdab5;background:rgba(17,29,26,.94);border:1px solid #a58a5e;border-radius:4px;box-shadow:0 6px 18px #0009;font:13px var(--sans);cursor:pointer}
+  .nav-shade:not([hidden]){display:block;position:fixed;inset:58px 0 0;z-index:79;border:0;background:rgba(1,7,8,.58);width:100%;height:auto;cursor:pointer}
+  .frame>.left-rail{z-index:81}
+  body.nav-open{overflow:hidden}
+}

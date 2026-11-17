@@ -1,0 +1,1821 @@
+
+<div class="subhero cornered rules-subhero"><div class="sub-img" style="background-image:url('assets/rules/rules-top-battle-hd-20261116.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">BATTLE CODEX · TABLETOP RULES</div><h1>桌面战团规则</h1><p>第三章编制军册、剧情援军、敌对势力、单位速查与战役任务。</p><a class="btn strong" href="#rules-friendly">隐修会军册</a><a class="btn" href="#rules-atlas">单位速查</a><a class="btn" href="#rules-scenarios">战役任务</a></div></div>
+<nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌军与战役对立方</a><a href="#rules-scenarios">战役任务</a><a href="#rules-atlas">单位速查</a></nav>
+<section class="rules-hub" aria-label="桌面规则六大入口">
+<a href="#rules-start"><small>01 / RULES</small><strong>规则总览</strong><span>通用能力与规则使用说明</span></a>
+<a href="#rules-friendly"><small>02 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 19 张数据卡</span></a>
+<a href="#rules-reinforcements"><small>03 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教 · 6 张</span></a>
+<a href="#rules-enemy-units"><small>04 / OPPOSITION</small><strong>敌军与战役对立方</strong><span>混沌、兽人、战役对立方 · 40 张</span></a>
+<a href="#rules-scenarios"><small>05 / MISSIONS</small><strong>战役任务</strong><span>五场原始任务模组</span></a>
+<a href="#rules-atlas"><small>06 / FIELD INDEX</small><strong>单位速查</strong><span>图片图鉴及多条件筛选</span></a>
+</section>
+<section class="rules-atlas" id="rules-atlas" aria-label="单位速查图鉴"><div class="rules-atlas-head"><div><small>FIELD INDEX / MINIATURE ATLAS</small><h2>单位速查图鉴</h2><p>编制归属取自第三章；职能标签仅供检索，原始数据卡不变。</p></div><a href="#rules-friendly">隐修会军册</a></div>
+<div class="rules-atlas-filters">
+<label>关键词<input id="atlas-q" type="search" placeholder="名称、组织、武器、特殊规则"/></label>
+<label>所属阵营／任务关系<select id="atlas-side"><option value="all">全部阵营与任务关系</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="enemy">敌对势力</option><option value="opposition">战役对立方</option></select></label>
+<label>组织 / 势力<select id="atlas-group"><option value="all">全部组织</option></select></label>
+<label>战场职能<select id="atlas-role"><option value="all">全部职能</option></select></label>
+<label>分值下限<input id="atlas-min" type="number" min="0" placeholder="不限"/></label>
+<label>分值上限<input id="atlas-max" type="number" min="0" placeholder="不限"/></label>
+<label>排序<select id="atlas-sort"><option value="original">原目录顺序</option><option value="up">分值升序</option><option value="down">分值降序</option><option value="name">名称排序</option></select></label>
+<button type="button" id="atlas-reset">重置筛选</button></div>
+<p id="atlas-count" class="rules-atlas-count" aria-live="polite"></p><div class="rules-atlas-grid" id="atlas-grid"></div><p id="atlas-empty" class="rules-atlas-empty" hidden>没有匹配的数据卡。</p>
+<p class="rules-atlas-note">分值取自现有规则卡，余火守卫战术班采用 TSM 基础参考值；部分单位以每台或每只计；筛选不进行组军总价计算。40张敌方相关数据卡中有39张敌对势力卡、1张暗黑天使战役对立方卡，后者只表示任务立场。</p></section>
+<div class="rules-reading"><article class="rules-document" id="rules-start"><h3>规则总览</h3><details class="rules-howto"><summary>如何使用规则与单位图鉴</summary><p>从所属组织或战役势力选择数据卡，按关键词、职能与原文分值筛选，再打开原始数据卡核对属性和特殊规则。五个战役模组保留原文。</p></details>
+<p>通用规则：<br>破碎律法的余烬</p>
+<p>模型被摧毁时，移除前可立即进行一次射击（仅限手枪或爆弹枪）或近战，命中骰加一。</p>
+<p>真名禁锢<br>该单位获得5+致命伤保护。若敌人为混沌单位，则命中骰可重掷1。</p>
+<p>相位剥离<br>该单位的近战攻击忽略灵能护盾及恶魔特保。</p>
+<p>斩首者<br>对角色单位进行近战攻击时，命中骰和造伤骰各加一。</p>
+<h4 id="rules-friendly">隐修会军册 · 第三章编制</h4><p class="rules-codex-note">本军册严格沿用第三章《战团构成》的五个组织：薪传议会、余火守卫、内环精锐、突击老兵和卡利班代行者。战场职能只用于筛选，不改变原编制。</p>
+<h5 id="rules-friendly-g01">薪传议会</h5>
+<h6 id="rules-friendly-g01-u01">隐修院长</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="abbot" data-zip-1111="rules-friendly-g01-u01"><a href="assets/rules/zip-1111-20261116/rules-friendly-g01-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看隐修院长完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g01-u01.webp" alt="隐修院长单位配图" loading="lazy" decoding="async"></a></figure>
+<p>– 连长  1人 115 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>5</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力剑</td><td>近战</td><td>近战</td><td>5</td><td>2+</td><td>5</td><td>-2</td><td>1</td></tr>
+</table></div>
+<p><strong>特殊规则：</strong> 律法碎片执行者（决斗中命中加一）<br>领袖，<strong>真名禁锢</strong> ，武器特效，斩首者，破碎律法的余烬</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Dark Vengeance Company Master 连长 1 人；保留该实体模型的原装武器。</p>
+<h6 id="rules-friendly-g01-u02">深渊观星者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="abyssal-stargazer" data-zip-1111="rules-friendly-g01-u02"><a href="assets/rules/zip-1111-20261116/rules-friendly-g01-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看深渊观星者完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g01-u02.webp" alt="深渊观星者单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-friendly-g01-u02-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-friendly-g01-u02.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>– 智库馆长  1人 95 分（灵能2级）</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>4</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>力场权杖</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>5</td><td>-2</td><td>2</td></tr>
+<tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>灵能</strong>。<br><strong>规则</strong>：领袖、真名禁锢、破碎律法的余烬；重力压制（灵能，敌方移动减半/冲锋重掷）；物理常数修正（友军+1命中）。<br><strong>灵能武器</strong>：<br><strong>灵能阶段：</strong> 每己方灵能阶段每名灵能者可施放一个已知灵能，进行二骰六检定。大于等于所需值成功；双一或结果为二则受致命伤三且失败；其他情况失败无反噬。</p>
+<p><strong>引力过载</strong>（需七）：选择敌方一载具或怪物单位，造成三加致命伤二，该单位下回合移动力减半。反噬：双二及以下，施法者受一致命伤。</p>
+<p><strong>维度稳定锚</strong>（需五）：选择己方单位，获得四加特保至下个己方指挥阶段。</p>
+<p><strong>相位剥离脉冲</strong>（需六）：选择十二寸内敌方单位，造成三致命伤，此伤害无法被任何特保护盾减免。<br><strong>真名禁锢</strong>：灵能测试可改一骰为6，只可一次，且T-1。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Dark Vengeance Librarian 智库馆长 1 人；保留实体模型原装武器。</p>
+<h6 id="rules-friendly-g01-u03">熔炉祭司</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="crucible-presbyter" data-zip-1111="rules-friendly-g01-u03"><a href="assets/rules/zip-1111-20261116/rules-friendly-g01-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看熔炉祭司完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g01-u03.webp" alt="熔炉祭司单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-friendly-g01-u03-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-friendly-g01-u03.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>– 审判牧师 1人 90 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>4</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>克罗齐乌斯权杖</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-1</td><td>2</td></tr>
+<tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：<br>领袖，守望经文光环（6&quot;内亚空间攻击5+特保，士气重掷）<br>余烬尚在（被摧毁时3&quot;内友军回D3模型）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Interrogator-Chaplain 审判牧师 1 人；保留实体模型原装武器。</p>
+<h6 id="rules-friendly-g01-u04">沉渊告解者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g01-u04" data-zip-2222="rules-friendly-g01-u04"><a href="assets/rules/zip-2222-20261116/rules-friendly-g01-u04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看沉渊告解者完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g01-u04.webp" alt="沉渊告解者单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-friendly-g01-u04-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-friendly-g01-u04.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>– 终结者牧师 1人 95 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>5</td><td>2+</td><td>5</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>克罗齐乌斯权杖</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-1</td><td>2</td></tr>
+<tr><td>风暴爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：领袖，静默倾听（4+打断灵能）；灵魂修补匠（领导单位5+忽略致命伤）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Terminator Chaplain 收藏版 1 人；保留实体模型原装武器。</p>
+<h6 id="rules-friendly-g01-u05">誓约掌旗官</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g01-u05" data-zip-1111="rules-friendly-g01-u05"><a href="assets/rules/zip-1111-20261116/rules-friendly-g01-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看誓约掌旗官完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g01-u05.webp" alt="誓约掌旗官单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-friendly-g01-u05-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-friendly-g01-u05.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>– 旗手 1人 60 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>4</td><td>8</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：领袖；旗帜光环（9&quot;内5+忽略致命伤，自动过士气）；旗帜复仇（阵亡时旗落，友军+1攻）。<br><strong>卡利班火焰</strong>：无畏光环，领导单位5+致命伤保护<br><strong>破碎律法的余烬</strong></p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Ancient 掌旗官 1 人；旗帜 1 面、爆弹枪 1 支。</p>
+<h5 id="rules-ember-guard">余火守卫 The Ember Guardian</h5>
+<h6 id="rules-friendly-g05-u01">余火守卫战术班</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g05-u01"><a href="assets/rules/unit-overrides/ember-guardians-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看余火守卫战术班模型图"><img src="assets/rules/unit-overrides/ember-guardians-20261116.webp" alt="十名余烬绿动力甲的余火守卫战术小队，配备红色爆弹枪、等离子枪和链锯剑" width="1254" height="1254" loading="lazy" decoding="async" srcset="assets/rules/unit-overrides/ember-guardians-20261116-mobile.webp 840w, assets/rules/unit-overrides/ember-guardians-20261116.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>战术步兵 · 10人 140 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>6+</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>爆弹手枪</td><td>手枪</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>近战武器</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：战斗分队（宣布战斗编队时、部署前，可将10人拆成两个5人单位）；<strong>破碎律法的余烬</strong>（依本页通用规则执行）。</p>
+
+<h5 id="rules-friendly-g02">内环精锐</h5>
+<h6 id="rules-friendly-g02-u01">希芙拉风暴骑士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g02-u01" data-zip-2222="rules-friendly-g02-u01"><a href="assets/rules/unit-overrides/siofra-storm-knights-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看希芙拉风暴骑士完整配图"><img src="assets/rules/unit-overrides/siofra-storm-knights-20261116.webp" alt="五名骨白色终结者装甲的希芙拉风暴骑士微缩模型，持动力剑、盾牌，并配有两名侍从模型" loading="lazy" decoding="async" width="891" height="920"></a></figure>
+<p>5人-重装终结者 235 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>5</td><td>2+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<p><strong>武器</strong>（整队任选）：</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力剑/拳套</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>7</td><td>-2</td><td>2</td></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>突击炮</td><td>远程</td><td>24&quot;</td><td>6</td><td>4+</td><td>6</td><td>0</td><td>1</td></tr>
+<tr><td>等离子炮</td><td>远程</td><td>36&quot;</td><td>D3</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子炮（过载）</td><td>远程</td><td>36&quot;</td><td>D3</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>旋风导弹穿甲</td><td>远程</td><td>48&quot;</td><td>1</td><td>3+</td><td>8</td><td>-2</td><td>D3</td></tr>
+<tr><td>卡利班戟</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>赦免权杖</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：<br><strong>破碎律法的余烬</strong></p>
+<p>深渊锚定<br>在战斗开始时，选择己方部署区内一个地形点作为“锚点”。当己方一个 <strong>希芙拉风暴骑士</strong> 单位位于该锚点 9 英寸内时，所有敌方单位对该风暴骑士单位的射击命中骰 -1。此外，敌方单位不能在该风暴骑士单位 6 英寸内进行传送或深入打击。</p>
+<p>**真名禁锢</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型分两组登记：① 死翼终结者指挥组 3 人，均配赦免权杖 1 柄及风暴盾 1 面，共 3 柄、3 面。② 混装终结者 5 人，逐人配装为：动力剑＋风暴爆弹枪；突击炮＋动力拳套；风暴爆弹枪＋动力拳套＋旋风导弹；等离子炮＋药剂师之手；卡利班之戟。此处仅记录实体模型，不改变上方 5 人规则卡。</p>
+<h6 id="rules-friendly-g02-u02">灰烬失乡骑士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g02-u02" data-zip-2222="rules-friendly-g02-u02"><a href="assets/rules/zip-2222-20261116/rules-friendly-g02-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看灰烬失乡骑士完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g02-u02.webp" alt="灰烬失乡骑士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>– 内环冠军  3人 190 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>3</td><td>7</td><td>1</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>4</td><td>1</td><td>1</td></tr>
+<tr><td>军团圣物</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>6</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：相位剥离；斩首者<br><strong>破碎律法的余烬</strong></p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Inner Circle Companions 改造的内环护卫 4 人，逐人配装为：① 动力拳套＋风暴爆弹枪；② 鸦翼战锤＋风暴盾；③ 双持风暴爆弹枪；④ 动力拳套＋动力权杖。实体 4 人与上方 3 人规则卡分别记账，不并入失联的灰烬遗忘骑士。</p>
+<h6 id="rules-friendly-g02-u03">灰烬遗忘骑士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g02-u03" data-zip-2222="rules-friendly-g02-u03"><a href="assets/rules/zip-2222-20261116/rules-friendly-g02-u03.webp?v=364d7f29" target="_blank" rel="noopener noreferrer" aria-label="查看灰烬遗忘骑士完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g02-u03.webp?v=364d7f29" alt="灰烬遗忘骑士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>– 守望骑士  3人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot;</td><td>4</td><td>3+</td><td>3</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>守护者战戟</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>守护者战戟</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>-1</td><td>-1</td></tr>
+<tr><td>死亡守望精工剑</td><td>近战</td><td>近战</td><td>5</td><td>2+</td><td>5</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：斥候9&quot;、先锋；</p>
+<p>沉默赠礼（格挡后反击，一次）</p>
+<p><strong>破碎律法的余烬</strong></p>
+<h5 id="rules-friendly-g03">突击老兵</h5>
+<h6 id="rules-friendly-g03-u01">暗夜骑兵</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u01" data-zip-1111="rules-friendly-g03-u01"><a href="assets/rules/zip-1111-20261116/rules-friendly-g03-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看暗夜骑兵完整配图"><img src="assets/rules/zip-1111-20261116/rules-friendly-g03-u01.webp" alt="暗夜骑兵单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-friendly-g03-u01-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-friendly-g03-u01.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>-鸦翼骑士 3人摩托 110 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>12&quot;</td><td>5</td><td>3+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>等离子步枪-标准</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子步枪-过载</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>链锯剑</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：低频干扰光环（6&quot;内敌不能使用战略）；游掠者（移动后射击，射击后移动）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Ravenwing Black Knights 鸦翼黑骑士摩托 3 人；保留三套模型原装摩托及武器。</p>
+<h6 id="rules-friendly-g03-u02">余烬刺客</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u02" data-zip-2222="rules-friendly-g03-u02"><a href="assets/rules/zip-2222-20261116/rules-friendly-g03-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看余烬刺客完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g03-u02.webp" alt="余烬刺客单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-friendly-g03-u02-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-friendly-g03-u02.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>-突袭老兵 5人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot;</td><td>4</td><td>3+</td><td>2</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>闪电爪）</td><td>近战</td><td>近战</td><td>5</td><td>3+</td><td>5</td><td>-2</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：静默杀手（无热信号）；维度切断（暴击6+造成额外致命伤）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：死亡守望改造的余烬刺客 3 人；每人双持闪电爪，共 6 只闪电爪；不以规则卡的 5 人编制补造实体。</p>
+<h6 id="rules-friendly-g03-u03">黑剑</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u03" data-zip-2222="rules-friendly-g03-u03"><a href="assets/rules/zip-2222-20261116/rules-friendly-g03-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看黑剑完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g03-u03.webp" alt="黑剑单位配图" loading="lazy" decoding="async"></a></figure>
+<p>-跳包小队  5人 160 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>10&quot;</td><td>4</td><td>3+</td><td>2</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>黑剑</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>5</td><td>-2</td><td>1</td></tr>
+<tr><td>动力剑</td><td>近战</td><td>近战</td><td>5</td><td>3+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>雷霆锤</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>8</td><td>-2</td><td>2</td></tr>
+<tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：深渊游掠者（移动后未冲锋可射击）；黑剑之击（6+命中时伤害+2）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：跳包突击指挥 2 人（Zephon 改造、Jump Lieutenant 各 1），保留原装动力剑／随身武器；另有跳包突击战士 3 人，逐人配装为黑剑 1 人、雷霆锤 2 人。指挥模型与三名战士分别记录，不合并改写规则卡。</p>
+<h6 id="rules-friendly-g03-u04">余烬审判者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u04" data-zip-2222="rules-friendly-g03-u04"><a href="assets/rules/ember-adjudicators-five-bonewhite-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看余烬审判者完整配图"><img src="assets/rules/ember-adjudicators-five-bonewhite-20261116.webp" alt="余烬审判者单位配图" loading="lazy" decoding="async" srcset="assets/rules/ember-adjudicators-five-bonewhite-20261116-mobile.webp 960w, assets/rules/ember-adjudicators-five-bonewhite-20261116.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>-重武器小队 5人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>4</td><td>4+</td><td>2</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>等离子炮-标准</td><td>远程</td><td>36&quot;</td><td>D3</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子炮-过载</td><td>远程</td><td>36&quot;</td><td>D3</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>多管热熔</td><td>远程</td><td>12&quot;</td><td>2</td><td>3+</td><td>8</td><td>-4</td><td>D6</td></tr>
+<tr><td>重爆弹枪</td><td>远程</td><td>36&quot;</td><td>3</td><td>3+</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>重型引力炮</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>6</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：逻辑的终点（无视掩体，对聚集单位+1命中）；<br>引力炮命中后敌移动减半。</p>
+<h6 id="rules-friendly-g03-u05">巡礼骑士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u05" data-zip-2222="rules-friendly-g03-u05"><a href="assets/rules/zip-2222-20261116/rules-friendly-g03-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看巡礼骑士完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g03-u05.webp" alt="巡礼骑士单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-friendly-g03-u05-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-friendly-g03-u05.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>-净化骑士小队 5人 180 分（灵能1级）</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>3</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>力场戟</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>动力剑</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>5</td><td>3</td><td>1</td></tr>
+<tr><td>相位剑</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-3</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：孤立行者（不可被领袖加入，可在桌角部署）；相位剥离（近战无视灵能护盾/恶魔特保），破碎律法的余烬</p>
+<p><strong>相位剥离脉冲</strong>，灵能，选择一个12&quot;内的敌方单位，进行一次灵能测试（WC6）。若成功，该单位受到 D3 致命伤，且此伤害无法通过任何特保护盾（包括恶魔特保）减免</p>
+<p><strong>律法稳固</strong>，灵能，进行一次灵能测试（WC5）。若成功，直到你的下一个指挥阶段，巡礼骑士自身 6&quot; 内的所有友方单位获得 5+ 致命伤保护</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Grey Knights Purifier 与 Deathwatch 套件改造的巡礼骑士 4 人；逐人配装为天罚力场戟 1 人、动力剑＋风暴盾 2 人、相位剑＋风暴盾 1 人。套件仅作造型及兵装来源，不代表灰骑士编入隐修会。</p>
+<h6 id="rules-friendly-g03-u06">遗迹铁匠</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u06" data-zip-2222="rules-friendly-g03-u06"><a href="assets/rules/zip-2222-20261116/rules-friendly-g03-u06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看遗迹铁匠完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g03-u06.webp" alt="遗迹铁匠单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-friendly-g03-u06-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-friendly-g03-u06.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>-技术军士 3人 110 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>等离子步枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子步枪-过载</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>动力拳套</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>8</td><td>-2</td><td>2</td></tr>
+<tr><td>链锯剑</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：机械修护（每回合修复D3）；<br>钢铁律法（免疫武器失效/爆炸），<br>重力锚点（未移动时对12&quot;内命中+1，敌不能撤退）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Dark Vengeance 战术兵改造的遗迹铁匠 3 人。① 动力拳套＋链锯剑，随行伺服颅骨 3 枚；② 等离子步枪，随行伺服颅骨 2 枚；③ 等离子步枪，随行伺服颅骨 1 枚。共 6 枚伺服颅骨，属于随行装备，不计入人员。</p>
+<h6 id="rules-friendly-g03-u07">自动炮台</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g03-u07" data-zip-2222="rules-friendly-g03-u07"><a href="assets/rules/zip-2222-20261116/rules-friendly-g03-u07.webp" target="_blank" rel="noopener noreferrer" aria-label="查看自动炮台完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g03-u07.webp" alt="自动炮台单位配图" loading="lazy" decoding="async"></a></figure>
+<p>-1台 40 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>0&quot;（固定）</td><td>6</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>自动炮</td><td>远程</td><td>36&quot;</td><td>2</td><td>4+</td><td>7</td><td>-1</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：固定（不能移动），无近战，遗迹铁匠可维修</p>
+<h5 id="rules-friendly-g04">卡利班代行者</h5>
+<h6 id="rules-friendly-g04-u01">碎律修女</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g04-u01" data-zip-2222="rules-friendly-g04-u01"><a href="assets/rules/zip-2222-20261116/rules-friendly-g04-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看碎律修女完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g04-u01.webp" alt="碎律修女单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 _60 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>4+</td><td>3</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>审判之剑</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：破碎圣歌光环（9&quot;内敌士气-2，冲锋重掷取低）；旗帜放大器（院长在12&quot;内光环扩至12&quot;）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：Aestred Thurga 修女模型 1 人，保留套件原装武器和圣物装具；在本团作为碎律修女的模型代理，不沿用套件原人物身份。</p>
+<h6 id="rules-friendly-g04-u02">指头女巫</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g04-u02" data-zip-2222="rules-friendly-g04-u02"><a href="assets/rules/zip-2222-20261116/rules-friendly-g04-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看指头女巫完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g04-u02.webp" alt="指头女巫单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 _45 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>2</td><td>7</td><td>0</td></tr>
+</table></div>
+<p><strong>武器</strong>：无（撒花礼器）</p>
+<p><strong>规则</strong>：导航者指引（每回合让一友方重掷冲锋）；赐福微光（所在单位5+致命伤保护）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型：圣凯瑟琳凯旋（Triumph of Saint Katherine）中的撒花修女 1 人；携带原装礼仪器具，作为指头女巫的模型代理。</p>
+<h6 id="rules-friendly-g04-u03">无名扈从</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-friendly-g04-u03" data-zip-2222="rules-friendly-g04-u03"><a href="assets/rules/zip-2222-20261116/rules-friendly-g04-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看无名扈从完整配图"><img src="assets/rules/zip-2222-20261116/rules-friendly-g04-u03.webp" alt="无名扈从单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 20 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>5+</td><td>1</td><td>5</td><td>0</td></tr>
+</table></div>
+<p><strong>武器</strong>：无</p>
+<p><strong>规则</strong>：牺牲（被摧毁时6&quot;内友方回1损）。</p>
+<p class="rules-physical-loadout"><strong>实体编制与兵装</strong>：实体模型代理备选各 1 件：① Aestred Thurga 套件的随行侍从 Agathae Dolan，保留原装圣物随员装具；② Watcher in the Dark／Watcher in Shadow 造型 1 件，保留原装携行物。两件为不同模型选择，不代表规则卡增至 2 人，亦不将 Watcher 设定为入团异形。</p>
+<h4 id="rules-reinforcements">剧情援军</h4>
+<h5 id="rules-reinforcements-g01">死亡守望杀戮小队</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g01" data-zip-1111="rules-reinforcements-g01"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看死亡守望杀戮小队完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g01.webp" alt="死亡守望杀戮小队单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人 240 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>8</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>复仇弹</td><td>远程</td><td>24&quot;</td><td>2</td><td>2+</td><td>4</td><td>-2</td><td>1</td></tr>
+<tr><td>动力剑（中士）</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>5</td><td>-2</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：异形死神（每场选一类型，全队对其命中重掷1）；死亡守望弹药（龙火弹/复仇弹）；</p>
+<h5 id="rules-reinforcements-g02">灰骑士清除者小队</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g02" data-zip-1111="rules-reinforcements-g02"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看灰骑士清除者小队完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g02.webp" alt="灰骑士清除者小队单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-reinforcements-g02-mobile.webp 929w, assets/rules/zip-1111-20261116/rules-reinforcements-g02.webp 1234w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>5人 260 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>2</td><td>8</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>风暴爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>复仇女神力场剑</td><td>近战</td><td>近战</td><td>3</td><td>2+</td><td>5</td><td>-2</td><td>2</td></tr>
+<tr><td>复仇女神力场戟（队长）</td><td>近战</td><td>近战</td><td>4</td><td>2+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>净化火焰（灵能）</td><td>远程</td><td>12&quot;</td><td>D6</td><td>n/a</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：<strong>规则：</strong> 灵能精通1级；恶魔杀手（对恶魔命中/造伤重掷1）；亚空间抗性（5+特保对灵能）；净化仪式（每场一次，6&quot;内恶魔受D3致命伤）。</p>
+<h5 id="rules-reinforcements-g03">克里格死亡军团步兵班</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g03" data-zip-1111="rules-reinforcements-g03"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看克里格死亡军团步兵班完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g03.webp" alt="克里格死亡军团步兵班单位配图" loading="lazy" decoding="async"></a></figure>
+<p>10人， 70分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>5+</td><td>1</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>激光枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+<tr><td>刺刀</td><td>近战</td><td>近战</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+<tr><td>榴弹发射器（每10人可带1把）</td><td>远程</td><td>24&quot;</td><td>1</td><td>4+</td><td>6</td><td>-1</td><td>D3</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>集体掩护</strong>：处于掩体内时，豁免掷骰 +1。</li>
+</ul>
+<ul>
+<li><strong>死不退却</strong>：当单位伤亡过半（≥5人阵亡）时，士气测试获得 +1 修正。</li>
+</ul>
+<ul>
+<li><strong>工兵</strong>：可以花费一个动作清除一个地雷或障碍物标记。</li>
+</ul>
+<ul>
+<li><strong>死亡冲锋</strong>：当该模型被近战击杀时，立即对击杀者造成 1 点致命伤（无视任何减免）。若在同一阶段多个模型同时被击杀，每个模型独立触发。</li>
+</ul>
+<h5 id="rules-reinforcements-g04">克里格死亡骑兵</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g04" data-zip-1111="rules-reinforcements-g04"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看克里格死亡骑兵完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g04.webp" alt="克里格死亡骑兵单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人， 80分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>10&quot;</td><td>4</td><td>4+</td><td>2</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>狩猎长矛（近战）</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>狩猎长矛（投掷）</td><td>远程</td><td>12&quot;</td><td>1</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>骑乘突击</strong>：若该单位在本回合移动后发动冲锋，则命中骰 +1。</li>
+</ul>
+<ul>
+<li><strong>死亡冲锋</strong>：当该模型被击杀时，对接触的敌方单位造成 1 点致命伤（无视减免）。</li>
+</ul>
+<ul>
+<li><strong>快速机动</strong>：可以在移动后执行射击（仅限投掷长矛），然后可以再次移动最多 6 英寸，但不能在同一回合冲锋。</li>
+</ul>
+<h5 id="rules-reinforcements-g05">机械教护教军</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g05" data-zip-1111="rules-reinforcements-g05"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看机械教护教军完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g05.webp" alt="机械教护教军单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-reinforcements-g05-mobile.webp 929w, assets/rules/zip-1111-20261116/rules-reinforcements-g05.webp 1234w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>5人， 50分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>4+</td><td>1</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>辐射卡宾枪</td><td>远程</td><td>18&quot;</td><td>2</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+<tr><td>近战武器</td><td>近战</td><td>近战</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>辐射光环</strong>：任何在近战范围内与该单位交战的敌方单位，在每个战斗回合开始时受到 1 点致命伤（投 D6，4+ 生效）。</li>
+</ul>
+<ul>
+<li><strong>机械坚韧</strong>：对该单位造成的致命伤减免 1（最少 1），但常规伤害不受影响。</li>
+</ul>
+<h5 id="rules-reinforcements-g06">机械教大主教</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-reinforcements-g06" data-zip-1111="rules-reinforcements-g06"><a href="assets/rules/zip-1111-20261116/rules-reinforcements-g06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看机械教大主教完整配图"><img src="assets/rules/zip-1111-20261116/rules-reinforcements-g06.webp" alt="机械教大主教单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-reinforcements-g06-mobile.webp 929w, assets/rules/zip-1111-20261116/rules-reinforcements-g06.webp 1234w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>1人， 75分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>4</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>eradication ray（集中）</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>D6</td></tr>
+<tr><td>eradication ray（分散）</td><td>远程</td><td>12&quot;</td><td>D6</td><td>3+</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>机械臂</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>机械修护</strong>：每回合可修复一个友方机械教或载具单位 D3 伤口。</li>
+</ul>
+<ul>
+<li><strong>意志主宰</strong>：9&quot; 内友方机械教单位 LD 测试重掷。</li>
+</ul>
+<ul>
+<li><strong>精工造物</strong>：自身获得 5+ 特保。</li>
+</ul>
+<h4 id="rules-enemy-units">敌军与战役对立方</h4><p class="rules-codex-note">此处按战役中的对立方归档；暗黑天使在这里表示剧情对立方，不代表将其永久定义为敌对阵营。</p>
+<h5 id="rules-enemy-units-g01">混沌恶魔</h5>
+<h6 id="rules-enemy-units-g01-u01">亚空间掠食实体</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u01" data-zip-1111="rules-enemy-units-g01-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看亚空间掠食实体完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp" alt="亚空间掠食实体单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-enemy-units-g01-u01.webp 1312w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>_50 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>7&quot;</td><td>5</td><td>5+</td><td>4</td><td>6</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>扭曲卷须</td><td>近战</td><td>近战</td><td>D6</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：无惧、相位穿梭（受到伤害时掷D6，4+则该伤害无效且该模型可立即移动D6&quot;）、亚空间回响（每击杀一个模型，回复1 lost wound）。</p>
+<hr>
+<h6 id="rules-enemy-units-g01-u02">恶魔王子</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u02" data-zip-1111="rules-enemy-units-g01-u02"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看恶魔王子完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u02.webp" alt="恶魔王子单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 260 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot;</td><td>6</td><td>3+</td><td>8</td><td>10</td><td>3</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>黑暗利爪</td><td>近战</td><td>近战</td><td>5</td><td>2+</td><td>7</td><td>-2</td><td>2</td></tr>
+<tr><td>魔焰（灵能）</td><td>远程</td><td>12&quot;</td><td>D3</td><td>n/a</td><td>6</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔、无惧、独立角色、灵能精通2级、亚空间速度（可移动12&quot;）、不死（被放逐时4+重生）</p>
+<h6 id="rules-enemy-units-g01-u03">恶魔王子瓦拉克</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u03" data-zip-1111="rules-enemy-units-g01-u03"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看恶魔王子瓦拉克完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u03.webp" alt="恶魔王子瓦拉克单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 240 分（基础分，强化不额外加分）</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot;</td><td>6</td><td>3+</td><td>8</td><td>10</td><td>3</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>黑暗利爪</td><td>近战</td><td>近战</td><td>6</td><td>2+</td><td>7</td><td>-2</td><td>2</td></tr>
+<tr><td>魔焰（灵能）</td><td>远程</td><td>12&quot;</td><td>D3+1</td><td>自动命中</td><td>6</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔，无惧，独立角色，灵能精通2级，亚空间速度（可移动12&quot;）。<br><strong>迷宫之主</strong>：每回合一次，选择一个12&quot;内的敌方单位，该单位必须进行一次LD测试（-1修正），失败则本回合不能移动或冲锋。</p>
+<p><strong>伪造狮王之语</strong>：当瓦拉克受到第3次伤害后，所有隐修会单位必须进行LD测试（-1修正），失败者本回合不能以瓦拉克为目标。</p>
+<p><strong>不死之躯</strong>：被放逐时投D6，5+则回复1血并留在战场（而非完全消灭）。</p>
+<h6 id="rules-enemy-units-g01-u04">恶魔王子克拉能</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u04" data-zip-1111="rules-enemy-units-g01-u04"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u04.webp?v=395a6cb5" target="_blank" rel="noopener noreferrer" aria-label="查看恶魔王子克拉能完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u04.webp?v=395a6cb5" alt="恶魔王子克拉能单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 240 分（基础分，强化不额外加分）</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th><th>INV</th></tr>
+<tr><td>8&quot;</td><td>6</td><td>3+</td><td>10</td><td>10</td><td>3</td><td>4++</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>黑暗利爪</td><td>近战</td><td>近战</td><td>6</td><td>2+</td><td>7</td><td>-2</td><td>2</td></tr>
+<tr><td>魔焰（灵能）</td><td>远程</td><td>12&quot;</td><td>D3</td><td>自动命中</td><td>6</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p>灵能2级</p>
+<ul>
+<li><strong>扭曲裂解</strong> (WC6)：选择一个18″内的敌方单位，造成D3致命伤；若目标是载具或怪物，则造成D3+3致命伤。</li>
+</ul>
+<p>特殊规则</p>
+<p><strong>恶魔王子</strong>：该单位拥有4++特保（已包含在上表中），且对士气免疫。</p>
+<p><strong>亚空间速度</strong>：该单位冲锋后，可以额外移动2″（即在冲锋移动时+2″）。</p>
+<p>特殊规则</p>
+<p><strong>亚空间速度</strong>：该单位冲锋时，冲锋移动距离+2″（即在2D6结果后+2）。</p>
+<p>背景描述</p>
+<p>_克拉能死后，他的躯体并未倒下。亚空间的能量从伤口喷涌而出，将血肉重塑为更可怖的形态。第一对翅膀撕裂背部时，他发出了比生前更清晰的命令：“井口……我到了。”他是休伦最锋利的剑，也是深渊最忠诚的叩门者。即便化身恶魔，他依然记得自己的名字：无情者。_</p>
+<h6 id="rules-enemy-units-g01-u05">放血鬼小队</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u05" data-zip-2222="rules-enemy-units-g01-u05"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看放血鬼小队完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05.webp" alt="放血鬼小队单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05-mobile.webp 900w, assets/rules/zip-2222-20261116/rules-enemy-units-g01-u05.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>10人 120 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>7&quot;</td><td>4</td><td>6+</td><td>1</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>地狱剑</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>5</td><td>-2</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔、无惧、嗜血狂魔（冲锋时 +1 攻击）。</p>
+<h6 id="rules-enemy-units-g01-u06">奸奇粉妖</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g01-u06" data-zip-1111="rules-enemy-units-g01-u06"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看奸奇粉妖完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06.webp" alt="奸奇粉妖单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06-mobile.webp 813w, assets/rules/zip-1111-20261116/rules-enemy-units-g01-u06.webp 1234w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>10人  _70 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>闪烁火焰（灵能）</td><td>远程</td><td>18&quot;</td><td>D6</td><td>4+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔、无惧、分裂成蓝妖。</p>
+<p>奸奇蓝妖</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>闪烁火焰（灵能）</td><td>远程</td><td>12&quot;</td><td>2</td><td>2+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<h5 id="rules-enemy-units-g02">混沌星际战士</h5>
+<h6 id="rules-enemy-units-g02-u01">奸奇术士（副官）</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u01" data-zip-1111="rules-enemy-units-g02-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看奸奇术士（副官）完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u01.webp" alt="奸奇术士（副官）单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 120 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>4</td><td>无</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>力场杖</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>6</td><td>-2</td><td>2</td></tr>
+<tr><td>等离子手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子手枪（过载）</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：混沌拥护者、独立角色、灵能精通3级、奸奇印记。<br><strong>灵能</strong>：<br>命运编织者，灵能，WC7，一个友军单位暴击范围扩至5+<br>突变之触，灵能，WC5，一敌军单位近战命中-1</p>
+<h6 id="rules-enemy-units-g02-u02">卡利基努斯</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u02" data-zip-1111="rules-enemy-units-g02-u02"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看卡利基努斯完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u02.webp" alt="卡利基努斯单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>5</td><td>9</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>力场杖</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>5</td><td>-2</td><td>2</td></tr>
+<tr><td>等离子手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子手枪（过载）</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：混沌拥护者、独立角色、灵能精通3级、奸奇印记。<br><strong>灵能</strong>：<br>命运编织者，灵能，WC7，一个友军单位暴击范围扩至5+<br>突变之触，灵能，WC5，一敌军单位近战命中-1<br><strong>星辰测绘师</strong>，灵能，每测绘3颗伪星后，可获得一次额外灵能充能（每回合多施法一次，且忽略一次亚空间反噬）。</p>
+<h6 id="rules-enemy-units-g02-u03">混沌星际战士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u03" data-zip-1111="rules-enemy-units-g02-u03"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌星际战士完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u03.webp" alt="混沌星际战士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>10人  _90 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>链锯剑</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>可选特殊武器</strong>（每10人可替换最多2把）：</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>等离子枪（标准）</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子枪（过载）</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>火焰喷射器</td><td>远程</td><td>12&quot;</td><td>D6</td><td>自动</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>： <strong>无情</strong>：可在移动后射击重型武器无减值<br><strong>黑暗契约</strong>（阵营技能）：混沌星际战士部队的通用规则，每次射击或近战时可以选择获得“持续命中”或“致命命中”增益，但需过一个领导力测试，失败则受D3致命伤。</p>
+<h6 id="rules-enemy-units-g02-u04">混沌猛禽星际战士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u04" data-zip-1111="rules-enemy-units-g02-u04"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌猛禽星际战士完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u04.webp" alt="混沌猛禽星际战士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>3人  _90 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>12&quot;（跳跃）</td><td>4</td><td>3+</td><td>2</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>链锯剑</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：猛禽突袭（深入打击）；恐吓（冲锋时，敌方单位士气测试-1）。<br><strong>黑暗契约</strong>（阵营技能）：混沌星际战士部队的通用规则，每次射击或近战时可以选择获得“持续命中”或“致命命中”增益，但需过一个领导力测试，失败则受D3致命伤。</p>
+<hr>
+<h6 id="rules-enemy-units-g02-u05">混沌神选星际战士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u05" data-zip-1111="rules-enemy-units-g02-u05"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌神选星际战士完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u05.webp" alt="混沌神选星际战士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人 125 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>3</td><td>6</td><td>2</td></tr>
+</table></div>
+<p>-<strong>黑暗契约 (Dark Pact)</strong>：每次射击或近战前选择一项增益，需过LD测试，失败则受D3致命伤。</p>
+<ul>
+<li><strong>[持续命中 1]</strong>：暴击出额外命中。</li>
+</ul>
+<ul>
+<li><strong>[致命命中]</strong>：暴击直接造伤。</li>
+</ul>
+<ul>
+<li><strong>无序掠夺 (Unfettered Raiders)</strong>：可在<strong>后撤</strong>或<strong>推进</strong>的回合中，正常进行<strong>射击</strong>和<strong>冲锋</strong>（普通单位后撤通常无法射击/冲锋）。</li>
+</ul>
+<p>远程武器</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>射程</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>等离子手枪（标准）</td><td>12&quot;</td><td>1</td><td>3+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子手枪（过载）</td><td>12&quot;</td><td>1</td><td>3+</td><td>8</td><td>-3</td><td>2</td></tr>
+<tr><td>爆弹手枪</td><td>12&quot;</td><td>1</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>爆弹枪</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<hr>
+<p>近战武器</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>射程</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力拳套</td><td>近战</td><td>4</td><td>3+</td><td>8</td><td>-2</td><td>2</td></tr>
+<tr><td>受诅武器</td><td>近战</td><td>4</td><td>3+</td><td>5</td><td>-2</td><td>1</td></tr>
+<tr><td>成对受诅武器</td><td>近战</td><td>5</td><td>3+</td><td>5</td><td>-2</td><td>1</td></tr>
+</table></div>
+<hr>
+<p>部队构成</p>
+<ul>
+<li>1名混沌神选冠军</li>
+</ul>
+<ul>
+<li>4名混沌神选</li>
+</ul>
+<p>每个模型自带：**爆弹枪 + 爆弹手枪 + 受诅武器</p>
+<p>所有成员都携带破片手雷和穿甲手雷</p>
+<p>单位技能</p>
+<ul>
+<li><strong>黑暗契约</strong>（阵营技能）：混沌星际战士部队的通用规则，每次射击或近战时可以选择获得“持续命中”或“致命命中”增益，但需过一个领导力测试，失败则受D3致命伤。</li>
+</ul>
+<ul>
+<li><strong>神选掠夺者</strong>：该单位在<strong>推进或后撤的回合中，仍可以射击和宣布冲锋</strong><a href="https://www.40k.app/factions/chaos-space-marines/unit/chosen" target="_blank" rel="noopener noreferrer">链接</a>。（这是神选与普通CSM最大的区别——普通CSM推进后只能射“突击”武器，神选没有任何限制。）</li>
+</ul>
+<p>-</p>
+<h6 id="rules-enemy-units-g02-u06">附魔战士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u06" data-zip-1111="rules-enemy-units-g02-u06"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看附魔战士完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u06.webp" alt="附魔战士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人 140分（4附魔战士+1附魔冠军）</p>
+<div class="table-scroll"><table>
+<tr><th>名称</th><th>移动(M)</th><th>坚韧(T)</th><th>保护(Sv)</th><th>生命值(W)</th><th>领导力(Ld)</th><th>控制(OC)</th></tr>
+<tr><td><strong>附魔战士</strong></td><td>9&quot;</td><td>5</td><td>3+</td><td>3</td><td>7+</td><td>1</td></tr>
+<tr><td><strong>附魔冠军</strong></td><td>9&quot;</td><td>5</td><td>3+</td><td>3</td><td>7+</td><td>1</td></tr>
+</table></div>
+<p><strong>武器装备</strong></p>
+<p>核心装备 (所有人)：惊骇异变 (近战：A5, S5, AP-1, D2)。</p>
+<p><strong>特殊保护：</strong> 此单位拥有 <strong>5+ 特殊保护 (Invulnerable Save)</strong>。</p>
+<p><strong>单位能力</strong></p>
+<ul>
+<li><strong>黑暗契约</strong>（阵营技能）：混沌星际战士部队的通用规则，每次射击或近战时可以选择获得“持续命中”或“致命命中”增益，但需过一个领导力测试，失败则受D3致命伤。</li>
+</ul>
+<ul>
+<li><strong>憎恶化身 (Epitome of Abhorrence)</strong>：如果该单位本轮<strong>推进</strong>过，其攻击获得 <strong>[致命命中]</strong> 能力。</li>
+</ul>
+<p><strong>装备选项</strong></p>
+<ul>
+<li><strong>混沌旗帜</strong>：每5人队中1人可携带，使黑暗契约LD测试可重掷。</li>
+</ul>
+<ul>
+<li><strong>附魔冠军</strong>：近战攻击次数+1 (A6)。</li>
+</ul>
+<h6 id="rules-enemy-units-g02-u07">混沌终结者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u07" data-zip-1111="rules-enemy-units-g02-u07"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u07.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌终结者完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u07.webp" alt="混沌终结者单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人  _200 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>5</td><td>2+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>组合爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>动力拳</td><td>近战</td><td>近战</td><td>3</td><td>4+</td><td>8</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：深入打击、无情。</p>
+<h6 id="rules-enemy-units-g02-u08">战争铁匠卡拉恩</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u08" data-zip-1111="rules-enemy-units-g02-u08"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u08.webp" target="_blank" rel="noopener noreferrer" aria-label="查看战争铁匠卡拉恩完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u08.webp" alt="战争铁匠卡拉恩单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>2+</td><td>5</td><td>9</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力锤</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>8</td><td>-2</td><td>2</td></tr>
+<tr><td>火焰喷射器</td><td>远程</td><td>12&quot;</td><td>D6</td><td>n/a</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>机械触须（额外攻击）</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：战匠（每回合可修复一友方载具D3损伤）；远程控制（只要轨道炮艇存活，卡拉恩不能被击杀）；伏击大师（第一回合隐藏，第二回合从桌边进场）。</p>
+<hr>
+<h6 id="rules-enemy-units-g02-u09">无情者克拉能（混沌领主）</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u09" data-zip-2222="rules-enemy-units-g02-u09"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g02-u09.webp" target="_blank" rel="noopener noreferrer" aria-label="查看无情者克拉能（混沌领主）完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g02-u09.webp" alt="无情者克拉能（混沌领主）单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 160 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>5</td><td>2+</td><td>6</td><td>9</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>恶魔武器</td><td>近战</td><td>近战</td><td>6</td><td>2+</td><td>8</td><td>-2</td><td>2</td></tr>
+<tr><td>等离子手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>2+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子手枪（过载）</td><td>远程</td><td>12&quot;</td><td>1</td><td>2+</td><td>8</td><td>-3</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：混沌拥护者、独立角色、无情者（每击杀一个模型，可额外攻击一次，无次数限制）。</p>
+<hr>
+<h6 id="rules-enemy-units-g02-u10">黑心奴役者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g02-u10" data-zip-1111="rules-enemy-units-g02-u10"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u10.webp" target="_blank" rel="noopener noreferrer" aria-label="查看黑心奴役者完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g02-u10.webp" alt="黑心奴役者单位配图" loading="lazy" decoding="async"></a></figure>
+<p>3人 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>8</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力武器</td><td>近战</td><td>近战</td><td>3</td><td>3+</td><td>5</td><td>-2</td><td>1</td></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：神选终结者、深入打击。</p>
+<hr>
+<h5 id="rules-enemy-units-g03">混沌机械</h5>
+<h6 id="rules-enemy-units-g03-u01">地狱兽</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u01" data-zip-1111="rules-enemy-units-g03-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看地狱兽完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01.webp" alt="地狱兽单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01-mobile.webp 840w, assets/rules/zip-1111-20261116/rules-enemy-units-g03-u01.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>1台 130 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>7</td><td>3+</td><td>8</td><td>7</td><td>3</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>重型爆弹枪</td><td>远程</td><td>36&quot;</td><td>3</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>动力爪</td><td>近战</td><td>近战</td><td>4</td><td>4+</td><td>10</td><td>-2</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：疯狂（每回合开始掷D6，若为1则攻击最近的友军单位）；无惧。</p>
+<h6 id="rules-enemy-units-g03-u02">腐化无畏</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u02" data-zip-2222="rules-enemy-units-g03-u02"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看腐化无畏完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02.webp" alt="腐化无畏单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-enemy-units-g03-u02.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>1台 130 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>8</td><td>3+</td><td>8</td><td>7</td><td>3</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>腐败多管热熔</td><td>远程</td><td>12&quot;</td><td>2</td><td>4+</td><td>8</td><td>-4</td><td>D6</td></tr>
+<tr><td>恶魔爪</td><td>近战</td><td>近战</td><td>4</td><td>4+</td><td>12</td><td>-3</td><td>3</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔引擎、疯狂冲锋（冲锋时攻击+1）。</p>
+<hr>
+<h6 id="rules-enemy-units-g03-u03">混沌犀牛运兵车</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u03" data-zip-1111="rules-enemy-units-g03-u03"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌犀牛运兵车完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u03.webp" alt="混沌犀牛运兵车单位配图" loading="lazy" decoding="async"></a></figure>
+<p>75 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>12&quot;</td><td>9</td><td>3+</td><td>10</td><td>6</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>组合爆弹枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>4+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：运输（可搭载10名混沌星际战士或12名邪教徒）；自修复（若被残废，每回合掷D6，5+修复）。</p>
+<h6 id="rules-enemy-units-g03-u04">混沌掠食者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u04" data-zip-1111="rules-enemy-units-g03-u04"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌掠食者完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04.webp" alt="混沌掠食者单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04-mobile.webp 960w, assets/rules/zip-1111-20261116/rules-enemy-units-g03-u04.webp 1254w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>130 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>10&quot;</td><td>10</td><td>3+</td><td>11</td><td>7</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>自动炮（主炮）</td><td>远程</td><td>48&quot;</td><td>2</td><td>4+</td><td>7</td><td>-1</td><td>2</td></tr>
+<tr><td>重型爆弹枪（×2，侧挂）</td><td>远程</td><td>36&quot;</td><td>3（每挺）</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：爆裂射击（对载具造伤+1）；烟雾弹（每场一次，获得掩体）。</p>
+<h6 id="rules-enemy-units-g03-u05">毁灭者</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u05" data-zip-1111="rules-enemy-units-g03-u05"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看毁灭者完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05.webp" alt="毁灭者单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05-mobile.webp 800w, assets/rules/zip-1111-20261116/rules-enemy-units-g03-u05.webp 1312w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>1台 _120 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>5</td><td>2+</td><td>4</td><td>7</td><td>1</td></tr>
+</table></div>
+<p><strong>武器</strong>（每个射击阶段选择一种）：</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>突袭炮</td><td>远程</td><td>24&quot;</td><td>6</td><td>4+</td><td>6</td><td>0</td><td>1</td></tr>
+<tr><td>多管热熔</td><td>远程</td><td>12&quot;</td><td>2</td><td>4+</td><td>8</td><td>-4</td><td>D6</td></tr>
+<tr><td>等离子炮（标准）</td><td>远程</td><td>36&quot;</td><td>D3</td><td>4+</td><td>7</td><td>-2</td><td>1</td></tr>
+<tr><td>等离子炮（过载）</td><td>远程</td><td>36&quot;</td><td>D3</td><td>4+</td><td>8</td><td>-3</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：深入打击、无惧、武器变形（每回合换武器）、吸收金属（被摧毁时，若邻接任意载具，该载具回复1损伤）。</p>
+<h6 id="rules-enemy-units-g03-u06">自动炮塔</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u06" data-zip-2222="rules-enemy-units-g03-u06"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看自动炮塔完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u06.webp" alt="自动炮塔单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1座 40 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>0&quot;</td><td>6</td><td>4+</td><td>3</td><td>-</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>自动炮</td><td>远程</td><td>36&quot;</td><td>2</td><td>4+</td><td>7</td><td>-1</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：固定、不可移动、不可被加入任何单位。</p>
+<hr>
+<h6 id="rules-enemy-units-g03-u07">轨道炮艇</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u07" data-zip-2222="rules-enemy-units-g03-u07"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07.webp" target="_blank" rel="noopener noreferrer" aria-label="查看轨道炮艇完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07.webp" alt="轨道炮艇单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-enemy-units-g03-u07.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>1台 150 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>20&quot;（飞行）</td><td>7</td><td>3+</td><td>10</td><td>8</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>双联激光炮</td><td>远程</td><td>48&quot;</td><td>2</td><td>3+</td><td>9</td><td>-3</td><td>D6+1</td></tr>
+<tr><td>导弹舱（破片）</td><td>远程</td><td>36&quot;</td><td>D6</td><td>3+</td><td>6</td><td>-1</td><td>1</td></tr>
+<tr><td>导弹舱（穿甲）</td><td>远程</td><td>36&quot;</td><td>1</td><td>3+</td><td>8</td><td>-2</td><td>D3</td></tr>
+</table></div>
+<p><strong>规则</strong>：空中单位（射击命中-1）；撤退引擎（若受到3点以上损伤，下一回合掷D6，4+则脱离战场）。</p>
+<hr>
+<h6 id="rules-enemy-units-g03-u08">混沌铸造骑士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g03-u08" data-zip-1111="rules-enemy-units-g03-u08"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u08.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌铸造骑士完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g03-u08.webp" alt="混沌铸造骑士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1台 180 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot;</td><td>7</td><td>3+</td><td>12</td><td>8</td><td>3</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>恶魔加农炮</td><td>远程</td><td>36&quot;</td><td>3</td><td>3+</td><td>8</td><td>-2</td><td>3</td></tr>
+<tr><td>重型战斗爪</td><td>近战</td><td>近战</td><td>4</td><td>3+</td><td>10</td><td>-3</td><td>3</td></tr>
+</table></div>
+<p><strong>规则</strong>：恶魔引擎、恶魔熔炉（每场一次，可重掷所有造伤骰）、它不会死。</p>
+<hr>
+<h5 id="rules-enemy-units-g04">混沌叛军</h5>
+<h6 id="rules-enemy-units-g04-u01">混沌邪教徒</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u01" data-zip-1111="rules-enemy-units-g04-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌邪教徒完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u01.webp" alt="混沌邪教徒单位配图" loading="lazy" decoding="async"></a></figure>
+<p>10人  _50 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>5</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>自动手枪</td><td>远程</td><td>12&quot;</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+<tr><td>粗制刀刃</td><td>近战</td><td>近战</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：人群掩护（10+模型时获得轻掩体）；狂热牺牲（被摧毁时，相邻一个混沌星际战士单位可立即进行一次免费近战攻击）。</p>
+<h6 id="rules-enemy-units-g04-u02">伐木枪手</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u02" data-zip-2222="rules-enemy-units-g04-u02"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u02.webp?v=fe1693ff" target="_blank" rel="noopener noreferrer" aria-label="查看伐木枪手完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u02.webp?v=fe1693ff" alt="伐木枪手单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人， 15分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>6</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>伐木枪</td><td>远程</td><td>24&quot;</td><td>2</td><td>4+</td><td>5</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：<strong>压制射击</strong>：命中后目标单位下回合冲锋距离-2&quot;</p>
+<h6 id="rules-enemy-units-g04-u03">喷火器手</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u03" data-zip-1111="rules-enemy-units-g04-u03"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看喷火器手完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u03.webp" alt="喷火器手单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人， 15分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>6</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>喷火器</td><td>远程</td><td>12&quot;</td><td>D6</td><td>自动命中</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：<strong>无视掩体</strong>：喷火器攻击忽略目标的掩体加成</p>
+<ul>
+<li><strong>灼烧</strong>：对 infantry 单位造伤+1</li>
+</ul>
+<h6 id="rules-enemy-units-g04-u04">混沌旗手</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u04" data-zip-2222="rules-enemy-units-g04-u04"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌旗手完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u04.webp" alt="混沌旗手单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人， 20分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>1</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>近战武器</td><td>近战</td><td>近战</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong> 混沌旗帜（9&quot;内邪教徒士气重掷，所在单位无畏）。<br><strong>鼓舞</strong>：旗手所在单位获得无畏（自动通过士气）</p>
+<h6 id="rules-enemy-units-g04-u05">堕落布道士</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u05" data-zip-2222="rules-enemy-units-g04-u05"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u05.webp" target="_blank" rel="noopener noreferrer" aria-label="查看堕落布道士完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u05.webp" alt="堕落布道士单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 60 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>6+</td><td>3</td><td>7</td><td>1</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>诅咒权杖</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>亚空间诅咒（灵能）</td><td>远程</td><td>12&quot;</td><td>D3</td><td>自动命中</td><td>3</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：灵能精通1级；狂热宣讲（6&quot;内邪教徒命中+1）；血肉祭坛（被击杀时，6&quot;内友方邪教徒+1攻击一回合）。</p>
+<p>特殊规则</p>
+<p><strong>1. 稳定器引力波</strong>：每回合一次，友军单位相邻且未移动可激活，全场混沌单位受1点致命伤（6+豁免），激活者本回合不能射击/冲锋。</p>
+<p><strong>2. 邪教狂热</strong>：堕落布道士被击杀时，6&quot;内邪教徒+1攻击。</p>
+<p><strong>3. 克里格死亡冲锋</strong>：克里格单位被近战击杀时，对击杀者造成1点致命伤。</p>
+<h6 id="rules-enemy-units-g04-u06">叛军步兵班</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u06" data-zip-1111="rules-enemy-units-g04-u06"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u06.webp" target="_blank" rel="noopener noreferrer" aria-label="查看叛军步兵班完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g04-u06.webp" alt="叛军步兵班单位配图" loading="lazy" decoding="async"></a></figure>
+<p>10人 _50 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>5+</td><td>1</td><td>6</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>激光枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+<tr><td>刺刀</td><td>近战</td><td>近战</td><td>1</td><td>4+</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：集体掩护（若处于掩体内，豁免+1）；士气脆弱（若伤亡超过3人，下次士气测试-2）。</p>
+<hr>
+<h6 id="rules-enemy-units-g04-u07">叛军重型武器组</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u07" data-zip-2222="rules-enemy-units-g04-u07"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u07.webp" target="_blank" rel="noopener noreferrer" aria-label="查看叛军重型武器组完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u07.webp" alt="叛军重型武器组单位配图" loading="lazy" decoding="async"></a></figure>
+<p>3人 _50 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>3</td><td>5+</td><td>1</td><td>6</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>重型爆弹枪</td><td>远程</td><td>36&quot;</td><td>3</td><td>5+</td><td>5</td><td>-1</td><td>1</td></tr>
+<tr><td>自动炮</td><td>远程</td><td>48&quot;</td><td>2</td><td>5+</td><td>7</td><td>-1</td><td>2</td></tr>
+</table></div>
+<hr>
+<h6 id="rules-enemy-units-g04-u08">混沌奥格林</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u08" data-zip-2222="rules-enemy-units-g04-u08"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u08.webp" target="_blank" rel="noopener noreferrer" aria-label="查看混沌奥格林完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u08.webp" alt="混沌奥格林单位配图" loading="lazy" decoding="async"></a></figure>
+<p>3人， 90分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>5</td><td>5+</td><td>3</td><td>6</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>暴徒大棒</td><td>近战</td><td>近战</td><td>4</td><td>4+</td><td>6</td><td>-1</td><td>2</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>蛮力冲锋</strong>：冲锋后攻击次数 +1。</li>
+</ul>
+<ul>
+<li><strong>无惧</strong>：免疫士气。</li>
+</ul>
+<ul>
+<li><strong>厚重之躯</strong>：受到的常规伤害减 1（最少 1）。<strong>对致命伤无效</strong>。</li>
+</ul>
+<h6 id="rules-enemy-units-g04-u09">生化奴役部队</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u09" data-zip-2222="rules-enemy-units-g04-u09"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09.webp" target="_blank" rel="noopener noreferrer" aria-label="查看生化奴役部队完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09.webp" alt="生化奴役部队单位配图" loading="lazy" decoding="async" srcset="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09-mobile.webp 960w, assets/rules/zip-2222-20261116/rules-enemy-units-g04-u09.webp 1050w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a></figure>
+<p>10人 60 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>4</td><td>5+</td><td>1</td><td>5</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>手术刀</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：无惧、生化再生（被摧毁时掷D6，6+则回复一个模型）。</p>
+<h6 id="rules-enemy-units-g04-u10">唤虫师</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u10" data-zip-2222="rules-enemy-units-g04-u10"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u10.webp" target="_blank" rel="noopener noreferrer" aria-label="查看唤虫师完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u10.webp" alt="唤虫师单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人， 60分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>3</td><td>6+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>扭曲法杖</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>4</td><td>-1</td><td>1</td></tr>
+<tr><td>虫群召唤（灵能）</td><td>远程</td><td>18&quot;</td><td>D3</td><td>自动命中</td><td>3</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>灵能精通1级</strong>（可施放虫群召唤）。</li>
+</ul>
+<ul>
+<li><strong>虫群感应</strong>：每回合一次，可令一只沙丘蠕虫额外移动 6&quot;。</li>
+</ul>
+<ul>
+<li><strong>献祭召唤</strong>：被击杀时，在击杀者 6&quot; 内召唤 D3 个虫群模型（攻击力同虫群召唤，视为独立单位）。</li>
+</ul>
+<hr>
+<h6 id="rules-enemy-units-g04-u11">沙丘蠕虫</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g04-u11" data-zip-2222="rules-enemy-units-g04-u11"><a href="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u11.webp" target="_blank" rel="noopener noreferrer" aria-label="查看沙丘蠕虫完整配图"><img src="assets/rules/zip-2222-20261116/rules-enemy-units-g04-u11.webp" alt="沙丘蠕虫单位配图" loading="lazy" decoding="async"></a></figure>
+<p>2只，每台 80分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>8&quot; (掘地)</td><td>6</td><td>4+</td><td>6</td><td>5</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>巨颚啃噬</td><td>近战</td><td>近战</td><td>4</td><td>4+</td><td>7</td><td>-2</td><td>D3</td></tr>
+<tr><td>酸液喷吐</td><td>远程</td><td>12&quot;</td><td>D6</td><td>自动命中</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong></p>
+<ul>
+<li><strong>掘地移动</strong>：可花费 2&quot; 移动力潜入地下，然后从任意位置出现（距离任何敌方模型至少 9&quot;）。出现时对 3&quot; 内所有单位造成 D3 致命伤。</li>
+</ul>
+<ul>
+<li><strong>巨兽</strong>：对步兵冲锋时，敌方必须进行 LD 测试（-1），失败则不能坚守。</li>
+</ul>
+<ul>
+<li><strong>厚重表皮</strong>：受到的常规伤害 AP 值减少 1（如 AP-2 变为 AP-1）。<strong>对致命伤无效</strong>。</li>
+</ul>
+<h5 id="rules-enemy-units-g05">兽人</h5>
+<h6 id="rules-enemy-units-g05-u01">兽人军阀“碎铁”</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g05-u01" data-zip-1111="rules-enemy-units-g05-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看兽人军阀“碎铁”完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u01.webp" alt="兽人军阀“碎铁”单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人 85 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>6</td><td>4+</td><td>7</td><td>8</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>动力爪</td><td>近战</td><td>近战</td><td>6</td><td>3+</td><td>10</td><td>-2</td><td>2</td></tr>
+<tr><td>巨型射枪</td><td>远程</td><td>18&quot;</td><td>3</td><td>5+</td><td>6</td><td>-1</td><td>2</td></tr>
+</table></div>
+<p><strong>规则</strong>：<strong>Waaagh！领袖</strong>：所在单位冲锋时命中+1，且该单位获得 <strong>无畏</strong>。</p>
+<p><strong>碎铁重击</strong>：每近战击杀一个模型，可立即额外攻击一次（每回合最多3次）。</p>
+<p><strong>遗物携带者</strong>：持有“卡利班遗物”，被击杀时遗物掉落，任何单位可拾取。</p>
+<p><strong>厚皮</strong>：受到的常规伤害减1（最少1），对致命伤无效。</p>
+<hr>
+<h6 id="rules-enemy-units-g05-u02">兽人小子</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g05-u02" data-zip-1111="rules-enemy-units-g05-u02"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看兽人小子完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u02.webp" alt="兽人小子单位配图" loading="lazy" decoding="async"></a></figure>
+<p>20人 160 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>5&quot;</td><td>5</td><td>5+</td><td>1</td><td>6</td><td>2</td></tr>
+</table></div>
+<p><strong>武器</strong>（全队统一选用砍刀或射枪）：</p>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>砍刀</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>4</td><td>-1</td><td>1</td></tr>
+<tr><td>射枪</td><td>远程</td><td>18&quot;</td><td>2</td><td>5+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>坦克锤（十人一把）</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+<p><strong>规则</strong>：绿潮（10模型以上时近战攻击+1）；无畏；人多势众（每有10个模型以上时，LD+1）。</p>
+<hr>
+<h6 id="rules-enemy-units-g05-u03">杀戮越野车</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g05-u03" data-zip-1111="rules-enemy-units-g05-u03"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u03.webp" target="_blank" rel="noopener noreferrer" aria-label="查看杀戮越野车完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u03.webp" alt="杀戮越野车单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1台 ，每台70 分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>14&quot;</td><td>6</td><td>4+</td><td>6</td><td>6</td><td>0</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>双管射枪</td><td>远程</td><td>18&quot;</td><td>4</td><td>5+</td><td>5</td><td>0</td><td>1</td></tr>
+<tr><td>火箭（单发）</td><td>远程</td><td>24&quot;</td><td>1</td><td>5+</td><td>8</td><td>-2</td><td>D3</td></tr>
+</table></div>
+<p><strong>规则</strong>：高速移动（可移动后射击，射击后移动）；爆炸物（被摧毁时，3&quot;内所有单位受D3致命伤）。</p>
+<hr>
+<h6 id="rules-enemy-units-g05-u04">兽人技师</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g05-u04" data-zip-1111="rules-enemy-units-g05-u04"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u04.webp" target="_blank" rel="noopener noreferrer" aria-label="查看兽人技师完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g05-u04.webp" alt="兽人技师单位配图" loading="lazy" decoding="async"></a></figure>
+<p>1人， 50分</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>5+</td><td>3</td><td>7</td><td>1</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>修理工具（近战）</td><td>近战</td><td>近战</td><td>2</td><td>4+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>碎屑枪</td><td>远程</td><td>12&quot;</td><td>2</td><td>4+</td><td>4</td><td>-1</td><td>1</td></tr>
+</table></div>
+<p><strong>规则：</strong> 机械修护（每回合修复一台兽人载具 D3 伤）；强化载具（9&quot;内兽人载具命中+1）。</p>
+<h5 id="rules-enemy-units-g06">暗黑天使</h5><p class="rules-codex-note">分类提示：暗黑天使战术小队在本规则中仅作为特定战役的对立方使用，不意味着暗黑天使战团整体被定义为永久敌人。单位属性和分值保持不变。</p>
+<h6 id="rules-enemy-units-g06-u01">暗黑天使战术小队</h6>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-enemy-units-g06-u01" data-zip-1111="rules-enemy-units-g06-u01"><a href="assets/rules/zip-1111-20261116/rules-enemy-units-g06-u01.webp" target="_blank" rel="noopener noreferrer" aria-label="查看暗黑天使战术小队完整配图"><img src="assets/rules/zip-1111-20261116/rules-enemy-units-g06-u01.webp" alt="暗黑天使战术小队单位配图" loading="lazy" decoding="async"></a></figure>
+<p>5人，中立敌对 _100 分_</p>
+<div class="table-scroll"><table>
+<tr><th>M</th><th>T</th><th>SV</th><th>W</th><th>LD</th><th>OC</th></tr>
+<tr><td>6&quot;</td><td>4</td><td>3+</td><td>2</td><td>7</td><td>2</td></tr>
+</table></div>
+<div class="table-scroll"><table>
+<tr><th>武器</th><th>类型</th><th>范围</th><th>A</th><th>WS/BS</th><th>S</th><th>AP</th><th>D</th></tr>
+<tr><td>爆弹枪</td><td>远程</td><td>24&quot;</td><td>1</td><td>3+</td><td>4</td><td>-1</td><td>1</td></tr>
+<tr><td>导弹发射器（破片）</td><td>远程</td><td>48&quot;</td><td>D6</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+<tr><td>导弹发射器（穿甲）</td><td>远程</td><td>48&quot;</td><td>1</td><td>3+</td><td>8</td><td>-2</td><td>D6</td></tr>
+<tr><td>近战武器</td><td>近战</td><td>近战</td><td>2</td><td>3+</td><td>4</td><td>0</td><td>1</td></tr>
+</table></div>
+<p><strong>规则</strong>：暗黑天使纪律（自动通过士气测试）；追猎模式（优先攻击堕天使或隐修会单位）。</p>
+<h4 id="rules-scenarios">战役任务</h4><nav class="rules-mission-links" aria-label="战役模组速查"><a href="#rules-scenarios-g01"><small>01 · 阵地防御</small>盲星回廊</a><a href="#rules-scenarios-g02"><small>02 · 突围战</small>钢铁之心</a><a href="#rules-scenarios-g03"><small>03 · 突袭战</small>死亡防线</a><a href="#rules-scenarios-g04"><small>04 · 联合斩首战</small>铁王座</a><a href="#rules-scenarios-g05"><small>05 · 大规模阻击战</small>深渊之井</a></nav>
+<h5 id="rules-scenarios-g01">模组 1：盲星回廊 —— 阵地防御战</h5>
+<figure class="rules-scenario-plate" data-scenario="01-blind-star-corridor"><a href="assets/rules/scenario-panoramas-20261116/01-blind-star-corridor.webp" target="_blank" rel="noopener noreferrer" aria-label="查看盲星回廊 · 阵地防御战模型场景完整3:1横幅"><img src="assets/rules/scenario-panoramas-20261116/01-blind-star-corridor.webp" width="2172" height="724" alt="盲星回廊战役一：紫色伪星穹顶与三处引力节点的哥特式微缩战场全景，无人物模型" loading="lazy" decoding="async" srcset="assets/rules/scenario-panoramas-20261116/01-blind-star-corridor-mobile.webp 960w, assets/rules/scenario-panoramas-20261116/01-blind-star-corridor.webp 1450w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>盲星回廊 · 阵地防御战</strong> · 桌面战役地形全景 · 3:1</figcaption></figure>
+<p>战役背景</p>
+<p>M38，奸奇术士卡利基努斯第二次入侵希芙拉，同时激活九十九颗伪星，试图将灵能构造体「九重凝视者」附着于深渊井口。深渊观星者塞勒诺斯在穹顶环区组织层层阻击。</p>
+<p>地图设置</p>
+<ul>
+<li><strong>尺寸</strong>：48&quot;×48&quot;</li>
+</ul>
+<ul>
+<li><strong>地形</strong>：中央开阔穹顶（直径24&quot;），三颗「盲星残骸」（直径3&quot;圆形）呈三角形分布。守军部署区有五条回廊入口（宽3&quot;）。</li>
+</ul>
+<ul>
+<li><strong>盲星效果</strong>：每回合开始，盲星3&quot;内所有单位受1点致命伤（5+豁免）。</li>
+</ul>
+<p>双方兵力（共约850分）</p>
+<div class="table-scroll"><table>
+<tr><th>守军（隐修会）</th><th>模型</th><th>分</th><th>进攻方（变途者/奸奇）</th><th>模型</th><th>分</th></tr>
+<tr><td>深渊观星者</td><td>1</td><td>95</td><td>卡利基努斯</td><td>1</td><td>150</td></tr>
+<tr><td>灰烬失乡骑士</td><td>3</td><td>160</td><td>奸奇术士</td><td>1</td><td>120</td></tr>
+<tr><td>巡礼骑士</td><td>5</td><td>180</td><td>粉妖</td><td>10</td><td>70</td></tr>
+<tr><td>—</td><td>—</td><td>—</td><td>蓝妖</td><td>10</td><td>70</td></tr>
+<tr><td><strong>合计</strong></td><td><strong>9</strong></td><td><strong>435</strong></td><td><strong>合计</strong></td><td><strong>22</strong></td><td><strong>410</strong></td></tr>
+</table></div>
+<p>特殊规则</p>
+<p><strong>1. 伪星节点（3处）</strong></p>
+<ul>
+<li>进攻方每回合选择一颗伪星激活，其6&quot;内单位命中+1。</li>
+</ul>
+<p><strong>2. 引力脉冲（守军）</strong></p>
+<p><strong>引力脉冲（守军）</strong>：深渊观星者每回合一次（代替射击），选择其18&quot;内一颗伪星引爆：6&quot;内所有单位受致命伤D3（5+豁免），伪星摧毁。被摧毁伪星从中心延伸3&quot;区域变为困难地形。</p>
+<p><strong>3. 九重凝视者倒计时</strong></p>
+<p>初始计数=3。每有一颗伪星存活至回合结束，计数-1。计数归零时（最早第4回合），进攻方<strong>立即获胜</strong>，不再进行后续回合。</p>
+<p>胜利条件</p>
+<div class="table-scroll"><table>
+<tr><th>守军</th><th>进攻方</th></tr>
+<tr><td>第6回合结束前引爆所有3颗伪星</td><td>凝视者附着成功（计数归零）</td></tr>
+</table></div>
+<p>部署</p>
+<ul>
+<li><strong>守军</strong>：回廊入口6&quot;内</li>
+</ul>
+<ul>
+<li><strong>进攻方</strong>：地图一角12&quot;×6&quot;</li>
+</ul>
+<p>战术提示</p>
+<p>守军需权衡：早引爆伪星可阻止倒计时，但会失去用引力脉冲杀伤敌军的机会。进攻方应集中保护一颗伪星，用粉妖的闪烁火焰压制守军。</p>
+<h5 id="rules-scenarios-g02">模组 2：钢铁之心 —— 突围战</h5>
+<figure class="rules-scenario-plate" data-scenario="02-iron-heart"><a href="assets/rules/scenario-panoramas-20261116/02-iron-heart.webp" target="_blank" rel="noopener noreferrer" aria-label="查看钢铁之心 · 突围战模型场景完整3:1横幅"><img src="assets/rules/scenario-panoramas-20261116/02-iron-heart.webp" width="2172" height="724" alt="钢铁之心战役二：铁喉锻造巢穴的中央放大器基座、四座通道与撤离平台的模型场景全景，无人物模型" loading="lazy" decoding="async" srcset="assets/rules/scenario-panoramas-20261116/02-iron-heart-mobile.webp 960w, assets/rules/scenario-panoramas-20261116/02-iron-heart.webp 1500w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>钢铁之心 · 突围战</strong> · 桌面战役地形全景 · 3:1</figcaption></figure>
+<p>战役背景</p>
+<p>M41，战争铁匠卡拉恩在铁喉锻造巢穴设伏。隐修院长伊瑟林率队突入后发现被陷阱包围，必须全歼敌军后从轨道炮艇撤离。</p>
+<p>地图设置</p>
+<ul>
+<li><strong>尺寸</strong>：48&quot;×48&quot;</li>
+</ul>
+<ul>
+<li><strong>地形</strong>：中央「放大器基座」（直径6&quot;，不可通过，重掩体）。四通道连接主厅。一角设「撤离点」（直径6&quot;）。</li>
+</ul>
+<ul>
+<li><strong>特殊</strong>：第2回合起，所有通道出口被力场封闭。</li>
+</ul>
+<p>双方兵力（共约1075分）</p>
+<div class="table-scroll"><table>
+<tr><th>守军（隐修会）</th><th>模型</th><th>分</th><th>进攻方（钢铁战士）</th><th>模型</th><th>分</th></tr>
+<tr><td>隐修院长</td><td>1</td><td>115</td><td>战争铁匠卡拉恩*</td><td>1</td><td>150</td></tr>
+<tr><td>灰烬失乡骑士</td><td>3</td><td>160</td><td>混沌终结者</td><td>3</td><td>120</td></tr>
+<tr><td>余烬审判者</td><td>5</td><td>120</td><td>混沌终结者</td><td>3</td><td>120</td></tr>
+<tr><td>黑剑</td><td>5</td><td>160</td><td>自动炮塔</td><td>2</td><td>80</td></tr>
+<tr><td>—</td><td>—</td><td>—</td><td>混沌邪教徒</td><td>10</td><td>50</td></tr>
+<tr><td><strong>合计</strong></td><td><strong>14</strong></td><td><strong>555</strong></td><td><strong>合计</strong></td><td><strong>19</strong></td><td><strong>520</strong></td></tr>
+</table></div>
+<p>_卡拉恩不在主厅，由轨道炮艇遥控_</p>
+<p>特殊规则</p>
+<p><strong>1. 卡拉恩的远程指挥</strong></p>
+<ul>
+<li>轨道炮艇视为独立单位（T7, W8, SV 3+，飞行，不可被近战攻击），部署在战场外，但可被远程武器射击（命中-1）。</li>
+</ul>
+<ul>
+<li>每回合一次：卡拉恩可指挥任一混沌单位，本回合命中+1或移动+3&quot;。炮艇每受到1点伤害，卡拉恩本回合只能指挥一个单位（而非一个单位获得两种增益）。</li>
+</ul>
+<ul>
+<li>炮艇累计受到6点伤害后立即撤离。之后卡拉恩从进攻方部署区边缘进场，此后可被正常击杀。</li>
+</ul>
+<p><strong>2. 基座过载</strong></p>
+<ul>
+<li>基座视为可攻击目标（T6, W3, SV 3+，不可移动，无特保）。</li>
+</ul>
+<ul>
+<li>余烬审判者的重型引力炮对基座进行远程攻击，<strong>命中后</strong>（无需伤害检定）即造成1点“过载计数”。</li>
+</ul>
+<ul>
+<li>累计3点过载后基座爆炸：6&quot;内所有单位受D3+3致命伤（可通过特保豁免，5+成功）。爆炸后基座消失，产生危险地形（该区域视为困难地形，且任何单位进入受到1点致命伤）。</li>
+</ul>
+<p><strong>3. 突围条件</strong></p>
+<ul>
+<li>6回合内全歼主厅敌军后，任一单位在撤离点停留一整回合且无敌军相邻即成功。</li>
+</ul>
+<p>胜利条件</p>
+<div class="table-scroll"><table>
+<tr><th>守军</th><th>进攻方</th></tr>
+<tr><td>全歼主厅敌军 + 一单位撤离</td><td>全歼守军 或 阻止撤离至第6回合结束</td></tr>
+</table></div>
+<p>部署</p>
+<ul>
+<li><strong>守军</strong>：主厅中央6&quot;内</li>
+</ul>
+<ul>
+<li><strong>进攻方</strong>：混沌终结者在四角（距中心18&quot;），自动炮塔在通道入口（距中心24&quot;），邪教徒分散边缘。</li>
+</ul>
+<p>战术提示</p>
+<p>守军需抉择：优先击杀卡拉恩（需先驱离炮艇）还是优先突围。基座过载是双刃剑。炮艇的存在会持续强化敌军，尽快驱离。</p>
+<h5 id="rules-scenarios-g03">模组3：死亡防线 —— 突袭战</h5>
+<figure class="rules-scenario-plate" data-scenario="03-death-line"><a href="assets/rules/scenario-panoramas-20261116/03-death-line.webp" target="_blank" rel="noopener noreferrer" aria-label="查看死亡防线 · 突袭战模型场景完整3:1横幅"><img src="assets/rules/scenario-panoramas-20261116/03-death-line.webp" width="2172" height="724" alt="死亡防线战役三：采用锈红机械教锻造圣殿式工业组件的大型地质稳定器与左右壕沟模型沙盘，无人物模型" loading="lazy" decoding="async" srcset="assets/rules/scenario-panoramas-20261116/03-death-line-mobile.webp 960w, assets/rules/scenario-panoramas-20261116/03-death-line.webp 1500w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>死亡防线 · 突袭战</strong> · 桌面战役地形全景 · 3:1</figcaption></figure>
+<p><strong>推荐总分</strong>：约1670分（友军625分 / 进攻方约1045分）<br><strong>时长</strong>：6–8回合<br><strong>战役背景</strong>：M41，无主之地废星潘多拉。邪教组织「破碎圣言」试图改造地质稳定器为亚空间信标。灰烬遗忘骑士率克里格加强连与机械教协同突袭。邪教兵力远超预期，且拥有持续增援能力。</p>
+<hr>
+<p>地图设置</p>
+<ul>
+<li><strong>尺寸</strong>：48″ × 48″</li>
+</ul>
+<ul>
+<li><strong>中央地质稳定器</strong>：直径6″，大型建筑，重掩体（射击命中 -1，守方豁免 +1，不可被移动或摧毁）。</li>
+</ul>
+<ul>
+<li><strong>友军战壕</strong>：两条战壕（各宽3″），分别位于稳定器西南侧和东南侧，从友军部署区延伸至距稳定器约12″处。战壕内模型获得轻掩体（SV+1）。</li>
+</ul>
+<ul>
+<li><strong>外围废墟与弹坑</strong>：分布在稳定器12″以外的区域，提供轻掩体，弹坑视为困难地形。</li>
+</ul>
+<ul>
+<li><strong>地雷区</strong>（仅对进攻方生效）：任何不具备<strong>飞行</strong>或<strong>猛禽</strong>关键词的进攻方单位，在其移动阶段结束时（无论是否移动，只要位于地图上且非本回合刚入场），必须进行一次D6检定。若结果为1，该单位受到1点普通伤害（可进行正常护甲豁免或特保，不可使用掩体加成）。</li>
+</ul>
+<hr>
+<p>双方兵力<br>友军（隐修会 + 帝国残部）—— 总分 625分</p>
+<p><strong>初始部署</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>灰烬遗忘骑士</td><td>3</td><td>120</td><td>文档“灰烬遗忘骑士”数据表（3人120分）</td></tr>
+<tr><td>克里格死亡军团步兵班</td><td>20</td><td>140</td><td>文档“克里格死亡军团步兵班”数据表（10人70分 ×2）</td></tr>
+<tr><td>克里格死亡骑兵</td><td>5</td><td>80</td><td>文档“克里格死亡骑兵”数据表（5人80分）</td></tr>
+<tr><td>机械教护教军</td><td>5</td><td>50</td><td>文档“机械教护教军”数据表（5人50分）</td></tr>
+<tr><td>机械教大主教</td><td>1</td><td>75</td><td>文档“机械教大主教”数据表（1人75分）</td></tr>
+</table></div>
+<p><strong>第二波增援（第3回合友军阶段开始时入场）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>克里格死亡骑兵</td><td>5</td><td>80</td><td>文档“克里格死亡骑兵”数据表（5人80分）</td></tr>
+</table></div>
+<blockquote><strong>友军合计</strong>：39个初始模型 + 5个增援模型 = 44个模型，545 + 80 = <strong>625分</strong>。</blockquote>
+<p><strong>友军关键规则摘要</strong>（均取自文档数据表）：</p>
+<ul>
+<li><strong>灰烬遗忘骑士</strong>：斥候9″、先锋部署；沉默赠礼（格挡后免费反击一次）；真名禁锢（5+致命伤保护，对混沌命中重掷1）；相位剥离（近战无视灵能护盾/恶魔特保）。</li>
+</ul>
+<ul>
+<li><strong>克里格步兵</strong>：集体掩护（掩体内豁免+1）、死不退却（伤亡过半时士气+1）、死亡冲锋（被近战击杀时对击杀者造成1点致命伤）。</li>
+</ul>
+<ul>
+<li><strong>克里格死亡骑兵</strong>：骑乘突击（移动后冲锋命中+1）、死亡冲锋（同上）、快速机动（移动→射击→可再移动6″但不冲锋）。</li>
+</ul>
+<ul>
+<li><strong>机械教护教军</strong>：辐射光环（近战范围内敌每回合受D6检定致命伤）、机械坚韧（致命伤-1，最少1）。</li>
+</ul>
+<ul>
+<li><strong>机械教大主教</strong>：机械修护（每回合修友方机械教/载具D3伤）、意志主宰（9″内机械教LD重掷）、自身5+特保。</li>
+</ul>
+<p>-<br>进攻方（破碎圣言 —— 混沌邪教）—— 总分约1045分</p>
+<p><strong>初始部署</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>堕落布道士</td><td>1</td><td>60</td><td>文档“堕落布道士”数据表（1人60分）</td></tr>
+<tr><td>混沌邪教徒</td><td>20</td><td>100</td><td>文档“混沌邪教徒”数据表（10人50分 ×2）</td></tr>
+<tr><td>混沌邪教徒</td><td>20</td><td>100</td><td>同上</td></tr>
+<tr><td>混沌猛禽</td><td>3</td><td>90</td><td>文档“混沌猛禽”数据表（3人90分）</td></tr>
+<tr><td>混沌奥格林</td><td>3</td><td>90</td><td>文档“混沌奥格林”数据表（3人90分）</td></tr>
+<tr><td>混沌旗手</td><td>1</td><td>20</td><td>文档“混沌旗手”数据表（1人20分）</td></tr>
+<tr><td>伐木枪手</td><td>1</td><td>15</td><td>文档“伐木枪手”数据表（1人15分）</td></tr>
+<tr><td>喷火器手</td><td>2</td><td>30</td><td>文档“喷火器手”数据表（1人15分 ×2）</td></tr>
+</table></div>
+<p><strong>第一波增援（第2回合进攻方阶段开始时入场）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>混沌邪教徒</td><td>20</td><td>100</td><td>文档“混沌邪教徒”数据表</td></tr>
+<tr><td>喷火器手</td><td>1</td><td>15</td><td>文档“喷火器手”数据表</td></tr>
+<tr><td>混沌旗手</td><td>1</td><td>20</td><td>文档“混沌旗手”数据表</td></tr>
+<tr><td>伐木枪手</td><td>1</td><td>15</td><td>文档“伐木枪手”数据表</td></tr>
+</table></div>
+<blockquote>第一波增援合计：23模型，<strong>150分</strong>。</blockquote>
+<p><strong>第二波增援（第3回合进攻方阶段开始时入场）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>混沌邪教徒</td><td>20</td><td>100</td><td>文档“混沌邪教徒”数据表</td></tr>
+<tr><td>喷火器手</td><td>1</td><td>15</td><td>文档“喷火器手”数据表</td></tr>
+<tr><td>混沌旗手</td><td>1</td><td>20</td><td>文档“混沌旗手”数据表</td></tr>
+<tr><td>伐木枪手</td><td>1</td><td>15</td><td>文档“伐木枪手”数据表</td></tr>
+<tr><td>混沌猛禽</td><td>3</td><td>90</td><td>文档“混沌猛禽”数据表</td></tr>
+<tr><td>混沌奥格林</td><td>3</td><td>90</td><td>文档“混沌奥格林”数据表</td></tr>
+</table></div>
+<blockquote>第二波增援合计：29模型，<strong>330分</strong>。</blockquote>
+<blockquote><strong>进攻方合计</strong>：51个初始模型 + 23 + 29 = 103个模型，565 + 150 + 330 = <strong>约1045分</strong>。</blockquote>
+<p><strong>进攻方关键规则摘要</strong>（均取自文档数据表）：</p>
+<ul>
+<li><strong>混沌邪教徒</strong>：人群掩护（10+模型时获轻掩体）、狂热牺牲（被摧毁时相邻一个CSM单位可免费近战一次，本模组中无CSM，故该规则仅在存在混沌猛禽/奥格林相邻时可能触发）。</li>
+</ul>
+<ul>
+<li><strong>堕落布道士</strong>：灵能精通1级（亚空间诅咒）；狂热宣讲（6″内邪教徒命中+1）；血肉祭坛（被击杀时6″内邪教徒+1攻击一回合）。</li>
+</ul>
+<ul>
+<li><strong>混沌猛禽</strong>：猛禽突袭（深入打击）、恐吓（冲锋时敌方士气-1）。<strong>免疫地雷</strong>。</li>
+</ul>
+<ul>
+<li><strong>混沌奥格林</strong>：蛮力冲锋（冲锋后攻击次数+1）、无惧（免疫士气）、厚重之躯（常规伤害减1，最少1；致命伤无效）。</li>
+</ul>
+<ul>
+<li><strong>混沌旗手</strong>：混沌旗帜（9″内邪教徒士气重掷）、鼓舞（所在单位无畏）。</li>
+</ul>
+<ul>
+<li><strong>伐木枪手</strong>：压制射击（命中后目标下回合冲锋距离-2″）。</li>
+</ul>
+<ul>
+<li><strong>喷火器手</strong>：无视掩体、灼烧（对步兵造伤+1）。</li>
+</ul>
+<p>三、特殊规则</p>
+<ol>
+<li>邪教协同（进攻方）</li>
+</ol>
+<ul>
+<li>混沌旗手在场时，其9″内所有邪教徒单位可重掷失败士气测试。</li>
+</ul>
+<ul>
+<li>堕落布道士在场时，其6″内所有邪教徒单位近战命中骰+1。</li>
+</ul>
+<ul>
+<li>以上两种光环可叠加。</li>
+</ul>
+<ul>
+<li>堕落布道士被击杀时，其6″内所有邪教徒单位立即获得近战攻击次数+1，持续至该回合结束。</li>
+</ul>
+<ol>
+<li>克里格死亡冲锋（友军）</li>
+</ol>
+<p>任何拥有“死亡冲锋”规则的克里格单位（步兵、死亡骑兵）被近战击杀时，立即对击杀者造成1点致命伤（无视护甲与特保）。</p>
+<ol>
+<li>战壕优势（友军）</li>
+</ol>
+<ul>
+<li>友军模型在战壕内时，获得轻掩体（SV+1），与其他掩体不叠加。</li>
+</ul>
+<ul>
+<li>友军模型在战壕内进行射击时，每个模型每回合可重掷1个失败命中骰。</li>
+</ul>
+<ol>
+<li>拦截射击（友军）</li>
+</ol>
+<p>每当进攻方一波增援单位入场完毕时，友军可立即指定己方2个单位（须在射程内且具有射击能力）对该波增援中的任意单位进行一次免费射击（如同守望先锋，但无需冲锋触发）。每个被指定的单位只能射击一次，可分配不同目标。</p>
+<ol>
+<li>地雷区（进攻方）</li>
+</ol>
+<p>见地图设置。混沌猛禽（拥有跳跃背包）免疫地雷效果。增援单位在入场回合的移动阶段结束时正常进行地雷检定。</p>
+<ol>
+<li>增援流程</li>
+</ol>
+<ul>
+<li><strong>第2回合进攻方阶段开始时</strong>：进攻方第一波增援（23人：20邪教徒 + 1喷火 + 1旗手 + 1伐木）从距稳定器18″的西南侧桌面边缘入场。入场后立即触发友军拦截射击。</li>
+</ul>
+<ul>
+<li><strong>第3回合进攻方阶段开始时</strong>：进攻方第二波增援（29人：20邪教徒 + 1喷火 + 1旗手 + 1伐木 + 3猛禽 + 3奥格林）从距稳定器18″的西南侧桌面边缘入场。入场后立即触发友军拦截射击。</li>
+</ul>
+<ul>
+<li><strong>第3回合友军阶段开始时</strong>：友军第二波增援（5死亡骑兵）从任意桌面边缘入场，入场点须距稳定器≥18″。</li>
+</ul>
+<ul>
+<li>所有增援单位在入场回合可正常移动、射击、冲锋。</li>
+</ul>
+<p>四、胜利条件</p>
+<div class="table-scroll"><table>
+<tr><th>友军胜利</th><th>进攻方胜利</th></tr>
+<tr><td>全歼进攻方所有模型</td><td>全歼友军所有模型</td></tr>
+</table></div>
+<p>五、部署</p>
+<div class="table-scroll"><table>
+<tr><th>阵营</th><th>部署位置</th></tr>
+<tr><td>友军</td><td>两条战壕内及其后方（距稳定器12″–30″范围内），西南战壕与东南战壕各部署部分单位。灰烬遗忘骑士可先锋部署在战壕前方≤9″处。</td></tr>
+<tr><td>进攻方（初始）</td><td>以稳定器为中心、半径12″–24″的半圆形区域（地图北侧/上方）。两队邪教徒各20人分居西南、东南前沿，堕落布道士与旗手居中，猛禽、奥格林部署在后方作为预备队。</td></tr>
+</table></div>
+<p><strong>部署示例</strong>：</p>
+<ul>
+<li><strong>进攻方</strong>：堕落布道士和旗手在距稳定器约18″的中央位置。两队邪教徒各20人分别位于稳定器西南和东南方向约12″–16″处。伐木枪手和喷火器手在邪教徒后方。混沌猛禽和奥格林在最后方（约20″–24″处），准备突击。</li>
+</ul>
+<ul>
+<li><strong>友军</strong>：灰烬遗忘骑士在中央战壕前出位置。克里格步兵20人分两队防守西南和东南战壕。死亡骑兵5人在战壕外侧待命，准备包抄侧翼。机械教护教军与大主教在战壕后方提供远程火力与维修支援。</li>
+</ul>
+<p>六、战术提示</p>
+<p><strong>友军方面</strong>：</p>
+<ul>
+<li>前期利用战壕的重掷命中优先点杀堕落布道士和混沌旗手——他们是邪教徒士气的核心支柱，一旦倒下，邪教协同体系将迅速瓦解。</li>
+</ul>
+<ul>
+<li>灰烬遗忘骑士的近战无视恶魔特保和灵能护盾，是对付堕落布道士的最佳人选。</li>
+</ul>
+<ul>
+<li>死亡骑兵利用快速机动能力从侧翼绕后，猎杀后排的伐木枪手和喷火器手，并在敌方大波增援入场时用拦截射击消耗其数量。</li>
+</ul>
+<ul>
+<li>第3回合增援的5名死亡骑兵是战局转折点——在进攻方第二波增援入场的同时加入战场，直接冲击其侧后，打乱进攻节奏。</li>
+</ul>
+<ul>
+<li>机械教大主教紧跟护教军，维持意志主宰光环并随时维修受损单位。</li>
+</ul>
+<p><strong>进攻方方面</strong>：</p>
+<ul>
+<li>人数是最大优势（103模型对44模型），但地雷区会持续造成损耗。需接受一定损失，用数量强行推进。</li>
+</ul>
+<ul>
+<li>堕落布道士和混沌旗手必须受到重点保护——将他们置于邪教徒人堆中央，利用“人群掩护”提供额外的轻掩体。</li>
+</ul>
+<ul>
+<li>猛禽和奥格林是突破战壕的关键。猛禽免疫地雷，应优先猎杀战壕内的克里格射击单位；奥格林的蛮力冲锋和厚重之躯让他们在正面攻坚中极为坚韧。</li>
+</ul>
+<ul>
+<li>第二波增援（第3回合）是压垮守军的决定性力量——3猛禽+3奥格林同时加入，此时守军也刚获得骑兵增援，双方将在稳定器周边展开决战。</li>
+</ul>
+<ul>
+<li>注意控制与稳定器的距离——越靠近稳定器，友军战壕优势越大；尽量在外围消耗守军，而非贸然冲入战壕区。</li>
+</ul>
+<h5 id="rules-scenarios-g04">模组 4：铁王座 —— 联合斩首战</h5>
+<figure class="rules-scenario-plate" data-scenario="04-iron-throne"><a href="assets/rules/scenario-panoramas-20261116/04-iron-throne.webp" target="_blank" rel="noopener noreferrer" aria-label="查看铁王座 · 联合斩首战模型场景完整3:1横幅"><img src="assets/rules/scenario-panoramas-20261116/04-iron-throne.webp" width="2172" height="724" alt="铁王座战役四：以废弃巡洋舰舰桥改造的三层兽人战争堡垒、中央楼梯与顶层钢铁王座的模型沙盘，无人物模型" loading="lazy" decoding="async" srcset="assets/rules/scenario-panoramas-20261116/04-iron-throne-mobile.webp 960w, assets/rules/scenario-panoramas-20261116/04-iron-throne.webp 1500w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>铁王座 · 联合斩首战</strong> · 桌面战役地形全景 · 3:1</figcaption></figure>
+<p>战役背景</p>
+<p>M41，维洛斯主星区边缘。兽人军阀“碎铁”将废弃巡洋舰舰桥改造成巨型战争堡垒，正逼近帝国哨站。死亡守望奉命执行斩首，隐修会黑剑小队则为回收一块据传刻有狮王封印的卡利班时期遗物而介入。双方在堡垒阴影中沉默相遇，互不统属，却必须共同撕裂这座钢铁巨兽的咽喉。<br>一、地图设置</p>
+<ul>
+<li><strong>三层结构</strong>：底层（Y=0–16″）、二层（Y=16–32″）、三层（Y=32–48″），每层高差3″。</li>
+</ul>
+<ul>
+<li><strong>平台尺寸</strong>：底层48″×48″，二层48″×48″，三层24″×24″（中央坐标12–36″,12–36″）。</li>
+</ul>
+<ul>
+<li><strong>中央楼梯</strong>：从底层中心(24,0)直通二层中心(24,16)，再从二层中心(24,16)直通三层中心(24,32)。楼梯宽6″，上下每层消耗2″移动力。</li>
+</ul>
+<ul>
+<li><strong>铁王座</strong>：三层中央(24,24)，碎铁及其卫队驻守。</li>
+</ul>
+<ul>
+<li><strong>轰隆隆干扰器</strong>：位于二层楼梯口(24,16)。<strong>属性：T3, W2, SV4+</strong>。</li>
+</ul>
+<p><strong>高地射击修正</strong>：</p>
+<ul>
+<li>从较低层射击较高层：命中骰 -3。</li>
+</ul>
+<ul>
+<li>从较高层射击较低层：命中骰 +1。</li>
+</ul>
+<ul>
+<li>同层无修正。</li>
+</ul>
+<hr>
+<p>二、双方兵力</p>
+<p>联合突击队（隐修会 + 死亡守望）—— 总分数1000分</p>
+<p><strong>左侧部署区</strong>（左下角 12″×6″ 区域）</p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td><strong>黑剑</strong>（跳包小队）</td><td>10</td><td>320</td><td>文档“黑剑”数据表</td></tr>
+<tr><td>余烬刺客</td><td>5</td><td>110</td><td>文档“余烬刺客”数据表</td></tr>
+<tr><td>熔炉牧师</td><td>1</td><td>90</td><td>文档“熔炉牧师”数据表</td></tr>
+</table></div>
+<p><strong>右侧部署区</strong>（右下角 12″×6″ 区域）</p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td><strong>死亡守望杀戮小队</strong></td><td>10</td><td>480</td><td>文档“死亡守望杀戮小队”数据表</td></tr>
+</table></div>
+<p><strong>联合特殊规则</strong>：</p>
+<p><strong>联合特殊规则</strong>：</p>
+<ul>
+<li><strong>沉默协同</strong>：当隐修会单位（黑剑、余烬刺客、熔炉牧师）与死亡守望单位在6″内时，双方命中骰 +1。此加成<strong>不与任何其他命中加成叠加</strong>（取最高值）。</li>
+</ul>
+<ul>
+<li><strong>干扰器摧毁奖励</strong>：当轰隆隆干扰器被摧毁后，兽人增援停止。</li>
+</ul>
+<p>兽人守军 —— 总分数 625分</p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>部署位置</th><th>数据来源</th></tr>
+<tr><td><strong>碎铁</strong>（战争老大）</td><td>1</td><td>85</td><td>三层王座</td><td>文档“兽人军阀‘碎铁’”数据表</td></tr>
+<tr><td><strong>兽人小子（射枪）</strong></td><td>10</td><td>80</td><td>三层王座周围</td><td>文档“兽人小子”数据表</td></tr>
+<tr><td><strong>兽人小子（混编）</strong></td><td>10</td><td>80</td><td>左侧二层</td><td>5砍刀 + 5射枪</td></tr>
+<tr><td><strong>杀戮越野车</strong></td><td>1</td><td>70</td><td>左侧二层</td><td>文档“杀戮越野车”数据表</td></tr>
+<tr><td><strong>兽人小子（射枪）</strong></td><td>5</td><td>40</td><td>右侧二层</td><td>文档“兽人小子”数据表</td></tr>
+<tr><td><strong>兽人技师</strong></td><td>1</td><td>50</td><td>右侧二层</td><td>文档“兽人技师”数据表</td></tr>
+<tr><td><strong>兽人小子（混编）</strong></td><td>15</td><td>120</td><td>左侧底层</td><td>5砍刀 + 10射枪，分值按比例折算</td></tr>
+<tr><td><strong>兽人小子</strong></td><td>10</td><td>80</td><td>右侧底层</td><td>5砍刀 + 5射枪）</td></tr>
+</table></div>
+<p><strong>兽人特殊规则</strong>：<br>兽人</p>
+<p>-增援**：干扰器未毁时，每回合兽人阶段，每回合兽人阶段，单数轮右侧出现 5个砍刀小子 增援，双数轮左侧出现5个砍刀小子。</p>
+<hr>
+<p>三、特殊规则</p>
+<ol>
+<li>轰隆隆干扰器</li>
+</ol>
+<ul>
+<li><strong>位置</strong>：二层平台正中央。</li>
+</ul>
+<ul>
+<li><strong>属性</strong>：可被攻击，T5，W3，SV4+。</li>
+</ul>
+<ul>
+<li><strong>效果</strong>：</li>
+</ul>
+<ul>
+<li><strong>未被摧毁时</strong>：每回合兽人阶段，单数轮左侧出现 5个砍刀小子 增援，双数轮右侧出现5个砍刀小子。</li>
+</ul>
+<p>胜利条件</p>
+<ul>
+<li><strong>联合胜</strong>：第7回合<strong>联合回合结束前</strong>击杀碎铁。</li>
+</ul>
+<ul>
+<li><strong>兽人胜</strong>：第7回合结束时碎铁仍存活。</li>
+</ul>
+<p>侧路互通条件</p>
+<p>每个阶段，联合突击队单位<strong>不可越过地图中线（24″）</strong>进入另一侧，兽人单位不受此限。</p>
+<p>五、部署与游戏流程</p>
+<ol>
+<li><strong>兽人玩家</strong>先部署全部单位（除增援外），按兵力表在对应位置布阵：</li>
+</ol>
+<ul>
+<li>底层左右侧小子部署在坐标范围内。</li>
+</ul>
+<ul>
+<li>二层左右侧单位部署在二层相应区域。</li>
+</ul>
+<ul>
+<li>三层王座单位部署在(24,24)周围6″内。</li>
+</ul>
+<ol>
+<li><strong>联合玩家</strong>后部署：</li>
+</ol>
+<ul>
+<li>左侧（隐修会）：黑剑10、余烬刺客5、熔炉牧师1，部署在左下角12″×6″区域（坐标0–12,0–12）。</li>
+</ul>
+<ul>
+<li>右侧（死亡守望）：死亡守望10人，部署在右下角12″×6″区域（坐标36–48,0–12）。</li>
+</ul>
+<ol>
+<li>兽人先手第一回合。</li>
+</ol>
+<p>关键地形提示</p>
+<ul>
+<li>中央楼梯是唯一连接三层的通道，所有模型必须通过楼梯上下（消耗移动）。</li>
+</ul>
+<ul>
+<li>干扰器位于二层楼梯口，上二层后才可攻击，摧毁它可阻止兽人增援，优先处理，不要增援过多</li>
+</ul>
+<p>黑剑跳跃背包可以越层，但是过早越层容易导致伤亡</p>
+<ul>
+<li>侧路互通前，联合左右两侧不能越过中线，但兽人无此限制。</li>
+</ul>
+<hr>
+<h5 id="rules-scenarios-g05">模组5:<strong>深渊之井 —— 大规模阻击战</strong></h5>
+<figure class="rules-scenario-plate" data-scenario="05-abyssal-well"><a href="assets/rules/scenario-panoramas-20261116/05-abyssal-well.webp" target="_blank" rel="noopener noreferrer" aria-label="查看深渊之井 · 大规模阻击战模型场景完整3:1横幅"><img src="assets/rules/scenario-panoramas-20261116/05-abyssal-well.webp" width="2172" height="724" alt="深渊之井战役五：灰蓝色哥特式堡垒城市从希芙拉之门经绝境长城上升至深渊井口的三层防线模型全景，无人物模型" loading="lazy" decoding="async" srcset="assets/rules/scenario-panoramas-20261116/05-abyssal-well-mobile.webp 960w, assets/rules/scenario-panoramas-20261116/05-abyssal-well.webp 1600w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>深渊之井 · 大规模阻击战</strong> · 桌面战役地形全景 · 3:1</figcaption></figure>
+<p>战役背景</p>
+<p><strong>类型</strong>：大规模阻击战<br><strong>推荐总分</strong>：约5000分（守军约2380分 / 进攻方约2620分）<br><strong>时长</strong>：最多12回合<br><strong>战役背景</strong>：M42，休伦·黑心派遣无情者克拉能率整支猩红海盗打击力量突袭希芙拉，企图夺取井底之物。隐修会全编制在环区层层设防。克拉能绕过正面防线，直取井口。当他在井口边缘倒下又重塑为恶魔王子时，这场阻击战进入了最残酷的阶段。</p>
+<ul>
+<li><strong>尺寸</strong>：48″（长）× 16″（宽）</li>
+</ul>
+<ul>
+<li><strong>方向</strong>：从左至右为进攻方推进方向（左端0″，右端48″）</li>
+</ul>
+<ul>
+<li><strong>地形与关卡</strong>：</li>
+</ul>
+<div class="table-scroll"><table>
+<tr><th>位置</th><th>名称</th><th>效果</th></tr>
+<tr><td>0″–12″</td><td>混沌登陆场</td><td>进攻方初始部署区</td></tr>
+<tr><td>12″</td><td>第一关卡：希芙拉之门</td><td>守军在关卡后方6″内且无敌方模型相邻时，获得重掩体（敌方射击命中-1，守方豁免+1）。敌方模型通过此线须额外消耗2″移动。</td></tr>
+<tr><td>24″</td><td>第二关卡：绝境长城</td><td>同上</td></tr>
+<tr><td>45″</td><td>第三关卡：深渊井口</td><td>同上，且在此处“到达井口”条件生效</td></tr>
+</table></div>
+<ul>
+<li><strong>区域说明</strong>：</li>
+</ul>
+<ul>
+<li>第一关卡后方（12″–18″）为第一防区</li>
+</ul>
+<ul>
+<li>第二关卡后方（24″–30″）为第二防区</li>
+</ul>
+<ul>
+<li>第三关卡后方（39″–45″）为井口防区</li>
+</ul>
+<p>双方兵力</p>
+<p>守军：破碎余烬隐修会 —— 总分 2380分</p>
+<p><strong>第一关卡 · 希芙拉之门防区（12″–18″）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>自动炮台</td><td>2</td><td>80</td><td>文档“自动炮台”数据表（1台40分 ×2）</td></tr>
+<tr><td>遗迹铁匠</td><td>3</td><td>110</td><td>文档“遗迹铁匠”数据表（3人110分）</td></tr>
+<tr><td>希芙拉风暴骑士</td><td>5</td><td>235</td><td>文档“希芙拉风暴骑士”数据表（5人235分）</td></tr>
+<tr><td>灰烬失乡骑士</td><td>6</td><td>380</td><td>文档“灰烬失乡骑士”数据表（3人190分 ×2）</td></tr>
+<tr><td>碎律修女</td><td>1</td><td>60</td><td>文档“碎律修女”数据表（1人60分）</td></tr>
+<tr><td>指头女巫</td><td>1</td><td>45</td><td>文档“指头女巫”数据表（1人45分）</td></tr>
+</table></div>
+<blockquote><strong>第一关卡合计</strong>：18模型 / 910分</blockquote>
+<p><strong>第二关卡 · 绝境长城防区（24″–30″）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>自动炮台</td><td>2</td><td>80</td><td>文档“自动炮台”数据表（1台40分 ×2）</td></tr>
+<tr><td>余烬审判者</td><td>5</td><td>150</td><td>文档“余烬审判者”数据表（5人150分）</td></tr>
+<tr><td>灰烬失乡骑士</td><td>6</td><td>380</td><td>文档“灰烬失乡骑士”数据表（3人190分 ×2）</td></tr>
+</table></div>
+<blockquote><strong>第二关卡合计</strong>：13模型 / 610分</blockquote>
+<p><strong>第三关卡 · 井口防区（39″–45″）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>自动炮台</td><td>2</td><td>80</td><td>文档“自动炮台”数据表（1台40分 ×2）</td></tr>
+<tr><td>余烬审判者</td><td>10</td><td>300</td><td>文档“余烬审判者”数据表（5人150分 ×2）</td></tr>
+<tr><td>隐修院长</td><td>1</td><td>115</td><td>文档“隐修院长”数据表（1人115分）</td></tr>
+<tr><td>沉渊告解者</td><td>1</td><td>95</td><td>文档“沉渊告解者”数据表（1人95分）</td></tr>
+<tr><td>深渊观星者</td><td>1</td><td>95</td><td>文档“深渊观星者”数据表（1人95分）</td></tr>
+<tr><td>希芙拉风暴骑士</td><td>5</td><td>235</td><td>文档“希芙拉风暴骑士”数据表（5人235分）</td></tr>
+<tr><td>誓约掌旗官</td><td>1</td><td>60</td><td>文档“誓约掌旗官”数据表（1人60分）</td></tr>
+</table></div>
+<blockquote><strong>第三关卡合计</strong>：21模型 / 980分</blockquote>
+<p><strong>空投反击（全场一次，不在初始部署中）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>巡礼骑士（<strong>不可直接攻击克拉能恶魔王子，见特殊规则2.5</strong>）</td><td>5</td><td>180</td><td>文档“巡礼骑士”数据表（5人180分）</td></tr>
+</table></div>
+<blockquote><strong>空投反击合计</strong>：5模型 / 180分（不参与初始部署，由特殊规则触发）</blockquote>
+<blockquote><strong>守军总计</strong>：52个初始部署模型 + 5个空投模型 = 57模型，2380分（初始部署2200分 + 空投180分）</blockquote>
+<p>进攻方：猩红海盗突击集群 —— 总分约2620分</p>
+<p><strong>初始部署（0″–12″登陆场）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>无情者克拉能（混沌领主）</td><td>1</td><td>160</td><td>文档“无情者克拉能（混沌领主）”数据表（1人160分）</td></tr>
+<tr><td>黑心奴役者</td><td>3</td><td>150</td><td>文档“黑心奴役者”数据表（3人150分）</td></tr>
+<tr><td>奸奇术士（副官）</td><td>1</td><td>120</td><td>文档“奸奇术士（副官）”数据表（1人120分）</td></tr>
+<tr><td>混沌神选星际战士</td><td>5</td><td>125</td><td>文档“混沌神选星际战士”数据表（5人125分）</td></tr>
+<tr><td>混沌星际战士</td><td>30</td><td>270</td><td>文档“混沌星际战士”数据表（10人90分 ×3）</td></tr>
+<tr><td>地狱兽</td><td>1</td><td>130</td><td>文档“地狱兽”数据表（1台130分）</td></tr>
+<tr><td>混沌终结者</td><td>10</td><td>400</td><td>文档“混沌终结者”数据表（5人200分 ×2）</td></tr>
+</table></div>
+<blockquote><strong>初始部署合计</strong>：51模型 / 1355分</blockquote>
+<p><strong>第一次空投支援</strong>（触发条件：第一个进攻方模型完成跨过12″线的移动后立即触发）</p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>混沌神选星际战士</td><td>5</td><td>125</td><td>文档“混沌神选星际战士”数据表</td></tr>
+<tr><td>混沌终结者</td><td>5</td><td>200</td><td>文档“混沌终结者”数据表</td></tr>
+</table></div>
+<blockquote><strong>第一次空投合计</strong>：10模型 / 325分</blockquote>
+<p><strong>恶魔支援</strong>（触发条件：克拉能被击杀变身后自动触发，空投到恶魔王子克拉能前方3-5″，清除前无法直接攻击恶魔王子）</p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>混沌神选星际战士</td><td>5</td><td>125</td><td>文档“混沌神选星际战士”数据表</td></tr>
+<tr><td>混沌终结者</td><td>10</td><td>400</td><td>文档“混沌终结者”数据表（5人200分 ×2）</td></tr>
+<tr><td>附魔战士</td><td>5</td><td>140</td><td>文档“附魔战士”数据表（5人140分）</td></tr>
+</table></div>
+<blockquote><strong>恶魔支援合计</strong>：20模型 / 665分</blockquote>
+<p><strong>克拉能变身后（替换原有模型，不额外计分）</strong></p>
+<div class="table-scroll"><table>
+<tr><th>单位</th><th>模型数</th><th>分数</th><th>数据来源</th></tr>
+<tr><td>恶魔王子克拉能（<strong>无敌状态，见特殊规则2.5</strong>）</td><td>1</td><td>—</td><td>文档“恶魔王子克拉能”数据表（替换克拉能，不重复计分）</td></tr>
+</table></div>
+<blockquote><strong>进攻方总计</strong>：51初始 + 10第一次空投 + 20第二次空投 = 81模型，1355 + 325 + 665 = <strong>约2345分</strong>（恶魔王子替换不计分）</blockquote>
+<p>特殊规则</p>
+<ol>
+<li>黑心奴役者保护（进攻方）</li>
+</ol>
+<p>当奸奇术士成为攻击的目标时，若场上存在黑心奴役者模型，进攻方可以选择让其中一个黑心奴役者代替术士承受该次攻击的所有伤害。黑心奴役者正常进行护甲豁免。</p>
+<p><strong>弱点</strong>：进攻方奸奇术士可在己方灵能阶段尝试破解守方拥有“真名禁锢”规则的单位。进行一次2D6检定，若结果≥7则成功。该角色本场战斗中失去所有“真名禁锢”增益，且灵能者对其发动的攻击命中骰+1。</p>
+<p>2.克拉能（混沌领主形态）的无敌状态</p>
+<p><strong>适用时段</strong>：游戏开始后，克拉能第一次被击杀前（即变身前）。</p>
+<p><strong>无敌效果</strong>：</p>
+<ul>
+<li>克拉能不能被选为任何攻击、灵能或特殊规则的目标。</li>
+</ul>
+<ul>
+<li>范围伤害（如爆炸、灵能波及）也对克拉能无效。</li>
+</ul>
+<ul>
+<li>克拉能可以正常移动、射击、冲锋和近战攻击，但敌方不能反击他（因为无法指定他为目标）。</li>
+</ul>
+<p><strong>解除条件</strong>（必须全部满足，克拉能的无敌才会消失，然后可以被攻击并击杀）：</p>
+<div class="table-scroll"><table>
+<tr><th>序号</th><th>目标类型</th><th>所需数量</th><th>备注</th></tr>
+<tr><td>1</td><td>黑心奴役者</td><td>3</td><td>初始部署</td></tr>
+<tr><td>2</td><td>奸奇术士</td><td>1</td><td>初始部署</td></tr>
+<tr><td>3</td><td>混沌神选</td><td>5</td><td>初始部署</td></tr>
+<tr><td>4</td><td>混沌神选</td><td>5</td><td>第一次空投（克拉能首次跨过12″线时触发）</td></tr>
+<tr><td>5</td><td>地狱兽</td><td>1</td><td>初始部署</td></tr>
+<tr><td>6</td><td>混沌终结者</td><td>10</td><td>初始部署</td></tr>
+<tr><td>7</td><td>混沌终结者</td><td>5</td><td>第一次空投</td></tr>
+<tr><td>8</td><td>混沌星际战士</td><td>至少击杀15个</td><td>从初始部署的CSM中计算，不论波次</td></tr>
+</table></div>
+<p>当以上1-8项全部完成时，克拉能的无敌解除，守军可以攻击并击杀他。击杀后立即触发变身。</p>
+<p>3恶魔王子克拉能（变身后形态）的无敌状态</p>
+<p><strong>适用时段</strong>：克拉能被击杀并变身为恶魔王子后，直到条件满足。</p>
+<p><strong>无敌效果</strong>：与克拉能形态相同（不可被选为目标，免疫伤害）。</p>
+<p><strong>解除条件</strong>（必须全部满足，恶魔王子的无敌才会消失，守军才能攻击他）：</p>
+<div class="table-scroll"><table>
+<tr><th>序号</th><th>目标类型</th><th>所需总数</th><th>具体构成</th></tr>
+<tr><td>1</td><td>混沌神选</td><td>5</td><td>恶魔支援（变身后入场）</td></tr>
+<tr><td>2</td><td>混沌终结者</td><td>10</td><td>恶魔支援（变身后入场）</td></tr>
+<tr><td>3</td><td>附魔战士</td><td>5</td><td>恶魔支援（变身后入场）</td></tr>
+</table></div>
+<p>同时触发守方空投反击，巡礼骑士可移动，射击及近战，但不可直接攻击恶魔王子</p>
+<ol>
+<li>深渊之数（守军全局增益）</li>
+</ol>
+<ul>
+<li>战斗开始时，初始计数 = 6。</li>
+</ul>
+<ul>
+<li>在每个守方指挥阶段开始时，计数自动减1。</li>
+</ul>
+<ul>
+<li>当计数归零时（最早为第6回合守方阶段开始），触发以下效果：</li>
+</ul>
+<ul>
+<li>所有守方单位的命中骰暴击范围扩至<strong>5+</strong>（即5–6均为暴击）。</li>
+</ul>
+<ul>
+<li>所有守方单位自动通过战斗震慑（士气）测试。</li>
+</ul>
+<blockquote>深渊之数是隐修会万年来守望深渊形成的灵能共鸣。计数归零象征着深渊对这场战役的回应——它选择了站在守望者一边。</blockquote>
+<p>5 先手权</p>
+<p>守方获得第一回合先手权。</p>
+<ol>
+<li>守方特殊支援：希芙拉之叹（全场限一次）</li>
+</ol>
+<ul>
+<li><strong>使用权限</strong>：仅深渊观星者可以使用。</li>
+</ul>
+<ul>
+<li><strong>使用时机</strong>：在己方任意指挥阶段开始时宣布使用。前3回合不能启用。</li>
+</ul>
+<ul>
+<li><strong>使用代价</strong>：宣布使用后，深渊观星者立即被移除（视为阵亡）。</li>
+</ul>
+<ul>
+<li><strong>效果</strong>：选择战场上任意一点，该点周围9″圆形区域变为“超高重力场”，持续至下一个己方指挥阶段结束。区域内产生以下效果：</li>
+</ul>
+<ul>
+<li><strong>物理沉降</strong>：区域内所有敌方单位移动力（M）减半（向下取整）。</li>
+</ul>
+<ul>
+<li><strong>禁断推进</strong>：区域内所有敌方单位不能进行推进动作。</li>
+</ul>
+<ul>
+<li><strong>冲锋迟滞</strong>：对该区域内单位发动的冲锋，或由该区域内单位发起的冲锋，冲锋距离-2″。</li>
+</ul>
+<blockquote>_战术注意_：攻方奸奇术士可尝试探测深渊观星者的意图。若守方打算使用此技能，进攻方可考虑优先集火处决深渊观星者，阻止其发动。</blockquote>
+<p>7 希芙拉的低语（全局环境）</p>
+<p>深渊脉动的低频辐射覆盖整个战场。在每个攻方指挥阶段开始时，攻方所有非载具、非恶魔单位投D20。</p>
+<ul>
+<li>若结果为<strong>1</strong>：该单位陷入癫狂。受影响单位该回合不能执行任何自愿行动，改为向最近的非癫狂单位（不分敌我）移动并必须近战攻击。若无法找到合法目标，则原地不动且该回合命中骰-1。</li>
+</ul>
+<ul>
+<li>若结果为2–20：无影响。</li>
+</ul>
+<ul>
+<li><strong>免疫单位</strong>：载具（地狱兽）、恶魔单位（变身后的克拉能、附魔战士）免疫此效果。</li>
+</ul>
+<ol>
+<li>变身（进攻方，克拉能被击杀时触发）</li>
+</ol>
+<p>当克拉能的Wounds降至0时，不将其移除，而是立即依次执行：</p>
+<ol>
+<li><strong>变身</strong>：在克拉能所在位置放置恶魔王子克拉能模型（数据使用文档“恶魔王子克拉能”数据表，W=10），克拉能模型移除。</li>
+</ol>
+<ol>
+<li>**恶魔支援*：在恶魔王子当前位置6″内部署第二波空投支援单位：5名混沌神选星际战士、10名混沌终结者、5名附魔战士。</li>
+</ol>
+<ol>
+<li><strong>行动规则</strong>：以上空投单位本回合不能移动。从下一个进攻方回合开始正常行动。</li>
+</ol>
+<p>变身后的恶魔王子仍受“无敌规则”（规则3）保护，直到守军满足全部解除条件。</p>
+<p>四、胜利条件</p>
+<div class="table-scroll"><table>
+<tr><th>进攻方胜利</th><th>守军胜利</th></tr>
+<tr><td>克拉能（或其变身后的恶魔王子）到达井口（45″处）6″内后，从<strong>下一个己方回合开始</strong>连续<strong>3个己方回合结束时</strong>，他仍然在井口6″内存活。到达当回合不计入连续计数。</td><td>阻止进攻方达成上述条件。若第13回合结束时进攻方仍未达成，守军自动获胜。</td></tr>
+</table></div>
+<blockquote>_特殊判定_：若恶魔王子在井口6″内被击杀（在无敌解除后），则进攻方的到达计时中断。若此后又有其他符合条件的模型进入井口6″，需重新从到达回合的下一回合开始计算连续3回合。</blockquote>
+<p>五、部署<br>守军部署（全部初始单位在游戏开始前部署完毕）</p>
+<div class="table-scroll"><table>
+<tr><th>防区</th><th>部署范围</th><th>部署单位</th></tr>
+<tr><td>第一关卡（希芙拉之门）</td><td>12″–18″区间</td><td>自动炮台×2、遗迹铁匠×3、希芙拉风暴骑士×5、灰烬失乡骑士×6、碎律修女×1、指头女巫×1</td></tr>
+<tr><td>第二关卡（绝境长城）</td><td>24″–30″区间</td><td>自动炮台×2、余烬审判者×5、灰烬失乡骑士×6</td></tr>
+<tr><td>第三关卡（深渊井口）</td><td>39″–45″区间</td><td>自动炮台×2、余烬审判者×10、隐修院长×1、沉渊告解者×1、深渊观星者×1、希芙拉风暴骑士×5、誓约掌旗官×1</td></tr>
+</table></div>
+<blockquote>空投反击的巡礼骑士×5不提前部署，在克拉能变身后由规则强制空投至恶魔王子身边6″内（见变身传送规则）。</blockquote>
+<p>进攻方部署</p>
+<ul>
+<li><strong>初始</strong>：所有初始单位部署在地图左端0″–12″任意位置，按进攻方意愿排列。</li>
+</ul>
+<ul>
+<li><strong>第一次空投</strong>：任意进攻方模型<strong>首次越过12″线</strong>时触发，空投单位部署在克拉能当前位置6″内，距守方模型至少3″。</li>
+</ul>
+<ul>
+<li><strong>第二次空投</strong>：克拉能被击杀变身后自动触发，空投单位部署在恶魔王子当前位置6″内，距守方模型至少3″。</li>
+</ul>
+<p>六、战术提示</p>
+<p><strong>守军方面</strong>：</p>
+<ul>
+<li>三层防线各司其职：第一层用风暴骑士的“深渊锚定”和“真名禁锢”延缓混沌终结者与神选的推进；第二层余烬审判者的重型引力炮可有效压制敌方大群步兵的移动；第三层是最后防线，隐修院长、沉渊告解者、深渊观星者与井口风暴骑士必须死守到深渊之数归零。</li>
+</ul>
+<ul>
+<li>深渊之数是最强增益，尽可能拖延克拉能的突破速度，让计数在决战前归零。一旦暴击范围扩至3+，所有守方单位的输出能力将发生质变。</li>
+</ul>
+<ul>
+<li>希芙拉之叹的使用时机至关重要——最佳时机是当克拉能（或其无敌解除后的恶魔王子）接近井口时，用超高重力场将其钉在原地，同时集火清除保护他的精英单位。</li>
+</ul>
+<ul>
+<li>深渊观星者是这场战役的核心资产，既能提供灵能压制，又能在关键时刻牺牲自己释放希芙拉之叹。务必妥善保护，直到最佳释放时机到来。</li>
+</ul>
+<ul>
+<li>巡礼骑士的空投反击是克拉能变身时的惊喜。他们在本守军回合就可以行动——利用“相位剥离”近战无视恶魔特保的特性，直接投入对恶魔王子身边精英的绞杀。</li>
+</ul>
+<p><strong>进攻方方面</strong>：</p>
+<ul>
+<li>克拉能的无敌是最大倚仗，但包围他的精英单位是消耗品。每阵亡一队黑心奴役者或混沌终结者，克拉能就离危险更近一步。合理分配推进节奏，让精英单位分批承受火力，而非一次性被集火清空。</li>
+</ul>
+<ul>
+<li>奸奇术士是战术支点：用“命运编织者”扩宽友军暴击范围，用“真名破解”剥离守军风暴骑士的致命伤保护。保护他——黑心奴役者应始终紧跟其3″范围内。</li>
+</ul>
+<ul>
+<li>希芙拉的低语是双刃剑，但载具和恶魔免疫。地狱兽应在正面持续施压，附魔战士变身后快速冲击后排。</li>
+</ul>
+<ul>
+<li>第一次空投的触发条件是无情者克拉能亲自跨过12″线，还是任意友方模型？规则未限制——可以让混沌邪教徒或混沌星际战士先行冲击12″线，触发空投后克拉能再趁乱跟进。</li>
+</ul>
+<ul>
+<li>到达井口只是开始，连续存活3个己方回合才是真正的挑战。在深渊之数归零后，守军的暴击会让这一切变得极为艰难。别贪快，确保井口周边的精英清除完毕，再让克拉能进入6″圈。</li>
+</ul>
+
+</article></div>

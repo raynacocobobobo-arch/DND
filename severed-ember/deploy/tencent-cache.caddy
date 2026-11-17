@@ -1,0 +1,29 @@
+# Add the block inside the EXISTING HTTPS site block in Caddyfile.
+# Assumes Caddy can read /srv/www/severed-ember from its own filesystem.
+handle_path /severed-ember/* {
+    root * /srv/www/severed-ember
+    encode zstd gzip
+
+    @html {
+        path / /index.html *.html
+        not path /assets/rules-fragment.html
+    }
+    header @html Cache-Control "no-cache, must-revalidate"
+
+    @fragment path /assets/rules-fragment.html
+    header @fragment Cache-Control "public, max-age=3600, must-revalidate"
+
+    @worker path /sw.js
+    header @worker Cache-Control "no-cache, must-revalidate"
+
+    @static {
+        path *.css *.js *.json *.webmanifest
+        not path /sw.js
+    }
+    header @static Cache-Control "public, max-age=3600, must-revalidate"
+
+    @images path *.webp *.png *.jpg *.jpeg *.gif *.svg *.ico
+    header @images Cache-Control "public, max-age=86400, stale-while-revalidate=604800"
+
+    file_server
+}
