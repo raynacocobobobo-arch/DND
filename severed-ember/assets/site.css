@@ -165,9 +165,9 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
 @media(max-width:620px){.campaign-photo-plate{margin:15px -9px 24px}.campaign-photo-plate figcaption{padding:12px 14px}.campaign-photo-plate figcaption strong{font-size:15px}}
 
 /* V4 shared original-art heraldry */
-.site-header .brand img{object-fit:contain;flex-shrink:0;width:34.5px;height:34.5px;filter:drop-shadow(0 0 7px #aa8b573a)}
+.site-header .brand img{object-fit:contain;flex-shrink:0;width:34.5px!important;height:34.5px!important;filter:drop-shadow(0 0 7px #aa8b573a)}
 .original-notice img{object-fit:contain}
-@media(max-width:620px){.site-header .brand img{width:26.25px;height:26.25px}}
+@media(max-width:620px){.site-header .brand img{width:26.25px!important;height:26.25px!important}}
 
 /* V4.4: clear art + compact full-width translucent bottom label, no fades or blur. */
 .reader-shell .reader-main .reader-top {
