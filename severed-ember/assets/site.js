@@ -56,9 +56,32 @@
     if(e.key==='Escape'){hideSearch();closeMenu()}
   });
   const drawer=$('#mobile-drawer'),shade=$('#drawer-shade');
-  function openMenu(){drawer?.classList.add('open');shade?.classList.add('open');$('#menu-button')?.setAttribute('aria-expanded','true')}
-  function closeMenu(){drawer?.classList.remove('open');shade?.classList.remove('open');$('#menu-button')?.setAttribute('aria-expanded','false')}
-  $('#menu-button')?.addEventListener('click',()=>drawer?.classList.contains('open')?closeMenu():openMenu());shade?.addEventListener('click',closeMenu);
+  // Reader-side navigation is hidden below 900px. Keep a discoverable directory
+  // button throughout chapter reading, instead of leaving only the header icon.
+  let readerQuick=null;
+  if(drawer){
+    const css=document.createElement('style');
+    css.id='reader-persistent-nav-css';
+    css.textContent=`
+      .reader-nav-quick{display:none}
+      @media(max-width:900px){
+        .reader-nav-quick{display:flex;align-items:center;gap:7px;position:fixed;left:10px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:54;min-height:42px;padding:0 13px;color:#efdab5;background:rgba(17,29,26,.94);border:1px solid #a58a5e;border-radius:4px;box-shadow:0 6px 18px #0009;font:13px -apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;cursor:pointer}
+        .reader-nav-quick[aria-expanded="true"]{display:none}
+      }`;
+    document.head.appendChild(css);
+    readerQuick=document.createElement('button');
+    readerQuick.type='button';
+    readerQuick.id='reader-nav-quick';
+    readerQuick.className='reader-nav-quick';
+    readerQuick.setAttribute('aria-label','打开卷宗目录');
+    readerQuick.setAttribute('aria-controls','mobile-drawer');
+    readerQuick.setAttribute('aria-expanded','false');
+    readerQuick.textContent='☰ 目录';
+    document.body.appendChild(readerQuick);
+  }
+  function openMenu(){drawer?.classList.add('open');shade?.classList.add('open');$('#menu-button')?.setAttribute('aria-expanded','true');readerQuick?.setAttribute('aria-expanded','true')}
+  function closeMenu(){drawer?.classList.remove('open');shade?.classList.remove('open');$('#menu-button')?.setAttribute('aria-expanded','false');readerQuick?.setAttribute('aria-expanded','false')}
+  $('#menu-button')?.addEventListener('click',()=>drawer?.classList.contains('open')?closeMenu():openMenu());readerQuick?.addEventListener('click',()=>drawer?.classList.contains('open')?closeMenu():openMenu());shade?.addEventListener('click',closeMenu);
   $$('#mobile-drawer a').forEach(a=>a.addEventListener('click',closeMenu));
   $('#print-button')?.addEventListener('click',()=>window.print());
   $('#copy-link')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);notify('已复制当前档案链接')}catch{notify('可从浏览器地址栏复制链接')}});

@@ -78,6 +78,31 @@ const cases=[
       };
     },view);
     if(!r.active||!r.visible)fail(v.name+':'+view,'view inactive');
+    // The chapter directory must remain reachable after leaving the overview.
+    if(view==='campaigns'){
+      const nav=await page.evaluate(()=>{
+        const rail=document.getElementById('drawer');
+        const quick=document.getElementById('nav-quick');
+        const rect=rail?.getBoundingClientRect();
+        const quickRect=quick?.getBoundingClientRect();
+        return {railVisible:!!rect&&rect.width>0&&rect.left<innerWidth&&rect.right>0,
+          quickVisible:!!quick&&!quick.hidden&&!!quickRect&&quickRect.width>40,
+          hasOverview:!!rail?.querySelector('a[href="#home"]')};
+      });
+      if(!nav.hasOverview)fail(v.name+':rail','overview return link missing');
+      if(v.width>800&&!nav.railVisible)fail(v.name+':rail','desktop directory vanished '+JSON.stringify(nav));
+      if(v.width<=800){
+        if(!nav.quickVisible)fail(v.name+':rail','mobile persistent directory trigger missing '+JSON.stringify(nav));
+        else{
+          await page.click('#nav-quick');
+          const opened=await page.evaluate(()=>document.querySelector('#drawer')?.classList.contains('open')&&document.querySelector('#nav-shade')?.hidden===false);
+          if(!opened)fail(v.name+':rail','mobile chapter drawer failed to open');
+          await page.evaluate(()=>document.querySelector('#nav-shade')?.click());
+          const closed=await page.evaluate(()=>!document.querySelector('#drawer')?.classList.contains('open'));
+          if(!closed)fail(v.name+':rail','mobile chapter drawer failed to close');
+        }
+      }
+    }
     if(r.documentWidth>r.windowWidth+2)fail(v.name+':'+view,'horizontal overflow '+r.documentWidth+' > '+r.windowWidth);
     if(r.badImages.length)fail(v.name+':'+view,'broken images '+JSON.stringify(r.badImages));
     const name=v.name+'-'+view;
@@ -155,6 +180,18 @@ const cases=[
     if(vres.doc>vres.win+2)fail(v.name+':chapter:'+ch,'horizontal overflow '+vres.doc+' > '+vres.win);
     if(vres.images.length)fail(v.name+':chapter:'+ch,'broken image '+vres.images.join(','));
     if(!vres.heading)fail(v.name+':chapter:'+ch,'missing heading');
+    if(v.width<=900&&ch==='01-overview'){
+      const quick=page.locator('#reader-nav-quick');
+      if(!await quick.isVisible())fail(v.name+':chapter-menu','mobile reader directory trigger missing');
+      else{
+        await quick.click();
+        const opened=await page.evaluate(()=>document.getElementById('mobile-drawer')?.classList.contains('open'));
+        if(!opened)fail(v.name+':chapter-menu','mobile reader drawer failed to open');
+        await page.evaluate(()=>document.getElementById('drawer-shade')?.click());
+        const closed=await page.evaluate(()=>!document.getElementById('mobile-drawer')?.classList.contains('open'));
+        if(!closed)fail(v.name+':chapter-menu','mobile reader drawer failed to close');
+      }
+    }
     const expectedChapterLogo=v.width<=800?24:34.5;
     if(!vres.logoWidth||Math.abs(vres.logoWidth-expectedChapterLogo)>1)
       fail(v.name+':chapter:'+ch,'header logo incorrect size '+vres.logoWidth);
