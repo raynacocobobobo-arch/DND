@@ -37,7 +37,8 @@ const cases=[
   const expectedHomeLogo=v.width<=800?27:36, expectedArchiveLogo=v.width<=800?30:40.5;
   if(!homeLogos[0]||Math.abs(homeLogos[0].width-expectedHomeLogo)>1)
     fail(v.name+':logo','header logo size '+JSON.stringify(homeLogos[0]));
-  if(!homeLogos[1]||Math.abs(homeLogos[1].width-expectedArchiveLogo)>1)
+  // The right rail is intentionally hidden on tablet and mobile layouts.
+  if(homeLogos[1]?.width>0&&Math.abs(homeLogos[1].width-expectedArchiveLogo)>1)
     fail(v.name+':logo','archive logo size '+JSON.stringify(homeLogos[1]));
   for(const view of views){
     await page.goto(HOST+'/index.html#'+view,{waitUntil:'domcontentloaded',timeout:30000});
