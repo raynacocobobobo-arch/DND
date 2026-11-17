@@ -1,0 +1,32 @@
+{
+  "id": "./index.html",
+  "name": "余烬隐修会",
+  "short_name": "余烬隐修会",
+  "description": "破碎余烬隐修会 · 战团圣典",
+  "lang": "zh-CN",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1916",
+  "theme_color": "#0e1916",
+  "icons": [
+    {
+      "src": "assets/branding/ember-home-icon-180-20261117.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding/ember-home-icon-192-20261117.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding/ember-home-icon-512-20261117.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
