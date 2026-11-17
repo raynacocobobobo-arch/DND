@@ -176,6 +176,18 @@ const cases=[
   });
   if(summary.failed.length)fail(v.name+':images','broken '+JSON.stringify(summary.failed));
   records.push({viewport:v.name,type:'content',...summary});
+  // Volume VII: this approved plate belongs immediately above the Grey Knights subsection.
+  await page.goto(HOST+'/index.html#codex-v07-h-4-9',{waitUntil:'domcontentloaded',timeout:30000});
+  const v07Plate=await page.evaluate(()=>{
+    const title=document.getElementById('codex-v07-h-4-9');
+    const figure=title?.previousElementSibling;
+    return {isFigure:figure?.tagName==='FIGURE',
+      caption:figure?.querySelector('figcaption')?.textContent?.trim(),
+      src:figure?.querySelector('img')?.getAttribute('src')};
+  });
+  if(!v07Plate.isFigure||v07Plate.caption!=='祸临之地 · 无署名外围记录'
+    ||!v07Plate.src?.includes('v07-unnamed-peripheral-record-20261116.webp'))
+    fail(v.name+':v07-placement','unnamed perimeter plate not above Grey Knights '+JSON.stringify(v07Plate));
   for(const ch of chapters){
     let response=await page.goto(HOST+'/chapters/'+ch+'.html',{waitUntil:'domcontentloaded',timeout:30000});
     await page.evaluate(async()=>{
@@ -193,6 +205,18 @@ const cases=[
       win:window.innerWidth,heading:document.querySelector('h1')?.textContent,
       logoWidth:document.querySelector('.site-header .brand img')?.getBoundingClientRect().width,
       images:[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.getAttribute('src'))}));
+    if(ch==='07-other-histories'){
+      const plate=await page.evaluate(()=>{
+        const title=document.getElementById('h-4-9');
+        const figure=title?.previousElementSibling;
+        return {isFigure:figure?.tagName==='FIGURE',
+          caption:figure?.querySelector('figcaption')?.textContent?.trim(),
+          src:figure?.querySelector('img')?.getAttribute('src')};
+      });
+      if(!plate.isFigure||plate.caption!=='祸临之地 · 无署名外围记录'
+        ||!plate.src?.includes('v07-unnamed-peripheral-record-20261116.webp'))
+        fail(v.name+':chapter-v07-placement','plate not above Grey Knights '+JSON.stringify(plate));
+    }
     if(response.status()!==200)fail(v.name+':chapter:'+ch,'HTTP '+response.status());
     if(vres.doc>vres.win+2)fail(v.name+':chapter:'+ch,'horizontal overflow '+vres.doc+' > '+vres.win);
     if(vres.images.length)fail(v.name+':chapter:'+ch,'broken image '+vres.images.join(','));
