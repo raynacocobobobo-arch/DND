@@ -167,7 +167,7 @@ html[data-mode='night'] .archive-text-lead p{color:#c5bca8}
 /* V4 shared original-art heraldry */
 .site-header .brand img{object-fit:contain;flex-shrink:0;width:34.5px!important;height:34.5px!important;filter:drop-shadow(0 0 7px #aa8b573a)}
 .original-notice img{object-fit:contain}
-@media(max-width:620px){.site-header .brand img{width:26.25px!important;height:26.25px!important}}
+@media(max-width:800px){.site-header .brand img{width:24px!important;height:24px!important;max-width:24px!important}}
 
 /* V4.4: clear art + compact full-width translucent bottom label, no fades or blur. */
 .reader-shell .reader-main .reader-top {
