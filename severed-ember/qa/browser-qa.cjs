@@ -216,6 +216,20 @@ const cases=[
   for(const e of [...new Set(http404)])fail(v.name+':HTTP',e);
   await page.close();
  }
+ // Verify a high-DPR phone requests the compressed mobile artwork, not desktop originals.
+ const retina=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});
+ await retina.goto(HOST+'/index.html#home',{waitUntil:'domcontentloaded',timeout:30000});
+ const mobileChoice=await retina.evaluate(()=>{
+   const images=[...document.querySelectorAll('#view-home .menu-grid img')];
+   return {count:images.length,first:images[0]?.currentSrc,
+     responsiveCount:document.querySelectorAll('img[srcset]').length};
+ });
+ if(mobileChoice.responsiveCount<100)
+   fail('iphone-retina:srcset','missing responsive images '+JSON.stringify(mobileChoice));
+ if(!mobileChoice.first?.includes('01-organization-mobile.webp'))
+   fail('iphone-retina:selection','large image selected for menu thumbnail '+JSON.stringify(mobileChoice));
+ records.push({viewport:'iphone-retina',type:'responsive',...mobileChoice});
+ await retina.close();
  await browser.close();
  const report={ok:failures.length===0,runAt:new Date().toISOString(),
    browser:'Chromium via Playwright (not physical iPhone Safari)',
