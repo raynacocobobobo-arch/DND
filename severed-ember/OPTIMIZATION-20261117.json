@@ -1,0 +1,100 @@
+{
+  "generated_utc": "2026-11-17T01:39:29.267966+00:00",
+  "quality": 92,
+  "image_count": 9,
+  "original_bytes": 25183752,
+  "optimized_bytes": 3162494,
+  "saved_bytes": 22021258,
+  "images": [
+    {
+      "original": "assets/chapter-art/04-golden-vault-relic-chant-fullbody-20261115.png",
+      "optimized": "assets/chapter-art/04-golden-vault-relic-chant-fullbody-20261115.webp",
+      "width": 2170,
+      "height": 725,
+      "alpha": false,
+      "original_bytes": 2733040,
+      "optimized_bytes": 455524,
+      "saved_bytes": 2277516
+    },
+    {
+      "original": "assets/organization/approved-20261115/banished-ash-knights-20261115.png",
+      "optimized": "assets/organization/approved-20261115/banished-ash-knights-20261115.webp",
+      "width": 2048,
+      "height": 682,
+      "alpha": true,
+      "original_bytes": 3121721,
+      "optimized_bytes": 351026,
+      "saved_bytes": 2770695
+    },
+    {
+      "original": "assets/organization/approved-20261115/cinder-assassins-three-white-helms-20261115.png",
+      "optimized": "assets/organization/approved-20261115/cinder-assassins-three-white-helms-20261115.webp",
+      "width": 2048,
+      "height": 682,
+      "alpha": true,
+      "original_bytes": 3050432,
+      "optimized_bytes": 318856,
+      "saved_bytes": 2731576
+    },
+    {
+      "original": "assets/organization/approved-20261115/confessor-aurek-blueblack-20261115.png",
+      "optimized": "assets/organization/approved-20261115/confessor-aurek-blueblack-20261115.webp",
+      "width": 2048,
+      "height": 682,
+      "alpha": true,
+      "original_bytes": 3001156,
+      "optimized_bytes": 307600,
+      "saved_bytes": 2693556
+    },
+    {
+      "original": "assets/organization/approved-20261115/finger-maiden-20261115.png",
+      "optimized": "assets/organization/approved-20261115/finger-maiden-20261115.webp",
+      "width": 2048,
+      "height": 682,
+      "alpha": true,
+      "original_bytes": 2802815,
+      "optimized_bytes": 274970,
+      "saved_bytes": 2527845
+    },
+    {
+      "original": "assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115.png",
+      "optimized": "assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115.webp",
+      "width": 2172,
+      "height": 724,
+      "alpha": false,
+      "original_bytes": 2355936,
+      "optimized_bytes": 314894,
+      "saved_bytes": 2041042
+    },
+    {
+      "original": "assets/portraits/approved-20261115/v09-05-gavriel-prayer-20261117.png",
+      "optimized": "assets/portraits/approved-20261115/v09-05-gavriel-prayer-20261117.webp",
+      "width": 2172,
+      "height": 724,
+      "alpha": false,
+      "original_bytes": 2332538,
+      "optimized_bytes": 306330,
+      "saved_bytes": 2026208
+    },
+    {
+      "original": "assets/portraits/revised-20261114/03-aurek-original01-helmet-only.png",
+      "optimized": "assets/portraits/revised-20261114/03-aurek-original01-helmet-only.webp",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "original_bytes": 2904013,
+      "optimized_bytes": 548950,
+      "saved_bytes": 2355063
+    },
+    {
+      "original": "assets/rites/08-recruitment-rite-20261115.png",
+      "optimized": "assets/rites/08-recruitment-rite-20261115.webp",
+      "width": 2048,
+      "height": 682,
+      "alpha": true,
+      "original_bytes": 2882101,
+      "optimized_bytes": 284344,
+      "saved_bytes": 2597757
+    }
+  ]
+}
