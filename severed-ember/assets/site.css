@@ -820,5 +820,5 @@ html[data-mode='night'] .reader-shell .reader-main .chapter-paper .codex-body > 
 .true-name-gallery .true-name-card figcaption strong{font-size:13px!important}
 .true-name-gallery .true-name-card figcaption .true-name-note{font-size:11px!important}}
 
-/* Mobile optical alignment: balance transparent crest artwork, without resizing it. */
-@media(max-width:800px){.site-header .brand img{transform:translateX(-3px)!important}}
+/* Optical alignment: balance transparent crest artwork across desktop and mobile, without resizing it. */
+.site-header .brand img{transform:translateX(-3px)!important}
