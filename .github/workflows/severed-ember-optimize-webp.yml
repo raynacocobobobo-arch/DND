@@ -1,0 +1,96 @@
+name: Optimize Severed Ember WebP for desktop and mobile
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'scripts/optimize_severed_ember_webp.py'
+      - '.github/workflows/severed-ember-optimize-webp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: severed-ember-responsive-webp
+  cancel-in-progress: false
+
+jobs:
+  optimize-responsive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install WebP encoder
+        run: python -m pip install --disable-pip-version-check 'Pillow>=11,<13'
+      - name: Build quality-preserving desktop WebP and smaller phone variants
+        run: python scripts/optimize_severed_ember_webp.py
+      - name: Validate compressed artwork and responsive URLs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json,re
+          from urllib.parse import unquote
+
+          root=Path('severed-ember').resolve()
+          report=json.loads((root/'PERFORMANCE-OPTIMIZATION-20261117.json').read_text(encoding='utf-8'))
+          assert report['converted_images'] >= 50, 'Expected bulk compression'
+          assert report['mobile_variants'] >= 40, 'Expected responsive artwork'
+          assert report['responsive_img_tags'] >= 60, 'Expected srcset in page HTML'
+          checked=0
+          for page in root.rglob('*.html'):
+              text=page.read_text(encoding='utf-8')
+              for tag in re.findall(r'<img\b[^>]*>', text, re.I):
+                  src=re.search(r'\bsrc=["\x27]([^"\x27]+)',tag)
+                  if not src:
+                      continue
+                  paths=[src.group(1)]
+                  sourceset=re.search(r'\bsrcset="([^"]+)"',tag)
+                  if sourceset:
+                      paths += [e.strip().split()[0] for e in sourceset.group(1).split(',')]
+                  for p in paths:
+                      p=unquote(p.split('?',1)[0].split('#',1)[0])
+                      if p.startswith('http') or p.startswith('data:'):
+                          continue
+                      target=(page.parent/p).resolve()
+                      assert target.is_relative_to(root), f'Image path escaped site: {p}'
+                      assert target.is_file(), f'Missing image {p} in {page}'
+                      checked+=1
+          for item in report['images']:
+              p=root/item['file']
+              with Image.open(p) as im:
+                  im.verify()
+              if item['mobile_file']:
+                  p=root/item['mobile_file']
+                  with Image.open(p) as im:
+                      im.verify()
+          print('VALIDATION PASS',checked,'static img/srcset URLs,',len(report['images']),'compressed or inspected images')
+          PY
+      - name: Commit optimized images and responsive references
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A severed-ember
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "Reduce Sev. Ember WebP transfer size and serve responsive mobile art"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+            if git push origin HEAD:gh-pages; then
+              echo "Pushed optimized site"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Failed to push safely after retries" >&2
+          exit 1
