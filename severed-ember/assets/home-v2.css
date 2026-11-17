@@ -6,9 +6,9 @@ body{background:radial-gradient(ellipse 65% 48% at 55% 0%,#1d2d28 0%,transparent
 .brand strong,.side-title,.section-head h2,.fact h3{font-family:Georgia,'Songti SC','STSong','Noto Serif CJK SC',serif}
 .frame{gap:16px}
 .left-rail,.right-rail .fact,.panel,.hero,.subhero,.category,.reading-volume,.archive-tile{border-color:var(--line)}
-.hero{height:clamp(325px,27vw,440px);background-color:#101a1b}
-.hero-bg{background-image:linear-gradient(90deg,#091314f8 0%,#0b1517ea 30%,#111d1b74 62%,#0a111024 100%),linear-gradient(0deg,#091313dc 0%,transparent 54%),url('hero/hero-gothic-20261115.webp');background-position:center,center,center 44%;background-size:cover,cover,cover}
-.hero-copy{padding:clamp(28px,4vw,58px);max-width:min(670px,69%)}
+.hero{height:clamp(325px,27vw,440px);background-color:#101a1b;position:relative}
+.hero-bg{background-image:linear-gradient(90deg,#091314f8 0%,#0b1517ea 30%,#111d1b74 62%,#0a111024 100%),linear-gradient(0deg,#091313dc 0%,transparent 54%),url('hero/hero-gothic-20261115.webp');background-position:center,center,center 44%;background-size:cover,cover,cover;position:absolute;inset:0}
+.hero-copy{padding:clamp(28px,4vw,58px);max-width:min(670px,69%);position:relative}
 .hero h1{font-size:clamp(33px,3.2vw,55px)}
 .btn{border-color:#ae9064;background:#1b2722;color:#f1dfbe;transition:background .2s,border-color .2s}
 .btn:hover{background:#374235;border-color:#e3bb78}
