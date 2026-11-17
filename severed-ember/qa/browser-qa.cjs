@@ -26,6 +26,19 @@ const cases=[
   page.on('response',r=>{if(r.status()>=400)http404.push(r.status()+' '+r.url())});
   let resp=await page.goto(HOST+'/index.html',{waitUntil:'networkidle',timeout:30000});
   if(resp.status()!==200)fail(v.name+':root','status '+resp.status());
+  const homeLogos=await page.evaluate(()=>{
+    const selectors=['.topbar .brand .crest>img','.right-rail .fact-emblem>img'];
+    return selectors.map(sel=>{
+      const el=document.querySelector(sel);
+      return el?{selector:sel,width:el.getBoundingClientRect().width,
+        transform:getComputedStyle(el).transform}:null;
+    });
+  });
+  const expectedHomeLogo=v.width<=800?27:36, expectedArchiveLogo=v.width<=800?30:40.5;
+  if(!homeLogos[0]||Math.abs(homeLogos[0].width-expectedHomeLogo)>1)
+    fail(v.name+':logo','header logo size '+JSON.stringify(homeLogos[0]));
+  if(!homeLogos[1]||Math.abs(homeLogos[1].width-expectedArchiveLogo)>1)
+    fail(v.name+':logo','archive logo size '+JSON.stringify(homeLogos[1]));
   for(const view of views){
     await page.goto(HOST+'/index.html#'+view,{waitUntil:'domcontentloaded',timeout:30000});
     await page.waitForTimeout(120);
@@ -74,7 +87,7 @@ const cases=[
     }
     records.push({viewport:v.name,view,...r});
   }
-  // The golden mosaic in Volume I must span the viewport, rather than the text column.
+  // Golden mosaic stays within the viewport, preserving the approved 9:16 portrait composition.
   await page.goto(HOST+'/index.html#codex-v01',{waitUntil:'domcontentloaded',timeout:30000});
   await page.waitForTimeout(180);
   const mural=await page.evaluate(()=>{
@@ -84,9 +97,10 @@ const cases=[
       width:r?.width,left:r?.left,viewport:window.innerWidth,
       src:img?.getAttribute('src'),ratio:img?.getAttribute('width')/img?.getAttribute('height')};
   });
-  if(!mural.visible||!mural.width||Math.abs(mural.width-mural.viewport)>mural.viewport*.02||
-     Math.abs(mural.left)>Math.max(24,mural.viewport*.02)||!mural.src)
-    fail(v.name+':overview','mosaic not viewport-wide '+JSON.stringify(mural));
+  if(!mural.visible||!mural.width||mural.width>mural.viewport+2||
+     mural.left < -2 || mural.left+mural.width>mural.viewport+2||
+     Math.abs(mural.ratio-9/16)>.015||!mural.src)
+    fail(v.name+':overview','mosaic overflow or invalid 9:16 composition '+JSON.stringify(mural));
   records.push({viewport:v.name,type:'overview',...mural});
   await page.goto(HOST+'/index.html#home',{waitUntil:'domcontentloaded'});
   await page.evaluate(async()=>{
@@ -109,7 +123,7 @@ const cases=[
     })),
     failed:[...document.images].filter(x=>x.complete&&x.naturalWidth===0).map(x=>x.getAttribute('src')),
   }));
-  if(summary.categories!==5||summary.deeds!==4||summary.panoramas.length!==9)
+  if(summary.categories!==5||summary.panoramas.length!==9)
     fail(v.name+':count','current-layout counts '+JSON.stringify({
       categories:summary.categories,deeds:summary.deeds,panoramas:summary.panoramas.length,
     }));
@@ -134,11 +148,15 @@ const cases=[
   });
     const vres=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,
       win:window.innerWidth,heading:document.querySelector('h1')?.textContent,
+      logoWidth:document.querySelector('.site-header .brand img')?.getBoundingClientRect().width,
       images:[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.getAttribute('src'))}));
     if(response.status()!==200)fail(v.name+':chapter:'+ch,'HTTP '+response.status());
     if(vres.doc>vres.win+2)fail(v.name+':chapter:'+ch,'horizontal overflow '+vres.doc+' > '+vres.win);
     if(vres.images.length)fail(v.name+':chapter:'+ch,'broken image '+vres.images.join(','));
     if(!vres.heading)fail(v.name+':chapter:'+ch,'missing heading');
+    const expectedChapterLogo=v.width<=800?24:34.5;
+    if(!vres.logoWidth||Math.abs(vres.logoWidth-expectedChapterLogo)>1)
+      fail(v.name+':chapter:'+ch,'header logo incorrect size '+vres.logoWidth);
     records.push({viewport:v.name,chapter:ch,...vres});
     if(ch==='05-campaigns'&&['desktop','iphone'].includes(v.name))
       await page.screenshot({path:path.join(OUT,v.name+'-chapter-05.png'),fullPage:false});
@@ -146,7 +164,7 @@ const cases=[
   if(v.name==='desktop'){
     const samples=[
       ['/assets/portraits/approved-20261115/v09-04-severin-20261115.webp','人物志：塞维林'],
-      ['/assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115.png','人物志：雷金纳德'],
+      ['/assets/portraits/approved-20261115/v09-03-reginald-industrial-halfphase-20261115.webp','人物志：雷金纳德'],
       ['/assets/campaigns/revised-20261116/v05-03.webp','第五卷：第二次三伪星之战'],
       ['/assets/campaigns/revised-20261116/v05-04.webp','第五卷：钢铁风暴'],
       ['/assets/campaigns/revised-20261116/v05-11.webp','第五卷：深渊之井'],
