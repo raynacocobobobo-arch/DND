@@ -768,7 +768,7 @@ function deleteStepSession(id){
 }
 function stepKindLabel(kind){return STEP_KINDS.find(p=>p[0]===kind)?.[1]||'其他'}
 
-const HEALTH_SHORTCUT_NAME='运动手账取步数';
+const HEALTH_SHORTCUT_NAME='健身记录取步数';
 const HEALTH_SHORTCUT_PENDING='hermes_fitness_shortcut_pending_v1';
 const HEALTH_STEP_URL_PREFIX='fitness-step=';
 function activeStepInterval(){
@@ -855,7 +855,7 @@ function renderHealthShortcutCard(){
  '<button type="button" class="secondary-btn" data-health-snapshot="total">同步今日总步数</button></div>'+
  '<p class="micro-note">首次使用需在 iPhone 创建「'+HEALTH_SHORTCUT_NAME+'」快捷指令。按键会跳转至快捷指令，读取后自动返回；已有手动输入仍可使用。</p>'+
  '<details class="health-shortcut-how"><summary>首次配置方法</summary><ol>'+
- '<li>复制已有的健康步数上报快捷指令，重命名为「'+HEALTH_SHORTCUT_NAME+'」。保留读取今日步数、求和及原有的服务器 POST 动作。</li>'+
+ '<li>复制已有的健康步数上报快捷指令，重命名为「'+HEALTH_SHORTCUT_NAME+'」。只保留读取今日步数、求和两个动作；这份手动快捷指令不需要服务器 POST。原本每晚22:00的自动上报快捷指令保持不变。</li>'+
  '<li>在最后新增「文本」动作：先写运动手账网址，后接 <code>#fitness-step=</code>，再插入「求和结果」变量。</li>'+
  '<li>最后新增「打开 URL」动作，打开上一步生成的网址。手动运行一次并允许访问健康数据。</li>'+
  '</ol><p>不要把 Bearer token 填入 GitHub 页面或分享给他人。</p></details></section>';
