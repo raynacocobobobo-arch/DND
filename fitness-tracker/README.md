@@ -1,10 +1,19 @@
-# 运动手账 / Fitness Tracker V1.6
+# 健身记录 / Fitness Tracker V1.6
 
 最新版本：V1.6（2026-11-18）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
+
+## V1.6 视觉品牌与 iPhone 添加到主屏幕
+
+- PWA 的 name/short_name、Safari apple-mobile-web-app-title、网页标题统一为「健身记录」。
+- 视觉采用黑色背景 + 醒目黄／金色按钮、标题和打卡进度；首页及步数去重、日历、历史、设置五个页面统一。
+- iOS 桌面图标使用用户上传的「黄底黑色拳头与帝国双头鹰徽记」图片，裁至 180×180 PNG 并压缩，链接为 `./icon-180.png`；修改 iPhone 主屏幕图标可能需要移除旧快捷方式并重新添加。
+- 缓存版本 `fitness-tracker-v1.6-gold`，随新图标与主题强制刷新。
+- 保留原 `icon.svg` 为兼容回退，不使用另一张后生成的图标。
+- 用户的健康步数原快捷指令、token、现有腾讯云定时推送均不做远程更改；一键读取需在设备上手动复制并设置快捷指令。
 
 ## V1.6 iPhone Apple 健康步数一键读取（快捷指令回传）
 
