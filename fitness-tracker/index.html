@@ -739,6 +739,19 @@ html,body,.app,.main{background:#0e0e0e!important}
  }
 }
 
+
+/* Safari has browser chrome: preserve scrolling rather than cut off the bottom row. */
+@media(max-width:850px) and (display-mode:browser){
+ body[data-screen="overview"] .app{height:auto!important;min-height:100dvh!important}
+ body[data-screen="overview"] .main{
+   height:auto!important;max-height:none!important;
+   min-height:100dvh!important;overflow-y:auto!important
+ }
+ body[data-screen="overview"] .quick-grid{
+   grid-template-rows:repeat(6,minmax(89px,auto))!important;flex:0 0 auto!important
+ }
+}
+
 </style>
 </head>
 <body>
