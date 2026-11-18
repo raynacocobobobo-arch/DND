@@ -153,6 +153,25 @@
  .quick-inputline{margin-top:3px}
  .quick-save{min-height:34px}
 }
+
+/* V1.3: compact history with dedicated today/week sections and editable calculation profiles. */
+.history-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:4px}
+.history-head h2{margin:0;font-size:20px;font-weight:800}
+.history-head p{margin:3px 0 0;font-size:12px;color:var(--sub)}
+.history-block.section-block{margin-top:13px}
+.history-empty{padding:10px 0;color:var(--sub);font-size:12px}
+.history-more{text-align:center;margin:16px 0 0}
+.exercise-config-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.exercise-config-card{background:#f8faf8;border:1px solid #dfeae2;border-radius:14px;padding:14px;min-width:0}
+.exercise-config-card h3{font-size:14px;color:#1b382b;margin:0 0 12px}
+.exercise-config-card label{display:block;font-size:11px;color:#617567;font-weight:650;margin:8px 0}
+.exercise-config-card input{display:block;width:100%;min-width:0;border:1px solid #d4e3d8;border-radius:9px;background:#fff;margin-top:5px;padding:9px;font-size:14px;color:#153b29}
+.exercise-config-preview{font-size:11px;color:#6c806e;margin-top:10px}
+.exercise-config-preview strong{color:#236f50}
+.exercise-save-bar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:20px}
+.exercise-save-bar p{font-size:11px;max-width:340px;color:var(--sub);margin:0}
+@media(max-width:750px){.exercise-config-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.exercise-save-bar{display:block}.exercise-save-bar p{margin-top:10px}}
+@media(max-width:390px){.exercise-config-grid{gap:7px}.exercise-config-card{padding:10px}.history-head h2{font-size:18px}}
 </style>
 </head>
 <body>
@@ -251,10 +270,98 @@ function previewDescription(d){if(d.type==='strength')return `${d.sets||0} 组 �
 function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='cardio')return '沿用原脚本：5 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='swimming')return '沿用原脚本：6 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
 function recordDescription(r){if(r.type==='walking')return `${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='swimming')return `${r.duration_min||0} 分钟${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
 function recordName(r){return r.type==='walking'?'步行':r.exercise||r.stroke||r.note||prettyType(r.type)}
-function renderHistory(){const wk=getWeekDates(),today=localDate(),records=[...state.records].filter(r=>historyFilter==='all'||historyFilter==='week'&&wk.includes(r.date)||historyFilter==='today'&&r.date===today).sort((a,b)=>b.date.localeCompare(a.date)||String(b.createdAt||'').localeCompare(String(a.createdAt||''))||b.id.localeCompare(a.id));const dates=[...new Set(records.map(r=>r.date))];return `<section class="card"><div class="section-title"><div><h2>完整训练历史</h2><p>共 ${state.records.length} 条记录 · 本次筛选 ${records.length} 条</p></div><button type="button" class="link-btn" data-view="overview">＋ 快速打卡</button></div><div class="history-controls">${[['week','本周'],['today','今天'],['all','全部']].map(([k,t])=>`<button type="button" class="pill ${historyFilter===k?'active':''}" data-filter="${k}">${t}</button>`).join('')}</div>${dates.length?dates.map(date=>`<div class="day-group"><div class="day-head"><strong>${safe(formatDate(date))} · ${DAY_NAMES[dateFromISO(date).getDay()]}</strong><small>合计 ${totalRecs(records.filter(r=>r.date===date))} kcal</small></div>${records.filter(r=>r.date===date).map(r=>`<div class="record-card"><div class="record-icon">${icon(r.type==='strength'?'training':r.type==='hold'?'hold':r.type==='walking'?'walking':r.type==='swimming'?'swimming':'activity',18)}</div><div class="record-meta"><strong>${safe(recordName(r))}</strong><small>${safe(recordDescription(r))}</small></div><div class="record-cal">${Number(r.calories)||0}<small>kcal</small></div><button type="button" class="record-action" data-edit="${safe(r.id)}" aria-label="编辑 ${safe(recordName(r))}">编辑</button><button type="button" class="record-action danger" data-delete="${safe(r.id)}" aria-label="删除 ${safe(recordName(r))}">删除</button></div>`).join('')}</div>`).join(''):`<div class="empty-state"><strong>这个时间范围还没有运动记录</strong><p>添加一条训练后，会自动显示在这里。</p><button type="button" class="primary-btn" data-view="overview" style="margin-top:12px">快速打卡</button></div>`}</section>`}
-function renderSettings(){return `<div class="settings-grid"><section class="card settings-card"><h2>个人参数</h2><div class="fields">${field({key:'weight',label:'当前体重',value:state.settings.weight,unit:'kg',step:.1,min:1})}${field({key:'weeklyGoal',label:'每周消耗目标',value:state.settings.weeklyGoal,unit:'kcal',min:1})}</div><p>修改体重只影响之后新建或重新编辑的训练记录，不改动既往消耗数据。</p><button type="button" class="primary-btn" data-action="save-settings" style="margin-top:16px">保存参数</button><div class="alert">卡路里是按照你原有训练脚本推算的近似值；仅凭次数、组数和时间，无法测量真实能量消耗。</div></section>
-<section class="card settings-card"><h2>数据备份</h2><p>所有数据保存在这个浏览器的本地存储中，不会自动上传。清理网站数据、更换浏览器或设备可能导致记录丢失，建议定期备份。</p><div class="settings-actions"><button type="button" class="primary-btn" data-action="export-json">导出 JSON</button><button type="button" class="secondary-btn" data-action="export-csv">导出 CSV</button><button type="button" class="secondary-btn" data-action="import-json">导入 JSON</button></div><div class="alert">导入备份会覆盖当前浏览器的记录。导入前请先导出当前数据。</div><button type="button" class="small-danger" data-action="reset-all" style="margin-top:13px">清空所有训练记录</button></section></div>
-<section class="card section-block"><div class="section-title"><div><h2>计算规则</h2><p>与原始 fitness.py 保持一致；静态保持为额外补充。</p></div></div><table class="formula-table"><tr><td>椭圆机 / 有氧</td><td>5.0 MET × 3.5 × 体重(kg) / 200 × 分钟</td></tr><tr><td>自行车（中等强度）</td><td>6.0 MET × 3.5 × 体重(kg) / 200 × 分钟（新增估算）</td></tr><tr><td>蛙泳</td><td>6.0 MET × 3.5 × 体重(kg) / 200 × 分钟</td></tr><tr><td>力量训练</td><td>总次数 × 0.22 kcal</td></tr><tr><td>仰卧起坐</td><td>总次数 × 0.15 × 体重 / 68</td></tr><tr><td>步行</td><td>步数 × 0.04 × 体重 / 70</td></tr><tr><td>静态保持</td><td>采用补充估算：3 MET × 3.5 × 体重 / 200 × 有效分钟</td></tr></table><details><summary>MET 与力量训练的计算局限</summary><p>MET 是基于活动强度和体重的粗略估计；游泳技术、动作节奏、间歇休息、负重、心率和个体差异都会影响实际消耗。力量训练沿用旧脚本“按次数估算”，并非经验证的个体能量消耗模型。静态动作只估算实际坚持的时间，不计休息。页面统计更适合观察记录趋势，不适合精确计算饮食能量缺口。</p></details></section>`}
+
+function historyRecordCard(r){
+ return '<div class="record-card"><div class="record-icon">'+icon(r.type==='strength'?'training':r.type==='hold'?'hold':r.type==='walking'?'walking':r.type==='swimming'?'swimming':'activity',18)+'</div>'+
+ '<div class="record-meta"><strong>'+safe(recordName(r))+'</strong><small>'+safe(recordDescription(r))+'</small></div>'+
+ '<div class="record-cal">'+(Number(r.calories)||0)+'<small>kcal</small></div>'+
+ '<button type="button" class="record-action" data-edit="'+safe(r.id)+'" aria-label="编辑 '+safe(recordName(r))+'">编辑</button>'+
+ '<button type="button" class="record-action danger" data-delete="'+safe(r.id)+'" aria-label="删除 '+safe(recordName(r))+'">删除</button></div>';
+}
+function renderHistorySection(title,items,emptyText){
+ const sorted=[...items].sort((a,b)=>b.date.localeCompare(a.date)||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+ const dates=[...new Set(sorted.map(r=>r.date))];
+ return '<section class="card section-block history-block"><div class="section-title"><div><h2>'+title+'</h2><p>'+
+ items.length+' 条记录 · 合计 '+totalRecs(items)+' kcal</p></div></div>'+
+ (dates.length?dates.map(date=>'<div class="day-group">'+(title==='今日记录'?'':'<div class="day-head"><strong>'+
+ safe(formatDate(date))+' · '+DAY_NAMES[dateFromISO(date).getDay()]+'</strong></div>')+
+ sorted.filter(r=>r.date===date).map(historyRecordCard).join('')+'</div>').join(''):
+ '<p class="history-empty">'+emptyText+'</p>')+'</section>';
+}
+function renderHistory(){
+ const today=localDate(),week=getWeekDates();
+ const recent=state.records.filter(r=>r.date===today);
+ const thisWeek=state.records.filter(r=>r.date!==today&&week.includes(r.date));
+ const older=state.records.filter(r=>!week.includes(r.date));
+ return '<section class="history-head"><div><h2>训练记录</h2><p>共 '+state.records.length+' 条，历史消耗 '+totalRecs(state.records)+' kcal</p></div>'+
+ '<div class="history-actions"><button type="button" class="link-btn" data-view="overview">＋ 快速打卡</button></div></section>'+
+ renderHistorySection('今日记录',recent,'今天暂无记录，运动后会自动出现在这里。')+
+ renderHistorySection('本周记录（不含今天）',thisWeek,'本周其他日期暂无运动记录。')+
+ '<div class="history-more"><button type="button" class="secondary-btn" data-filter="'+(historyFilter==='all'?'week':'all')+'">'+
+ (historyFilter==='all'?'收起更早记录':'查看更早记录（'+older.length+' 条）')+'</button></div>'+
+ (historyFilter==='all'?renderHistorySection('更早记录',older,'暂无更早记录。'):'');
+}
+function renderExerciseSettings(){
+ return '<section class="card section-block exercise-settings"><div class="section-title"><div><h2>每组动作与热量计算</h2>'+
+ '<p>设置每组动作次数或持续秒数，以及每次、每分钟或每千步的估算热量。</p></div></div>'+
+ '<div class="exercise-config-grid">'+QUICK_ITEMS.map(q=>{
+  const p=exerciseProfile(q),hasSet=q.type==='strength'||q.type==='hold';
+  const unit=q.type==='walking'?'kcal / 1000步':q.type==='strength'?'kcal / 次':'kcal / 分钟';
+  const amount=q.type==='walking'?q.value+' 步':q.value+' '+q.unit;
+  return '<div class="exercise-config-card" data-exercise-config="'+q.key+'"><h3>'+safe(q.name)+'</h3>'+
+   (hasSet?'<label>每组'+(q.type==='hold'?'秒数':'动作次数')+
+    '<input type="number" id="ec-'+q.key+'-perSet" min="1" max="600" step="1" inputmode="numeric" value="'+p.perSet+'"></label>':'')+
+   '<label>热量系数（'+unit+'）<input type="number" id="ec-'+q.key+
+   '-rate" min="0" max="10000" step="0.001" inputmode="decimal" value="'+Number(p.rate.toFixed(4))+'"></label>'+
+   '<div class="exercise-config-preview">默认 '+amount+' ≈ <strong data-exercise-est="'+q.key+'">'+
+   profileCalories(q,q.value,p)+'</strong> kcal</div></div>';
+ }).join('')+'</div>'+
+ '<div class="exercise-save-bar"><button type="button" class="primary-btn" data-action="save-exercise-config">保存动作与热量参数</button>'+
+ '<p>更改只影响之后的记录；旧记录的卡路里、组数和运动日期不会自动变化。</p></div></section>';
+}
+function renderSettings(){
+ return '<div class="settings-grid"><section class="card settings-card"><h2>个人参数</h2><div class="fields">'+
+ field({key:'weight',label:'当前体重',value:state.settings.weight,unit:'kg',step:.1,min:1})+
+ field({key:'weeklyGoal',label:'每周消耗目标',value:state.settings.weeklyGoal,unit:'kcal',min:1})+
+ '</div><p>更新体重只影响未自定义系数的后续估算，不重算历史记录。</p>'+
+ '<button type="button" class="primary-btn" data-action="save-settings" style="margin-top:16px">保存参数</button></section>'+
+ '<section class="card settings-card"><h2>数据备份</h2>'+
+ '<p>训练和打卡数据仅保存在当前浏览器。建议定期导出 JSON 备份；清理浏览器网站数据可能造成丢失。</p>'+
+ '<div class="settings-actions"><button type="button" class="primary-btn" data-action="export-json">导出 JSON</button>'+
+ '<button type="button" class="secondary-btn" data-action="export-csv">导出 CSV</button>'+
+ '<button type="button" class="secondary-btn" data-action="import-json">导入 JSON</button></div>'+
+ '<div class="alert">导入备份会覆盖当前记录，请先导出当前数据。</div>'+
+ '<button type="button" class="small-danger" data-action="reset-all" style="margin-top:13px">清空所有训练记录</button></section></div>'+
+ renderExerciseSettings()+
+ '<section class="card section-block"><h2>计算说明</h2>'+
+ '<p>椭圆机默认按 5 kcal / 分钟：20 分钟 = 100 kcal。骑车、蛙泳和步行默认热量系数按当前体重估算；力量按组数 × 每组动作数 × 每次热量，静蹲按组数 × 每组秒数换算有效分钟。</p>'+
+ '<p class="micro-note">这些都是记录用的近似估算值，不等于穿戴设备测得的实际能量消耗。可以按你的设备数据调整各项系数。</p></section>';
+}
+function saveExerciseProfiles(){
+ const next={...(state.settings.exerciseProfiles||{})};
+ for(const q of QUICK_ITEMS){
+  const rate=Number(document.getElementById('ec-'+q.key+'-rate')?.value);
+  const setInput=document.getElementById('ec-'+q.key+'-perSet');
+  const perSet=setInput?Number(setInput.value):undefined;
+  if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){
+   toast('请检查「'+q.name+'」的动作次数或热量系数');return false;
+  }
+  next[q.key]=setInput?{perSet,rate}:{rate};
+ }
+ const previous=state.settings;
+ state.settings={...previous,exerciseProfiles:next};
+ if(!persist()){state.settings=previous;return false}
+ render();toast('动作与热量参数已保存，后续记录采用新设置');return true;
+}
+function updateExercisePreview(card){
+ const q=QUICK_ITEMS.find(item=>item.key===card?.dataset.exerciseConfig);if(!q)return;
+ const rate=Number(card.querySelector('[id$="-rate"]')?.value);
+ const setInput=card.querySelector('[id$="-perSet"]'),perSet=setInput?Number(setInput.value):undefined;
+ const target=card.querySelector('[data-exercise-est]');
+ if(!target)return;
+ if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){target.textContent='—';return}
+ target.textContent=profileCalories(q,q.value,{perSet,rate});
+}
 function switchView(v){if(!['overview','calendar','training','history','settings'].includes(v))return;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
 function toast(message){let el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400)}
 function pullForm(){const f=document.getElementById('recordForm');if(!f)return;for(const input of f.querySelectorAll('[name]'))draft[input.name]=input.value}
@@ -468,7 +575,8 @@ document.addEventListener('click',e=>{
  render();return}
  if(e.target.closest('[data-rest-toggle]')){toggleRestDay();return}
 });
-document.addEventListener('click',e=>{const viewBtn=e.target.closest('[data-view]');if(viewBtn){switchView(viewBtn.dataset.view);return}const categoryBtn=e.target.closest('[data-category]');if(categoryBtn){const next=categoryBtn.dataset.category;if(next===draft.type)return;draft={...emptyDraft(next),id:draft.id,date:draft.date};render();return}const planBtn=e.target.closest('[data-plan]');if(planBtn){const [day,index]=planBtn.dataset.plan.split('-').map(Number);startPlan(day,index);return}const filterBtn=e.target.closest('[data-filter]');if(filterBtn){historyFilter=filterBtn.dataset.filter;render();return}const editBtn=e.target.closest('[data-edit]');if(editBtn){startEdit(editBtn.dataset.edit);return}const delBtn=e.target.closest('[data-delete]');if(delBtn){const item=state.records.find(r=>r.id===delBtn.dataset.delete);if(!item)return;if(confirm(`删除 ${item.date} 的「${recordName(item)}」记录？`)){state.records=state.records.filter(r=>r.id!==item.id);persist();render();toast('记录已删除')}return}const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;switch(action){case 'reset-draft':draft=emptyDraft();render();break;case 'save-settings':saveSettings();break;case 'export-json':exportJSON();break;case 'export-csv':exportCSV();break;case 'import-json':document.getElementById('importFile').click();break;case 'reset-all':if(confirm('确定清空所有训练记录吗？此操作无法撤销。')){state=initialState();draft=emptyDraft();persist();view='overview';render();toast('已清空记录')}break}});
+document.addEventListener('click',e=>{const viewBtn=e.target.closest('[data-view]');if(viewBtn){switchView(viewBtn.dataset.view);return}const categoryBtn=e.target.closest('[data-category]');if(categoryBtn){const next=categoryBtn.dataset.category;if(next===draft.type)return;draft={...emptyDraft(next),id:draft.id,date:draft.date};render();return}const planBtn=e.target.closest('[data-plan]');if(planBtn){const [day,index]=planBtn.dataset.plan.split('-').map(Number);startPlan(day,index);return}const filterBtn=e.target.closest('[data-filter]');if(filterBtn){historyFilter=filterBtn.dataset.filter;render();return}const editBtn=e.target.closest('[data-edit]');if(editBtn){startEdit(editBtn.dataset.edit);return}const delBtn=e.target.closest('[data-delete]');if(delBtn){const item=state.records.find(r=>r.id===delBtn.dataset.delete);if(!item)return;if(confirm(`删除 ${item.date} 的「${recordName(item)}」记录？`)){state.records=state.records.filter(r=>r.id!==item.id);persist();render();toast('记录已删除')}return}const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;switch(action){case 'reset-draft':draft=emptyDraft();render();break;case 'save-settings':saveSettings();break;case 'save-exercise-config':saveExerciseProfiles();break;case 'export-json':exportJSON();break;case 'export-csv':exportCSV();break;case 'import-json':document.getElementById('importFile').click();break;case 'reset-all':if(confirm('确定清空所有训练记录吗？此操作无法撤销。')){state=initialState();draft=emptyDraft();persist();view='overview';render();toast('已清空记录')}break}});
+document.addEventListener('input',e=>{const card=e.target.closest('[data-exercise-config]');if(card)updateExercisePreview(card);});
 document.addEventListener('input',e=>{if(e.target.closest('#recordForm')){pullForm();updatePreview()}});
 document.addEventListener('submit',e=>{if(e.target.id!=='recordForm')return;e.preventDefault();pullForm();try{const rec=newRecord(draft);const index=state.records.findIndex(r=>r.id===rec.id);if(index>=0)state.records[index]=rec;else state.records.push(rec);persist();draft=emptyDraft('strength');switchView('overview');toast(index>=0?'记录修改已保存':'训练已记录，统计已更新')}catch(err){toast(err.message)}});
 document.getElementById('importFile').addEventListener('change',e=>{importJSONFile(e.target.files[0]);e.target.value=''});
