@@ -1,4 +1,4 @@
-const CACHE='fitness-tracker-v1.9-manual-safe';
+const CACHE='fitness-tracker-v2.0-iphone16';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-180.png','./icon-512.jpg'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
