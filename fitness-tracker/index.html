@@ -193,6 +193,7 @@
 .step-save{border:0;background:#24785b;color:#fff;padding:11px 15px;min-height:42px;border-radius:10px;margin-top:13px;font-weight:750;font-size:13px}
 .step-help{font-size:11px;color:#819184;line-height:1.7;margin:9px 0 0}
 @media(max-width:620px){.step-tool{padding:11px 12px}.step-inputs{gap:8px}.step-inputs label{font-size:11px}.step-inputs input{padding:8px 7px}}
+.checkin-calendar-label{font-size:11px;color:#849589}
 </style>
 </head>
 <body>
@@ -632,7 +633,7 @@ function renderRestButton(){
 function renderCheckinStrip(){
  const week=getWeekDates(),streak=streakCount(),today=localDate();
  const active=week.filter(d=>dayKind(d)!=='none').length;
- return '<section class="checkin-strip" aria-label="本周打卡状态"><div class="checkin-strip-header"><strong>本周打卡 · '+active+'/7 天</strong><button type="button" data-view="calendar">查看月历</button></div>'+
+ return '<section class="checkin-strip" aria-label="本周打卡状态"><div class="checkin-strip-header"><strong>本周打卡 · '+active+'/7 天</strong><span class="checkin-calendar-label">本周</span></div>'+
  '<div class="checkin-week">'+week.map(d=>{
   const type=dayKind(d),num=Number(d.slice(-2)),day=dateFromISO(d);
   return '<div class="checkin-day '+type+(d===today?' today':'')+'"><span class="weekday">周'+['日','一','二','三','四','五','六'][day.getDay()]+'</span><span class="day-circle">'+num+'</span><span class="day-signal">'+(type==='workout'?'训练':type==='rest'?'休息':'—')+'</span></div>';
