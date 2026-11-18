@@ -237,7 +237,7 @@ function quickCalories(q,n){return calc(quickDraft(q,n))??0}
 
 const REST_DAYS_KEY='hermes_fitness_rest_days_v1';
 function validRestDate(v){
- if(typeof v!=='string'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(v))return false;
+ if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;
  const d=dateFromISO(v);
  return !Number.isNaN(d.getTime())&&localDate(d)===v&&v<=localDate();
 }
