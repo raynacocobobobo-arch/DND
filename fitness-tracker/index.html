@@ -7,7 +7,7 @@
   <meta name="description" content="轻量离线健身追踪：记录组数、次数、训练时长，自动估算运动消耗。" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <title>运动手账 · 健身追踪 V1.1</title>
+  <title>运动手账 · 健身追踪 V1.2</title>
   <style>
     :root {--bg:#f5f7f5;--card:#fff;--ink:#192824;--sub:#687972;--muted:#92a19a;--line:#e4ebe6;--accent:#24785b;--accent-dark:#176448;--accent-pale:#eaf5ef;--ink-panel:#18372f;--warm:#e9af61;--shadow:0 12px 40px rgba(32,65,49,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -116,6 +116,43 @@
 .cal-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#24785b;margin-right:5px}
 .cal-legend .rest-dot{background:#abc78e}
 @media(max-width:620px){.cal-grid{gap:4px}.cal-blank{min-height:65px}.cal-day{min-height:68px;border-radius:9px;padding:7px 2px 5px}.cal-date{min-width:24px;height:24px;font-size:12px}.cal-day .cal-info{font-size:9px}.cal-stat strong{font-size:21px}.cal-stat{padding:11px}.checkin-strip{padding:12px 10px}.checkin-week{gap:4px}.checkin-footer{align-items:flex-start}.checkin-footer span{max-width:56%}}
+
+/* V1.2: four genuinely compact quick-tap cards per row on phones. */
+@media(max-width:850px){
+ .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .quick-card{
+  min-width:0;min-height:130px;border-radius:11px;
+  padding:9px 6px 8px;box-shadow:none;
+  display:flex;flex-direction:column;align-items:stretch;
+ }
+ .quick-cardhead{display:flex;justify-content:center;align-items:center;min-height:30px;gap:0;text-align:center}
+ .quick-cardhead>div{width:100%;min-width:0}
+ .quick-bubble,.quick-cardnote{display:none}
+ .quick-cardtitle{
+  font-size:12px;line-height:1.17;letter-spacing:-.2px;
+  min-height:28px;display:flex;justify-content:center;align-items:center;
+  font-weight:760;white-space:normal;overflow-wrap:anywhere;
+ }
+ .quick-inputline{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px}
+ .quick-countbox{width:100%;min-width:0;border:0;background:transparent;border-radius:0}
+ .quick-countbox button{display:none}
+ .quick-countbox input{
+  display:block;width:100%;min-width:0;height:34px;
+  padding:0 2px;border:1px solid #d9e8dd;border-radius:8px;
+  background:#f6faf7;font-size:16px;
+  font-weight:760;text-align:center;
+ }
+ .quick-unit{width:auto;line-height:1.1;font-size:10px;color:#71877a}
+ .quick-save{margin-top:auto;min-height:36px;padding:6px 0;border-radius:8px;font-size:12px}
+ .quick-estimate{display:none}
+}
+@media(max-width:390px){
+ .quick-grid{gap:5px}
+ .quick-card{padding:8px 4px 7px;border-radius:10px}
+ .quick-cardtitle{font-size:11.5px}
+ .quick-inputline{margin-top:3px}
+ .quick-save{min-height:34px}
+}
 </style>
 </head>
 <body>
@@ -174,7 +211,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['快速打卡','固定项目 · 只填数量 · 自动算热量'],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.1</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.2</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -212,12 +249,14 @@ const QUICK_ITEMS=[
  {key:'elliptical',name:'椭圆机',unit:'分钟',value:20,step:5,max:480,type:'cardio',exercise:'椭圆机',note:'按分钟',iconName:'activity'},
  {key:'lat',name:'拉背',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'拉背',note:'固定每组15次',iconName:'training'},
  {key:'row',name:'划船',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'划船',note:'固定每组15次',iconName:'training'},
- {key:'fly',name:'飞鸟及引体',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'飞鸟及引体',note:'组合动作 · 每组15次',iconName:'training'},
- {key:'steps',name:'走路',unit:'步',value:5000,step:1000,max:100000,type:'walking',exercise:'走路',note:'填写实际步数',iconName:'walking'},
- {key:'bike',name:'自行车',unit:'分钟',value:20,step:5,max:480,type:'cardio',exercise:'自行车',note:'中等强度估算',iconName:'activity'},
- {key:'swim',name:'蛙泳',unit:'分钟',value:20,step:5,max:480,type:'swimming',exercise:'蛙泳',note:'按分钟记录',iconName:'swimming'},
- {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:3,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'固定每组45秒',iconName:'hold'},
- {key:'situps',name:'仰卧起坐',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'仰卧起坐',note:'固定每组15次',iconName:'training'}
+ {key:'fly',name:'飞鸟及引体',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'飞鸟及引体',note:'每组15次',iconName:'training'},
+ {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:3,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'每组45秒',iconName:'hold'},
+ {key:'situps',name:'仰卧起坐',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'仰卧起坐',note:'每组15次',iconName:'training'},
+ {key:'dumbbell',name:'哑铃',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'哑铃',note:'每组15次',iconName:'training'},
+ {key:'back',name:'背部运动',unit:'组',value:3,step:1,max:100,type:'strength',exercise:'背部运动',note:'每组15次',iconName:'training'},
+ {key:'bike',name:'自行车',unit:'分钟',value:20,step:5,max:480,type:'cardio',exercise:'自行车',note:'中等强度',iconName:'activity'},
+ {key:'steps',name:'走路',unit:'步',value:5000,step:1000,max:100000,type:'walking',exercise:'走路',note:'实际步数',iconName:'walking'},
+ {key:'swim',name:'蛙泳',unit:'分钟',value:20,step:5,max:480,type:'swimming',exercise:'蛙泳',note:'按分钟',iconName:'swimming'}
 ];
 function readQuickValues(){
  // Only the card defaults change. Do not touch existing workout records, settings,
@@ -323,7 +362,7 @@ function renderQuickHome(){
  '<div class="quick-bar"><div class="quick-bar-fill" style="width:'+displayPercent+'%"></div></div>' +
  '<div class="quick-barline"><span>本周目标进度 '+percentage+'%</span><span>'+(rem===0?'已达到周目标':'距离目标还差 '+rem+' kcal')+'</span></div></section>'+
  renderCheckinStrip()+
- '<div class="quick-section-title"><h2>快速记录</h2><span>V1.0 · 9个固定项目</span></div>'+
+ '<div class="quick-section-title"><h2>快速记录</h2><span>V1.2 · 11个固定项目</span></div>'+
  '<div class="quick-grid">'+QUICK_ITEMS.map(q=>{
  const v=quickValues[q.key],estimate=quickCalories(q,v);
  return '<form class="quick-card" data-q-form="'+q.key+'">'+
@@ -331,7 +370,7 @@ function renderQuickHome(){
  '<div class="quick-inputline"><div class="quick-countbox"><button type="button" data-q-step="'+q.key+'" data-direction="-1" aria-label="'+q.name+'减少">−</button>'+
  '<input type="number" inputmode="numeric" name="q-value" aria-label="'+q.name+q.unit+'" min="1" max="'+q.max+'" step="1" value="'+v+'">'+
  '<button type="button" data-q-step="'+q.key+'" data-direction="1" aria-label="'+q.name+'增加">+</button></div><span class="quick-unit">'+q.unit+'</span></div>'+
- '<button type="submit" class="quick-save">＋ 记录'+q.name+'</button>'+
+ '<button type="submit" class="quick-save" aria-label="打卡'+q.name+'">打卡</button>'+
  '<div class="quick-estimate">本次预计 <strong data-q-est="'+q.key+'">'+estimate+'</strong> kcal</div></form>'
  }).join('')+'</div>'+
  '<section class="quick-recent"><div class="quick-recent-head"><strong>今天的记录 · '+todayRecords.length+' 项</strong><button type="button" data-view="history">查看全部</button></div>'+
