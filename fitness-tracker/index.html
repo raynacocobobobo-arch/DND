@@ -637,6 +637,7 @@ function cleanStepDiary(raw){
  return result;
 }
 let editingStepSessionId=null;
+let stepManualOpen=false;
 function todayStepEntry(){return state.stepDiary?.[localDate()]||{}}
 function stepSessions(date){return state.stepDiary?.[date]?.sessions||[]}
 function completeStepSessions(date){return stepSessions(date).filter(s=>s.end!==null)}
@@ -746,7 +747,7 @@ function saveStepSession(form){
  try{
   if(managedWalkingRecord(day)&&dailyStepBreakdown(day))updateManagedWalking(day);
   if(!persist()){state.stepDiary=previous;state.records=oldRecords;return false}
-  editingStepSessionId=null;render();
+  editingStepSessionId=null;stepManualOpen=false;render();
   toast(end===null?'已存开始步数；完成后可补填结束步数':'扣除区间已保存，净步数已更新');
   return true;
  }catch(e){state.stepDiary=previous;state.records=oldRecords;toast(e.message||'保存失败');return false}
@@ -760,7 +761,7 @@ function deleteStepSession(id){
  try{
   if(managedWalkingRecord(day)&&dailyStepBreakdown(day))updateManagedWalking(day);
   if(!persist()){state.stepDiary=previous;state.records=oldRecords;return false}
-  editingStepSessionId=null;render();toast('已删除这段区间，净步数已重新计算');return true;
+  editingStepSessionId=null;stepManualOpen=false;render();toast('已删除这段区间，净步数已重新计算');return true;
  }catch(e){state.stepDiary=previous;state.records=oldRecords;toast(e.message||'删除失败');return false}
 }
 function stepKindLabel(kind){return STEP_KINDS.find(p=>p[0]===kind)?.[1]||'其他'}
@@ -859,43 +860,44 @@ function renderHealthShortcutCard(){
 }
 
 function renderStepDedup(){
- const entry=todayStepEntry(),sessions=[...stepSessions(localDate())].sort((a,b)=>a.start-b.start);
- const breakdown=dailyStepBreakdown(localDate()),deduction=stepDeduction(localDate());
- const edit=sessions.find(x=>x.id===editingStepSessionId);
- const total=Number.isInteger(entry.total)?entry.total:null;
- const excluded=deduction.excluded,net=breakdown?.net;
- return '<div class="step-page">'+
- '<section class="card step-summary"><h2>今日净步数</h2>'+
- '<div class="step-equation"><div><small>全天总步数</small><strong>'+(total??'—')+'</strong></div>'+
- '<span>−</span><div><small>已扣除 '+deduction.completed+' 段</small><strong>'+excluded+'</strong></div>'+
- '<span>=</span><div class="step-net"><small>计入走路</small><strong>'+(net??'待填写')+'</strong></div></div>'+
- (deduction.pending?'<p class="step-pending">还有 '+deduction.pending+' 段未填写结束步数，暂不扣除；完成后自动更新。</p>':'')+
- '<form id="stepTotalForm" class="step-total-form"><label>当天累计总步数<input type="number" name="dayTotal" min="1" max="1000000" step="1" inputmode="numeric" placeholder="例如 12000" value="'+(total??'')+'"></label>'+
- '<button type="submit">保存 / 更新全天步数</button></form>'+
- '<p class="micro-note">也可以在第一页「走路」卡片输入全天累计步数，同一天只会保留一条自动计算的净步数记录。</p></section>'+
- renderHealthShortcutCard()+
- '<section class="card step-sessions"><div class="section-title"><div><h2>重复计步区间</h2><p>健身房、骑车、乘车等可记录多段；每段填开始和结束的累计步数。</p></div>'+
- '<button type="button" class="link-btn" data-step-new>＋ 新增一段</button></div>'+
- (sessions.length?'<div class="step-session-list">'+sessions.map((x,i)=>
- '<div class="step-session-row"><span class="step-session-num">'+(i+1)+'</span><div class="step-session-info"><strong>'+safe(stepKindLabel(x.kind))+'</strong>'+
- '<small>'+x.start.toLocaleString('zh-CN')+' → '+(x.end===null?'待补结束步数':x.end.toLocaleString('zh-CN'))+'</small></div>'+
- '<div class="step-session-delta">'+(x.end===null?'待完成':'−'+(x.end-x.start).toLocaleString('zh-CN')+' 步')+'</div>'+
- '<button type="button" class="record-action" data-step-edit="'+safe(x.id)+'">修改</button>'+
- '<button type="button" class="record-action danger" data-step-delete="'+safe(x.id)+'">删除</button></div>').join('')+'</div>':
- '<div class="step-empty">今天还没有扣除区间。填写下方的第一段开始步数即可。</div>')+
- '<form id="stepSessionForm" class="step-session-form"><strong>'+(edit?'修改扣除区间':'新增扣除区间')+'</strong>'+
- '<div class="step-session-fields"><label>类型<select name="sessionKind">'+STEP_KINDS.map(k=>
+ const day=localDate(),entry=todayStepEntry(),sessions=[...stepSessions(day)].sort((a,b)=>a.start-b.start);
+ const data=dailyStepBreakdown(day),deduction=stepDeduction(day),active=activeStepInterval();
+ const edit=sessions.find(s=>s.id===editingStepSessionId),total=Number.isInteger(entry.total)?entry.total:null;
+ const fmt=v=>typeof v==='number'?v.toLocaleString('zh-CN'):'—';
+ return '<div class="step-page compact-step-page">'+
+ '<section class="card step-compact-hero">'+
+ '<div class="step-compact-top"><div class="step-total-label">今日有效步数<strong>'+fmt(data?.net)+'</strong></div>'+
+ '<div class="step-compact-totals"><span>总步 '+fmt(total)+'</span><span>扣除 '+fmt(deduction.excluded)+'</span></div></div>'+
+ (active?'<div class="step-active">进行中 · '+safe(stepKindLabel(active.kind))+' · '+fmt(active.start)+' 步</div>':'')+
+ '<div class="step-compact-actions">'+
+ (active?'':'<select id="healthStepKind" aria-label="选择区间类型">'+STEP_KINDS.map(k=>
+ '<option value="'+k[0]+'">'+k[1]+'</option>').join('')+'</select>')+
+ '<button type="button" class="step-one-tap" data-health-snapshot="interval">'+
+ (active?'结束记录':'开始记录')+'</button>'+
+ '<button type="button" class="step-sync" data-health-snapshot="total">同步</button></div>'+
+ '</section>'+
+ '<section class="card step-compact-list"><div class="step-compact-heading"><h2>扣除记录 <small>'+sessions.length+' 段</small></h2>'+
+ '<button type="button" class="step-manual-toggle" data-step-manual>'+(stepManualOpen?'收起手动':'手动录入')+'</button></div>'+
+ (sessions.length?'<div class="step-session-list">'+sessions.map(x=>
+ '<div class="step-session-row"><div class="step-session-info"><strong>'+safe(stepKindLabel(x.kind))+
+ '</strong><small>'+fmt(x.start)+' → '+(x.end===null?'未结束':fmt(x.end))+'</small></div>'+
+ '<div class="step-session-delta">'+(x.end===null?'进行中':'−'+fmt(x.end-x.start))+'</div>'+
+ '<button type="button" class="record-action" data-step-edit="'+safe(x.id)+'" aria-label="修改">改</button>'+
+ '<button type="button" class="record-action danger" data-step-delete="'+safe(x.id)+'" aria-label="删除">删</button></div>').join('')+'</div>':
+ '<div class="step-compact-empty">暂无记录</div>')+
+ (stepManualOpen?'<div class="step-manual-body">'+
+ '<form id="stepTotalForm" class="step-total-form">'+
+ '<label>今日总步数<input type="number" name="dayTotal" min="1" max="1000000" step="1" inputmode="numeric" value="'+(total??'')+'"></label>'+
+ '<button type="submit">更新</button></form>'+
+ '<form id="stepSessionForm" class="step-session-form"><div class="step-session-fields">'+
+ '<label>类型<select name="sessionKind">'+STEP_KINDS.map(k=>
  '<option value="'+k[0]+'" '+((edit?.kind||'gym')===k[0]?'selected':'')+'>'+k[1]+'</option>').join('')+'</select></label>'+
- '<label>开始累计步数<input type="number" name="sessionStart" inputmode="numeric" min="0" max="1000000" placeholder="如 5000" value="'+(edit?.start??'')+'"></label>'+
- '<label>结束累计步数<input type="number" name="sessionEnd" inputmode="numeric" min="0" max="1000000" placeholder="可稍后填写" value="'+(edit?.end??'')+'"></label></div>'+
- '<div class="step-session-actions"><button type="submit" class="step-save">'+(edit?'保存修改':'保存这一段')+'</button>'+
- (edit?'<button type="button" class="secondary-btn" data-step-new>取消修改</button>':'')+'</div>'+
- '<p class="micro-note">先记开始步数，结束后再修改补填。区间可以多段，但不能重叠，以免重复扣除。</p></form></section>'+
- '<section class="card step-example"><h2>多次扣除示例</h2><p>第一段 5,000 → 6,000，扣 1,000 步；第二段 8,000 → 9,000，再扣 1,000 步。</p>'+
- '<p>若全天总步数为 12,000：<strong>12,000 − 1,000 − 1,000 = 10,000 净步数</strong>，只将这 10,000 步换算为走路热量。</p>'+
- '<p class="micro-note">所有读数应来自同一个计步来源。这是手动估算：区间内的真实走路也会被扣除，而计步设备并不能可靠区分骑行或乘车造成的误计步。</p></section></div>';
+ '<label>开始<input type="number" name="sessionStart" inputmode="numeric" min="0" max="1000000" value="'+(edit?.start??'')+'" placeholder="开始步数"></label>'+
+ '<label>结束<input type="number" name="sessionEnd" inputmode="numeric" min="0" max="1000000" value="'+(edit?.end??'')+'" placeholder="结束步数"></label></div>'+
+ '<div class="step-session-actions"><button class="step-save" type="submit">'+(edit?'保存修改':'新增区间')+'</button>'+
+ (edit?'<button type="button" class="secondary-btn" data-step-new>取消修改</button>':'')+'</div></form></div>':'')+
+ '</section></div>';
 }
-
 const REST_DAYS_KEY='hermes_fitness_rest_days_v1';
 function validRestDate(v){
  if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;
@@ -1036,8 +1038,9 @@ document.addEventListener('click',e=>{
  if(healthBtn){const type=healthBtn.dataset.healthSnapshot;
   openHealthShortcut(type==='total'?'total':activeStepInterval()?'end':'start',
    document.getElementById('healthStepKind')?.value||'gym');return}
- const newButton=e.target.closest('[data-step-new]');if(newButton){editingStepSessionId=null;render();return}
- const editButton=e.target.closest('[data-step-edit]');if(editButton){editingStepSessionId=editButton.dataset.stepEdit;render();return}
+ const manualButton=e.target.closest('[data-step-manual]');if(manualButton){stepManualOpen=!stepManualOpen;editingStepSessionId=null;render();return}
+ const newButton=e.target.closest('[data-step-new]');if(newButton){editingStepSessionId=null;stepManualOpen=true;render();return}
+ const editButton=e.target.closest('[data-step-edit]');if(editButton){editingStepSessionId=editButton.dataset.stepEdit;stepManualOpen=true;render();return}
  const deleteButton=e.target.closest('[data-step-delete]');if(deleteButton){deleteStepSession(deleteButton.dataset.stepDelete);return}
  const day=e.target.closest('[data-cal-date]');
  if(day){calendarSelected=day.dataset.calDate;render();return}
