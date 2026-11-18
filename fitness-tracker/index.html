@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
   <link rel="icon" href="./icon-180.png" type="image/png" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <title>健身记录 · V1.9</title>
+  <title>健身记录 · V2.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -648,6 +648,97 @@ html,body,.app,.main{background:#0e0e0e!important}
 .home-recovery-notice{display:block;width:100%;border:1px solid #806022;border-radius:9px;
  background:#2e2412;color:#f2c253;font-size:11px;font-weight:700;padding:8px 10px;
  text-align:left;line-height:1.35;flex:none}
+
+/* V2.0 / iPhone 16 (393×852 CSS pt): home is an actual single-screen PWA view. */
+@media(max-width:850px){
+ body[data-screen="overview"] .topline{display:none!important}
+ body[data-screen="overview"] .main{
+   padding-left:9px!important;padding-right:9px!important;
+   padding-top:calc(env(safe-area-inset-top, 0px) + 7px)!important;
+   padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 57px)!important;
+   display:flex!important;flex-direction:column;min-height:0;
+ }
+ body[data-screen="overview"] #content{display:flex!important;flex:1;flex-direction:column;min-height:0}
+ body[data-screen="overview"] .quick-screen{display:flex!important;flex:1;flex-direction:column;min-height:0;gap:6px!important}
+ body[data-screen="overview"] .quick-top{flex:0 0 auto!important;padding:8px 12px 7px!important;margin:0!important;border-radius:10px!important}
+ body[data-screen="overview"] .quick-metric-label{font-size:10px!important}
+ body[data-screen="overview"] .quick-metric-large{font-size:25px!important;line-height:1.05!important;margin-top:1px!important}
+ body[data-screen="overview"] .quick-metric-large small{font-size:10px!important}
+ body[data-screen="overview"] .quick-week-meta{gap:1px!important}
+ body[data-screen="overview"] .quick-week-meta strong{font-size:14px!important}
+ body[data-screen="overview"] .quick-week-meta small{font-size:9px!important}
+ body[data-screen="overview"] .quick-bar{height:3px!important;margin-top:5px!important}
+ body[data-screen="overview"] .quick-grid{
+   flex:1!important;min-height:0!important;
+   display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   grid-template-rows:repeat(6,minmax(0,1fr))!important;
+   grid-auto-rows:auto;gap:5px!important;
+   align-content:stretch!important;
+ }
+ body[data-screen="overview"] .quick-screen .quick-card{
+   min-height:0!important;height:auto!important;overflow:hidden!important;
+   margin:0!important;padding:5px 8px!important;
+   gap:2px!important;border-radius:9px!important;
+   justify-content:space-between!important
+ }
+ body[data-screen="overview"] .quick-title-row{min-height:0!important;flex:none}
+ body[data-screen="overview"] .quick-title-row strong{font-size:12.5px!important;line-height:1.1!important}
+ body[data-screen="overview"] .quick-screen .quick-qty{height:30px!important;min-height:30px!important;gap:4px!important;flex:none}
+ body[data-screen="overview"] .quick-screen .qty-btn{
+   height:30px!important;min-height:30px!important;
+   width:30px!important;min-width:30px!important;font-size:18px!important
+ }
+ body[data-screen="overview"] .quick-screen .qty-center select,
+ body[data-screen="overview"] .quick-screen .qty-center input{
+   height:30px!important;min-height:30px!important;font-size:15px!important
+ }
+ body[data-screen="overview"] .quick-screen .quick-save{
+   height:28px!important;min-height:28px!important;
+   margin:0!important;padding:3px!important;
+   font-size:12px!important;flex:none
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child{
+   grid-column:span 2!important;display:grid!important;
+   grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr) minmax(67px,.65fr)!important;
+   align-items:center!important;gap:9px!important;padding:6px 10px!important
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-title-row strong{font-size:13px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-qty{height:40px!important;min-height:40px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-btn{
+   height:40px!important;min-height:40px!important;width:34px!important;min-width:34px!important
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-center select,
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-center input{
+   height:40px!important;min-height:40px!important;font-size:15px!important
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-save{
+   height:42px!important;min-height:42px!important;font-size:12px!important
+ }
+ .mobile-nav .nav-btn span{white-space:nowrap!important;letter-spacing:-.2px}
+ .mobile-nav .nav-btn{font-size:10px!important}
+}
+@media(max-width:850px) and (min-height:780px){
+ body[data-screen="overview"] .app{height:100dvh!important;min-height:0!important}
+ body[data-screen="overview"] .main{
+   height:100dvh!important;max-height:100dvh!important;overflow:hidden!important
+ }
+ body[data-screen="overview"] .quick-grid{overflow:hidden}
+}
+/* Browser bars / keyboard / increased text size: prefer scroll to clipping. */
+@media(max-width:850px) and (max-height:779px){
+ body[data-screen="overview"] .main{height:auto!important;min-height:100dvh!important;overflow-y:auto!important}
+ body[data-screen="overview"] .quick-grid{flex:0 0 auto!important;grid-template-rows:repeat(6,minmax(86px,auto))!important}
+ body[data-screen="overview"] .quick-card{min-height:86px!important}
+}
+@media(max-width:850px){
+ body[data-screen="overview"]:has(input:focus) .main{
+   overflow-y:auto!important;max-height:none!important;min-height:100dvh!important;height:auto!important
+ }
+ body[data-screen="overview"]:has(input:focus) .quick-grid{
+   grid-template-rows:repeat(6,minmax(86px,auto))!important;flex:none!important
+ }
+}
+
 </style>
 </head>
 <body>
@@ -782,9 +873,9 @@ else if(type==='hold'){r.exercise=ex;r.sets=Number(d.sets);r.secondsPerSet=Numbe
 if(d.presetKey)r.presetKey=d.presetKey;return r}
 function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
-function viewTitle(){return {overview:['快速打卡','固定项目 · 只填数量 · 自动算热量'],steps:['步数去重','手动输入今日步数与扣除区间'],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
-function navHTML(){return [['overview','打卡'],['steps','步数去重'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V1.9</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function viewTitle(){return {overview:['健身记录',''],steps:['手动步数',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
+function navHTML(){return [['overview','打卡'],['steps','手动步数'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
+function render(){document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V2.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -884,7 +975,7 @@ function renderSettings(){
  '<div class="data-safety-status">'+
  (storageReadIssue?'<strong class="data-safety-alert">'+safe(storageReadIssue)+'</strong>':
  state.records.length?'<span>本机已读取 '+state.records.length+' 条训练记录</span>':
- '<span>当前入口没有读取到训练记录。请检查原来的 Safari / 主屏幕入口，暂时不要清理网站数据。</span>')+
+ '<span>暂无历史记录。找回旧数据请检查原桌面图标或 Safari，勿清理网站数据。</span>')+
  (recoveryState()?.records.length?'<button type="button" class="secondary-btn" data-action="restore-snapshot">恢复本机快照（'+recoveryState().records.length+' 条）</button>':'')+
  (storageReadIssue?'<button type="button" class="secondary-btn" data-action="export-raw">导出原始内容</button>':'')+
  '</div>'+'<div class="settings-actions"><button type="button" class="primary-btn" data-action="export-json">导出 JSON</button>'+
@@ -1270,8 +1361,6 @@ function renderQuickHome(){
  const goal=Number(state.settings.weeklyGoal)||1500,rem=Math.max(0,goal-weekSum);
  const percentage=Math.min(100,Math.max(0,Math.round(weekSum/goal*100)));
  return '<div class="quick-screen">'+
- (!state.records.length||storageReadIssue?'<button type="button" class="home-recovery-notice" data-view="settings">'+
- (storageReadIssue?'检测到记录读取异常 · 查看数据保护':'当前入口未读取到历史记录 · 查看恢复选项')+'</button>':'')+
  '<section class="quick-top" aria-label="训练消耗"><div class="quick-topline">'+
  '<div><div class="quick-metric-label">今日消耗</div><div class="quick-metric-large">'+daySum+'<small>kcal</small></div></div>'+
  '<div class="quick-week-meta"><small>本周剩余</small><strong>'+rem+' kcal</strong></div></div>'+
