@@ -491,6 +491,14 @@ function dailyStepBreakdown(date){
  const excluded=complete?s.gymOut-s.gymIn:0;
  return {total:s.total,excluded,net:Math.max(0,s.total-excluded),complete};
 }
+function walkingPreviewNet(total){
+ const s=todayStepEntry();
+ if(Number.isInteger(s.gymIn)&&Number.isInteger(s.gymOut)&&s.gymOut>=s.gymIn){
+  if(total<s.gymOut)return null;
+  return Math.max(0,total-(s.gymOut-s.gymIn));
+ }
+ return total;
+}
 function managedWalkingRecord(date){
  return state.records.find(r=>r.date===date&&r.type==='walking'&&r.stepMode==='daily-net-v1')||null;
 }
@@ -681,7 +689,9 @@ function renderQuickHome(){
  '<div class="quick-barline"><span>本周目标进度 '+percentage+'%</span><span>'+(rem===0?'已达到周目标':'距离目标还差 '+rem+' kcal')+'</span></div></section>'+
  '<div class="quick-section-title"><h2>快速记录</h2><span>V1.4 · 11个固定项目</span></div>'+
  '<div class="quick-grid">'+QUICK_ITEMS.map(q=>{
- const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:quickValues[q.key],estimate=quickCalories(q,v);
+ const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:quickValues[q.key];
+ const net=q.key==='steps'?walkingPreviewNet(v):v;
+ const estimate=net===null?'—':quickCalories(q,net);
  return '<form class="quick-card" data-q-form="'+q.key+'">'+
  '<div class="quick-cardhead"><span class="quick-bubble">'+icon(q.iconName,18)+'</span><div><div class="quick-cardtitle">'+q.name+'</div><div class="quick-cardnote">'+q.note+'</div></div></div>'+
  '<div class="quick-inputline"><div class="quick-countbox"><button type="button" data-q-step="'+q.key+'" data-direction="-1" aria-label="'+q.name+'减少">−</button>'+
@@ -697,7 +707,7 @@ function quickUpdateEstimate(form){
  const q=QUICK_ITEMS.find(item=>item.key===form?.dataset.qForm);if(!q)return;
  const input=form.querySelector('[name="q-value"]');
  const val=Number(input?.value);const el=form.querySelector('[data-q-est]');
- if(el)el.textContent=Number.isInteger(val)&&val>0&&val<=q.max?quickCalories(q,val):'—';
+ if(el){const net=q.key==='steps'?walkingPreviewNet(val):val;el.textContent=Number.isInteger(val)&&val>0&&val<=q.max&&net!==null?quickCalories(q,net):'—'}
 }
 document.addEventListener('click',e=>{
  const btn=e.target.closest('[data-q-step]');if(!btn)return;
