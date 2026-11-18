@@ -579,6 +579,19 @@ html,body,.app,.main{background:#0e0e0e!important}
  .quick-screen .quick-card:last-child .quick-qty .qty-btn{min-width:26px;width:26px}
 }
 
+
+/* Final-row usability: expanded touch targets instead of empty vertical area. */
+@media(max-width:850px){
+ .quick-screen .quick-card:last-child .quick-qty{height:52px!important;align-items:center}
+ .quick-screen .quick-card:last-child .qty-btn{height:49px!important;min-height:49px!important;width:41px!important;min-width:41px!important;font-size:23px!important}
+ .quick-screen .quick-card:last-child .qty-center select,
+ .quick-screen .quick-card:last-child .qty-center input{height:49px!important;min-height:49px!important;font-size:16px!important}
+ .quick-screen .quick-card:last-child .quick-save{height:56px!important;min-height:56px!important;font-size:14px!important}
+}
+@media(max-width:370px){
+ .quick-screen .quick-card:last-child .qty-btn{min-width:28px!important;width:28px!important}
+ .quick-screen .quick-card:last-child .quick-save{min-height:44px!important;height:44px!important}
+}
 </style>
 </head>
 <body>
