@@ -462,6 +462,7 @@ html,body,.app,.main{background:#0e0e0e!important}
 const SEED_RECORDS = [];
 const STORAGE_KEY = 'hermes_fitness_journal_v1';
 const DEFAULT_SETTINGS={weight:65,weeklyGoal:1500};
+const STEP_KINDS=[['gym','健身房'],['bike','骑车'],['transport','乘车'],['other','其他']];
 const CATEGORIES=[['strength','力量'],['cardio','有氧'],['swimming','游泳'],['walking','步行'],['hold','静态']];
 const DAY_NAMES=['周日','周一','周二','周三','周四','周五','周六'];
 const WEEK_SHORT=['一','二','三','四','五','六','日'];
@@ -716,7 +717,6 @@ function quickDraft(q,n){
 function quickCalories(q,n){return calc(quickDraft(q,n))??0}
 
 
-const STEP_KINDS=[['gym','健身房'],['bike','骑车'],['transport','乘车'],['other','其他']];
 function stepInt(v){const n=Number(v);return Number.isInteger(n)&&n>=0&&n<=1000000?n:null}
 function cleanStepDiary(raw){
  const result={};
