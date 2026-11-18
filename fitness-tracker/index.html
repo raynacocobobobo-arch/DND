@@ -7,7 +7,7 @@
   <meta name="description" content="轻量离线健身追踪：记录组数、次数、训练时长，自动估算运动消耗。" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <title>运动手账 · 健身追踪 V1.3.1</title>
+  <title>运动手账 · 健身追踪 V1.4</title>
   <style>
     :root {--bg:#f5f7f5;--card:#fff;--ink:#192824;--sub:#687972;--muted:#92a19a;--line:#e4ebe6;--accent:#24785b;--accent-dark:#176448;--accent-pale:#eaf5ef;--ink-panel:#18372f;--warm:#e9af61;--shadow:0 12px 40px rgba(32,65,49,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -179,6 +179,21 @@
 .record-metric span{font-size:11px;color:var(--sub)}
 .record-energy{font-size:10px;color:var(--muted);font-weight:450}
 @media(max-width:620px){.record-metric{min-width:58px}.record-metric strong{font-size:17px}.record-energy{font-size:9px}}
+
+/* V1.4 optional walking step de-duplication; closed by default on mobile */
+.step-tool{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 15px}
+.step-tool-toggle{border:0;background:transparent;color:#235f46;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:space-between;width:100%;padding:1px 0;text-align:left}
+.step-tool-toggle span{color:#779586;font-weight:600;font-size:11px}
+.step-tool-status{margin:6px 0 0;font-size:11px;color:#617a6a}
+.step-tool-status strong{color:#1f7854}
+.step-tool-form{margin-top:13px;border-top:1px solid #e9eee9;padding-top:14px}
+.step-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.step-inputs label{font-size:12px;font-weight:650;color:#536c5b}
+.step-inputs input{display:block;width:100%;min-width:0;min-height:43px;border:1px solid #d9e5db;border-radius:9px;padding:9px 11px;margin-top:6px;background:#fbfdfb;font-size:15px}
+.step-save{border:0;background:#24785b;color:#fff;padding:11px 15px;min-height:42px;border-radius:10px;margin-top:13px;font-weight:750;font-size:13px}
+.step-help{font-size:11px;color:#819184;line-height:1.7;margin:9px 0 0}
+@media(max-width:620px){.step-tool{padding:11px 12px}.step-inputs{gap:8px}.step-inputs label{font-size:11px}.step-inputs input{padding:8px 7px}}
+.checkin-calendar-label{font-size:11px;color:#849589}
 </style>
 </head>
 <body>
@@ -217,8 +232,8 @@ function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function monday(d=new Date()){return addDays(d,-((d.getDay()+6)%7))}
 function formatDate(s){const d=dateFromISO(s);return `${d.getMonth()+1}月${d.getDate()}日`}
 function getWeekDates(){let m=monday(new Date());return Array.from({length:7},(_,i)=>localDate(addDays(m,i)))}
-function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true}))}}
-function readState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const v=JSON.parse(s);if(v&&Array.isArray(v.records)&&v.settings)return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings}}}}catch(e){console.warn('本地数据读取失败',e)}return initialState()}
+function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{}}}
+function readState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const v=JSON.parse(s);if(v&&Array.isArray(v.records)&&v.settings)return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary)}}}catch(e){console.warn('本地数据读取失败',e)}return initialState()}
 let state=readState(),view='overview',historyFilter='week',draft=emptyDraft('strength');
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true}catch(e){toast('浏览器存储失败，请立即导出备份');return false}}
 // First load: import source training records only once.
@@ -259,7 +274,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['快速打卡','固定项目 · 只填数量 · 自动算热量'],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.3.1</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.4</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -275,8 +290,8 @@ function renderTraining(){const plan=PLANS[new Date().getDay()];return `<div cla
  <div><section class="card preview-card"><span class="hero-label" style="color:#5d8b72">本次预计消耗</span><div class="preview-kcal" id="previewKcal">${calc(draft)??'—'}<small>kcal</small></div><p class="preview-line" id="previewLine">${safe(previewDescription(draft))}</p><div class="rule-list" id="previewRule">${safe(previewRule(draft))}</div></section><section class="card assist-card section-block"><div class="section-title"><div><h3>今天的计划</h3><p>${plan.label}</p></div></div>${plan.items.length?plan.items.map((item,i)=>`<div class="compact-plan"><div><div class="compact-plan-name">${safe(item.exercise)}</div><div class="compact-plan-sub">${safe(describePlanItem(item))}</div></div><button type="button" class="mini-btn" data-plan="${new Date().getDay()}-${i}">填入</button></div>`).join(''):'<p class="micro-note">今天是休息日，可以记录实际完成的其他活动。</p>'}</section></div></div>`}
 function previewDescription(d){if(d.type==='strength')return `${d.sets||0} 组 × ${d.repsPerSet||0} 次 = ${(Number(d.sets)||0)*(Number(d.repsPerSet)||0)} 次`;if(d.type==='cardio'||d.type==='swimming')return `${d.exercise||'运动'} · ${d.durationMin||'尚未填写'} 分钟`;if(d.type==='walking')return `${d.steps||0} 步`;if(d.type==='hold')return `${d.sets||0} 组 × ${d.secondsPerSet||0} 秒`;return ''}
 function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='cardio')return String(d.exercise||'').trim()==='椭圆机'?'椭圆机定制：默认 5 kcal / 分钟（20 分钟 = 100 kcal）':'骑行按设置中的每分钟热量系数计算';if(d.type==='swimming')return '沿用原脚本：6 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
-function recordDescription(r){if(r.type==='walking')return `${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='swimming')return `${r.duration_min||0} 分钟${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
-function recordName(r){return r.type==='walking'?'步行':r.exercise||r.stroke||r.note||prettyType(r.type)}
+function recordDescription(r){if(r.type==='walking')return r.stepMode==='daily-net-v1'?`净 ${r.steps||0} 步 · 全天 ${r.dailyTotalSteps||0} 步 · 馆内扣除 ${r.gymExcludedSteps||0} 步`:`${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='swimming')return `${r.duration_min||0} 分钟${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
+function recordName(r){return r.type==='walking'?(r.stepMode==='daily-net-v1'?'走路 · 已去重':'步行'):r.exercise||r.stroke||r.note||prettyType(r.type)}
 
 function historyRecordCard(r){
  const isSet=r.type==='strength'||r.type==='hold';
@@ -392,7 +407,7 @@ function saveSettings(){const w=Number(document.getElementById('f-weight')?.valu
 function exportFile(textContent,fileName,mime){const a=document.createElement('a'),blob=new Blob([textContent],{type:mime});const url=URL.createObjectURL(blob);a.href=url;a.download=fileName;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function exportJSON(){exportFile(JSON.stringify({...state,restDays:[...restDays].sort(),exportedAt:new Date().toISOString()},null,2),`运动手账-备份-${localDate()}.json`,'application/json;charset=utf-8');toast('JSON 备份已导出')}
 function exportCSV(){const headers=['日期','类型','项目','组数','每组次数','总次数','时长(分钟)','每组秒数','步数','距离(米)','重量(kg)','估算千卡'];const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const lines=state.records.map(r=>[r.date,prettyType(r.type),recordName(r),r.sets,r.repsPerSet,r.reps,r.duration_min,r.secondsPerSet,r.steps,r.distance_m,r.loadKg,r.calories].map(cell).join(','));exportFile('\ufeff'+headers.map(cell).join(',')+'\r\n'+lines.join('\r\n'),`运动手账-记录-${localDate()}.csv`,'text/csv;charset=utf-8');toast('CSV 已导出')}
-function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;state={version:1,records:clean,settings};persist();if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
+function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;state={version:1,records:clean,settings,stepDiary:Object.prototype.hasOwnProperty.call(v,'stepDiary')?cleanStepDiary(v.stepDiary):state.stepDiary};persist();if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
 
 const QUICK_ITEMS=[
  {key:'elliptical',name:'椭圆机',unit:'分钟',value:20,step:5,max:480,type:'cardio',exercise:'椭圆机',note:'按分钟',iconName:'activity'},
@@ -450,6 +465,142 @@ function quickDraft(q,n){
 }
 function quickCalories(q,n){return calc(quickDraft(q,n))??0}
 
+function cleanStepDiary(raw){
+ const result={};
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))return result;
+ for(const [date,values] of Object.entries(raw)){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!values||typeof values!=='object')continue;
+  const clean={};
+  for(const key of ['total','gymIn','gymOut']){
+   if(values[key]===null||values[key]===undefined||values[key]==='')continue;
+   const n=Number(values[key]);
+   if(Number.isInteger(n)&&n>=0&&n<=1000000)clean[key]=n;
+  }
+  if(clean.gymOut!==undefined&&(clean.gymIn===undefined||clean.gymOut<clean.gymIn))delete clean.gymOut;
+  if(Object.keys(clean).length)result[date]=clean;
+ }
+ return result;
+}
+let stepPanelOpen=false;
+function todayStepEntry(){return state.stepDiary?.[localDate()]||{}}
+function dailyStepBreakdown(date){
+ const s=state.stepDiary?.[date];
+ if(!s||!Number.isInteger(s.total)||s.total<0)return null;
+ const complete=Number.isInteger(s.gymIn)&&Number.isInteger(s.gymOut)&&s.gymOut>=s.gymIn;
+ if(complete&&s.total<s.gymOut)return null;
+ const excluded=complete?s.gymOut-s.gymIn:0;
+ return {total:s.total,excluded,net:Math.max(0,s.total-excluded),complete};
+}
+function walkingPreviewNet(total){
+ const s=todayStepEntry();
+ if(Number.isInteger(s.gymIn)&&Number.isInteger(s.gymOut)&&s.gymOut>=s.gymIn){
+  if(total<s.gymOut)return null;
+  return Math.max(0,total-(s.gymOut-s.gymIn));
+ }
+ return total;
+}
+function managedWalkingRecord(date){
+ return state.records.find(r=>r.date===date&&r.type==='walking'&&r.stepMode==='daily-net-v1')||null;
+}
+function updateManagedWalking(date){
+ const breakdown=dailyStepBreakdown(date);
+ if(!breakdown)return false;
+ const old=managedWalkingRecord(date);
+ const q=QUICK_ITEMS.find(x=>x.key==='steps');
+ let rec;
+ if(breakdown.net===0){
+  rec={id:old?.id||uid(),date,type:'walking',steps:0,calories:0,
+   createdAt:old?.createdAt||new Date().toISOString(),weightAtRecord:state.settings.weight};
+ }else{
+  const draft=quickDraft(q,breakdown.net);
+  draft.id=old?.id||null;draft.date=date;
+  rec=newRecord(draft);
+ }
+ rec.stepMode='daily-net-v1';
+ rec.presetKey='steps';
+ rec.dailyTotalSteps=breakdown.total;
+ rec.gymExcludedSteps=breakdown.excluded;
+ rec.note='净步数 '+breakdown.net+' 步；全天 '+breakdown.total+' 步；已排除健身房 '+breakdown.excluded+' 步';
+ const index=old?state.records.findIndex(r=>r.id===old.id):-1;
+ if(index>=0)state.records[index]=rec;
+ else state.records.push(rec);
+ return true;
+}
+function saveDailySteps(total){
+ const day=localDate();
+ if(!Number.isInteger(total)||total<1||total>1000000){toast('请输入当天的累计总步数');return false}
+ const prev=state.stepDiary||{},oldRecords=state.records.slice();
+ const old=prev[day]||{};
+ // Avoid accidentally counting older manually logged walking entries twice.
+ if(!managedWalkingRecord(day)){
+  const overlaps=recordsOfDate(day).filter(r=>r.type==='walking'&&r.stepMode!=='daily-net-v1');
+  if(overlaps.length&&!confirm('今天已有 '+overlaps.length+' 条旧步行记录。全天净步数可能与它们重复计入。旧记录不会被删除，仍要新增全天步数吗？'))return false;
+ }
+ state.stepDiary={...prev,[day]:{...old,total}};
+ if(!dailyStepBreakdown(day)){
+  state.stepDiary=prev;
+  toast('今日总步数不能小于离馆步数，请填最新的累计步数');
+  return false;
+ }
+ try{
+  updateManagedWalking(day);
+  if(!persist()){state.stepDiary=prev;state.records=oldRecords;return false}
+  const breakdown=dailyStepBreakdown(day);
+  render();toast('已记录非健身房 '+breakdown.net+' 步；扣除 '+breakdown.excluded+' 步');
+  return true;
+ }catch(e){state.stepDiary=prev;state.records=oldRecords;toast(e.message||'步数记录失败');return false}
+}
+function readStepCounter(value){
+ if(value.trim()==='')return null;
+ const n=Number(value);
+ return Number.isInteger(n)&&n>=0&&n<=1000000?n:NaN;
+}
+function saveGymCounters(form){
+ const day=localDate();
+ const vIn=readStepCounter(String(form.querySelector('[name="gymIn"]')?.value??''));
+ const vOut=readStepCounter(String(form.querySelector('[name="gymOut"]')?.value??''));
+ if(Number.isNaN(vIn)||Number.isNaN(vOut)||(vOut!==null&&(vIn===null||vOut<vIn))){
+  toast('请核对入馆和离馆步数：离馆不能小于入馆');return false;
+ }
+ const prev=state.stepDiary||{},oldRecords=state.records.slice(),old=prev[day]||{};
+ const next={...old};
+ if(vIn===null){delete next.gymIn;delete next.gymOut}
+ else{next.gymIn=vIn;if(vOut===null)delete next.gymOut;else next.gymOut=vOut}
+ state.stepDiary={...prev,[day]:next};
+ const existing=managedWalkingRecord(day);
+ const valid=dailyStepBreakdown(day);
+ try{
+  if(existing&&valid)updateManagedWalking(day);
+  if(!persist()){state.stepDiary=prev;state.records=oldRecords;return false}
+  render();
+  if(existing&&!valid)toast('已保存计步；请更新今日总步数（须不小于离馆步数）');
+  else if(vIn===null)toast('已清除今天的健身房计步区间');
+  else if(vOut===null)toast('入馆步数已保存；离馆后补填结束步数');
+  else toast('已扣除健身房 '+(vOut-vIn)+' 步，净步数已更新');
+  return true;
+ }catch(e){state.stepDiary=prev;state.records=oldRecords;toast(e.message||'保存失败');return false}
+}
+function renderStepTool(){
+ const s=todayStepEntry(),breakdown=dailyStepBreakdown(localDate());
+ const complete=Number.isInteger(s.gymIn)&&Number.isInteger(s.gymOut)&&s.gymOut>=s.gymIn;
+ const excluded=complete?s.gymOut-s.gymIn:0;
+ const status=breakdown?'今日 '+breakdown.total+' 步 − 馆内 '+breakdown.excluded+' 步 = <strong>'+breakdown.net+' 步</strong>':
+  Number.isInteger(s.total)&&complete?'总步数需要更新（不能小于离馆读数）':
+  complete?'馆内计步 '+excluded+' 步，待记录今日总步数':
+  Number.isInteger(s.gymIn)?'入馆步数已保存，离馆后再填一次':'未设馆内区间，走路卡片按全部步数计算';
+ return '<section class="step-tool"><div class="step-tool-header">'+
+ '<button type="button" class="step-tool-toggle" data-step-toggle aria-expanded="'+(stepPanelOpen?'true':'false')+'">'+
+ '步数去重 · 入馆 / 离馆 <span>'+(stepPanelOpen?'收起':'展开')+'</span></button>'+
+ '<p class="step-tool-status">'+status+'</p></div>'+
+ (stepPanelOpen?'<form id="gymStepForm" class="step-tool-form">'+
+ '<div class="step-inputs"><label>入馆时累计步数<input type="number" name="gymIn" inputmode="numeric" min="0" max="1000000" placeholder="例如 3200" value="'+(s.gymIn??'')+'"></label>'+
+ '<label>离馆时累计步数<input type="number" name="gymOut" inputmode="numeric" min="0" max="1000000" placeholder="离馆后再填写" value="'+(s.gymOut??'')+'"></label></div>'+
+ '<button type="submit" class="step-save">保存入馆 / 离馆数值</button>'+
+ '<p class="step-help">两个数字都使用同一设备当天的累计步数。入馆时先存第一个，离馆后补第二个；走路卡片填写当天总步数，就会自动扣除馆内这段。留空两项并保存可取消扣除。</p>'+
+ '</form>':'')+'</section>';
+}
+
+
 const REST_DAYS_KEY='hermes_fitness_rest_days_v1';
 function validRestDate(v){
  if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;
@@ -490,7 +641,7 @@ function renderRestButton(){
 function renderCheckinStrip(){
  const week=getWeekDates(),streak=streakCount(),today=localDate();
  const active=week.filter(d=>dayKind(d)!=='none').length;
- return '<section class="checkin-strip" aria-label="本周打卡状态"><div class="checkin-strip-header"><strong>本周打卡 · '+active+'/7 天</strong><button type="button" data-view="calendar">查看月历</button></div>'+
+ return '<section class="checkin-strip" aria-label="本周打卡状态"><div class="checkin-strip-header"><strong>本周打卡 · '+active+'/7 天</strong><span class="checkin-calendar-label">本周</span></div>'+
  '<div class="checkin-week">'+week.map(d=>{
   const type=dayKind(d),num=Number(d.slice(-2)),day=dateFromISO(d);
   return '<div class="checkin-day '+type+(d===today?' today':'')+'"><span class="weekday">周'+['日','一','二','三','四','五','六'][day.getDay()]+'</span><span class="day-circle">'+num+'</span><span class="day-signal">'+(type==='workout'?'训练':type==='rest'?'休息':'—')+'</span></div>';
@@ -513,7 +664,7 @@ function renderCalendar(){
    '" data-cal-date="'+date+'" '+(future?'disabled':'')+' aria-label="'+date+' '+(type==='workout'?'已训练 '+amount+'千卡':type==='rest'?'休息打卡':'尚未打卡')+
    '" aria-pressed="'+(chosen?'true':'false')+'"><span class="cal-date">'+day+'</span><span class="cal-info">'+status+'</span></button>');
  }
- return '<div class="cal-shell"><section class="card"><div class="cal-header"><div class="cal-month-label">'+year+'年'+month+'月</div>'+
+ return renderCheckinStrip()+'<div class="cal-shell"><section class="card"><div class="cal-header"><div class="cal-month-label">'+year+'年'+month+'月</div>'+
  '<div class="cal-nav"><button type="button" data-cal-month="-1" aria-label="上个月">‹</button><button type="button" data-cal-month="1" aria-label="下个月" '+(isCurrent?'disabled':'')+'>›</button></div></div>'+
  '<div class="cal-grid">'+names.map(s=>'<span class="cal-weekday">周'+s+'</span>').join('')+cells.join('')+'</div>'+
  '<div class="cal-legend"><span><i></i>运动打卡</span><span><i class="rest-dot"></i>休息打卡（0 kcal）</span><span>空白：未打卡</span></div></section>'+
@@ -536,10 +687,11 @@ function renderQuickHome(){
  '<div class="quick-week-meta"><small>本周还差</small><strong>'+rem+' kcal</strong><small>已消耗 '+weekSum+' / '+goal+' kcal</small></div></div>' +
  '<div class="quick-bar"><div class="quick-bar-fill" style="width:'+displayPercent+'%"></div></div>' +
  '<div class="quick-barline"><span>本周目标进度 '+percentage+'%</span><span>'+(rem===0?'已达到周目标':'距离目标还差 '+rem+' kcal')+'</span></div></section>'+
- renderCheckinStrip()+
- '<div class="quick-section-title"><h2>快速记录</h2><span>V1.3.1 · 11个固定项目</span></div>'+
+ '<div class="quick-section-title"><h2>快速记录</h2><span>V1.4 · 11个固定项目</span></div>'+
  '<div class="quick-grid">'+QUICK_ITEMS.map(q=>{
- const v=quickValues[q.key],estimate=quickCalories(q,v);
+ const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:quickValues[q.key];
+ const net=q.key==='steps'?walkingPreviewNet(v):v;
+ const estimate=net===null?'—':quickCalories(q,net);
  return '<form class="quick-card" data-q-form="'+q.key+'">'+
  '<div class="quick-cardhead"><span class="quick-bubble">'+icon(q.iconName,18)+'</span><div><div class="quick-cardtitle">'+q.name+'</div><div class="quick-cardnote">'+q.note+'</div></div></div>'+
  '<div class="quick-inputline"><div class="quick-countbox"><button type="button" data-q-step="'+q.key+'" data-direction="-1" aria-label="'+q.name+'减少">−</button>'+
@@ -548,13 +700,14 @@ function renderQuickHome(){
  '<button type="submit" class="quick-save" aria-label="打卡'+q.name+'">打卡</button>'+
  '<div class="quick-estimate">本次预计 <strong data-q-est="'+q.key+'">'+estimate+'</strong> kcal</div></form>'
  }).join('')+'</div>'+
- '<p class="quick-quiet">热量是简化估算；椭圆机默认20分钟100 kcal。力量训练默认15组、每组15次；可在「设置」中修改每组次数和热量系数。</p>';
+ renderStepTool()+
+ '<p class="quick-quiet">步行热量按非健身房净步数估算；如果没有设置入馆/离馆数值，则使用当天全部步数。其余训练单独记录，热量为简化估算。</p>';
 }
 function quickUpdateEstimate(form){
  const q=QUICK_ITEMS.find(item=>item.key===form?.dataset.qForm);if(!q)return;
  const input=form.querySelector('[name="q-value"]');
  const val=Number(input?.value);const el=form.querySelector('[data-q-est]');
- if(el)el.textContent=Number.isInteger(val)&&val>0&&val<=q.max?quickCalories(q,val):'—';
+ if(el){const net=q.key==='steps'?walkingPreviewNet(val):val;el.textContent=Number.isInteger(val)&&val>0&&val<=q.max&&net!==null?quickCalories(q,net):'—'}
 }
 document.addEventListener('click',e=>{
  const btn=e.target.closest('[data-q-step]');if(!btn)return;
@@ -567,10 +720,12 @@ document.addEventListener('input',e=>{
  const form=e.target.closest('[data-q-form]');if(form)quickUpdateEstimate(form);
 });
 document.addEventListener('submit',e=>{
+ if(e.target.id==='gymStepForm'){e.preventDefault();saveGymCounters(e.target);return}
  const form=e.target.closest('[data-q-form]');if(!form)return;
  e.preventDefault();
  const q=QUICK_ITEMS.find(x=>x.key===form.dataset.qForm),n=Number(form.querySelector('[name="q-value"]').value);
  if(!q||!Number.isInteger(n)||n<1||n>q.max){toast('请填写有效的'+(q?.unit||'训练数量'));return}
+ if(q.key==='steps'){saveDailySteps(n);return}
  try{
    const record=newRecord(quickDraft(q,n));
    state.records.push(record);
@@ -582,6 +737,7 @@ document.addEventListener('submit',e=>{
 });
 
 document.addEventListener('click',e=>{
+ if(e.target.closest('[data-step-toggle]')){stepPanelOpen=!stepPanelOpen;render();return}
  const day=e.target.closest('[data-cal-date]');
  if(day){calendarSelected=day.dataset.calDate;render();return}
  const month=e.target.closest('[data-cal-month]');
