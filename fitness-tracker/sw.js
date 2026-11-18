@@ -1,4 +1,4 @@
-const CACHE='fitness-tracker-v1.1';
+const CACHE='fitness-tracker-v1.2';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
