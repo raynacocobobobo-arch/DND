@@ -267,7 +267,7 @@ else if(draft.type==='hold'){s=field({key:'exercise',label:'静态动作',value:
 function renderTraining(){const plan=PLANS[new Date().getDay()];return `<div class="form-grid"><section class="card"><div class="section-title"><div><h2>${draft.id?'修改已保存记录':'添加训练'}</h2><p>所有计算均在当前设备中完成</p></div>${draft.id?'<button type="button" class="link-btn" data-action="reset-draft">取消编辑</button>':''}</div><div class="segmented" role="group" aria-label="选择运动类型">${CATEGORIES.map(([key,label])=>`<button type="button" class="segment ${draft.type===key?'active':''}" data-category="${key}" aria-pressed="${draft.type===key}">${label}</button>`).join('')}</div><form id="recordForm"><div class="fields">${renderTypeFields()}${field({key:'date',label:'训练日期',value:draft.date,type:'date',full:true})}</div><div class="form-actions"><button type="submit" class="primary-btn">${draft.id?'保存修改':'保存这条训练'}</button><button type="button" class="secondary-btn" data-action="reset-draft">清空</button></div></form></section>
  <div><section class="card preview-card"><span class="hero-label" style="color:#5d8b72">本次预计消耗</span><div class="preview-kcal" id="previewKcal">${calc(draft)??'—'}<small>kcal</small></div><p class="preview-line" id="previewLine">${safe(previewDescription(draft))}</p><div class="rule-list" id="previewRule">${safe(previewRule(draft))}</div></section><section class="card assist-card section-block"><div class="section-title"><div><h3>今天的计划</h3><p>${plan.label}</p></div></div>${plan.items.length?plan.items.map((item,i)=>`<div class="compact-plan"><div><div class="compact-plan-name">${safe(item.exercise)}</div><div class="compact-plan-sub">${safe(describePlanItem(item))}</div></div><button type="button" class="mini-btn" data-plan="${new Date().getDay()}-${i}">填入</button></div>`).join(''):'<p class="micro-note">今天是休息日，可以记录实际完成的其他活动。</p>'}</section></div></div>`}
 function previewDescription(d){if(d.type==='strength')return `${d.sets||0} 组 × ${d.repsPerSet||0} 次 = ${(Number(d.sets)||0)*(Number(d.repsPerSet)||0)} 次`;if(d.type==='cardio'||d.type==='swimming')return `${d.exercise||'运动'} · ${d.durationMin||'尚未填写'} 分钟`;if(d.type==='walking')return `${d.steps||0} 步`;if(d.type==='hold')return `${d.sets||0} 组 × ${d.secondsPerSet||0} 秒`;return ''}
-function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='cardio')return '沿用原脚本：5 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='swimming')return '沿用原脚本：6 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
+function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='cardio')return String(d.exercise||'').trim()==='椭圆机'?'椭圆机定制：默认 5 kcal / 分钟（20 分钟 = 100 kcal）':'骑行按设置中的每分钟热量系数计算';if(d.type==='swimming')return '沿用原脚本：6 MET × 3.5 × 体重 ÷ 200 × 分钟';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
 function recordDescription(r){if(r.type==='walking')return `${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='swimming')return `${r.duration_min||0} 分钟${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
 function recordName(r){return r.type==='walking'?'步行':r.exercise||r.stroke||r.note||prettyType(r.type)}
 
@@ -511,7 +511,6 @@ function renderQuickHome(){
  const goal=Number(state.settings.weeklyGoal)||1500,rem=Math.max(0,goal-weekSum);
  const percentage=Math.round(weekSum/goal*100),displayPercent=Math.min(100,Math.max(0,percentage));
  const weekday=['周日','周一','周二','周三','周四','周五','周六'][new Date().getDay()];
- const recent=[...todayRecords].reverse();
  return '<section class="quick-top" aria-label="今日和本周消耗">' +
  '<div class="quick-topline"><div><div class="quick-metric-label">今日已消耗 · '+weekday+'</div><div class="quick-metric-large">'+daySum+'<small>kcal</small></div></div>' +
  '<div class="quick-week-meta"><small>本周还差</small><strong>'+rem+' kcal</strong><small>已消耗 '+weekSum+' / '+goal+' kcal</small></div></div>' +
@@ -529,7 +528,7 @@ function renderQuickHome(){
  '<button type="submit" class="quick-save" aria-label="打卡'+q.name+'">打卡</button>'+
  '<div class="quick-estimate">本次预计 <strong data-q-est="'+q.key+'">'+estimate+'</strong> kcal</div></form>'
  }).join('')+'</div>'+
- '<p class="quick-quiet">热量为简化估算；力量及仰卧起坐按每组15次、靠墙静蹲按每组45秒计算，蛙泳与自行车按6.0 MET估算。体重和周目标可在“设置”修改。</p>';
+ '<p class="quick-quiet">热量是简化估算；椭圆机默认20分钟100 kcal。力量每组次数、静蹲秒数及所有项目的热量系数，均可在「设置」中修改。</p>';
 }
 function quickUpdateEstimate(form){
  const q=QUICK_ITEMS.find(item=>item.key===form?.dataset.qForm);if(!q)return;
