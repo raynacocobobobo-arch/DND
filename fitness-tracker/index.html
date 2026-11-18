@@ -488,7 +488,7 @@ function formatDate(s){const d=dateFromISO(s);return `${d.getMonth()+1}月${d.ge
 function getWeekDates(){let m=monday(new Date());return Array.from({length:7},(_,i)=>localDate(addDays(m,i)))}
 function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{}}}
 function readState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const v=JSON.parse(s);if(v&&Array.isArray(v.records)&&v.settings)return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary)}}}catch(e){console.warn('本地数据读取失败',e)}return initialState()}
-let state=readState(),view='overview',historyFilter='week',draft=emptyDraft('strength');
+let state=readState(),view='overview',historyFilter='week',historySelectedDate=null,draft=emptyDraft('strength');
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true}catch(e){toast('浏览器存储失败，请立即导出备份');return false}}
 // First load: import source training records only once.
 try { if(!localStorage.getItem(STORAGE_KEY))persist(); } catch(e) { console.warn('当前环境无法持久存储',e); }
@@ -567,29 +567,38 @@ function historyRecordCard(r){
  '<button type="button" class="record-action" data-edit="'+safe(r.id)+'" aria-label="编辑 '+safe(recordName(r))+'">编辑</button>'+
  '<button type="button" class="record-action danger" data-delete="'+safe(r.id)+'" aria-label="删除 '+safe(recordName(r))+'">删除</button></div>';
 }
-function renderHistorySection(title,items,emptyText){
+
+function renderHistorySection(title,items){
+ if(!items.length)return '';
  const sorted=[...items].sort((a,b)=>b.date.localeCompare(a.date)||String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
  const dates=[...new Set(sorted.map(r=>r.date))];
- return '<section class="card section-block history-block"><div class="section-title"><div><h2>'+title+'</h2><p>'+
- items.length+' 条记录 · '+items.reduce((n,r)=>n+((r.type==='strength'||r.type==='hold')?Math.max(0,Number(r.sets)||0):0),0)+' 组已记录</p></div></div>'+
- (dates.length?dates.map(date=>'<div class="day-group">'+(title==='今日记录'?'':'<div class="day-head"><strong>'+
- safe(formatDate(date))+' · '+DAY_NAMES[dateFromISO(date).getDay()]+'</strong></div>')+
- sorted.filter(r=>r.date===date).map(historyRecordCard).join('')+'</div>').join(''):
- '<p class="history-empty">'+emptyText+'</p>')+'</section>';
+ return '<section class="history-slice"><div class="history-slice-head"><strong>'+safe(title)+'</strong><span>'+items.length+' 项</span></div>'+
+ dates.map(date=>'<div class="history-date-group">'+(title==='今日'?'':'<div class="history-date-label">'+safe(formatDate(date))+'</div>')+
+ sorted.filter(r=>r.date===date).map(historyRecordCard).join('')+'</div>').join('')+'</section>';
 }
 function renderHistory(){
- const today=localDate(),week=getWeekDates();
- const recent=state.records.filter(r=>r.date===today);
- const thisWeek=state.records.filter(r=>r.date!==today&&week.includes(r.date));
- const older=state.records.filter(r=>!week.includes(r.date));
- return '<section class="history-head"><div><h2>训练记录</h2><p>共 '+state.records.length+' 条，按实际组数、分钟或步数记录</p></div>'+
- '<div class="history-actions"><button type="button" class="link-btn" data-view="overview">＋ 快速打卡</button></div></section>'+
- renderHistorySection('今日记录',recent,'今天暂无记录，运动后会自动出现在这里。')+
- renderHistorySection('本周记录（不含今天）',thisWeek,'本周其他日期暂无运动记录。')+
- '<div class="history-more"><button type="button" class="secondary-btn" data-filter="'+(historyFilter==='all'?'week':'all')+'">'+
- (historyFilter==='all'?'收起更早记录':'查看更早记录（'+older.length+' 条）')+'</button></div>'+
- (historyFilter==='all'?renderHistorySection('更早记录',older,'暂无更早记录。'):'');
+ const today=localDate(),week=getWeekDates(),recs=state.records;
+ if(historySelectedDate){
+  const day=historySelectedDate,items=recs.filter(r=>r.date===day);
+  return '<div class="history-compact"><div class="history-focus-head"><strong>'+safe(formatDate(day))+'</strong>'+
+   '<button type="button" class="link-btn" data-history-all>全部记录</button></div>'+
+   (items.length?'<section class="card history-unified">'+items.map(historyRecordCard).join('')+'</section>':
+    '<div class="history-inline-empty">'+(dayKind(day)==='rest'?'休息日':'无运动记录')+'</div>')+'</div>';
+ }
+ const todayItems=recs.filter(r=>r.date===today);
+ const weekItems=recs.filter(r=>r.date!==today&&week.includes(r.date));
+ const older=recs.filter(r=>!week.includes(r.date));
+ return '<div class="history-compact">'+
+  (todayItems.length||weekItems.length?'<section class="card history-unified">'+
+    renderHistorySection('今日',todayItems)+
+    renderHistorySection('本周',weekItems)+'</section>':
+   '<div class="history-inline-empty">本周暂无训练记录</div>')+
+  (older.length?'<button type="button" class="history-expand" data-filter="'+(historyFilter==='all'?'week':'all')+'">'+
+   (historyFilter==='all'?'收起更早记录':'更早记录 · '+older.length+' 项')+'</button>'+
+   (historyFilter==='all'?'<section class="card history-unified">'+renderHistorySection('更早记录',older)+'</section>':''):'')+
+  '</div>';
 }
+
 function renderExerciseSettings(){
  return '<section class="card section-block exercise-settings"><div class="section-title"><div><h2>每组动作与热量计算</h2>'+
  '</div></div>'+
@@ -1054,34 +1063,35 @@ function renderCheckinStrip(){
   return '<div class="checkin-day '+type+(d===today?' today':'')+'"><span class="weekday">周'+['日','一','二','三','四','五','六'][day.getDay()]+'</span><span class="day-circle">'+num+'</span><span class="day-signal">'+(type==='workout'?'训练':type==='rest'?'休息':'—')+'</span></div>';
  }).join('')+'</div><div class="checkin-footer"><span>连续打卡 '+streak+' 天 · 运动自动计入打卡</span>'+renderRestButton()+'</div></section>';
 }
+
 function renderCalendar(){
  const today=localDate(),year=Number(calendarMonth.slice(0,4)),month=Number(calendarMonth.slice(5,7));
- const first=new Date(year,month-1,1,12),firstOffset=(first.getDay()+6)%7;
+ const first=new Date(year,month-1,1,12),offset=(first.getDay()+6)%7;
  const days=new Date(year,month,0).getDate(),names=['一','二','三','四','五','六','日'];
  const monthDates=Array.from({length:days},(_,i)=>calendarMonth+'-'+String(i+1).padStart(2,'0'));
- const active=monthDates.filter(d=>dayKind(d)!=='none').length,workouts=monthDates.filter(d=>dayKind(d)==='workout').length;
- const selected=calendarSelected.startsWith(calendarMonth)?calendarSelected:calendarMonth+'-01';
- const selectedRecs=recordsOfDate(selected),selectedType=dayKind(selected),selectedTotal=totalRecs(selectedRecs);
- const nowMonth=today.slice(0,7),isCurrent=calendarMonth===nowMonth;
- const cells=Array(firstOffset).fill('<span class="cal-blank" aria-hidden="true"></span>');
+ const count=monthDates.filter(d=>dayKind(d)!=='none').length;
+ const workouts=monthDates.filter(d=>dayKind(d)==='workout').length;
+ const current=calendarMonth===today.slice(0,7);
+ const cells=Array.from({length:offset},()=>'<span class="cal-blank" aria-hidden="true"></span>');
  for(let day=1;day<=days;day++){
-  const date=monthDates[day-1],type=dayKind(date),amount=totalRecs(recordsOfDate(date)),future=date>today,chosen=date===selected;
-  const status=type==='workout'?amount+' kcal':type==='rest'?'休息':future?'':'·';
-  cells.push('<button type="button" class="cal-day '+type+(date===today?' today':'')+(chosen?' selected':'')+(future?' future':'')+
-   '" data-cal-date="'+date+'" '+(future?'disabled':'')+' aria-label="'+date+' '+(type==='workout'?'已训练 '+amount+'千卡':type==='rest'?'休息打卡':'尚未打卡')+
-   '" aria-pressed="'+(chosen?'true':'false')+'"><span class="cal-date">'+day+'</span><span class="cal-info">'+status+'</span></button>');
+  const date=monthDates[day-1],type=dayKind(date),future=date>today;
+  cells.push('<button type="button" class="cal-day '+type+(date===today?' today':'')+
+   (future?' future':'')+'" data-cal-date="'+date+'" '+(future?'disabled':'')+
+   ' aria-label="'+date+' '+(type==='workout'?'已训练':type==='rest'?'休息打卡':'未打卡')+
+   '"><span class="cal-date">'+day+'</span><span class="cal-info">'+
+   (type==='workout'?'●':type==='rest'?'休':'')+'</span></button>');
  }
- return renderCheckinStrip()+'<div class="cal-shell"><section class="card"><div class="cal-header"><div class="cal-month-label">'+year+'年'+month+'月</div>'+
- '<div class="cal-nav"><button type="button" data-cal-month="-1" aria-label="上个月">‹</button><button type="button" data-cal-month="1" aria-label="下个月" '+(isCurrent?'disabled':'')+'>›</button></div></div>'+
- '<div class="cal-grid">'+names.map(s=>'<span class="cal-weekday">周'+s+'</span>').join('')+cells.join('')+'</div>'+
- '<div class="cal-legend"><span><i></i>运动打卡</span><span><i class="rest-dot"></i>休息打卡（0 kcal）</span><span>空白：未打卡</span></div></section>'+
- '<div class="cal-stats"><div class="cal-stat"><strong>'+active+'</strong><small>本月打卡天数</small></div><div class="cal-stat"><strong>'+workouts+'</strong><small>本月运动天数</small></div><div class="cal-stat"><strong>'+streakCount()+'</strong><small>连续打卡天数</small></div></div>'+
- '<section class="cal-detail"><h3>'+safe(formatDate(selected))+' · '+(selectedType==='workout'?'已完成训练':selectedType==='rest'?'休息日已打卡':'暂无打卡')+'</h3>'+
- (selectedType==='workout'?'<p>本日 '+selectedRecs.length+' 条运动记录，估算消耗 '+selectedTotal+' kcal。运动记录自动计入每日打卡。</p>'+
- selectedRecs.map(r=>'<div class="cal-detail-item"><span>'+safe(recordName(r))+' · '+safe(recordDescription(r))+'</span><strong>'+Number(r.calories||0)+' kcal</strong></div>').join(''):
- selectedType==='rest'?'<p>已登记休息日打卡，不增加运动消耗。</p>':'<p>训练后会自动打卡，无训练也可以为今天登记休息日。</p>')+
- (selected===today?'<div style="margin-top:12px">'+renderRestButton()+'</div>':'')+
- '</section></div>';
+ return '<div class="calendar-clean"><section class="card calendar-compact-card">'+
+  '<div class="cal-header"><div class="cal-month-label">'+year+'年'+month+'月</div>'+
+  '<div class="cal-nav"><button type="button" data-cal-month="-1" aria-label="上个月">‹</button>'+
+  '<button type="button" data-cal-month="1" aria-label="下个月" '+(current?'disabled':'')+'>›</button></div></div>'+
+  '<div class="cal-grid">'+names.map(name=>'<span class="cal-weekday">'+name+'</span>').join('')+
+  cells.join('')+'</div>'+
+  '<div class="cal-summary-line"><span>打卡 <strong>'+count+'</strong> 天</span>'+
+  '<span>运动 <strong>'+workouts+'</strong> 天</span>'+
+  '<span>连续 <strong>'+streakCount()+'</strong> 天</span></div>'+
+  (current&&dayKind(today)!=='workout'?'<div class="cal-rest-inline">'+renderRestButton()+'</div>':'')+
+  '</section></div>';
 }
 
 function quickOptions(q){
@@ -1172,6 +1182,7 @@ document.addEventListener('submit',e=>{
 });
 
 document.addEventListener('click',e=>{
+ const allHistory=e.target.closest('[data-history-all]');if(allHistory){historySelectedDate=null;render();return}
  const healthBtn=e.target.closest('[data-health-snapshot]');
  if(healthBtn){const type=healthBtn.dataset.healthSnapshot;
   openHealthShortcut(type==='total'?'total':activeStepInterval()?'end':'start',
@@ -1181,7 +1192,7 @@ document.addEventListener('click',e=>{
  const editButton=e.target.closest('[data-step-edit]');if(editButton){editingStepSessionId=editButton.dataset.stepEdit;stepManualOpen=true;render();return}
  const deleteButton=e.target.closest('[data-step-delete]');if(deleteButton){deleteStepSession(deleteButton.dataset.stepDelete);return}
  const day=e.target.closest('[data-cal-date]');
- if(day){calendarSelected=day.dataset.calDate;render();return}
+ if(day){historySelectedDate=day.dataset.calDate;view='history';render();window.scrollTo({top:0,behavior:'instant'});return}
  const month=e.target.closest('[data-cal-month]');
  if(month){const dir=Number(month.dataset.calMonth);if(dir!==1&&dir!==-1)return;
  const y=Number(calendarMonth.slice(0,4)),m=Number(calendarMonth.slice(5,7));
@@ -1192,7 +1203,7 @@ document.addEventListener('click',e=>{
  render();return}
  if(e.target.closest('[data-rest-toggle]')){toggleRestDay();return}
 });
-document.addEventListener('click',e=>{const viewBtn=e.target.closest('[data-view]');if(viewBtn){switchView(viewBtn.dataset.view);return}const categoryBtn=e.target.closest('[data-category]');if(categoryBtn){const next=categoryBtn.dataset.category;if(next===draft.type)return;draft={...emptyDraft(next),id:draft.id,date:draft.date};render();return}const planBtn=e.target.closest('[data-plan]');if(planBtn){const [day,index]=planBtn.dataset.plan.split('-').map(Number);startPlan(day,index);return}const filterBtn=e.target.closest('[data-filter]');if(filterBtn){historyFilter=filterBtn.dataset.filter;render();return}const editBtn=e.target.closest('[data-edit]');if(editBtn){startEdit(editBtn.dataset.edit);return}const delBtn=e.target.closest('[data-delete]');if(delBtn){const item=state.records.find(r=>r.id===delBtn.dataset.delete);if(!item)return;if(confirm(`删除 ${item.date} 的「${recordName(item)}」记录？`)){state.records=state.records.filter(r=>r.id!==item.id);persist();render();toast('记录已删除')}return}const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;switch(action){case 'reset-draft':draft=emptyDraft();render();break;case 'save-settings':saveSettings();break;case 'save-exercise-config':saveExerciseProfiles();break;case 'export-json':exportJSON();break;case 'export-csv':exportCSV();break;case 'import-json':document.getElementById('importFile').click();break;case 'reset-all':if(confirm('确定清空所有训练记录吗？此操作无法撤销。')){state=initialState();draft=emptyDraft();persist();view='overview';render();toast('已清空记录')}break}});
+document.addEventListener('click',e=>{const viewBtn=e.target.closest('[data-view]');if(viewBtn){if(viewBtn.dataset.view==='history')historySelectedDate=null;switchView(viewBtn.dataset.view);return}const categoryBtn=e.target.closest('[data-category]');if(categoryBtn){const next=categoryBtn.dataset.category;if(next===draft.type)return;draft={...emptyDraft(next),id:draft.id,date:draft.date};render();return}const planBtn=e.target.closest('[data-plan]');if(planBtn){const [day,index]=planBtn.dataset.plan.split('-').map(Number);startPlan(day,index);return}const filterBtn=e.target.closest('[data-filter]');if(filterBtn){historyFilter=filterBtn.dataset.filter;render();return}const editBtn=e.target.closest('[data-edit]');if(editBtn){startEdit(editBtn.dataset.edit);return}const delBtn=e.target.closest('[data-delete]');if(delBtn){const item=state.records.find(r=>r.id===delBtn.dataset.delete);if(!item)return;if(confirm(`删除 ${item.date} 的「${recordName(item)}」记录？`)){state.records=state.records.filter(r=>r.id!==item.id);persist();render();toast('记录已删除')}return}const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;switch(action){case 'reset-draft':draft=emptyDraft();render();break;case 'save-settings':saveSettings();break;case 'save-exercise-config':saveExerciseProfiles();break;case 'export-json':exportJSON();break;case 'export-csv':exportCSV();break;case 'import-json':document.getElementById('importFile').click();break;case 'reset-all':if(confirm('确定清空所有训练记录吗？此操作无法撤销。')){state=initialState();draft=emptyDraft();persist();view='overview';render();toast('已清空记录')}break}});
 document.addEventListener('input',e=>{const card=e.target.closest('[data-exercise-config]');if(card)updateExercisePreview(card);});
 document.addEventListener('input',e=>{if(e.target.closest('#recordForm')){pullForm();updatePreview()}});
 document.addEventListener('submit',e=>{if(e.target.id!=='recordForm')return;e.preventDefault();pullForm();try{const rec=newRecord(draft);const index=state.records.findIndex(r=>r.id===rec.id);if(index>=0)state.records[index]=rec;else state.records.push(rec);persist();draft=emptyDraft('strength');switchView('overview');toast(index>=0?'记录修改已保存':'训练已记录，统计已更新')}catch(err){toast(err.message)}});
