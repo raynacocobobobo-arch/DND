@@ -6,13 +6,19 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "theme_color": "#111111",
-  "background_color": "#0d0e10",
+  "theme_color": "#0e0e0e",
+  "background_color": "#0e0e0e",
   "icons": [
     {
       "src": "./icon-180.png",
       "sizes": "180x180",
       "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
