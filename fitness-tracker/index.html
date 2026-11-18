@@ -7,7 +7,7 @@
   <meta name="description" content="轻量离线健身追踪：记录组数、次数、训练时长，自动估算运动消耗。" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <title>运动手账 · 健身追踪 V1.5</title>
+  <title>运动手账 · 健身追踪 V1.6</title>
   <style>
     :root {--bg:#f5f7f5;--card:#fff;--ink:#192824;--sub:#687972;--muted:#92a19a;--line:#e4ebe6;--accent:#24785b;--accent-dark:#176448;--accent-pale:#eaf5ef;--ink-panel:#18372f;--warm:#e9af61;--shadow:0 12px 40px rgba(32,65,49,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -228,6 +228,19 @@
 .step-home-link{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 2px 3px;font-size:11px;color:#728a7c}
 .step-home-link button{border:0;background:transparent;color:#26785a;font-weight:800;padding:5px 1px}
 @media(max-width:620px){.mobile-nav .nav-btn{font-size:10px}.step-page .card{padding:14px 12px}.step-equation strong{font-size:18px}.step-equation small{font-size:9px}.step-session-row{gap:6px}.step-session-info small{font-size:10px}.step-session-row .record-action{padding:6px 4px}.step-session-delta{font-size:11px}.step-session-fields{grid-template-columns:1fr 1fr;gap:8px}.step-session-fields label:first-child{grid-column:1/-1}.step-total-form{gap:7px}.step-total-form button{max-width:48%;padding:10px 6px;font-size:11px}}
+
+/* V1.6 Shortcuts handoff: one tap reads today's Health count via iOS, no tokens in public webpage. */
+.health-shortcut-card{border-color:#c7dfcd!important}
+.health-shortcut-card .section-title{margin-bottom:14px}
+.health-shortcut-kind{display:block;font-weight:700;font-size:12px;color:#607868;margin:9px 0}
+.health-shortcut-kind select{display:block;margin-top:6px;width:100%;max-width:270px;border:1px solid #d0e3d7;background:#fff;border-radius:10px;padding:11px;color:#294b39}
+.health-shortcut-buttons{display:flex;flex-wrap:wrap;gap:10px}
+.health-shortcut-buttons button{min-height:44px;font-size:13px}
+.health-shortcut-how{margin-top:13px;border-top:1px solid #e7eee8;padding-top:12px;color:#64796a;font-size:12px}
+.health-shortcut-how summary{font-weight:700;color:#287151;cursor:pointer}
+.health-shortcut-how ol{padding-left:19px;line-height:1.9}
+.health-shortcut-how code{background:#ebf4ee;border-radius:4px;padding:2px 3px}
+@media(max-width:620px){.health-shortcut-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.health-shortcut-buttons button{padding:10px 7px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -308,7 +321,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['快速打卡','固定项目 · 只填数量 · 自动算热量'],steps:['步数去重','多段运动／乘车累计步数扣除'],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['steps','步数去重'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.5</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS / TRACKING · V1.6</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -658,6 +671,100 @@ function deleteStepSession(id){
  }catch(e){state.stepDiary=previous;state.records=oldRecords;toast(e.message||'删除失败');return false}
 }
 function stepKindLabel(kind){return STEP_KINDS.find(p=>p[0]===kind)?.[1]||'其他'}
+
+const HEALTH_SHORTCUT_NAME='运动手账取步数';
+const HEALTH_SHORTCUT_PENDING='hermes_fitness_shortcut_pending_v1';
+const HEALTH_STEP_URL_PREFIX='fitness-step=';
+function activeStepInterval(){
+ return stepSessions(localDate()).find(s=>s.end===null)||null;
+}
+function saveShortcutPending(value){
+ try{localStorage.setItem(HEALTH_SHORTCUT_PENDING,JSON.stringify(value));return true}
+ catch(e){toast('浏览器无法保存本次操作，请检查网站存储权限');return false}
+}
+function clearShortcutPending(){
+ try{localStorage.removeItem(HEALTH_SHORTCUT_PENDING)}catch(e){}
+}
+function getShortcutPending(){
+ try{
+  const v=JSON.parse(localStorage.getItem(HEALTH_SHORTCUT_PENDING)||'null');
+  if(!v||!['start','end','total'].includes(v.mode)||!Number.isFinite(v.when)||
+   Date.now()-v.when>15*60*1000||v.when-Date.now()>60000||v.date!==localDate())return null;
+  return v;
+ }catch(e){return null}
+}
+function openHealthShortcut(mode,kind){
+ const current=activeStepInterval();
+ if(mode==='start'&&current){toast('请先读取上一段的结束步数');return false}
+ if(mode==='end'&&!current){toast('还没有待结束的区间');return false}
+ const pending={mode,date:localDate(),when:Date.now()};
+ if(mode==='start')pending.kind=STEP_KINDS.some(x=>x[0]===kind)?kind:'other';
+ if(mode==='end')pending.id=current.id;
+ if(!saveShortcutPending(pending))return false;
+ const address='shortcuts://run-shortcut?name='+encodeURIComponent(HEALTH_SHORTCUT_NAME);
+ window.location.href=address;
+ return true;
+}
+function applyHealthShortcutSnapshot(raw,pending){
+ const count=Number(raw);
+ if(!Number.isInteger(count)||count<0||count>1000000){toast('健康步数格式不正确，请检查快捷指令输出');return false}
+ if(!pending||pending.date!==localDate()){toast('快捷取步操作已过期，请重新点击读取');return false}
+ const day=localDate(),oldEntry=todayStepEntry(),prevDiary=state.stepDiary||{};
+ const prevRecords=state.records.slice(),sessions=[...stepSessions(day)];
+ const currentTotal=Number.isInteger(oldEntry.total)?oldEntry.total:0;
+ if(count<currentTotal){toast('健康读取值小于本日已保存的累计步数，请确认数据是否已同步');return false}
+ if(pending.mode==='start'){
+  sessions.push({id:uid(),kind:pending.kind||'other',start:count,end:null});
+ }else if(pending.mode==='end'){
+  const index=sessions.findIndex(s=>s.id===pending.id&&s.end===null);
+  if(index<0){toast('未找到要结束的区间，请重新读取');return false}
+  sessions[index]={...sessions[index],end:count};
+ }
+ const issue=validateStepSessions(sessions);
+ if(issue){toast(issue);return false}
+ const todayOld=recordsOfDate(day).filter(r=>r.type==='walking'&&r.stepMode!=='daily-net-v1');
+ if(!managedWalkingRecord(day)&&todayOld.length&&!confirm('今天已有手动步行记录。自动同步步数可能重复累计。旧记录不会删除，仍继续吗？'))return false;
+ state.stepDiary={...prevDiary,[day]:{...oldEntry,total:count,sessions,shortcutReadAt:new Date().toISOString()}};
+ try{
+  const breakdown=dailyStepBreakdown(day);
+  if(!breakdown)throw Error('步数区间不完整或计数超出范围');
+  updateManagedWalking(day);
+  if(!persist()){state.stepDiary=prevDiary;state.records=prevRecords;return false}
+  const label=pending.mode==='start'?'已自动记录开始步数':pending.mode==='end'?'已自动记录结束步数':'已同步今日总步数';
+  render();toast(label+'：'+count+' 步，净步数 '+breakdown.net+' 步');
+  return true;
+ }catch(e){state.stepDiary=prevDiary;state.records=prevRecords;toast(e.message||'读取结果处理失败');return false}
+}
+function receiveHealthShortcutResult(){
+ // The number lives in the URL fragment, which is not sent in an HTTP request to GitHub.
+ const fragment=String(window.location.hash||'').replace(/^#/,'');
+ if(!fragment.startsWith(HEALTH_STEP_URL_PREFIX))return;
+ const raw=fragment.slice(HEALTH_STEP_URL_PREFIX.length);
+ try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+ const pending=getShortcutPending();
+ clearShortcutPending();
+ if(!pending){toast('已返回健康步数，但没有有效的读取操作；请先在步数去重页点击按钮');return}
+ const ok=applyHealthShortcutSnapshot(raw,pending);
+ if(ok){view='steps';render()}
+}
+function renderHealthShortcutCard(){
+ const active=activeStepInterval(),total=todayStepEntry().total;
+ return '<section class="card health-shortcut-card"><div class="section-title"><div><h2>一键读取 Apple 健康步数</h2>'+
+ '<p>由 iPhone「快捷指令」读取，并回传当前累计步数，不需要手动抄数字</p></div></div>'+
+ (active?'<p class="step-pending">进行中：'+safe(stepKindLabel(active.kind))+' · 开始 '+active.start.toLocaleString('zh-CN')+' 步。再按一次即可读取结束值。</p>':
+ '<label class="health-shortcut-kind">这次要排除的活动<select id="healthStepKind">'+STEP_KINDS.map(k=>
+ '<option value="'+k[0]+'">'+k[1]+'</option>').join('')+'</select></label>')+
+ '<div class="health-shortcut-buttons"><button type="button" class="primary-btn" data-health-snapshot="interval">'+
+ (active?'读取结束步数':'读取开始步数')+'</button>'+
+ '<button type="button" class="secondary-btn" data-health-snapshot="total">同步今日总步数</button></div>'+
+ '<p class="micro-note">首次使用需在 iPhone 创建「'+HEALTH_SHORTCUT_NAME+'」快捷指令。按键会跳转至快捷指令，读取后自动返回；已有手动输入仍可使用。</p>'+
+ '<details class="health-shortcut-how"><summary>首次配置方法</summary><ol>'+
+ '<li>复制已有的健康步数上报快捷指令，重命名为「'+HEALTH_SHORTCUT_NAME+'」。保留读取今日步数、求和及原有的服务器 POST 动作。</li>'+
+ '<li>在最后新增「文本」动作：先写运动手账网址，后接 <code>#fitness-step=</code>，再插入「求和结果」变量。</li>'+
+ '<li>最后新增「打开 URL」动作，打开上一步生成的网址。手动运行一次并允许访问健康数据。</li>'+
+ '</ol><p>不要把 Bearer token 填入 GitHub 页面或分享给他人。</p></details></section>';
+}
+
 function renderStepDedup(){
  const entry=todayStepEntry(),sessions=[...stepSessions(localDate())].sort((a,b)=>a.start-b.start);
  const breakdown=dailyStepBreakdown(localDate()),deduction=stepDeduction(localDate());
@@ -673,6 +780,7 @@ function renderStepDedup(){
  '<form id="stepTotalForm" class="step-total-form"><label>当天累计总步数<input type="number" name="dayTotal" min="1" max="1000000" step="1" inputmode="numeric" placeholder="例如 12000" value="'+(total??'')+'"></label>'+
  '<button type="submit">保存 / 更新全天步数</button></form>'+
  '<p class="micro-note">也可以在第一页「走路」卡片输入全天累计步数，同一天只会保留一条自动计算的净步数记录。</p></section>'+
+ renderHealthShortcutCard()+
  '<section class="card step-sessions"><div class="section-title"><div><h2>重复计步区间</h2><p>健身房、骑车、乘车等可记录多段；每段填开始和结束的累计步数。</p></div>'+
  '<button type="button" class="link-btn" data-step-new>＋ 新增一段</button></div>'+
  (sessions.length?'<div class="step-session-list">'+sessions.map((x,i)=>
@@ -781,7 +889,7 @@ function renderQuickHome(){
  '<div class="quick-week-meta"><small>本周还差</small><strong>'+rem+' kcal</strong><small>已消耗 '+weekSum+' / '+goal+' kcal</small></div></div>' +
  '<div class="quick-bar"><div class="quick-bar-fill" style="width:'+displayPercent+'%"></div></div>' +
  '<div class="quick-barline"><span>本周目标进度 '+percentage+'%</span><span>'+(rem===0?'已达到周目标':'距离目标还差 '+rem+' kcal')+'</span></div></section>'+
- '<div class="quick-section-title"><h2>快速记录</h2><span>V1.5 · 11个固定项目</span></div>'+
+ '<div class="quick-section-title"><h2>快速记录</h2><span>V1.6 · 11个固定项目</span></div>'+
  '<div class="quick-grid">'+QUICK_ITEMS.map(q=>{
  const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:quickValues[q.key];
  const net=q.key==='steps'?walkingPreviewNet(v):v;
@@ -832,6 +940,10 @@ document.addEventListener('submit',e=>{
 });
 
 document.addEventListener('click',e=>{
+ const healthBtn=e.target.closest('[data-health-snapshot]');
+ if(healthBtn){const type=healthBtn.dataset.healthSnapshot;
+  openHealthShortcut(type==='total'?'total':activeStepInterval()?'end':'start',
+   document.getElementById('healthStepKind')?.value||'gym');return}
  const newButton=e.target.closest('[data-step-new]');if(newButton){editingStepSessionId=null;render();return}
  const editButton=e.target.closest('[data-step-edit]');if(editButton){editingStepSessionId=editButton.dataset.stepEdit;render();return}
  const deleteButton=e.target.closest('[data-step-delete]');if(deleteButton){deleteStepSession(deleteButton.dataset.stepDelete);return}
@@ -854,6 +966,8 @@ document.addEventListener('submit',e=>{if(e.target.id!=='recordForm')return;e.pr
 document.getElementById('importFile').addEventListener('change',e=>{importJSONFile(e.target.files[0]);e.target.value=''});
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 render();
+receiveHealthShortcutResult();
+window.addEventListener('hashchange',receiveHealthShortcutResult);
 </script>
 </body>
 </html>
