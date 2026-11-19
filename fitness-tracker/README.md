@@ -1,10 +1,20 @@
-# 健身记录 / Fitness Tracker V5.0.1（纯本地版）
+# 健身记录 / Fitness Tracker V5.2.0（iPhone 16 Pro 单屏版）
 
-最新版本：V5.0.1（2026-11-20）
+最新版本：V5.2.0（2026-11-20）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
+
+## V5.2.0 — iPhone 16 Pro 完整单屏打卡首页
+
+- 首页改为 3 列 × 4 行的 **12 项运动卡片**，不再按日常/有氧/力量/游泳堆叠大分组，也不留右侧空白。
+- 顶部显示今日 kcal 和本周目标进度；每张卡片清楚呈现运动名称、今日累计次数或分钟/步数/来回数、该项目的 kcal。
+- iPhone 16 Pro 以 402×874 CSS px 为布局基准，使用 `100dvh` 和 safe-area-inset 适配刘海/底部导航；在足够高度的屏幕上不滚动，较矮视口回退滚动防止内容被裁切。
+- 点卡片继续打开原先的底部记录操作面板，不改默认加减、输入、热量算法、本地存储键和历史数据。
+- 仅替换首页模板与样式，保留日历、历史、设置、JSON 导入导出；继续保持纯本地存储，不添加后台。
+- Service Worker 缓存升级至 `fitness-tracker-v5.2.0-iphone16pro-grid`。
+
 
 ## V5.0.1 纯本地存储
 
