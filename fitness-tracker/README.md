@@ -1,10 +1,24 @@
-# 健身记录 / Fitness Tracker V2.1
+# 健身记录 / Fitness Tracker V2.2
 
-最新版本：V2.1（2026-11-19）
+最新版本：V2.2（2026-11-19）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
+
+## V2.2 黄黑拳头桌面 Logo + Hermes 同账号云端备份
+
+- 保留 V2.1 全部运动卡片、日历日期补记、历史、4 组默认、步数区间去重和本机恢复机制；`index.html` 主逻辑只增配色、版本和引入独立 `cloud.js`。
+- 将拳头图标替换为新的**去掉鹰翼的金黑拳头版**：iPhone 桌面 `icon-180.png`、网页 favicon `icon.svg`（嵌入相同 PNG）、PWA manifest 全部指向同一新图标；新 PWA 缓存版本为 `fitness-tracker-v2.2-cloud-fist`，缓存 `cloud.js`，不再引用旧 `icon-512.jpg`。小图标为经手机尺寸优化的 144px 版本。
+- App 标题仍为 **健身记录**；手机安装图标可能需要删除原有桌面快捷方式并重新「添加到主屏幕」，iOS 不保证自动更新已安装快捷方式图像。
+- 直接复用 Hermes To Do 已有的 Supabase 项目和相同邮箱／密码身份认证。用户需要在「设置 → 云端同步」单独登录一次，不会直接共享不同网页的登录 Cookie。密码不写进 GitHub；仅公开 publishable key 在前端，未使用 service_role/secret key。
+- Supabase 单独创建 `public.fitness_journals`，按 `auth.uid() = user_id` 设定 SELECT/INSERT/UPDATE RLS 策略，并拒绝 anon 权限；Hermes To Do 现有数据表完全未修改。
+- 云端记录为一份加版本号的个人快照：`{records,settings,stepDiary,restDays}`，包括原训练、个别动作热量系数、多段步数扣除和日历休息日。
+- **防止覆盖旧数据**：首次成功登录必须主动选择「上传本机记录」或「下载云端记录」，不会自动上传空状态；下载云端前必须确认，并把当前本机状态备份到 `fitness_before_cloud_restore_v1`。下载会替换本机数据，覆盖前生成保护备份。
+- 只有首次手动上传或下载后才开启后续自动同步；本地保存先成功，之后非阻塞式上传到云端。后端 RPC `fitness_save_journal` 按 `version` 执行乐观锁，发现其他设备已写入新版本立即拒绝覆盖并提示用户下载核对；离线时不删除本机数据。
+- 当前版本为**单账号个人快照同步**，不是多端同时编辑自动合并：不同设备频繁交叉修改可能触发冲突，用户必须检查本机备份并决定如何合并。
+- 未掌握 Hermes 账号密码，不执行任何真实用户登录；已验证数据库建表/权限，前端可用模拟认证测试业务逻辑，真实 iPhone 的登录和回传须由用户实际试用。
+- 旧版 V2.1 保存于 `release/fitness-tracker-v2.1`，新版本 V2.2 会单独创建 release 快照。
 
 ## V2.1 日历补记训练 + 椭圆机时长快捷选择
 
