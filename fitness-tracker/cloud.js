@@ -56,7 +56,7 @@ async function resumeAccount(){
  if(!signedIn()||refreshingAccount)return;
  refreshingAccount=(async()=>{
   if(Number(session.expires_at||0)<Date.now()/1000+300)await getToken();
-  if(view==='settings'&&signedIn())await refresh();
+  if(signedIn())await refresh();
  })();
  try{await refreshingAccount}finally{refreshingAccount=null}
 }
