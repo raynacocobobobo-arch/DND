@@ -996,6 +996,157 @@ body[data-screen="overview"] .quick-screen .quick-card.has-entry .quick-save{
   body[data-screen="overview"] .quick-screen .qty-btn{width:28px!important;min-width:28px!important}
   body[data-screen="overview"] .quick-screen .quick-card:last-child{column-gap:6px!important}
 }
+
+/* V2.4: measured typography, quieter graphite surfaces and direct inline recording. */
+body[data-screen="overview"] .main{background:#111317!important}
+body[data-screen="overview"] .quick-screen{max-width:1200px!important;width:100%!important;margin:0 auto!important;gap:14px!important}
+body[data-screen="overview"] .quick-top{
+ background:linear-gradient(115deg,#2b2d31 0%,#1f2328 100%)!important;
+ border:1px solid #42454a!important;color:#f6f0e6!important;
+ box-shadow:0 10px 30px rgba(0,0,0,.14)!important;
+ padding:21px 25px!important;border-radius:18px!important;
+}
+body[data-screen="overview"] .quick-top:after{border-color:rgba(237,195,110,.1)!important;box-shadow:0 0 0 26px rgba(237,195,110,.02)!important}
+body[data-screen="overview"] .quick-top .quick-metric-label,
+body[data-screen="overview"] .quick-top .quick-week-meta small{color:#b4b6b8!important}
+body[data-screen="overview"] .quick-top .quick-metric-large,
+body[data-screen="overview"] .quick-top .quick-week-meta strong{color:#f6e9cf!important}
+body[data-screen="overview"] .quick-top .quick-metric-large small{color:#c7b994!important}
+body[data-screen="overview"] .quick-top .quick-week-meta{border-color:#4a4c4e!important}
+body[data-screen="overview"] .quick-top .quick-bar{background:#3a3b3d!important;height:5px!important;margin-top:16px!important}
+body[data-screen="overview"] .quick-top .quick-bar-fill{background:linear-gradient(90deg,#bea16b,#ebc77a)!important}
+body[data-screen="overview"] .quick-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:5px 2px -2px}
+body[data-screen="overview"] .quick-section-head h2{margin:0;font-size:16px!important;color:#f2ede7!important;letter-spacing:.1px}
+body[data-screen="overview"] .quick-section-head span{font-size:11px;color:#989ba0}
+body[data-screen="overview"] .quick-screen .quick-grid{
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ grid-template-rows:none!important;grid-auto-rows:auto!important;
+ gap:12px!important;align-content:start!important;min-height:0!important;
+ flex:none!important;overflow:visible!important;
+}
+body[data-screen="overview"] .quick-screen .quick-card{
+ display:flex!important;flex-direction:column!important;min-width:0!important;
+ height:auto!important;min-height:144px!important;
+ padding:16px!important;gap:0!important;margin:0!important;
+ border-radius:14px!important;border:1px solid #393d43!important;
+ background:linear-gradient(150deg,#25282e 0%,#1b1e24 100%)!important;
+ box-shadow:0 3px 14px rgba(0,0,0,.1)!important;
+ transition:border-color .15s ease,transform .15s ease!important;
+}
+body[data-screen="overview"] .quick-screen .quick-card:hover{border-color:#6f6553!important}
+body[data-screen="overview"] .quick-screen .quick-card:focus-within{border-color:#c7a361!important}
+body[data-screen="overview"] .quick-screen .quick-card.has-entry{border-color:#786b50!important}
+body[data-screen="overview"] .quick-screen .quick-title-row{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;min-height:0!important;gap:8px!important}
+body[data-screen="overview"] .quick-heading{display:flex;align-items:center;gap:9px;min-width:0}
+body[data-screen="overview"] .quick-kind{
+ display:inline-block;border-radius:5px;padding:3px 6px;flex:none;
+ background:#37383a;color:#b9b4a9;font-size:10px;font-weight:650;line-height:1.25;
+}
+body[data-screen="overview"] .quick-screen .quick-title-row strong{
+ color:#f1efec!important;font-size:15px!important;font-weight:740!important;
+ line-height:1.3!important;letter-spacing:0!important;
+}
+body[data-screen="overview"] .quick-screen .quick-done{
+ background:transparent!important;color:#dec18a!important;font-size:10px!important;
+ width:auto!important;height:auto!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .quick-note-row{
+ display:flex;align-items:center;justify-content:space-between;gap:5px;
+ min-height:20px;margin:7px 0 15px;color:#9c9fa4;font-size:11px;white-space:nowrap;
+}
+body[data-screen="overview"] .quick-card-note{overflow:hidden;text-overflow:ellipsis}
+body[data-screen="overview"] .quick-distance{color:#ddc28c;font-weight:680}
+body[data-screen="overview"] .quick-actions{display:grid;grid-template-columns:minmax(0,1fr) 66px;gap:7px;align-items:stretch;margin-top:auto;min-width:0}
+body[data-screen="overview"] .quick-screen .quick-qty{display:flex!important;gap:4px!important;height:40px!important;min-height:40px!important;min-width:0!important}
+body[data-screen="overview"] .quick-screen .qty-btn,
+body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-btn{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ min-width:30px!important;width:30px!important;height:40px!important;min-height:40px!important;
+ background:#34373e!important;color:#e2ddd4!important;
+ border:1px solid #444850!important;border-radius:8px!important;
+ font-size:19px!important;font-weight:500!important;
+}
+body[data-screen="overview"] .quick-screen .qty-btn:hover{background:#43464d!important}
+body[data-screen="overview"] .quick-screen .qty-center{min-width:0!important;position:relative;flex:1!important}
+body[data-screen="overview"] .quick-screen .qty-center input[name="q-value"],
+body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-center input[name="q-value"]{
+ display:block!important;width:100%!important;min-width:0!important;
+ height:40px!important;min-height:40px!important;border-radius:8px!important;
+ background:#14171c!important;border:1px solid #454950!important;
+ color:#f3cf85!important;text-align:center!important;text-align-last:center!important;
+ font-size:16px!important;font-weight:790!important;padding:0 21px 0 4px!important;
+ appearance:textfield;-moz-appearance:textfield;
+}
+body[data-screen="overview"] .quick-screen .qty-center input[name="q-value"]::-webkit-inner-spin-button,
+body[data-screen="overview"] .quick-screen .qty-center input[name="q-value"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+body[data-screen="overview"] .quick-screen .quick-unit-suffix{
+ position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:10px;color:#9d916f;
+ pointer-events:none;white-space:nowrap;
+}
+body[data-screen="overview"] .quick-screen .quick-save,
+body[data-screen="overview"] .quick-screen .quick-card.has-entry .quick-save,
+body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-save{
+ width:100%!important;min-width:0!important;height:40px!important;min-height:40px!important;
+ margin:0!important;padding:0 4px!important;border-radius:8px!important;
+ background:#d7b779!important;border:1px solid #d7b779!important;
+ color:#211b13!important;font-size:12px!important;font-weight:780!important;
+ letter-spacing:.15px!important;box-shadow:none!important;
+}
+body[data-screen="overview"] .quick-screen .quick-save:hover{background:#ebcc8c!important}
+@media(min-width:851px) and (max-width:1250px){
+ body[data-screen="overview"] .quick-screen .quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:850px){
+ body[data-screen="overview"] .app{height:auto!important;min-height:100dvh!important}
+ body[data-screen="overview"] .main{
+  height:auto!important;max-height:none!important;min-height:100dvh!important;
+  overflow-y:auto!important;padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
+ }
+ body[data-screen="overview"] #content{flex:none!important;height:auto!important;min-height:0!important}
+ body[data-screen="overview"] .quick-screen{flex:none!important;min-height:0!important;gap:9px!important}
+ body[data-screen="overview"] .quick-top{padding:12px 15px!important;border-radius:13px!important}
+ body[data-screen="overview"] .quick-top .quick-bar{margin-top:9px!important}
+ body[data-screen="overview"] .quick-section-head{margin:2px 1px 0}
+ body[data-screen="overview"] .quick-section-head h2{font-size:13px!important}
+ body[data-screen="overview"] .quick-section-head span{font-size:10px}
+ body[data-screen="overview"] .quick-screen .quick-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:none!important;grid-auto-rows:auto!important;
+  flex:none!important;gap:7px!important;overflow:visible!important;
+ }
+ body[data-screen="overview"] .quick-screen .quick-card{
+  display:flex!important;grid-column:auto!important;
+  min-height:133px!important;height:auto!important;overflow:visible!important;
+  padding:10px!important;border-radius:11px!important;
+ }
+ body[data-screen="overview"] .quick-heading{gap:5px}
+ body[data-screen="overview"] .quick-kind{padding:2px 4px;font-size:9px}
+ body[data-screen="overview"] .quick-screen .quick-title-row strong{font-size:12px!important}
+ body[data-screen="overview"] .quick-note-row{font-size:9px;min-height:18px;margin:5px 0 8px}
+ body[data-screen="overview"] .quick-actions{display:flex!important;flex-direction:column;gap:6px}
+ body[data-screen="overview"] .quick-screen .quick-qty{height:33px!important;min-height:33px!important;gap:4px!important}
+ body[data-screen="overview"] .quick-screen .qty-btn{width:29px!important;min-width:29px!important;height:33px!important;min-height:33px!important}
+ body[data-screen="overview"] .quick-screen .qty-center input[name="q-value"]{height:33px!important;min-height:33px!important;font-size:14px!important}
+ body[data-screen="overview"] .quick-screen .quick-save{height:30px!important;min-height:30px!important;font-size:12px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child{
+  display:flex!important;grid-column:span 2!important;min-height:104px!important;
+  padding:12px!important;
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-note-row{margin:4px 0 8px}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-actions{
+  display:grid!important;grid-template-columns:minmax(0,1fr) 88px!important;gap:8px!important
+ }
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-qty{height:39px!important;min-height:39px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-btn{width:34px!important;min-width:34px!important;height:39px!important;min-height:39px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .qty-center input[name="q-value"]{height:39px!important;min-height:39px!important}
+ body[data-screen="overview"] .quick-screen .quick-card:last-child .quick-save{height:39px!important;min-height:39px!important}
+}
+@media(max-width:370px){
+ body[data-screen="overview"] .quick-screen .quick-card{padding:8px!important}
+ body[data-screen="overview"] .quick-note-row{font-size:8px}
+ body[data-screen="overview"] .quick-screen .qty-btn{width:27px!important;min-width:27px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1105,6 +1256,12 @@ function calc(d){
  const preset=QUICK_ITEMS.find(q=>q.key===d.presetKey)||
   QUICK_ITEMS.find(q=>q.exercise===exercise&&q.type===d.type)||
   (d.type==='walking'?QUICK_ITEMS.find(q=>q.key==='steps'):null);
+ if(d.type==='swimming'&&d.legacySwimming){
+  const mins=Number(d.durationMin);
+  const legacyRate=Number(state.settings.exerciseProfiles?.swim?.rate);
+  const defaultRate=6*3.5*w/200;
+  return mins>0?Math.round(mins*(Number.isFinite(legacyRate)&&state.settings.exerciseProfiles?.swim?.rate!==undefined?legacyRate:defaultRate)):null;
+ }
  if(d.type==='swimming'&&!d.legacySwimming){
   const laps=Number(d.laps);
   if(!Number.isInteger(laps)||laps<1)return null;
@@ -1675,42 +1832,42 @@ function renderQuickHome(){
  const percentage=Math.min(100,Math.max(0,Math.round(weekSum/goal*100)));
  return '<div class="quick-screen">'+
  '<section class="quick-top" aria-label="训练消耗"><div class="quick-topline">'+
- '<div><div class="quick-metric-label">今日消耗</div><div class="quick-metric-large">'+daySum+'<small>kcal</small></div></div>'+
- '<div class="quick-week-meta"><small>本周剩余</small><strong>'+rem+' kcal</strong></div></div>'+
+ '<div><div class="quick-metric-label">今日运动消耗</div><div class="quick-metric-large">'+daySum+'<small>kcal</small></div></div>'+
+ '<div class="quick-week-meta"><small>本周剩余目标</small><strong>'+rem+' kcal</strong></div></div>'+
  '<div class="quick-bar"><div class="quick-bar-fill" style="width:'+percentage+'%"></div></div></section>'+
+ '<div class="quick-section-head"><h2>快速记录</h2><span>调整数量，点击记录即可打卡</span></div>'+
  '<div class="quick-grid" aria-label="运动快捷打卡">'+QUICK_ITEMS.map(q=>{
   const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:quickValues[q.key];
-  const options=quickOptions(q),custom=!options.includes(v);
-  const completed=todayRecords.some(r=>r.type===q.type&&(q.type==='walking'||r.exercise===q.exercise));
-  const textUnit=q.unit==='分钟'?'分':q.unit==='组'?'组':'步';
-  const choices=options.map(n=>'<option value="'+n+'" '+(v===n?'selected':'')+'>'+n+textUnit+'</option>').join('');
-  return '<form class="quick-card'+(custom?' is-custom':'')+(completed?' has-entry':'')+'" data-q-form="'+q.key+'" novalidate>'+
-   '<div class="quick-title-row"><strong>'+safe(q.name)+'</strong>'+
-   (completed?'<span class="quick-done" aria-label="今日已记录">✓</span>':'')+'</div>'+
-   '<div class="quick-qty"><button type="button" class="qty-btn" data-q-step="'+q.key+'" data-direction="-1" aria-label="'+safe(q.name)+'减少'+q.step+q.unit+'">−</button>'+
-   '<div class="qty-center"><select data-q-select aria-label="'+safe(q.name)+'数量">'+choices+
-   '<option value="custom" '+(custom?'selected':'')+'>输入其他</option></select>'+
-   '<input type="number" name="q-value" inputmode="numeric" aria-label="'+safe(q.name)+'自定义数量" min="'+(q.unit==='分钟'?10:q.key==='steps'?1000:1)+'" max="'+q.max+'" step="'+q.step+'" value="'+v+'"></div>'+
+  const completed=todayRecords.some(r=>r.type===q.type&&(q.type==='walking'||r.exercise===q.exercise||r.stroke===q.exercise));
+  const kind=q.type==='swimming'?'游泳':q.type==='walking'?'日常':q.type==='cardio'?'有氧':q.type==='hold'?'静态':'力量';
+  const note=q.type==='swimming'?'1 来回＝50 米':q.unit==='分钟'?'每次增减 10 分钟':q.type==='walking'?'每次增减 1000 步':'每次增减 1 组';
+  const unit=q.unit==='分钟'?'分':q.unit==='组'?'组':q.unit;
+  return '<form class="quick-card'+(completed?' has-entry':'')+'" data-q-form="'+q.key+'" novalidate>'+
+   '<div class="quick-title-row"><div class="quick-heading"><span class="quick-kind">'+kind+'</span><strong>'+safe(q.name)+'</strong></div>'+
+   (completed?'<span class="quick-done" aria-label="今日已记录">✓ 已记</span>':'')+'</div>'+
+   '<div class="quick-note-row"><span class="quick-card-note">'+note+'</span>'+
+   (q.type==='swimming'?'<span class="quick-distance" data-q-distance>共 '+v*50+' 米</span>':'')+'</div>'+
+   '<div class="quick-actions"><div class="quick-qty"><button type="button" class="qty-btn" data-q-step="'+q.key+'" data-direction="-1" aria-label="'+safe(q.name)+'减少'+q.step+q.unit+'">−</button>'+
+   '<div class="qty-center"><input type="number" name="q-value" inputmode="numeric" aria-label="'+safe(q.name)+'数量" min="'+(q.unit==='分钟'?10:q.key==='steps'?1000:1)+'" max="'+q.max+'" step="'+q.step+'" value="'+v+'"><span class="quick-unit-suffix">'+unit+'</span></div>'+
    '<button type="button" class="qty-btn" data-q-step="'+q.key+'" data-direction="1" aria-label="'+safe(q.name)+'增加'+q.step+q.unit+'">＋</button></div>'+
-   '<button type="submit" class="quick-save" aria-label="打卡'+safe(q.name)+'">打卡</button>'+
+   '<button type="submit" class="quick-save" aria-label="打卡'+safe(q.name)+'">'+(completed?'再记一次':'记录')+'</button></div>'+
    '</form>';
  }).join('')+'</div></div>';
 }
-
 function quickUpdateEstimate(form){
  const q=QUICK_ITEMS.find(item=>item.key===form?.dataset.qForm);if(!q)return;
  const input=form.querySelector('[name="q-value"]');
  const val=Number(input?.value);const el=form.querySelector('[data-q-est]');
  if(el){const net=q.key==='steps'?walkingPreviewNet(val):val;el.textContent=Number.isInteger(val)&&val>0&&val<=q.max&&net!==null?quickCalories(q,net):'—'}
+ const distance=form.querySelector('[data-q-distance]');
+ if(distance)distance.textContent=input?.value!==''&&Number.isInteger(val)&&val>0?'共 '+val*50+' 米':'— 米';
 }
 function syncQuickChoice(form,value,keepCustom=false){
  const q=QUICK_ITEMS.find(x=>x.key===form?.dataset.qForm);if(!q)return;
  const input=form.querySelector('[name="q-value"]'),picker=form.querySelector('[data-q-select]');
- if(!input||!picker)return;
+ if(!input)return;
  input.value=String(value);
- const preset=quickOptions(q).includes(value);
- form.classList.toggle('is-custom',keepCustom||!preset);
- picker.value=preset&&!keepCustom?String(value):'custom';
+ if(picker){const preset=quickOptions(q).includes(value);form.classList.toggle('is-custom',keepCustom||!preset);picker.value=preset&&!keepCustom?String(value):'custom';}
  quickUpdateEstimate(form);
 }
 document.addEventListener('click',e=>{
