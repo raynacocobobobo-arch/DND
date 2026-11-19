@@ -1969,7 +1969,7 @@ function wbToday(q,records){
  const value=list.reduce((n,r)=>n+(q.key==='swim'?(Number(r.laps)||0):q.type==='cardio'?(Number(r.duration_min)||0):(Number(r.sets)||0)),0);
  let label=value?value.toLocaleString('zh-CN')+' '+(q.unit==='分钟'?'分钟':q.unit):'已记录 '+list.length+' 笔';
  if(q.key==='swim'&&value)label+=' · '+(value*50).toLocaleString('zh-CN')+' 米';
- if(oldSwims)label+=(value?' · ':'')+oldSwims+' 笔旧时长';
+ if(oldSwims)label+=(value?' · ':' · ')+oldSwims+' 笔旧时长';
  return {count:list.length,value,label,oldSwims,list};
 }
 function wbDefaultLabel(q){return q.key==='steps'?'填写今日步数':'+ '+q.value+' '+q.unit}
@@ -2061,7 +2061,7 @@ function wbPreview(form){
  if(!q||!input||!el)return;
  const n=Number(input.value);
  const valid=input.value!==''&&Number.isInteger(n)&&n>=1&&n<=q.max;
- el.textContent=valid?(q.key==='swim'?(n*50)+' 米 · ':'')+'约 '+quickCalories(q,n)+' kcal':'请输入有效数量';
+ el.textContent=valid?(q.key==='steps'?'按扣除区间计算净步数':(q.key==='swim'?(n*50)+' 米 · ':'')+'约 '+quickCalories(q,n)+' kcal'):'请输入有效数量';
 }
 document.addEventListener('click',e=>{
  const filter=e.target.closest('[data-wb-filter]');
