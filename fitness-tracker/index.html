@@ -2037,7 +2037,7 @@ function wbEditor(q){
   '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
   '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
   '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+q.step+unit+'">−</button>'+
-  '<div class="wb-editor-number"><input type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="1" max="'+q.max+'" value="'+v+'" aria-label="本次数量"><span>'+unit+'</span></div>'+
+  '<div class="wb-editor-number"><input type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="'+(q.unit==='分钟'?10:1)+'" max="'+q.max+'" value="'+v+'" aria-label="本次数量"><span>'+unit+'</span></div>'+
   '<button type="button" data-wb-step="1" aria-label="增加'+q.step+unit+'">＋</button></div>'+
   (q.key==='swim'?'<div class="wb-editor-help" data-wb-preview>'+v*50+' 米（50 米 / 来回）</div>':
    q.key==='steps'?'<div class="wb-editor-help">按当天累计步数更新，保留原有去重逻辑</div>':'')+
@@ -2076,7 +2076,7 @@ function renderQuickHome(){
 }
 function wbSave(q,n){
  if(wbBusy)return false;
- if(!q||!Number.isInteger(n)||n<1||n>q.max){toast('请输入有效的'+(q?.unit||'数量'));return false}
+ if(!q||!Number.isInteger(n)||n<(q.unit==='分钟'?10:1)||n>q.max){toast('请输入有效的'+(q?.unit||'数量'));return false}
  if(q.key==='steps'){wbOpenKey=null;return saveDailySteps(n)}
  wbBusy=true;
  try{
@@ -2105,7 +2105,7 @@ document.addEventListener('click',e=>{
   const form=step.closest('[data-wb-form]'),q=QUICK_ITEMS.find(x=>x.key===form?.dataset.wbForm),input=form?.querySelector('[name="wb-count"]');
   if(!q||!input)return;
   const n=Number(input.value),current=input.value!==''&&Number.isFinite(n)?n:q.value;
-  input.value=String(Math.max(1,Math.min(q.max,current+Number(step.dataset.wbStep)*q.step)));
+  input.value=String(Math.max(q.key==='steps'?1000:q.unit==='分钟'?10:1,Math.min(q.max,current+Number(step.dataset.wbStep)*q.step)));
   wbPreview(form);return;
  }
  const undo=e.target.closest('[data-wb-undo]');
