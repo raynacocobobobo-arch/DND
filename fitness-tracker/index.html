@@ -1506,7 +1506,7 @@ function calc(d){
 }
 function newRecord(d){const c=calc(d);if(c===null||!Number.isFinite(c))throw new Error('请填写有效训练数量');const date=d.date, type=d.type,ex=(d.exercise||'').trim();if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(dateFromISO(date).getTime()))throw new Error('日期格式不正确');if(['strength','cardio','running','swimming','hold'].includes(type)&&!ex)throw new Error('请输入运动名称');const r={id:d.id||uid(),date,type,calories:c,createdAt:d.id?state.records.find(x=>x.id===d.id)?.createdAt||new Date().toISOString():new Date().toISOString(),weightAtRecord:state.settings.weight};if(type==='strength'){const s=Number(d.sets),p=Number(d.repsPerSet);if(!Number.isInteger(s)||!Number.isInteger(p)||s<1||p<1)throw new Error('组数和次数需要是正整数');r.exercise=ex;r.sets=s;r.repsPerSet=p;r.reps=s*p;if(d.loadKg!==''&&Number(d.loadKg)>=0)r.loadKg=Number(d.loadKg);r.note=`${ex} ${s}组×${p}次`}
 else if(type==='cardio'){r.exercise=ex;r.duration_min=Number(d.durationMin);r.note=`${ex} ${r.duration_min}分钟`}
-else if(type==='running'){const km=Number(d.distanceKm);if(!(km>0&&km<=200)&&!Number.isFinite(km))throw new Error('请输入有效跑步公里数');if(!Number.isFinite(km)||km<=0||km>200||Math.round(km*100)/100!==km)throw new Error('跑步距离请输入最多两位小数的正数');r.exercise=ex;r.distance_km=km;r.distance_m=Math.round(km*1000);r.note=`${ex} ${km}km`}
+else if(type==='running'){const km=Number(d.distanceKm);if(!Number.isFinite(km)||km<=0||km>200||Math.round(km*100)/100!==km)throw new Error('跑步距离请输入最多两位小数的正数');r.exercise=ex;r.distance_km=km;r.distance_m=Math.round(km*1000);r.note=`${ex} ${km}km`}
 else if(type==='swimming'){r.stroke=ex;if(d.legacySwimming){const minutes=Number(d.durationMin);if(!(minutes>0))throw new Error('旧记录需填写有效时长');r.duration_min=minutes;if(d.distanceM!==''&&Number(d.distanceM)>0)r.distance_m=Number(d.distanceM);r.note=`${ex} ${minutes}分钟（旧记录）`}else{const laps=Number(d.laps);if(!Number.isInteger(laps)||laps<1||laps>300)throw new Error('请输入有效的来回数');r.laps=laps;r.distance_m=laps*50;r.note=`${ex} ${laps}来回 · ${r.distance_m}米`}}
 else if(type==='walking'){r.steps=Number(d.steps);if(!Number.isInteger(r.steps)||r.steps<1)throw new Error('步数需要是正整数');r.note=`步行${r.steps}步`}
 else if(type==='hold'){r.exercise=ex;r.sets=Number(d.sets);r.secondsPerSet=Number(d.secondsPerSet);if(!Number.isInteger(r.sets)||r.sets<1||!(r.secondsPerSet>0))throw new Error('请填写有效组数与秒数');r.duration_sec=r.sets*r.secondsPerSet;r.note=`${ex} ${r.sets}组×${r.secondsPerSet}秒`}
@@ -2401,7 +2401,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v3.2.0';
+   const key='fitness_sw_reloaded_v3.3.0';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
