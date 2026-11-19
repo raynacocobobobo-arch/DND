@@ -1,4 +1,4 @@
-const CACHE='fitness-tracker-v3.3.0-zero-running';
+const CACHE='fitness-tracker-v3.4.0-elliptical-running-time';
 const ASSETS=['./','./index.html','./manifest.webmanifest?v=2.2','./cloud.js?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
