@@ -1342,12 +1342,7 @@ body[data-screen="overview"] .wb-modal .wb-editor-help{color:#b6afa0!important;f
 body[data-screen="overview"] .wb-modal .wb-save{height:52px!important;min-height:52px!important;font-size:15px!important;background:#d4b57a!important}
 
 
-.history-correction{display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:12px;margin:8px 0 12px;background:#292621;border:1px solid #665739;border-radius:10px}
-.history-correction>div{flex:1 1 100%}
-.history-correction strong{display:block;font-size:13px;color:#f1d18e}
-.history-correction p{margin:5px 0 0;font-size:11px;line-height:1.5;color:#bcb09a}
-.history-correction button{border:0;border-radius:8px;background:#d3b37a;color:#181716;padding:9px 12px;font-size:12px;font-weight:750;min-height:38px}
-.history-correction .history-correction-restore{background:#36322c;color:#e7cb98;border:1px solid #685839}
+
 
 
 /* V3.3: distinguish today's accumulated total from this session's new quantity. */
@@ -1636,7 +1631,7 @@ function saveHistoryQuickForm(form){
  const raw=selector?.value==='custom'?form.querySelector('#historyQuickCustom')?.value:selector?.value;
  const n=Number(raw);
  if(!q||raw===undefined||raw===''||!Number.isFinite(n)||n<=0||n>q.max||
-   (q.key==='running'?Math.round(n*100)/100!==n:!Number.isInteger(n))){
+   !Number.isInteger(n)){
   toast('请选择有效的运动数量');return false;
  }
  // Today's walking uses the same deduplicated daily record as the manual steps page.
@@ -1742,7 +1737,7 @@ function updateExercisePreview(card){
  const target=card.querySelector('[data-exercise-est]');
  if(!target)return;
  if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){target.textContent='—';return}
- target.textContent=profileCalories(q,q.key==='steps'?1000:q.key==='running'?1:q.key==='swim'?1:q.unit==='分钟'?10:1,{perSet,rate});
+ target.textContent=profileCalories(q,q.key==='steps'?1000:q.key==='running'?20:q.key==='elliptical'?20:q.key==='swim'?1:q.unit==='分钟'?10:1,{perSet,rate});
 }
 function switchView(v){if(!['overview','steps','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
 function toast(message){let el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400)}
