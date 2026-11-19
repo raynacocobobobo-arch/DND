@@ -1,5 +1,5 @@
-const CACHE='fitness-tracker-v4.1.0-active-walking';
-const ASSETS=['./','./index.html','./manifest.webmanifest?v=2.2','./cloud.js?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
+const CACHE='fitness-tracker-v4.2.0-start-login';
+const ASSETS=['./','./index.html','./manifest.webmanifest?v=2.2','./cloud.js?v=2.3','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
