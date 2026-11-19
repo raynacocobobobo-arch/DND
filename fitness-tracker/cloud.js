@@ -1,4 +1,4 @@
-/* 健身记录 V2.3 · Hermes 同一账号，启动时展示登录入口。 */
+/* 健身记录 V2.4 · Hermes Supabase 无密码邮件登录；保留本机数据与明确同步确认。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -6,7 +6,7 @@ function read(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catc
 function write(key,value){try{value===null?localStorage.removeItem(key):localStorage.setItem(key,JSON.stringify(value));return true}catch(e){return false}}
 let session=read(SESSION_KEY),link=read(LINK_KEY),remote=null,busy=false,conflict=false,dirty=false,importing=false,uploading=false,timer=null;
 let status=session?'正在检查云端数据':'未登录：当前记录仍安全保存在本机';
-let entryStage='none';
+let entryStage='none',lastLoginEmail='';
 function signedIn(){return !!session?.access_token&&!!session?.refresh_token&&!!session?.user?.id}
 function auto(){return signedIn()&&link?.enabled&&link.userId===session.user.id&&!conflict}
 function say(msg){status=msg;
@@ -55,27 +55,96 @@ async function refresh(){
   renderIfSettings();return true;
  }catch(e){say('云端读取失败：'+e.message);return false}
 }
-async function login(form){
- if(busy)return;
- const email=String(form.querySelector('[name="cloudEmail"]')?.value||'').trim();
- const password=String(form.querySelector('[name="cloudPassword"]')?.value||'');
- if(!email.includes('@')||!password){toast('请输入 Hermes To Do 使用的邮箱和密码');return}
- busy=true;say('正在登录');
+/* Supabase passwordless email authentication: no Hermes server passwords. */
+function hasAuthCallback(){
+ const hash=new URLSearchParams(location.hash.replace(/^#/,''));
+ const query=new URLSearchParams(location.search);
+ return !!(hash.get('access_token')||hash.get('error')||query.get('token_hash'));
+}
+function discardAuthUrl(){
+ const url=new URL(location.href);
+ url.hash='';
+ url.searchParams.delete('token_hash');
+ url.searchParams.delete('type');
+ url.searchParams.delete('error');
+ url.searchParams.delete('error_description');
+ url.searchParams.delete('error_code');
+ try{history.replaceState(history.state,'',url.pathname+url.search)}catch(e){}
+}
+async function acceptAuthSession(result){
+ if(!result?.access_token||!result?.refresh_token)throw Error('登录链接没有返回完整的会话');
+ const user=await fetchAPI('/auth/v1/user',
+  {method:'GET',headers:{Authorization:'Bearer '+result.access_token}},false);
+ if(!user?.id)throw Error('无法验证登录账号');
+ const priorId=link?.userId;
+ session={...result,user,expires_at:Math.floor(Date.now()/1000)+Number(result.expires_in||3600)};
+ if(priorId!==user.id){link=null;write(LINK_KEY,null)}
+ if(!write(SESSION_KEY,session))throw Error('登录会话无法保存到本机');
+ await refresh();
+ say('邮箱验证成功。请先确认本机和云端数据的同步方式');
+ if(auto())closeEntry();
+ else{entryStage='sync';renderEntry()}
+}
+async function consumeEmailCallback(){
+ const hash=new URLSearchParams(location.hash.replace(/^#/,''));
+ const query=new URLSearchParams(location.search);
  try{
-  const s=await fetchAPI('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})},false);
-  if(!s?.user?.id||!s.access_token||!s.refresh_token)throw Error('账号认证未成功');
-  const previousUser=link?.userId;
-  session={...s,expires_at:Math.floor(Date.now()/1000)+Number(s.expires_in||3600)};
-  if(previousUser!==s.user.id){link=null;write(LINK_KEY,null)}
-  write(SESSION_KEY,session);
-  await refresh();say('登录成功。首次使用请选择「上传本机」或「下载云端」');
-   if(entryStage==='login'){
-    if(auto())closeEntry();
-    else{entryStage='sync';renderEntry()}
-   }
- }catch(e){say('登录失败：'+e.message);toast(status)}
+  if(hash.get('error')||query.get('error')){
+   throw Error(hash.get('error_description')||query.get('error_description')||
+    '邮件登录链接无效或已过期');
+  }
+  if(hash.get('access_token')&&hash.get('refresh_token')){
+   await acceptAuthSession({
+    access_token:hash.get('access_token'),
+    refresh_token:hash.get('refresh_token'),
+    expires_in:Number(hash.get('expires_in'))||3600,
+    token_type:hash.get('token_type')||'bearer'
+   });
+  }else if(query.get('token_hash')){
+   const response=await fetchAPI('/auth/v1/verify',{method:'POST',
+    body:JSON.stringify({token_hash:query.get('token_hash'),type:query.get('type')||'email'})},false);
+   await acceptAuthSession(response);
+  }else throw Error('缺少邮件验证信息');
+ }catch(e){
+  entryStage='login';
+  say('邮件验证失败：'+(e.message||'请重新发送登录邮件'));
+  renderEntry();
+ }finally{discardAuthUrl()}
+}
+async function verifyEmailCode(form){
+ if(busy)return;
+ const email=String(form.querySelector('[name="cloudEmail"]')?.value||lastLoginEmail).trim();
+ const token=String(form.querySelector('[name="cloudOtp"]')?.value||'').trim();
+ if(!email.includes('@')||!/^[0-9]{6}$/.test(token)){say('请填写邮箱和邮件中的 6 位验证码');return}
+ busy=true;say('正在验证邮箱');
+ try{
+  const result=await fetchAPI('/auth/v1/verify',
+   {method:'POST',body:JSON.stringify({email,token,type:'email'})},false);
+  await acceptAuthSession(result);
+ }catch(e){say('验证码验证失败：'+(e.message||'请使用邮件中的登录链接'))}
  finally{busy=false;renderIfSettings()}
 }
+
+async function login(form){
+ if(busy)return;
+ const email=String(form.querySelector('[name="cloudEmail"]')?.value||'').trim().toLowerCase();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){say('请输入完整的 Hermes 登录邮箱');return}
+ busy=true;
+ say('正在发送登录邮件');
+ try{
+  // A recognized existing account is required; do not create accounts implicitly.
+  const redirect=location.origin+location.pathname;
+  await fetchAPI('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),
+   {method:'POST',body:JSON.stringify({email,create_user:false})},false);
+  lastLoginEmail=email;
+  entryStage='waiting';
+  say('登录邮件已请求发送，请到邮箱打开登录链接');
+  renderEntry();
+ }catch(e){
+  say('邮件发送失败：'+(e.message||'请稍后重试'));
+ }finally{busy=false;renderIfSettings()}
+}
+
 async function logout(){
  if(!signedIn()||!confirm('退出云端账号？本机训练记录不会删除。'))return;
  const token=session.access_token;
@@ -160,19 +229,27 @@ function renderEntry(){
  let root=document.getElementById('fitnessEntryGate');
  if(!root){root=document.createElement('div');root.id='fitnessEntryGate';document.body.appendChild(root)}
  document.body.classList.add('fitness-entry-open');
- const entering=entryStage==='login';
  root.className='fitness-entry-overlay';
+ const entering=entryStage==='login',waiting=entryStage==='waiting';
  root.innerHTML='<section class="fitness-entry-card" role="dialog" aria-modal="true" aria-label="'+
-  (entering?'登录健身记录':'选择云端同步方式')+'">'+
+  (entering?'登录健身记录':waiting?'等待邮件验证':'选择云端同步方式')+'">'+
   '<div class="fitness-entry-brand"><img src="./icon-180.png?v=2.2" width="46" height="46" alt="" />'+
   '<div><strong>健身记录</strong><small>HERMES FITNESS JOURNAL</small></div></div>'+
   (entering?
-   '<div class="fitness-entry-heading"><h2>登录并开始记录</h2>'+
-   '<p>使用 Hermes To Do 的同一账号登录健身记录。</p></div>'+
+   '<div class="fitness-entry-heading"><h2>使用邮箱登录</h2>'+
+   '<p>与 Hermes To Do 同一 Supabase 账号，无需密码。</p></div>'+
    '<form id="fitnessEntryLogin" class="fitness-entry-form">'+
-   '<label>邮箱<input type="email" name="cloudEmail" autocomplete="username" autocapitalize="off" inputmode="email" required placeholder="Hermes 邮箱"></label>'+
-   '<label>密码<input type="password" name="cloudPassword" autocomplete="current-password" required placeholder="Hermes 密码"></label>'+
-   '<button type="submit" class="fitness-entry-primary">登录并继续</button></form>'+
+   '<label>Hermes 邮箱<input type="email" name="cloudEmail" autocomplete="username" autocapitalize="off" inputmode="email" required placeholder="请输入完整邮箱"></label>'+
+   '<button type="submit" class="fitness-entry-primary">发送邮箱登录链接</button></form>'+
+   '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不登录，使用本机记录</button>':
+  waiting?
+   '<div class="fitness-entry-heading"><h2>检查登录邮件</h2>'+
+   '<p>登录链接已请求发送至 '+safe(lastLoginEmail)+'。在邮件中点击链接，即可返回健身记录。</p></div>'+
+   '<form id="fitnessEntryOtp" class="fitness-entry-form">'+
+   '<label>若邮件包含 6 位验证码，也可在这里输入'+
+   '<input type="text" name="cloudOtp" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" autocomplete="one-time-code" placeholder="6 位验证码"></label>'+
+   '<button type="submit" class="fitness-entry-secondary">验证邮箱验证码</button></form>'+
+   '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="retry">重新填写邮箱</button>'+
    '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不登录，使用本机记录</button>':
    '<div class="fitness-entry-heading"><h2>已登录 Hermes 账号</h2>'+
    '<p>'+safe(session?.user?.email||'账号已验证')+'</p></div>'+
@@ -181,18 +258,16 @@ function renderEntry(){
    '<button type="button" class="fitness-entry-secondary" data-fitness-entry="download">下载云端记录</button>'+
    '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不同步，进入打卡</button></div>')+
   '<p class="fitness-entry-status" id="fitnessEntryStatus" role="status" aria-live="polite">'+safe(status)+'</p>'+
-  '<p class="fitness-entry-footnote">登录不会删除本机训练记录。首次上传或下载需要另行确认，避免覆盖数据。</p>'+
+  '<p class="fitness-entry-footnote">登录不会删除本机训练记录，上传或下载云端数据需要另行确认。</p>'+
   '</section>';
 }
-
 function panel(){
  const logged=signedIn(),account=logged?String(session.user.email||'已登录'):'';
  return '<section class="card fitness-cloud-panel"><div class="section-title"><div>'+
- '<h2>云端同步 · Hermes 同一账号</h2><p>使用相同的邮箱和密码，健身数据单独存储</p></div></div>'+
+ '<h2>云端同步 · Hermes 同一账号</h2><p>使用 Hermes 邮箱的无密码登录链接，健身数据单独存储</p></div></div>'+
  (!logged?'<form id="fitnessCloudLogin" class="fitness-cloud-login">'+
   '<label>Hermes 邮箱<input type="email" name="cloudEmail" autocomplete="username" required></label>'+
-  '<label>密码<input type="password" name="cloudPassword" autocomplete="current-password" required></label>'+
-  '<button class="primary-btn" type="submit">登录</button></form>':
+  '<button class="primary-btn" type="submit">发送登录链接</button></form>':
   '<div class="fitness-cloud-account"><strong>'+safe(account)+'</strong>'+
   '<button type="button" class="link-btn" data-cloud-action="logout">退出</button></div>'+
   '<div class="fitness-cloud-actions">'+
@@ -201,7 +276,7 @@ function panel(){
   '<button type="button" class="secondary-btn" data-cloud-action="refresh">刷新状态</button></div>'+
   '<p class="micro-note">首次连接先选择上传或下载，避免把空数据写到云端。连接成功后新记录自动同步；版本冲突时停止覆盖。</p>')+
  '<p class="fitness-cloud-status" id="fitnessCloudStatus" role="status">'+safe(status)+'</p>'+
- '<p class="micro-note">本机记录保留；账号密码仅用于登录，不写入公开网站代码。</p></section>';
+ '<p class="micro-note">本机记录保留；邮箱仅用于发送登录链接，无需填写密码。</p></section>';
 }
 // Add a separate panel without modifying existing record/calendar UI functions.
 const previousSettings=renderSettings;
@@ -213,6 +288,8 @@ persistRestDays=function(next){const ok=priorRestPersist(next);if(ok)schedule();
 document.addEventListener('submit',event=>{
  if(event.target.id==='fitnessCloudLogin'||event.target.id==='fitnessEntryLogin'){
   event.preventDefault();login(event.target)
+ }else if(event.target.id==='fitnessEntryOtp'){
+  event.preventDefault();verifyEmailCode(event.target)
  }
 });
 document.addEventListener('click',event=>{
@@ -220,6 +297,7 @@ document.addEventListener('click',event=>{
  if(entry){
   const action=entry.dataset.fitnessEntry;
   if(action==='skip'){closeEntry();return}
+  if(action==='retry'){entryStage='login';renderEntry();return}
   if(action==='upload'||action==='download'){
    (async()=>{
     const done=action==='upload'?await upload(true):await download();
@@ -236,6 +314,9 @@ document.addEventListener('click',event=>{
 });
 window.addEventListener('online',()=>{if(auto())schedule()});
 render();
-if(signedIn())refresh();
+if(hasAuthCallback()){
+ entryStage='waiting';renderEntry();
+ consumeEmailCallback();
+}else if(signedIn())refresh();
 else{entryStage='login';renderEntry()}
 })();
