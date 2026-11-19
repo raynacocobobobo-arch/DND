@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V3.0.0</title>
+  <title>健身记录 · V3.1.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -1264,6 +1264,64 @@ body[data-screen="overview"] .wb-more{width:100%;padding:12px;background:transpa
  body[data-screen="overview"] .wb-log-cal{display:none}
 }
 
+
+/* V3.1: the homepage is an input list, not a statistics dashboard. */
+body[data-screen="overview"],body[data-screen="overview"] .main{background:#111317!important}
+body[data-screen="overview"] .wb-screen{width:100%!important;max-width:800px!important;margin:0 auto!important;display:flex!important;flex-direction:column!important;gap:10px!important;padding-bottom:25px!important;color:#eee!important}
+body[data-screen="overview"] .wb-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:0 0 5px;padding:9px 4px 13px;border-bottom:1px solid #34373c}
+body[data-screen="overview"] .wb-header-title h1{font-size:25px!important;line-height:1.2;color:#f0ede7!important;margin:0 0 5px;letter-spacing:.5px}
+body[data-screen="overview"] .wb-header-title small{display:block;font-size:12px;color:#a0a6ad}
+body[data-screen="overview"] .wb-day-total{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+body[data-screen="overview"] .wb-day-total strong{font-size:32px;line-height:1;color:#d4b779;font-weight:760;font-variant-numeric:tabular-nums}
+body[data-screen="overview"] .wb-day-total span{font-size:11px;color:#aaabb0}
+body[data-screen="overview"] .wb-groups{display:flex!important;flex-direction:column!important;gap:12px!important;grid-template-columns:none!important;min-height:0!important}
+body[data-screen="overview"] .wb-group{border:0!important;background:transparent!important;border-radius:0!important;overflow:visible!important}
+body[data-screen="overview"] .wb-group-title{font-size:11px!important;font-weight:760!important;color:#d0b783!important;letter-spacing:.7px;margin:0!important;padding:3px 5px 6px}
+body[data-screen="overview"] .wb-rows{display:flex;flex-direction:column;background:#1d2025;border:1px solid #2c3038;border-radius:11px;overflow:hidden}
+body[data-screen="overview"] .wb-row{display:block!important;min-width:0!important;padding:0!important;border:0!important;background:transparent!important;border-radius:0!important}
+body[data-screen="overview"] .wb-row+.wb-row{border-top:1px solid #30343b!important}
+body[data-screen="overview"] .wb-row.is-open{background:#24272d!important}
+body[data-screen="overview"] .wb-entry{display:flex;align-items:center;width:100%;min-width:0;gap:11px;padding:9px 13px;min-height:48px;border:0;background:transparent;text-align:left;color:#eee}
+body[data-screen="overview"] .wb-entry-icon{display:grid;place-items:center;flex:none;width:23px;color:#b9ad90}
+body[data-screen="overview"] .wb-entry-name{flex:1;min-width:0;font-size:13px;color:#e8e8e8;font-weight:680}
+body[data-screen="overview"] .wb-entry-value{flex:none;font-size:12px;font-variant-numeric:tabular-nums;color:#a8a9ac;white-space:nowrap}
+body[data-screen="overview"] .wb-entry-value.is-done{color:#e4c584}
+body[data-screen="overview"] .wb-entry-action{display:grid;place-items:center;flex:none;width:24px;height:24px;color:#dbbe82;background:#313239;border-radius:7px;font-size:19px;font-weight:450}
+body[data-screen="overview"] .wb-editor{margin:0 9px 9px!important;padding:13px!important;display:flex!important;flex-direction:column!important;gap:11px!important;border-radius:10px!important;background:#15191e!important;border:1px solid #50505a!important}
+body[data-screen="overview"] .wb-editor-title{display:flex;justify-content:space-between;align-items:center}
+body[data-screen="overview"] .wb-editor-title strong{font-size:13px;color:#e9e9e4}
+body[data-screen="overview"] .wb-editor-close{border:0;color:#a7aab0;background:transparent;font-size:21px}
+body[data-screen="overview"] .wb-editor-controls{display:flex;align-items:stretch;justify-content:center;gap:8px;height:43px}
+body[data-screen="overview"] .wb-editor-controls>button{width:48px;min-height:43px;background:#34383f;border:1px solid #4b5058;color:#f4e3c4;border-radius:9px;font-size:21px}
+body[data-screen="overview"] .wb-editor-number{display:flex;align-items:center;justify-content:center;gap:5px;background:#20242a;border:1px solid #42464c;border-radius:9px;min-width:125px;flex:1;max-width:260px}
+body[data-screen="overview"] .wb-editor-number input{width:70px;min-width:0;padding:3px!important;text-align:right;font-size:18px;font-weight:800;border:none!important;background:transparent!important;color:#eccc8d!important;appearance:textfield;-moz-appearance:textfield}
+body[data-screen="overview"] .wb-editor-number input::-webkit-inner-spin-button{-webkit-appearance:none}
+body[data-screen="overview"] .wb-editor-number span{font-size:12px;color:#aeb1b5}
+body[data-screen="overview"] .wb-editor-help{font-size:11px;color:#a0a4aa;text-align:center}
+body[data-screen="overview"] .wb-save{height:42px;min-height:42px;background:#d6b67a;border:none;border-radius:9px;color:#211a12;font-size:13px;font-weight:800}
+body[data-screen="overview"] .wb-today-log{border:0!important;border-top:1px solid #353841!important;border-radius:0!important;background:transparent!important;padding:5px 2px!important}
+body[data-screen="overview"] .wb-log-heading{display:flex;align-items:center;justify-content:space-between;margin:5px 0}
+body[data-screen="overview"] .wb-log-heading h2{font-size:12px!important;color:#e7e4dd!important;margin:0}
+body[data-screen="overview"] .wb-log-heading button{font-size:11px;background:transparent;border:0;color:#bda579}
+body[data-screen="overview"] .wb-log-item{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 4px;border-bottom:1px solid #292d33}
+body[data-screen="overview"] .wb-log-text{font-size:11px;color:#a9b0b5;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block!important}
+body[data-screen="overview"] .wb-log-item button{background:transparent;border:0;color:#c7b28b;font-size:11px;padding:4px}
+@media(max-width:850px){
+ body[data-screen="overview"] .app{height:auto!important;min-height:100dvh!important}
+ body[data-screen="overview"] .main{height:auto!important;max-height:none!important;min-height:100dvh!important;overflow-y:auto!important;padding:calc(env(safe-area-inset-top, 0px) + 8px) 11px calc(env(safe-area-inset-bottom, 0px) + 86px)!important}
+ body[data-screen="overview"] #content{height:auto!important;flex:none!important;min-height:0!important}
+ body[data-screen="overview"] .wb-screen{gap:8px!important;max-width:none!important}
+ body[data-screen="overview"] .wb-header{padding:6px 3px 10px;margin:0 0 2px}
+ body[data-screen="overview"] .wb-header-title h1{font-size:20px!important}
+ body[data-screen="overview"] .wb-day-total strong{font-size:27px}
+ body[data-screen="overview"] .wb-groups{gap:8px!important}
+ body[data-screen="overview"] .wb-group-title{padding:2px 5px 5px}
+ body[data-screen="overview"] .wb-entry{min-height:43px;padding:8px 10px;gap:8px}
+ body[data-screen="overview"] .wb-entry-name{font-size:13px}
+ body[data-screen="overview"] .wb-entry-value{font-size:12px}
+ body[data-screen="overview"] .wb-entry-action{width:22px;height:22px;font-size:18px}
+}
+
 </style>
 </head>
 <body>
@@ -1411,7 +1469,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['健身记录',''],steps:['手动步数',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['steps','手动步数'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.0.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.1.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -1942,14 +2000,13 @@ function quickOptions(q){
  if(q.unit==='分钟')return [...Array.from({length:12},(_,i)=>(i+1)*10),150,180,240,300];
  return [];
 }
-/* V3: today-first check-in workbench. No data migration or storage key changes. */
+/* V3.1: minimal home, correct local calendar date and day-by-day accounting. */
 const WB_GROUPS=[
- {key:'cardio',title:'有氧运动',hint:'按分钟记录',keys:['elliptical','bike']},
- {key:'strength',title:'力量训练',hint:'按组记录，实际完成多少记多少',keys:['lat','row','fly','dumbbell','back','situps','wall-sit']},
- {key:'swimming',title:'游泳',hint:'按来回记录，每来回 50 米',keys:['swim']},
- {key:'walking',title:'步行',hint:'按今日总步数更新，不重复累加',keys:['steps']}
+ {key:'daily',title:'日常',keys:['steps','situps','wall-sit']},
+ {key:'cardio',title:'有氧',keys:['elliptical','bike']},
+ {key:'strength',title:'力量',keys:['lat','row','fly','dumbbell','back']},
+ {key:'swimming',title:'游泳',keys:['swim']}
 ];
-let wbFilter='all';
 let wbOpenKey=null;
 let wbBusy=false;
 function wbMatches(q,r){
@@ -1959,134 +2016,106 @@ function wbMatches(q,r){
 }
 function wbToday(q,records){
  const list=records.filter(r=>wbMatches(q,r));
- if(!list.length)return {count:0,value:0,label:'未记录',oldSwims:0,list};
- const oldSwims=q.key==='swim'?list.filter(r=>!(Number(r.laps)>0)).length:0;
+ if(!list.length)return {count:0,value:0,label:'',list};
  if(q.key==='steps'){
   const managed=list.find(r=>r.stepMode==='daily-net-v1');
-  const v=managed?Number(managed.steps)||0:list.reduce((n,r)=>n+(Number(r.steps)||0),0);
-  return {count:list.length,value:v,label:v.toLocaleString('zh-CN')+' 步'+(managed?'（净）':''),oldSwims,list};
+  const total=managed?(Number(managed.steps)||0):list.reduce((sum,r)=>sum+(Number(r.steps)||0),0);
+  return {count:list.length,value:total,label:total.toLocaleString('zh-CN')+' 步',list};
  }
- const value=list.reduce((n,r)=>n+(q.key==='swim'?(Number(r.laps)||0):q.type==='cardio'?(Number(r.duration_min)||0):(Number(r.sets)||0)),0);
- let label=value?value.toLocaleString('zh-CN')+' '+(q.unit==='分钟'?'分钟':q.unit):'已记录 '+list.length+' 笔';
- if(q.key==='swim'&&value)label+=' · '+(value*50).toLocaleString('zh-CN')+' 米';
- if(oldSwims)label+=(value?' · ':' · ')+oldSwims+' 笔旧时长';
- return {count:list.length,value,label,oldSwims,list};
-}
-function wbDefaultLabel(q){return q.key==='steps'?'填写今日步数':'+ '+q.value+' '+q.unit}
-function wbEditor(q){
+ const amount=list.reduce((sum,r)=>sum+(q.key==='swim'?(Number(r.laps)||0):q.type==='cardio'?(Number(r.duration_min)||0):(Number(r.sets)||0)),0);
+ const oldTimed=q.key==='swim'?list.filter(r=>!(Number(r.laps)>0)).length:0;
  const unit=q.unit==='分钟'?'分钟':q.unit;
- const v=q.key==='steps'?(Number.isInteger(todayStepEntry().total)?todayStepEntry().total:q.value):q.value;
- return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
-  '<div class="wb-editor-label"><strong>'+safe(q.key==='steps'?'今日累计步数':'本次完成数量')+'</strong>'+
-  '<span>'+safe(q.key==='swim'?'1 来回 = 50 米':q.key==='steps'?'本次填写覆盖当天累计，不叠加':q.type==='strength'||q.type==='hold'?'按完成组数录入':'按实际训练分钟录入')+'</span></div>'+
-  '<div class="wb-editor-bottom"><div class="wb-stepper">'+
-  '<button type="button" data-wb-step="-1" aria-label="'+safe(q.name)+'减'+q.step+unit+'">−</button>'+
-  '<input name="wb-count" type="number" inputmode="numeric" min="'+(q.unit==='分钟'?10:1)+'" max="'+q.max+'" step="'+q.step+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量">'+
-  '<span>'+unit+'</span>'+
-  '<button type="button" data-wb-step="1" aria-label="'+safe(q.name)+'加'+q.step+unit+'">＋</button></div>'+
-  '<div class="wb-editor-result" data-wb-preview>'+safe(q.key==='swim'?(v*50)+' 米 · 约 '+quickCalories(q,v)+' kcal':'约 '+quickCalories(q,v)+' kcal')+'</div>'+
-  '<button type="submit" class="wb-save">'+safe(q.key==='steps'?'更新步数':'记录本次')+'</button>'+
-  '<button type="button" class="wb-cancel" data-wb-close>取消</button></div></form>';
+ const label=q.key==='swim'
+  ?(amount?amount+' 来回 · '+(amount*50).toLocaleString('zh-CN')+' 米':'')+(oldTimed?(amount?' · ':'')+oldTimed+' 笔旧记录':'')
+  :amount?amount.toLocaleString('zh-CN')+' '+unit:list.length+' 笔';
+ return {count:list.length,value:amount,label,list};
 }
-function wbRow(q,dayRecords){
- const info=wbToday(q,dayRecords),active=wbOpenKey===q.key;
- const note=q.key==='swim'?'50 米 / 来回':q.key==='steps'?'今日累计，非增加量':q.unit==='分钟'?'+ / − 10 分钟':'+ / − 1 组';
- return '<div class="wb-row'+(active?' is-open':'')+(info.count?' is-done':'')+'" data-wb-row="'+q.key+'">'+
-  '<div class="wb-row-main"><span class="wb-row-icon">'+icon(q.iconName,18)+'</span>'+
-  '<div class="wb-row-text"><strong>'+safe(q.name)+'</strong><small>'+safe(note)+'</small></div></div>'+
-  '<div class="wb-row-status"><span class="wb-status-dot'+(info.count?' done':'')+'"></span>'+
-   '<span>'+safe(info.label)+'</span></div>'+
-  '<div class="wb-row-controls">'+
-   (q.key==='steps'?'':'<button type="button" class="wb-one-tap" data-wb-fast="'+q.key+'" aria-label="'+safe(q.name)+'快速记录'+q.value+q.unit+'">'+safe(wbDefaultLabel(q))+'</button>')+
-   '<button type="button" class="wb-adjust" data-wb-open="'+q.key+'" aria-expanded="'+active+'">'+(q.key==='steps'?'填步数':active?'收起':'调整')+'</button>'+
-  '</div>'+
-  (active?wbEditor(q):'')+'</div>';
+function wbEditor(q){
+ const v=q.key==='steps'&&Number.isInteger(todayStepEntry().total)?todayStepEntry().total:q.value;
+ const unit=q.unit==='分钟'?'分钟':q.unit;
+ return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
+  '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
+  '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
+  '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+q.step+unit+'">−</button>'+
+  '<div class="wb-editor-number"><input type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="1" max="'+q.max+'" value="'+v+'" aria-label="本次数量"><span>'+unit+'</span></div>'+
+  '<button type="button" data-wb-step="1" aria-label="增加'+q.step+unit+'">＋</button></div>'+
+  (q.key==='swim'?'<div class="wb-editor-help" data-wb-preview>'+v*50+' 米（50 米 / 来回）</div>':
+   q.key==='steps'?'<div class="wb-editor-help">按当天累计步数更新，保留原有去重逻辑</div>':'')+
+  '<button type="submit" class="wb-save">'+(q.key==='steps'?'更新今日步数':'记录本次运动')+'</button></form>';
+}
+function wbRow(q,recs){
+ const info=wbToday(q,recs),open=wbOpenKey===q.key;
+ const label=info.count?info.label:q.value.toLocaleString('zh-CN')+' '+q.unit;
+ return '<div class="wb-row'+(open?' is-open':'')+'" data-wb-row="'+q.key+'">'+
+  '<button type="button" class="wb-entry" data-wb-open="'+q.key+'" aria-expanded="'+open+'" aria-label="'+safe(q.name+(info.count?'今日已完成 ':'默认 ')+label)+'">'+
+   '<span class="wb-entry-icon">'+icon(q.iconName,17)+'</span>'+
+   '<span class="wb-entry-name">'+safe(q.name)+'</span>'+
+   '<span class="wb-entry-value'+(info.count?' is-done':'')+'">'+(info.count?'✓ ':'')+safe(label)+'</span>'+
+   '<span class="wb-entry-action">'+(open?'−':'+')+'</span>'+
+  '</button>'+(open?wbEditor(q):'')+'</div>';
 }
 function renderQuickHome(){
- const today=localDate(),recs=recordsOfDate(today),week=getWeekDates();
- const weekTotal=totalRecs(state.records.filter(r=>week.includes(r.date)));
- const goal=Number(state.settings.weeklyGoal)||1500,ratio=Math.min(100,Math.max(0,Math.round(100*weekTotal/goal)));
- const done=QUICK_ITEMS.filter(q=>wbToday(q,recs).count).length;
- const groups=WB_GROUPS.filter(g=>wbFilter==='all'||g.key===wbFilter);
- const logs=[...recs].sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))).slice(0,6);
+ // Date is the device-local calendar date (midnight to midnight), never the week total.
+ const today=localDate(),recs=recordsOfDate(today);
+ const dateLabel=formatDate(today)+' · '+DAY_NAMES[new Date().getDay()];
+ const recent=[...recs].sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))).slice(0,3);
  return '<div class="wb-screen">'+
-  '<section class="wb-summary"><div class="wb-summary-label">今日已完成</div><div class="wb-metrics">'+
-   '<div class="wb-main-metric"><strong>'+totalRecs(recs).toLocaleString('zh-CN')+'</strong><span>kcal</span></div>'+
-   '<div class="wb-secondary-metrics"><div><strong>'+done+'</strong><span>项运动</span></div><div><strong>'+recs.length+'</strong><span>笔记录</span></div></div></div>'+
-   '<div class="wb-progress-head"><span>本周 '+weekTotal.toLocaleString('zh-CN')+' / '+goal.toLocaleString('zh-CN')+' kcal</span><span>'+ratio+'%</span></div>'+
-   '<div class="wb-progress-track"><span style="width:'+ratio+'%"></span></div></section>'+
-  '<div class="wb-section-head"><div><h2>选择运动</h2><p>可一键记录默认量，也可以调整后保存</p></div>'+
-   '<button type="button" class="wb-history-link" data-view="history">查看历史</button></div>'+
-  '<nav class="wb-filters" aria-label="运动类别">'+
-   [['all','全部'],['cardio','有氧'],['strength','力量'],['swimming','游泳'],['walking','步行']].map(([key,label])=>
-    '<button type="button" data-wb-filter="'+key+'" class="'+(wbFilter===key?'active':'')+'" aria-pressed="'+(wbFilter===key)+'">'+label+'</button>').join('')+
-  '</nav>'+
-  '<div class="wb-groups">'+groups.map(g=>{
-   const qs=g.keys.map(key=>QUICK_ITEMS.find(q=>q.key===key)).filter(Boolean);
-   const doneCount=qs.filter(q=>wbToday(q,recs).count).length;
-   return '<section class="wb-group"><div class="wb-group-head"><div><h3>'+g.title+'</h3><small>'+g.hint+'</small></div>'+
-    '<span>'+doneCount+' / '+qs.length+' 项已记</span></div>'+
+  '<header class="wb-header"><div class="wb-header-title"><h1>健身记录</h1><small>'+safe(dateLabel)+'</small></div>'+
+   '<div class="wb-day-total"><strong>'+totalRecs(recs).toLocaleString('zh-CN')+'</strong><span>kcal · 今日</span></div></header>'+
+  '<div class="wb-groups">'+WB_GROUPS.map(g=>{
+   const qs=g.keys.map(k=>QUICK_ITEMS.find(q=>q.key===k)).filter(Boolean);
+   return '<section class="wb-group"><h2 class="wb-group-title">'+g.title+'</h2>'+
     '<div class="wb-rows">'+qs.map(q=>wbRow(q,recs)).join('')+'</div></section>';
   }).join('')+'</div>'+
-  '<section class="wb-today-log"><div class="wb-log-head"><h2>今日记录</h2><span>'+recs.length+' 笔</span></div>'+
-   (logs.length?logs.map(r=>'<div class="wb-log-item"><span class="wb-log-tick">✓</span>'+
-     '<div class="wb-log-text"><strong>'+safe(recordName(r))+'</strong><small>'+safe(recordDescription(r))+'</small></div>'+
-     '<span class="wb-log-cal">'+(Number(r.calories)||0)+' kcal</span>'+
+  (recent.length?'<section class="wb-today-log"><div class="wb-log-heading"><h2>今日记录</h2><button type="button" data-view="history">查看全部</button></div>'+
+   recent.map(r=>'<div class="wb-log-item"><span class="wb-log-text">'+safe(recordName(r))+' · '+safe(recordDescription(r))+'</span>'+
      '<button type="button" data-edit="'+safe(r.id)+'" aria-label="编辑记录">编辑</button>'+
-     (r.type==='walking'&&r.stepMode==='daily-net-v1'?'<button type="button" data-view="steps">步数</button>':
-      '<button type="button" data-wb-undo="'+safe(r.id)+'" aria-label="撤销记录">撤销</button>')+
-    '</div>').join('')+
-    (recs.length>logs.length?'<button type="button" class="wb-more" data-view="history">查看其余 '+(recs.length-logs.length)+' 笔记录</button>':''):
-    '<p class="wb-empty">今天还没有打卡。选一项运动开始记录。</p>')+
-   '</section></div>';
+     (r.type==='walking'&&r.stepMode==='daily-net-v1'?'':'<button type="button" data-wb-undo="'+safe(r.id)+'" aria-label="撤销记录">撤销</button>')+
+     '</div>').join('')+'</section>':'')+
+ '</div>';
 }
 function wbSave(q,n){
  if(wbBusy)return false;
- if(!q||!Number.isInteger(n)||n<1||n>q.max){toast('请输入 1 到 '+(q?.max||'上限')+' 之间的有效'+(q?.unit||'数量'));return false}
- if(q.key==='steps')return saveDailySteps(n);
+ if(!q||!Number.isInteger(n)||n<1||n>q.max){toast('请输入有效的'+(q?.unit||'数量'));return false}
+ if(q.key==='steps'){wbOpenKey=null;return saveDailySteps(n)}
  wbBusy=true;
  try{
-  const rec=newRecord(quickDraft(q,n));
-  state.records.push(rec);
+  const record=newRecord(quickDraft(q,n));
+  state.records.push(record);
   if(!persist()){state.records.pop();return false}
-  wbOpenKey=null;render();
-  toast('已记录 '+q.name+' · '+n+q.unit+(q.key==='swim'?'（'+(n*50)+' 米）':''));
-  return true;
- }catch(err){toast(err.message||'记录失败');return false}
+  wbOpenKey=null;
+  render();toast('已记录 '+q.name+' · '+n+q.unit);return true;
+ }catch(err){toast(err.message||'保存失败');return false}
  finally{wbBusy=false}
 }
 function wbPreview(form){
  const q=QUICK_ITEMS.find(x=>x.key===form?.dataset.wbForm);
- const input=form?.querySelector('[name="wb-count"]'),el=form?.querySelector('[data-wb-preview]');
+ const input=form?.querySelector('[name="wb-count"]');
+ const el=form?.querySelector('[data-wb-preview]');
  if(!q||!input||!el)return;
  const n=Number(input.value);
- const valid=input.value!==''&&Number.isInteger(n)&&n>=1&&n<=q.max;
- el.textContent=valid?(q.key==='steps'?'按扣除区间计算净步数':(q.key==='swim'?(n*50)+' 米 · ':'')+'约 '+quickCalories(q,n)+' kcal'):'请输入有效数量';
+ el.textContent=input.value!==''&&Number.isInteger(n)&&n>0&&n<=q.max?(n*50)+' 米（50 米 / 来回）':'请输入有效来回数';
 }
 document.addEventListener('click',e=>{
- const filter=e.target.closest('[data-wb-filter]');
- if(filter){wbFilter=filter.dataset.wbFilter;wbOpenKey=null;render();return}
  const open=e.target.closest('[data-wb-open]');
  if(open){wbOpenKey=wbOpenKey===open.dataset.wbOpen?null:open.dataset.wbOpen;render();return}
  if(e.target.closest('[data-wb-close]')){wbOpenKey=null;render();return}
- const fast=e.target.closest('[data-wb-fast]');
- if(fast){const q=QUICK_ITEMS.find(x=>x.key===fast.dataset.wbFast);if(q)wbSave(q,q.value);return}
  const step=e.target.closest('[data-wb-step]');
  if(step){
   const form=step.closest('[data-wb-form]'),q=QUICK_ITEMS.find(x=>x.key===form?.dataset.wbForm),input=form?.querySelector('[name="wb-count"]');
   if(!q||!input)return;
-  const n=Number(input.value),v=input.value!==''&&Number.isFinite(n)?n:q.value;
-  input.value=String(Math.max(q.unit==='分钟'?10:1,Math.min(q.max,v+Number(step.dataset.wbStep)*q.step)));
+  const n=Number(input.value),current=input.value!==''&&Number.isFinite(n)?n:q.value;
+  input.value=String(Math.max(1,Math.min(q.max,current+Number(step.dataset.wbStep)*q.step)));
   wbPreview(form);return;
  }
  const undo=e.target.closest('[data-wb-undo]');
  if(undo){
   const rec=state.records.find(x=>x.id===undo.dataset.wbUndo&&x.date===localDate());
-  if(!rec||!confirm('撤销今天的「'+recordName(rec)+'」'+recordDescription(rec)+' 这笔记录？'))return;
+  if(!rec||!confirm('撤销「'+recordName(rec)+'」'+recordDescription(rec)+'？'))return;
   const old=state.records;
-  state.records=old.filter(x=>x.id!==rec.id);
+  state.records=old.filter(r=>r.id!==rec.id);
   if(!persist()){state.records=old;return}
-  render();toast('已撤销该笔记录');return;
+  render();toast('已撤销该笔记录');
  }
 });
 document.addEventListener('input',e=>{
@@ -2098,8 +2127,7 @@ document.addEventListener('submit',e=>{
  e.preventDefault();
  const q=QUICK_ITEMS.find(x=>x.key===form.dataset.wbForm);
  const input=form.querySelector('[name="wb-count"]');
- const n=input?.value===''?NaN:Number(input?.value);
- wbSave(q,n);
+ wbSave(q,input?.value===''?NaN:Number(input?.value));
 });
 
 function quickUpdateEstimate(form){
@@ -2195,8 +2223,45 @@ document.addEventListener('input',e=>{const card=e.target.closest('[data-exercis
 document.addEventListener('input',e=>{if(e.target.closest('#recordForm')){pullForm();updatePreview()}});
 document.addEventListener('submit',e=>{if(e.target.id!=='recordForm')return;e.preventDefault();pullForm();try{const rec=newRecord(draft);const index=state.records.findIndex(r=>r.id===rec.id);const previous=state.records.slice();if(index>=0)state.records[index]=rec;else state.records.push(rec);if(!persist()){state.records=previous;return}draft=emptyDraft('strength');switchView('overview');toast(index>=0?'记录修改已保存':'训练已记录，统计已更新')}catch(err){toast(err.message)}});
 document.getElementById('importFile').addEventListener('change',e=>{importJSONFile(e.target.files[0]);e.target.value=''});
+/* The current day changes at the device's LOCAL 00:00, not at UTC midnight.
+   Keep historical records as-is; only refresh the current-day view. */
+let displayedLocalDay=localDate();
+let localMidnightTimer=null;
+function refreshLocalCalendarDay(){
+ const today=localDate();
+ if(today===displayedLocalDay)return false;
+ displayedLocalDay=today;
+ wbOpenKey=null;
+ if(!draft.id)draft={...emptyDraft(draft.type),date:today};
+ if(calendarMonth<today.slice(0,7))calendarMonth=today.slice(0,7);
+ render();
+ return true;
+}
+function scheduleLocalMidnightRefresh(){
+ if(localMidnightTimer!==null)clearTimeout(localMidnightTimer);
+ const now=new Date();
+ const next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,1,0);
+ localMidnightTimer=setTimeout(()=>{
+  refreshLocalCalendarDay();
+  scheduleLocalMidnightRefresh();
+ },Math.max(1000,next.getTime()-now.getTime()));
+}
+document.addEventListener('visibilitychange',()=>{
+ if(!document.hidden){refreshLocalCalendarDay();scheduleLocalMidnightRefresh();}
+});
+window.addEventListener('pageshow',()=>{refreshLocalCalendarDay();scheduleLocalMidnightRefresh();});
+window.addEventListener('focus',()=>{refreshLocalCalendarDay();scheduleLocalMidnightRefresh();});
+// iOS PWA suspension can delay timers, so also poll while the page is active.
+setInterval(()=>{if(!document.hidden)refreshLocalCalendarDay();},30000);
+// Reject an action from a still-visible YESTERDAY screen before it can save on the wrong day.
+function guardOldDayAction(e){
+ if(refreshLocalCalendarDay()){e.preventDefault();e.stopImmediatePropagation();}
+}
+document.addEventListener('click',guardOldDayAction,true);
+document.addEventListener('submit',guardOldDayAction,true);
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 render();
+scheduleLocalMidnightRefresh();
 </script>
 <script src="./cloud.js?v=2.2"></script>
 </body>
