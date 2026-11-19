@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V3.5.0</title>
+  <title>健身记录 · V3.6.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -1360,8 +1360,8 @@ body[data-screen="overview"] .wb-editor-help{line-height:1.55!important;text-ali
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar"><div class="brand"><span class="brand-symbol"><img src="./icon-180.png" width="39" height="39" alt="" /></span><div><h1>健身记录</h1><small>FITNESS JOURNAL</small></div></div><nav class="nav" id="desktopNav"></nav><div class="side-foot"><strong>专注记录，不消耗 Token</strong>训练可离线记录，登录后可与云端同步。</div></aside>
-  <main class="main"><div id="content"></div><p class="footer-disclaimer">运动热量为简化估算，并非实际测量结果 · 可选云端同步</p></main>
+  <aside class="sidebar"><div class="brand"><span class="brand-symbol"><img src="./icon-180.png" width="39" height="39" alt="" /></span><div><h1>健身记录</h1><small>FITNESS JOURNAL</small></div></div><nav class="nav" id="desktopNav"></nav></aside>
+  <main class="main"><div id="content"></div></main>
 </div>
 <nav class="mobile-nav" id="mobileNav" aria-label="主导航"></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1371,7 +1371,7 @@ body[data-screen="overview"] .wb-editor-help{line-height:1.55!important;text-ali
 const SEED_RECORDS = [];
 const STORAGE_KEY = 'hermes_fitness_journal_v1';
 const DEFAULT_SETTINGS={weight:65,weeklyGoal:1500};
-const STEP_KINDS=[['gym','健身房'],['bike','骑车'],['transport','乘车'],['other','其他']];
+
 const CATEGORIES=[['strength','力量'],['cardio','有氧'],['running','跑步'],['swimming','游泳'],['walking','步行'],['hold','静态']];
 const DAY_NAMES=['周日','周一','周二','周三','周四','周五','周六'];
 const WEEK_SHORT=['一','二','三','四','五','六','日'];
@@ -1427,6 +1427,25 @@ function readState(){
  return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary)};
 }
 let state=readState(),view='overview',historyFilter='week',historySelectedDate=null,draft=emptyDraft('strength');
+/* Preserve old raw step inputs while retiring interval subtraction.
+   Existing deduplicated walking records are transformed once, retaining their dates.
+   Full raw localStorage is backed up before any conversion. */
+const OLD_STEPS_BACKUP='fitness_before_step_dedup_removal_v3_6';
+function normalizeLegacyWalking(source){
+ if(!source||!Array.isArray(source.records))return source;
+ let changed=false;
+ const weight=Number(source.settings?.weight)||65;
+ const records=source.records.map(r=>{
+  if(r?.type!=='walking'||r.stepMode!=='daily-net-v1')return r;
+  const raw=stepInt(r.dailyTotalSteps);
+  const steps=raw??(stepInt(r.steps)??0);
+  const {stepMode,gymExcludedSteps,dailyTotalSteps,...clean}=r;
+  changed=true;
+  return {...clean,steps,calories:Math.round(0.04*(Number(r.weightAtRecord)||weight)/70*steps),note:'步数 '+steps+' 步'};
+ });
+ return changed?{...source,records}:source;
+}
+
 function recalibratedFitnessState(source){
  if(!source||!Array.isArray(source.records)||!source.settings)return source;
  const p=source.settings.exerciseProfiles||{};
@@ -1452,8 +1471,14 @@ const CALIBRATION_BACKUP='fitness_before_elliptical_recalibration_v3_4';
 function persist(){
  if(storageReadIssue){toast('原有数据读取异常：已停止写入以保护记录');return false}
  try{
-  const corrected=recalibratedFitnessState(state);
-  const next=JSON.stringify(corrected),prior=localStorage.getItem(STORAGE_KEY);
+  const prior=localStorage.getItem(STORAGE_KEY);
+  const walked=normalizeLegacyWalking(state);
+  if(walked!==state&&!localStorage.getItem(OLD_STEPS_BACKUP)){
+   localStorage.setItem(OLD_STEPS_BACKUP,prior||JSON.stringify(state));
+   if(!localStorage.getItem(OLD_STEPS_BACKUP))throw new Error('原步数资料无法备份');
+  }
+  const corrected=recalibratedFitnessState(walked);
+  const next=JSON.stringify(corrected);
   const historyChanged=corrected.records!==state.records;
   if(historyChanged&&!localStorage.getItem(CALIBRATION_BACKUP)){
    // Preserve original record calories, dates and exercise amounts before correction.
@@ -1644,7 +1669,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['健身记录',''],steps:['手动步数',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['steps','手动步数'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){if(!storageReadIssue){applyConfirmedNovemberDates();if(recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.5.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){if(!storageReadIssue){applyConfirmedNovemberDates();if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.6.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,steps:renderStepDedup,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -1663,8 +1688,8 @@ function renderTraining(){const plan=PLANS[new Date().getDay()];return `<div cla
  <div><section class="card preview-card"><span class="hero-label" style="color:#5d8b72">本次预计消耗</span><div class="preview-kcal" id="previewKcal">${calc(draft)??'—'}<small>kcal</small></div><p class="preview-line" id="previewLine">${safe(previewDescription(draft))}</p><div class="rule-list" id="previewRule">${safe(previewRule(draft))}</div></section><section class="card assist-card section-block"><div class="section-title"><div><h3>今天的计划</h3><p>${plan.label}</p></div></div>${plan.items.length?plan.items.map((item,i)=>`<div class="compact-plan"><div><div class="compact-plan-name">${safe(item.exercise)}</div><div class="compact-plan-sub">${safe(describePlanItem(item))}</div></div><button type="button" class="mini-btn" data-plan="${new Date().getDay()}-${i}">填入</button></div>`).join(''):'<p class="micro-note">今天是休息日，可以记录实际完成的其他活动。</p>'}</section></div></div>`}
 function previewDescription(d){if(d.type==='strength')return `${d.sets||0} 组 × ${d.repsPerSet||0} 次 = ${(Number(d.sets)||0)*(Number(d.repsPerSet)||0)} 次`;if(d.type==='swimming')return d.legacySwimming?`${d.exercise||'游泳'} · ${d.durationMin||'尚未填写'} 分钟（旧记录）`:`${d.exercise||'游泳'} · ${d.laps||0} 来回 · ${(Number(d.laps)||0)*50} 米`;if(d.type==='cardio')return `${d.exercise||'运动'} · ${d.durationMin||'尚未填写'} 分钟`;if(d.type==='running')return d.legacyRunning?`${d.distanceKm||0} km（旧记录）`:`${d.durationMin||0} 分钟`;if(d.type==='walking')return `${d.steps||0} 步`;if(d.type==='hold')return `${d.sets||0} 组 × ${d.secondsPerSet||0} 秒`;return ''}
 function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='running')return d.legacyRunning?'旧跑步记录按公里保留，不自动换算成分钟':'跑步固定3.3 kcal/分钟，20分钟约66 kcal';if(d.type==='cardio')return String(d.exercise||'').trim()==='椭圆机'?'椭圆机校准：2.5 kcal / 分钟（20 分钟 = 50 kcal），历史记录同步重算':'骑行按设置中的每分钟热量系数计算';if(d.type==='swimming')return d.legacySwimming?'旧记录按原有分钟数计算，历史数据不转换':'按 50 米 / 来回记录；热量使用可调整的每来回系数估算（默认以 6 MET、约 2 分钟 / 50 米折算），不代表测得游泳时长';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
-function recordDescription(r){if(r.type==='walking')return r.stepMode==='daily-net-v1'?`净 ${r.steps||0} 步 · 全天 ${r.dailyTotalSteps||0} 步 · 区间扣除 ${r.gymExcludedSteps||0} 步`:`${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='running')return Number(r.duration_min)>0?`${r.duration_min} 分钟`:`${r.distance_km||0} km（旧记录）`;if(r.type==='swimming')return Number.isInteger(Number(r.laps))&&Number(r.laps)>0?`${r.laps} 来回 · ${r.distance_m||r.laps*50} 米`:`${r.duration_min||0} 分钟（旧记录）${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
-function recordName(r){return r.type==='walking'?(r.stepMode==='daily-net-v1'?'走路 · 已去重':'步行'):r.exercise||r.stroke||r.note||prettyType(r.type)}
+function recordDescription(r){if(r.type==='walking')return `${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='running')return Number(r.duration_min)>0?`${r.duration_min} 分钟`:`${r.distance_km||0} km（旧记录）`;if(r.type==='swimming')return Number.isInteger(Number(r.laps))&&Number(r.laps)>0?`${r.laps} 来回 · ${r.distance_m||r.laps*50} 米`:`${r.duration_min||0} 分钟（旧记录）${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次（原记录未分组）`;return r.note||'运动记录'}
+function recordName(r){return r.type==='walking'?'走路':r.exercise||r.stroke||r.note||prettyType(r.type)}
 
 function historyRecordCard(r){
  const isSet=r.type==='strength'||r.type==='hold';
@@ -1727,10 +1752,8 @@ function saveHistoryQuickForm(form){
    !Number.isInteger(n)){
   toast('请选择有效的运动数量');return false;
  }
- // Today's walking uses the same deduplicated daily record as the manual steps page.
- if(q.key==='steps'&&date===localDate())return saveDailySteps(n);
- if(q.key==='steps'&&recordsOfDate(date).some(r=>r.type==='walking'&&r.stepMode==='daily-net-v1')&&
-    !confirm('这天已有净步数记录，另外添加走路可能重复计算。仍然添加吗？'))return false;
+ // One total for that calendar day, never append extra walking sessions.
+ if(q.key==='steps')return saveDailySteps(n,date);
  const previous=state.records.slice();
  try{
   const draft=quickDraft(q,n);draft.date=date;
@@ -1913,197 +1936,56 @@ function quickCalories(q,n){return calc(quickDraft(q,n))??0}
 
 function stepInt(v){const n=Number(v);return Number.isInteger(n)&&n>=0&&n<=1000000?n:null}
 function cleanStepDiary(raw){
- const result={};
- if(!raw||typeof raw!=='object'||Array.isArray(raw))return result;
- for(const [date,values] of Object.entries(raw)){
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!values||typeof values!=='object'||Array.isArray(values))continue;
-  const clean={},total=stepInt(values.total);
-  if(values.total!==undefined&&values.total!==''&&values.total!==null&&total!==null)clean.total=total;
-  let sessions=[];
-  if(Array.isArray(values.sessions)){
-   for(let index=0;index<values.sessions.length&&index<50;index++){
-    const x=values.sessions[index];if(!x||typeof x!=='object')continue;
-    const start=stepInt(x.start),end=x.end===null||x.end===''||x.end===undefined?null:stepInt(x.end);
-    if(start===null||(end!==null&&end<start))continue;
-    sessions.push({id:typeof x.id==='string'&&x.id?x.id:'imported-'+index,
-      kind:STEP_KINDS.some(k=>k[0]===x.kind)?x.kind:'other',start,end});
-   }
-  }else{
-   const start=stepInt(values.gymIn),end=stepInt(values.gymOut);
-   // Migrate previous one-interval representation in memory; do not touch records on page load.
-   if(values.gymIn!==undefined&&values.gymIn!==null&&start!==null){
-    sessions=[{id:'legacy-gym-1',kind:'gym',start,end:end!==null&&end>=start?end:null}];
-   }
+ // Preserve numeric daily totals only. Interval deductions are discontinued.
+ const out={};
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
+ for(const [date,entry] of Object.entries(raw)){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!entry||typeof entry!=='object')continue;
+  const total=stepInt(entry.total);
+  if(total!==null)out[date]={total};
+ }
+ return out;
+}
+function saveDailySteps(total,date=localDate()){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||date>localDate()||
+   !Number.isInteger(total)||total<=0||total>1000000){
+  toast('请输入有效的当天总步数');return false;
+ }
+ const prior=state;
+ try{
+  const existingRecords=state.records.filter(r=>r.date===date&&r.type==='walking');
+  const latest=existingRecords.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
+  const q=QUICK_ITEMS.find(x=>x.key==='steps');
+  const rec=newRecord({...quickDraft(q,total),id:latest?.id||null,date});
+  rec.note='步数 '+total+' 步';
+  if(existingRecords.length>1){
+   const key='fitness_step_records_before_total_v3_6_'+date;
+   if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify({
+     date,records:existingRecords,stepDiary:state.stepDiary?.[date]||null,savedAt:new Date().toISOString()
+   }));
   }
-  if(sessions.length)clean.sessions=sessions;
-  if(Object.keys(clean).length)result[date]=clean;
- }
- return result;
-}
-let editingStepSessionId=null;
-function todayStepEntry(){return state.stepDiary?.[localDate()]||{}}
-function stepSessions(date){return state.stepDiary?.[date]?.sessions||[]}
-function completeStepSessions(date){return stepSessions(date).filter(s=>s.end!==null)}
-function validateStepSessions(sessions){
- if(sessions.length>30)return '每天最多添加 30 段';
- const sorted=[...sessions].sort((a,b)=>a.start-b.start);
- for(let i=0;i<sorted.length;i++){
-  const x=sorted[i];
-  if(stepInt(x.start)===null||x.end!==null&&(stepInt(x.end)===null||x.end<x.start))return '累计步数必须是非负整数，结束不能小于开始';
-  if(i>0&&sorted[i-1].end===null)return '上一段尚未填写结束步数，请先完成';
-  if(i>0&&x.start<sorted[i-1].end)return '区间相互重叠，可能重复扣除步数，请调整后保存';
- }
- return '';
-}
-function stepDeduction(date){
- const sessions=stepSessions(date),invalid=validateStepSessions(sessions);
- if(invalid)return {excluded:0,completed:0,pending:sessions.length,error:invalid};
- const completed=sessions.filter(s=>s.end!==null);
- return {excluded:completed.reduce((sum,s)=>sum+(s.end-s.start),0),
-  completed:completed.length,pending:sessions.length-completed.length,error:''};
-}
-function dailyStepBreakdown(date){
- const entry=state.stepDiary?.[date];
- if(!entry||!Number.isInteger(entry.total)||entry.total<0)return null;
- const deduction=stepDeduction(date);
- if(deduction.error)return null;
- const closed=completeStepSessions(date);
- if(closed.some(s=>s.end>entry.total)||deduction.excluded>entry.total)return null;
- return {total:entry.total,excluded:deduction.excluded,
-  net:entry.total-deduction.excluded,complete:deduction.pending===0,pending:deduction.pending};
-}
-function walkingPreviewNet(total){
- if(!Number.isInteger(total)||total<0)return null;
- const deduction=stepDeduction(localDate());
- if(deduction.error||completeStepSessions(localDate()).some(s=>s.end>total)||deduction.excluded>total)return null;
- return total-deduction.excluded;
-}
-function managedWalkingRecord(date){
- return state.records.find(r=>r.date===date&&r.type==='walking'&&r.stepMode==='daily-net-v1')||null;
-}
-function updateManagedWalking(date){
- const breakdown=dailyStepBreakdown(date);
- if(!breakdown)return false;
- const old=managedWalkingRecord(date),q=QUICK_ITEMS.find(x=>x.key==='steps');
- let rec;
- if(breakdown.net===0){
-  rec={id:old?.id||uid(),date,type:'walking',steps:0,calories:0,
-    createdAt:old?.createdAt||new Date().toISOString(),weightAtRecord:state.settings.weight};
- }else{
-  const draft=quickDraft(q,breakdown.net);
-  draft.id=old?.id||null;draft.date=date;
-  rec=newRecord(draft);
- }
- rec.stepMode='daily-net-v1';rec.presetKey='steps';
- rec.dailyTotalSteps=breakdown.total;rec.gymExcludedSteps=breakdown.excluded;
- rec.note='净步数 '+breakdown.net+' 步；全天 '+breakdown.total+' 步；扣除区间 '+breakdown.excluded+' 步';
- const index=old?state.records.findIndex(r=>r.id===old.id):-1;
- if(index>=0)state.records[index]=rec;else state.records.push(rec);
- return true;
-}
-function saveDailySteps(total){
- const day=localDate();
- if(!Number.isInteger(total)||total<1||total>1000000){toast('请输入今天的累计总步数');return false}
- const prev=state.stepDiary||{},oldRecords=state.records.slice(),old=prev[day]||{};
- if(!managedWalkingRecord(day)){
-  const overlaps=recordsOfDate(day).filter(r=>r.type==='walking'&&r.stepMode!=='daily-net-v1');
-  if(overlaps.length&&!confirm('今天已有 '+overlaps.length+' 条旧步行记录。全天净步数可能重复计入，旧记录不会删除。仍保存今天总步数吗？'))return false;
- }
- state.stepDiary={...prev,[day]:{...old,total}};
- if(!dailyStepBreakdown(day)){
-  state.stepDiary=prev;
-  toast('今日总步数不能小于任一扣除区间的结束步数');
-  return false;
- }
- try{
-  updateManagedWalking(day);
-  if(!persist()){state.stepDiary=prev;state.records=oldRecords;return false}
-  const b=dailyStepBreakdown(day);
-  render();toast('已保存：净步数 '+b.net+'，共扣除 '+b.excluded+' 步');
+  state={...state,
+   records:state.records.filter(r=>!(r.date===date&&r.type==='walking')).concat([rec]),
+   stepDiary:{...(state.stepDiary||{}),[date]:{total}}};
+  if(!persist()){state=prior;return false}
+  wbOpenKey=null;render();
+  toast(date+' 步数已更新：'+total.toLocaleString('zh-CN')+' 步');
   return true;
- }catch(e){state.stepDiary=prev;state.records=oldRecords;toast(e.message||'保存失败');return false}
+ }catch(e){state=prior;toast(e.message||'步数保存失败');return false}
 }
-function readStepCounter(value){
- if(value.trim()==='')return null;
- return stepInt(value)??NaN;
-}
-function saveStepSession(form){
- const day=localDate(),entry=todayStepEntry();
- const kind=String(form.querySelector('[name="sessionKind"]')?.value||'other');
- const start=readStepCounter(String(form.querySelector('[name="sessionStart"]')?.value??''));
- const end=readStepCounter(String(form.querySelector('[name="sessionEnd"]')?.value??''));
- if(!STEP_KINDS.some(k=>k[0]===kind)||start===null||Number.isNaN(start)||Number.isNaN(end)||
-    end!==null&&end<start){
-  toast('请填写有效累计步数：结束步数不能小于开始步数');return false;
- }
- const sessions=[...stepSessions(day)],idx=editingStepSessionId?
-  sessions.findIndex(x=>x.id===editingStepSessionId):-1;
- const session={id:idx>=0?sessions[idx].id:uid(),kind,start,end};
- if(idx>=0)sessions[idx]=session;else sessions.push(session);
- const issue=validateStepSessions(sessions);
- if(issue){toast(issue);return false}
- const previous=state.stepDiary||{},oldRecords=state.records.slice();
- // Complete intervals may contain newer cumulative readings than an earlier saved daily total.
- const latest=Math.max(...sessions.map(s=>s.end??s.start),0);
- const nextEntry={...entry,sessions};
- if(Number.isInteger(entry.total)&&latest>entry.total)nextEntry.total=latest;
- state.stepDiary={...previous,[day]:nextEntry};
- try{
-  if(managedWalkingRecord(day)&&dailyStepBreakdown(day))updateManagedWalking(day);
-  if(!persist()){state.stepDiary=previous;state.records=oldRecords;return false}
-  editingStepSessionId=null;render();
-  toast(end===null?'已存开始步数；完成后可补填结束步数':'扣除区间已保存，净步数已更新');
-  return true;
- }catch(e){state.stepDiary=previous;state.records=oldRecords;toast(e.message||'保存失败');return false}
-}
-function deleteStepSession(id){
- const day=localDate(),entry=todayStepEntry(),sessions=stepSessions(day);
- if(!sessions.some(s=>s.id===id))return false;
- if(!confirm('删除这一段扣除区间吗？此前保存的运动历史不会被删除。'))return false;
- const previous=state.stepDiary||{},oldRecords=state.records.slice();
- state.stepDiary={...previous,[day]:{...entry,sessions:sessions.filter(s=>s.id!==id)}};
- try{
-  if(managedWalkingRecord(day)&&dailyStepBreakdown(day))updateManagedWalking(day);
-  if(!persist()){state.stepDiary=previous;state.records=oldRecords;return false}
-  editingStepSessionId=null;render();toast('已删除这段区间，净步数已重新计算');return true;
- }catch(e){state.stepDiary=previous;state.records=oldRecords;toast(e.message||'删除失败');return false}
-}
-function stepKindLabel(kind){return STEP_KINDS.find(p=>p[0]===kind)?.[1]||'其他'}
-
-
 function renderStepDedup(){
- const day=localDate(),entry=todayStepEntry(),sessions=[...stepSessions(day)].sort((a,b)=>a.start-b.start);
- const deduction=stepDeduction(day),data=dailyStepBreakdown(day);
- const edit=sessions.find(s=>s.id===editingStepSessionId);
- const number=v=>typeof v==='number'?v.toLocaleString('zh-CN'):'—';
+ const date=localDate(),rows=recordsOfDate(date).filter(r=>r.type==='walking');
+ const latest=rows.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
+ const saved=stepInt(state.stepDiary?.[date]?.total);
+ const total=saved??(Number(latest?.steps)||0);
  return '<div class="step-page manual-step-page">'+
- '<section class="card step-compact-hero">'+
- '<div class="step-compact-top"><div class="step-total-label">今日有效步数<strong>'+number(data?.net)+'</strong></div>'+
- '<div class="step-compact-totals"><span>累计 '+number(entry.total)+'</span><span>排除 '+number(deduction.excluded)+'</span></div></div>'+
- '<form id="stepTotalForm" class="manual-total-form">'+
- '<label for="manualDailyTotal">今日累计步数</label>'+
- '<div class="manual-total-input"><input id="manualDailyTotal" type="number" name="dayTotal" min="1" max="1000000" step="1" inputmode="numeric" placeholder="输入今日总步数" value="'+(Number.isInteger(entry.total)?entry.total:'')+'">'+
- '<button type="submit">保存步数</button></div></form>'+
- (Number.isInteger(entry.total)&&!data?'<div class="manual-pending">请将总步数更新到最新的区间结束读数</div>':'')+
- '</section>'+
- '<section class="card step-compact-list"><div class="step-compact-heading"><h2>扣除区间 <small>'+sessions.length+' 段</small></h2></div>'+
- '<form id="stepSessionForm" class="manual-session-form">'+
- '<div class="manual-session-fields"><label>类型<select name="sessionKind">'+STEP_KINDS.map(k=>
- '<option value="'+k[0]+'" '+((edit?.kind||'gym')===k[0]?'selected':'')+'>'+k[1]+'</option>').join('')+'</select></label>'+
- '<label>开始累计步数<input type="number" name="sessionStart" min="0" max="1000000" step="1" inputmode="numeric" placeholder="如 5000" value="'+(edit?.start??'')+'"></label>'+
- '<label>结束累计步数<input type="number" name="sessionEnd" min="0" max="1000000" step="1" inputmode="numeric" placeholder="如 6000" value="'+(edit?.end??'')+'"></label></div>'+
- '<div class="manual-session-buttons"><button type="submit" class="step-save">'+(edit?'保存修改':'＋ 添加扣除区间')+'</button>'+
- (edit?'<button type="button" data-step-new class="secondary-btn">取消</button>':'')+'</div></form>'+
- (sessions.length?'<div class="manual-session-list">'+sessions.map((x,i)=>
- '<div class="step-session-row"><span class="manual-session-index">'+(i+1)+'</span>'+
- '<div class="step-session-info"><strong>'+safe(stepKindLabel(x.kind))+'</strong>'+
- '<small>'+number(x.start)+' → '+(x.end===null?'待补结束':number(x.end))+'</small></div>'+
- '<div class="step-session-delta">'+(x.end===null?'未结束':'−'+number(x.end-x.start))+'</div>'+
- '<button type="button" class="record-action" data-step-edit="'+safe(x.id)+'" aria-label="修改区间">改</button>'+
- '<button type="button" class="record-action danger" data-step-delete="'+safe(x.id)+'" aria-label="删除区间">删</button></div>').join('')+'</div>':
- '<div class="step-compact-empty">还没有扣除区间</div>')+'</section></div>';
+  '<section class="card step-compact-hero">'+
+  '<div class="step-compact-top"><div class="step-total-label">今日步数<strong>'+total.toLocaleString('zh-CN')+'</strong></div></div>'+
+  '<form id="stepTotalForm" class="manual-total-form">'+
+  '<label for="manualDailyTotal">今日累计步数</label>'+
+  '<div class="manual-total-input"><input id="manualDailyTotal" type="number" name="dayTotal" min="1" max="1000000" step="1" inputmode="numeric" placeholder="输入今天的总步数" value="'+(total||'')+'">'+
+  '<button type="submit">保存步数</button></div></form></section></div>';
 }
-
 const REST_DAYS_KEY='hermes_fitness_rest_days_v1';
 function validRestDate(v){
  if(typeof v!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;
@@ -2209,8 +2091,8 @@ function wbToday(q,records){
  const list=records.filter(r=>wbMatches(q,r));
  if(!list.length)return {count:0,value:0,label:'0 '+q.unit,list};
  if(q.key==='steps'){
-  const managed=list.find(r=>r.stepMode==='daily-net-v1');
-  const total=managed?(Number(managed.steps)||0):list.reduce((sum,r)=>sum+(Number(r.steps)||0),0);
+  const latest=list.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
+  const total=stepInt(state.stepDiary?.[localDate()]?.total)??(Number(latest?.steps)||0);
   return {count:list.length,value:total,label:total.toLocaleString('zh-CN')+' 步',list};
  }
  const oldTimedSwims=q.key==='swim'?list.filter(r=>!(Number(r.laps)>0)).length:0;
@@ -2228,13 +2110,13 @@ function wbEditor(q){
  const v=0; // Every new entry starts at zero: NEVER prefill a cumulative amount.
  const unit=q.unit;
  const info=wbToday(q,recordsOfDate(localDate()));
- const header=q.key==='steps'?'今日当前累计 '+info.label+' · 请输入新的总步数':
+ const header=q.key==='steps'?'今日已有 '+info.label+' · 输入当天总步数':
   '今日已累计 '+info.label+' · 以下只记录本次新增';
  return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
   '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
   '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
   '<div class="wb-editor-meta">'+safe(header)+'</div>'+
-  '<label class="wb-editor-entry-label" for="wb-count-'+q.key+'">'+(q.key==='steps'?'新的今日累计':'本次新增')+'</label>'+
+  '<label class="wb-editor-entry-label" for="wb-count-'+q.key+'">'+(q.key==='steps'?'今日总步数':'本次新增')+'</label>'+
   '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+q.step+unit+'">−</button>'+
   '<div class="wb-editor-number"><input id="wb-count-'+q.key+'" type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="0" max="'+q.max+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量"><span>'+unit+'</span></div>'+
   '<button type="button" data-wb-step="1" aria-label="增加'+q.step+unit+'">＋</button></div>'+
@@ -2252,10 +2134,8 @@ function wbRow(q,recs){
    '<span class="wb-entry-action">›</span></button></div>';
 }
 function renderQuickHome(){
- // Date is the device-local calendar date (midnight to midnight), never the week total.
  const today=localDate(),recs=recordsOfDate(today);
  const dateLabel=formatDate(today)+' · '+DAY_NAMES[new Date().getDay()];
- const recent=[...recs].sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))).slice(0,3);
  return '<div class="wb-screen">'+
   '<header class="wb-header"><div class="wb-header-title"><h1>健身记录</h1><small>'+safe(dateLabel)+'</small></div>'+
    '<div class="wb-day-total"><strong>'+totalRecs(recs).toLocaleString('zh-CN')+'</strong><span>kcal · 今日</span></div></header>'+
@@ -2264,11 +2144,6 @@ function renderQuickHome(){
    return '<section class="wb-group"><h2 class="wb-group-title">'+g.title+'</h2>'+
     '<div class="wb-rows">'+qs.map(q=>wbRow(q,recs)).join('')+'</div></section>';
   }).join('')+'</div>'+
-  (recent.length?'<section class="wb-today-log"><div class="wb-log-heading"><h2>今日记录</h2><button type="button" data-view="history">查看全部</button></div>'+
-   recent.map(r=>'<div class="wb-log-item"><span class="wb-log-text">'+safe(recordName(r))+' · '+safe(recordDescription(r))+'</span>'+
-     '<button type="button" data-edit="'+safe(r.id)+'" aria-label="编辑记录">编辑</button>'+
-     (r.type==='walking'&&r.stepMode==='daily-net-v1'?'':'<button type="button" data-wb-undo="'+safe(r.id)+'" aria-label="撤销记录">撤销</button>')+
-     '</div>').join('')+'</section>':'')+
  '</div>'+(wbOpenKey?'<div class="wb-modal"><button type="button" class="wb-modal-backdrop" data-wb-close aria-label="关闭操作面板"></button><div class="wb-modal-sheet" role="dialog" aria-modal="true" aria-label="记录运动">'+wbEditor(QUICK_ITEMS.find(q=>q.key===wbOpenKey))+'</div></div>':'');
 }
 function wbQuantityValid(q,n){
@@ -2278,7 +2153,7 @@ function wbQuantityValid(q,n){
 function wbPreviewText(q,n){
  const info=wbToday(q,recordsOfDate(localDate()));
  if(!wbQuantityValid(q,n))return '本次 0 '+q.unit+' · 请填写实际完成量';
- if(q.key==='steps')return '将今日累计更新为 '+n.toLocaleString('zh-CN')+' 步（不是再加 '+n+' 步）';
+ if(q.key==='steps')return '今日步数：'+n.toLocaleString('zh-CN')+' 步';
  const next=info.value+n;
  const km=q.key==='swim'?' · 本次 '+(n*50)+' 米':'';
  return '本次新增 '+n+' '+q.unit+km+' · 约 '+quickCalories(q,n)+' kcal；保存后今日累计 '+next+' '+q.unit;
@@ -2351,7 +2226,7 @@ function quickUpdateEstimate(form){
  const q=QUICK_ITEMS.find(item=>item.key===form?.dataset.qForm);if(!q)return;
  const input=form.querySelector('[name="q-value"]');
  const val=Number(input?.value);const el=form.querySelector('[data-q-est]');
- if(el){const net=q.key==='steps'?walkingPreviewNet(val):val;el.textContent=Number.isInteger(val)&&val>0&&val<=q.max&&net!==null?quickCalories(q,net):'—'}
+ if(el){const net=val;el.textContent=Number.isInteger(val)&&val>0&&val<=q.max?quickCalories(q,net):'—'}
  const distance=form.querySelector('[data-q-distance]');
  if(distance)distance.textContent=input?.value!==''&&Number.isInteger(val)&&val>0?'共 '+val*50+' 米':'— 米';
 }
@@ -2402,7 +2277,7 @@ document.addEventListener('input',e=>{
 document.addEventListener('submit',e=>{
  if(e.target.id==='historyQuickForm'){e.preventDefault();saveHistoryQuickForm(e.target);return}
  if(e.target.id==='stepTotalForm'){e.preventDefault();const n=Number(e.target.querySelector('[name="dayTotal"]')?.value);saveDailySteps(n);return}
- if(e.target.id==='stepSessionForm'){e.preventDefault();saveStepSession(e.target);return}
+
  const form=e.target.closest('[data-q-form]');if(!form)return;
  e.preventDefault();
  const q=QUICK_ITEMS.find(x=>x.key===form.dataset.qForm),n=Number(form.querySelector('[name="q-value"]').value);
@@ -2420,9 +2295,7 @@ document.addEventListener('submit',e=>{
 
 document.addEventListener('click',e=>{
  const allHistory=e.target.closest('[data-history-all]');if(allHistory){historySelectedDate=null;render();return}
- const newButton=e.target.closest('[data-step-new]');if(newButton){editingStepSessionId=null;render();return}
- const editButton=e.target.closest('[data-step-edit]');if(editButton){editingStepSessionId=editButton.dataset.stepEdit;render();return}
- const deleteButton=e.target.closest('[data-step-delete]');if(deleteButton){deleteStepSession(deleteButton.dataset.stepDelete);return}
+
  const day=e.target.closest('[data-cal-date]');
  if(day){historySelectedDate=day.dataset.calDate;view='history';render();window.scrollTo({top:0,behavior:'instant'});return}
  const month=e.target.closest('[data-cal-month]');
@@ -2481,7 +2354,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v3.5.0';
+   const key='fitness_sw_reloaded_v3.6.0';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
