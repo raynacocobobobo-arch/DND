@@ -1,4 +1,4 @@
-/* 健身记录 V2.7 · 一次登录，持久会话；本机训练优先，云端手动同步。 */
+/* 健身记录 V2.8 · 明确展示来源/目标设备数据，同账号一键迁移到桌面应用。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -13,7 +13,10 @@ function say(msg){status=msg;
  const settings=document.getElementById('fitnessCloudStatus');if(settings)settings.textContent=msg;
  const entry=document.getElementById('fitnessEntryStatus');if(entry)entry.textContent=msg;
 }
-function renderIfSettings(){if(view==='settings')render()}
+function renderIfSettings(){
+ // Refresh counts on the home sync banner, but don't interrupt a workout editor.
+ if(view==='settings'||(view==='overview'&&!wbOpenKey&&!wbCalorieDetailOpen))render();
+}
 async function fetchAPI(path,opts={},auth=true){
  const headers={'apikey':KEY,'Content-Type':'application/json'};
  if(auth){const token=await getToken();if(!token)throw Error('登录已失效，请重新登录');headers.Authorization='Bearer '+token}
@@ -53,7 +56,7 @@ async function resumeAccount(){
  if(!signedIn()||refreshingAccount)return;
  refreshingAccount=(async()=>{
   if(Number(session.expires_at||0)<Date.now()/1000+300)await getToken();
-  if(view==='settings'&&signedIn())await refresh();
+  if(signedIn())await refresh();
  })();
  try{await refreshingAccount}finally{refreshingAccount=null}
 }
@@ -343,10 +346,55 @@ function panel(){
   '<button type="button" class="primary-btn" data-cloud-action="upload"'+(state.records.length===0?' disabled':'')+'>上传本机记录</button>'+
   '<button type="button" class="secondary-btn" data-cloud-action="download"'+(remote?.records===0?' disabled':'')+'>下载云端记录</button>'+
   '<button type="button" class="secondary-btn" data-cloud-action="refresh">刷新状态</button></div>'+
-  '<p class="micro-note">原浏览器或 iPhone 桌面应用若有训练记录，请先在那里从「设置 → 导出 JSON」保存，再在此浏览器导入。空数据上传及下载已禁用；云端操作只能手动进行，打卡不会自动上传。</p>')+
+  '<p class="micro-note">在有训练记录的浏览器点击「同步到 iPhone 桌面版」，随后在桌面版点击「从云端恢复记录」。两个浏览器数据彼此独立；上传和下载均需确认，且不会传输空数据。</p>')+
  '<p class="fitness-cloud-status" id="fitnessCloudStatus" role="status">'+safe(status)+'</p>'+
  '<p class="micro-note">本机记录保留；邮箱仅用于发送登录链接，无需填写密码。</p></section>';
 }
+/* Both iOS Home Screen apps and in-app browsers own separate localStorage databases.
+   Copy the source journal to the authenticated cloud once; the destination receives it
+   only after the user chooses to restore. No empty automatic cloud writes. */
+function fitnessSyncBanner(){
+ const localCount=state.records.length,remoteCount=remote?.records;
+ if(!signedIn()){
+  return localCount?
+   '<div class="fitness-sync-mini">本机 '+localCount+' 条记录仅保存在此浏览器。要同步到 iPhone 桌面版，可在设置中登录一次。</div>':
+   '<div class="fitness-sync-mini fitness-sync-attention">这个浏览器暂无训练记录；原记录可能保存在另一个浏览器或桌面应用中。请勿删除原应用。</div>';
+ }
+ if(remoteCount===undefined||remoteCount===null){
+  return '<div class="fitness-sync-mini">本机 '+localCount+' 条记录 · 正在检查云端训练记录</div>';
+ }
+ if(localCount===0&&remoteCount>0){
+  return '<div class="fitness-sync-mini fitness-sync-attention">'+
+    '<span>此设备 0 条 · 云端 '+remoteCount+' 条。可以恢复到当前桌面应用。</span>'+
+    '<button type="button" data-fitness-sync-action="download">从云端恢复记录</button></div>';
+ }
+ if(localCount>0&&remoteCount===0){
+  return '<div class="fitness-sync-mini fitness-sync-attention">'+
+    '<span>此设备有 '+localCount+' 条训练，云端暂无记录。先上传，另一端才能显示。</span>'+
+    '<button type="button" data-fitness-sync-action="upload">同步到 iPhone 桌面版</button></div>';
+ }
+ if(localCount===0&&remoteCount===0){
+  return '<div class="fitness-sync-mini fitness-sync-attention">当前设备与云端均为 0 条。请回到原来有训练数据的浏览器打开健身记录。</div>';
+ }
+ if(remoteCount>localCount){
+  return '<div class="fitness-sync-mini">'+
+   '<span>本机 '+localCount+' 条 · 云端 '+remoteCount+' 条。请检查是否有尚未同步的本机记录，再恢复。</span>'+
+   '<button type="button" data-fitness-sync-action="download">查看并恢复云端</button></div>';
+ }
+ if(remoteCount<localCount){
+  return '<div class="fitness-sync-mini">'+
+   '<span>本机 '+localCount+' 条 · 云端 '+remoteCount+' 条，可能有未上传记录。</span>'+
+   '<button type="button" data-fitness-sync-action="upload">上传本机记录</button></div>';
+ }
+ return '<div class="fitness-sync-mini">本机 '+localCount+' 条 · 云端 '+remoteCount+' 条。'+
+  '<button type="button" data-fitness-sync-action="refresh">核对云端</button></div>';
+}
+const beforeFitnessSyncQuickHome=renderQuickHome;
+renderQuickHome=function(){
+ const html=beforeFitnessSyncQuickHome();
+ return html.replace('<div class="wb-groups">',fitnessSyncBanner()+'<div class="wb-groups">');
+};
+
 // Add a separate panel without modifying existing record/calendar UI functions.
 const previousSettings=renderSettings;
 renderSettings=function(){return panel()+previousSettings()};
@@ -376,6 +424,14 @@ document.addEventListener('click',event=>{
    })();
    return;
   }
+ }
+ const syncBtn=event.target.closest('[data-fitness-sync-action]');
+ if(syncBtn){
+  const action=syncBtn.dataset.fitnessSyncAction;
+  if(action==='upload')upload(true);
+  else if(action==='download')download();
+  else if(action==='refresh')refresh();
+  return;
  }
  const btn=event.target.closest('[data-cloud-action]');if(!btn)return;
  if(btn.dataset.cloudAction==='logout')logout();
