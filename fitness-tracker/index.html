@@ -1733,7 +1733,7 @@ function updateExercisePreview(card){
  if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){target.textContent='—';return}
  target.textContent=profileCalories(q,q.value,{perSet,rate});
 }
-function switchView(v){if(!['overview','steps','calendar','training','history','settings'].includes(v))return;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
+function switchView(v){if(!['overview','steps','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
 function toast(message){let el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400)}
 function pullForm(){const f=document.getElementById('recordForm');if(!f)return;for(const input of f.querySelectorAll('[name]'))draft[input.name]=input.value}
 function updatePreview(){const k=document.getElementById('previewKcal'),desc=document.getElementById('previewLine'),rule=document.getElementById('previewRule');if(k)k.innerHTML=`${calc(draft)??'—'}<small>kcal</small>`;if(desc)desc.textContent=previewDescription(draft);if(rule)rule.textContent=previewRule(draft)}
@@ -2183,10 +2183,17 @@ function wbPreview(form){
   q.key==='swim'?(n*50)+' 米 · 预计 '+quickCalories(q,n)+' kcal':
   '预计消耗约 '+quickCalories(q,n)+' kcal';
 }
+function wbSetModalKey(key){
+ const main=document.querySelector('.main'),mainScroll=main?.scrollTop||0,windowScroll=window.scrollY;
+ wbOpenKey=key;render();
+ if(main)main.scrollTop=mainScroll;
+ window.scrollTo(0,windowScroll);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&wbOpenKey)wbSetModalKey(null)});
 document.addEventListener('click',e=>{
  const open=e.target.closest('[data-wb-open]');
- if(open){const y=window.scrollY;wbOpenKey=wbOpenKey===open.dataset.wbOpen?null:open.dataset.wbOpen;render();window.scrollTo(0,y);return}
- if(e.target.closest('[data-wb-close]')){const y=window.scrollY;wbOpenKey=null;render();window.scrollTo(0,y);return}
+ if(open){wbSetModalKey(wbOpenKey===open.dataset.wbOpen?null:open.dataset.wbOpen);return}
+ if(e.target.closest('[data-wb-close]')){wbSetModalKey(null);return}
  const step=e.target.closest('[data-wb-step]');
  if(step){
   const form=step.closest('[data-wb-form]'),q=QUICK_ITEMS.find(x=>x.key===form?.dataset.wbForm),input=form?.querySelector('[name="wb-count"]');
@@ -2346,7 +2353,17 @@ function guardOldDayAction(e){
 }
 document.addEventListener('click',guardOldDayAction,true);
 document.addEventListener('submit',guardOldDayAction,true);
-if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{
+  // A claimed worker does not replace already-running JS; reload once when no form is being edited.
+  if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
+  try{
+   const key='fitness_sw_reloaded_v3.2.0';
+   if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
+  }catch(e){location.reload()}
+ });
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{}));
+}
 render();
 scheduleLocalMidnightRefresh();
 </script>
