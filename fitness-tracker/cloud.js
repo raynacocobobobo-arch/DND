@@ -1,4 +1,4 @@
-/* 健身记录 V2.4 · Hermes Supabase 无密码邮件登录；保留本机数据与明确同步确认。 */
+/* 健身记录 V2.5 · 阻止空数据上传及下载覆盖，区分本机与云端记录。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -51,7 +51,7 @@ async function refresh(){
   conflict=!!(auto()&&Number(link.version)!==remote.version);
   if(link?.enabled&&link.userId===session.user.id&&Number(link.version)!==remote.version)conflict=true;
   say(conflict?'云端有新版本，请先下载核对，自动上传已暂停':
-    remote.version?'云端有 '+remote.records+' 条记录，可下载或继续同步':'云端暂无健身记录');
+    remote.records===0?'云端目前 0 条训练记录，勿上传空数据；请先找回原有本机记录':'云端有 '+remote.records+' 条训练记录，可下载或继续同步');
   renderIfSettings();return true;
  }catch(e){say('云端读取失败：'+e.message);return false}
 }
@@ -155,6 +155,10 @@ async function logout(){
 }
 async function upload(force=false){
  if(!signedIn()||uploading||importing||storageReadIssue)return false;
+ if(!state.records.length){
+  say('已阻止空数据上传：当前浏览器没有训练记录。请在原来的浏览器或桌面图标中导出 JSON，再导入此处。');
+  renderIfSettings();return false;
+ }
  if(!force&&!auto())return false;
  if(!remote&&!await refresh())return false;
  if(!force&&conflict){say('云端存在新版本，已暂停上传');return false}
@@ -189,6 +193,7 @@ async function download(){
   const row=await getRow(),v=row?.payload;
   if(!row||!v||!Array.isArray(v.records)||typeof v.settings!=='object'||!v.settings)
    throw Error('云端不存在有效的健身记录');
+  if(!v.records.length){say('已阻止空云端下载：云端目前没有训练记录，不能覆盖本机。');return false;}
   if(!confirm('云端有 '+v.records.length+' 条记录，将替换本机 '+state.records.length+' 条。系统先保存本机副本。确认继续？'))return false;
   const previous={state,restDays:[...restDays]},oldState=state,oldRest=restDays,oldIssue=storageReadIssue;
   if(!write('fitness_before_cloud_restore_v1',previous))throw Error('本机备份失败，取消替换');
