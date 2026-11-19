@@ -1341,6 +1341,14 @@ body[data-screen="overview"] .wb-modal .wb-editor-number input{font-size:25px!im
 body[data-screen="overview"] .wb-modal .wb-editor-help{color:#b6afa0!important;font-size:12px!important}
 body[data-screen="overview"] .wb-modal .wb-save{height:52px!important;min-height:52px!important;font-size:15px!important;background:#d4b57a!important}
 
+
+.history-correction{display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:12px;margin:8px 0 12px;background:#292621;border:1px solid #665739;border-radius:10px}
+.history-correction>div{flex:1 1 100%}
+.history-correction strong{display:block;font-size:13px;color:#f1d18e}
+.history-correction p{margin:5px 0 0;font-size:11px;line-height:1.5;color:#bcb09a}
+.history-correction button{border:0;border-radius:8px;background:#d3b37a;color:#181716;padding:9px 12px;font-size:12px;font-weight:750;min-height:38px}
+.history-correction .history-correction-restore{background:#36322c;color:#e7cb98;border:1px solid #685839}
+
 </style>
 </head>
 <body>
@@ -1579,6 +1587,63 @@ function saveHistoryQuickForm(form){
   render();toast('已记录 '+q.name+' · '+n+q.unit);return true;
  }catch(e){state.records=previous;toast(e.message||'保存失败');return false}
 }
+
+/* Nov 19 historical correction is deliberately user-triggered; device-local records cannot be read remotely. */
+const CORRECT_DAY='2026-11-19';
+const CORRECT_BACKUP='fitness_backup_nov19_pre_correction_v1';
+function isCorrectElliptical(r){return r.date===CORRECT_DAY&&r.type==='cardio'&&r.exercise==='椭圆机'&&Number(r.duration_min)===20}
+function nov19Backup(){
+ try{const v=JSON.parse(localStorage.getItem(CORRECT_BACKUP)||'null');return v?.date===CORRECT_DAY&&Array.isArray(v.records)?v:null}catch(e){return null}
+}
+function nov19IsCorrect(){
+ const rows=recordsOfDate(CORRECT_DAY);
+ return rows.length===1&&isCorrectElliptical(rows[0])&&!state.stepDiary?.[CORRECT_DAY];
+}
+function historyCorrectionUI(date){
+ if(date!==CORRECT_DAY)return '';
+ const rows=recordsOfDate(date),backup=nov19Backup();
+ return '<section class="history-correction"><div><strong>11月19日记录核对</strong>'+
+  '<p>当前 '+rows.length+' 笔 · '+totalRecs(rows)+' kcal。'+
+  (nov19IsCorrect()?'已是椭圆机20分钟的单笔记录。':'确认当天只有椭圆机20分钟后，可执行校正。')+'</p></div>'+
+  (nov19IsCorrect()?'':'<button type="button" data-correct-day>校正为椭圆机20分钟</button>')+
+  (backup?'<button type="button" class="history-correction-restore" data-restore-day>恢复原记录</button>':'')+
+  '</section>';
+}
+function correctNov19(){
+ if(nov19IsCorrect()){toast('11月19日记录已正确');return true}
+ const rows=recordsOfDate(CORRECT_DAY);
+ if(!confirm('11月19日现有 '+rows.length+' 笔记录。校正后仅保留椭圆机20分钟；当天其他记录及步数先备份后移除，其他日期不受影响。确定继续？'))return false;
+ const previous=state;
+ try{
+  if(!nov19Backup()){
+   const snapshot={date:CORRECT_DAY,records:rows,stepDiary:state.stepDiary?.[CORRECT_DAY]??null,savedAt:new Date().toISOString()};
+   localStorage.setItem(CORRECT_BACKUP,JSON.stringify(snapshot));
+   if(!nov19Backup())throw new Error('无法验证备份');
+  }
+  const q=QUICK_ITEMS.find(x=>x.key==='elliptical');
+  if(!q)throw new Error('椭圆机配置不存在');
+  const keep=rows.find(isCorrectElliptical)||newRecord({...quickDraft(q,20),date:CORRECT_DAY});
+  const stepDiary={...(state.stepDiary||{})};delete stepDiary[CORRECT_DAY];
+  state={...state,records:state.records.filter(r=>r.date!==CORRECT_DAY).concat([keep]),stepDiary};
+  if(!persist()){state=previous;return false}
+  render();toast('已校正：11月19日椭圆机20分钟');return true;
+ }catch(e){state=previous;toast('校正失败：'+e.message);return false}
+}
+function restoreNov19(){
+ const backup=nov19Backup();
+ if(!backup){toast('没有可恢复的备份');return false}
+ if(!confirm('恢复11月19日校正前的 '+backup.records.length+' 笔记录及当天步数？其他日期不变。'))return false;
+ const previous=state,stepDiary={...(state.stepDiary||{})};
+ if(backup.stepDiary===null)delete stepDiary[CORRECT_DAY];else stepDiary[CORRECT_DAY]=backup.stepDiary;
+ state={...state,records:state.records.filter(r=>r.date!==CORRECT_DAY).concat(backup.records),stepDiary};
+ if(!persist()){state=previous;return false}
+ render();toast('11月19日原记录已恢复');return true;
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-correct-day]')){correctNov19();return}
+ if(e.target.closest('[data-restore-day]')){restoreNov19();return}
+});
+
 function renderHistory(){
  const today=localDate(),week=getWeekDates(),recs=state.records;
  if(historySelectedDate){
@@ -1586,14 +1651,14 @@ function renderHistory(){
   return '<div class="history-compact"><div class="history-focus-head"><strong>'+safe(formatDate(day))+'</strong>'+
    '<div class="history-focus-actions"><button type="button" class="link-btn" data-view="calendar">返回日历</button>'+
    '<button type="button" class="link-btn" data-history-all>全部记录</button></div></div>'+
-   renderHistoryQuickForm(day)+
+   historyCorrectionUI(day)+renderHistoryQuickForm(day)+
    (items.length?'<section class="card history-unified">'+items.map(historyRecordCard).join('')+'</section>':
     '<div class="history-inline-empty">'+(dayKind(day)==='rest'?'休息日':'暂无记录')+'</div>')+'</div>';
  }
  const todayItems=recs.filter(r=>r.date===today);
  const weekItems=recs.filter(r=>r.date!==today&&week.includes(r.date));
  const older=recs.filter(r=>!week.includes(r.date));
- return '<div class="history-compact">'+
+ return '<div class="history-compact">'+historyCorrectionUI(today)+
   (todayItems.length||weekItems.length?'<section class="card history-unified">'+
     renderHistorySection('今日',todayItems)+
     renderHistorySection('本周',weekItems)+'</section>':
