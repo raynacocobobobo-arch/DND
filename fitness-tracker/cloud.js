@@ -1,4 +1,4 @@
-/* 健身记录 V2.8 · 明确展示来源/目标设备数据，同账号一键迁移到桌面应用。 */
+/* 健身记录 V2.9 · 首页顶部始终显示数据迁移入口。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -354,45 +354,25 @@ function panel(){
    Copy the source journal to the authenticated cloud once; the destination receives it
    only after the user chooses to restore. No empty automatic cloud writes. */
 function fitnessSyncBanner(){
- const localCount=state.records.length,remoteCount=remote?.records;
- if(!signedIn()){
-  return localCount?
-   '<div class="fitness-sync-mini">本机 '+localCount+' 条记录仅保存在此浏览器。要同步到 iPhone 桌面版，可在设置中登录一次。</div>':
-   '<div class="fitness-sync-mini fitness-sync-attention">这个浏览器暂无训练记录；原记录可能保存在另一个浏览器或桌面应用中。请勿删除原应用。</div>';
- }
- if(remoteCount===undefined||remoteCount===null){
-  return '<div class="fitness-sync-mini">本机 '+localCount+' 条记录 · 正在检查云端训练记录</div>';
- }
- if(localCount===0&&remoteCount>0){
-  return '<div class="fitness-sync-mini fitness-sync-attention">'+
-    '<span>此设备 0 条 · 云端 '+remoteCount+' 条。可以恢复到当前桌面应用。</span>'+
-    '<button type="button" data-fitness-sync-action="download">从云端恢复记录</button></div>';
- }
- if(localCount>0&&remoteCount===0){
-  return '<div class="fitness-sync-mini fitness-sync-attention">'+
-    '<span>此设备有 '+localCount+' 条训练，云端暂无记录。先上传，另一端才能显示。</span>'+
-    '<button type="button" data-fitness-sync-action="upload">同步到 iPhone 桌面版</button></div>';
- }
- if(localCount===0&&remoteCount===0){
-  return '<div class="fitness-sync-mini fitness-sync-attention">当前设备与云端均为 0 条。请回到原来有训练数据的浏览器打开健身记录。</div>';
- }
- if(remoteCount>localCount){
-  return '<div class="fitness-sync-mini">'+
-   '<span>本机 '+localCount+' 条 · 云端 '+remoteCount+' 条。请检查是否有尚未同步的本机记录，再恢复。</span>'+
-   '<button type="button" data-fitness-sync-action="download">查看并恢复云端</button></div>';
- }
- if(remoteCount<localCount){
-  return '<div class="fitness-sync-mini">'+
-   '<span>本机 '+localCount+' 条 · 云端 '+remoteCount+' 条，可能有未上传记录。</span>'+
-   '<button type="button" data-fitness-sync-action="upload">上传本机记录</button></div>';
- }
- return '<div class="fitness-sync-mini">本机 '+localCount+' 条 · 云端 '+remoteCount+' 条。'+
-  '<button type="button" data-fitness-sync-action="refresh">核对云端</button></div>';
+ const local=state.records.length,cloud=remote?.records;
+ const account=signedIn()?'已登录':'此页面未登录';
+ const cloudText=cloud===undefined?'正在获取':cloud+' 条';
+ return '<section class="fitness-transfer-card" aria-label="数据迁移">'+
+  '<div class="fitness-transfer-heading"><strong>数据迁移</strong>'+
+  '<span>本机 '+local+' 条 · 云端 '+cloudText+' · '+account+'</span></div>'+
+  '<p>两边记录不会自动共享：先在有数据的页面上传，再到 iPhone 桌面版恢复。</p>'+
+  '<div class="fitness-transfer-buttons">'+
+   '<button type="button" data-fitness-sync-action="upload"'+(local===0?' disabled':'')+'>① 上传本机记录</button>'+
+   '<button type="button" data-fitness-sync-action="download"'+(cloud===0?' disabled':'')+'>② 从云端恢复记录</button></div>'+
+  (!signedIn()?'<p class="fitness-transfer-note">这个页面尚未登录：点击上传或恢复会进入设置，登录一次即可。本机记录不会删除。</p>':'')+
+  (local===0?'<p class="fitness-transfer-note">本机 0 条：请先找回显示过训练记录的原入口，不要在此上传。</p>':'')+
+  '<button type="button" class="fitness-transfer-export" data-fitness-sync-action="export">导出本机 JSON 备份</button>'+
+  '</section>';
 }
 const beforeFitnessSyncQuickHome=renderQuickHome;
 renderQuickHome=function(){
  const html=beforeFitnessSyncQuickHome();
- return html.replace('<div class="wb-groups">',fitnessSyncBanner()+'<div class="wb-groups">');
+ return html.replace('<div class="wb-week">',fitnessSyncBanner()+'<div class="wb-week">');
 };
 
 // Add a separate panel without modifying existing record/calendar UI functions.
@@ -428,6 +408,12 @@ document.addEventListener('click',event=>{
  const syncBtn=event.target.closest('[data-fitness-sync-action]');
  if(syncBtn){
   const action=syncBtn.dataset.fitnessSyncAction;
+  if(action==='export'){exportJSON();return}
+  if(!signedIn()&&(action==='upload'||action==='download')){
+   switchView('settings');
+   toast('此页面需要登录一次才能迁移；本机运动记录不会删除');
+   return;
+  }
   if(action==='upload')upload(true);
   else if(action==='download')download();
   else if(action==='refresh')refresh();
