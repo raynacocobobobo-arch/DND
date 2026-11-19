@@ -1,4 +1,4 @@
-/* 健身记录 V2.5 · 阻止空数据上传及下载覆盖，区分本机与云端记录。 */
+/* 健身记录 V2.6 · 本机优先；不在启动时要求登录，不进行自动同步。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -8,7 +8,7 @@ let session=read(SESSION_KEY),link=read(LINK_KEY),remote=null,busy=false,conflic
 let status=session?'正在检查云端数据':'未登录：当前记录仍安全保存在本机';
 let entryStage='none',lastLoginEmail='';
 function signedIn(){return !!session?.access_token&&!!session?.refresh_token&&!!session?.user?.id}
-function auto(){return signedIn()&&link?.enabled&&link.userId===session.user.id&&!conflict}
+function auto(){return false} // Safety: sync is opt-in/manual, including previously linked sessions.
 function say(msg){status=msg;
  const settings=document.getElementById('fitnessCloudStatus');if(settings)settings.textContent=msg;
  const entry=document.getElementById('fitnessEntryStatus');if(entry)entry.textContent=msg;
@@ -81,9 +81,8 @@ async function acceptAuthSession(result){
  if(priorId!==user.id){link=null;write(LINK_KEY,null)}
  if(!write(SESSION_KEY,session))throw Error('登录会话无法保存到本机');
  await refresh();
- say('邮箱验证成功。请先确认本机和云端数据的同步方式');
- if(auto())closeEntry();
- else{entryStage='sync';renderEntry()}
+ say('邮箱验证成功。当前以本机记录为准；如需同步，可在设置里手动操作。');
+ closeEntry();renderIfSettings();
 }
 async function consumeEmailCallback(){
  const hash=new URLSearchParams(location.hash.replace(/^#/,''));
@@ -106,9 +105,9 @@ async function consumeEmailCallback(){
    await acceptAuthSession(response);
   }else throw Error('缺少邮件验证信息');
  }catch(e){
-  entryStage='login';
-  say('邮件验证失败：'+(e.message||'请重新发送登录邮件'));
-  renderEntry();
+  closeEntry();
+  say('邮件验证失败：'+(e.message||'需要时可在设置中重新发送登录邮件'));
+  renderIfSettings();
  }finally{discardAuthUrl()}
 }
 async function verifyEmailCode(form){
@@ -137,9 +136,9 @@ async function login(form){
   await fetchAPI('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),
    {method:'POST',body:JSON.stringify({email,create_user:false})},false);
   lastLoginEmail=email;
-  entryStage='waiting';
-  say('登录邮件已请求发送，请到邮箱打开登录链接');
-  renderEntry();
+  closeEntry();
+  say('登录邮件已请求发送，请到邮箱打开登录链接；本机记录不受影响。');
+  renderIfSettings();
  }catch(e){
   say('邮件发送失败：'+(e.message||'请稍后重试'));
  }finally{busy=false;renderIfSettings()}
@@ -280,7 +279,7 @@ function panel(){
   '<button type="button" class="primary-btn" data-cloud-action="upload"'+(state.records.length===0?' disabled':'')+'>上传本机记录</button>'+
   '<button type="button" class="secondary-btn" data-cloud-action="download"'+(remote?.records===0?' disabled':'')+'>下载云端记录</button>'+
   '<button type="button" class="secondary-btn" data-cloud-action="refresh">刷新状态</button></div>'+
-  '<p class="micro-note">原浏览器或 iPhone 桌面应用若有训练记录，请先在那里从「设置 → 导出 JSON」保存，再在此浏览器导入。空数据上传及下载已禁用；版本冲突时暂停覆盖。</p>')+
+  '<p class="micro-note">原浏览器或 iPhone 桌面应用若有训练记录，请先在那里从「设置 → 导出 JSON」保存，再在此浏览器导入。空数据上传及下载已禁用；云端操作只能手动进行，打卡不会自动上传。</p>')+
  '<p class="fitness-cloud-status" id="fitnessCloudStatus" role="status">'+safe(status)+'</p>'+
  '<p class="micro-note">本机记录保留；邮箱仅用于发送登录链接，无需填写密码。</p></section>';
 }
@@ -320,9 +319,8 @@ document.addEventListener('click',event=>{
 });
 window.addEventListener('online',()=>{if(auto())schedule()});
 render();
-if(hasAuthCallback()){
- entryStage='waiting';renderEntry();
- consumeEmailCallback();
-}else if(signedIn())refresh();
-else{entryStage='login';renderEntry()}
+closeEntry();
+if(hasAuthCallback())consumeEmailCallback();
+else if(signedIn())refresh();
+// No sign-in wall. The local journal opens directly, irrespective of account state.
 })();
