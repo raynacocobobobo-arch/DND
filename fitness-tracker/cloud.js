@@ -259,8 +259,9 @@ function renderEntry(){
    '<div class="fitness-entry-heading"><h2>已登录 Hermes 账号</h2>'+
    '<p>'+safe(session?.user?.email||'账号已验证')+'</p></div>'+
    '<div class="fitness-entry-sync">'+
-   '<button type="button" class="fitness-entry-primary" data-fitness-entry="upload">上传本机记录</button>'+
-   '<button type="button" class="fitness-entry-secondary" data-fitness-entry="download">下载云端记录</button>'+
+   '<p class="fitness-entry-data-warning">当前浏览器本机 '+state.records.length+' 条训练 · 云端 '+(remote?.records??'未读取')+' 条训练。'+(state.records.length===0?'本机为 0 时，请先在原来的 iPhone 桌面图标、Safari 或原应用内浏览器找到记录，从「设置」导出 JSON。切勿清理原应用数据。':'')+'</p>'+
+   '<button type="button" class="fitness-entry-primary" data-fitness-entry="upload"'+(state.records.length===0?' disabled':'')+'>上传本机记录</button>'+
+   '<button type="button" class="fitness-entry-secondary" data-fitness-entry="download"'+(remote?.records===0?' disabled':'')+'>下载云端记录</button>'+
    '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不同步，进入打卡</button></div>')+
   '<p class="fitness-entry-status" id="fitnessEntryStatus" role="status" aria-live="polite">'+safe(status)+'</p>'+
   '<p class="fitness-entry-footnote">登录不会删除本机训练记录，上传或下载云端数据需要另行确认。</p>'+
@@ -269,17 +270,17 @@ function renderEntry(){
 function panel(){
  const logged=signedIn(),account=logged?String(session.user.email||'已登录'):'';
  return '<section class="card fitness-cloud-panel"><div class="section-title"><div>'+
- '<h2>云端同步 · Hermes 同一账号</h2><p>使用 Hermes 邮箱的无密码登录链接，健身数据单独存储</p></div></div>'+
+ '<h2>云端同步 · Hermes 同一账号</h2><p>当前浏览器本机 '+state.records.length+' 条训练 · 云端 '+(remote?.records??'未读取')+' 条训练</p></div></div>'+
  (!logged?'<form id="fitnessCloudLogin" class="fitness-cloud-login">'+
   '<label>Hermes 邮箱<input type="email" name="cloudEmail" autocomplete="username" required></label>'+
   '<button class="primary-btn" type="submit">发送登录链接</button></form>':
   '<div class="fitness-cloud-account"><strong>'+safe(account)+'</strong>'+
   '<button type="button" class="link-btn" data-cloud-action="logout">退出</button></div>'+
   '<div class="fitness-cloud-actions">'+
-  '<button type="button" class="primary-btn" data-cloud-action="upload">上传本机记录</button>'+
-  '<button type="button" class="secondary-btn" data-cloud-action="download">下载云端记录</button>'+
+  '<button type="button" class="primary-btn" data-cloud-action="upload"'+(state.records.length===0?' disabled':'')+'>上传本机记录</button>'+
+  '<button type="button" class="secondary-btn" data-cloud-action="download"'+(remote?.records===0?' disabled':'')+'>下载云端记录</button>'+
   '<button type="button" class="secondary-btn" data-cloud-action="refresh">刷新状态</button></div>'+
-  '<p class="micro-note">首次连接先选择上传或下载，避免把空数据写到云端。连接成功后新记录自动同步；版本冲突时停止覆盖。</p>')+
+  '<p class="micro-note">原浏览器或 iPhone 桌面应用若有训练记录，请先在那里从「设置 → 导出 JSON」保存，再在此浏览器导入。空数据上传及下载已禁用；版本冲突时暂停覆盖。</p>')+
  '<p class="fitness-cloud-status" id="fitnessCloudStatus" role="status">'+safe(status)+'</p>'+
  '<p class="micro-note">本机记录保留；邮箱仅用于发送登录链接，无需填写密码。</p></section>';
 }
