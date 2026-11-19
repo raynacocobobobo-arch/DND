@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V5.0.1</title>
+  <title>健身记录 · V5.2.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -1396,6 +1396,112 @@ body[data-screen="overview"] .wb-calorie-empty{padding:18px 8px;font-size:13px;c
 
 
 
+
+/* V5.2.0 iPhone 16 Pro: 12 visible exercises, zero-scroll 3x4 home. */
+body[data-screen="overview"] .ft-home {
+  box-sizing:border-box; display:grid; grid-template-rows:auto auto minmax(0,1fr);
+  gap:11px; width:100%; max-width:790px; min-height:640px;
+  margin:0 auto; color:#f3f1ec;
+}
+body[data-screen="overview"] .ft-header {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  min-width:0; padding:3px 2px 10px; border-bottom:1px solid #33363b;
+}
+body[data-screen="overview"] .ft-title {margin:0 0 5px; color:#f5f3ee!important; font-size:25px; line-height:1.18; letter-spacing:.3px; font-weight:790}
+body[data-screen="overview"] .ft-date {display:block; color:#a8abb0; font-size:12px; line-height:1.4}
+body[data-screen="overview"] .ft-today {
+  border:0; background:transparent; cursor:pointer; min-width:0; padding:5px 0 5px 8px;
+  color:#d8b877; display:flex; align-items:baseline; justify-content:flex-end; gap:5px;
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+body[data-screen="overview"] .ft-today strong {font-size:31px; line-height:1; font-weight:800; letter-spacing:-.5px}
+body[data-screen="overview"] .ft-today span {font-size:11px; color:#c7b18d; font-weight:650}
+body[data-screen="overview"] .ft-today svg {align-self:center; color:#a8a7a5}
+body[data-screen="overview"] .ft-week {display:grid; gap:7px; padding:0 2px 3px}
+body[data-screen="overview"] .ft-week-info {display:flex; align-items:baseline; justify-content:space-between; gap:9px; min-width:0}
+body[data-screen="overview"] .ft-week-info>span {color:#abb0b8; font-size:11px; white-space:nowrap}
+body[data-screen="overview"] .ft-week-info strong {color:#d8b877; font-size:12px; font-weight:750; white-space:nowrap; font-variant-numeric:tabular-nums}
+body[data-screen="overview"] .ft-week-track {height:5px; overflow:hidden; border-radius:20px; background:#35383f}
+body[data-screen="overview"] .ft-week-track span {display:block; height:100%; background:#d8b877; border-radius:20px}
+body[data-screen="overview"] .ft-grid {
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:repeat(4,minmax(0,1fr)); gap:8px;
+  min-height:0; width:100%;
+}
+body[data-screen="overview"] .ft-tile {
+  appearance:none; -webkit-appearance:none; width:100%; height:100%;
+  min-width:0; min-height:0; display:flex; flex-direction:column;
+  text-align:left; align-items:stretch; justify-content:space-between;
+  gap:6px; padding:11px 10px 10px; border:1px solid #373b42;
+  border-radius:13px; background:#202329; color:#ebebed;
+  font-family:inherit; cursor:pointer; overflow:hidden; -webkit-tap-highlight-color:transparent;
+}
+body[data-screen="overview"] .ft-tile:active {background:#2a2d33; border-color:#a98f5e}
+body[data-screen="overview"] .ft-tile:focus-visible {outline:2px solid #e2bd7d; outline-offset:2px}
+body[data-screen="overview"] .ft-tile.is-done {border-color:#66583f; background:#25262a}
+body[data-screen="overview"] .ft-tile-head {display:flex; align-items:center; gap:6px; min-width:0}
+body[data-screen="overview"] .ft-tile-icon {color:#c6ae80; width:19px; flex:none; display:grid; place-items:center}
+body[data-screen="overview"] .ft-tile-icon svg {height:18px; width:18px}
+body[data-screen="overview"] .ft-tile-name {
+  color:#f1f0ec; font-size:12px; line-height:1.25; font-weight:730;
+  overflow-wrap:anywhere; min-width:0; 
+}
+body[data-screen="overview"] .ft-tile-data {display:flex; flex-direction:column; gap:4px; min-width:0; margin-top:auto}
+body[data-screen="overview"] .ft-tile-amount {color:#e8e8e8; font-size:19px; font-weight:780; line-height:1.08; font-variant-numeric:tabular-nums; letter-spacing:-.3px; white-space:nowrap}
+body[data-screen="overview"] .ft-tile-amount small {font-size:10px; color:#b2b5ba; font-weight:650; letter-spacing:0}
+body[data-screen="overview"] .ft-tile-kcal {font-size:11px; font-variant-numeric:tabular-nums; line-height:1.15; color:#c9ac76; font-weight:650; white-space:nowrap}
+body[data-screen="overview"] .ft-tile.is-done .ft-tile-amount {color:#f2d595}
+body[data-screen="overview"] .ft-tile.is-done .ft-tile-kcal {color:#e0c38c}
+@media(max-width:850px) {
+  body[data-screen="overview"],body[data-screen="overview"] .app {
+    min-height:0!important; height:100dvh!important; overflow:hidden!important;
+  }
+  body[data-screen="overview"] .main {
+    box-sizing:border-box!important; display:block!important;
+    min-height:0!important; height:100dvh!important; max-height:100dvh!important;
+    width:100%!important; max-width:none!important;
+    overflow:hidden!important;
+    padding:calc(env(safe-area-inset-top,0px) + 8px) 14px calc(env(safe-area-inset-bottom,0px) + 68px)!important;
+  }
+  body[data-screen="overview"] #content {height:100%!important; flex:1 1 auto!important; min-height:0!important}
+  body[data-screen="overview"] .ft-home {
+    height:100%!important; min-height:0!important; max-width:none!important;
+    grid-template-rows:auto auto minmax(0,1fr); gap:10px;
+  }
+  body[data-screen="overview"] .ft-grid {grid-template-rows:repeat(4,minmax(0,1fr)); gap:8px}
+  body[data-screen="overview"] .mobile-nav {
+    height:calc(62px + env(safe-area-inset-bottom,0px))!important;
+    box-sizing:border-box!important;
+    padding:5px max(11px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(11px,env(safe-area-inset-left,0px))!important;
+    background:#151619!important; border-color:#343536!important;
+    align-items:stretch!important;
+  }
+  body[data-screen="overview"] .mobile-nav .nav-btn {
+    padding:5px 3px!important; gap:3px!important; height:51px!important;
+    font-size:11px!important; line-height:1.15!important;
+    border-radius:12px!important; color:#aeb0b4!important; font-weight:720!important;
+  }
+  body[data-screen="overview"] .mobile-nav .nav-btn svg {width:19px!important; height:19px!important; color:inherit!important}
+  body[data-screen="overview"] .mobile-nav .nav-btn.active {background:#332b1f!important; color:#f1c572!important}
+  body[data-screen="overview"] .mobile-nav .nav-btn.active svg {color:#f1c572!important}
+  body[data-screen="overview"] .ft-title {font-size:24px}
+}
+@media(max-width:390px) {
+  body[data-screen="overview"] .ft-grid {gap:7px}
+  body[data-screen="overview"] .ft-tile {padding:9px 8px}
+  body[data-screen="overview"] .ft-tile-name {font-size:11px}
+  body[data-screen="overview"] .ft-tile-amount {font-size:17px}
+  body[data-screen="overview"] .ft-week-info strong {font-size:11px}
+}
+@media(max-width:850px) and (max-height:690px) {
+  /* Smaller browser viewports may scroll rather than conceal an activity. */
+  body[data-screen="overview"],body[data-screen="overview"] .app {height:auto!important; min-height:100dvh!important; overflow:visible!important}
+  body[data-screen="overview"] .main {height:auto!important; max-height:none!important; min-height:100dvh!important; overflow-y:auto!important}
+  body[data-screen="overview"] #content {height:auto!important}
+  body[data-screen="overview"] .ft-home {height:auto!important; min-height:605px!important}
+  body[data-screen="overview"] .ft-grid {grid-template-rows:repeat(4,minmax(110px,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -1766,7 +1872,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['健身记录',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.0.1</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.2.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -2261,29 +2367,38 @@ function wbToggleCalorieDetail(open){
  window.scrollTo(0,windowScroll);
 }
 
+
+function ftTile(q,recs){
+ const info=wbToday(q,recs);
+ const calories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
+ const quantity=Number.isFinite(Number(info.value))?Number(info.value):0;
+ const formatted=quantity.toLocaleString('zh-CN');
+ return '<button type="button" class="ft-tile'+(info.count?' is-done':'')+'" data-wb-open="'+q.key+
+ '" aria-label="'+safe(q.name)+'，今日 '+safe(formatted+' '+q.unit)+'，'+calories.toLocaleString('zh-CN')+' 千卡，点击记录运动">'+
+ '<span class="ft-tile-head"><span class="ft-tile-icon">'+icon(q.iconName,18)+'</span><span class="ft-tile-name">'+safe(q.name)+'</span></span>'+
+ '<span class="ft-tile-data"><span class="ft-tile-amount">'+formatted+' <small>'+safe(q.unit)+'</small></span>'+
+ '<span class="ft-tile-kcal">'+calories.toLocaleString('zh-CN')+' kcal</span></span></button>';
+}
 function renderQuickHome(){
  const today=localDate(),recs=recordsOfDate(today);
  const dateLabel=formatDate(today)+' · '+DAY_NAMES[new Date().getDay()];
  const weekDays=new Set(getWeekDates()),weekly=totalRecs(state.records.filter(r=>weekDays.has(r.date)));
  const target=Number(state.settings.weeklyGoal)>0?Number(state.settings.weeklyGoal):1500;
  const percent=Math.round(weekly/target*100),fill=Math.min(100,Math.max(0,weekly/target*100));
- return '<div class="wb-screen">'+
-  '<header class="wb-header"><div class="wb-header-title"><h1>健身记录</h1><small>'+safe(dateLabel)+'</small></div>'+
-   '<button type="button" class="wb-day-total" data-wb-cal-open aria-label="查看今日热量明细">'+
-   '<strong>'+totalRecs(recs).toLocaleString('zh-CN')+'</strong><span>kcal · 今日</span>'+
-   '<span class="wb-calorie-chevron">›</span></button></header>'+
-  '<div class="wb-week"><div class="wb-week-info"><span>本周进度</span>'+
-   '<strong>'+weekly.toLocaleString('zh-CN')+' / '+target.toLocaleString('zh-CN')+' kcal · '+percent+'%</strong></div>'+
-   '<div class="wb-week-track" role="progressbar" aria-label="本周热量目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,Math.max(0,percent))+'">'+
-    '<span style="width:'+fill.toFixed(1)+'%"></span></div></div>'+
-  '<div class="wb-groups">'+WB_GROUPS.map(g=>{
-   const qs=g.keys.map(k=>QUICK_ITEMS.find(q=>q.key===k)).filter(Boolean);
-   return '<section class="wb-group"><h2 class="wb-group-title">'+g.title+'</h2>'+
-    '<div class="wb-rows">'+qs.map(q=>wbRow(q,recs)).join('')+'</div></section>';
-  }).join('')+'</div>'+
- '</div>'+(wbCalorieDetailOpen?wbTodayDetailPanel(recs):
+ const ordered=['steps','situps','wall-sit','elliptical','bike','running','lat','row','fly','dumbbell','back','swim'];
+ return '<div class="ft-home">'+
+  '<header class="ft-header"><div><h1 class="ft-title">健身记录</h1><span class="ft-date">'+safe(dateLabel)+'</span></div>'+
+  '<button type="button" class="ft-today" data-wb-cal-open aria-label="查看今日热量明细，今日'+totalRecs(recs)+'千卡">'+
+  '<strong>'+totalRecs(recs).toLocaleString('zh-CN')+'</strong><span>kcal · 今日</span><svg width="12" height="17" viewBox="0 0 12 17" fill="none" aria-hidden="true"><path d="m4 3 5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></header>'+
+  '<div class="ft-week"><div class="ft-week-info"><span>本周进度</span>'+
+  '<strong>'+weekly.toLocaleString('zh-CN')+' / '+target.toLocaleString('zh-CN')+' kcal · '+percent+'%</strong></div>'+
+  '<div class="ft-week-track" role="progressbar" aria-label="本周热量目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,Math.max(0,percent))+'">'+
+  '<span style="width:'+fill.toFixed(1)+'%"></span></div></div>'+
+  '<div class="ft-grid" aria-label="今日全部运动项目">'+ordered.map(key=>ftTile(QUICK_ITEMS.find(q=>q.key===key),recs)).join('')+'</div></div>'+
+  (wbCalorieDetailOpen?wbTodayDetailPanel(recs):
    wbOpenKey?'<div class="wb-modal"><button type="button" class="wb-modal-backdrop" data-wb-close aria-label="关闭操作面板"></button><div class="wb-modal-sheet" role="dialog" aria-modal="true" aria-label="记录运动">'+wbEditor(QUICK_ITEMS.find(q=>q.key===wbOpenKey))+'</div></div>':'');
 }
+
 function wbQuantityValid(q,n){
  if(!q||!Number.isFinite(n)||n<=0||n>q.max)return false;
  return Number.isInteger(n);
@@ -2495,7 +2610,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.0.1_local';
+   const key='fitness_sw_reloaded_v5.2.0_grid';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
