@@ -1,12 +1,12 @@
-/* 健身记录 V2.6 · 本机优先；不在启动时要求登录，不进行自动同步。 */
+/* 健身记录 V2.7 · 一次登录，持久会话；本机训练优先，云端手动同步。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catch(e){return null}}
 function write(key,value){try{value===null?localStorage.removeItem(key):localStorage.setItem(key,JSON.stringify(value));return true}catch(e){return false}}
 let session=read(SESSION_KEY),link=read(LINK_KEY),remote=null,busy=false,conflict=false,dirty=false,importing=false,uploading=false,timer=null;
-let status=session?'正在检查云端数据':'未登录：当前记录仍安全保存在本机';
-let entryStage='none',lastLoginEmail='';
+let status=session?'账号会话已保存，重新进入无需再次登录':'未登录：当前记录仍安全保存在本机';
+let entryStage='none',lastLoginEmail='',refreshingToken=null,refreshingAccount=null;
 function signedIn(){return !!session?.access_token&&!!session?.refresh_token&&!!session?.user?.id}
 function auto(){return false} // Safety: sync is opt-in/manual, including previously linked sessions.
 function say(msg){status=msg;
@@ -24,14 +24,38 @@ async function fetchAPI(path,opts={},auth=true){
 }
 async function getToken(){
  if(!signedIn())return null;
- if(Number(session.expires_at||0)>Date.now()/1000+90)return session.access_token;
- try{
-  const s=await fetchAPI('/auth/v1/token?grant_type=refresh_token',
-   {method:'POST',body:JSON.stringify({refresh_token:session.refresh_token})},false);
-  if(!s?.access_token||!s?.user?.id)return null;
-  session={...s,expires_at:Math.floor(Date.now()/1000)+Number(s.expires_in||3600)};
-  write(SESSION_KEY,session);return session.access_token;
- }catch(e){say('账号会话已过期，请退出并重新登录');return null}
+ if(Number(session.expires_at||0)>Date.now()/1000+120)return session.access_token;
+ if(refreshingToken)return refreshingToken;
+ refreshingToken=(async()=>{
+  try{
+   const before=session;
+   const fresh=await fetchAPI('/auth/v1/token?grant_type=refresh_token',
+    {method:'POST',body:JSON.stringify({refresh_token:before.refresh_token})},false);
+   if(!fresh?.access_token||!fresh?.refresh_token){
+    say('登录暂时无法续期；保留账号，不影响本机打卡，联网后重试');
+    return null;
+   }
+   const next={...before,...fresh,user:fresh.user?.id?fresh.user:before.user,
+    expires_at:Math.floor(Date.now()/1000)+Number(fresh.expires_in||3600)};
+   if(!next.user?.id||next.user.id!==before.user.id)return null;
+   if(!write(SESSION_KEY,next)){say('无法保存登录状态，请检查本机网站存储');return null}
+   session=next;
+   return next.access_token;
+  }catch(e){
+   // Offline or transient token errors never erase the remembered login.
+   say('网络暂时无法刷新登录，恢复网络后自动重试；本机记录仍可使用');
+   return null;
+  }finally{refreshingToken=null}
+ })();
+ return refreshingToken;
+}
+async function resumeAccount(){
+ if(!signedIn()||refreshingAccount)return;
+ refreshingAccount=(async()=>{
+  if(Number(session.expires_at||0)<Date.now()/1000+300)await getToken();
+  if(view==='settings'&&signedIn())await refresh();
+ })();
+ try{await refreshingAccount}finally{refreshingAccount=null}
 }
 async function getRow(){
  const id=encodeURIComponent(session.user.id);
@@ -266,14 +290,54 @@ function renderEntry(){
   '<p class="fitness-entry-footnote">登录不会删除本机训练记录，上传或下载云端数据需要另行确认。</p>'+
   '</section>';
 }
+/* A Magic Link opened in Safari does not sign an independently stored iOS Home Screen
+   web app in. Claiming the email link from the original installed app binds it once.
+   Never persist the raw link or print it to browser logs. */
+async function claimEmailLink(form){
+ if(busy)return;
+ const raw=String(form.querySelector('[name="cloudLoginLink"]')?.value||'').trim();
+ if(!raw){say('请粘贴 Gmail 邮件里的完整登录链接');return}
+ let linkUrl;
+ try{linkUrl=new URL(raw)}catch(e){say('登录链接不是有效的网址');return}
+ const fromSupabase=linkUrl.origin===API&&linkUrl.pathname==='/auth/v1/verify';
+ const fromApp=linkUrl.origin===location.origin&&
+  (linkUrl.pathname===location.pathname||linkUrl.pathname===location.pathname.replace(/index\\.html$/,''));
+ if(!fromSupabase&&!fromApp){say('仅接受当前 Supabase 项目或健身记录本身的登录链接');return}
+ const fragment=new URLSearchParams(linkUrl.hash.replace(/^#/,''));
+ const query=linkUrl.searchParams;
+ busy=true;say('正在验证此设备的登录链接');
+ try{
+  let verified;
+  if(fromApp&&fragment.get('access_token')&&fragment.get('refresh_token')){
+   verified={access_token:fragment.get('access_token'),refresh_token:fragment.get('refresh_token'),
+    expires_in:Number(fragment.get('expires_in'))||3600,token_type:'bearer'};
+  }else{
+   const tokenHash=query.get('token_hash')||query.get('token');
+   const kind=query.get('type')||'magiclink';
+   if(!tokenHash||!['email','magiclink','signup'].includes(kind))
+    throw Error('邮件链接缺少可验证的令牌，请复制新邮件中的完整登录链接');
+   verified=await fetchAPI('/auth/v1/verify',
+    {method:'POST',body:JSON.stringify({token_hash:tokenHash,type:kind})},false);
+  }
+  await acceptAuthSession(verified);
+  form.reset();
+  say('本设备已登录，之后打开将自动保持在线；训练数据未改变');
+ }catch(e){say('验证失败：'+(e.message||'此链接可能已使用或过期，请重新发送邮件'))}
+ finally{busy=false;renderIfSettings()}
+}
+
 function panel(){
  const logged=signedIn(),account=logged?String(session.user.email||'已登录'):'';
  return '<section class="card fitness-cloud-panel"><div class="section-title"><div>'+
  '<h2>云端同步 · Hermes 同一账号</h2><p>当前浏览器本机 '+state.records.length+' 条训练 · 云端 '+(remote?.records??'未读取')+' 条训练</p></div></div>'+
- (!logged?'<form id="fitnessCloudLogin" class="fitness-cloud-login">'+
+ (!logged?'<div class="fitness-account-login"><form id="fitnessCloudLogin" class="fitness-cloud-login">'+
   '<label>Hermes 邮箱<input type="email" name="cloudEmail" autocomplete="username" required></label>'+
-  '<button class="primary-btn" type="submit">发送登录链接</button></form>':
-  '<div class="fitness-cloud-account"><strong>'+safe(account)+'</strong>'+
+  '<button class="primary-btn" type="submit">发送登录链接</button></form>'+
+  '<form id="fitnessClaimEmailLink" class="fitness-claim-login">'+
+  '<label>iPhone 桌面应用：从 Gmail 复制登录链接，在这里粘贴验证一次'+
+  '<input type="text" name="cloudLoginLink" placeholder="粘贴邮件登录链接" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" required></label>'+
+  '<button class="secondary-btn" type="submit">在当前应用保持登录</button></form></div>':
+  '<div class="fitness-cloud-account"><strong>'+safe(account)+' · 已登录（自动续期）</strong>'+
   '<button type="button" class="link-btn" data-cloud-action="logout">退出</button></div>'+
   '<div class="fitness-cloud-actions">'+
   '<button type="button" class="primary-btn" data-cloud-action="upload"'+(state.records.length===0?' disabled':'')+'>上传本机记录</button>'+
@@ -295,6 +359,8 @@ document.addEventListener('submit',event=>{
   event.preventDefault();login(event.target)
  }else if(event.target.id==='fitnessEntryOtp'){
   event.preventDefault();verifyEmailCode(event.target)
+ }else if(event.target.id==='fitnessClaimEmailLink'){
+  event.preventDefault();claimEmailLink(event.target)
  }
 });
 document.addEventListener('click',event=>{
@@ -317,10 +383,13 @@ document.addEventListener('click',event=>{
  else if(btn.dataset.cloudAction==='upload')upload(true);
  else if(btn.dataset.cloudAction==='download')download();
 });
-window.addEventListener('online',()=>{if(auto())schedule()});
+window.addEventListener('online',()=>resumeAccount());
+window.addEventListener('pageshow',()=>resumeAccount());
+window.addEventListener('focus',()=>resumeAccount());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAccount()});
 render();
 closeEntry();
 if(hasAuthCallback())consumeEmailCallback();
-else if(signedIn())refresh();
+else if(signedIn())resumeAccount();
 // No sign-in wall. The local journal opens directly, irrespective of account state.
 })();
