@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V3.8.0</title>
+  <title>健身记录 · V3.9.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -1356,6 +1356,25 @@ body[data-screen="overview"] .wb-editor-help{line-height:1.55!important;text-ali
  body[data-screen="overview"] .wb-entry-value{font-size:11px!important}
 }
 
+
+/* V3.9: show quantity and kcal together without overcrowding iPhone rows. */
+body[data-screen="overview"] .wb-entry{min-height:54px!important}
+body[data-screen="overview"] .wb-entry-value{
+ display:flex!important;flex-direction:column!important;align-items:flex-end!important;justify-content:center!important;
+ gap:3px!important;line-height:1.2!important;min-width:0!important;text-align:right!important;
+}
+body[data-screen="overview"] .wb-entry-amount{display:block;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+body[data-screen="overview"] .wb-entry-kcal{display:block;color:#b7a27e;font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+body[data-screen="overview"] .wb-entry-value.is-done .wb-entry-kcal{color:#d2b67c}
+@media(max-width:430px){
+ body[data-screen="overview"] .wb-entry{min-height:54px!important;gap:8px!important;padding:8px 10px!important}
+ body[data-screen="overview"] .wb-entry-name{font-size:12px!important}
+ body[data-screen="overview"] .wb-entry-amount{font-size:11px!important}
+ body[data-screen="overview"] .wb-entry-kcal{font-size:10px!important}
+ body[data-screen="overview"] .wb-entry-icon{width:19px!important}
+ body[data-screen="overview"] .wb-entry-action{width:17px!important;flex:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -1452,10 +1471,14 @@ function recalibratedFitnessState(source){
  const needRates=Number(p.elliptical?.rate)!==2.5||Number(p.running?.rate)!==3.3;
  let changedRecords=false;
  const records=source.records.map(r=>{
-  const isElliptical=r&&r.type==='cardio'&&(r.exercise==='椭圆机'||r.presetKey==='elliptical');
-  const minutes=Number(r?.duration_min);
-  if(!isElliptical||!Number.isFinite(minutes)||minutes<=0)return r;
-  const calories=Math.round(minutes*2.5);
+  if(!r||typeof r!=='object')return r;
+  const minutes=Number(r.duration_min);
+  if(!Number.isFinite(minutes)||minutes<=0)return r;
+  const isElliptical=r.type==='cardio'&&(r.exercise==='椭圆机'||r.presetKey==='elliptical');
+  const isTimedRunning=(r.type==='running'||r.type==='cardio'&&r.exercise==='跑步');
+  // Older distance-only runs cannot reliably be converted to time.
+  if(!isElliptical&&!isTimedRunning)return r;
+  const calories=Math.round(minutes*(isElliptical?2.5:3.3));
   if(Number(r.calories)===calories)return r;
   changedRecords=true;
   return {...r,calories};
@@ -1468,6 +1491,7 @@ function recalibratedFitnessState(source){
  return {...source,records:changedRecords?records:source.records,settings};
 }
 const CALIBRATION_BACKUP='fitness_before_elliptical_recalibration_v3_4';
+const CALORIES_V39_BACKUP='fitness_before_calorie_sync_v3_9';
 function persist(){
  if(storageReadIssue){toast('原有数据读取异常：已停止写入以保护记录');return false}
  try{
@@ -1479,6 +1503,11 @@ function persist(){
   }
   const corrected=recalibratedFitnessState(walked);
   const next=JSON.stringify(corrected);
+  // Save the actual previously stored snapshot before updating stale time-based kcal.
+  if(corrected.records!==walked.records&&!localStorage.getItem(CALORIES_V39_BACKUP)){
+   localStorage.setItem(CALORIES_V39_BACKUP,prior||JSON.stringify(state));
+   if(!localStorage.getItem(CALORIES_V39_BACKUP))throw new Error('历史热量备份未成功');
+  }
   const historyChanged=corrected.records!==state.records;
   if(historyChanged&&!localStorage.getItem(CALIBRATION_BACKUP)){
    // Preserve original record calories, dates and exercise amounts before correction.
@@ -1612,6 +1641,10 @@ function calc(d){
  const preset=QUICK_ITEMS.find(q=>q.key===d.presetKey)||
   QUICK_ITEMS.find(q=>q.exercise===exercise&&q.type===d.type)||
   (d.type==='walking'?QUICK_ITEMS.find(q=>q.key==='steps'):null);
+ if(d.type==='cardio'&&exercise==='跑步'){
+  const minutes=Number(d.durationMin);
+  return Number.isFinite(minutes)&&minutes>0&&minutes<=480?Math.round(minutes*3.3):null;
+ }
  if(d.type==='running'){
   if(d.legacyRunning){
    const km=Number(d.distanceKm),rate=Number(d.legacyRunningRate);
@@ -1684,7 +1717,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['健身记录',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){if(!storageReadIssue){applyConfirmedNovemberDates();if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.8.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){if(!storageReadIssue){applyConfirmedNovemberDates();if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V3.9.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -2086,7 +2119,7 @@ let wbOpenKey=null;
 let wbBusy=false;
 function wbMatches(q,r){
  if(q.key==='steps')return r.type==='walking';
- if(q.key==='running')return r.type==='running'&&(r.exercise||'跑步')==='跑步';
+ if(q.key==='running')return (r.type==='running'&&(r.exercise||'跑步')==='跑步')||(r.type==='cardio'&&r.exercise==='跑步');
  if(q.key==='swim')return r.type==='swimming'&&(r.stroke||r.exercise)==='蛙泳';
  return r.type===q.type&&(r.exercise||r.stroke)===q.exercise;
 }
@@ -2121,8 +2154,9 @@ function wbEditor(q){
  const v=0; // Every new entry starts at zero: NEVER prefill a cumulative amount.
  const unit=q.unit;
  const info=wbToday(q,recordsOfDate(localDate()));
- const header=q.key==='steps'?'今日已有 '+info.label+' · 输入当天总步数':
-  '今日已累计 '+info.label+' · 以下只记录本次新增';
+ const completedCalories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
+ const header=q.key==='steps'?'今日已有 '+info.label+' · '+completedCalories+' kcal · 输入当天总步数':
+  '今日已累计 '+info.label+' · '+completedCalories+' kcal · 以下只记录本次新增';
  return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
   '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
   '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
@@ -2136,12 +2170,17 @@ function wbEditor(q){
 }
 function wbRow(q,recs){
  const info=wbToday(q,recs);
- const label=info.count?'今日累计 '+info.label:'0 '+q.unit;
+ const amount=info.count?info.label:'0 '+q.unit;
+ // Sum the exact stored per-session kcal, rather than rounding the combined quantity.
+ // This keeps each row consistent with Today's total and historical records.
+ const calories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
  return '<div class="wb-row" data-wb-row="'+q.key+'">'+
-  '<button type="button" class="wb-entry" data-wb-open="'+q.key+'" aria-label="'+safe(q.name+' '+label)+'">'+
+  '<button type="button" class="wb-entry" data-wb-open="'+q.key+'" aria-label="'+safe(q.name+' 今日 '+amount+'，'+calories+' kcal')+'">'+
    '<span class="wb-entry-icon">'+icon(q.iconName,17)+'</span>'+
    '<span class="wb-entry-name">'+safe(q.name)+'</span>'+
-   '<span class="wb-entry-value'+(info.count?' is-done':'')+'">'+(info.count?'✓ ':'')+safe(label)+'</span>'+
+   '<span class="wb-entry-value'+(info.count?' is-done':'')+'">'+
+    '<span class="wb-entry-amount">'+(info.count?'✓ ':'')+safe(amount)+'</span>'+
+    '<span class="wb-entry-kcal">'+calories.toLocaleString('zh-CN')+' kcal</span></span>'+
    '<span class="wb-entry-action">›</span></button></div>';
 }
 function renderQuickHome(){
@@ -2366,7 +2405,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v3.8.0';
+   const key='fitness_sw_reloaded_v3.9.0';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
