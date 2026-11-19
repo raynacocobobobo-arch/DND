@@ -1,5 +1,5 @@
-const CACHE='fitness-tracker-v4.7.0-device-sync';
-const ASSETS=['./','./index.html','./manifest.webmanifest?v=2.2','./cloud.js?v=2.8','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
+const CACHE='fitness-tracker-v4.8.0-visible-transfer';
+const ASSETS=['./','./index.html','./manifest.webmanifest?v=2.2','./cloud.js?v=2.9','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
