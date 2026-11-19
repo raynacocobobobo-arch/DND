@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V5.2.0</title>
+  <title>健身记录 · V5.3.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -1397,7 +1397,7 @@ body[data-screen="overview"] .wb-calorie-empty{padding:18px 8px;font-size:13px;c
 
 
 
-/* V5.2.0 iPhone 16 Pro: 12 visible exercises, zero-scroll 3x4 home. */
+/* V5.3.0 iPhone 16 Pro: 12 visible exercises, zero-scroll 3x4 home. */
 body[data-screen="overview"] .ft-home {
   box-sizing:border-box; display:grid; grid-template-rows:auto auto minmax(0,1fr);
   gap:11px; width:100%; max-width:790px; min-height:640px;
@@ -1500,6 +1500,59 @@ body[data-screen="overview"] .ft-tile.is-done .ft-tile-kcal {color:#e0c38c}
   body[data-screen="overview"] #content {height:auto!important}
   body[data-screen="overview"] .ft-home {height:auto!important; min-height:605px!important}
   body[data-screen="overview"] .ft-grid {grid-template-rows:repeat(4,minmax(110px,1fr))}
+}
+
+
+/* V5.3.0: direct-quantity calorie settings, one full-width readable row per exercise. */
+body[data-screen="settings"] .ft-settings-layout{display:flex;flex-direction:column;gap:14px;max-width:900px;margin:0 auto}
+body[data-screen="settings"] .ft-settings-layout>.card{margin:0!important;box-shadow:none!important}
+body[data-screen="settings"] .ft-settings-profile h2,
+body[data-screen="settings"] .ft-settings-backup h2{margin-bottom:13px!important;color:#f2ddb4!important}
+body[data-screen="settings"] .ft-rules-panel{padding:18px 15px!important;background:#1a1b1f!important;border:1px solid #45403a!important}
+body[data-screen="settings"] .ft-rules-title h2{margin:0!important;color:#f0e6d1!important;font-size:19px!important}
+body[data-screen="settings"] .ft-rules-title p{color:#b5b4b4;font-size:12px;line-height:1.65;margin:7px 0 18px}
+body[data-screen="settings"] .ft-rule-groups{display:flex;flex-direction:column;gap:17px}
+body[data-screen="settings"] .ft-rule-group h3{font-size:13px!important;color:#d7b980!important;margin:0 0 8px!important}
+body[data-screen="settings"] .ft-rule-rows{display:flex;flex-direction:column;gap:8px}
+body[data-screen="settings"] .ft-rule-row{
+ background:#24262b!important;border:1px solid #3c3e43!important;border-radius:12px;
+ padding:12px 13px;display:flex;flex-direction:column;gap:9px;min-width:0;
+}
+body[data-screen="settings"] .ft-rule-header{display:flex;align-items:start;justify-content:space-between;gap:8px;min-width:0}
+body[data-screen="settings"] .ft-rule-ident{min-width:0;display:flex;flex-direction:column;gap:4px}
+body[data-screen="settings"] .ft-rule-ident strong{font-size:14px;line-height:1.25;color:#f1eee8}
+body[data-screen="settings"] .ft-rule-ident span{font-size:11px;line-height:1.45;color:#999fa6}
+body[data-screen="settings"] .ft-rule-kind{flex:none;border:1px solid #5a513d;border-radius:99px;padding:3px 8px;color:#d0b581;background:#312c24;font-size:10px}
+body[data-screen="settings"] .ft-rule-equation{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+body[data-screen="settings"] .ft-rule-equation>span{font-size:12px;color:#c9c9c9;line-height:1.45;min-width:0}
+body[data-screen="settings"] .ft-rule-equation>span strong{font-size:13px;color:#f2dfbc;font-weight:750;white-space:normal}
+body[data-screen="settings"] .ft-rule-result{display:flex;align-items:baseline;gap:4px;white-space:nowrap}
+body[data-screen="settings"] .ft-rule-result strong{font-size:22px;color:#e4c080;font-weight:800;font-variant-numeric:tabular-nums}
+body[data-screen="settings"] .ft-rule-result>span{font-size:11px;color:#d5bf9b}
+body[data-screen="settings"] .ft-rule-edit{display:flex;align-items:center;gap:5px;flex:none}
+body[data-screen="settings"] .ft-rule-edit input{
+ min-height:40px!important;width:95px!important;max-width:30vw;padding:7px 9px!important;
+ background:#111316!important;border:1px solid #8d7651!important;border-radius:9px!important;
+ text-align:right!important;color:#f2d49a!important;font-size:19px!important;font-weight:780!important;
+ font-variant-numeric:tabular-nums;
+}
+body[data-screen="settings"] .ft-rule-edit>span{font-size:11px;color:#d2b689;font-weight:700}
+body[data-screen="settings"] .ft-rule-time{display:flex;align-items:center;gap:8px;color:#aeb3bc;font-size:12px}
+body[data-screen="settings"] .ft-rule-time input{
+ background:#111316!important;border:1px solid #73624a!important;border-radius:7px!important;
+ height:34px!important;width:72px!important;color:#e6d1a4!important;text-align:center;font-size:14px!important;
+}
+body[data-screen="settings"] .ft-rule-time>span{color:#aeb3bc}
+body[data-screen="settings"] .ft-rule-example{font-size:11px;color:#bca880;line-height:1.5;border-top:1px solid #383a3f;padding-top:8px}
+body[data-screen="settings"] .ft-rules-footer{margin-top:17px;display:flex;flex-direction:column;gap:11px}
+body[data-screen="settings"] .ft-rules-footer p{margin:0;font-size:11px;color:#b5aaa0;line-height:1.65}
+body[data-screen="settings"] .ft-rules-footer button{min-height:44px;width:100%;background:#d7b675!important;border-radius:10px!important;color:#221c14!important;font-size:14px}
+body[data-screen="settings"] .ft-settings-backup .settings-actions{gap:8px}
+@media(max-width:390px){
+ body[data-screen="settings"] .ft-rule-row{padding:11px 10px}
+ body[data-screen="settings"] .ft-rule-equation>span{font-size:11px}
+ body[data-screen="settings"] .ft-rule-equation>span strong{font-size:12px}
+ body[data-screen="settings"] .ft-rule-edit input{width:81px!important}
 }
 
 </style>
@@ -1872,7 +1925,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['健身记录',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['偏好与数据','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k)}<span>${t}</span></button>`).join('')}
-function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.2.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=view==='overview'?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.3.0</div><h1 class="page-title">${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -1993,71 +2046,155 @@ function renderHistory(){
   '</div>';
 }
 
-function renderExerciseSettings(){
- return '<section class="card section-block exercise-settings"><div class="section-title"><div><h2>每组动作与热量计算</h2>'+
- '</div></div>'+
- '<div class="exercise-config-grid">'+QUICK_ITEMS.map(q=>{
-  const p=exerciseProfile(q),hasSet=q.type==='hold';
-  const unit=q.type==='walking'?'kcal / 1000步':q.type==='strength'?'kcal / 次':q.type==='running'?'kcal / 分钟':q.type==='swimming'?'kcal / 来回':'kcal / 分钟';
-  const sample=q.key==='steps'?1000:q.key==='running'?20:q.key==='elliptical'?20:q.key==='swim'?1:q.type==='strength'?60:q.unit==='分钟'?10:1;
-  const amount=sample+' '+q.unit;
-  return '<div class="exercise-config-card" data-exercise-config="'+q.key+'"><h3>'+safe(q.name)+'</h3>'+
-   (hasSet?'<label>每组'+(q.type==='hold'?'秒数':'动作次数')+
-    '<input type="number" id="ec-'+q.key+'-perSet" min="1" max="600" step="1" inputmode="numeric" value="'+p.perSet+'"></label>':'')+
-   '<label>热量系数（'+unit+'）<input type="number" '+(['elliptical','running','steps'].includes(q.key)?'readonly aria-readonly="true" ':'')+'id="ec-'+q.key+
-   '-rate" min="0" max="10000" step="0.001" inputmode="decimal" value="'+Number(p.rate.toFixed(4))+'"></label>'+
-   '<div class="exercise-config-preview">默认 '+amount+' ≈ <strong data-exercise-est="'+q.key+'">'+
-   profileCalories(q,sample,p)+'</strong> kcal</div></div>';
- }).join('')+'</div>'+
- '<div class="exercise-save-bar"><button type="button" class="primary-btn" data-action="save-exercise-config">保存动作与热量参数</button>'+
- '</div></section>';
+
+/* V5.3.0: Human-readable calorie setting basis. Never change the workout formulas. */
+function ftRuleFixed(q){return ['steps','elliptical','running'].includes(q.key)}
+function ftRuleBasis(q){return q.key==='steps'?1000:q.key==='swim'?1:q.key==='wall-sit'?1:q.type==='strength'?60:20}
+function ftRuleExample(q){return q.key==='steps'?5000:q.key==='swim'?10:q.key==='wall-sit'?2:q.type==='strength'?120:40}
+function ftRuleName(q,n,p){
+ if(q.key==='wall-sit')return n+' 组 × '+p.perSet+' 秒';
+ if(q.key==='swim')return n+' 来回（'+n*50+' 米）';
+ return n.toLocaleString('zh-CN')+' '+q.unit;
 }
+function ftRuleRawKcal(q,p){
+ const basis=ftRuleBasis(q);
+ return q.type==='hold'?basis*p.perSet/60*p.rate:q.type==='walking'?basis/1000*p.rate:basis*p.rate;
+}
+function ftRuleNumber(n){return String(Number(Number(n).toPrecision(12)))}
+function ftRuleRate(q,kcal,perSet){
+ const denominator=q.type==='hold'?perSet/60:q.type==='walking'?ftRuleBasis(q)/1000:ftRuleBasis(q);
+ return kcal/denominator;
+}
+function ftRuleRow(q){
+ const p=exerciseProfile(q),fixed=ftRuleFixed(q),kcal=ftRuleRawKcal(q,p),amount=ftRuleBasis(q);
+ const note=q.key==='steps'?'按当前体重 '+Number(state.settings.weight||65)+' kg 估算':
+   q.key==='elliptical'||q.key==='running'?'已确认的固定热量标准':
+   q.key==='swim'?'每来回按 50 米计算':
+   q.key==='wall-sit'?'单组热量随每组秒数变化':
+   q.type==='strength'?'60 次相当于 4 组 × 15 次（仅为换算示例）':'时长越长，热量按比例计算';
+ const standard=ftRuleName(q,amount,p);
+ const display=ftRuleNumber(kcal);
+ const main=fixed
+   ?'<div class="ft-rule-result"><strong>'+profileCalories(q,amount,p)+'</strong><span>kcal</span></div>'
+   :'<label class="ft-rule-edit" for="ec-'+q.key+'-kcal"><input type="number" id="ec-'+q.key+'-kcal" data-rule-kcal data-original-kcal="'+display+'" min="0" max="1000000" step="any" inputmode="decimal" value="'+display+'" aria-label="'+safe(q.name)+'完成'+safe(standard)+'消耗的千卡"><span>kcal</span></label>';
+ const time=q.type==='hold'
+  ?'<label class="ft-rule-time" for="ec-'+q.key+'-perSet">每组时长<input type="number" id="ec-'+q.key+'-perSet" min="1" max="600" step="1" inputmode="numeric" value="'+p.perSet+'"><span>秒</span></label>'
+  :'';
+ return '<div class="ft-rule-row" data-exercise-config="'+q.key+'">'+
+   '<div class="ft-rule-header"><div class="ft-rule-ident"><strong>'+safe(q.name)+'</strong><span>'+safe(note)+'</span></div>'+
+   '<span class="ft-rule-kind">'+(fixed?'固定标准':'可修改')+'</span></div>'+
+   time+
+   '<div class="ft-rule-equation"><span>完成 <strong>'+safe(standard)+'</strong> 预计消耗</span>'+main+'</div>'+
+   '<div class="ft-rule-example" data-exercise-est="'+q.key+'">举例：'+safe(ftRuleName(q,ftRuleExample(q),p))+
+   ' ≈ '+profileCalories(q,ftRuleExample(q),p)+' kcal</div>'+
+   '</div>';
+}
+function renderExerciseSettings(){
+ const groups=[
+  {name:'日常运动',items:['steps','situps','wall-sit']},
+  {name:'有氧训练',items:['elliptical','bike','running']},
+  {name:'力量训练',items:['lat','row','fly','dumbbell','back']},
+  {name:'游泳',items:['swim']}
+ ];
+ return '<section class="card section-block ft-rules-panel"><div class="ft-rules-title"><h2>运动热量换算</h2>'+
+ '<p>直接看「完成多少 → 预计消耗多少 kcal」。修改数字后，系统自动换算成记录时使用的热量参数。</p></div>'+
+ '<div class="ft-rule-groups">'+groups.map(group=>
+  '<section class="ft-rule-group"><h3>'+group.name+'</h3><div class="ft-rule-rows">'+
+  group.items.map(key=>ftRuleRow(QUICK_ITEMS.find(q=>q.key===key))).join('')+'</div></section>'
+ ).join('')+'</div>'+
+ '<div class="ft-rules-footer"><p>数值是估算，不是实测。已保存的历史记录不会因修改这些参数而重新计算；新标准用于之后新增的训练。</p>'+
+ '<button type="button" class="primary-btn" data-action="save-exercise-config">保存热量标准</button></div></section>';
+}
+
+
 function renderSettings(){
- return '<div class="settings-grid"><section class="card settings-card"><h2>个人参数</h2><div class="fields">'+
+ return '<div class="ft-settings-layout">'+
+ '<section class="card settings-card ft-settings-profile"><h2>个人参数</h2><div class="fields">'+
  field({key:'weight',label:'当前体重',value:state.settings.weight,unit:'kg',step:.1,min:1})+
  field({key:'weeklyGoal',label:'每周消耗目标',value:state.settings.weeklyGoal,unit:'kcal',min:1})+
- '</div>'+
- '<button type="button" class="primary-btn" data-action="save-settings" style="margin-top:16px">保存参数</button></section>'+
- '<section class="card settings-card"><h2>数据备份</h2>'+
- ''+
+ '</div><button type="button" class="primary-btn" data-action="save-settings" style="margin-top:16px">保存个人参数</button></section>'+
+ renderExerciseSettings()+
+ '<section class="card settings-card ft-settings-backup"><h2>数据备份</h2>'+
  '<div class="data-safety-status">'+
  (storageReadIssue?'<strong class="data-safety-alert">'+safe(storageReadIssue)+'</strong>':
  state.records.length?'<span>本机已读取 '+state.records.length+' 条训练记录</span>':
  '<span>暂无历史记录。找回旧数据请检查原桌面图标或 Safari，勿清理网站数据。</span>')+
  (recoveryState()?.records.length?'<button type="button" class="secondary-btn" data-action="restore-snapshot">恢复本机快照（'+recoveryState().records.length+' 条）</button>':'')+
  (storageReadIssue?'<button type="button" class="secondary-btn" data-action="export-raw">导出原始内容</button>':'')+
- '</div>'+'<div class="settings-actions"><button type="button" class="primary-btn" data-action="export-json">导出 JSON</button>'+
+ '</div><div class="settings-actions"><button type="button" class="primary-btn" data-action="export-json">导出 JSON</button>'+
  '<button type="button" class="secondary-btn" data-action="export-csv">导出 CSV</button>'+
  '<button type="button" class="secondary-btn" data-action="import-json">导入 JSON</button></div>'+
  '<div class="alert">仅保存在本机浏览器或桌面应用，不会上传服务器。清除网站数据或移除桌面应用可能丢失记录，请定期导出 JSON 备份。导入备份会覆盖当前记录。</div>'+
- '</section></div>'+
- renderExerciseSettings();
+ '</section></div>';
 }
+
+
 function saveExerciseProfiles(){
  const next={...(state.settings.exerciseProfiles||{})};
+ let changed=0;
  for(const q of QUICK_ITEMS){
-  const rate=Number(document.getElementById('ec-'+q.key+'-rate')?.value);
-  const setInput=document.getElementById('ec-'+q.key+'-perSet');
-  const perSet=setInput?Number(setInput.value):undefined;
-  if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){
-   toast('请检查「'+q.name+'」的动作次数或热量系数');return false;
+  if(ftRuleFixed(q))continue;
+  const card=document.querySelector('[data-exercise-config="'+q.key+'"]');
+  const input=card?.querySelector('[data-rule-kcal]');
+  if(!card||!input||input.value.trim()===''){toast('请填写「'+q.name+'」的预计消耗');return false}
+  const kcal=Number(input.value),original=Number(input.dataset.originalKcal);
+  const perSetInput=card.querySelector('[id$="-perSet"]');
+  const p=exerciseProfile(q);
+  const perSet=perSetInput?Number(perSetInput.value):p.perSet;
+  if(!Number.isFinite(kcal)||kcal<0||kcal>1000000||
+   (perSetInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){
+   toast('请检查「'+q.name+'」的数值');return false;
   }
-  next[q.key]=q.key==='swim'?{...(next[q.key]||{}),lapRate:rate}:setInput?{perSet,rate}:{rate};
+  const caloriesChanged=kcal!==original;
+  const timeChanged=!!perSetInput&&perSet!==p.perSet;
+  if(!caloriesChanged&&!timeChanged)continue;
+  const rate=caloriesChanged?ftRuleRate(q,kcal,perSet):p.rate;
+  if(!Number.isFinite(rate)||rate<0||rate>10000){
+   toast('「'+q.name+'」的热量超出可设置范围');return false;
+  }
+  if(q.key==='swim')next[q.key]={...(next[q.key]||{}),lapRate:rate};
+  else if(perSetInput)next[q.key]={...(next[q.key]||{}),perSet,rate};
+  else next[q.key]={...(next[q.key]||{}),rate};
+  changed++;
  }
+ if(!changed){toast('热量标准没有变化');return true}
  const previous=state.settings;
  state.settings={...previous,exerciseProfiles:next};
  if(!persist()){state.settings=previous;return false}
- render();toast('动作与热量参数已保存，后续记录采用新设置');return true;
+ render();toast('已保存 '+changed+' 项热量标准，之后新增的运动按新标准计算');return true;
 }
-function updateExercisePreview(card){
- const q=QUICK_ITEMS.find(item=>item.key===card?.dataset.exerciseConfig);if(!q)return;
- const rate=Number(card.querySelector('[id$="-rate"]')?.value);
- const setInput=card.querySelector('[id$="-perSet"]'),perSet=setInput?Number(setInput.value):undefined;
+function updateExercisePreview(card,source){
+ const q=QUICK_ITEMS.find(item=>item.key===card?.dataset.exerciseConfig);
+ if(!q||ftRuleFixed(q))return;
+ const p=exerciseProfile(q);
+ const input=card.querySelector('[data-rule-kcal]');
+ const perSetInput=card.querySelector('[id$="-perSet"]');
+ if(!input)return;
+ const perSet=perSetInput?Number(perSetInput.value):p.perSet;
+ if(perSetInput&&source===perSetInput&&Number.isInteger(perSet)&&perSet>=1&&perSet<=600){
+  const lastAuto=input.dataset.lastAuto||input.dataset.originalKcal;
+  if(Number(input.value)===Number(lastAuto)){
+   const fresh=ftRuleNumber(ftRuleRawKcal(q,{...p,perSet}));
+   input.value=fresh;
+   input.dataset.lastAuto=fresh;
+  }
+ }
+ const kcal=input.value.trim()===''?NaN:Number(input.value);
+ const rate=ftRuleRate(q,kcal,perSet);
  const target=card.querySelector('[data-exercise-est]');
  if(!target)return;
- if(!Number.isFinite(rate)||rate<0||rate>10000||(setInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))){target.textContent='—';return}
- target.textContent=profileCalories(q,q.key==='steps'?1000:q.key==='running'?20:q.key==='elliptical'?20:q.key==='swim'?1:q.type==='strength'?60:q.unit==='分钟'?10:1,{perSet,rate});
+ if(!Number.isFinite(kcal)||kcal<0||kcal>1000000||
+  (perSetInput&&(!Number.isInteger(perSet)||perSet<1||perSet>600))||
+  !Number.isFinite(rate)||rate<0||rate>10000){
+  target.textContent='请填写有效的热量或时长';
+  return;
+ }
+ const live={...p,perSet,rate};
+ const basisLabel=card.querySelector('.ft-rule-equation>span strong');
+ if(basisLabel)basisLabel.textContent=ftRuleName(q,ftRuleBasis(q),live);
+ target.textContent='举例：'+ftRuleName(q,ftRuleExample(q),live)+' ≈ '+profileCalories(q,ftRuleExample(q),live)+' kcal';
 }
+
 function switchView(v){if(v==='steps')v='overview';if(!['overview','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;wbCalorieDetailOpen=false;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
 function toast(message){let el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400)}
 function pullForm(){const f=document.getElementById('recordForm');if(!f)return;for(const input of f.querySelectorAll('[name]'))draft[input.name]=input.value}
@@ -2565,7 +2702,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-rest-toggle]')){toggleRestDay();return}
 });
 document.addEventListener('click',e=>{const viewBtn=e.target.closest('[data-view]');if(viewBtn){if(viewBtn.dataset.view==='history')historySelectedDate=null;switchView(viewBtn.dataset.view);return}const categoryBtn=e.target.closest('[data-category]');if(categoryBtn){const next=categoryBtn.dataset.category;if(next===draft.type)return;draft={...emptyDraft(next),id:draft.id,date:draft.date};render();return}const planBtn=e.target.closest('[data-plan]');if(planBtn){const [day,index]=planBtn.dataset.plan.split('-').map(Number);startPlan(day,index);return}const filterBtn=e.target.closest('[data-filter]');if(filterBtn){historyFilter=filterBtn.dataset.filter;render();return}const editBtn=e.target.closest('[data-edit]');if(editBtn){startEdit(editBtn.dataset.edit);return}const delBtn=e.target.closest('[data-delete]');if(delBtn){const item=state.records.find(r=>r.id===delBtn.dataset.delete);if(!item)return;if(confirm(`删除 ${item.date} 的「${recordName(item)}」记录？`)){const previous=state.records;state.records=state.records.filter(r=>r.id!==item.id);if(!persist()){state.records=previous;return}render();toast('记录已删除')}return}const action=e.target.closest('[data-action]')?.dataset.action;if(!action)return;switch(action){case 'reset-draft':draft=emptyDraft();render();break;case 'save-settings':saveSettings();break;case 'save-exercise-config':saveExerciseProfiles();break;case 'export-json':exportJSON();break;case 'export-csv':exportCSV();break;case 'import-json':document.getElementById('importFile').click();break;case 'restore-snapshot':restoreFitnessSnapshot();break;case 'export-raw':exportRawFitnessData();break}});
-document.addEventListener('input',e=>{const card=e.target.closest('[data-exercise-config]');if(card)updateExercisePreview(card);});
+document.addEventListener('input',e=>{const card=e.target.closest('[data-exercise-config]');if(card)updateExercisePreview(card,e.target);});
 document.addEventListener('input',e=>{if(e.target.closest('#recordForm')){pullForm();updatePreview()}});
 document.addEventListener('submit',e=>{if(e.target.id!=='recordForm')return;e.preventDefault();pullForm();try{const rec=newRecord(draft);const index=state.records.findIndex(r=>r.id===rec.id);const previous=state.records.slice();if(index>=0)state.records[index]=rec;else state.records.push(rec);if(!persist()){state.records=previous;return}draft=emptyDraft('strength');switchView('overview');toast(index>=0?'记录修改已保存':'训练已记录，统计已更新')}catch(err){toast(err.message)}});
 document.getElementById('importFile').addEventListener('change',e=>{importJSONFile(e.target.files[0]);e.target.value=''});
@@ -2610,7 +2747,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.2.0_grid';
+   const key='fitness_sw_reloaded_v5.3.0_settings';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
