@@ -1,4 +1,4 @@
-/* 健身记录 V2.2 · Hermes 同一 Supabase 账号。此文件只包含公开 publishable key。 */
+/* 健身记录 V2.3 · Hermes 同一账号，启动时展示登录入口。 */
 (function(){
 'use strict';
 const API="https://arnrlepjuqdmvbipswci.supabase.co", KEY="sb_publishable_KIqNFyXWtQe8umuikfP6lQ_3MQrQzdt", SESSION_KEY='fitness_cloud_session_v1', LINK_KEY='fitness_cloud_link_v1';
@@ -6,9 +6,13 @@ function read(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catc
 function write(key,value){try{value===null?localStorage.removeItem(key):localStorage.setItem(key,JSON.stringify(value));return true}catch(e){return false}}
 let session=read(SESSION_KEY),link=read(LINK_KEY),remote=null,busy=false,conflict=false,dirty=false,importing=false,uploading=false,timer=null;
 let status=session?'正在检查云端数据':'未登录：当前记录仍安全保存在本机';
+let entryStage='none';
 function signedIn(){return !!session?.access_token&&!!session?.refresh_token&&!!session?.user?.id}
 function auto(){return signedIn()&&link?.enabled&&link.userId===session.user.id&&!conflict}
-function say(msg){status=msg;const el=document.getElementById('fitnessCloudStatus');if(el)el.textContent=msg}
+function say(msg){status=msg;
+ const settings=document.getElementById('fitnessCloudStatus');if(settings)settings.textContent=msg;
+ const entry=document.getElementById('fitnessEntryStatus');if(entry)entry.textContent=msg;
+}
 function renderIfSettings(){if(view==='settings')render()}
 async function fetchAPI(path,opts={},auth=true){
  const headers={'apikey':KEY,'Content-Type':'application/json'};
@@ -65,6 +69,10 @@ async function login(form){
   if(previousUser!==s.user.id){link=null;write(LINK_KEY,null)}
   write(SESSION_KEY,session);
   await refresh();say('登录成功。首次使用请选择「上传本机」或「下载云端」');
+   if(entryStage==='login'){
+    if(auto())closeEntry();
+    else{entryStage='sync';renderEntry()}
+   }
  }catch(e){say('登录失败：'+e.message);toast(status)}
  finally{busy=false;renderIfSettings()}
 }
@@ -141,6 +149,42 @@ function schedule(){
  if(timer)clearTimeout(timer);
  timer=setTimeout(()=>{timer=null;upload(false)},1000);
 }
+/* Sign-in does not automatically replace local training records or enable sync. */
+function closeEntry(){
+ entryStage='none';
+ document.getElementById('fitnessEntryGate')?.remove();
+ document.body.classList.remove('fitness-entry-open');
+}
+function renderEntry(){
+ if(entryStage==='none'){closeEntry();return}
+ let root=document.getElementById('fitnessEntryGate');
+ if(!root){root=document.createElement('div');root.id='fitnessEntryGate';document.body.appendChild(root)}
+ document.body.classList.add('fitness-entry-open');
+ const entering=entryStage==='login';
+ root.className='fitness-entry-overlay';
+ root.innerHTML='<section class="fitness-entry-card" role="dialog" aria-modal="true" aria-label="'+
+  (entering?'登录健身记录':'选择云端同步方式')+'">'+
+  '<div class="fitness-entry-brand"><img src="./icon-180.png?v=2.2" width="46" height="46" alt="" />'+
+  '<div><strong>健身记录</strong><small>HERMES FITNESS JOURNAL</small></div></div>'+
+  (entering?
+   '<div class="fitness-entry-heading"><h2>登录并开始记录</h2>'+
+   '<p>使用 Hermes To Do 的同一账号登录健身记录。</p></div>'+
+   '<form id="fitnessEntryLogin" class="fitness-entry-form">'+
+   '<label>邮箱<input type="email" name="cloudEmail" autocomplete="username" autocapitalize="off" inputmode="email" required placeholder="Hermes 邮箱"></label>'+
+   '<label>密码<input type="password" name="cloudPassword" autocomplete="current-password" required placeholder="Hermes 密码"></label>'+
+   '<button type="submit" class="fitness-entry-primary">登录并继续</button></form>'+
+   '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不登录，使用本机记录</button>':
+   '<div class="fitness-entry-heading"><h2>已登录 Hermes 账号</h2>'+
+   '<p>'+safe(session?.user?.email||'账号已验证')+'</p></div>'+
+   '<div class="fitness-entry-sync">'+
+   '<button type="button" class="fitness-entry-primary" data-fitness-entry="upload">上传本机记录</button>'+
+   '<button type="button" class="fitness-entry-secondary" data-fitness-entry="download">下载云端记录</button>'+
+   '<button type="button" class="fitness-entry-textbutton" data-fitness-entry="skip">暂不同步，进入打卡</button></div>')+
+  '<p class="fitness-entry-status" id="fitnessEntryStatus" role="status" aria-live="polite">'+safe(status)+'</p>'+
+  '<p class="fitness-entry-footnote">登录不会删除本机训练记录。首次上传或下载需要另行确认，避免覆盖数据。</p>'+
+  '</section>';
+}
+
 function panel(){
  const logged=signedIn(),account=logged?String(session.user.email||'已登录'):'';
  return '<section class="card fitness-cloud-panel"><div class="section-title"><div>'+
@@ -167,9 +211,23 @@ persist=function(){const ok=priorPersist();if(ok)schedule();return ok};
 const priorRestPersist=persistRestDays;
 persistRestDays=function(next){const ok=priorRestPersist(next);if(ok)schedule();return ok};
 document.addEventListener('submit',event=>{
- if(event.target.id==='fitnessCloudLogin'){event.preventDefault();login(event.target)}
+ if(event.target.id==='fitnessCloudLogin'||event.target.id==='fitnessEntryLogin'){
+  event.preventDefault();login(event.target)
+ }
 });
 document.addEventListener('click',event=>{
+ const entry=event.target.closest('[data-fitness-entry]');
+ if(entry){
+  const action=entry.dataset.fitnessEntry;
+  if(action==='skip'){closeEntry();return}
+  if(action==='upload'||action==='download'){
+   (async()=>{
+    const done=action==='upload'?await upload(true):await download();
+    if(done)closeEntry();
+   })();
+   return;
+  }
+ }
  const btn=event.target.closest('[data-cloud-action]');if(!btn)return;
  if(btn.dataset.cloudAction==='logout')logout();
  else if(btn.dataset.cloudAction==='refresh')refresh();
@@ -179,4 +237,5 @@ document.addEventListener('click',event=>{
 window.addEventListener('online',()=>{if(auto())schedule()});
 render();
 if(signedIn())refresh();
+else{entryStage='login';renderEntry()}
 })();
