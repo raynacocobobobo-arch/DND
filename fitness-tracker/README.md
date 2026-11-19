@@ -1,10 +1,22 @@
-# 健身记录 / Fitness Tracker V2.2
+# 健身记录 / Fitness Tracker V2.3
 
-最新版本：V2.2（2026-11-19）
+最新版本：V2.3（2026-11-19）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
+
+## V2.3 首页视觉优化（不改变打卡逻辑）
+
+- 仅首页的视觉样式及「今日已记录」状态有变；所有运动记录和计步、日历、历史、设置、账号登录的逻辑保持 V2.2 不变。
+- 顶部统计区由强烈亮黄调整为哑光黄铜渐变，突出今日消耗 kcal，右侧继续显示本周剩余 kcal 和进度条。
+- 11 个运动卡片从金色边框＋高饱和黄按钮改为石墨灰卡底、细灰边框、奶油色运动名称、金色计数和克制的铜金色打卡按钮。
+- 当天已有该运动记录时，卡片标题右侧展示金色小勾；仍可继续记录同一运动，不更改记录状态或热量。
+- 保留 iPhone 16 的 **2 列 × 6 行**，最后一张蛙泳卡片横跨两列，保留减号、数量下拉/自定义、加号和打卡按钮；符合原定单屏 PWA 设计目标。
+- 在 Safari 普通浏览模式或高度较小的屏幕上仍允许向下滚动，不以强制裁切隐藏打卡按钮。
+- 不添加训练历史到首页、不添加周打卡条、不改变 11 个项目顺序、不重算历史 kcal；椭圆机仍默认 5 kcal/分钟。
+- 本地记录键 `hermes_fitness_journal_v1`、休息日键 `hermes_fitness_rest_days_v1`、Supabase 私有表 `fitness_journals` 及 `cloud.js` 同步逻辑不变。
+- 离线缓存版本更新为 `fitness-tracker-v2.3-home-refine`；V2.2 完整代码继续保留在 `release/fitness-tracker-v2.2` 分支。
 
 ## V2.2 黄黑拳头桌面 Logo + Hermes 同账号云端备份
 
