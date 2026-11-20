@@ -1,10 +1,13 @@
-# 健身记录 / Fitness Tracker V5.5.0（按确认效果图还原首页）
+# 健身记录 / Fitness Tracker V5.5.1（按确认效果图还原首页）
 
-最新版本：V5.5.0（2026-11-20）
+最新版本：V5.5.1（2026-11-20）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
+
+**V5.5.1 适配修正：** iPhone 16 Pro 竖屏卡片内部缩紧高度，避免数量与 kcal 金色铭牌在实际安全区内被裁切；低于 771 CSS px 的短视口提供可滚动回退。
+
  
 ## V5.5.0 — 按确认的无星际战士效果图还原
  
