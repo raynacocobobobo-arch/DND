@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
   <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
   <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V5.11.0</title>
+  <title>健身记录 · V5.12.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -3065,6 +3065,78 @@ body[data-screen="overview"] .if6-energy-content{
  }
 }
 
+/* V5.12.0 — Armageddon-inspired Astra Militarum header.
+   This is a presentation-only override. No storage or workout logic changes. */
+body[data-screen="overview"] .if6-head{
+  background-image:
+    linear-gradient(90deg,rgba(5,6,8,.97) 0%,rgba(5,6,8,.84) 19%,rgba(5,6,8,.59) 42%,rgba(5,6,8,.17) 78%),
+    url('./art/steel-legion-header.webp')!important;
+  background-size:100% 100%,cover!important;
+  background-position:center center,center center!important;
+  background-repeat:no-repeat!important;
+  border-bottom:1px solid #977340!important;
+  box-shadow:inset 0 0 0 1px #8e6c3990,inset 0 -6px 9px #080807b8,0 2px 7px #0009!important;
+  padding:5px 11px 7px 7px!important;
+}
+body[data-screen="overview"] .if6-banner{
+  display:block!important;
+  width:45px!important;min-width:45px!important;height:100%!important;
+  background:url('./art/steel-legion-flag.webp') center center/contain no-repeat!important;
+  flex:none!important;margin:0!important;padding:0!important;
+  border:0!important;box-shadow:none!important;
+  clip-path:none!important;
+}
+body[data-screen="overview"] .if6-banner b,
+body[data-screen="overview"] .if6-banner span,
+body[data-screen="overview"] .if6-banner:before,
+body[data-screen="overview"] .if6-banner:after{
+  display:none!important;content:none!important;
+}
+body[data-screen="overview"] .if6-brand{
+  gap:5px!important;padding-left:2px!important;
+  min-width:0!important;
+  text-shadow:0 2px 5px #000,0 0 10px #000!important;
+}
+body[data-screen="overview"] .if6-brand h1{
+  color:#f5e7cb!important;letter-spacing:1px!important;
+  font-size:clamp(24px,6.8vw,30px)!important;
+  line-height:1.15!important;
+}
+body[data-screen="overview"] .if6-brand-date{
+  color:#f0d8ae!important;font-size:clamp(11px,3vw,14px)!important;
+}
+body[data-screen="overview"] .if6-legion{
+  color:#eac079!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-weight:800!important;
+  font-size:clamp(11px,2.8vw,13px)!important;
+  letter-spacing:1.05px!important;
+  line-height:1.13!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  text-shadow:0 1px 3px #000!important;
+}
+body[data-screen="overview"] .if6-legion:before{
+  width:14px!important;background:#cb9c4a!important;
+}
+@media(max-width:390px){
+  body[data-screen="overview"] .if6-banner{
+    width:39px!important;min-width:39px!important;
+  }
+  body[data-screen="overview"] .if6-brand h1{
+    font-size:clamp(23px,6.6vw,27px)!important;
+  }
+  body[data-screen="overview"] .if6-legion{
+    font-size:11px!important;letter-spacing:.6px!important;
+  }
+}
+@media(max-width:850px) and (max-height:760px){
+  body[data-screen="overview"] .if6-head{padding:3px 9px 4px 5px!important}
+  body[data-screen="overview"] .if6-brand{gap:3px!important}
+  body[data-screen="overview"] .if6-brand h1{font-size:clamp(22px,6.2vw,26px)!important}
+  body[data-screen="overview"] .if6-brand-date{font-size:11px!important}
+  body[data-screen="overview"] .if6-legion{font-size:11px!important}
+}
 </style>
 </head>
 <body>
@@ -4095,9 +4167,9 @@ function renderQuickHome(){
  const fill=Math.max(0,Math.min(100,100*weekly/target));
  return '<div class="if6-home">'+
  '<header class="if6-head">'+
- '<span class="if6-banner" aria-hidden="true"><b>VII</b><span></span></span>'+
+ '<span class="if6-banner" aria-hidden="true"></span>'+
  '<div class="if6-brand"><h1>健身记录</h1><span class="if6-brand-date">'+safe(formatDate(today)+' · '+DAY_NAMES[new Date().getDay()])+'</span>'+
- '<span class="if6-legion">VII LEGION · IMPERIAL FISTS</span></div></header>'+
+ '<span class="if6-legion" lang="la">PRO IMPERATORE</span></div></header>'+
  '<section class="if6-stats" aria-label="今日消耗与本周进度"><span class="if6-stat-crest">'+IF6_CREST+'</span>'+
  '<button type="button" class="if6-stat-today" data-wb-cal-open aria-label="今日消耗 '+dayTotal+' 千卡，查看明细">'+
  '<span class="if6-stat-label">今日消耗</span><span class="if6-stat-amount"><strong>'+dayTotal.toLocaleString('zh-CN')+'</strong><small>kcal</small></span></button>'+
@@ -4328,7 +4400,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.11.0_inline';
+   const key='fitness_sw_reloaded_v5.12.0_inline';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
