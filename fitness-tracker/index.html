@@ -8,11 +8,11 @@
   <meta name="apple-mobile-web-app-title" content="健身记录" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="description" content="轻量离线健身追踪：记录组数、次数、训练时长，自动估算运动消耗。" />
-  <link rel="manifest" href="./manifest.webmanifest?v=2.2" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=2.2" />
-  <link rel="icon" href="./icon-180.png?v=2.2" type="image/png" />
-  <link rel="icon" href="./icon.svg?v=2.2" type="image/svg+xml" />
-  <title>健身记录 · V5.12.0</title>
+  <link rel="manifest" href="./manifest.webmanifest?v=5.13.0" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5.13.0" />
+  <link rel="icon" href="./icon-180.png?v=5.13.0" type="image/png" />
+  <link rel="icon" href="./icon.svg?v=5.13.0" type="image/svg+xml" />
+  <title>健身记录 · V5.13.0</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -3065,7 +3065,7 @@ body[data-screen="overview"] .if6-energy-content{
  }
 }
 
-/* V5.12.0 — Armageddon-inspired Astra Militarum header.
+/* V5.13.0 — Armageddon-inspired Astra Militarum header.
    This is a presentation-only override. No storage or workout logic changes. */
 body[data-screen="overview"] .if6-head{
   background-image:
@@ -3137,11 +3137,55 @@ body[data-screen="overview"] .if6-legion:before{
   body[data-screen="overview"] .if6-brand-date{font-size:11px!important}
   body[data-screen="overview"] .if6-legion{font-size:11px!important}
 }
+
+/* V5.13.0: Daily energy and weekly percentage fit inside the painted stats plaque. */
+body[data-screen="overview"] .if6-stats{
+ min-width:0!important;
+}
+body[data-screen="overview"] .if6-stat-today{
+ box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
+ padding:3px 3px!important;overflow:hidden!important;
+}
+body[data-screen="overview"] .if6-stat-amount{
+ box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
+ display:flex!important;align-items:baseline!important;justify-content:center!important;
+ gap:3px!important;overflow:hidden!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-stat-amount strong{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;
+ font-size:var(--today-fit,30px)!important;
+ line-height:1!important;letter-spacing:-.65px!important;
+ white-space:nowrap!important;font-variant-numeric:tabular-nums!important;
+}
+body[data-screen="overview"] .if6-stat-amount small{
+ display:block!important;flex:0 0 auto!important;
+ font-size:clamp(9px,2.5vw,11px)!important;
+ line-height:1.1!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-stat-week{
+ box-sizing:border-box!important;min-width:0!important;max-width:100%!important;overflow:hidden!important;
+}
+body[data-screen="overview"] .if6-week-upper{min-width:0!important;width:100%!important;gap:3px!important}
+body[data-screen="overview"] .if6-week-percent{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;white-space:nowrap!important;
+ font-size:var(--week-fit,23px)!important;
+ line-height:1!important;font-variant-numeric:tabular-nums!important;
+}
+body[data-screen="overview"] .if6-week-cal{
+ display:block!important;max-width:100%!important;min-width:0!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;
+}
+@media(max-width:390px){
+ body[data-screen="overview"] .if6-stat-today{padding-left:1px!important;padding-right:1px!important}
+ body[data-screen="overview"] .if6-stat-amount{gap:2px!important}
+ body[data-screen="overview"] .if6-stat-amount small{font-size:9px!important}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar"><div class="brand"><span class="brand-symbol"><img src="./icon-180.png" width="39" height="39" alt="" /></span><div><h1>健身记录</h1><small>FITNESS JOURNAL</small></div></div><nav class="nav" id="desktopNav"></nav></aside>
+  <aside class="sidebar"><div class="brand"><span class="brand-symbol"><img src="./icon-180.png?v=5.13.0" width="39" height="39" alt="" /></span><div><h1>健身记录</h1><small>FITNESS JOURNAL</small></div></div><nav class="nav" id="desktopNav"></nav></aside>
   <main class="main"><div id="content"></div></main>
 </div>
 <nav class="mobile-nav" id="mobileNav" aria-label="主导航"></nav>
@@ -4165,6 +4209,12 @@ function renderQuickHome(){
  const target=Number(state.settings.weeklyGoal)>0?Number(state.settings.weeklyGoal):1500;
  const percentage=Math.round(100*weekly/target);
  const fill=Math.max(0,Math.min(100,100*weekly/target));
+ // Layout-only numeric sizing: preserves actual calorie totals and calculations.
+ const todayText=dayTotal.toLocaleString('zh-CN');
+ const totalChars=todayText.length;
+ const todayFont=totalChars<=2?36:totalChars===3?31:totalChars<=5?25:totalChars<=7?19:15;
+ const percentText=String(percentage)+'%';
+ const percentFont=percentText.length<=3?25:percentText.length===4?21:percentText.length===5?18:15;
  return '<div class="if6-home">'+
  '<header class="if6-head">'+
  '<span class="if6-banner" aria-hidden="true"></span>'+
@@ -4172,9 +4222,9 @@ function renderQuickHome(){
  '<span class="if6-legion" lang="la">PRO IMPERATORE</span></div></header>'+
  '<section class="if6-stats" aria-label="今日消耗与本周进度"><span class="if6-stat-crest">'+IF6_CREST+'</span>'+
  '<button type="button" class="if6-stat-today" data-wb-cal-open aria-label="今日消耗 '+dayTotal+' 千卡，查看明细">'+
- '<span class="if6-stat-label">今日消耗</span><span class="if6-stat-amount"><strong>'+dayTotal.toLocaleString('zh-CN')+'</strong><small>kcal</small></span></button>'+
+ '<span class="if6-stat-label">今日消耗</span><span class="if6-stat-amount" style="--today-fit:'+todayFont+'px"><strong>'+todayText+'</strong><small>kcal</small></span></button>'+
  '<span class="if6-stat-divider" aria-hidden="true"></span>'+
- '<div class="if6-stat-week"><div class="if6-week-upper"><span class="if6-stat-label">本周进度</span><strong class="if6-week-percent">'+percentage+'%</strong></div>'+
+ '<div class="if6-stat-week"><div class="if6-week-upper"><span class="if6-stat-label">本周进度</span><strong class="if6-week-percent" style="--week-fit:'+percentFont+'px">'+percentText+'</strong></div>'+
  '<span class="if6-week-cal">'+weekly.toLocaleString('zh-CN')+' / '+target.toLocaleString('zh-CN')+' kcal</span>'+
  '<div class="if6-track" role="progressbar" aria-label="本周热量目标完成进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,Math.max(0,percentage))+'"><span class="if6-track-fill" style="width:'+fill.toFixed(1)+'%"></span></div></div></section>'+
  '<section class="if6-grid" aria-label="今日十二项运动">'+IF6_ORDER.map(key=>if6Tile(QUICK_ITEMS.find(q=>q.key===key),records)).join('')+'</section></div>'+
@@ -4400,7 +4450,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.12.0_inline';
+   const key='fitness_sw_reloaded_v5.13.0_inline';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
