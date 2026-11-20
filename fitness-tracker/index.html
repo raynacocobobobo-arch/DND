@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5.13.0" />
   <link rel="icon" href="./icon-180.png?v=5.13.0" type="image/png" />
   <link rel="icon" href="./icon.svg?v=5.13.0" type="image/svg+xml" />
-  <title>健身记录 · V5.13.1</title>
+  <title>健身记录 · V5.13.2</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -3634,7 +3634,7 @@ function renderTraining(){const plan=PLANS[new Date().getDay()];return `<div cla
 function previewDescription(d){if(d.type==='strength')return `${d.sets||0} 组 × ${d.repsPerSet||0} 次 = ${(Number(d.sets)||0)*(Number(d.repsPerSet)||0)} 次`;if(d.type==='swimming')return d.legacySwimming?`${d.exercise||'游泳'} · ${d.durationMin||'尚未填写'} 分钟（旧记录）`:`${d.exercise||'游泳'} · ${d.laps||0} 来回 · ${(Number(d.laps)||0)*50} 米`;if(d.type==='cardio')return `${d.exercise||'运动'} · ${d.durationMin||'尚未填写'} 分钟`;if(d.type==='running')return d.legacyRunning?`${d.distanceKm||0} km（旧记录）`:`${d.durationMin||0} 分钟`;if(d.type==='walking')return `${d.steps||0} 步`;if(d.type==='hold')return `${d.sets||0} 组 × ${d.secondsPerSet||0} 秒`;return ''}
 function previewRule(d){if(d.type==='strength')return d.exercise.trim()==='仰卧起坐'?'沿用原脚本：次数 × 0.15 × 体重 / 68':'沿用原脚本：总次数 × 0.22 kcal（经验估算）';if(d.type==='running')return d.legacyRunning?'旧跑步记录按公里保留，不自动换算成分钟':'跑步固定3.3 kcal/分钟，20分钟约66 kcal';if(d.type==='cardio')return String(d.exercise||'').trim()==='椭圆机'?'椭圆机校准：2.5 kcal / 分钟（20 分钟 = 50 kcal），历史记录同步重算':'骑行按设置中的每分钟热量系数计算';if(d.type==='swimming')return d.legacySwimming?'旧记录按原有分钟数计算，历史数据不转换':'按 50 米 / 来回记录；热量使用可调整的每来回系数估算（默认以 6 MET、约 2 分钟 / 50 米折算），不代表测得游泳时长';if(d.type==='walking')return '沿用原脚本：0.04 × (体重 / 70) × 步数';return '静态保持补充简化算法：3 MET × 3.5 × 体重 ÷ 200 × 有效分钟'}
 function recordDescription(r){if(r.type==='walking')return `${r.steps||0} 步`;if(r.type==='cardio')return `${r.duration_min||0} 分钟`;if(r.type==='running')return Number(r.duration_min)>0?`${r.duration_min} 分钟`:`${r.distance_km||0} km（旧记录）`;if(r.type==='swimming')return Number.isInteger(Number(r.laps))&&Number(r.laps)>0?`${r.laps} 来回 · ${r.distance_m||r.laps*50} 米`:`${r.duration_min||0} 分钟（旧记录）${r.distance_m?` · ${r.distance_m} 米`:''}`;if(r.type==='hold')return `${r.sets||0} 组 × ${r.secondsPerSet||0} 秒`;if(r.type==='strength')return r.sets&&r.repsPerSet?`${r.sets} 组 × ${r.repsPerSet} 次 = ${r.reps} 次${r.loadKg!=null?` · ${r.loadKg} kg`:''}`:`${r.reps||0} 次`;return r.note||'运动记录'}
-function recordName(r){return r.type==='walking'?'走路':r.exercise||r.stroke||r.note||prettyType(r.type)}
+function recordName(r){return r.type==='walking'?'走路':(r.presetKey==='back'||r.exercise==='背部运动')?'臀桥及背部':r.exercise||r.stroke||r.note||prettyType(r.type)}
 
 function historyRecordCard(r){
  const isSet=r.type==='strength'||r.type==='hold';
@@ -3905,7 +3905,7 @@ const QUICK_ITEMS=[
  {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:0,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'每组45秒',iconName:'hold'},
  {key:'situps',name:'仰卧起坐',unit:'次',value:0,step:1,max:6000,type:'strength',exercise:'仰卧起坐',note:'每组15次',iconName:'training'},
  {key:'dumbbell',name:'哑铃',unit:'次',value:0,step:1,max:6000,type:'strength',exercise:'哑铃',note:'每组15次',iconName:'training'},
- {key:'back',name:'背部运动',unit:'次',value:0,step:1,max:6000,type:'strength',exercise:'背部运动',note:'每组15次',iconName:'training'},
+ {key:'back',name:'臀桥及背部',unit:'次',value:0,step:1,max:6000,type:'strength',exercise:'背部运动',note:'每组15次',iconName:'training'},
  {key:'bike',name:'自行车',unit:'分钟',value:0,step:10,max:480,type:'cardio',exercise:'自行车',note:'中等强度',iconName:'activity'},
  {key:'running',name:'跑步',unit:'分钟',value:0,step:10,max:480,type:'running',exercise:'跑步',note:'按分钟',iconName:'running'},
  {key:'steps',name:'走路',unit:'步',value:0,step:1000,max:100000,type:'walking',exercise:'走路',note:'实际步数',iconName:'walking'},
