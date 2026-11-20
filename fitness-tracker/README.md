@@ -1,11 +1,18 @@
-# 健身记录 / Fitness Tracker V5.13.2（新手机图标与热量溢出修复）
+# 健身记录 / Fitness Tracker V5.13.3（资源拆分与离线缓存优化）
 
-最新版本：V5.13.2（2026-11-20）
+最新版本：V5.13.3（2026-11-21）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
  
+## V5.13.3 — 资源加载与体积收尾优化
+- 将原 index.html 内的 CSS 和 JavaScript 原样拆分为 app.css、app.js；所有选择器、绘制、交互及热量计算逻辑保持不变。
+- 首页文档不再重复携带约 370 KB 的样式和脚本；由 Service Worker 预缓存带版本号的独立文件，后续打开可复用缓存，且支持离线使用。
+- 取消同时加载与 icon-180.png 内容重复的内嵌 PNG 格式 icon.svg favicon；iPhone 180px 图标及 PWA 192/512px PNG 保留，原 icon.svg 文件保留供旧版本兼容。
+- 删除未被页面、manifest 或 SW 引用的旧 icon-512.jpg（现用 icon-512.png），减少发布目录冗余。
+- 不修改 localStorage 键值、既有运动记录、设置、12 项运动卡、日历、热量算法及视觉设计。
+
 ## V5.13.2 — 将「背部运动」更名为「臀桥及背部」
 - 首页第十一项（key=back）的显示名称更新为「臀桥及背部」；设置、添加运动弹窗、当日训练、历史及热量明细同步显示新名称。
 - 保留内部 exercise='背部运动' 与 presetKey='back'，保证历史训练仍被正确统计；不会更改、迁移或覆盖用户已有 localStorage 数据。
