@@ -1,5 +1,5 @@
-const CACHE='fitness-tracker-v5.9.1-plaque-center';
-const ASSETS=['./','./index.html','./imperial-fortress.svg','./art/background.webp','./art/fortress.webp','./art/stats.webp','./art/card.webp','./art/nav.webp','./art/nav-active.webp','./art/banner.webp','./manifest.webmanifest?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
+const CACHE='fitness-tracker-v5.10.0-astra-banner-badges';
+const ASSETS=['./','./index.html','./imperial-fortress.svg','./art/background.webp','./art/fortress.webp','./art/stats.webp','./art/card.webp','./art/astramilitarum-training-sprite.webp','./art/nav.webp','./art/nav-active.webp','./art/banner.webp','./manifest.webmanifest?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
