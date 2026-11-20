@@ -1,11 +1,18 @@
-# 健身记录 / Fitness Tracker V5.13.3（资源拆分与离线缓存优化）
+# 健身记录 / Fitness Tracker V5.14.0（复古黑暗奇幻漫画主题）
 
-最新版本：V5.13.3（2026-11-21）
+最新版本：V5.14.0（2026-11-21）
 
 V1.0 冻结基线：`release/fitness-tracker-v1.0`；V1.1 在不更改旧记录数据结构的基础上新增日历和打卡。
 
 线上入口：https://raynacocobobobo-arch.github.io/DND/fitness-tracker/
  
+## V5.14.0 — 首页复古黑暗奇幻漫画主题上线
+- 在 V5.13.3 首页结构基础上新增 `noir-theme.css`（独立覆盖，不重写计算逻辑），以焦橙、深红、羊皮纸黄、橄榄绿和黑色构建复古四色漫画视觉。
+- 将已确认设计稿的顶部全身调查员剪裁为 `art/noir-hero.webp`，并将 12 个运动角色统一制作为轻量 WebP 图组 `art/noir-workouts.webp`。
+- 保持打卡首页 3 列 × 4 行，12 项顺序、名称、数量/单位、kcal、今日消耗按钮、周进度和四栏导航；所有值由现有 JavaScript 实时产生，不采用图片中的示例数据。
+- Service Worker 预缓存新增 CSS/两张 WebP 素材，支持安装到桌面和离线访问。
+- 不触碰 `app.js`、localStorage 数据键 `hermes_fitness_journal_v1`、热量算法、日历/历史/设置/导入导出流程及旧 PWA 图标。
+
 ## V5.13.3 — 资源加载与体积收尾优化
 - 将原 index.html 内的 CSS 和 JavaScript 原样拆分为 app.css、app.js；所有选择器、绘制、交互及热量计算逻辑保持不变。
 - 首页文档不再重复携带约 370 KB 的样式和脚本；由 Service Worker 预缓存带版本号的独立文件，后续打开可复用缓存，且支持离线使用。
