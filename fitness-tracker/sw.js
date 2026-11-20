@@ -1,4 +1,4 @@
-const CACHE='fitness-tracker-v5.10.0-astra-banner-badges';
+const CACHE='fitness-tracker-v5.10.1-inline-banner-icons';
 const ASSETS=['./','./index.html','./imperial-fortress.svg','./art/background.webp','./art/fortress.webp','./art/stats.webp','./art/card.webp','./art/astramilitarum-training-sprite.webp','./art/nav.webp','./art/nav-active.webp','./art/banner.webp','./manifest.webmanifest?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
@@ -10,7 +10,7 @@ self.addEventListener('fetch',e=>{
   const req=e.request;
   if(req.method!=='GET'||!req.url.startsWith(self.registration.scope))return;
   if(req.mode==='navigate'){
-    e.respondWith(fetch(req).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));}return r;}).catch(()=>caches.match('./index.html')));
+    e.respondWith(fetch(req,{cache:'no-store'}).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));}return r;}).catch(()=>caches.match('./index.html')));
   } else {
     e.respondWith(caches.match(req).then(cached=>cached||fetch(req).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put(req,copy));}return r;})));
   }
