@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5.13.0" />
   <link rel="icon" href="./icon-180.png?v=5.13.0" type="image/png" />
   <link rel="icon" href="./icon.svg?v=5.13.0" type="image/svg+xml" />
-  <title>健身记录 · V5.13.0</title>
+  <title>健身记录 · V5.13.1</title>
   <style>
     :root {--bg:#29251d;--card:#fff;--ink:#27221a;--sub:#e3ae2d;--muted:#896a29;--line:#29251d;--accent:#c99216;--accent-dark:#c99216;--accent-pale:#29251d;--ink-panel:#27221a;--warm:#e9af61;--shadow:0 12px 40px rgba(215,161,31,.045);--radius:22px;}
     *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.52}
@@ -3181,6 +3181,69 @@ body[data-screen="overview"] .if6-week-cal{
  body[data-screen="overview"] .if6-stat-amount small{font-size:9px!important}
 }
 
+
+/* V5.13.1: kcal values no longer collide with painted gold laurel or plaque. */
+body[data-screen="overview"] .if6-stat-today{
+ display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;
+ gap:1px!important;padding:6px 3px 5px!important;min-width:0!important;overflow:hidden!important;
+}
+body[data-screen="overview"] .if6-stat-today>.if6-stat-label{
+ flex:0 0 auto!important;font-size:clamp(11px,3.2vw,14px)!important;line-height:1.12!important;margin:0!important;
+}
+body[data-screen="overview"] .if6-stat-amount{
+ box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;gap:0!important;
+ width:calc(100% - 30px)!important;max-width:125px!important;min-width:0!important;
+ margin:1px 0 0!important;padding:0!important;overflow:hidden!important;text-align:center!important;
+}
+body[data-screen="overview"] .if6-stat-amount strong{
+ display:block!important;flex:0 0 auto!important;max-width:100%!important;
+ font-size:min(31px,var(--today-fit,27px))!important;line-height:1.04!important;
+ letter-spacing:-.65px!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-stat-amount small{
+ display:block!important;flex:0 0 auto!important;font-size:9px!important;
+ line-height:1.05!important;font-weight:850!important;margin:0!important;padding:0!important;
+ letter-spacing:.5px!important;text-align:center!important;
+}
+body[data-screen="overview"] .if6-card{position:relative!important}
+body[data-screen="overview"] .if6-energy{
+ box-sizing:border-box!important;position:absolute!important;left:50%!important;top:87%!important;
+ right:auto!important;bottom:auto!important;transform:translate(-50%,-50%)!important;
+ width:76%!important;height:17px!important;min-height:17px!important;max-height:17px!important;
+ margin:0!important;padding:0!important;z-index:2!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ overflow:hidden!important;color:#211509!important;line-height:1!important;pointer-events:none!important;
+}
+body[data-screen="overview"] .if6-energy-content{
+ display:flex!important;flex-direction:row!important;width:100%!important;max-width:100%!important;
+ height:17px!important;min-height:17px!important;align-items:center!important;justify-content:center!important;
+ gap:2px!important;margin:0!important;padding:0!important;line-height:1!important;
+ white-space:nowrap!important;overflow:hidden!important;transform:none!important;
+}
+body[data-screen="overview"] .if6-energy-content svg{
+ display:block!important;flex:0 0 9px!important;width:9px!important;height:10px!important;
+ min-height:0!important;margin:0!important;padding:0!important;
+ align-self:center!important;vertical-align:middle!important;
+}
+body[data-screen="overview"] .if6-energy-content strong{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;font-size:11px!important;
+ font-weight:900!important;line-height:1!important;letter-spacing:-.15px!important;
+ margin:0!important;padding:0!important;align-self:center!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-energy-content em{
+ display:block!important;flex:0 0 auto!important;font-style:normal!important;font-size:9px!important;
+ font-weight:800!important;line-height:1!important;margin:0!important;padding:0!important;
+ align-self:center!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-energy.kcal-long .if6-energy-content strong{font-size:9px!important}
+body[data-screen="overview"] .if6-energy.kcal-very-long .if6-energy-content strong{font-size:7.5px!important;letter-spacing:-.35px!important}
+@media(max-width:390px){
+ body[data-screen="overview"] .if6-stat-amount{width:calc(100% - 26px)!important}
+ body[data-screen="overview"] .if6-energy{width:80%!important}
+ body[data-screen="overview"] .if6-energy-content{gap:1px!important}
+}
+
 </style>
 </head>
 <body>
@@ -4193,6 +4256,8 @@ function if6Tile(q,records){
  const info=wbToday(q,records);
  const calories=info.list.reduce((sum,r)=>sum+(Number(r.calories)||0),0);
  const amount=Number(info.value)||0;
+ const kcalText=calories.toLocaleString('zh-CN');
+ const kcalDensity=kcalText.length>7?' kcal-very-long':kcalText.length>5?' kcal-long':'';
  const label=amount.toLocaleString('zh-CN');
  const wide=label.length>=5;
  return '<button type="button" class="if6-card'+(info.count?' is-done':'')+'" data-wb-open="'+q.key+
@@ -4200,7 +4265,7 @@ function if6Tile(q,records){
  '<span class="if6-icon">'+if6ExerciseIcon(q)+'</span>'+
  '<span class="if6-card-name">'+safe(q.name)+'</span>'+
  '<span class="if6-quantity'+(wide?' long':'')+'"><strong>'+label+'</strong><small>'+safe(q.unit)+'</small></span>'+
- '<span class="if6-energy"><span class="if6-energy-content">'+IF6_FLAME+'<strong>'+calories.toLocaleString('zh-CN')+'</strong><em>kcal</em></span></span></button>';
+ '<span class="if6-energy'+kcalDensity+'"><span class="if6-energy-content">'+IF6_FLAME+'<strong>'+kcalText+'</strong><em>kcal</em></span></span></button>';
 }
 function renderQuickHome(){
  const today=localDate(),records=recordsOfDate(today);
