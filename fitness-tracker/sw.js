@@ -1,4 +1,4 @@
-const CACHE='fitness-tracker-v5.5.0-approved-gothic';
+const CACHE='fitness-tracker-v5.5.1-approved-gothic-fit';
 const ASSETS=['./','./index.html','./imperial-fortress.svg','./manifest.webmanifest?v=2.2','./icon.svg?v=2.2','./icon-180.png?v=2.2'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
