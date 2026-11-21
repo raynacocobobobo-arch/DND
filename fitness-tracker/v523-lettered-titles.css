@@ -1,0 +1,27 @@
+/* V5.23.0 • Screen titles hand-lettered to match the home artwork. */
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-title{
+  box-sizing:border-box!important;display:block!important;flex:none!important;position:relative!important;
+  margin:0!important;padding:0!important;font-size:0!important;line-height:0!important;
+  color:transparent!important;text-shadow:none!important;-webkit-text-stroke:0 transparent!important;
+  border:0!important;background-repeat:no-repeat!important;background-size:contain!important;
+  background-position:left top!important;overflow:hidden!important;white-space:nowrap!important;
+}
+body[data-screen="calendar"] .topline .page-title{
+  width:clamp(145px,50vw,370px)!important;height:clamp(56px,19.35vw,143px)!important;
+  background-image:url('./art/calendar-lettering.webp?v=5.23.0')!important;
+}
+body[data-screen="history"] .topline .page-title{
+  width:clamp(145px,50vw,370px)!important;height:clamp(56px,19.35vw,143px)!important;
+  background-image:url('./art/history-lettering.webp?v=5.23.0')!important;
+  background-position:right top!important;margin-left:auto!important;
+}
+body[data-screen="settings"] .topline .page-title{
+  width:clamp(90px,28vw,210px)!important;height:clamp(62px,19.8vw,148px)!important;
+  background-image:url('./art/settings-lettering.webp?v=5.23.0')!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-sub{display:none!important}
+@media(max-width:350px){
+ body:is([data-screen="calendar"],[data-screen="history"]) .topline .page-title{
+  width:clamp(140px,48vw,170px)!important;height:clamp(54px,18.6vw,66px)!important
+ }
+}
