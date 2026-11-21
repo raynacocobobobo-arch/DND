@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+ <meta name="theme-color" content="#201b18">
+ <title>Hermes To Do · iPhone 小组件安装</title>
+ <style>
+  :root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+  *{box-sizing:border-box}body{margin:0;background:#14120f;color:#f5e5d0;line-height:1.65;padding:26px 17px 64px}
+  main{max-width:640px;margin:0 auto}.label{color:#caab81;font-size:11px;letter-spacing:2px;font-weight:700}
+  h1{font-size:27px;margin:9px 0 5px;line-height:1.3}.sub{margin:0 0 24px;color:#b4a28d;font-size:14px}
+  .panel{padding:20px;border:1px solid #624a32;background:#241e18;border-radius:15px;margin:0 0 18px}
+  .panel h2{font-size:17px;margin:0 0 11px}.steps{padding-left:23px;margin:0}.steps li{padding:5px 0}
+  .buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:17px 0}
+  button,.btn{appearance:none;display:grid;place-items:center;text-decoration:none;text-align:center;padding:14px 8px;min-height:50px;border-radius:11px;font-size:15px;font-weight:720}
+  button{border:0;color:#201409;background:#d6af74;cursor:pointer}.btn{color:#efd7b4;background:#372b20;border:1px solid #84684a}
+  button:focus-visible,.btn:focus-visible{outline:2px solid #fff6e7;outline-offset:3px}
+  .status{font-size:13px;color:#d6af74;min-height:24px;margin:0}
+  .note{color:#bba78c;font-size:13px;margin:12px 0}.warning{color:#e4b78b}
+  details{margin:18px 0 0}summary{cursor:pointer;color:#e3c397;font-size:14px}textarea{width:100%;height:190px;resize:vertical;background:#15120f;border:1px solid #6c5138;color:#ead6b6;border-radius:9px;padding:12px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre;overflow:auto;margin:10px 0 0}
+  a{color:#e0bb8c}
+ </style>
+</head>
+<body>
+<main>
+ <div class="label">HERMES TO DO / IOS WIDGET</div>
+ <h1>安装 iPhone 桌面小组件</h1>
+ <p class="sub">不用在聊天里下载文件。直接复制完整脚本，到 Scriptable 粘贴即可。</p>
+ <section class="panel">
+  <h2>在 iPhone 上操作</h2>
+  <ol class="steps">
+   <li>先安装 <a href="https://apps.apple.com/app/id1405459188">Scriptable</a>。</li>
+   <li>在此页面点击<strong>「复制完整脚本」</strong>。</li>
+   <li>打开 Scriptable，点右上角 <strong>＋</strong> 新建脚本，长按编辑区域并<strong>粘贴</strong>，命名为 <strong>Hermes To Do</strong>。</li>
+   <li>点击 Scriptable 里的运行按钮，粘贴腾讯云 Agent 私聊给你的<strong>只读令牌</strong>，完成配对。</li>
+   <li>返回 iPhone 桌面，长按空白处 → 添加小组件 → Scriptable → 选择<strong>中尺寸</strong> → 编辑小组件并选择这个脚本。</li>
+  </ol>
+  <div class="buttons">
+   <button type="button" id="copy">复制完整脚本</button>
+   <a class="btn" href="./Hermes-To-Do-Widget.js" download="Hermes-To-Do-Widget.js">下载 JS 文件</a>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite">正在载入脚本…</p>
+  <p class="note">如果无法直接复制，展开下方「显示完整代码」，长按代码 → 全选 → 复制。</p>
+  <details><summary>显示完整代码（备用复制方式）</summary>
+   <textarea id="source" readonly spellcheck="false" aria-label="Scriptable 全部脚本"></textarea>
+  </details>
+ </section>
+ <section class="panel">
+  <h2>关于安全与数据</h2>
+  <p class="note">这里公开的只有小组件程序，没有你的令牌、密码、任务内容。只读令牌只需要在你自己的 Scriptable 中输入，不要发到聊天或上传至 GitHub。</p>
+  <p class="note">服务器已上线。首次显示 0 项可能是因为腾讯云 Hermes 数据库目前没有任务；如果网站确有任务却显示 0，请先核实使用的是腾讯云版本还是 GitHub Pages/Supabase 版本。</p>
+  <p class="warning note">iOS 决定桌面小组件实际刷新频率，并不保证任务完成后立即刷新。</p>
+ </section>
+</main>
+<script>
+(function(){
+ const source=document.getElementById('source');
+ const btn=document.getElementById('copy');
+ const status=document.getElementById('status');
+ let code='';
+ const setStatus=(message)=>status.textContent=message;
+ fetch('./Hermes-To-Do-Widget.js',{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.text()})
+  .then(t=>{if(t.length<7500||!t.includes('Script.setWidget'))throw Error('脚本不完整');code=t;source.value=t;setStatus('脚本已载入，可以复制（约 '+Math.ceil(t.length/1000)+' KB）。')})
+  .catch(e=>setStatus('自动载入失败。请点击「下载 JS 文件」打开源文件：'+e.message));
+ btn.addEventListener('click',async()=>{
+   if(!code){setStatus('脚本尚未载入，请检查网络或点击下载文件。');return}
+   try{
+    if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(code);
+    else{source.closest('details').open=true;source.focus();source.select();if(!document.execCommand('copy'))throw Error('无法复制')}
+    setStatus('已复制！现在打开 Scriptable，新建脚本并粘贴。');
+   }catch(e){source.closest('details').open=true;source.focus();source.select();setStatus('浏览器未允许自动复制，代码已选中，请在文本框里长按选择「复制」。')}
+ });
+})();
+</script>
+</body>
+</html>
