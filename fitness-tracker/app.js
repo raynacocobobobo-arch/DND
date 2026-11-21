@@ -356,9 +356,9 @@ else if(type==='hold'){r.exercise=ex;r.sets=Number(d.sets);r.secondsPerSet=Numbe
 if(d.presetKey)r.presetKey=d.presetKey;return r}
 function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
-function viewTitle(){return {overview:['健身记录',''],followalong:['跟练','视频课程'],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['设置','体重、目标和备份，都由你控制。']}[view]}
-function navHTML(){return [['overview','打卡'],['followalong','跟练'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k==='overview'?'training':k==='history'?'journal':k)}<span>${t}</span></button>`).join('')}
-function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.11.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="训练日历"':''}>${view==='calendar'?'':safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]())}
+function viewTitle(){return {overview:['健身记录',''],followalong:['跟练',''],calendar:['训练日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['训练历史','按日期查看和修改每一条记录。'],settings:['设置','体重、目标和备份，都由你控制。']}[view]}
+function navHTML(){return [['overview','打卡'],['followalong','跟练'],['calendar','日历'],['history','历史'],['settings','设置']].map(([k,t])=>`<button type="button" aria-label="${t}" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k==='overview'?'training':k==='history'?'journal':k)}<span>${t}</span></button>`).join('')}
+function render(){if(!storageReadIssue){/* Never reassign recorded dates during app launch. */if(normalizeLegacyWalking(state)!==state||recalibratedFitnessState(state)!==state)persist();}document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.11.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="训练日历"':''}>${view==='calendar'?'':safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -632,27 +632,70 @@ function updateExercisePreview(card,source){
 /* V5.25: video followalong is intentionally separate from calorie/records state. */
 const FOLLOW_ALONG_KEY='fitness_followalong_sessions_v1';
 function followalongCount(){try{const x=JSON.parse(localStorage.getItem(FOLLOW_ALONG_KEY)||'{}');return Number.isInteger(x.count)&&x.count>=0?x.count:0}catch(e){return 0}}
+/* V5.26.0 — the user's original MP4, downloaded just once per browser cache. */
+const FOLLOW_VIDEO_PARTS=13;
+const FOLLOW_VIDEO_TOTAL_BYTES=7725210;
+const FOLLOW_VIDEO_CACHE='fitness-video-v526-offline';
+let followVideoObjectUrl=null,followVideoPromise=null;
 function renderFollowalong(){
- const count=followalongCount();
  return '<div class="fa-page">'+
- '<header class="fa-hero"><div class="fa-hero-copy"><span class="fa-episode">FIELD TRAINING / NO. 01</span><h1>跟练</h1><span class="fa-hero-sub">跟随视频 · 完成今天的舒展练习</span></div><div class="fa-hero-mark" aria-hidden="true"><svg viewBox="0 0 90 90" fill="none"><path d="M11 12h68v65H11z" stroke="#19110a" stroke-width="4"/><path d="M20 12V5M70 12V5M12 25h67" stroke="#19110a" stroke-width="5"/><path d="M38 36v31l28-15.5z" fill="#ab3122" stroke="#120b07" stroke-width="4"/></svg></div></header>'+
- '<section class="fa-player-card"><div class="fa-ribbon"><span>01 / 驼背舒展</span><strong>08:17</strong></div>'+
- '<div class="fa-player"><iframe loading="lazy" src="https://player.bilibili.com/player.html?bvid=BV1rS4y1b7cU&amp;page=1&amp;high_quality=1&amp;danmaku=0&amp;autoplay=0" title="驼背与肩颈舒展跟练视频，约8分17秒" allow="fullscreen; autoplay; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'+
- '<div class="fa-player-foot"><span>跟随视频中的倒计时进行动作</span><a href="https://www.bilibili.com/video/BV1rS4y1b7cU/" target="_blank" rel="noopener noreferrer">打开原视频 ↗</a></div></section>'+
- '<section class="fa-intro-card"><span class="fa-corner-index">TRAINING FILE · 001</span><h2>肩颈与上背舒展</h2><div class="fa-tags"><span>肩颈活动</span><span>上背舒展</span><span>无需器械</span></div>'+
- '<p>跟随画面中的动作、计时与提示练习。保持自然呼吸，不必刻意追求动作幅度。</p></section>'+
- '<section class="fa-check-card"><div><span class="fa-check-label">跟练记录</span><strong>'+count+' <small>次</small></strong><p>独立记录跟练次数，不重复计算运动热量。</p></div><button type="button" class="fa-complete-btn" data-follow-complete>完成本次跟练</button></section>'+
- '<p class="fa-disclaimer">动作以视频示范为准；出现疼痛、眩晕或麻木时请停止。此视频来自原作者在视频平台发布的版本，播放需要联网。</p>'+
- '</div>';
+ '<header class="fa-hero"><h1 class="fa-hero-heading" aria-label="跟练">跟练</h1></header>'+
+ '<section class="fa-player-sheet"><div class="fa-player">'+
+ '<video id="fa-video" controls playsinline preload="none" poster="./art/follow-poster-v526.webp?v=5.26.0" aria-label="跟练视频"></video>'+
+ '<div class="fa-video-state" id="fa-video-state" role="status" aria-live="polite">视频准备中…</div>'+
+ '</div></section></div>';
 }
-document.addEventListener('click',function(e){
- const btn=e.target.closest('[data-follow-complete]');
- if(!btn)return;
- const count=followalongCount();
- try{localStorage.setItem(FOLLOW_ALONG_KEY,JSON.stringify({count:count+1,lastDate:localDate()}))}
- catch(err){toast('无法保存跟练次数，请检查浏览器存储空间');return}
- render();
- toast('已完成一次跟练');
+async function followVideoPart(index,cache){
+ const url='./media/posture-parts/p'+String(index).padStart(2,'0')+'.bin?v=5.26.0';
+ let response=cache?await cache.match(url,{ignoreSearch:true}):null;
+ if(!response){
+  response=await fetch(url);
+  if(!response.ok)throw new Error('视频资源未能加载');
+  if(cache)await cache.put(url,response.clone());
+ }
+ return response.arrayBuffer();
+}
+function hydrateFollowVideo(){
+ const video=document.getElementById('fa-video');
+ if(!video)return;
+ const status=document.getElementById('fa-video-state');
+ if(followVideoObjectUrl){
+  video.src=followVideoObjectUrl;if(status)status.hidden=true;return;
+ }
+ if(!followVideoPromise){
+  followVideoPromise=(async()=>{
+   const cache=typeof caches==='undefined'?null:await caches.open(FOLLOW_VIDEO_CACHE);
+   let downloaded=0;
+   const parts=await Promise.all(Array.from({length:FOLLOW_VIDEO_PARTS},async(_,i)=>{
+    const data=await followVideoPart(i,cache);
+    downloaded++;
+    const tip=document.getElementById('fa-video-state');
+    if(tip&&view==='followalong')tip.textContent='正在准备视频 '+Math.round(downloaded/FOLLOW_VIDEO_PARTS*100)+'%';
+    return data;
+   }));
+   const size=parts.reduce((n,p)=>n+p.byteLength,0);
+   if(size!==FOLLOW_VIDEO_TOTAL_BYTES)throw new Error('视频资源不完整，请重新加载');
+   return URL.createObjectURL(new Blob(parts,{type:'video/mp4'}));
+  })().catch(err=>{followVideoPromise=null;throw err});
+ }
+ followVideoPromise.then(url=>{
+  followVideoObjectUrl=url;
+  const current=document.getElementById('fa-video');
+  if(!current)return;
+  current.src=url;
+  const tip=document.getElementById('fa-video-state');
+  if(tip)tip.hidden=true;
+ }).catch(()=>{
+  const tip=document.getElementById('fa-video-state');
+  if(tip&&view==='followalong')tip.innerHTML='<button type="button" class="fa-video-retry" data-follow-retry>重新加载视频</button>';
+ });
+}
+document.addEventListener('click',e=>{
+ if(!e.target.closest('[data-follow-retry]'))return;
+ followVideoPromise=null;
+ const status=document.getElementById('fa-video-state');
+ if(status){status.hidden=false;status.textContent='视频准备中…'}
+ hydrateFollowVideo();
 });
 
 function switchView(v){if(v==='steps')v='overview';if(!['overview','followalong','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;wbCalorieDetailOpen=false;view=v;render();window.scrollTo({top:0,behavior:'instant'})}

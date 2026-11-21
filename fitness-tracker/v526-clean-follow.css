@@ -1,0 +1,101 @@
+/* V5.26.0 — Minimal follow-along, same original comic treatment as the other tabs.
+   Retains the established four icon illustrations, adding only the follow-along slot. */
+body[data-screen="followalong"],body[data-screen="followalong"] .app,
+body[data-screen="followalong"] .main,body[data-screen="followalong"] #content{
+  background:#0c0907!important;color:#201309!important;
+}
+body[data-screen="followalong"],body[data-screen="followalong"] .app{
+  width:100%!important;min-height:100dvh!important;height:auto!important;max-height:none!important;overflow:visible!important;
+}
+body[data-screen="followalong"] .main{
+  box-sizing:border-box!important;display:block!important;width:100%!important;max-width:900px!important;
+  min-height:100dvh!important;height:auto!important;max-height:none!important;margin:0 auto!important;
+  padding:env(safe-area-inset-top,0px) 0 calc(62px + env(safe-area-inset-bottom,0px))!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+}
+body[data-screen="followalong"] #content{box-sizing:border-box!important;max-width:none!important;width:100%!important;min-height:0!important;height:auto!important;overflow:visible!important;}
+body[data-screen="followalong"] .fa-page{
+  box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  width:100%!important;max-width:760px!important;min-height:calc(100dvh - 62px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;
+  margin:0 auto!important;gap:7px!important;padding:3px 5px 0!important;
+  border:0!important;box-shadow:none!important;background:#0c0907!important;color:#201309!important;
+}
+body[data-screen="followalong"] .fa-hero{
+  box-sizing:border-box!important;display:block!important;flex:0 0 auto!important;position:relative!important;
+  width:100%!important;height:clamp(132px,42vw,193px)!important;min-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;border:2px solid #1a1009!important;border-radius:10px!important;
+  background:#9d341c url('./art/follow-hero-v526.webp?v=5.26.0') center/100% 100% no-repeat!important;
+  box-shadow:inset 0 0 0 1px #d18a4a!important;
+}
+body[data-screen="followalong"] .fa-hero:before,body[data-screen="followalong"] .fa-hero:after{content:none!important;display:none!important}
+body[data-screen="followalong"] .fa-hero-heading{
+  box-sizing:border-box!important;position:absolute!important;left:12px!important;top:11px!important;z-index:2!important;
+  display:block!important;width:clamp(80px,24vw,139px)!important;height:clamp(40px,12vw,65px)!important;
+  margin:0!important;padding:0!important;color:transparent!important;font-size:0!important;line-height:0!important;
+  text-shadow:none!important;transform:none!important;-webkit-text-stroke:0 transparent!important;
+  background:url('./art/follow-title-v526.webp?v=5.26.0') left center/contain no-repeat!important;
+}
+body[data-screen="followalong"] .fa-hero-heading:after{content:none!important;display:none!important}
+body[data-screen="followalong"] .fa-player-sheet{
+  box-sizing:border-box!important;display:flex!important;flex:1 0 auto!important;flex-direction:column!important;
+  width:100%!important;min-height:calc(100dvh - 300px)!important;
+  margin:0!important;padding:11px 8px 20px!important;border:2px solid #17100b!important;border-radius:10px!important;
+  background:#f7d29a url('./art/paper-exact.webp?v=5.18.0') center/104px 44px repeat!important;
+  box-shadow:inset 0 0 0 1px #daa96a!important;
+}
+body[data-screen="followalong"] .fa-player{
+  box-sizing:border-box!important;position:relative!important;display:block!important;flex:none!important;
+  width:100%!important;height:auto!important;aspect-ratio:16/9!important;margin:0!important;padding:0!important;
+  background:#100d09!important;border:2px solid #120b06!important;border-radius:6px!important;overflow:hidden!important;
+  box-shadow:0 2px 0 #5f3b22!important;
+}
+body[data-screen="followalong"] .fa-player video{
+  display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  max-width:none!important;object-fit:contain!important;background:#0c0a09!important;
+}
+body[data-screen="followalong"] .fa-video-state{
+  box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  position:absolute!important;inset:0!important;z-index:2!important;padding:10px!important;
+  background:rgba(9,7,6,.55)!important;color:#ffe1a7!important;text-align:center!important;
+  font:800 12px/1.45 'Songti SC','STSong',serif!important;
+}
+body[data-screen="followalong"] .fa-video-state[hidden]{display:none!important}
+body[data-screen="followalong"] .fa-video-retry{background:#9f2e21!important;color:#ffe5b4!important;border:1px solid #edba77!important;border-radius:5px!important;padding:9px 17px!important;font:900 14px/1.2 'Songti SC','STSong',serif!important}
+/* Five slots from the previously approved hand-inked navigation sprite; NO new generic SVG icon set. */
+@media(max-width:850px){
+ body[data-screen] .mobile-nav,body[data-screen="overview"] .mobile-nav{
+   display:grid!important;position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:100!important;
+   box-sizing:border-box!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+   width:100%!important;height:calc(61px + env(safe-area-inset-bottom,0px))!important;
+   min-height:0!important;max-height:none!important;margin:0!important;padding:0 0 env(safe-area-inset-bottom,0px)!important;
+   gap:0!important;overflow:hidden!important;border:0!important;border-top:0!important;
+   background-color:#0b0907!important;background-image:url('./art/nav-five-v526.webp?v=5.26.0')!important;
+   background-position:center top!important;background-size:100% 61px!important;background-repeat:no-repeat!important;
+   box-shadow:none!important;backdrop-filter:none!important;
+ }
+ body[data-screen] .mobile-nav .nav-btn,body[data-screen] .mobile-nav .nav-btn.active,
+ body[data-screen="overview"] .mobile-nav .nav-btn,body[data-screen="overview"] .mobile-nav .nav-btn.active{
+   display:block!important;position:relative!important;box-sizing:border-box!important;flex:none!important;
+   width:100%!important;height:61px!important;min-width:0!important;min-height:0!important;max-height:none!important;
+   margin:0!important;padding:0!important;gap:0!important;background:transparent!important;border:0!important;
+   border-radius:0!important;outline-offset:-3px!important;box-shadow:none!important;filter:none!important;
+ }
+ body[data-screen] .mobile-nav .nav-btn:before,body[data-screen] .mobile-nav .nav-btn:after,
+ body[data-screen="overview"] .mobile-nav .nav-btn:before,body[data-screen="overview"] .mobile-nav .nav-btn:after{
+   display:none!important;content:none!important;background:none!important;
+ }
+ body[data-screen] .mobile-nav .nav-btn svg,body[data-screen] .mobile-nav .nav-btn span,
+ body[data-screen="overview"] .mobile-nav .nav-btn svg,body[data-screen="overview"] .mobile-nav .nav-btn span{
+   position:absolute!important;opacity:0!important;pointer-events:none!important;
+ }
+ body[data-screen="overview"] .main{padding-bottom:calc(61px + env(safe-area-inset-bottom,0px))!important}
+ body[data-screen="followalong"] .main{padding-bottom:calc(61px + env(safe-area-inset-bottom,0px))!important}
+}
+@media(max-width:350px){
+ body[data-screen="followalong"] .fa-player-sheet{padding:7px 5px 12px!important}
+ body[data-screen="followalong"] .fa-hero-heading{left:9px!important;top:9px!important}
+}
+@media(min-width:851px){
+ body[data-screen="followalong"] .fa-page{padding:10px 14px!important}
+ body[data-screen="followalong"] .fa-player-sheet{min-height:300px!important}
+}
