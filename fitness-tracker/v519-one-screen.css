@@ -184,3 +184,17 @@ body[data-screen="overview"] .if6-card[data-wb-open="running"] .if6-icon {
   width: 80% !important;
   height: 76% !important;
 }
+
+body[data-screen="overview"] .if6-card[data-wb-open="wall-sit"] .if6-icon {
+  width: 94% !important;
+  height: 76% !important;
+}
+body[data-screen="overview"] .if6-card[data-wb-open="row"] .if6-icon {
+  width: 100% !important;
+  height: 69% !important;
+}
+body[data-screen="overview"] .if6-card[data-wb-open="elliptical"] .if6-icon,
+body[data-screen="overview"] .if6-card[data-wb-open="bike"] .if6-icon {
+  width: 95% !important;
+  height: 75% !important;
+}
