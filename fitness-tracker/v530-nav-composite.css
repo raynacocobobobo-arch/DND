@@ -1,0 +1,39 @@
+/* V5.30.0: single composite background per state. The V5.29 split
+ broke button alignment; only the second graphic is reduced inside new SVG.
+ Originals remain a fallback when SVG display is unavailable. */
+@media(max-width:850px){
+ body[data-screen="overview"],body[data-screen="training"]{
+  --ft-nav-fixed:url('./art/nav-fixed-overview-v530.svg?v=5.30.0');
+  --ft-nav-original:url('./art/nav-active-overview-v526.webp?v=5.26.1');
+ }
+ body[data-screen="followalong"]{
+  --ft-nav-fixed:url('./art/nav-fixed-followalong-v530.svg?v=5.30.0');
+  --ft-nav-original:url('./art/nav-active-followalong-v526.webp?v=5.26.1');
+ }
+ body[data-screen="calendar"]{
+  --ft-nav-fixed:url('./art/nav-fixed-calendar-v530.svg?v=5.30.0');
+  --ft-nav-original:url('./art/nav-active-calendar-v526.webp?v=5.26.1');
+ }
+ body[data-screen="history"]{
+  --ft-nav-fixed:url('./art/nav-fixed-history-v530.svg?v=5.30.0');
+  --ft-nav-original:url('./art/nav-active-history-v526.webp?v=5.26.1');
+ }
+ body[data-screen="settings"]{
+  --ft-nav-fixed:url('./art/nav-fixed-settings-v530.svg?v=5.30.0');
+  --ft-nav-original:url('./art/nav-active-settings-v526.webp?v=5.26.1');
+ }
+ body[data-screen] .mobile-nav{
+  background-image:var(--ft-nav-fixed),var(--ft-nav-original)!important;
+  background-color:#0b0907!important;
+  background-size:100% 61px,100% 61px!important;
+  background-position:center top,center top!important;
+  background-repeat:no-repeat,no-repeat!important;
+ }
+ body[data-screen] .mobile-nav::after{
+  content:none!important;display:none!important;
+ }
+ body[data-screen] .mobile-nav .nav-btn::before,
+ body[data-screen] .mobile-nav .nav-btn::after{
+  content:none!important;display:none!important;background:none!important;
+ }
+}
