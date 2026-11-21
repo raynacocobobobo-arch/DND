@@ -150,9 +150,6 @@ body[data-screen="overview"] .mobile-nav .nav-btn:nth-child(4):before{width:65px
   body[data-screen="overview"] .if6-energy-content strong,
   body[data-screen="overview"] .if6-energy.kcal-long .if6-energy-content strong,
   body[data-screen="overview"] .if6-energy.kcal-very-long .if6-energy-content strong{font-size:clamp(15px,4.3vw,18px)!important}
-  body[data-screen="overview"] .if6-icon{height:60%!important}
-  body[data-screen="overview"] .if6-card[data-wb-open="situps"] .if6-icon{height:57%!important}
-  body[data-screen="overview"] .if6-card[data-wb-open="row"] .if6-icon{height:54%!important}
 }
 
 /* V5.19.1: make the hero an inset, four-corner rounded artwork card.
