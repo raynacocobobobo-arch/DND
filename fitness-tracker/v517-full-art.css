@@ -80,7 +80,7 @@ body[data-screen="overview"] .if6-icon:after{
 /* Artwork-specific occupancy controls. Tall standing poses use 97-104% height;
    horizontal/ground poses occupy full card width while preserving proportions. */
 body[data-screen="overview"] .if6-card:nth-child(1) .if6-icon:after{width:101%!important;height:100%!important}
-body[data-screen="overview"] .if6-card:nth-child(2) .if6-icon:after{width:105%!important;height:100%!important;background-image:url('./art/exercise-situps-fixed.webp')!important}
+body[data-screen="overview"] .if6-card:nth-child(2) .if6-icon:after{width:105%!important;height:100%!important;background-image:url('./art/exercise-situps-fixed.webp?v=5.17.2')!important}
 body[data-screen="overview"] .if6-card:nth-child(3) .if6-icon:after{width:94%!important;height:99%!important}
 body[data-screen="overview"] .if6-card:nth-child(4) .if6-icon:after{width:102%!important;height:93%!important}
 body[data-screen="overview"] .if6-card:nth-child(5) .if6-icon:after{width:99%!important;height:94%!important}
@@ -101,4 +101,20 @@ body[data-screen="overview"] .if6-card:nth-child(12) .if6-icon:after{width:104%!
 }
 @media(max-width:850px){
   body[data-screen="overview"] .main{padding-bottom:calc(22vw + 15px + env(safe-area-inset-bottom,0px))!important}
+}
+
+/* V5.17.2 visual QA: preserve all digits even for atypically long totals. */
+body[data-screen="overview"] .if6-stat-amount strong{
+ font-size:min(46px,10vw,calc(var(--today-fit,30px) * 1.23))!important;
+ max-width:calc(100% - 36px)!important;min-width:0!important;
+ overflow:hidden!important;white-space:nowrap!important
+}
+body[data-screen="overview"] .if6-week-percent{
+ font-size:min(44px,10vw,calc(var(--week-fit,25px) * 1.5))!important
+}
+body[data-screen="overview"] .if6-energy.kcal-long .if6-energy-content strong{
+ font-size:clamp(12px,3.6vw,16px)!important
+}
+body[data-screen="overview"] .if6-energy.kcal-very-long .if6-energy-content strong{
+ font-size:clamp(10px,3vw,13px)!important
 }
