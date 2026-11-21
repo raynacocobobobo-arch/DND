@@ -1,4 +1,4 @@
-// Hermes To Do · iPhone Scriptable Widget v1.0
+// Hermes To Do · iPhone Scriptable Widget v2.0 · 鸢尾圣女美术版
 // 适配：Scriptable 小、中、大尺寸；优先使用中尺寸。
 // 安全：不在源代码中保存令牌，只存于 iPhone Keychain。
 // 先由服务器部署 GET /api/widget/v1/summary，再在 Scriptable 首次运行时输入令牌。
@@ -10,12 +10,6 @@ const CACHE_KEY = 'hermes.widget.v1.last.valid.summary';
 const REQUEST_TIMEOUT_SECONDS = 12;
 const REFRESH_MINUTES = 30; // iOS 决定实际刷新时间，此设置仅是建议。
 
-const palette = {
-  bg: '#201B18', surface: '#332921', border: '#594734',
-  gold: '#EAC18A', ivory: '#FAE7C9', muted: '#BAA58B',
-  red: '#D66F58', green: '#B4CBA0', track: '#66513B'
-};
-const color = hex => new Color(hex);
 const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 const validInt = v => Number.isSafeInteger(v) && v >= 0 && v <= 1000000;
 
@@ -106,100 +100,198 @@ async function fetchSummary(token) {
   return parseSummary(JSON.parse(body));
 }
 
-function addText(stack, value, size, hex, bold) {
-  const t = stack.addText(String(value));
-  t.font = bold ? Font.boldSystemFont(size) : Font.mediumSystemFont(size);
-  t.textColor = color(hex);
-  t.lineLimit = 1;
-  t.minimumScaleFactor = 0.72;
-  return t;
+/* V2 · HERMES VISUAL SYSTEM — ivory × antique gold × navy × burgundy.
+   The heroine/iris artwork is the official Hermes To Do app icon, not a substitute illustration.
+   Every label remains live Scriptable text, not hard-coded into the background art. */
+const ARTWORK_URL = 'https://raynacocobobobo-arch.github.io/DND/hermestodo/icons/icon-192.png?v=20261110';
+const ARTWORK_CACHE_FILE = 'hermes-widget-v2-icon-192.png';
+
+const theme = {
+  navy: '#101e28', deep: '#0a1118', gold: '#c8a46a', goldLight: '#ebca91',
+  ivory: '#f3e3c9', muted: '#c6b398', burgundy: '#882e31', sage: '#b2c0a3'
+};
+const paint = (hex, alpha=1) => new Color(hex, alpha);
+
+async function loadArt() {
+  const fm = FileManager.local();
+  const file = fm.joinPath(fm.documentsDirectory(), ARTWORK_CACHE_FILE);
+  if (fm.fileExists(file)) {
+    try { return fm.readImage(file); } catch (_) {}
+  }
+  try {
+    const req = new Request(ARTWORK_URL);
+    req.timeoutInterval = 7;
+    const img = await req.loadImage();
+    if (img) { try { fm.writeImage(file, img); } catch (_) {} }
+    return img;
+  } catch (_) { return null; }
 }
-function timeLabel(ts) {
-  if (!Number.isFinite(ts)) return '尚未同步';
-  const date = new Date(ts);
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  return '最近同步 ' + hours + ':' + minutes;
+
+function heraldicBackground(small, art) {
+  const W = small ? 620 : 1280, H = 620;
+  const ctx = new DrawContext();
+  ctx.size = new Size(W, H);
+  ctx.opaque = true;
+  ctx.respectScreenScale = true;
+  ctx.setFillColor(paint(theme.deep));
+  ctx.fillRect(new Rect(0, 0, W, H));
+  // Official illustration occupies the right side, like the website's illustrated hero.
+  if (art) {
+    const side = small ? 545 : 640;
+    const left = small ? 155 : 800;
+    const top = small ? 26 : -10;
+    ctx.drawImageInRect(art, new Rect(left, top, side, side));
+  }
+  // Dark translucent scrim keeps dynamic text legible over the painting.
+  for (let x = 0; x < W; x += 24) {
+    const relative = x / W;
+    const opacity = small ? Math.max(.10, .93 - relative * 1.00)
+                          : Math.max(.09, .97 - relative * 1.10);
+    ctx.setFillColor(paint(theme.deep, opacity));
+    ctx.fillRect(new Rect(x, 0, 25, H));
+  }
+  ctx.setFillColor(paint(theme.navy, .24));
+  ctx.fillRect(new Rect(0, H * .72, W, H * .28));
+  // Museum-label / Gothic manuscript double hairlines.
+  ctx.setStrokeColor(paint(theme.gold, .80));
+  ctx.setLineWidth(3);
+  ctx.strokeRect(new Rect(19, 19, W - 38, H - 38));
+  ctx.setStrokeColor(paint(theme.goldLight, .23));
+  ctx.setLineWidth(2);
+  ctx.strokeRect(new Rect(28, 28, W - 56, H - 56));
+  // Narrow red heraldic ribbon anchors the composition to the red-and-gold website art.
+  ctx.setFillColor(paint(theme.burgundy, .95));
+  ctx.fillRect(new Rect(0, 95, 13, H - 190));
+  ctx.setFillColor(paint(theme.gold, .75));
+  ctx.fillRect(new Rect(35, 68, small ? 74 : 112, 3));
+  ctx.fillRect(new Rect(35, H - 72, small ? 92 : 128, 3));
+  return ctx.getImage();
+}
+
+function fancyFont(size, latin=false) {
+  try { return Font.custom(latin ? 'Georgia-Bold' : 'STSongti-SC-Bold', size); }
+  catch (_) { return Font.boldSystemFont(size); }
+}
+function addText(stack, value, size, hex, bold=false, serif=false) {
+  const t = stack.addText(String(value));
+  t.font = serif ? fancyFont(size, /^[\x00-\x7F]+$/.test(String(value))) :
+           bold ? Font.boldSystemFont(size) : Font.mediumSystemFont(size);
+  t.textColor = paint(hex);
+  t.lineLimit = 1;
+  t.minimumScaleFactor = .64;
+  return t;
 }
 function dateLabel(iso) {
   if (!iso) return '';
-  const date = new Date(iso);
-  if (!Number.isFinite(date.getTime())) return '';
-  const mm = date.getMonth() + 1;
-  const dd = date.getDate();
-  return mm + '/' + dd;
+  const d = new Date(iso);
+  return Number.isFinite(d.getTime()) ? (d.getMonth()+1)+'/'+d.getDate() : '';
 }
-function addHeader(widget) {
+function timeLabel(ts) {
+  if (!Number.isFinite(ts)) return '等待首次同步';
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' 同步';
+}
+function line(widget) {
+  const sep = widget.addStack();
+  sep.size = new Size(0, 1);
+  sep.backgroundColor = paint(theme.gold,.48);
+}
+function addHeader(widget, isSmall) {
   const row = widget.addStack();
   row.layoutHorizontally();
   row.centerAlignContent();
-  addText(row, '✦', 14, palette.gold, true);
-  row.addSpacer(6);
-  addText(row, 'HERMES TO DO', 10, palette.gold, true);
+  addText(row, '⚜', isSmall?15:18, theme.goldLight, true);
+  row.addSpacer(isSmall?5:8);
+  addText(row, 'HERMES', isSmall?11:13, theme.goldLight, true, true);
+  row.addSpacer(4);
+  addText(row, 'TO DO', isSmall?7:9, theme.muted, false);
   row.addSpacer();
-  addText(row, '今日', 10, palette.muted, false);
+  if (!isSmall) addText(row, '今日纪事', 11, theme.muted, true, true);
 }
-function addStatistic(widget, data, isSmall) {
+function addFooter(widget, snapshot, stale) {
   const row = widget.addStack();
   row.layoutHorizontally();
-  row.bottomAlignContent();
-  const left = row.addStack(); left.layoutVertically();
-  addText(left, fmt(data.incompleteCount), isSmall ? 39 : 37, palette.ivory, true);
-  addText(left, '未完成任务', isSmall ? 10 : 11, palette.muted, false);
+  row.centerAlignContent();
+  addText(row, '✦', 9, theme.gold, true);
+  row.addSpacer(5);
+  addText(row, stale ? '离线数据' : timeLabel(snapshot?.receivedAt), 9, theme.muted);
   row.addSpacer();
-  const right = row.addStack(); right.layoutVertically();
-  addText(right, fmt(data.completedToday), isSmall ? 28 : 32, palette.green, true);
-  addText(right, '今日完成', isSmall ? 10 : 11, palette.muted, false);
+  if (stale) addText(row, '未连接', 9, '#e8a994', false);
 }
-function addTaskList(widget, upcoming, limit) {
-  const divider = widget.addStack(); divider.size = new Size(0, 1);
-  divider.backgroundColor = color(palette.border);
-  widget.addSpacer(8);
-  addText(widget, '近期截止', 11, palette.gold, true);
+function renderSmall(widget, data, snapshot, stale) {
+  addHeader(widget,true);
+  widget.addSpacer(11);
+  addText(widget, '未完成任务', 11, theme.goldLight, true);
+  widget.addSpacer(0);
+  addText(widget, fmt(data.incompleteCount), 50, theme.ivory, true, true);
+  widget.addSpacer();
+  line(widget);
+  widget.addSpacer(6);
+  const done = widget.addStack(); done.layoutHorizontally(); done.centerAlignContent();
+  addText(done, '今日完成', 10, theme.muted, false);
+  done.addSpacer(7);
+  addText(done, fmt(data.completedToday), 15, theme.sage, true, true);
+  widget.addSpacer(6);
+  addFooter(widget,snapshot,stale);
+}
+function addTasks(widget, items) {
   widget.addSpacer(5);
-  if (!upcoming.length) {
-    addText(widget, '暂无有截止日期的未完成任务', 11, palette.muted, false);
+  if (!items.length) {
+    addText(widget, '暂无近期任务 · 从容安排今天', 10, theme.muted);
     return;
   }
-  for (const item of upcoming.slice(0, limit)) {
+  for (const task of items.slice(0,2)) {
     const row = widget.addStack(); row.layoutHorizontally(); row.centerAlignContent();
-    addText(row, '•', 14, item.priority === 'high' ? palette.red : palette.gold, true);
+    addText(row, '◆', 8, task.priority==='high'?'#cf8b72':theme.gold, true);
     row.addSpacer(5);
-    const label = addText(row, item.title, 11, palette.ivory, false);
+    const label = addText(row, task.title, 10.5, theme.ivory);
     label.lineLimit = 1;
     row.addSpacer(5);
-    const date = dateLabel(item.dueAt);
-    if (date) addText(row, date, 10, palette.muted, false);
-    widget.addSpacer(4);
+    const date = dateLabel(task.dueAt);
+    if (date) addText(row,date,9,theme.muted);
+    widget.addSpacer(3);
   }
 }
-function renderWidget(snapshot, stateText) {
+function renderMedium(widget, data, snapshot, stale) {
+  addHeader(widget,false);
+  widget.addSpacer(8);
+  const stats = widget.addStack(); stats.layoutHorizontally(); stats.centerAlignContent();
+  const left = stats.addStack(); left.layoutVertically();
+  addText(left,'未完成任务',10,theme.goldLight,true);
+  addText(left,fmt(data.incompleteCount),41,theme.ivory,true,true);
+  stats.addSpacer(18);
+  const right = stats.addStack(); right.layoutVertically();
+  addText(right,'今日完成',10,theme.muted);
+  addText(right,fmt(data.completedToday),29,theme.sage,true,true);
+  stats.addSpacer();
+  widget.addSpacer(5);
+  line(widget);
+  addTasks(widget,data.upcoming);
+  widget.addSpacer();
+  addFooter(widget,snapshot,stale);
+}
+function renderPlaceholder(widget, issue, small) {
+  addHeader(widget,small);
+  widget.addSpacer(13);
+  addText(widget,'尚未连接',small?26:31,theme.ivory,true,true);
+  widget.addSpacer(4);
+  addText(widget,'请打开 Scriptable 配对',11,theme.muted);
+  widget.addSpacer();
+  line(widget);
+  widget.addSpacer(6);
+  addText(widget,issue==='未配对'?'等待令牌':(issue||'检查网络与服务器'),9,theme.goldLight);
+}
+function renderWidget(snapshot, issue, art) {
   const w = new ListWidget();
-  w.backgroundColor = color(palette.bg);
-  w.setPadding(13, 15, 12, 15);
+  const small = config.widgetFamily==='small';
+  w.backgroundColor = paint(theme.navy);
+  try { w.backgroundImage = heraldicBackground(small,art); } catch (_) {}
+  w.setPadding(small?16:17,small?18:22,small?16:14,small?18:22);
   w.url = APP_URL;
-  w.refreshAfterDate = new Date(Date.now() + REFRESH_MINUTES * 60 * 1000);
-  const small = config.widgetFamily === 'small';
-  addHeader(w);
-  w.addSpacer(small ? 8 : 10);
-  if (!snapshot) {
-    addText(w, '尚未连接', 22, palette.ivory, true);
-    w.addSpacer(7);
-    addText(w, '在 Scriptable 打开脚本，输入只读令牌', 11, palette.muted, false).lineLimit = 2;
-    w.addSpacer();
-    addText(w, stateText || '等待服务器配置', 9, palette.red, false).lineLimit = 2;
-    return w;
-  }
-  addStatistic(w, snapshot.data, small);
-  if (!small) {
-    w.addSpacer(8);
-    addTaskList(w, snapshot.data.upcoming, config.widgetFamily === 'large' ? 3 : 2);
-  }
-  w.addSpacer();
-  const foot = w.addStack(); foot.layoutHorizontally();
-  addText(foot, timeLabel(snapshot.receivedAt), 9, palette.muted, false);
-  foot.addSpacer();
-  if (stateText) addText(foot, '离线缓存', 9, palette.red, false);
+  w.refreshAfterDate = new Date(Date.now()+REFRESH_MINUTES*60*1000);
+  if (!snapshot) renderPlaceholder(w,issue,small);
+  else if (small) renderSmall(w,snapshot.data,snapshot,!!issue);
+  else renderMedium(w,snapshot.data,snapshot,!!issue);
   return w;
 }
 
@@ -221,7 +313,8 @@ async function main() {
   } else {
     issue = '未配对';
   }
-  const w = renderWidget(snapshot, issue);
+  const art = await loadArt();
+  const w = renderWidget(snapshot, issue, art);
   Script.setWidget(w);
   if (!config.runsInWidget) {
     if (config.widgetFamily === 'small') await w.presentSmall();
