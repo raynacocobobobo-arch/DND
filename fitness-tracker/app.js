@@ -1027,7 +1027,7 @@ function renderQuickHome(){
  return '<div class="if6-home">'+
  '<header class="if6-head">'+
  '<span class="if6-banner" aria-hidden="true"></span>'+
- '<div class="if6-brand"><h1>健身记录</h1><span class="if6-brand-date">'+safe(formatDate(today)+' · '+DAY_NAMES[new Date().getDay()])+'</span>'+
+ '<div class="if6-brand"><h1>健身记录</h1><span class="if6-brand-date">'+safe(formatDate(today).replace(/-/g,'.'))+'</span>'+
  '<span class="if6-legion" lang="la">PRO IMPERATORE</span></div></header>'+
  '<section class="if6-stats" aria-label="今日消耗与本周进度"><span class="if6-stat-crest">'+IF6_CREST+'</span>'+
  '<button type="button" class="if6-stat-today" data-wb-cal-open aria-label="今日消耗 '+dayTotal+' 千卡，查看明细">'+
