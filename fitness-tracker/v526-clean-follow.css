@@ -99,3 +99,11 @@ body[data-screen="followalong"] .fa-video-retry{background:#9f2e21!important;col
  body[data-screen="followalong"] .fa-page{padding:10px 14px!important}
  body[data-screen="followalong"] .fa-player-sheet{min-height:300px!important}
 }
+/* Selected navigation brush follows the active tab using original illustrations. */
+@media(max-width:850px){
+ body[data-screen="overview"] .mobile-nav,body[data-screen="training"] .mobile-nav{background-image:url('./art/nav-active-overview-v526.webp?v=5.26.1')!important}
+ body[data-screen="followalong"] .mobile-nav{background-image:url('./art/nav-active-followalong-v526.webp?v=5.26.1')!important}
+ body[data-screen="calendar"] .mobile-nav{background-image:url('./art/nav-active-calendar-v526.webp?v=5.26.1')!important}
+ body[data-screen="history"] .mobile-nav{background-image:url('./art/nav-active-history-v526.webp?v=5.26.1')!important}
+ body[data-screen="settings"] .mobile-nav{background-image:url('./art/nav-active-settings-v526.webp?v=5.26.1')!important}
+}
