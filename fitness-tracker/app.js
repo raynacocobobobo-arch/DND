@@ -934,6 +934,8 @@ function wbEditor(q){
  const completedCalories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
  const header=q.key==='steps'?'今日已有 '+info.label+' · '+completedCalories+' kcal · 输入当天总步数':
   '今日已累计 '+info.label+' · '+completedCalories+' kcal · 以下只记录本次新增';
+ const extra=q.key==='swim'?'<div style="display:grid;gap:8px;margin:10px 0"><label>本次总分钟（选填）<input class="input" type="number" name="wb-minutes" min="0" step="0.5" placeholder="不填按每圈2.5分钟推算"></label><label>其中休息分钟<input class="input" type="number" name="wb-rest" min="0" step="0.5" value="0"></label></div>':
+  q.key==='running'?'<div style="margin:10px 0"><label>跑步机速度 km/h（坡度0%，按快走）<input class="input" type="number" name="wb-speed" min="3" max="7.1" step="0.05" value="6.25"></label></div>':'';
  return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
   '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
   '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
@@ -942,7 +944,7 @@ function wbEditor(q){
   '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+wbDelta(q,-1)+unit+'">−</button>'+
   '<div class="wb-editor-number"><input id="wb-count-'+q.key+'" type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="0" max="'+q.max+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量"><span>'+unit+'</span></div>'+
   '<button type="button" data-wb-step="1" aria-label="增加'+wbDelta(q,1)+unit+'">＋</button></div>'+
-  '<div class="wb-editor-help" data-wb-preview>'+safe(wbPreviewText(q,0))+'</div>'+
+  extra+'<div class="wb-editor-help" data-wb-preview>'+safe(wbPreviewText(q,0))+'</div>'+
   '<button type="submit" class="wb-save">'+(q.key==='steps'?'更新今日累计步数':'保存本次新增')+'</button></form>';
 }
 function wbRow(q,recs){
@@ -1056,21 +1058,21 @@ function wbQuantityValid(q,n){
  if(!q||!Number.isFinite(n)||n<=0||n>q.max)return false;
  return Number.isInteger(n);
 }
-function wbPreviewText(q,n){
+function wbPreviewText(q,n,extra){
  const info=wbToday(q,recordsOfDate(localDate()));
  if(!wbQuantityValid(q,n))return '本次 0 '+q.unit+' · 请填写实际完成量';
  if(q.key==='steps')return '今日步数：'+n.toLocaleString('zh-CN')+' 步';
  const next=info.value+n;
  const km=q.key==='swim'?' · 本次 '+(n*50)+' 米':'';
- return '本次新增 '+n+' '+q.unit+km+' · 约 '+quickCalories(q,n)+' kcal；保存后今日累计 '+next+' '+q.unit;
+ return '本次新增 '+n+' '+q.unit+km+' · 额外热量约 '+quickCalories(q,n,extra)+' kcal（估算）；保存后今日累计 '+next+' '+q.unit;
 }
-function wbSave(q,n){
+function wbSave(q,n,extra){
  if(wbBusy)return false;
  if(!wbQuantityValid(q,n)){toast('请填写大于0的有效本次运动量');return false}
  if(q.key==='steps'){wbOpenKey=null;return saveDailySteps(n)}
  wbBusy=true;
  try{
-  const record=newRecord(quickDraft(q,n));
+  const record=newRecord({...quickDraft(q,n),...(extra||{})});
   state.records.push(record);
   if(!persist()){state.records.pop();return false}
   const cumulative=wbToday(q,recordsOfDate(record.date));
@@ -1080,11 +1082,23 @@ function wbSave(q,n){
  }catch(err){toast(err.message||'保存失败');return false}
  finally{wbBusy=false}
 }
+function wbExtra(form){
+ const extra={},read=n=>form.querySelector('[name="'+n+'"]')?.value;
+ if(form.dataset.wbForm==='swim'){
+  const min=read('wb-minutes'),rest=read('wb-rest');
+  if(min!==undefined&&min!=='')extra.durationMin=Number(min);
+  if(rest!==undefined&&rest!=='')extra.restMin=Number(rest);
+ }
+ if(form.dataset.wbForm==='running'){
+  const speed=read('wb-speed');if(speed!==undefined&&speed!=='')extra.speedKmh=Number(speed);
+ }
+ return extra;
+}
 function wbPreview(form){
  const q=QUICK_ITEMS.find(x=>x.key===form?.dataset.wbForm);
  const input=form?.querySelector('[name="wb-count"]'),el=form?.querySelector('[data-wb-preview]');
  if(!q||!input||!el)return;
- el.textContent=wbPreviewText(q,input.value===''?0:Number(input.value));
+ el.textContent=wbPreviewText(q,input.value===''?0:Number(input.value),wbExtra(form));
 }
 function wbSetModalKey(key){
  const main=document.querySelector('.main'),mainScroll=main?.scrollTop||0,windowScroll=window.scrollY;
@@ -1120,7 +1134,7 @@ document.addEventListener('click',e=>{
  }
 });
 document.addEventListener('input',e=>{
- const input=e.target.closest('[data-wb-form] [name="wb-count"]');
+ const input=e.target.closest('[data-wb-form] [name="wb-count"], [data-wb-form] [name="wb-minutes"], [data-wb-form] [name="wb-rest"], [data-wb-form] [name="wb-speed"]');
  if(input)wbPreview(input.closest('[data-wb-form]'));
 });
 document.addEventListener('submit',e=>{
@@ -1128,7 +1142,7 @@ document.addEventListener('submit',e=>{
  e.preventDefault();
  const q=QUICK_ITEMS.find(x=>x.key===form.dataset.wbForm);
  const input=form.querySelector('[name="wb-count"]');
- wbSave(q,input?.value===''?NaN:Number(input?.value));
+ wbSave(q,input?.value===''?NaN:Number(input?.value),wbExtra(form));
 });
 
 function quickUpdateEstimate(form){
