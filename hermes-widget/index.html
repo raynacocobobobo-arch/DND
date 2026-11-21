@@ -4,7 +4,7 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
  <meta name="theme-color" content="#201b18">
- <title>Hermes To Do · iPhone 小组件安装</title>
+ <title>Hermes To Do · 圣女鸢尾小组件 V2</title>
  <style>
   :root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
   *{box-sizing:border-box}body{margin:0;background:#14120f;color:#f5e5d0;line-height:1.65;padding:26px 17px 64px}
@@ -25,19 +25,28 @@
 <body>
 <main>
  <div class="label">HERMES TO DO / IOS WIDGET</div>
- <h1>安装 iPhone 桌面小组件</h1>
- <p class="sub">不用在聊天里下载文件。直接复制完整脚本，到 Scriptable 粘贴即可。</p>
+ <h1>圣女鸢尾 · iPhone 小组件 V2</h1>
+ <p class="sub">采用 Hermes 原有的深海军蓝、旧金鸢尾纹章和圣女插画；已有令牌继续使用，无需重新配对。</p>
+ <div class="panel" style="padding:14px;display:flex;align-items:center;gap:14px;background:linear-gradient(115deg,#0b1721,#273039)">
+  <img src="../hermestodo/icons/icon-192.png" width="98" height="98" alt="Hermes 圣女与鸢尾徽章" style="width:98px;height:98px;object-fit:cover;border:1px solid #b48f5a;border-radius:9px;flex:none">
+  <div>
+   <div style="font:700 12px Georgia,serif;color:#e9c487;letter-spacing:1px">⚜ HERMES TO DO</div>
+   <div style="color:#f5dfba;font-size:18px;font-weight:700;margin-top:6px">复用原网站美术</div>
+   <div style="color:#b9a98f;font-size:12px;margin-top:6px">圣女铠甲 · 金色鸢尾 · 深蓝底色</div>
+   <div style="color:#b9a98f;font-size:11px;margin-top:6px">实际数字由小组件实时读取，并非静态图片</div>
+  </div>
+ </div>
  <section class="panel">
   <h2>在 iPhone 上操作</h2>
   <ol class="steps">
    <li>先安装 <a href="https://apps.apple.com/app/id1405459188">Scriptable</a>。</li>
-   <li>在此页面点击<strong>「复制完整脚本」</strong>。</li>
+   <li>在此页面点击<strong>「复制 V2 脚本」</strong>。</li>
    <li>打开 Scriptable，点右上角 <strong>＋</strong> 新建脚本，长按编辑区域并<strong>粘贴</strong>，命名为 <strong>Hermes To Do</strong>。</li>
    <li>点击 Scriptable 里的运行按钮，粘贴腾讯云 Agent 私聊给你的<strong>只读令牌</strong>，完成配对。</li>
    <li>返回 iPhone 桌面，长按空白处 → 添加小组件 → Scriptable → 选择<strong>中尺寸</strong> → 编辑小组件并选择这个脚本。</li>
   </ol>
   <div class="buttons">
-   <button type="button" id="copy">复制完整脚本</button>
+   <button type="button" id="copy">复制 V2 脚本</button>
    <a class="btn" href="./Hermes-To-Do-Widget.js" download="Hermes-To-Do-Widget.js">下载 JS 文件</a>
   </div>
   <p class="status" id="status" role="status" aria-live="polite">正在载入脚本…</p>
@@ -49,7 +58,7 @@
  <section class="panel">
   <h2>关于安全与数据</h2>
   <p class="note">这里公开的只有小组件程序，没有你的令牌、密码、任务内容。只读令牌只需要在你自己的 Scriptable 中输入，不要发到聊天或上传至 GitHub。</p>
-  <p class="note">服务器已上线。首次显示 0 项可能是因为腾讯云 Hermes 数据库目前没有任务；如果网站确有任务却显示 0，请先核实使用的是腾讯云版本还是 GitHub Pages/Supabase 版本。</p>
+  <p class="note">服务器已上线。如果显示 0 项，可能是因为腾讯云 Hermes 数据库目前没有任务；如果网站确有任务却显示 0，请先核实使用的是腾讯云版本还是 GitHub Pages/Supabase 版本。</p>
   <p class="warning note">iOS 决定桌面小组件实际刷新频率，并不保证任务完成后立即刷新。</p>
  </section>
 </main>
