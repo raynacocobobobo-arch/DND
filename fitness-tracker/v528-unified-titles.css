@@ -1,0 +1,69 @@
+
+/* V5.28 — Five titles share the same artwork treatment AND the same per-character
+   display height. Two-character images are horizontally cropped, not enlarged.
+   Backgrounds, hero illustrations, layout and data remain unchanged. */
+:root{
+  --ft-title-h:clamp(45px,13.2vw,67px);
+  --ft-title-w4:clamp(135px,39.6vw,201px);
+  --ft-title-w2:clamp(92px,26.95vw,137px);
+}
+/* The overview text was printed directly onto banner-crisp.webp.
+   Mask just its original upper-left lettered ink patch, then paint a real H1 above it. */
+body[data-screen="overview"] .if6-head::before{
+  content:""!important;display:block!important;position:absolute!important;
+  left:0!important;top:0!important;width:49%!important;height:67%!important;
+  z-index:2!important;pointer-events:none!important;
+  background-color:#090806!important;
+  background-image:radial-gradient(circle at 30% 43%,rgba(35,28,23,.22) 0 1px,transparent 1.6px)!important;
+  background-size:9px 8px!important;
+  clip-path:polygon(0 0,95% 0,95% 12%,100% 18%,94% 32%,100% 45%,89% 58%,86% 72%,75% 84%,60% 98%,0 100%)!important;
+}
+body[data-screen="overview"] .if6-brand h1{
+  display:block!important;position:absolute!important;box-sizing:border-box!important;
+  left:5.2%!important;top:2%!important;z-index:5!important;
+  width:var(--ft-title-w4)!important;height:var(--ft-title-h)!important;
+  margin:0!important;padding:0!important;border:0!important;
+  font-size:0!important;line-height:0!important;letter-spacing:0!important;
+  color:transparent!important;text-shadow:none!important;
+  -webkit-text-stroke:0 transparent!important;
+  background:url('./art/title-overview-v528.webp?v=5.28.0') left top/100% 100% no-repeat!important;
+  white-space:nowrap!important;pointer-events:none!important;
+}
+body[data-screen="overview"] .if6-brand-date{z-index:6!important;top:61%!important}
+/* Other four headings are independent H1 layers over their original illustration.
+   Keep the DOM text for screen readers; only change their visual treatment. */
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-title,
+body[data-screen="followalong"] .fa-hero-heading{
+  box-sizing:border-box!important;display:block!important;
+  height:var(--ft-title-h)!important;
+  margin-top:0!important;margin-bottom:0!important;padding:0!important;
+  font-size:0!important;line-height:0!important;letter-spacing:0!important;
+  color:transparent!important;text-shadow:none!important;
+  -webkit-text-stroke:0 transparent!important;
+  background-repeat:no-repeat!important;background-position:left top!important;
+  background-size:100% 100%!important;filter:none!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"]) .topline .page-title{
+  width:var(--ft-title-w4)!important;
+}
+body[data-screen="settings"] .topline .page-title,
+body[data-screen="followalong"] .fa-hero-heading{
+  width:var(--ft-title-w2)!important;
+}
+body[data-screen="calendar"] .topline .page-title{
+  background-image:url('./art/title-calendar-v528.webp?v=5.28.0')!important;
+}
+body[data-screen="history"] .topline .page-title{
+  margin-left:auto!important;
+  background-image:url('./art/title-history-v528.webp?v=5.28.0')!important;
+}
+body[data-screen="settings"] .topline .page-title{
+  background-image:url('./art/title-settings-v528.webp?v=5.28.0')!important;
+}
+body[data-screen="followalong"] .fa-hero-heading{
+  left:12px!important;top:11px!important;
+  background:url('./art/title-followalong-v528.webp?v=5.28.0') left top/100% 100% no-repeat!important;
+}
+@media(max-width:350px){
+  body[data-screen="followalong"] .fa-hero-heading{left:9px!important;top:9px!important}
+}
