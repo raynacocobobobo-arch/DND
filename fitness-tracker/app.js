@@ -922,13 +922,14 @@ function wbToday(q,records){
  return {count:list.length,value,label,list};
 }
 function wbDelta(q,dir){
+ if(q.key==='swim'&&dir<0)return 5;
  if(q.type==='strength')return dir>0?60:20;
  if(q.key==='running'||q.key==='elliptical')return dir>0?20:10;
  return q.step;
 }
 
 function wbEditor(q){
- const v=0; // Every new entry starts at zero: NEVER prefill a cumulative amount.
+ const v=q.key==='swim'?emptyDraft(q.type).laps:0;
  const unit=q.unit;
  const info=wbToday(q,recordsOfDate(localDate()));
  const completedCalories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
@@ -944,7 +945,7 @@ function wbEditor(q){
   '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+wbDelta(q,-1)+unit+'">−</button>'+
   '<div class="wb-editor-number"><input id="wb-count-'+q.key+'" type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="0" max="'+q.max+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量"><span>'+unit+'</span></div>'+
   '<button type="button" data-wb-step="1" aria-label="增加'+wbDelta(q,1)+unit+'">＋</button></div>'+
-  extra+'<div class="wb-editor-help" data-wb-preview>'+safe(wbPreviewText(q,0))+'</div>'+
+  extra+'<div class="wb-editor-help" data-wb-preview>'+safe(wbPreviewText(q,v))+'</div>'+
   '<button type="submit" class="wb-save">'+(q.key==='steps'?'更新今日累计步数':'保存本次新增')+'</button></form>';
 }
 function wbRow(q,recs){
@@ -1008,9 +1009,7 @@ function if6ExerciseIcon(q){
 
 const IF6_FLAME='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.4 1.5c1.7 4.8-2.1 5.9.9 9.3 2.4-1.8 2.6-4.5 2.6-4.5 2.6 3.7 5 8.1 3.5 13.2-1 4.5-4.4 7.4-9.3 7.4-5.4 0-9-3.3-9-8.4 0-4.4 2-7.4 5.3-10.5-.5 3.1.9 5.6 2 6.2C12 8.9 10.7 4.4 12.4 1.5Z"/></svg>';
 const IF6_CREST='<svg viewBox="0 0 114 26" aria-hidden="true"><g><path d="M3 6h41l9 9H20zM111 6H70l-9 9h33zM13 16h38l4 6H31zM101 16H63l-4 6h24z"/><circle cx="57" cy="12" r="10"/><path d="M52 18v5h10v-5" fill="#a77a36"/><circle cx="53.5" cy="11" r="2" fill="#191714" stroke="none"/><circle cx="60.5" cy="11" r="2" fill="#191714" stroke="none"/><path d="m57 13-2 3h4z" fill="#191714" stroke="none"/></g></svg>';
-function if6Tile(q,records){
- const info=wbToday(q,records);
- const calories=info.list.reduce((sum,r)=>sum+(Number(r.calories)||0),0);
+function if6Tile(q,info,calories){
  const amount=Number(info.value)||0;
  const kcalText=calories.toLocaleString('zh-CN');
  const kcalDensity=kcalText.length>7?' kcal-very-long':kcalText.length>5?' kcal-long':'';
@@ -1026,6 +1025,12 @@ function if6Tile(q,records){
 function renderQuickHome(){
  const today=localDate(),records=recordsOfDate(today);
  const dayTotal=totalRecs(records);
+ const tiles=IF6_ORDER.map(key=>{
+  const item=QUICK_ITEMS.find(q=>q.key===key);
+  const info=wbToday(item,records);
+  const calories=totalRecs(info.list);
+  return {item,info,calories};
+ }).sort((a,b)=>b.calories-a.calories);
  const weeklyDays=new Set(getWeekDates()),weekly=totalRecs(state.records.filter(r=>weeklyDays.has(r.date)));
  const target=Number(state.settings.weeklyGoal)>0?Number(state.settings.weeklyGoal):1500;
  const percentage=Math.round(100*weekly/target);
@@ -1048,7 +1053,7 @@ function renderQuickHome(){
  '<div class="if6-stat-week"><div class="if6-week-upper"><span class="if6-stat-label">本周进度</span><strong class="if6-week-percent" style="--week-fit:'+percentFont+'px">'+percentText+'</strong></div>'+
  '<span class="if6-week-cal">'+weekly.toLocaleString('zh-CN')+' / '+target.toLocaleString('zh-CN')+' kcal</span>'+
  '<div class="if6-track" role="progressbar" aria-label="本周热量目标完成进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,Math.max(0,percentage))+'"><span class="if6-track-fill" style="width:'+fill.toFixed(1)+'%"></span></div></div></section>'+
- '<section class="if6-grid" aria-label="今日十二项运动">'+IF6_ORDER.map(key=>if6Tile(QUICK_ITEMS.find(q=>q.key===key),records)).join('')+'</section></div>'+
+ '<section class="if6-grid" aria-label="今日十二项运动">'+tiles.map(({item,info,calories})=>if6Tile(item,info,calories)).join('')+'</section></div>'+
  (wbCalorieDetailOpen?wbTodayDetailPanel(records):wbOpenKey?
  '<div class="wb-modal"><button type="button" class="wb-modal-backdrop" data-wb-close aria-label="关闭操作面板"></button>'+
  '<div class="wb-modal-sheet" role="dialog" aria-modal="true" aria-label="记录运动">'+wbEditor(QUICK_ITEMS.find(q=>q.key===wbOpenKey))+'</div></div>':'');
