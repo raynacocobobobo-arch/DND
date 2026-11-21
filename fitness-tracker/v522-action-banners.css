@@ -1,0 +1,53 @@
+/* V5.22.0: approved original action banners. History artwork is horizontally mirrored pixel-for-pixel before WebP encoding. */
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline{
+  box-sizing:border-box!important;position:relative!important;isolation:isolate!important;
+  height:clamp(132px,42vw,380px)!important;
+  min-height:clamp(132px,42vw,380px)!important;
+  max-height:380px!important;
+  overflow:hidden!important;
+  border-radius:10px!important;
+  background:#110d09!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline:before{
+  content:""!important;inset:0!important;position:absolute!important;z-index:0!important;
+  display:block!important;opacity:1!important;mix-blend-mode:normal!important;
+  transform:none!important;pointer-events:none!important;
+  background-repeat:no-repeat!important;background-position:center center!important;
+  background-size:100% 100%!important;
+}
+body[data-screen="calendar"] .topline:before{background-image:url('./art/calendar-action-v522.webp?v=5.22.0')!important}
+body[data-screen="history"] .topline:before{background-image:url('./art/history-action-flipped-v522.webp?v=5.22.0')!important}
+body[data-screen="settings"] .topline:before{background-image:url('./art/settings-action-v522.webp?v=5.22.0')!important}
+/* Keep heading readable without changing the approved artwork pixels. */
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline:after{
+  content:""!important;display:block!important;position:absolute!important;inset:0!important;
+  z-index:1!important;pointer-events:none!important;
+  background:linear-gradient(90deg,rgba(8,7,7,.80) 0%,rgba(8,7,7,.34) 36%,transparent 66%)!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline>div{position:relative!important;z-index:2!important;}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .date-chip{z-index:3!important;}
+/* A whole-image horizontal mirror moves the history character to the left.
+   Relocate only the heading and date-chip, not the artwork, to avoid overlap. */
+body[data-screen="history"] .topline{
+  align-items:flex-end!important;
+}
+body[data-screen="history"] .topline:after{
+  background:linear-gradient(270deg,rgba(8,7,7,.86) 0%,rgba(8,7,7,.35) 36%,transparent 69%)!important;
+}
+body[data-screen="history"] .topline>div{
+  align-self:flex-end!important;max-width:55%!important;text-align:right!important;
+}
+body[data-screen="history"] .topline .date-chip{
+  left:auto!important;right:clamp(12px,3.4vw,23px)!important;
+  text-align:right!important;
+}
+/* The calendar should remain scrollable when the natural picture height reduces day-grid height. */
+@media(max-width:850px) and (max-height:790px){
+ body[data-screen="calendar"],body[data-screen="calendar"] .app{
+   height:auto!important;max-height:none!important;min-height:100dvh!important;overflow:visible!important;
+ }
+ body[data-screen="calendar"] .main{height:auto!important;max-height:none!important;min-height:100dvh!important;overflow-y:auto!important}
+ body[data-screen="calendar"] #content{height:auto!important;min-height:0!important;overflow:visible!important}
+ body[data-screen="calendar"] .cal30-shell{height:auto!important;min-height:550px!important}
+ body[data-screen="calendar"] .cal30-grid{grid-template-rows:repeat(5,minmax(66px,1fr))!important}
+}
