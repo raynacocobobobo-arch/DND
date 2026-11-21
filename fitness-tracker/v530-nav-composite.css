@@ -13,7 +13,7 @@ body[data-screen="overview"] .if6-stat-amount small {
 @media (max-width: 850px) {
   body[data-screen] #mobileNav {
     background: #0b0907 !important;
-    border-top: 1px solid #ffdda2 !important;
+    border-top: 0 !important;
   }
 
   body[data-screen] #mobileNav::after {
@@ -44,7 +44,7 @@ body[data-screen="overview"] .if6-stat-amount small {
     width: min(calc(100% - 8px), 80px) !important;
     height: 60px !important;
     margin: 0 auto !important;
-    background: url('./art/nav-buttons-v5307.webp') var(--sprite-column) var(--sprite-row) / 500% 200% no-repeat !important;
+    background: url('./art/nav-buttons-v5308.webp') var(--sprite-column) var(--sprite-row) / 500% 200% no-repeat !important;
     pointer-events: none;
   }
 
