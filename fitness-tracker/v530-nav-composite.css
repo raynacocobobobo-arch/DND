@@ -84,3 +84,10 @@ body[data-screen="calendar"] .cal30-grid {
     font-size: clamp(10px, 2.9vw, 12px) !important;
   }
 }
+
+/* Keep interface text clear on every screen. */
+body[data-screen] #content *,
+body[data-screen] #desktopNav *,
+body[data-screen] #mobileNav * {
+  text-shadow: none !important;
+}
