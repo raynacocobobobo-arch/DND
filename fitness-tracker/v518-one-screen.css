@@ -45,3 +45,12 @@ body[data-screen="overview"] .mobile-nav .nav-btn,body[data-screen="overview"] .
 body[data-screen="overview"] .mobile-nav .nav-btn svg,body[data-screen="overview"] .mobile-nav .nav-btn span{opacity:0!important}
 @media(max-height:555px) and (max-width:850px){body[data-screen="overview"],body[data-screen="overview"] .app{height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important}body[data-screen="overview"] .main{height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-y:auto!important}body[data-screen="overview"] #content{height:auto!important;overflow:visible!important}body[data-screen="overview"] .if6-home{height:auto!important;min-height:560px!important;grid-template-rows:115px 68px minmax(355px,1fr)!important}body[data-screen="overview"] .if6-grid{min-height:355px!important}}
 @media(min-width:851px){body[data-screen="overview"],body[data-screen="overview"] .app{height:auto!important;max-height:none!important;overflow:visible!important}body[data-screen="overview"] .main{height:auto!important;max-height:none!important;min-height:100vh!important;overflow:visible!important;padding:20px!important}body[data-screen="overview"] #content{height:auto!important;overflow:visible!important}body[data-screen="overview"] .if6-home{height:auto!important;min-height:820px!important;grid-template-rows:190px 95px minmax(0,1fr)!important}body[data-screen="overview"] .if6-grid{height:520px!important}body[data-screen="overview"] .if6-card{min-height:0!important}}
+
+/* Compact browser chrome: keep weekly target and progress bar fully visible. */
+@media(max-height:740px) and (max-width:850px){
+ body[data-screen="overview"] .if6-home{grid-template-rows:clamp(112px,20.8dvh,177px) 76px minmax(0,1fr)!important}
+ body[data-screen="overview"] .if6-week-percent{font-size:25px!important}
+ body[data-screen="overview"] .if6-stat-week{gap:0!important}
+ body[data-screen="overview"] .if6-week-cal{font-size:10px!important;line-height:1.06!important}
+ body[data-screen="overview"] .if6-track{height:7px!important;min-height:7px!important;margin-top:1px!important}
+}
