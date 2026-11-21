@@ -1,0 +1,37 @@
+/* V5.24.0: reference-calibrated display lettering for the three secondary tabs.
+   All three headings use hand-drawn, transparent vector artwork; the real H1 stays in the DOM. */
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-title{
+  box-sizing:border-box!important;display:block!important;position:relative!important;
+  flex:0 0 auto!important;margin:0!important;padding:0!important;
+  width:clamp(116px,36.7vw,168px)!important;height:clamp(47px,13.7vw,63px)!important;
+  min-width:0!important;max-width:100%!important;
+  font-size:0!important;line-height:0!important;color:transparent!important;
+  -webkit-text-stroke:0 transparent!important;text-shadow:none!important;
+  white-space:nowrap!important;overflow:visible!important;
+  background-repeat:no-repeat!important;background-size:100% 100%!important;
+  background-position:left top!important;filter:none!important;
+}
+body[data-screen="calendar"] .topline .page-title{
+  background-image:url('./art/calendar-title-v524.svg?v=5.24.0')!important;
+}
+body[data-screen="history"] .topline .page-title{
+  background-image:url('./art/history-title-v524.svg?v=5.24.0')!important;
+  background-position:right top!important;margin-left:auto!important;
+}
+body[data-screen="settings"] .topline .page-title{
+  width:clamp(72px,21.7vw,99px)!important;height:clamp(47px,13.7vw,63px)!important;
+  background-image:url('./art/settings-title-v524.svg?v=5.24.0')!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline{
+  padding:clamp(11px,3vw,20px)!important;
+}
+body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-sub{
+  display:none!important;
+}
+body[data-screen="history"] .topline>div{align-self:flex-end!important;text-align:right!important;}
+@media(min-width:851px){
+  body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-title{
+    width:clamp(185px,27vw,310px)!important;height:clamp(70px,10.3vw,117px)!important;
+  }
+  body[data-screen="settings"] .topline .page-title{width:clamp(105px,15vw,174px)!important;}
+}
