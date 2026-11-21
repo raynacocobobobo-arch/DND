@@ -1261,11 +1261,19 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.13.0_inline';
+   const key='fitness_sw_reloaded_v5.22.1_inline';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>reg.update()).catch(()=>{}));
+ navigator.serviceWorker.addEventListener('message',e=>{
+  if(e.data?.type!=='FITNESS_RELEASE_READY'||!e.data?.version)return;
+  if(document.activeElement?.closest('form')||wbOpenKey){toast('新版已下载，请保存输入后重新打开');return}
+  try{
+   const key='fitness_sw_reload_'+e.data.version;
+   if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
+  }catch(err){location.reload()}
+ });
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)navigator.serviceWorker.getRegistration().then(reg=>reg?.update()).catch(()=>{});});
 }
 render();
