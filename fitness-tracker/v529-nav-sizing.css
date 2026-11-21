@@ -1,0 +1,64 @@
+/* V5.29.0 — Bottom navigation: five slots are one composite bitmap.
+   Split its rendering into five equal CSS windows so only the oversized
+   second slot (跟练) can be scaled without affecting the other four.
+   Preserve the original sprite artwork, highlight state and click targets. */
+@media (max-width:850px) {
+  body[data-screen] {
+    --ft-nav-sprite:url('./art/nav-five-v526.webp?v=5.26.0');
+  }
+  body:is([data-screen="overview"],[data-screen="training"]) {
+    --ft-nav-sprite:url('./art/nav-active-overview-v526.webp?v=5.26.1');
+  }
+  body[data-screen="followalong"] {
+    --ft-nav-sprite:url('./art/nav-active-followalong-v526.webp?v=5.26.1');
+  }
+  body[data-screen="calendar"] {
+    --ft-nav-sprite:url('./art/nav-active-calendar-v526.webp?v=5.26.1');
+  }
+  body[data-screen="history"] {
+    --ft-nav-sprite:url('./art/nav-active-history-v526.webp?v=5.26.1');
+  }
+  body[data-screen="settings"] {
+    --ft-nav-sprite:url('./art/nav-active-settings-v526.webp?v=5.26.1');
+  }
+  body[data-screen] .mobile-nav {
+    background-image:none!important;
+    background-color:#0b0907!important;
+  }
+  body[data-screen] .mobile-nav::after {
+    content:""!important;
+    display:block!important;
+    position:absolute!important;
+    left:0!important;right:0!important;top:0!important;
+    height:2px!important;
+    z-index:5!important;
+    background:#ffe0a6!important;
+    pointer-events:none!important;
+  }
+  body[data-screen] .mobile-nav .nav-btn::before {
+    content:""!important;
+    display:block!important;
+    box-sizing:border-box!important;
+    position:absolute!important;
+    inset:0!important;
+    z-index:1!important;
+    background-image:var(--ft-nav-sprite)!important;
+    background-size:500% 100%!important;
+    background-position:var(--ft-nav-x) top!important;
+    background-repeat:no-repeat!important;
+    pointer-events:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+  body[data-screen] .mobile-nav .nav-btn:nth-child(1){--ft-nav-x:0%}
+  body[data-screen] .mobile-nav .nav-btn:nth-child(2){--ft-nav-x:25%}
+  body[data-screen] .mobile-nav .nav-btn:nth-child(3){--ft-nav-x:50%}
+  body[data-screen] .mobile-nav .nav-btn:nth-child(4){--ft-nav-x:75%}
+  body[data-screen] .mobile-nav .nav-btn:nth-child(5){--ft-nav-x:100%}
+  /* Normalize the icon plus lettering size, not the interactive touch area. */
+  body[data-screen] .mobile-nav .nav-btn:nth-child(2)::before{
+    transform:scale(.90)!important;
+    transform-origin:50% 50%!important;
+    clip-path:inset(9% 0 0 0)!important;
+  }
+}
