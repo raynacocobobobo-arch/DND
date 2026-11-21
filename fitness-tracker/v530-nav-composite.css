@@ -69,3 +69,18 @@ body[data-screen="overview"] .if6-stat-amount small {
     font-size: min(9vw, 28px, calc(var(--today-fit, 31px) * 1.22)) !important;
   }
 }
+
+body[data-screen="calendar"] .cal30-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+}
+@media (max-width: 420px) {
+  body[data-screen="calendar"] .cal30-grid {
+    gap: 3px !important;
+  }
+  body[data-screen="calendar"] .cal30-date {
+    gap: 1px !important;
+  }
+  body[data-screen="calendar"] .cal30-day.month-switch .cal30-date strong {
+    font-size: clamp(10px, 2.9vw, 12px) !important;
+  }
+}
