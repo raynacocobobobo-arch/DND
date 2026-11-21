@@ -175,12 +175,12 @@ body[data-screen="overview"] .if6-head{
 body[data-screen="overview"] .if6-card[data-wb-open="steps"] .if6-icon {
   left: auto !important;
   right: 0 !important;
-  width: 100% !important;
-  height: 90% !important;
+  width: 80% !important;
+  height: 74% !important;
 }
 body[data-screen="overview"] .if6-card[data-wb-open="running"] .if6-icon {
   left: auto !important;
   right: 0 !important;
-  width: 100% !important;
-  height: 88% !important;
+  width: 80% !important;
+  height: 76% !important;
 }
