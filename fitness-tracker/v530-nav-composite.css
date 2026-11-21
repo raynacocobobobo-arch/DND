@@ -3,23 +3,23 @@
  Originals remain a fallback when SVG display is unavailable. */
 @media(max-width:850px){
  body[data-screen="overview"],body[data-screen="training"]{
-  --ft-nav-fixed:url('./art/nav-fixed-overview-v530.svg?v=5.30.1');
+  --ft-nav-fixed:url('./art/nav-fixed-overview-v530.svg?v=5.30.2');
   --ft-nav-original:url('./art/nav-active-overview-v526.webp?v=5.26.1');
  }
  body[data-screen="followalong"]{
-  --ft-nav-fixed:url('./art/nav-fixed-followalong-v530.svg?v=5.30.1');
+  --ft-nav-fixed:url('./art/nav-fixed-followalong-v530.svg?v=5.30.2');
   --ft-nav-original:url('./art/nav-active-followalong-v526.webp?v=5.26.1');
  }
  body[data-screen="calendar"]{
-  --ft-nav-fixed:url('./art/nav-fixed-calendar-v530.svg?v=5.30.1');
+  --ft-nav-fixed:url('./art/nav-fixed-calendar-v530.svg?v=5.30.2');
   --ft-nav-original:url('./art/nav-active-calendar-v526.webp?v=5.26.1');
  }
  body[data-screen="history"]{
-  --ft-nav-fixed:url('./art/nav-fixed-history-v530.svg?v=5.30.1');
+  --ft-nav-fixed:url('./art/nav-fixed-history-v530.svg?v=5.30.2');
   --ft-nav-original:url('./art/nav-active-history-v526.webp?v=5.26.1');
  }
  body[data-screen="settings"]{
-  --ft-nav-fixed:url('./art/nav-fixed-settings-v530.svg?v=5.30.1');
+  --ft-nav-fixed:url('./art/nav-fixed-settings-v530.svg?v=5.30.2');
   --ft-nav-original:url('./art/nav-active-settings-v526.webp?v=5.26.1');
  }
  body[data-screen] .mobile-nav{
@@ -37,3 +37,4 @@
   content:none!important;display:none!important;background:none!important;
  }
 }
+@media(max-width:850px){body[data-screen="overview"] .if6-stat-amount strong,body[data-screen="overview"] .if6-stat-amount small{text-shadow:none!important;filter:none!important}}
