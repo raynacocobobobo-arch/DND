@@ -30,10 +30,10 @@ body[data-screen="followalong"] .fa-hero{
 body[data-screen="followalong"] .fa-hero:before,body[data-screen="followalong"] .fa-hero:after{content:none!important;display:none!important}
 body[data-screen="followalong"] .fa-hero-heading{
   box-sizing:border-box!important;position:absolute!important;left:12px!important;top:11px!important;z-index:2!important;
-  display:block!important;width:clamp(80px,24vw,139px)!important;height:clamp(40px,12vw,65px)!important;
+  display:block!important;width:clamp(72px,21.7vw,99px)!important;height:clamp(47px,13.7vw,63px)!important;
   margin:0!important;padding:0!important;color:transparent!important;font-size:0!important;line-height:0!important;
   text-shadow:none!important;transform:none!important;-webkit-text-stroke:0 transparent!important;
-  background:url('./art/follow-title-v526.webp?v=5.26.0') left center/contain no-repeat!important;
+  background:url('./art/follow-title-v527.webp?v=5.27.1') left center/contain no-repeat!important;
 }
 body[data-screen="followalong"] .fa-hero-heading:after{content:none!important;display:none!important}
 body[data-screen="followalong"] .fa-player-sheet{
@@ -106,4 +106,12 @@ body[data-screen="followalong"] .fa-video-retry{background:#9f2e21!important;col
  body[data-screen="calendar"] .mobile-nav{background-image:url('./art/nav-active-calendar-v526.webp?v=5.26.1')!important}
  body[data-screen="history"] .mobile-nav{background-image:url('./art/nav-active-history-v526.webp?v=5.26.1')!important}
  body[data-screen="settings"] .mobile-nav{background-image:url('./art/nav-active-settings-v526.webp?v=5.26.1')!important}
+}
+
+/* V5.27.1: 跟练沿用「设置」同尺寸的两字题头比例，使用匹配的金墨刷字。 */
+@media(min-width:851px){
+ body[data-screen="followalong"] .fa-hero-heading{
+  width:clamp(105px,15vw,174px)!important;
+  height:clamp(70px,10.3vw,117px)!important;
+ }
 }
