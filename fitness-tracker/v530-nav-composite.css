@@ -41,7 +41,7 @@ body[data-screen="overview"] .if6-stat-amount small {
     display: block !important;
     position: absolute !important;
     inset: 0 !important;
-    width: min(100%, 88px) !important;
+    width: min(calc(100% - 8px), 80px) !important;
     height: 60px !important;
     margin: 0 auto !important;
     background: url('./art/nav-buttons-v5303.webp') var(--sprite-column) var(--sprite-row) / 500% 200% no-repeat !important;
@@ -51,6 +51,10 @@ body[data-screen="overview"] .if6-stat-amount small {
   body[data-screen] #mobileNav .nav-btn::after {
     content: none !important;
     display: none !important;
+  }
+
+  body[data-screen] #mobileNav .nav-btn:last-child {
+    box-shadow: inset -3px 0 #0b0907, inset -4px 0 #a58152 !important;
   }
 
   body[data-screen] #mobileNav .nav-btn + .nav-btn {
