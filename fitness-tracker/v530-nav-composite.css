@@ -44,7 +44,7 @@ body[data-screen="overview"] .if6-stat-amount small {
     width: min(calc(100% - 8px), 80px) !important;
     height: 60px !important;
     margin: 0 auto !important;
-    background: url('./art/nav-buttons-v5309.webp') var(--sprite-column) var(--sprite-row) / 500% 200% no-repeat !important;
+    background: url('./art/nav-buttons-v5314.webp') var(--sprite-column) var(--sprite-row) / 500% 200% no-repeat !important;
     pointer-events: none;
   }
 
