@@ -989,9 +989,11 @@ const IF6_ORDER=['steps','situps','wall-sit','elliptical','bike','running','lat'
 /* V5.10 — Astra Militarum trained personnel icons from approved banner artwork.
    Single optimized 4x3 WebP sprite; keys correspond to existing exercises.
    Data and actions remain DOM-driven, image is purely decorative. */
+/* V5.18: explicit image loading allows broken-image detection and avoids CSS pseudo-content conflicts. */
+const IF18_IMAGES={"steps":"exercise-steps.webp","situps":"exercise-situps-fixed.webp","wall-sit":"exercise-wall-sit.webp","elliptical":"exercise-elliptical.webp","bike":"exercise-bike.webp","running":"exercise-running.webp","lat":"exercise-lat.webp","row":"exercise-row-fixed.webp","fly":"exercise-fly.webp","dumbbell":"exercise-dumbbell.webp","back":"exercise-back.webp","swim":"exercise-swim.webp"};
 function if6ExerciseIcon(q){
  const key=IF6_ORDER.includes(q.key)?q.key:'steps';
- return '<span class="astra-training-icon astra-'+key+'" aria-hidden="true"></span>';
+ return '<img class="if18-figure" src="./art/'+IF18_IMAGES[key]+'?v=5.18.0" alt="" loading="eager" decoding="async" />';
 }
 
 const IF6_FLAME='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.4 1.5c1.7 4.8-2.1 5.9.9 9.3 2.4-1.8 2.6-4.5 2.6-4.5 2.6 3.7 5 8.1 3.5 13.2-1 4.5-4.4 7.4-9.3 7.4-5.4 0-9-3.3-9-8.4 0-4.4 2-7.4 5.3-10.5-.5 3.1.9 5.6 2 6.2C12 8.9 10.7 4.4 12.4 1.5Z"/></svg>';
