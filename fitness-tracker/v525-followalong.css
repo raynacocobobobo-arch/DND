@@ -54,3 +54,17 @@ body[data-screen="followalong"] #content{width:100%!important;max-width:none!imp
  body[data-screen="followalong"] .main{padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))!important}
 }
 @media(min-width:851px){body[data-screen="followalong"] .mobile-nav{display:none!important}}
+
+/* Navigation specificity patch: supersede all former four-column ink-sprite selectors. */
+@media(max-width:850px){
+ body[data-screen] .mobile-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0!important;width:100%!important;height:calc(65px + env(safe-area-inset-bottom,0px))!important;padding:3px 3px calc(4px + env(safe-area-inset-bottom,0px))!important;background:#0a0807!important;border-top:2px solid #d4af71!important;}
+ body[data-screen] .mobile-nav .nav-btn,body[data-screen] .mobile-nav .nav-btn.active{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;min-width:0!important;width:100%!important;height:100%!important;max-height:none!important;padding:2px 0!important;background:transparent!important;color:#f4d397!important;border:0!important;border-radius:3px!important;font-size:12px!important}
+ body[data-screen] .mobile-nav .nav-btn.active{background:radial-gradient(ellipse at center,#bd3c25 0%,#99281b 57%,transparent 74%)!important;color:#ffdfa3!important}
+ body[data-screen] .mobile-nav .nav-btn svg{display:block!important;width:22px!important;height:22px!important;opacity:1!important;visibility:visible!important;position:relative!important;z-index:2!important;flex:none!important;stroke:currentColor!important;filter:none!important}
+ body[data-screen] .mobile-nav .nav-btn span{display:block!important;opacity:1!important;visibility:visible!important;color:inherit!important;font:900 12px/1.12 'Songti SC','STSong',serif!important;white-space:nowrap!important;position:relative!important;z-index:2!important}
+ body[data-screen] .mobile-nav .nav-btn:nth-child(1):before,
+ body[data-screen] .mobile-nav .nav-btn:nth-child(2):before,
+ body[data-screen] .mobile-nav .nav-btn:nth-child(3):before,
+ body[data-screen] .mobile-nav .nav-btn:nth-child(4):before,
+ body[data-screen] .mobile-nav .nav-btn:nth-child(5):before{content:none!important;display:none!important;width:0!important;height:0!important;background:none!important;}
+}
