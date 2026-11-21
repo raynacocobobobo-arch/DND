@@ -1,5 +1,5 @@
-const CACHE='fitness-tracker-v5.25.1-five-tabs-fix';
-const ASSETS=["./v525-followalong.css?v=5.25.1","./v520-comic-sections.css?v=5.20.1","./","./index.html","./app.css?v=5.13.3","./app.js?v=5.25.0","./v519-one-screen.css?v=5.19.1","./manifest.webmanifest?v=5.23.0","./icon-180.png?v=5.23.0","./icon-192.png?v=5.23.0","./icon-512.png?v=5.23.0","./art/banner-crisp.webp?v=5.18.0","./art/paper-exact.webp?v=5.18.0","./art/nav-crisp.webp?v=5.18.0","./art/exercise-steps.webp?v=5.18.0","./art/exercise-situps-fixed.webp?v=5.18.0","./art/exercise-wall-sit.webp?v=5.18.0","./art/exercise-elliptical.webp?v=5.18.0","./art/exercise-bike.webp?v=5.18.0","./art/exercise-running.webp?v=5.18.0","./art/exercise-lat.webp?v=5.18.0","./art/exercise-row-fixed.webp?v=5.18.0","./art/exercise-fly.webp?v=5.18.0","./art/exercise-dumbbell.webp?v=5.18.0","./art/exercise-back.webp?v=5.18.0","./art/exercise-swim.webp?v=5.18.0","./v521-scene-heroes.css?v=5.21.0","./art/calendar-hero.webp?v=5.21.0","./art/history-hero.webp?v=5.21.0","./art/settings-hero.webp?v=5.21.0","./v522-action-banners.css?v=5.22.0","./art/calendar-action-v522.webp?v=5.22.0","./art/history-action-flipped-v522.webp?v=5.22.0","./art/settings-action-v522.webp?v=5.22.0","./v524-matched-titles.css?v=5.24.0","./art/calendar-title-v524.svg?v=5.24.0","./art/history-title-v524.svg?v=5.24.0","./art/settings-title-v524.svg?v=5.24.0"];
+const CACHE='fitness-tracker-v5.26.0-follow-video';
+const ASSETS=["./v520-comic-sections.css?v=5.20.1","./","./index.html","./app.css?v=5.13.3","./v519-one-screen.css?v=5.19.1","./manifest.webmanifest?v=5.23.0","./icon-180.png?v=5.23.0","./icon-192.png?v=5.23.0","./icon-512.png?v=5.23.0","./art/banner-crisp.webp?v=5.18.0","./art/paper-exact.webp?v=5.18.0","./art/nav-crisp.webp?v=5.18.0","./art/exercise-steps.webp?v=5.18.0","./art/exercise-situps-fixed.webp?v=5.18.0","./art/exercise-wall-sit.webp?v=5.18.0","./art/exercise-elliptical.webp?v=5.18.0","./art/exercise-bike.webp?v=5.18.0","./art/exercise-running.webp?v=5.18.0","./art/exercise-lat.webp?v=5.18.0","./art/exercise-row-fixed.webp?v=5.18.0","./art/exercise-fly.webp?v=5.18.0","./art/exercise-dumbbell.webp?v=5.18.0","./art/exercise-back.webp?v=5.18.0","./art/exercise-swim.webp?v=5.18.0","./v521-scene-heroes.css?v=5.21.0","./art/calendar-hero.webp?v=5.21.0","./art/history-hero.webp?v=5.21.0","./art/settings-hero.webp?v=5.21.0","./v522-action-banners.css?v=5.22.0","./art/calendar-action-v522.webp?v=5.22.0","./art/history-action-flipped-v522.webp?v=5.22.0","./art/settings-action-v522.webp?v=5.22.0","./v524-matched-titles.css?v=5.24.0","./art/calendar-title-v524.svg?v=5.24.0","./art/history-title-v524.svg?v=5.24.0","./art/settings-title-v524.svg?v=5.24.0","./v526-clean-follow.css?v=5.26.0","./app.js?v=5.26.0","./art/follow-hero-v526.webp?v=5.26.0","./art/follow-title-v526.webp?v=5.26.0","./art/nav-five-v526.webp?v=5.26.0","./art/follow-poster-v526.webp?v=5.26.0"];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
@@ -15,6 +15,16 @@ self.addEventListener('activate',e=>{
 self.addEventListener('fetch',e=>{
   const req=e.request;
   if(req.method!=='GET'||!req.url.startsWith(self.registration.scope))return;
+  if(/\/media\/posture-parts\/p\d{2}\.bin(?:\?|$)/.test(req.url)){
+   e.respondWith(caches.open('fitness-video-v526-offline').then(async c=>{
+    const cached=await c.match(req,{ignoreSearch:true});
+    if(cached)return cached;
+    const response=await fetch(req);
+    if(response.ok)await c.put(req,response.clone());
+    return response;
+   }));
+   return;
+  }
   if(req.mode==='navigate'){
     e.respondWith(fetch(req,{cache:'no-store'}).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy));}return r;}).catch(()=>caches.match('./index.html')));
   } else {
