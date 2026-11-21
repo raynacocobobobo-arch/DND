@@ -117,17 +117,6 @@ body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-o
 }
 
 /* Titles and navigation labels are live text over the existing artwork. */
-body[data-screen="overview"] .if6-brand h1,
-body:is([data-screen="calendar"],[data-screen="history"],[data-screen="settings"]) .topline .page-title,
-body[data-screen="followalong"] .fa-hero-heading {
-  width: auto !important; height: auto !important;
-  font-family: STKaiti, "Kaiti SC", KaiTi, "Songti SC", serif !important;
-  font-size: clamp(25px, 7.2vw, 38px) !important;
-  line-height: 1.25 !important; font-weight: 900 !important;
-  letter-spacing: 0 !important; white-space: nowrap !important;
-  color: #ffdda2 !important; -webkit-text-stroke: .6px #160d08 !important;
-  background: none !important;
-}
 @media (max-width: 850px) {
   body[data-screen] #mobileNav .nav-btn span {
     display: block !important; position: absolute !important;
@@ -140,3 +129,11 @@ body[data-screen="followalong"] .fa-hero-heading {
     pointer-events: none !important;
   }
 }
+
+/* Restore the original hand-brushed title treatment at its original dimensions. */
+body[data-screen="overview"] .if6-brand h1 { background-image: url('./art/title-overview-v5321.webp') !important; }
+body[data-screen="followalong"] .fa-hero-heading { background-image: url('./art/title-followalong-v5321.webp') !important; }
+body[data-screen="calendar"] .topline .page-title { background-image: url('./art/title-calendar-v5321.webp') !important; }
+body[data-screen="history"] .topline .page-title { background-image: url('./art/title-history-v5321.webp') !important; }
+body[data-screen="settings"] .topline .page-title { background-image: url('./art/title-settings-v5321.webp') !important; }
+body[data-screen="followalong"] .fa-hero-heading, body[data-screen="settings"] .topline .page-title { width: var(--ft-title-w4) !important; }
