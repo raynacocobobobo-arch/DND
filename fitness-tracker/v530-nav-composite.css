@@ -91,3 +91,27 @@ body[data-screen] #desktopNav *,
 body[data-screen] #mobileNav * {
   text-shadow: none !important;
 }
+
+/* Put energy in the clear space on the two cardio cards. */
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy {
+  left: auto !important;
+  right: 4px !important;
+  top: 5px !important;
+  max-width: 46% !important;
+}
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy-content {
+  justify-content: flex-end !important;
+  gap: 1px !important;
+}
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy-content strong {
+  font-size: clamp(10px, 3vw, 14px) !important;
+}
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy-content em {
+  font-size: clamp(8px, 2.2vw, 10px) !important;
+}
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy.kcal-long strong {
+  font-size: 9px !important;
+}
+body[data-screen="overview"] .if6-card:is([data-wb-open="elliptical"],[data-wb-open="running"]) .if6-energy.kcal-very-long strong {
+  font-size: 7px !important;
+}
