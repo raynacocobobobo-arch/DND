@@ -1,0 +1,27 @@
+name: Build correct crunch video poster
+on:
+  push:
+    branches: [fix/fitness-crunch-title-poster-20261122]
+    paths: [.github/workflows/build-crunch-poster-v537.yml]
+permissions:
+  contents: write
+jobs:
+  poster:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract real frame from 2.mp4
+        run: |
+          set -euo pipefail
+          ffmpeg -hide_banner -loglevel error -y -ss 32 -i fitness-tracker/media/2.mp4 -frames:v 1 -vf 'scale=640:-2' -c:v libwebp -quality 78 fitness-tracker/art/follow-poster-crunch-v537.webp
+          test "$(stat -c%s fitness-tracker/art/follow-poster-crunch-v537.webp)" -gt 15000
+          file fitness-tracker/art/follow-poster-crunch-v537.webp
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of json fitness-tracker/art/follow-poster-crunch-v537.webp
+          sha256sum fitness-tracker/art/follow-poster-crunch-v537.webp
+      - name: Commit only the new actual-video poster
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fitness-tracker/art/follow-poster-crunch-v537.webp
+          git commit -m "media(fitness): poster from actual crunch video at 00:32"
+          git push origin HEAD:fix/fitness-crunch-title-poster-20261122
