@@ -27,7 +27,7 @@ function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function monday(d=new Date()){return addDays(d,-((d.getDay()+6)%7))}
 function formatDate(s){const d=dateFromISO(s);return `${d.getMonth()+1}月${d.getDate()}日`}
 function getWeekDates(){let m=monday(new Date());return Array.from({length:7},(_,i)=>localDate(addDays(m,i)))}
-function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{}}}
+function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{},weightHistory:{}}}
 
 const RECOVERY_KEY='hermes_fitness_journal_recovery_v1';
 let storageReadIssue='';
@@ -49,6 +49,15 @@ function archivePriorFitnessData(raw){
   return true;
  }catch(e){return false}
 }
+function cleanWeightHistory(value){
+ const result={};
+ if(!value||typeof value!=='object'||Array.isArray(value))return result;
+ for(const [date,weight] of Object.entries(value)){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||localDate(dateFromISO(date))!==date)continue;
+  const n=Number(weight);if(Number.isFinite(n)&&n>0&&n<=500)result[date]=n;
+ }
+ return result;
+}
 function readState(){
  let raw;
  try{raw=localStorage.getItem(STORAGE_KEY)}
@@ -56,7 +65,7 @@ function readState(){
  if(raw===null)return initialState();
  const v=parsedFitnessState(raw);
  if(!v){storageReadIssue='检测到无法解析的原有记录，已禁止自动覆盖';return initialState()}
- return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary)};
+ return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary),weightHistory:cleanWeightHistory(v.weightHistory)};
 }
 let state=readState(),view='overview',historyFilter='week',historySelectedDate=null,draft=emptyDraft('strength');
 /* Preserve old raw step inputs while retiring interval subtraction.
@@ -207,7 +216,7 @@ function restoreFitnessSnapshot(){
   catch(e){toast('原始内容备份失败，已取消恢复');return false}
  }
  storageReadIssue='';
- state={version:1,records:saved.records,settings:{...DEFAULT_SETTINGS,...saved.settings},stepDiary:cleanStepDiary(saved.stepDiary)};
+ state={version:1,records:saved.records,settings:{...DEFAULT_SETTINGS,...saved.settings},stepDiary:cleanStepDiary(saved.stepDiary),weightHistory:cleanWeightHistory(saved.weightHistory)};
  if(!persist()){state=prior;storageReadIssue=wasBlocked;return false}
  view='history';historySelectedDate=null;render();toast('已恢复本地快照：'+saved.records.length+' 条记录');return true;
 }
@@ -663,7 +672,7 @@ function exportFile(textContent,fileName,mime){const a=document.createElement('a
 function exportRawFitnessData(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw){toast('没有原始内容可导出');return}exportFile(raw,`健身记录-原始保护-${localDate()}.txt`,'text/plain;charset=utf-8');toast('原始内容已导出')}catch(e){toast('原始内容读取失败')}}
 function exportJSON(){exportFile(JSON.stringify({...state,restDays:[...restDays].sort(),exportedAt:new Date().toISOString()},null,2),`运动手账-备份-${localDate()}.json`,'application/json;charset=utf-8');toast('JSON 备份已导出')}
 function exportCSV(){const headers=['日期','类型','项目','组数','每组次数','总次数','时长(分钟)','每组秒数','步数','距离(米)','重量(kg)','估算千卡','游泳来回数','跑步距离(km)'];const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const lines=state.records.map(r=>[r.date,prettyType(r.type),recordName(r),r.sets,r.repsPerSet,r.reps,r.duration_min,r.secondsPerSet,r.steps,r.distance_m,r.loadKg,r.calories,r.laps,r.distance_km].map(cell).join(','));exportFile('\ufeff'+headers.map(cell).join(',')+'\r\n'+lines.join('\r\n'),`运动手账-记录-${localDate()}.csv`,'text/csv;charset=utf-8');toast('CSV 已导出')}
-function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','running','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;const beforeImport=state,readBlock=storageReadIssue; if(readBlock&&!archivePriorFitnessData(localStorage.getItem(STORAGE_KEY))){throw new Error('原始内容无法保护，已取消导入')};storageReadIssue='';state={version:1,records:clean,settings,stepDiary:Object.prototype.hasOwnProperty.call(v,'stepDiary')?cleanStepDiary(v.stepDiary):state.stepDiary};if(!persist()){state=beforeImport;storageReadIssue=readBlock;throw new Error('记录未写入，请勿删除原始备份')};if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
+function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','running','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;const beforeImport=state,readBlock=storageReadIssue; if(readBlock&&!archivePriorFitnessData(localStorage.getItem(STORAGE_KEY))){throw new Error('原始内容无法保护，已取消导入')};storageReadIssue='';state={version:1,records:clean,settings,stepDiary:Object.prototype.hasOwnProperty.call(v,'stepDiary')?cleanStepDiary(v.stepDiary):state.stepDiary,weightHistory:Object.prototype.hasOwnProperty.call(v,'weightHistory')?cleanWeightHistory(v.weightHistory):state.weightHistory};if(!persist()){state=beforeImport;storageReadIssue=readBlock;throw new Error('记录未写入，请勿删除原始备份')};if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
 
 const QUICK_ITEMS=[
  {key:'elliptical',name:'椭圆机',unit:'分钟',value:0,step:20,max:480,type:'cardio',exercise:'椭圆机',note:'轻量·每次20分钟',iconName:'activity'},
@@ -803,12 +812,37 @@ function renderCheckinStrip(){
 
 
 
+function windowStreak(days){
+ let i=days.length-1;if(i>=0&&dayKind(days[i])==='none')i--;
+ let count=0;while(i>=0&&dayKind(days[i])!=='none'){count++;i--}return count;
+}
+function renderWeightTracker(){
+ const today=localDate(),history=state.weightHistory||{},todayWeight=history[today];
+ const from=localDate(addDays(dateFromISO(today),-20));
+ const entries=Object.entries(history).filter(([d])=>d>=from&&d<=today).sort((a,b)=>a[0].localeCompare(b[0]));
+ let chart='<p class="weight-empty">'+(entries.length?'再记录一天，即可查看变化趋势':'每天记录一次，查看体重变化')+'</p>';
+ if(entries.length){
+  const vals=entries.map(x=>x[1]),lo=Math.min(...vals)-.5,hi=Math.max(...vals)+.5;
+  const points=entries.map(([d,w])=>{const delta=Math.round((dateFromISO(d)-dateFromISO(from))/86400000);return {x:12+delta/20*276,y:66-(w-lo)/(hi-lo)*52,d,w}});
+  const line=points.map(pt=>pt.x.toFixed(1)+','+pt.y.toFixed(1)).join(' ');
+  chart='<div class="weight-chart"><svg viewBox="0 0 300 76" role="img" aria-label="最近21天体重变化，共'+entries.length+'条记录"><path d="M12 66H288" stroke="#b7976b" stroke-width="1" fill="none"/>'+(points.length>1?'<polyline points="'+line+'" fill="none" stroke="#a42e21" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>':'')+points.map(pt=>'<circle cx="'+pt.x.toFixed(1)+'" cy="'+pt.y.toFixed(1)+'" r="3" fill="#a42e21"><title>'+pt.d+'：'+pt.w+' kg</title></circle>').join('')+'</svg><div class="weight-chart-labels"><span>'+formatDate(from)+'</span><span>'+formatDate(today)+'</span></div></div>'+(entries.length===1?'<p class="weight-empty">再记录一天，即可查看变化趋势</p>':'');
+ }
+ const latest=Object.entries(history).filter(([d])=>d<=today).sort((a,b)=>b[0].localeCompare(a[0]))[0];
+ return '<section class="weight-board" aria-label="体重跟踪"><div class="weight-header"><h2>体重跟踪</h2><span>'+(latest?'最近 '+latest[1]+' kg · '+formatDate(latest[0]):'尚无记录')+'</span></div>'+
+ '<form id="weightForm" class="weight-form"><label for="weightInput">今日体重</label><div class="weight-input"><input id="weightInput" name="weight" type="number" min="1" max="500" step="0.1" inputmode="decimal" placeholder="输入体重" value="'+(todayWeight??'')+'" required><span>kg</span></div><button type="submit">'+(todayWeight?'更新':'记录')+'</button></form>'+chart+'</section>';
+}
+function saveTodayWeight(form){
+ const value=Number(form.elements.weight.value);
+ if(!Number.isFinite(value)||value<=0||value>500){toast('请填写有效体重');return false}
+ const prior=state;state={...state,settings:{...state.settings,weight:value},weightHistory:{...state.weightHistory,[localDate()]:value}};
+ if(!persist()){state=prior;return false}render();toast('今日体重已保存');return true;
+}
 /* V5.11.0: Thirty consecutive dates, no padding blanks, clear month boundaries. */
 function renderCalendar(){
  const today=localDate();
  const end=calendarWindowEnd>today?today:calendarWindowEnd;
- const start=localDate(addDays(dateFromISO(end),-29));
- const days=Array.from({length:30},(_,i)=>localDate(addDays(dateFromISO(start),i)));
+ const start=localDate(addDays(dateFromISO(end),-20));
+ const days=Array.from({length:21},(_,i)=>localDate(addDays(dateFromISO(start),i)));
  const recordsByDate=new Map();
  for(const r of state.records){
   if(r.date<start||r.date>end)continue;
@@ -855,22 +889,22 @@ function renderCalendar(){
    '<span class="cal30-kcal">'+metric+'</span></button>';
  }).join('');
  return '<div class="cal30-shell">'+
- '<section class="cal30-board" aria-label="最近30天连续运动记录">'+
- '<header class="cal30-header"><div class="cal30-heading"><h2>'+(latest?'最近30天':'连续30天')+
+ '<section class="cal30-board" aria-label="最近21天连续运动记录">'+
+ '<header class="cal30-header"><div class="cal30-heading"><h2>'+(latest?'最近21天':'连续21天')+
  '</h2><span>'+formatDate(start)+' — '+formatDate(end)+'</span></div>'+
  '<div class="cal30-actions"><button type="button" data-cal-shift="-7" aria-label="向前七天">‹</button>'+
  '<button type="button" data-cal-shift="7" aria-label="向后七天" '+(latest?'disabled':'')+'>›</button></div></header>'+
  '<div class="cal30-months" aria-label="月份分隔">'+monthlyGuide+'</div>'+
- '<div class="cal30-grid" role="group" aria-label="连续30天每日运动消耗">'+cells+'</div>'+
+ '<div class="cal30-grid" role="group" aria-label="连续21天每日运动消耗">'+cells+'</div>'+
  '<footer class="cal30-footer">'+
  '<div class="cal30-stat"><span>总消耗</span><strong>'+energy.toLocaleString('zh-CN')+'</strong><small>kcal</small></div>'+
  '<div class="cal30-stat"><span>运动</span><strong>'+workouts+'</strong><small>天</small></div>'+
  '<div class="cal30-stat"><span>打卡</span><strong>'+checkins+'</strong><small>天</small></div>'+
- '<div class="cal30-stat"><span>连续</span><strong>'+streakCount()+'</strong><small>天</small></div>'+
+ '<div class="cal30-stat"><span>连续</span><strong>'+windowStreak(days)+'</strong><small>天</small></div>'+
  '</footer>'+
- (!latest?'<button type="button" class="cal30-back" data-cal-today>回到最近30天</button>':'')+
+ (!latest?'<button type="button" class="cal30-back" data-cal-today>回到最近21天</button>':'')+
  (latest&&dayKind(today)!=='workout'?'<div class="cal30-rest">'+renderRestButton()+'</div>':'')+
- '</section></div>';
+ '</section>'+renderWeightTracker()+'</div>';
 }
 
 
@@ -1204,6 +1238,7 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('submit',e=>{
  if(e.target.id==='historyQuickForm'){e.preventDefault();saveHistoryQuickForm(e.target);return}
+ if(e.target.id==='weightForm'){e.preventDefault();saveTodayWeight(e.target);return}
  
 
  const form=e.target.closest('[data-q-form]');if(!form)return;
