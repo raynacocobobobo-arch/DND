@@ -1,0 +1,97 @@
+name: Fitness V5.36 real browser QA
+on:
+  push:
+    branches: [feature/fitness-two-videos-timeline-20261122]
+    paths: [.github/workflows/fitness-v536-browser-qa.yml]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Playwright
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Check both videos, timestamp seeking and wake lock lifecycle
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/qa.py <<'PY'
+          import json,threading,http.server,socketserver
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          server=socketserver.TCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          addr='http://127.0.0.1:%s/fitness-tracker/' % server.server_address[1]
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True,args=['--autoplay-policy=no-user-gesture-required'])
+              ctx=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=2,
+                   is_mobile=True,has_touch=True,locale='zh-CN',service_workers='block')
+              page=ctx.new_page();errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.add_init_script("""() => {
+                window.__wakeEvents=[];
+                Object.defineProperty(navigator,'wakeLock',{configurable:true,value:{
+                  request: async (kind) => {
+                    window.__wakeEvents.push('request:'+kind);
+                    return {released:false,release(){this.released=true;window.__wakeEvents.push('release');return Promise.resolve();},addEventListener(){}};
+                  }
+                }});
+              }""")
+              page.goto(addr,wait_until='networkidle',timeout=90000)
+              page.locator('#mobileNav [data-view="followalong"]').click()
+              page.locator('.fa-chapter').first.wait_for(state='visible')
+              assert page.locator('.fa-chapter').count()==12
+              assert page.locator('[data-follow-jump="329"]').count()==1
+              page.wait_for_function("""() => {
+                const a=document.getElementById('fa-video-1'),b=document.getElementById('fa-video-2');
+                return a && b && a.readyState>=1 && b.readyState>=1;
+              }""",timeout=45000)
+              dims=page.evaluate("""() => ({
+                title:document.title,chapters:[...document.querySelectorAll('.fa-chapter')].map(b=>b.textContent.trim()),
+                duration1:document.querySelector('#fa-video-1').duration,
+                duration2:document.querySelector('#fa-video-2').duration,
+                source1:document.querySelector('#fa-video-1').currentSrc,
+                source2:document.querySelector('#fa-video-2').currentSrc,
+                writingMode:getComputedStyle(document.querySelector('.fa-chapter-title')).writingMode
+              })""")
+              assert abs(dims['duration1']-373.4)<2,dims
+              assert abs(dims['duration2']-188.383)<2,dims
+              assert '1.mp4' in dims['source1'] and '2.mp4' in dims['source2'],dims
+              assert dims['writingMode']=='vertical-rl',dims
+              page.locator('[data-follow-jump="329"]').click()
+              page.wait_for_function("document.querySelector('#fa-video-1').currentTime>=328.5",timeout=10000)
+              page.wait_for_function("window.__wakeEvents.includes('request:screen')",timeout=10000)
+              page.evaluate("document.querySelector('#fa-video-1').pause()")
+              page.wait_for_function("window.__wakeEvents.includes('release')",timeout=10000)
+              page.screenshot(path='fitness-tracker/qa/v536-actual-mobile-with-timeline.png',full_page=True,animations='disabled')
+              page.evaluate("""async () => {
+                const a=document.querySelector('#fa-video-1');
+                const b=document.querySelector('#fa-video-2');
+                a.muted=true;b.muted=true;
+                await a.play();await b.play();
+              }""")
+              states=page.evaluate("""() => ({
+                firstPaused:document.querySelector('#fa-video-1').paused,
+                secondPlaying:!document.querySelector('#fa-video-2').paused,
+                wakeEvents:window.__wakeEvents
+              })""")
+              assert states['firstPaused'] and states['secondPlaying'],states
+              page.evaluate("document.querySelector('#fa-video-2').pause()")
+              print('V536_BROWSER_QA',json.dumps({'media':dims,'playback':states,'errors':errors},ensure_ascii=False))
+              assert not errors,errors
+              browser.close()
+          server.shutdown()
+          PY
+          python /tmp/qa.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v536-real-browser-screenshot
+          path: fitness-tracker/qa/v536-actual-mobile-with-timeline.png
