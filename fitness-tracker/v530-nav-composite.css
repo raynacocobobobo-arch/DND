@@ -137,3 +137,26 @@ body[data-screen="calendar"] .topline .page-title { background-image: url('./art
 body[data-screen="history"] .topline .page-title { background-image: url('./art/title-history-v5321.webp') !important; }
 body[data-screen="settings"] .topline .page-title { background-image: url('./art/title-settings-v5321.webp') !important; }
 body[data-screen="followalong"] .fa-hero-heading, body[data-screen="settings"] .topline .page-title { width: var(--ft-title-w4) !important; }
+
+/* Calendar and daily weight tracker */
+body[data-screen="calendar"] .topline .page-title { font-size:0 !important; line-height:0 !important; color:transparent !important; -webkit-text-fill-color:transparent !important; }
+body[data-screen="calendar"], body[data-screen="calendar"] .app { height:auto !important; max-height:none !important; overflow:visible !important; min-height:100dvh !important; }
+body[data-screen="calendar"] .main { height:auto !important; max-height:none !important; min-height:100dvh !important; overflow:visible !important; }
+body[data-screen="calendar"] #content { height:auto !important; min-height:0 !important; overflow:visible !important; }
+body[data-screen="calendar"] .cal30-shell { height:auto !important; min-height:0 !important; flex:none !important; gap:8px !important; }
+body[data-screen="calendar"] .cal30-board { flex:none !important; }
+body[data-screen="calendar"] .cal30-grid { grid-template-rows:repeat(3,minmax(54px,auto)) !important; }
+body[data-screen="calendar"] .weight-board { box-sizing:border-box; padding:12px 10px; border:2px solid #171009; border-radius:10px; background:#f7d594 url('./art/paper-exact.webp?v=5.18.0') repeat; background-size:104px 44px; color:#170f08; }
+body[data-screen="calendar"] .weight-header { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+body[data-screen="calendar"] .weight-header h2 { font:950 20px/1.1 'Songti SC','STSong',serif; margin:0; color:#170f08; }
+body[data-screen="calendar"] .weight-header span { font-size:11px; font-weight:700; color:#704d32; }
+body[data-screen="calendar"] .weight-form { display:flex; align-items:center; gap:7px; margin-top:10px; }
+body[data-screen="calendar"] .weight-form label { flex:none; color:#1b100a; font-size:13px; font-weight:850; }
+body[data-screen="calendar"] .weight-input { display:flex; align-items:center; min-width:0; flex:1; border:1.5px solid #25170f; border-radius:5px; background:#fff0c5; padding-right:7px; }
+body[data-screen="calendar"] .weight-input input { box-sizing:border-box; width:100%; min-width:0; height:36px; padding:5px 8px; border:0; background:transparent; color:#17100b; font-size:16px; font-weight:800; }
+body[data-screen="calendar"] .weight-input span { color:#6d4a30; font-size:12px; font-weight:800; }
+body[data-screen="calendar"] .weight-form button { flex:none; min-height:38px; padding:5px 13px; border:1.5px solid #25170d; border-radius:5px; color:#ffedbb; background:#a63022; font-size:13px; font-weight:900; }
+body[data-screen="calendar"] .weight-chart { margin-top:8px; }
+body[data-screen="calendar"] .weight-chart svg { display:block; width:100%; height:68px; overflow:visible; }
+body[data-screen="calendar"] .weight-chart-labels { display:flex; justify-content:space-between; color:#705239; font-size:10px; }
+body[data-screen="calendar"] .weight-empty { margin:8px 0 0; color:#705239; font-size:12px; }
