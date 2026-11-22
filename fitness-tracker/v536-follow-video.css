@@ -84,3 +84,29 @@ body[data-screen="followalong"] .fa-awake-info{
  body[data-screen="followalong"] .fa-chapter{height:120px}
  body[data-screen="followalong"] .fa-chapter-title{font-size:14px;max-height:86px}
 }
+
+
+/* Real-browser QA fixes: existing global title colors are light, and
+   vertical writing-mode creates an auto-sized 4px-tall flex child. */
+body[data-screen="followalong"] .fa-video-head h2{
+ color:#23130b!important;-webkit-text-fill-color:#23130b!important;
+ text-shadow:none!important;opacity:1!important;
+}
+body[data-screen="followalong"] .fa-chapter-title{
+ box-sizing:border-box!important;
+ flex:0 0 58px!important;width:20px!important;
+ height:58px!important;min-height:58px!important;max-height:58px!important;
+ display:block!important;writing-mode:vertical-rl!important;
+ text-orientation:upright!important;overflow:visible!important;
+ white-space:nowrap!important;line-height:18px!important;
+ color:#291a10!important;-webkit-text-fill-color:#291a10!important;
+}
+body[data-screen="followalong"] .fa-chapter.active .fa-chapter-title{
+ color:#fff0c9!important;-webkit-text-fill-color:#fff0c9!important;
+}
+@media(min-width:851px){
+ body[data-screen="followalong"] .fa-chapter-title{
+  flex-basis:84px!important;height:84px!important;
+  min-height:84px!important;max-height:84px!important;
+ }
+}
