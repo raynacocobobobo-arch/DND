@@ -83,6 +83,22 @@ jobs:
               print("SAFE_AREA_DIAGNOSTICS",json.dumps(safe,ensure_ascii=False))
               page.screenshot(path="fitness-tracker/qa/fitness-actual-with-safe-area.png",full_page=False,animations="disabled")
               assert safe["bottom"] < safe["nav"], "iPhone safe area obscures weight tracker"
+              # Five realistic non-monotonic daily weights: do not imply linear weight loss.
+              page.evaluate("""() => {
+                state.weightHistory={
+                  '2026-11-18':65.2,'2026-11-19':65.5,
+                  '2026-11-20':65.1,'2026-11-21':65.4,'2026-11-22':65.0
+                };
+                render();
+              }""")
+              page.screenshot(path="fitness-tracker/qa/fitness-actual-five-day-fluctuations.png",full_page=False,animations="disabled")
+              five=page.evaluate("""() => ({
+                points:document.querySelectorAll('.weight-chart circle').length,
+                labels:[...document.querySelectorAll('.weight-chart svg text')].map(x=>x.textContent),
+                bottom:document.querySelector('.weight-board').getBoundingClientRect().bottom,
+                nav:document.querySelector('#mobileNav').getBoundingClientRect().top})""")
+              print("FIVE_DAY_DIAGNOSTICS",json.dumps(five,ensure_ascii=False))
+              assert five["points"]==5 and five["bottom"]<five["nav"], "5-day weight chart overflow"
               browser.close()
           httpd.shutdown()
           PY
