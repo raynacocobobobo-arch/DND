@@ -1,0 +1,121 @@
+name: Fitness V5.38 eating window real browser QA
+on:
+  push:
+    branches: [feature/fitness-eating-window-v538-20261122]
+    paths: [.github/workflows/fitness-v538-eating-qa.yml, fitness-tracker/app.js, fitness-tracker/index.html, fitness-tracker/v538-eating-window.css]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real browser
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Test one screen, actual timestamps, data preservation and short screens
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/fitness_v538_qa.py <<'PY'
+          import json, threading, http.server, socketserver
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          httpd=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=httpd.serve_forever,daemon=True).start()
+          url='http://127.0.0.1:%s/fitness-tracker/' % httpd.server_address[1]
+          baseline={"version":1,"settings":{"weight":65,"age":36,"weeklyGoal":1500},
+            "records":[{"id":"qa-workout","date":"2026-11-21","type":"cardio","exercise":"椭圆机","duration_min":20,"calories":120,"createdAt":"2026-11-21T10:00:00"}],
+            "weightHistory":{"2026-11-21":65.4},"stepDiary":{}}
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':390,'height':844},
+                device_scale_factor=2,is_mobile=True,has_touch=True,
+                timezone_id='Asia/Shanghai',locale='zh-CN',service_workers='block')
+              page=context.new_page(); errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,22,16,15,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.add_init_script("""(() => {
+                localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s))
+              })();""" % json.dumps(baseline,ensure_ascii=False))
+              page.goto(url,wait_until='networkidle',timeout=90000)
+              page.locator('.if6-eat').wait_for(state='visible',timeout=10000)
+              assert page.locator('.if6-card').count()==12
+              assert page.locator('[data-eating-start]').count()==1
+              page.screenshot(path='fitness-tracker/qa/v538-mobile-before-first-meal.png',full_page=False,animations='disabled')
+              page.locator('[data-eating-start]').click()
+              assert '16:15' in page.locator('.if6-eat-time').inner_text()
+              page.locator('[data-eating-edit]').click()
+              page.locator('#eatingStartTime').fill('11:30')
+              page.locator('#eatingTimeForm button[type="submit"]').click()
+              assert '11:30' in page.locator('.if6-eat-time').inner_text()
+              assert '19:30' in page.locator('.if6-eat-time').inner_text()
+              assert page.locator('[data-eating-status]').inner_text()=='进食中'
+              def geometry(pg):
+                  return pg.evaluate("""() => {
+                    const find=s=>document.querySelector(s)?.getBoundingClientRect();
+                    const row=r=>r&&({top:r.top,bottom:r.bottom,height:r.height});
+                    const nav=find('#mobileNav'),grid=find('.if6-grid'),strip=find('.if6-eat');
+                    const cards=[...document.querySelectorAll('.if6-card')].map(c=>c.getBoundingClientRect());
+                    return {innerHeight:innerHeight,documentHeight:document.documentElement.scrollHeight,
+                      nav:row(nav),grid:row(grid),strip:row(strip),
+                      cardCount:cards.length,minCardHeight:Math.min(...cards.map(r=>r.height)),
+                      lastCardBottom:Math.max(...cards.map(r=>r.bottom)),header:row(find('.if6-head')),
+                      statusText:document.querySelector('.if6-eat-time')?.textContent.trim()}
+                  }""")
+              main_geo=geometry(page)
+              print('EAT_390_GEOMETRY',json.dumps(main_geo,ensure_ascii=False),flush=True)
+              assert main_geo['cardCount']==12
+              assert main_geo['lastCardBottom']<=main_geo['nav']['top']+2,main_geo
+              assert main_geo['minCardHeight']>=90,main_geo
+              assert main_geo['strip']['height']>=49,main_geo
+              page.screenshot(path='fitness-tracker/qa/v538-mobile-eating-1130-1930.png',full_page=False,animations='disabled')
+              data=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              assert data['records']==baseline['records'], 'Existing workouts were changed'
+              assert data['weightHistory']==baseline['weightHistory'],'Existing weights were changed'
+              assert 'eatingWindows' in data and data['eatingWindows']['2026-11-22']['startAt']>0
+              page.reload(wait_until='networkidle')
+              assert '11:30' in page.locator('.if6-eat-time').inner_text()
+              page.clock.set_fixed_time(datetime(2026,11,22,20,0,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.evaluate('refreshEatPhaseForTest=()=>document.querySelector("[data-eating-status]").textContent=eatStatus(state.eatingWindows[localDate()]); refreshEatPhaseForTest()')
+              assert page.locator('[data-eating-status]').inner_text()=='窗口已结束'
+              page.clock.set_fixed_time(datetime(2026,11,22,16,15,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.set_viewport_size({'width':402,'height':874})
+              geo_402=geometry(page)
+              assert geo_402['lastCardBottom']<=geo_402['nav']['top']+2,geo_402
+              page.screenshot(path='fitness-tracker/qa/v538-mobile-402x874.png',full_page=False,animations='disabled')
+              page.add_style_tag(content='body[data-screen="overview"] .main { padding-top:55px !important; }')
+              safe_geo=geometry(page)
+              print('EAT_SAFE_AREA_GEOMETRY',json.dumps(safe_geo,ensure_ascii=False),flush=True)
+              assert safe_geo['lastCardBottom']<=safe_geo['nav']['top']+2,safe_geo
+              page.screenshot(path='fitness-tracker/qa/v538-mobile-safe-area.png',full_page=False,animations='disabled')
+              page.set_viewport_size({'width':375,'height':667})
+              short_geo=geometry(page)
+              print('EAT_SHORT_GEOMETRY',json.dumps(short_geo,ensure_ascii=False),flush=True)
+              assert short_geo['cardCount']==12 and short_geo['minCardHeight']>=90,short_geo
+              page.screenshot(path='fitness-tracker/qa/v538-short-screen-top.png',full_page=False,animations='disabled')
+              page.evaluate("document.querySelector('.main').scrollTop=1000")
+              page.screenshot(path='fitness-tracker/qa/v538-short-screen-bottom.png',full_page=False,animations='disabled')
+              Path('fitness-tracker/qa/v538-diagnostics.json').write_text(json.dumps(
+                {'390':main_geo,'402':geo_402,'safe':safe_geo,'short':short_geo,
+                 'record':data['eatingWindows']['2026-11-22'],'errors':errors},indent=2,ensure_ascii=False))
+              assert not errors,errors
+              browser.close()
+          httpd.shutdown()
+          PY
+          python /tmp/fitness_v538_qa.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v538-real-mobile-screens
+          path: fitness-tracker/qa/v538-*
