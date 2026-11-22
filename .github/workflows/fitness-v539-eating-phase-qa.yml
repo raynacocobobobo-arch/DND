@@ -1,0 +1,132 @@
+name: Fitness V5.39 eating phase browser QA
+on:
+  push:
+    branches: [feature/fitness-eating-phase-visual-v539-20261122]
+    paths: [.github/workflows/fitness-v539-eating-phase-qa.yml, fitness-tracker/app.js, fitness-tracker/v539-eating-phase.css]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Chromium
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Verify live state transitions and take genuine screenshots
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/qa_v539.py <<'PY'
+          import json,threading,http.server,socketserver
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          httpd=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=httpd.serve_forever,daemon=True).start()
+          url='http://127.0.0.1:%d/fitness-tracker/' % httpd.server_address[1]
+          fixture={"version":1,"settings":{"weight":65,"age":36,"weeklyGoal":1500},
+                   "records":[{"id":"preserve-workout","date":"2026-11-21","type":"cardio","exercise":"椭圆机","duration_min":20,"calories":120}],
+                   "weightHistory":{"2026-11-21":65.4},"stepDiary":{},
+                   "eatingWindows":{"2026-11-22":{"startAt":1795327800000}}}
+          def state_info(page):
+              return page.evaluate("""() => {
+                const strip=document.querySelector('.if6-eat'),cs=getComputedStyle(strip);
+                const box=x=>x?.getBoundingClientRect();
+                const nav=box(document.querySelector('#mobileNav'));
+                const cards=[...document.querySelectorAll('.if6-card')].map(box);
+                const r=box(strip);
+                return {phase:strip.dataset.eatingPhase,day:strip.dataset.eatingDay,
+                   text:strip.textContent.trim(),bg:cs.backgroundImage,color:cs.color,
+                   titleColor:getComputedStyle(strip.querySelector('.if6-eat-title strong')).color,
+                   timeColor:strip.querySelector('.if6-eat-time')?getComputedStyle(strip.querySelector('.if6-eat-time')).color:null,
+                   stripHeight:r.height,stripWidth:r.width,stripScrollWidth:strip.scrollWidth,
+                   viewport:innerWidth+'x'+innerHeight,cardCount:cards.length,
+                   lastCardBottom:Math.max(...cards.map(r=>r.bottom)),navTop:nav.top,
+                   scrollHeight:document.documentElement.scrollHeight};
+              }""")
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              ctx=browser.new_context(viewport={'width':390,'height':844},
+                  device_scale_factor=2,is_mobile=True,has_touch=True,timezone_id='Asia/Shanghai',
+                  locale='zh-CN',service_workers='block')
+              pg=ctx.new_page();errors=[]
+              pg.on('pageerror',lambda e:errors.append(str(e)))
+              pg.clock.install(time=datetime(2026,11,22,19,29,tzinfo=ZoneInfo('Asia/Shanghai')))
+              # Correct fixture timestamp from local calendar and carry real training/weight data.
+              pg.add_init_script("""(() => {
+                const state=%s;
+                state.eatingWindows['2026-11-22'].startAt=new Date(2026,10,22,11,30,0,0).getTime();
+                if(!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(state));
+              })();""" % json.dumps(fixture,ensure_ascii=False))
+              pg.goto(url,wait_until='networkidle',timeout=75000)
+              before=state_info(pg)
+              assert before['phase']=='eating',before
+              assert before['cardCount']==12 and before['lastCardBottom']<=before['navTop']+2,before
+              pg.screenshot(path='fitness-tracker/qa/v539-01-eating-parchment.png',full_page=False,animations='disabled')
+              pg.clock.set_fixed_time(datetime(2026,11,22,19,31,tzinfo=ZoneInfo('Asia/Shanghai')))
+              pg.evaluate('refreshEatingPhase()')
+              after=state_info(pg)
+              assert after['phase']=='fasting',after
+              assert '19:30' in after['text'] and '次日11:30' in after['text'],after
+              assert '禁食时段' in after['text'],after
+              assert 'gradient' in after['bg'] and after['timeColor']=='rgb(255, 240, 208)',after
+              assert after['stripScrollWidth']<=after['stripWidth']+2,after
+              assert after['lastCardBottom']<=after['navTop']+2,after
+              pg.screenshot(path='fitness-tracker/qa/v539-02-fasting-oxblood.png',full_page=False,animations='disabled')
+              pg.clock.set_fixed_time(datetime(2026,11,23,6,10,tzinfo=ZoneInfo('Asia/Shanghai')))
+              pg.evaluate('refreshEatingPhase()')
+              nextmorning=state_info(pg)
+              assert nextmorning['phase']=='fasting' and nextmorning['day']=='2026-11-23',nextmorning
+              assert '昨19:30' in nextmorning['text'] and '11:30' in nextmorning['text'],nextmorning
+              assert '开始进食' in nextmorning['text'],nextmorning
+              pg.screenshot(path='fitness-tracker/qa/v539-03-next-morning-fasting.png',full_page=False,animations='disabled')
+              pg.clock.set_fixed_time(datetime(2026,11,23,11,31,tzinfo=ZoneInfo('Asia/Shanghai')))
+              pg.evaluate('refreshEatingPhase()')
+              nextday=state_info(pg)
+              assert nextday['phase']=='idle' and '第一餐时记录时间' in nextday['text'],nextday
+              pg.screenshot(path='fitness-tracker/qa/v539-04-next-day-ready.png',full_page=False,animations='disabled')
+              pg.clock.set_fixed_time(datetime(2026,11,23,6,10,tzinfo=ZoneInfo('Asia/Shanghai')))
+              pg.evaluate("""() => {
+                  state.eatingWindows['2026-11-22']={startAt:new Date(2026,10,22,23,0,0,0).getTime()};
+                  render();
+              }""")
+              cross=state_info(pg)
+              assert cross['phase']=='eating' and '昨23:00' in cross['text'] and '07:00' in cross['text'],cross
+              pg.clock.set_fixed_time(datetime(2026,11,23,7,1,tzinfo=ZoneInfo('Asia/Shanghai')))
+              pg.evaluate('refreshEatingPhase()')
+              crossfast=state_info(pg)
+              assert crossfast['phase']=='fasting' and '07:00' in crossfast['text'] and '23:00' in crossfast['text'],crossfast
+              pg.screenshot(path='fitness-tracker/qa/v539-05-cross-midnight-oxblood.png',full_page=False,animations='disabled')
+              pg.set_viewport_size({'width':375,'height':667})
+              small=state_info(pg)
+              assert small['cardCount']==12 and small['stripScrollWidth']<=small['stripWidth']+2,small
+              pg.evaluate('window.scrollTo(0,document.documentElement.scrollHeight)')
+              small_scrolled=state_info(pg)
+              assert small_scrolled['lastCardBottom']<=small_scrolled['navTop']+2,small_scrolled
+              pg.screenshot(path='fitness-tracker/qa/v539-06-small-screen-scrolled.png',full_page=False,animations='disabled')
+              raw=pg.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              assert raw['records']==fixture['records'] and raw['weightHistory']==fixture['weightHistory'],raw
+              assert not errors,errors
+              diag={'before':before,'after':after,'morning':nextmorning,'ready':nextday,
+                    'overnight':cross,'overnightfast':crossfast,'small':small,'errors':errors}
+              Path('fitness-tracker/qa/v539-diagnostics.json').write_text(json.dumps(diag,indent=2,ensure_ascii=False))
+              print('V539_QA',json.dumps(diag,ensure_ascii=False),flush=True)
+              browser.close()
+          httpd.shutdown()
+          PY
+          python /tmp/qa_v539.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v539-real-phase-screens
+          path: fitness-tracker/qa/v539-*
