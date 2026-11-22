@@ -162,3 +162,48 @@ body[data-screen="calendar"] .weight-chart-labels { display:flex; justify-conten
 body[data-screen="calendar"] .weight-empty { margin:8px 0 0; color:#705239; font-size:12px; }
 body[data-screen="calendar"] .weight-header h2 { color:#170f08 !important; -webkit-text-fill-color:#170f08 !important; }
 body[data-screen="calendar"] .weight-input input { background:#fff0c5 !important; color:#17100b !important; -webkit-text-fill-color:#17100b !important; }
+
+/* Fit calendar and weight tracking together on a phone screen. */
+@media (max-width:850px) and (min-height:700px) {
+  body[data-screen="calendar"], body[data-screen="calendar"] .app {
+    height:100dvh !important; min-height:0 !important; max-height:100dvh !important; overflow:hidden !important;
+  }
+  body[data-screen="calendar"] .main {
+    box-sizing:border-box !important; height:100dvh !important; min-height:0 !important; max-height:100dvh !important;
+    overflow:hidden !important; display:flex !important; flex-direction:column !important;
+    padding-top:calc(env(safe-area-inset-top, 0px) + 6px) !important;
+    padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 69px) !important;
+  }
+  body[data-screen="calendar"] #content {
+    display:flex !important; flex-direction:column !important; flex:1 1 auto !important;
+    height:100% !important; min-height:0 !important; overflow:hidden !important;
+  }
+  body[data-screen="calendar"] .topline {
+    height:clamp(118px,18dvh,156px) !important; min-height:clamp(118px,18dvh,156px) !important;
+    max-height:156px !important; flex:0 0 auto !important; margin-bottom:6px !important;
+  }
+  body[data-screen="calendar"] .cal30-shell {
+    flex:1 1 auto !important; height:auto !important; min-height:0 !important;
+    gap:6px !important; overflow:hidden !important;
+  }
+  body[data-screen="calendar"] .cal30-board {
+    flex:1 1 auto !important; min-height:0 !important; padding:8px 9px !important;
+  }
+  body[data-screen="calendar"] .cal30-header { min-height:37px !important; padding-bottom:5px !important; }
+  body[data-screen="calendar"] .cal30-months { height:21px !important; min-height:21px !important; margin-bottom:4px !important; }
+  body[data-screen="calendar"] .cal30-grid { grid-template-rows:repeat(3,minmax(0,1fr)) !important; flex:1 1 auto !important; gap:3px !important; }
+  body[data-screen="calendar"] .cal30-day { padding:4px 2px !important; }
+  body[data-screen="calendar"] .cal30-footer { margin-top:5px !important; padding-top:5px !important; }
+  body[data-screen="calendar"] .cal30-stat { font-size:10px !important; }
+  body[data-screen="calendar"] .cal30-stat strong { font-size:clamp(16px,4.3vw,22px) !important; }
+  body[data-screen="calendar"] .cal30-rest { margin-top:2px !important; }
+  body[data-screen="calendar"] .cal30-back, body[data-screen="calendar"] .cal30-rest .rest-check-button { min-height:30px !important; margin-top:4px !important; padding:5px 8px !important; }
+  body[data-screen="calendar"] .weight-board { flex:0 0 auto !important; padding:9px 10px !important; }
+  body[data-screen="calendar"] .weight-header { padding-bottom:5px; border-bottom:1px solid #b48b61; }
+  body[data-screen="calendar"] .weight-header h2 { font-size:18px !important; }
+  body[data-screen="calendar"] .weight-form { margin-top:7px; }
+  body[data-screen="calendar"] .weight-chart { margin-top:4px; }
+  body[data-screen="calendar"] .weight-chart svg { height:34px; }
+  body[data-screen="calendar"] .weight-chart-labels { font-size:9px; line-height:1; }
+  body[data-screen="calendar"] .weight-empty { margin-top:5px; font-size:11px; line-height:1.2; }
+}
