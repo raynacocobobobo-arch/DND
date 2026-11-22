@@ -105,8 +105,27 @@ jobs:
               print('EAT_SHORT_GEOMETRY',json.dumps(short_geo,ensure_ascii=False),flush=True)
               assert short_geo['cardCount']==12 and short_geo['minCardHeight']>=90,short_geo
               page.screenshot(path='fitness-tracker/qa/v538-short-screen-top.png',full_page=False,animations='disabled')
-              page.evaluate("document.querySelector('.main').scrollTop=1000")
+              page.evaluate("window.scrollTo(0,document.documentElement.scrollHeight)")
+              page.wait_for_timeout(160)
+              scrolled=geometry(page)
+              print('EAT_SHORT_SCROLLED',json.dumps(scrolled,ensure_ascii=False),flush=True)
+              assert scrolled['lastCardBottom']<=scrolled['nav']['top']+2,scrolled
               page.screenshot(path='fitness-tracker/qa/v538-short-screen-bottom.png',full_page=False,animations='disabled')
+              page.set_viewport_size({'width':390,'height':844})
+              page.evaluate('window.scrollTo(0,0)')
+              page.clock.set_fixed_time(datetime(2026,11,22,23,30,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.evaluate("saveEatTime(new Date(2026,10,22,23,0,0,0).getTime())")
+              midnight=page.evaluate("""() => ({
+                text:document.querySelector('.if6-eat-time').textContent,
+                detailsWidth:document.querySelector('.if6-eat-details').clientWidth,
+                detailsScrollWidth:document.querySelector('.if6-eat-details').scrollWidth,
+                stripWidth:document.querySelector('.if6-eat').clientWidth,
+                stripScrollWidth:document.querySelector('.if6-eat').scrollWidth})""")
+              print('EAT_NEXT_DAY',json.dumps(midnight,ensure_ascii=False),flush=True)
+              assert '次日07:00' in midnight['text'],midnight
+              assert midnight['detailsScrollWidth']<=midnight['detailsWidth']+2,midnight
+              page.evaluate("document.querySelector('#toast')?.classList.remove('show')")
+              page.screenshot(path='fitness-tracker/qa/v538-late-meal-next-day.png',full_page=False,animations='disabled')
               Path('fitness-tracker/qa/v538-diagnostics.json').write_text(json.dumps(
                 {'390':main_geo,'402':geo_402,'safe':safe_geo,'short':short_geo,
                  'record':data['eatingWindows']['2026-11-22'],'errors':errors},indent=2,ensure_ascii=False))
