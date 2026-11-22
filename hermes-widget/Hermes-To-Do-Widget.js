@@ -1,4 +1,4 @@
-// Hermes To Do · iPhone Scriptable Widget v2.0 · 鸢尾圣女美术版
+// Hermes To Do · iPhone Scriptable Widget v3.0 · 原版 Logo 哥特徽章
 // 适配：Scriptable 小、中、大尺寸；优先使用中尺寸。
 // 安全：不在源代码中保存令牌，只存于 iPhone Keychain。
 // 先由服务器部署 GET /api/widget/v1/summary，再在 Scriptable 首次运行时输入令牌。
@@ -100,197 +100,194 @@ async function fetchSummary(token) {
   return parseSummary(JSON.parse(body));
 }
 
-/* V2 · HERMES VISUAL SYSTEM — ivory × antique gold × navy × burgundy.
-   The heroine/iris artwork is the official Hermes To Do app icon, not a substitute illustration.
-   Every label remains live Scriptable text, not hard-coded into the background art. */
-const ARTWORK_URL = 'https://raynacocobobobo-arch.github.io/DND/hermestodo/icons/icon-192.png?v=20261110';
-const ARTWORK_CACHE_FILE = 'hermes-widget-v2-icon-192.png';
+/* V3 · HERMES ORIGINAL LOGO EDITION.
+   The existing icon is the design authority: ivory hood, ornate gold halo,
+   blackened armour, fleur-de-lis and dark crimson sealing wax.
+   Draw the ENTIRE uncropped logo in its original square aspect ratio.
+   All numbers, text and dates remain real data from the existing API. */
+const ARTWORK_URL = 'https://raynacocobobobo-arch.github.io/DND/hermestodo/icons/icon-512.webp?v=3';
+const ARTWORK_FALLBACK_URL = 'https://raynacocobobobo-arch.github.io/DND/hermestodo/icons/icon-192.png?v=20261110';
+const ARTWORK_CACHE_FILE = 'hermes-widget-v3-official-logo.png';
 
 const theme = {
-  navy: '#101e28', deep: '#0a1118', gold: '#c8a46a', goldLight: '#ebca91',
-  ivory: '#f3e3c9', muted: '#c6b398', burgundy: '#882e31', sage: '#b2c0a3'
+  charcoal:'#0d1012', ink:'#0b151c', navy:'#101e28', bone:'#f0dfc3',
+  brass:'#c8a46a', gold:'#e2c18a', muted:'#b5a38b', seal:'#8c3430',
+  shadow:'#15110e', line:'#745a36'
 };
-const paint = (hex, alpha=1) => new Color(hex, alpha);
+const paint = (hex, alpha=1) => new Color(hex,alpha);
 
 async function loadArt() {
-  const fm = FileManager.local();
-  const file = fm.joinPath(fm.documentsDirectory(), ARTWORK_CACHE_FILE);
-  if (fm.fileExists(file)) {
-    try { return fm.readImage(file); } catch (_) {}
+  const fm=FileManager.local();
+  const path=fm.joinPath(fm.documentsDirectory(),ARTWORK_CACHE_FILE);
+  if (fm.fileExists(path)) {
+    try { return fm.readImage(path); } catch (_) {}
   }
-  try {
-    const req = new Request(ARTWORK_URL);
-    req.timeoutInterval = 7;
-    const img = await req.loadImage();
-    if (img) { try { fm.writeImage(file, img); } catch (_) {} }
-    return img;
-  } catch (_) { return null; }
+  for (const url of [ARTWORK_URL, ARTWORK_FALLBACK_URL]) {
+    try {
+      const req=new Request(url);
+      req.timeoutInterval=9;
+      const img=await req.loadImage();
+      if(img){
+        try { fm.writeImage(path,img); } catch (_) {}
+        return img;
+      }
+    } catch (_) {}
+  }
+  return null;
+}
+
+function drawGothicFrame(ctx,W,H,small) {
+  // Understated gilded frame rather than decorative stickers or gradients.
+  ctx.setStrokeColor(paint(theme.line,.62));
+  ctx.setLineWidth(3);
+  ctx.strokeRect(new Rect(15,15,W-30,H-30));
+  ctx.setStrokeColor(paint(theme.brass,.27));
+  ctx.setLineWidth(2);
+  ctx.strokeRect(new Rect(24,24,W-48,H-48));
+  // Short copper marks from the original app's Gothic identity.
+  ctx.setFillColor(paint(theme.seal,.84));
+  ctx.fillRect(new Rect(16,H-27,small?125:183,8));
+  ctx.setFillColor(paint(theme.gold,.72));
+  ctx.fillRect(new Rect(40,58,small?93:150,3));
+  ctx.fillRect(new Rect(40,H-62,small?105:155,2));
 }
 
 function heraldicBackground(small, art) {
-  const W = small ? 620 : 1280, H = 620;
-  const ctx = new DrawContext();
-  ctx.size = new Size(W, H);
-  ctx.opaque = true;
-  ctx.respectScreenScale = true;
-  ctx.setFillColor(paint(theme.deep));
-  ctx.fillRect(new Rect(0, 0, W, H));
-  // Official illustration occupies the right side, like the website's illustrated hero.
+  const W=small?620:1280,H=620;
+  const ctx=new DrawContext();
+  ctx.size=new Size(W,H);
+  ctx.opaque=true;
+  ctx.respectScreenScale=true;
+  ctx.setFillColor(paint(theme.ink));
+  ctx.fillRect(new Rect(0,0,W,H));
+  // A broad, opaque text field protects the contrast; never darken the logo.
+  ctx.setFillColor(paint(theme.charcoal));
+  ctx.fillRect(new Rect(0,0,small?278:725,H));
   if (art) {
-    const side = small ? 545 : 640;
-    const left = small ? 155 : 800;
-    const top = small ? 26 : -10;
-    ctx.drawImageInRect(art, new Rect(left, top, side, side));
+    // Fit the full native app icon. No off-canvas placement and no scrim over it.
+    const rect=small?new Rect(296,121,290,290):new Rect(752,53,494,494);
+    ctx.drawImageInRect(art,rect);
+    ctx.setStrokeColor(paint(theme.brass,.55));
+    ctx.setLineWidth(2);
+    ctx.strokeRect(new Rect(rect.x-2,rect.y-2,rect.width+4,rect.height+4));
+  } else {
+    // Only a subdued empty frame when the icon cannot be loaded.
+    const r=small?new Rect(297,122,290,290):new Rect(753,54,494,494);
+    ctx.setStrokeColor(paint(theme.brass,.5));
+    ctx.setLineWidth(3);
+    ctx.strokeRect(r);
   }
-  // Dark translucent scrim keeps dynamic text legible over the painting.
-  for (let x = 0; x < W; x += 24) {
-    const relative = x / W;
-    const opacity = small ? Math.max(.10, .93 - relative * 1.00)
-                          : Math.max(.09, .97 - relative * 1.10);
-    ctx.setFillColor(paint(theme.deep, opacity));
-    ctx.fillRect(new Rect(x, 0, 25, H));
-  }
-  ctx.setFillColor(paint(theme.navy, .24));
-  ctx.fillRect(new Rect(0, H * .72, W, H * .28));
-  // Museum-label / Gothic manuscript double hairlines.
-  ctx.setStrokeColor(paint(theme.gold, .80));
-  ctx.setLineWidth(3);
-  ctx.strokeRect(new Rect(19, 19, W - 38, H - 38));
-  ctx.setStrokeColor(paint(theme.goldLight, .23));
-  ctx.setLineWidth(2);
-  ctx.strokeRect(new Rect(28, 28, W - 56, H - 56));
-  // Narrow red heraldic ribbon anchors the composition to the red-and-gold website art.
-  ctx.setFillColor(paint(theme.burgundy, .95));
-  ctx.fillRect(new Rect(0, 95, 13, H - 190));
-  ctx.setFillColor(paint(theme.gold, .75));
-  ctx.fillRect(new Rect(35, 68, small ? 74 : 112, 3));
-  ctx.fillRect(new Rect(35, H - 72, small ? 92 : 128, 3));
+  drawGothicFrame(ctx,W,H,small);
   return ctx.getImage();
 }
 
-function fancyFont(size, latin=false) {
-  try { return Font.custom(latin ? 'Georgia-Bold' : 'STSongti-SC-Bold', size); }
-  catch (_) { return Font.boldSystemFont(size); }
+function hermesFont(size,serif=false) {
+  if(serif){
+    try { return Font.custom('STSongti-SC-Bold',size); } catch(_) {}
+  }
+  return Font.boldSystemFont(size);
 }
-function addText(stack, value, size, hex, bold=false, serif=false) {
-  const t = stack.addText(String(value));
-  t.font = serif ? fancyFont(size, /^[\x00-\x7F]+$/.test(String(value))) :
-           bold ? Font.boldSystemFont(size) : Font.mediumSystemFont(size);
-  t.textColor = paint(hex);
-  t.lineLimit = 1;
-  t.minimumScaleFactor = .64;
+function addText(stack,value,size,hex,bold=false,serif=false) {
+  const t=stack.addText(String(value));
+  t.font=bold?hermesFont(size,serif):Font.mediumSystemFont(size);
+  t.textColor=paint(hex);
+  t.lineLimit=1;
+  t.minimumScaleFactor=.58;
   return t;
 }
-function dateLabel(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return Number.isFinite(d.getTime()) ? (d.getMonth()+1)+'/'+d.getDate() : '';
+function dateLabel(iso){
+  if(!iso)return '';
+  const d=new Date(iso);
+  return Number.isFinite(d.getTime())?(d.getMonth()+1)+'/'+d.getDate():'';
 }
-function timeLabel(ts) {
-  if (!Number.isFinite(ts)) return '等待首次同步';
-  const d = new Date(ts);
-  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' 同步';
+function timeLabel(ts){
+  if(!Number.isFinite(ts))return '尚未同步';
+  const d=new Date(ts);
+  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
-function line(widget) {
-  const sep = widget.addStack();
-  sep.size = new Size(0, 1);
-  sep.backgroundColor = paint(theme.gold,.48);
+function addHeader(w,small) {
+  const h=w.addStack();h.layoutHorizontally();h.centerAlignContent();
+  addText(h,'⚜',small?15:17,theme.gold,true);
+  h.addSpacer(5);
+  addText(h,'HERMES TO DO',small?9:11,theme.bone,true,true);
+  h.addSpacer();
 }
-function addHeader(widget, isSmall) {
-  const row = widget.addStack();
-  row.layoutHorizontally();
-  row.centerAlignContent();
-  addText(row, '⚜', isSmall?15:18, theme.goldLight, true);
-  row.addSpacer(isSmall?5:8);
-  addText(row, 'HERMES', isSmall?11:13, theme.goldLight, true, true);
-  row.addSpacer(4);
-  addText(row, 'TO DO', isSmall?7:9, theme.muted, false);
-  row.addSpacer();
-  if (!isSmall) addText(row, '今日纪事', 11, theme.muted, true, true);
+function addRule(w) {
+  const row=w.addStack();row.size=new Size(0,1);
+  row.backgroundColor=paint(theme.line,.58);
 }
-function addFooter(widget, snapshot, stale) {
-  const row = widget.addStack();
-  row.layoutHorizontally();
-  row.centerAlignContent();
-  addText(row, '✦', 9, theme.gold, true);
-  row.addSpacer(5);
-  addText(row, stale ? '离线数据' : timeLabel(snapshot?.receivedAt), 9, theme.muted);
-  row.addSpacer();
-  if (stale) addText(row, '未连接', 9, '#e8a994', false);
-}
-function renderSmall(widget, data, snapshot, stale) {
-  addHeader(widget,true);
-  widget.addSpacer(11);
-  addText(widget, '未完成任务', 11, theme.goldLight, true);
-  widget.addSpacer(0);
-  addText(widget, fmt(data.incompleteCount), 50, theme.ivory, true, true);
-  widget.addSpacer();
-  line(widget);
-  widget.addSpacer(6);
-  const done = widget.addStack(); done.layoutHorizontally(); done.centerAlignContent();
-  addText(done, '今日完成', 10, theme.muted, false);
+function renderSmall(w,data,snapshot,stale) {
+  addHeader(w,true);
+  w.addSpacer(19);
+  const panel=w.addStack(); panel.layoutVertically();
+  panel.size=new Size(79,0);
+  addText(panel,'未完成',10,theme.gold,true);
+  addText(panel,fmt(data.incompleteCount),47,theme.bone,true,true);
+  w.addSpacer();
+  addRule(w);
+  w.addSpacer(7);
+  const done=w.addStack();done.layoutHorizontally();done.centerAlignContent();
+  addText(done,'今日完成',10,theme.muted);
   done.addSpacer(7);
-  addText(done, fmt(data.completedToday), 15, theme.sage, true, true);
-  widget.addSpacer(6);
-  addFooter(widget,snapshot,stale);
+  addText(done,fmt(data.completedToday),17,theme.gold,true,true);
+  w.addSpacer(6);
+  addText(w,stale?'离线数据':('更新 '+timeLabel(snapshot?.receivedAt)),9,theme.muted);
 }
-function addTasks(widget, items) {
-  widget.addSpacer(5);
-  if (!items.length) {
-    addText(widget, '暂无近期任务 · 从容安排今天', 10, theme.muted);
-    return;
-  }
-  for (const task of items.slice(0,2)) {
-    const row = widget.addStack(); row.layoutHorizontally(); row.centerAlignContent();
-    addText(row, '◆', 8, task.priority==='high'?'#cf8b72':theme.gold, true);
-    row.addSpacer(5);
-    const label = addText(row, task.title, 10.5, theme.ivory);
-    label.lineLimit = 1;
-    row.addSpacer(5);
-    const date = dateLabel(task.dueAt);
-    if (date) addText(row,date,9,theme.muted);
-    widget.addSpacer(3);
-  }
-}
-function renderMedium(widget, data, snapshot, stale) {
-  addHeader(widget,false);
-  widget.addSpacer(8);
-  const stats = widget.addStack(); stats.layoutHorizontally(); stats.centerAlignContent();
-  const left = stats.addStack(); left.layoutVertically();
-  addText(left,'未完成任务',10,theme.goldLight,true);
-  addText(left,fmt(data.incompleteCount),41,theme.ivory,true,true);
-  stats.addSpacer(18);
-  const right = stats.addStack(); right.layoutVertically();
+function renderMedium(w,data,snapshot,stale) {
+  addHeader(w,false);
+  w.addSpacer(12);
+  // Strict column width keeps titles and numbers clear of the authentic logo.
+  const info=w.addStack();info.layoutVertically();info.size=new Size(181,0);
+  const main=info.addStack();main.layoutHorizontally();main.centerAlignContent();
+  const left=main.addStack();left.layoutVertically();
+  addText(left,'未完成',10,theme.gold,true);
+  addText(left,fmt(data.incompleteCount),39,theme.bone,true,true);
+  main.addSpacer(17);
+  const right=main.addStack();right.layoutVertically();
   addText(right,'今日完成',10,theme.muted);
-  addText(right,fmt(data.completedToday),29,theme.sage,true,true);
-  stats.addSpacer();
-  widget.addSpacer(5);
-  line(widget);
-  addTasks(widget,data.upcoming);
-  widget.addSpacer();
-  addFooter(widget,snapshot,stale);
+  addText(right,fmt(data.completedToday),26,theme.gold,true,true);
+  info.addSpacer(7);
+  addRule(info);
+  info.addSpacer(8);
+  if(data.upcoming.length){
+    addText(info,'近期任务',10,theme.gold,true,true);
+    info.addSpacer(4);
+    for(const task of data.upcoming.slice(0,2)){
+      const row=info.addStack();row.layoutHorizontally();row.centerAlignContent();
+      addText(row,'◆',8,task.priority==='high'?theme.seal:theme.brass,true);
+      row.addSpacer(5);
+      addText(row,task.title,11,theme.bone).lineLimit=1;
+      row.addSpacer();
+      const d=dateLabel(task.dueAt);
+      if(d)addText(row,d,9,theme.muted);
+      info.addSpacer(3);
+    }
+  }else{
+    addText(info,'暂无近期任务',11,theme.muted);
+  }
+  w.addSpacer();
+  const foot=w.addStack();foot.layoutHorizontally();
+  addText(foot,stale?'离线数据':'更新 '+timeLabel(snapshot?.receivedAt),9,theme.muted);
 }
-function renderPlaceholder(widget, issue, small) {
-  addHeader(widget,small);
-  widget.addSpacer(13);
-  addText(widget,'尚未连接',small?26:31,theme.ivory,true,true);
-  widget.addSpacer(4);
-  addText(widget,'请打开 Scriptable 配对',11,theme.muted);
-  widget.addSpacer();
-  line(widget);
-  widget.addSpacer(6);
-  addText(widget,issue==='未配对'?'等待令牌':(issue||'检查网络与服务器'),9,theme.goldLight);
+function renderPlaceholder(w,issue,small){
+  addHeader(w,small);
+  w.addSpacer(18);
+  addText(w,'尚未连接',small?24:30,theme.bone,true,true);
+  w.addSpacer(7);
+  addText(w,'请在 Scriptable 中完成配对',10,theme.muted).lineLimit=2;
+  w.addSpacer();
+  addText(w,issue||'等待数据',9,theme.gold);
 }
-function renderWidget(snapshot, issue, art) {
-  const w = new ListWidget();
-  const small = config.widgetFamily==='small';
-  w.backgroundColor = paint(theme.navy);
-  try { w.backgroundImage = heraldicBackground(small,art); } catch (_) {}
-  w.setPadding(small?16:17,small?18:22,small?16:14,small?18:22);
-  w.url = APP_URL;
-  w.refreshAfterDate = new Date(Date.now()+REFRESH_MINUTES*60*1000);
-  if (!snapshot) renderPlaceholder(w,issue,small);
-  else if (small) renderSmall(w,snapshot.data,snapshot,!!issue);
+function renderWidget(snapshot,issue,art){
+  const w=new ListWidget();
+  const small=config.widgetFamily==='small';
+  w.backgroundColor=paint(theme.ink);
+  try{w.backgroundImage=heraldicBackground(small,art);}catch(_){}
+  w.setPadding(small?15:16,small?17:20,small?15:14,small?17:20);
+  w.url=APP_URL;
+  w.refreshAfterDate=new Date(Date.now()+REFRESH_MINUTES*60*1000);
+  if(!snapshot)renderPlaceholder(w,issue,small);
+  else if(small)renderSmall(w,snapshot.data,snapshot,!!issue);
   else renderMedium(w,snapshot.data,snapshot,!!issue);
   return w;
 }
