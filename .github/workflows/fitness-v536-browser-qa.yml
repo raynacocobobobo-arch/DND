@@ -22,11 +22,39 @@ jobs:
         run: |
           mkdir -p fitness-tracker/qa
           cat > /tmp/qa.py <<'PY'
-          import json,threading,http.server,socketserver
+          import json,threading,http.server,socketserver,os,re
           from playwright.sync_api import sync_playwright
           class Handler(http.server.SimpleHTTPRequestHandler):
               def log_message(self,*args): pass
-          server=socketserver.TCPServer(('127.0.0.1',0),Handler)
+              def send_head(self):
+                  self._partial=None
+                  path=self.translate_path(self.path)
+                  requested=self.headers.get('Range','')
+                  if os.path.isfile(path) and requested.startswith('bytes='):
+                      match=re.match(r'bytes=(\d+)-(\d*)',requested)
+                      if match:
+                          size=os.path.getsize(path)
+                          start=int(match.group(1))
+                          end=min(size-1,int(match.group(2)) if match.group(2) else size-1)
+                          if 0<=start<=end:
+                              f=open(path,'rb');f.seek(start)
+                              self._partial=end-start+1
+                              self.send_response(206)
+                              self.send_header('Content-Type',self.guess_type(path))
+                              self.send_header('Accept-Ranges','bytes')
+                              self.send_header('Content-Range',f'bytes {start}-{end}/{size}')
+                              self.send_header('Content-Length',str(self._partial))
+                              self.end_headers()
+                              return f
+                  return super().send_head()
+              def copyfile(self,source,output):
+                  if self._partial is None:return super().copyfile(source,output)
+                  remaining=self._partial
+                  while remaining>0:
+                      data=source.read(min(65536,remaining))
+                      if not data:break
+                      output.write(data);remaining-=len(data)
+          server=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
           threading.Thread(target=server.serve_forever,daemon=True).start()
           addr='http://127.0.0.1:%s/fitness-tracker/' % server.server_address[1]
           with sync_playwright() as p:
@@ -65,6 +93,17 @@ jobs:
               assert abs(dims['duration2']-188.383)<2,dims
               assert '1.mp4' in dims['source1'] and '2.mp4' in dims['source2'],dims
               assert dims['writingMode']=='vertical-rl',dims
+              styles=page.evaluate("""() => {
+                const inspect=(selector)=>{
+                  const el=document.querySelector(selector),cs=getComputedStyle(el),r=el.getBoundingClientRect();
+                  return {text:el.textContent,visibility:cs.visibility,opacity:cs.opacity,color:cs.color,
+                    fill:cs.webkitTextFillColor,fontSize:cs.fontSize,writingMode:cs.writingMode,
+                    display:cs.display,overflow:cs.overflow,
+                    width:r.width,height:r.height,scrollWidth:el.scrollWidth,scrollHeight:el.scrollHeight};
+                };
+                return {heading:inspect('.fa-video-head h2'),chapter:inspect('.fa-chapter-title')};
+              }""")
+              print("STYLE_DIAGNOSTICS",json.dumps(styles,ensure_ascii=False),flush=True)
               page.locator('[data-follow-jump="329"]').click()
               page.wait_for_timeout(1600)
               diag=page.evaluate("""() => { const v=document.getElementById('fa-video-1'); return {
