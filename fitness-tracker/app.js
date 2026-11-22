@@ -1360,13 +1360,11 @@ document.addEventListener('submit',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&eatEditOpen){eatEditOpen=false;render()}});
 function refreshEatingPhase(){
  if(document.hidden||view!=='overview')return;
+ // Keep the global day-guard in sync with the visible dashboard. Otherwise a
+ // new-day first-meal tap can be silently cancelled as a "yesterday" action.
+ if(refreshLocalCalendarDay())return;
  const element=document.querySelector('.if6-eat');if(!element)return;
  const next=eatPhaseData();
- // At midnight refresh the whole dashboard date and daily exercise totals.
- // Do not interrupt an open training or eating-time editor.
- if(element.dataset.eatingDay!==next.day&&!eatEditOpen&&!wbOpenKey&&!wbCalorieDetailOpen){
-  render();return;
- }
  if(element.dataset.eatingPhase!==next.kind||element.dataset.eatingDay!==next.day)
   element.outerHTML=renderEatStrip();
 }
