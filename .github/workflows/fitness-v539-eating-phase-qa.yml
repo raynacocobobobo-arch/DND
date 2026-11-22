@@ -89,6 +89,7 @@ jobs:
               assert nextmorning['phase']=='fasting' and nextmorning['day']=='2026-11-23',nextmorning
               assert '昨19:30' in nextmorning['text'] and '11:30' in nextmorning['text'],nextmorning
               assert '开始进食' in nextmorning['text'],nextmorning
+              assert '11月23日' in pg.locator('.if6-brand-date').inner_text(), 'Homepage date did not refresh at midnight'
               pg.screenshot(path='fitness-tracker/qa/v539-03-next-morning-fasting.png',full_page=False,animations='disabled')
               pg.clock.set_fixed_time(datetime(2026,11,23,11,31,tzinfo=ZoneInfo('Asia/Shanghai')))
               pg.evaluate('refreshEatingPhase()')
