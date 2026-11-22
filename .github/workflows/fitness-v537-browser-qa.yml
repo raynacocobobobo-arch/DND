@@ -72,3 +72,5 @@ jobs:
         with:
           name: fitness-v537-correct-browser-screens
           path: fitness-tracker/qa/v537-real-*.png
+
+# Browser review rerun after exact 2.mp4 poster was committed.
