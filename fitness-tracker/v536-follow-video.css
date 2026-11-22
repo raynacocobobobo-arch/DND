@@ -1,0 +1,86 @@
+/* V5.36.0 — two videos and compact numbered chapter timeline.
+   Uses the approved ink/ochre comic palette; no changes to the workout calendar. */
+body[data-screen="followalong"] .fa-player-sheet{
+ gap:10px!important;min-height:0!important;padding:10px 8px 18px!important;
+}
+body[data-screen="followalong"] .fa-video-block{
+ display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+body[data-screen="followalong"] .fa-video-head{
+ display:flex;align-items:baseline;justify-content:space-between;
+ gap:6px;padding:1px 2px 0;
+}
+body[data-screen="followalong"] .fa-video-head h2{
+ margin:0;color:#23130b;font:900 17px/1.3 "Songti SC","STSong",serif;
+}
+body[data-screen="followalong"] .fa-video-head small{
+ color:#765034;font:750 11px/1.25 "Songti SC","STSong",serif;white-space:nowrap;
+}
+body[data-screen="followalong"] .fa-player{ flex:none!important; }
+body[data-screen="followalong"] .fa-player video{ z-index:1; }
+body[data-screen="followalong"] .fa-video-state{
+ pointer-events:none!important;z-index:2!important;
+}
+body[data-screen="followalong"] .fa-local-video-tools{
+ display:flex;gap:6px;justify-content:flex-start;align-items:center;
+}
+body[data-screen="followalong"] .fa-local-video-tools[hidden]{display:none!important}
+body[data-screen="followalong"] .fa-local-video-tools button{
+ color:#793020;background:#f4dfb5;border:1px solid #95653d;border-radius:5px;
+ padding:6px 11px;font:750 11px/1.3 "Songti SC","STSong",serif;
+}
+body[data-screen="followalong"] .fa-chapters-head{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ border-top:1px solid #a97f56;padding:9px 2px 0;
+}
+body[data-screen="followalong"] .fa-chapters-head strong{
+ color:#24130c;font:900 15px/1.2 "Songti SC","STSong",serif;white-space:nowrap;
+}
+body[data-screen="followalong"] .fa-chapters-head span{
+ color:#6b4a33;font:700 11px/1.25 "Songti SC","STSong",serif;
+ overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:right;
+}
+body[data-screen="followalong"] .fa-chapters{
+ display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;min-width:0;
+}
+body[data-screen="followalong"] .fa-chapter{
+ min-width:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;
+ height:91px;gap:6px;padding:6px 0 5px;
+ color:#291a10;background:#f9e5bd;border:1.5px solid #6c4128;border-radius:6px;
+ box-shadow:inset 0 0 0 1px #e3ba86;
+ cursor:pointer;touch-action:manipulation;
+}
+body[data-screen="followalong"] .fa-chapter:focus-visible{
+ outline:3px solid #ac3420;outline-offset:2px;
+}
+body[data-screen="followalong"] .fa-chapter.active{
+ color:#fff0c9;background:#963023;border-color:#45170d;
+ box-shadow:inset 0 0 0 1px #d79067;
+}
+body[data-screen="followalong"] .fa-chapter-time{
+ color:inherit;font:850 10px/1.15 ui-monospace,monospace;
+ font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+body[data-screen="followalong"] .fa-chapter-title{
+ display:block;writing-mode:vertical-rl;text-orientation:mixed;
+ text-align:start;letter-spacing:1px;
+ font:900 12px/1.2 "Songti SC","STSong",serif;
+ max-height:60px;overflow:hidden;white-space:nowrap;
+}
+body[data-screen="followalong"] .fa-awake-info{
+ color:#785337;text-align:center;
+ background:rgba(137,74,32,.09);border-top:1px solid #b48b65;
+ padding:9px 4px 4px;font:750 11px/1.35 "Songti SC","STSong",serif;
+}
+@media(max-width:350px){
+ body[data-screen="followalong"] .fa-chapters{gap:3px}
+ body[data-screen="followalong"] .fa-chapter{height:90px}
+ body[data-screen="followalong"] .fa-chapter-time{font-size:9px}
+ body[data-screen="followalong"] .fa-chapter-title{font-size:11px}
+}
+@media(min-width:851px){
+ body[data-screen="followalong"] .fa-video-block{max-width:100%}
+ body[data-screen="followalong"] .fa-chapters{grid-template-columns:repeat(12,minmax(0,1fr))}
+ body[data-screen="followalong"] .fa-chapter{height:120px}
+ body[data-screen="followalong"] .fa-chapter-title{font-size:14px;max-height:86px}
+}
