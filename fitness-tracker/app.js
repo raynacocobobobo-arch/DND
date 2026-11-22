@@ -777,9 +777,20 @@ document.addEventListener('click',e=>{
   const target=Number(jump.dataset.followJump);if(!Number.isFinite(target)||target<0)return;
   const seek=()=>{
    if(Number.isFinite(video.duration)&&target>=video.duration){toast('动作时间超过视频长度');return}
-   try{video.currentTime=target;}catch(e){toast('视频尚未就绪，无法跳转');return}
-   followChapterHighlight(target);
-   const run=video.play();if(run&&run.catch)run.catch(()=>toast('请点击视频播放按钮继续'));
+   // Wait until the target keyframe is ready before resuming. iOS/Chromium
+   // can otherwise restart at 00:00 when play() races with currentTime.
+   if(!video.paused)video.pause();
+   const resume=()=>{
+    followChapterHighlight(target);
+    const run=video.play();
+    if(run&&run.catch)run.catch(()=>toast('请点击视频播放按钮继续'));
+   };
+   if(Math.abs(video.currentTime-target)<0.25){resume();return;}
+   video.addEventListener('seeked',resume,{once:true});
+   try{video.currentTime=target;}catch(e){
+    video.removeEventListener('seeked',resume);
+    toast('视频尚未就绪，无法跳转');
+   }
   };
   if(video.readyState>=1)seek();
   else if(video.src){video.addEventListener('loadedmetadata',seek,{once:true});video.load();}
