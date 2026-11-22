@@ -94,8 +94,17 @@ jobs:
               page.screenshot(path='fitness-tracker/qa/v540-06-red-after-week.png',full_page=False,animations='disabled')
               # New actual first-meal tap is the ONLY event that replaces persistent red.
               page.locator('[data-eating-start]').click()
+              tapdiag=page.evaluate("""() => ({
+                time:Date.now(),newDate:new Date().toString(),day:localDate(),
+                entries:state.eatingWindows,
+                saved:JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))?.eatingWindows,
+                toast:document.querySelector('#toast')?.textContent,
+                storageIssue:storageReadIssue
+              })""")
+              print('TAP_DIAGNOSTICS',json.dumps(tapdiag,ensure_ascii=False),flush=True)
               nextstart=observed(page)
               print('PHASE_NEXT_TAP',json.dumps(nextstart,ensure_ascii=False),flush=True)
+              page.screenshot(path='fitness-tracker/qa/v540-07-next-meal-debug.png',full_page=False,animations='disabled')
               assert nextstart['phase']=='eating' and not nextstart['red'],nextstart
               assert '12:00' in nextstart['text'] and '20:00' in nextstart['text'],nextstart
               page.screenshot(path='fitness-tracker/qa/v540-07-next-meal-resets.png',full_page=False,animations='disabled')
