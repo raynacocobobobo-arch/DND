@@ -613,7 +613,7 @@ function renderFollowalong(){
  const chapterButtons=FOLLOW_CHAPTERS.map((c,i)=>
   '<button type="button" class="fa-chapter" data-follow-jump="'+c[2]+'" aria-label="跳转到第'+(i+1)+'节 '+c[1]+'，'+c[0]+'">'+
    '<span class="fa-chapter-time">'+c[0]+'</span>'+
-   '<span class="fa-chapter-title">'+safe(c[1])+'</span>'+
+   '<span class="fa-chapter-title" aria-hidden="true">'+Array.from(c[1]).map(ch=>'<span class="fa-chapter-glyph">'+safe(ch)+'</span>').join('')+'</span>'+
   '</button>').join('');
  function section(num,name,length){
   return '<div class="fa-video-block" data-follow-block="'+num+'">'+
