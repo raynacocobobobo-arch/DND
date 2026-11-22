@@ -1,0 +1,162 @@
+/* V5.38 — compact 16:8 eating-window strip.
+   Same parchment/red-ink palette as existing 12 exercise cards.
+   Never remove cards; small-screen scroll is preferable to clipped data. */
+body[data-screen="overview"] .if6-home {
+ grid-template-rows:clamp(116px,18.7dvh,159px)
+                    clamp(67px,8.8dvh,78px)
+                    clamp(56px,7.2dvh,62px)
+                    minmax(0,1fr)!important;
+}
+body[data-screen="overview"] .if6-eat{
+ box-sizing:border-box!important;
+ min-width:0!important;min-height:0!important;
+ display:flex!important;align-items:center!important;gap:8px!important;
+ width:100%!important;height:100%!important;
+ padding:5px 9px!important;margin:0!important;
+ border:4px solid #0b0806!important;border-radius:9px!important;
+ background:#f8d69d url('./art/paper-exact.webp?v=5.18.0') center/104px 44px repeat!important;
+ box-shadow:inset 0 0 0 1px #d7a36c!important;color:#22120b!important;
+ font-family:"Songti SC","STSong","Noto Serif CJK SC",serif!important;
+}
+body[data-screen="overview"] .if6-eat-title{
+ display:flex!important;flex:0 0 75px!important;flex-direction:column!important;
+ align-items:flex-start!important;justify-content:center!important;gap:3px!important;
+ min-width:0!important;white-space:nowrap!important;line-height:1.05!important;
+}
+body[data-screen="overview"] .if6-eat-title strong{
+ color:#23120c!important;font-size:14px!important;font-weight:950!important;
+ letter-spacing:-.3px!important;
+}
+body[data-screen="overview"] .if6-eat-title small{
+ display:block!important;color:#9e2d21!important;
+ font:900 12px/1.05 Georgia,serif!important;letter-spacing:1px!important;
+}
+body[data-screen="overview"] .if6-eat-details{
+ display:flex!important;align-items:center!important;justify-content:flex-end!important;
+ flex:1 1 auto!important;min-width:0!important;gap:7px!important;height:100%!important;
+}
+body[data-screen="overview"] .if6-eat-time{
+ min-width:0!important;flex:1 1 auto!important;white-space:nowrap!important;
+ font:900 clamp(15px,4.05vw,19px)/1.1 Georgia,"Songti SC",serif!important;
+ letter-spacing:-.4px!important;color:#2b160d!important;
+ font-variant-numeric:tabular-nums!important;text-align:center!important;
+}
+body[data-screen="overview"] .if6-eat-time i{
+ font-style:normal!important;margin:0 5px!important;color:#a34b2a!important;
+}
+body[data-screen="overview"] .if6-eat-status{
+ flex:0 0 auto!important;white-space:nowrap!important;
+ font:850 10px/1.25 "Songti SC","STSong",serif!important;
+ color:#862e1c!important;
+}
+body[data-screen="overview"] .if6-eat-placeholder{
+ min-width:0!important;flex:1 1 auto!important;
+ color:#62412c!important;font:800 clamp(11px,3.15vw,13px)/1.2 "Songti SC","STSong",serif!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body[data-screen="overview"] .if6-eat-action{
+ box-sizing:border-box!important;display:flex!important;justify-content:center!important;align-items:center!important;
+ flex:0 0 auto!important;min-width:74px!important;min-height:33px!important;
+ margin:0!important;padding:5px 9px!important;
+ color:#fff1cf!important;background:#9e3021!important;
+ border:2px solid #2e160d!important;border-radius:6px!important;
+ box-shadow:inset 0 0 0 1px #d47b59!important;
+ font:900 12px/1.1 "Songti SC","STSong",serif!important;white-space:nowrap!important;
+}
+body[data-screen="overview"] .if6-eat-action.subtle{
+ min-width:48px!important;background:#f0bd80!important;
+ box-shadow:inset 0 0 0 1px #fff0cb!important;color:#482119!important;
+}
+body[data-screen="overview"] .if6-eat-action:focus-visible{
+ outline:3px solid #b53325!important;outline-offset:2px!important;
+}
+body[data-screen="overview"] .if6-eat-overlay{
+ position:fixed!important;inset:0!important;z-index:260!important;
+ display:flex!important;justify-content:center!important;align-items:center!important;
+ padding:calc(12px + env(safe-area-inset-top,0px)) 13px calc(12px + env(safe-area-inset-bottom,0px))!important;
+ box-sizing:border-box!important;
+}
+body[data-screen="overview"] .if6-eat-backdrop{
+ position:absolute!important;inset:0!important;border:0!important;background:#070503bb!important;
+}
+body[data-screen="overview"] .if6-eat-sheet{
+ box-sizing:border-box!important;position:relative!important;z-index:1!important;
+ width:100%!important;max-width:430px!important;max-height:100%!important;overflow-y:auto!important;
+ border:2px solid #3d2316!important;border-radius:11px!important;
+ background:#f6d5a0 url('./art/paper-exact.webp?v=5.18.0') center/104px 44px repeat!important;
+ box-shadow:0 12px 36px #0009,inset 0 0 0 2px #d2a46a!important;
+ padding:18px 16px!important;color:#28180e!important;
+ font-family:"Songti SC","STSong","Noto Serif CJK SC",serif!important;
+}
+body[data-screen="overview"] .if6-eat-sheet h2{
+ margin:0 0 7px!important;color:#21120a!important;font-size:21px!important;font-weight:950!important;
+}
+body[data-screen="overview"] .if6-eat-sheet p{
+ margin:0 0 13px!important;color:#654431!important;font-size:12px!important;line-height:1.5!important;
+}
+body[data-screen="overview"] #eatingTimeForm{
+ display:flex!important;flex-direction:column!important;gap:8px!important;
+}
+body[data-screen="overview"] #eatingTimeForm label{
+ color:#351d13!important;font-weight:850!important;font-size:14px!important;
+}
+body[data-screen="overview"] #eatingStartTime{
+ box-sizing:border-box!important;width:100%!important;min-height:48px!important;
+ border:2px solid #a16a40!important;border-radius:5px!important;
+ background:#fff0d1!important;color:#2b190f!important;
+ font:800 22px/1.2 Georgia,serif!important;
+}
+body[data-screen="overview"] .if6-eat-form-actions{
+ display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;
+}
+body[data-screen="overview"] .if6-eat-form-actions button{
+ min-height:40px!important;border:2px solid #3f2518!important;border-radius:6px!important;
+ background:#eed0a0!important;color:#321a11!important;
+ font:900 14px/1.2 "Songti SC","STSong",serif!important;
+}
+body[data-screen="overview"] .if6-eat-form-actions button[type="submit"]{
+ background:#9e3021!important;color:#fff2ce!important;
+}
+body[data-screen="overview"] .if6-eat-remove{
+ width:100%!important;border:0!important;margin:12px 0 0!important;
+ padding:6px!important;background:transparent!important;
+ color:#8c3025!important;text-decoration:underline!important;font-size:12px!important;
+}
+body[data-screen="overview"] .if6-eat-history{margin-top:14px!important;padding-top:9px!important;border-top:1px solid #b98e5f!important}
+body[data-screen="overview"] .if6-eat-history h3{font-size:13px!important;margin:0 0 7px!important;color:#312012!important}
+body[data-screen="overview"] .if6-eat-history-row{display:flex!important;justify-content:space-between!important;gap:10px!important;padding:4px 0!important;font-size:12px!important;color:#573e2c!important}
+body[data-screen="overview"] .if6-eat-history-row strong{color:#3a2013!important;font-family:Georgia,"Songti SC",serif!important}
+body[data-screen="overview"] .if6-eat-sheet .if6-eat-footnote{margin:10px 0 0!important;font-size:11px!important;line-height:1.4!important}
+
+/* Short heights: preserve the 12 cards rather than clipping them. */
+@media (max-width:850px) and (max-height:700px){
+ body[data-screen="overview"],body[data-screen="overview"] .app{
+  height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;
+ }
+ body[data-screen="overview"] .main{
+  height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-y:auto!important;
+ }
+ body[data-screen="overview"] #content{height:auto!important;overflow:visible!important;}
+ body[data-screen="overview"] .if6-home{
+  height:auto!important;min-height:690px!important;overflow:visible!important;
+  grid-template-rows:115px 67px 56px minmax(440px,1fr)!important;
+ }
+ body[data-screen="overview"] .if6-grid{height:440px!important;min-height:440px!important;}
+}
+@media (max-width:375px){
+ body[data-screen="overview"] .if6-eat{gap:4px!important;padding-left:6px!important;padding-right:6px!important}
+ body[data-screen="overview"] .if6-eat-title{flex-basis:68px!important}
+ body[data-screen="overview"] .if6-eat-title strong{font-size:13px!important}
+ body[data-screen="overview"] .if6-eat-details{gap:4px!important}
+ body[data-screen="overview"] .if6-eat-status{font-size:9px!important}
+ body[data-screen="overview"] .if6-eat-time{font-size:15px!important}
+ body[data-screen="overview"] .if6-eat-action{min-width:65px!important;padding:4px 6px!important}
+ body[data-screen="overview"] .if6-eat-action.subtle{min-width:42px!important}
+}
+@media (min-width:851px){
+ body[data-screen="overview"] .if6-home{
+  min-height:900px!important;
+  grid-template-rows:190px 95px 68px 520px!important;
+ }
+ body[data-screen="overview"] .if6-grid{height:520px!important}
+}
