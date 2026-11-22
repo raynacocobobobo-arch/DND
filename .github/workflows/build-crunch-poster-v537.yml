@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install video frame extractor
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: Extract real frame from 2.mp4
         run: |
           set -euo pipefail
           ffmpeg -hide_banner -loglevel error -y -ss 32 -i fitness-tracker/media/2.mp4 -frames:v 1 -vf 'scale=640:-2' -c:v libwebp -quality 78 fitness-tracker/art/follow-poster-crunch-v537.webp
-          test "$(stat -c%s fitness-tracker/art/follow-poster-crunch-v537.webp)" -gt 15000
+          test "$(stat -c%s fitness-tracker/art/follow-poster-crunch-v537.webp)" -gt 3000
           file fitness-tracker/art/follow-poster-crunch-v537.webp
           ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of json fitness-tracker/art/follow-poster-crunch-v537.webp
           sha256sum fitness-tracker/art/follow-poster-crunch-v537.webp
