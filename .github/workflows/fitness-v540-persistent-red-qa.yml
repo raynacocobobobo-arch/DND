@@ -1,0 +1,144 @@
+name: Fitness V5.40 persistent fasting red real browser QA
+on:
+  push:
+    branches: [fix/fitness-red-until-next-meal-v540-20261122]
+    paths: [.github/workflows/fitness-v540-persistent-red-qa.yml, fitness-tracker/app.js]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real mobile browser
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Verify no automatic reset after 24 hours, multiple days, and next meal tap
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/test_v540.py <<'PY'
+          import json,threading,http.server,socketserver
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          httpd=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=httpd.serve_forever,daemon=True).start()
+          url='http://127.0.0.1:%s/fitness-tracker/'%httpd.server_address[1]
+          baseline={
+            "version":1,"settings":{"weight":65,"age":36,"weeklyGoal":1500},
+            "records":[{"id":"preserve-v540-workout","date":"2026-11-22","type":"cardio","exercise":"椭圆机","duration_min":20,"calories":110}],
+            "weightHistory":{"2026-11-21":65.4},"stepDiary":{},
+            "eatingWindows":{"2026-11-22":{"startAt":0}}
+          }
+          def dt(day,hour,minute):
+              return datetime(2026,11,day,hour,minute,tzinfo=ZoneInfo('Asia/Shanghai'))
+          def observed(pg):
+              return pg.evaluate("""() => {
+                const node=document.querySelector('.if6-eat'),cs=getComputedStyle(node);
+                const rect=node.getBoundingClientRect(),nav=document.querySelector('#mobileNav').getBoundingClientRect();
+                const cards=[...document.querySelectorAll('.if6-card')].map(n=>n.getBoundingClientRect());
+                return {phase:node.dataset.eatingPhase,day:node.dataset.eatingDay,
+                  text:node.textContent.trim(),bg:cs.backgroundImage,red:node.classList.contains('is-fasting'),
+                  stripHeight:rect.height,stripScrollWidth:node.scrollWidth,stripWidth:node.clientWidth,
+                  cardCount:cards.length,lowestCardBottom:Math.max(...cards.map(r=>r.bottom)),
+                  navTop:nav.top,headerDate:document.querySelector('.if6-brand-date')?.textContent};
+              }""")
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              ctx=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=2,
+                  is_mobile=True,has_touch=True,timezone_id='Asia/Shanghai',
+                  locale='zh-CN',service_workers='block')
+              page=ctx.new_page();errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.clock.install(time=dt(22,11,29))
+              page.add_init_script("""(() => {
+                const raw=%s;
+                raw.eatingWindows['2026-11-22'].startAt=new Date(2026,10,22,11,30).getTime();
+                if(!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(raw));
+              })();"""%json.dumps(baseline,ensure_ascii=False))
+              page.goto(url,wait_until='networkidle',timeout=90000)
+              def check(label,when,phase,expected,text_required=None):
+                  page.clock.set_fixed_time(when)
+                  page.evaluate('refreshEatingPhase()')
+                  info=observed(page)
+                  print('PHASE_'+label,json.dumps(info,ensure_ascii=False),flush=True)
+                  assert info['phase']==phase,info
+                  assert info['red']==expected,info
+                  assert info['cardCount']==12 and info['lowestCardBottom']<=info['navTop']+3,info
+                  assert info['stripScrollWidth']<=info['stripWidth']+5,info
+                  if text_required:assert text_required in info['text'],info
+                  return info
+              a=check('WINDOW',dt(22,17,30),'eating',False,'11:30')
+              page.screenshot(path='fitness-tracker/qa/v540-01-eating.png',full_page=False,animations='disabled')
+              b=check('RED_START',dt(22,19,31),'fasting',True,'19:30')
+              assert '现在' in b['text'] and '次日11:30' not in b['text'],b
+              page.screenshot(path='fitness-tracker/qa/v540-02-red-first-evening.png',full_page=False,animations='disabled')
+              c=check('MIDNIGHT',dt(23,0,1),'fasting',True,'昨19:30')
+              assert '11月23日' in c['headerDate'],c
+              page.screenshot(path='fitness-tracker/qa/v540-03-red-after-midnight.png',full_page=False,animations='disabled')
+              d=check('24H',dt(23,12,0),'fasting',True,'昨19:30')
+              page.screenshot(path='fitness-tracker/qa/v540-04-red-after-24h.png',full_page=False,animations='disabled')
+              e=check('48H',dt(24,12,0),'fasting',True,'11/22 19:30')
+              page.screenshot(path='fitness-tracker/qa/v540-05-red-after-48h.png',full_page=False,animations='disabled')
+              f=check('WEEK',dt(29,12,0),'fasting',True,'11/22 19:30')
+              page.screenshot(path='fitness-tracker/qa/v540-06-red-after-week.png',full_page=False,animations='disabled')
+              # New actual first-meal tap is the ONLY event that replaces persistent red.
+              page.locator('[data-eating-start]').click()
+              nextstart=observed(page)
+              print('PHASE_NEXT_TAP',json.dumps(nextstart,ensure_ascii=False),flush=True)
+              assert nextstart['phase']=='eating' and not nextstart['red'],nextstart
+              assert '12:00' in nextstart['text'] and '20:00' in nextstart['text'],nextstart
+              page.screenshot(path='fitness-tracker/qa/v540-07-next-meal-resets.png',full_page=False,animations='disabled')
+              page.reload(wait_until='networkidle')
+              assert observed(page)['phase']=='eating','New day record did not persist across reload'
+              data=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              assert data['records']==baseline['records'] and data['weightHistory']==baseline['weightHistory'],data
+              assert set(data['eatingWindows'])=={'2026-11-22','2026-11-29'},data
+              # late-night first meal should stay tan through midnight and then red after 8h
+              page.evaluate("""() => {
+                state.eatingWindows={'2026-11-22':{startAt:new Date(2026,10,22,23,0).getTime()}};
+                render();
+              }""")
+              overnight=check('OVERNIGHT',dt(23,6,45),'eating',False,'昨23:00')
+              overnight_end=check('OVERNIGHT_END',dt(23,7,1),'fasting',True,'07:00')
+              overnight_late=check('OVERNIGHT_LATE',dt(25,8,0),'fasting',True,'11/23 07:00')
+              # no recorded meal must stay parchment; no unexpected fasting red on first install
+              page.evaluate("""() => {
+                state.eatingWindows={};render();
+              }""")
+              empty=observed(page)
+              assert empty['phase']=='idle' and not empty['red'],empty
+              # older records never produce JS page errors or overflow on short screens
+              page.evaluate("""() => {
+                state.eatingWindows={'2026-11-22':{startAt:new Date(2026,10,22,11,30).getTime()}};render();
+              }""")
+              page.set_viewport_size({'width':375,'height':667})
+              small=observed(page)
+              assert small['phase']=='fasting' and small['stripScrollWidth']<=small['stripWidth']+5,small
+              page.evaluate('window.scrollTo(0,document.documentElement.scrollHeight)')
+              small_bottom=observed(page)
+              assert small_bottom['lowestCardBottom']<=small_bottom['navTop']+3,small_bottom
+              page.screenshot(path='fitness-tracker/qa/v540-08-short-screen-red.png',full_page=False,animations='disabled')
+              assert not errors,errors
+              Path('fitness-tracker/qa/v540-diagnostics.json').write_text(json.dumps({'window':a,'red':b,'midnight':c,'24h':d,
+                '48h':e,'week':f,'next_tap':nextstart,'overnight':overnight,'overnight_end':overnight_end,
+                'overnight_late':overnight_late,'empty':empty,'small':small,'errors':errors},ensure_ascii=False,indent=2))
+              browser.close()
+          httpd.shutdown()
+          PY
+          python /tmp/test_v540.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v540-real-browser-states
+          path: fitness-tracker/qa/v540-*
