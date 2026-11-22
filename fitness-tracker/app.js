@@ -306,7 +306,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['外勤日志',''],followalong:['仪式训练',''],calendar:['行动日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['调查档案','按日期查看和修改每一条记录。'],settings:['装备整备','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['followalong','仪式'],['calendar','日历'],['history','档案'],['settings','整备']].map(([k,t])=>`<button type="button" aria-label="${t}" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k==='overview'?'training':k==='history'?'journal':k)}<span>${t}</span></button>`).join('')}
-function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.30.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
+function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.35.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -817,19 +817,40 @@ function windowStreak(days){
  let count=0;while(i>=0&&dayKind(days[i])!=='none'){count++;i--}return count;
 }
 function renderWeightTracker(){
- const today=localDate(),history=state.weightHistory||{},todayWeight=history[today];
- const from=localDate(addDays(dateFromISO(today),-20));
- const entries=Object.entries(history).filter(([d])=>d>=from&&d<=today).sort((a,b)=>a[0].localeCompare(b[0]));
- let chart='<p class="weight-empty">'+(entries.length?'再记录一天，即可查看变化趋势':'每天记录一次，查看体重变化')+'</p>';
- if(entries.length){
-  const vals=entries.map(x=>x[1]),lo=Math.min(...vals)-.5,hi=Math.max(...vals)+.5;
-  const points=entries.map(([d,w])=>{const delta=Math.round((dateFromISO(d)-dateFromISO(from))/86400000);return {x:12+delta/20*276,y:66-(w-lo)/(hi-lo)*52,d,w}});
-  const line=points.map(pt=>pt.x.toFixed(1)+','+pt.y.toFixed(1)).join(' ');
-  chart='<div class="weight-chart"><svg viewBox="0 0 300 76" role="img" aria-label="最近21天体重变化，共'+entries.length+'条记录"><path d="M12 66H288" stroke="#b7976b" stroke-width="1" fill="none"/>'+(points.length>1?'<polyline points="'+line+'" fill="none" stroke="#a42e21" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>':'')+points.map(pt=>'<circle cx="'+pt.x.toFixed(1)+'" cy="'+pt.y.toFixed(1)+'" r="3" fill="#a42e21"><title>'+pt.d+'：'+pt.w+' kg</title></circle>').join('')+'</svg><div class="weight-chart-labels"><span>'+formatDate(from)+'</span><span>'+formatDate(today)+'</span></div></div>'+(entries.length===1?'<p class="weight-empty">再记录一天，即可查看变化趋势</p>':'');
- }
- const latest=Object.entries(history).filter(([d])=>d<=today).sort((a,b)=>b[0].localeCompare(a[0]))[0];
- return '<section class="weight-board" aria-label="体重跟踪"><div class="weight-header"><h2>体重跟踪</h2><span>'+(latest?'最近 '+latest[1]+' kg · '+formatDate(latest[0]):'尚无记录')+'</span></div>'+
- '<form id="weightForm" class="weight-form"><label for="weightInput">今日体重</label><div class="weight-input"><input id="weightInput" name="weight" type="number" min="1" max="500" step="0.1" inputmode="decimal" placeholder="输入体重" value="'+(todayWeight??'')+'" required><span>kg</span></div><button type="submit">'+(todayWeight?'更新':'记录')+'</button></form>'+chart+'</section>';
+  const today=localDate(),history=state.weightHistory||{},todayWeight=history[today];
+  const all=Object.entries(history).filter(([d,w])=>d<=today&&Number.isFinite(Number(w))&&Number(w)>0).sort((a,b)=>a[0].localeCompare(b[0]));
+  const latest=all[all.length-1],recentStart=localDate(addDays(dateFromISO(today),-6));
+  const recent=all.filter(([d])=>d>=recentStart);
+  const recentDates=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(today),i-6)));
+  const hasFullWeek=recentDates.every(d=>Number.isFinite(Number(history[d]))&&Number(history[d])>0);
+  const average=hasFullWeek?recentDates.reduce((n,d)=>n+Number(history[d]),0)/7:null;
+  let chart='<p class="weight-empty">记录体重后，这里会显示最近7天的真实波动。</p>';
+  if(recent.length){
+    const values=recent.map(([,w])=>Number(w)),low=Math.min(...values),high=Math.max(...values);
+    const pad=Math.max(.20,(high-low)*.2),min=low-pad,max=high+pad;
+    const first=dateFromISO(recent[0][0]),last=dateFromISO(recent[recent.length-1][0]);
+    const span=Math.max(1,Math.round((last-first)/86400000));
+    const pts=recent.map(([d,w])=>{
+      const dx=Math.round((dateFromISO(d)-first)/86400000);
+      return {date:d,weight:Number(w),x:recent.length===1?150:26+dx/span*248,y:17+(max-Number(w))/(max-min)*40};
+    });
+    const coordinates=pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
+    const shape=pts.length>1?'<polyline points="'+coordinates+'" fill="none" stroke="#a42e21" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>':'';
+    const dots=pts.map(p=>'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.8" fill="#a42e21" stroke="#fff0c5" stroke-width="1.6"><title>'+p.date+' '+p.weight.toFixed(1)+' kg</title></circle>').join('');
+    const valuesText=pts.map(p=>'<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-8).toFixed(1)+'" font-size="11" font-weight="850" text-anchor="middle" fill="#78251d">'+p.weight.toFixed(1)+'</text>').join('');
+    chart='<div class="weight-chart"><svg viewBox="0 0 300 68" preserveAspectRatio="none" role="img" aria-label="最近7天真实体重记录，共'+recent.length+'天">'+
+      '<path d="M16 28H284 M16 55H284" stroke="#bb9260" stroke-width=".7" stroke-dasharray="3 4" opacity=".6"/>'+shape+dots+valuesText+'</svg>'+
+      '<div class="weight-chart-labels"><span>'+formatDate(recent[0][0])+'</span><span>'+formatDate(recent[recent.length-1][0])+'</span></div></div>';
+  }
+  const status=hasFullWeek?'最近7日平均 '+average.toFixed(2)+' kg':'已记录 '+recent.length+'/7 天 · 每日波动属正常';
+  const trend='<div class="weight-trend-top"><strong>最近7天体重</strong><span>'+status+'</span></div>';
+  const tip=hasFullWeek?'参考7日均值，不用单日涨跌判断减脂':'每天如实记录，满7天再看均值趋势';
+  return '<section class="weight-board" aria-label="体重跟踪"><div class="weight-header"><h2>体重跟踪</h2><span>'+
+    (latest?'最近 '+Number(latest[1]).toFixed(1)+' kg · '+formatDate(latest[0]):'尚无记录')+'</span></div>'+
+    '<form id="weightForm" class="weight-form"><label for="weightInput">今日体重</label>'+
+    '<div class="weight-input"><input id="weightInput" name="weight" type="number" min="1" max="500" step="0.1" inputmode="decimal" placeholder="输入体重" value="'+(todayWeight??'')+'" required><span>kg</span></div>'+
+    '<button type="submit">'+(todayWeight?'更新':'记录')+'</button></form>'+
+    trend+chart+'<p class="weight-trend-tip">'+tip+'</p></section>';
 }
 function saveTodayWeight(form){
  const value=Number(form.elements.weight.value);
