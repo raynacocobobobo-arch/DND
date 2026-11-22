@@ -46,7 +46,7 @@ jobs:
               page.on('pageerror',lambda e:errors.append(str(e)))
               page.clock.install(time=datetime(2026,11,22,16,15,tzinfo=ZoneInfo('Asia/Shanghai')))
               page.add_init_script("""(() => {
-                localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s))
+                if (!localStorage.getItem('hermes_fitness_journal_v1')) localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s))
               })();""" % json.dumps(baseline,ensure_ascii=False))
               page.goto(url,wait_until='networkidle',timeout=90000)
               page.locator('.if6-eat').wait_for(state='visible',timeout=10000)
@@ -79,6 +79,7 @@ jobs:
               assert main_geo['lastCardBottom']<=main_geo['nav']['top']+2,main_geo
               assert main_geo['minCardHeight']>=90,main_geo
               assert main_geo['strip']['height']>=49,main_geo
+              page.evaluate("document.querySelector('#toast')?.classList.remove('show')")
               page.screenshot(path='fitness-tracker/qa/v538-mobile-eating-1130-1930.png',full_page=False,animations='disabled')
               data=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
               assert data['records']==baseline['records'], 'Existing workouts were changed'
