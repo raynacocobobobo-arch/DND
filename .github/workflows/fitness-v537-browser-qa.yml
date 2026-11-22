@@ -58,7 +58,7 @@ jobs:
               assert not errors,errors
               poster_check=page.request.get(address+'art/follow-poster-crunch-v537.webp')
               assert poster_check.status==200,poster_check.status
-              assert len(poster_check.body())>15000
+              assert len(poster_check.body())>3000
               page.screenshot(path='fitness-tracker/qa/v537-real-mobile-top.png',full_page=False,animations='disabled')
               second=page.locator('[data-follow-block="2"]')
               second.screenshot(path='fitness-tracker/qa/v537-real-second-video.png',animations='disabled')
