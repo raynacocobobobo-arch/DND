@@ -2,7 +2,7 @@ name: Fitness V5.36 real browser QA
 on:
   push:
     branches: [feature/fitness-two-videos-timeline-20261122]
-    paths: [.github/workflows/fitness-v536-browser-qa.yml]
+    paths: [.github/workflows/fitness-v536-browser-qa.yml, fitness-tracker/app.js]
 permissions:
   contents: read
 jobs:
@@ -35,7 +35,7 @@ jobs:
                    is_mobile=True,has_touch=True,locale='zh-CN',service_workers='block')
               page=ctx.new_page();errors=[]
               page.on('pageerror',lambda e:errors.append(str(e)))
-              page.add_init_script("""() => {
+              page.add_init_script("""(() => {
                 window.__wakeEvents=[];
                 Object.defineProperty(navigator,'wakeLock',{configurable:true,value:{
                   request: async (kind) => {
@@ -43,7 +43,7 @@ jobs:
                     return {released:false,release(){this.released=true;window.__wakeEvents.push('release');return Promise.resolve();},addEventListener(){}};
                   }
                 }});
-              }""")
+              })();""")
               page.goto(addr,wait_until='networkidle',timeout=90000)
               page.locator('#mobileNav [data-view="followalong"]').click()
               page.locator('.fa-chapter').first.wait_for(state='visible')
