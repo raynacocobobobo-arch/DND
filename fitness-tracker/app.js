@@ -1289,7 +1289,7 @@ function eatPhaseData(now=Date.now()){
 function renderEatStrip(){
  const phase=eatPhaseData(),day=phase.day;
  const own=state.eatingWindows?.[day];
- const label=phase.kind==='fasting'?'禁食时段':'进食窗口';
+ const label='进食窗口';
  const time=phase.kind==='idle'?'':'<span class="if6-eat-time">'+eatDisplayPoint(phase.from,day)+
   '<i>—</i>'+eatDisplayPoint(phase.to,day)+'</span>';
  const status=phase.kind==='fasting'?'禁食时段':'进食中';
