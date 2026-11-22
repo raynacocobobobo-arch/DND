@@ -1,0 +1,21 @@
+name: Export V5.36 complete site for browser review
+on:
+  push:
+    branches: [feature/fitness-two-videos-timeline-20261122]
+    paths: [.github/workflows/export-fitness-v536-review.yml]
+permissions:
+  contents: read
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble exact working tree
+        run: |
+          tar -czf /tmp/fitness-v536-site.tar.gz fitness-tracker
+          sha256sum /tmp/fitness-v536-site.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fitness-v536-complete-site
+          path: /tmp/fitness-v536-site.tar.gz
