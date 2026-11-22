@@ -1,0 +1,98 @@
+/* V5.41 — weekly kcal text must never be covered by the progress bar.
+   Preserve the 12-card workout grid and the eating-time strip. */
+@media (max-width:850px) {
+  body[data-screen="overview"] .if6-home {
+    grid-template-rows:clamp(112px,17.7dvh,152px)
+                       clamp(79px,9.8dvh,85px)
+                       clamp(56px,7.2dvh,62px)
+                       minmax(0,1fr)!important;
+  }
+  body[data-screen="overview"] .if6-stats {
+    padding:4px 9px!important;
+    align-items:stretch!important;
+    overflow:hidden!important;
+  }
+  body[data-screen="overview"] .if6-stat-week {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:minmax(28px,auto) minmax(15px,auto) 8px!important;
+    align-content:center!important;
+    justify-items:stretch!important;
+    justify-content:stretch!important;
+    row-gap:3px!important;
+    height:100%!important;
+    padding:0 1px 0 8px!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+  body[data-screen="overview"] .if6-week-upper {
+    min-width:0!important;
+    min-height:28px!important;
+    height:auto!important;
+    align-self:stretch!important;
+    overflow:visible!important;
+  }
+  body[data-screen="overview"] .if6-week-percent {
+    font-size:clamp(25px,7.4vw,32px)!important;
+    line-height:1!important;
+    align-self:center!important;
+    margin:0!important;
+  }
+  body[data-screen="overview"] .if6-week-cal {
+    box-sizing:border-box!important;
+    position:relative!important;
+    display:block!important;
+    margin:0!important;
+    padding:0!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:15px!important;
+    font-size:clamp(11px,2.9vw,13px)!important;
+    line-height:1.25!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    z-index:2!important;
+    flex:none!important;
+    white-space:nowrap!important;
+    font-variant-numeric:tabular-nums!important;
+  }
+  body[data-screen="overview"] .if6-track {
+    position:relative!important;
+    align-self:end!important;
+    display:block!important;
+    box-sizing:border-box!important;
+    height:8px!important;
+    min-height:8px!important;
+    max-height:8px!important;
+    margin:0!important;
+    flex:none!important;
+    z-index:1!important;
+  }
+}
+@media (max-width:850px) and (max-height:700px){
+  /* Existing short-screen mode is scrollable; keep readable stats instead of crushing them. */
+  body[data-screen="overview"] .if6-home {
+    grid-template-rows:110px 79px 56px minmax(440px,1fr)!important;
+  }
+  body[data-screen="overview"] .if6-stats {
+    min-height:79px!important;
+  }
+}
+@media (min-width:851px) {
+  body[data-screen="overview"] .if6-stat-week {
+    display:grid!important;
+    grid-template-rows: minmax(32px,auto) minmax(16px,auto) 9px!important;
+    row-gap:4px!important;
+    align-content:center!important;
+  }
+  body[data-screen="overview"] .if6-week-cal {
+    position:relative!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    line-height:1.3!important;
+  }
+  body[data-screen="overview"] .if6-track {
+    margin:0!important;
+  }
+}
