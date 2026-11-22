@@ -160,3 +160,5 @@ body[data-screen="calendar"] .weight-chart { margin-top:8px; }
 body[data-screen="calendar"] .weight-chart svg { display:block; width:100%; height:68px; overflow:visible; }
 body[data-screen="calendar"] .weight-chart-labels { display:flex; justify-content:space-between; color:#705239; font-size:10px; }
 body[data-screen="calendar"] .weight-empty { margin:8px 0 0; color:#705239; font-size:12px; }
+body[data-screen="calendar"] .weight-header h2 { color:#170f08 !important; -webkit-text-fill-color:#170f08 !important; }
+body[data-screen="calendar"] .weight-input input { background:#fff0c5 !important; color:#17100b !important; -webkit-text-fill-color:#17100b !important; }
