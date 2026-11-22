@@ -316,7 +316,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['外勤日志',''],followalong:['仪式训练',''],calendar:['行动日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['调查档案','按日期查看和修改每一条记录。'],settings:['装备整备','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['followalong','仪式'],['calendar','日历'],['history','档案'],['settings','整备']].map(([k,t])=>`<button type="button" aria-label="${t}" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k==='overview'?'training':k==='history'?'journal':k)}<span>${t}</span></button>`).join('')}
-function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.39.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
+function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.40.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -1272,26 +1272,28 @@ function eatEnd(w,day){
 function eatDisplayPoint(ms,referenceDay){
  const d=localDate(new Date(ms));
  const yesterday=localDate(addDays(dateFromISO(referenceDay),-1));
- return (d===referenceDay?'':d===yesterday?'昨':'次日')+eatClock(ms);
+ const prefix=d===referenceDay?'':d===yesterday?'昨':d.slice(5).replace('-','/')+' ';
+ return prefix+eatClock(ms);
 }
 function eatPhaseData(now=Date.now()){
  const day=localDate(new Date(now)),entries=state.eatingWindows||{};
  const own=entries[day];
- const yesterday=localDate(addDays(dateFromISO(day),-1));
- const prev=own?null:entries[yesterday];
- const record=own||prev;
- if(!record||!Number.isFinite(record.startAt)||now<record.startAt)return {day,kind:'idle',own:!!own};
- const end=record.startAt+EAT_MS,plannedNext=record.startAt+3*EAT_MS;
- if(now>=plannedNext)return {day,kind:'idle',own:!!own};
+ // A completed 8-hour window remains in its red phase until the NEXT actual
+ // first-meal tap, regardless of midnight, 24 hours, or longer gaps.
+ // Pick the most recently recorded first meal, including records older than yesterday.
+ const record=Object.values(entries).filter(w=>w&&Number.isSafeInteger(w.startAt)&&w.startAt<=now)
+   .sort((a,b)=>b.startAt-a.startAt)[0];
+ if(!record)return {day,kind:'idle',own:!!own};
+ const end=record.startAt+EAT_MS;
  if(now<end)return {day,kind:'eating',own:!!own,from:record.startAt,to:end};
- return {day,kind:'fasting',own:!!own,from:end,to:plannedNext};
+ return {day,kind:'fasting',own:!!own,from:end};
 }
 function renderEatStrip(){
  const phase=eatPhaseData(),day=phase.day;
  const own=state.eatingWindows?.[day];
  const label='进食窗口';
  const time=phase.kind==='idle'?'':'<span class="if6-eat-time">'+eatDisplayPoint(phase.from,day)+
-  '<i>—</i>'+eatDisplayPoint(phase.to,day)+'</span>';
+  '<i>—</i>'+(phase.kind==='fasting'?'现在':eatDisplayPoint(phase.to,day))+'</span>';
  const status=phase.kind==='fasting'?'禁食时段':'进食中';
  const button=own?'<button class="if6-eat-action subtle" type="button" data-eating-edit>调整</button>':
   '<button class="if6-eat-action" type="button" data-eating-start>开始进食</button>';
@@ -1358,13 +1360,11 @@ document.addEventListener('submit',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&eatEditOpen){eatEditOpen=false;render()}});
 function refreshEatingPhase(){
  if(document.hidden||view!=='overview')return;
+ // Keep the global day-guard in sync with the visible dashboard. Otherwise a
+ // new-day first-meal tap can be silently cancelled as a "yesterday" action.
+ if(refreshLocalCalendarDay())return;
  const element=document.querySelector('.if6-eat');if(!element)return;
  const next=eatPhaseData();
- // At midnight refresh the whole dashboard date and daily exercise totals.
- // Do not interrupt an open training or eating-time editor.
- if(element.dataset.eatingDay!==next.day&&!eatEditOpen&&!wbOpenKey&&!wbCalorieDetailOpen){
-  render();return;
- }
  if(element.dataset.eatingPhase!==next.kind||element.dataset.eatingDay!==next.day)
   element.outerHTML=renderEatStrip();
 }
