@@ -2,7 +2,7 @@ name: Fitness V5.36 real browser QA
 on:
   push:
     branches: [feature/fitness-two-videos-timeline-20261122]
-    paths: [.github/workflows/fitness-v536-browser-qa.yml, fitness-tracker/app.js]
+    paths: [.github/workflows/fitness-v536-browser-qa.yml, fitness-tracker/app.js, fitness-tracker/v536-follow-video.css]
 permissions:
   contents: read
 jobs:
@@ -104,6 +104,8 @@ jobs:
                 return {heading:inspect('.fa-video-head h2'),chapter:inspect('.fa-chapter-title')};
               }""")
               print("STYLE_DIAGNOSTICS",json.dumps(styles,ensure_ascii=False),flush=True)
+              assert styles['chapter']['height']>=50,styles
+              assert styles['heading']['color']=='rgb(35, 19, 11)',styles
               page.locator('[data-follow-jump="329"]').click()
               page.wait_for_timeout(1600)
               diag=page.evaluate("""() => { const v=document.getElementById('fa-video-1'); return {
