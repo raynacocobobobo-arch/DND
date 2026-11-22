@@ -3,50 +3,72 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
- <meta name="theme-color" content="#201b18">
- <title>Hermes To Do · 圣女鸢尾小组件 V2</title>
+ <meta name="theme-color" content="#0b151c">
+ <title>Hermes To Do · 正式 Logo 小组件 V3</title>
  <style>
   :root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
-  *{box-sizing:border-box}body{margin:0;background:#14120f;color:#f5e5d0;line-height:1.65;padding:26px 17px 64px}
-  main{max-width:640px;margin:0 auto}.label{color:#caab81;font-size:11px;letter-spacing:2px;font-weight:700}
+  *{box-sizing:border-box}body{margin:0;background:#0b151c;color:#f0dfc3;line-height:1.65;padding:26px 17px 64px}
+  main{max-width:640px;margin:0 auto}.label{color:#c8a46a;font-size:11px;letter-spacing:2px;font-weight:700}
   h1{font-size:27px;margin:9px 0 5px;line-height:1.3}.sub{margin:0 0 24px;color:#b4a28d;font-size:14px}
-  .panel{padding:20px;border:1px solid #624a32;background:#241e18;border-radius:15px;margin:0 0 18px}
+  .panel{padding:20px;border:1px solid #745a36;background:#131c23;border-radius:15px;margin:0 0 18px}
   .panel h2{font-size:17px;margin:0 0 11px}.steps{padding-left:23px;margin:0}.steps li{padding:5px 0}
   .buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:17px 0}
   button,.btn{appearance:none;display:grid;place-items:center;text-decoration:none;text-align:center;padding:14px 8px;min-height:50px;border-radius:11px;font-size:15px;font-weight:720}
-  button{border:0;color:#201409;background:#d6af74;cursor:pointer}.btn{color:#efd7b4;background:#372b20;border:1px solid #84684a}
+  button{border:0;color:#15110e;background:#c8a46a;cursor:pointer}.btn{color:#f0dfc3;background:#18232b;border:1px solid #84684a}
   button:focus-visible,.btn:focus-visible{outline:2px solid #fff6e7;outline-offset:3px}
   .status{font-size:13px;color:#d6af74;min-height:24px;margin:0}
   .note{color:#bba78c;font-size:13px;margin:12px 0}.warning{color:#e4b78b}
-  details{margin:18px 0 0}summary{cursor:pointer;color:#e3c397;font-size:14px}textarea{width:100%;height:190px;resize:vertical;background:#15120f;border:1px solid #6c5138;color:#ead6b6;border-radius:9px;padding:12px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre;overflow:auto;margin:10px 0 0}
+  details{margin:18px 0 0}summary{cursor:pointer;color:#e3c397;font-size:14px}textarea{width:100%;height:190px;resize:vertical;background:#0b151c;border:1px solid #6c5138;color:#ead6b6;border-radius:9px;padding:12px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre;overflow:auto;margin:10px 0 0}
   a{color:#e0bb8c}
+
+  /* Preview mirrors the actual logo-first Scriptable composition; values are examples only. */
+  .preview-section{margin:0 0 18px;padding:16px;border:1px solid #745a36;border-radius:15px;background:#101e28}
+  .preview-grid{display:flex;gap:21px;align-items:center}
+  .widget-mock{position:relative;isolation:isolate;flex:0 0 188px;width:188px;height:188px;border:1px solid #745a36;border-radius:25px;overflow:hidden;background:#0d1012;box-shadow:inset 0 0 0 5px #0b151c,0 9px 24px #0008;color:#f0dfc3;font-family:Georgia,"Songti SC",serif}
+  .widget-mock:before{content:"";position:absolute;z-index:2;inset:7px;border:1px solid #745a3670;border-radius:20px;pointer-events:none}
+  .wm-header{position:absolute;z-index:4;left:14px;top:14px;font:bold 10px Georgia,serif;letter-spacing:.6px;white-space:nowrap}.wm-fleur{color:#e2c18a;font-size:15px;vertical-align:-1px}
+  .wm-logo{position:absolute;right:9px;top:40px;width:88px;height:88px;object-fit:contain;border:1px solid #8b673b;filter:none}
+  .wm-left{position:absolute;left:18px;top:58px;z-index:4}.wm-kicker{font:bold 11px "Songti SC",serif;color:#c8a46a}.wm-value{font:bold 53px/.98 Georgia,serif;color:#f0dfc3}
+  .wm-bottom{position:absolute;left:18px;right:17px;bottom:31px;border-top:1px solid #745a36;padding-top:6px;display:flex;gap:8px;align-items:center;font-size:11px;color:#b5a38b}.wm-bottom strong{color:#e2c18a;font-size:16px}
+  .wm-sync{position:absolute;bottom:14px;left:18px;font:9px sans-serif;color:#b5a38b}
+  .preview-copy{min-width:0}.preview-copy h2{font-size:18px;margin:8px 0;color:#f0dfc3}.preview-copy p{font-size:13px;color:#c4af8c;line-height:1.7}.preview-copy .preview-caption{font-size:11px;color:#ad9270}
+  @media(max-width:490px){.preview-grid{gap:14px}.widget-mock{flex-basis:171px;width:171px;height:171px}.wm-logo{width:82px;height:82px;top:38px}.preview-copy h2{font-size:15px}.preview-copy p{font-size:11px;line-height:1.55}.wm-left{top:56px}.wm-value{font-size:48px}.wm-bottom{bottom:28px}.wm-sync{bottom:11px}}
  </style>
 </head>
 <body>
 <main>
  <div class="label">HERMES TO DO / IOS WIDGET</div>
- <h1>圣女鸢尾 · iPhone 小组件 V2</h1>
- <p class="sub">采用 Hermes 原有的深海军蓝、旧金鸢尾纹章和圣女插画；已有令牌继续使用，无需重新配对。</p>
- <div class="panel" style="padding:14px;display:flex;align-items:center;gap:14px;background:linear-gradient(115deg,#0b1721,#273039)">
-  <img src="../hermestodo/icons/icon-192.png" width="98" height="98" alt="Hermes 圣女与鸢尾徽章" style="width:98px;height:98px;object-fit:cover;border:1px solid #b48f5a;border-radius:9px;flex:none">
-  <div>
-   <div style="font:700 12px Georgia,serif;color:#e9c487;letter-spacing:1px">⚜ HERMES TO DO</div>
-   <div style="color:#f5dfba;font-size:18px;font-weight:700;margin-top:6px">复用原网站美术</div>
-   <div style="color:#b9a98f;font-size:12px;margin-top:6px">圣女铠甲 · 金色鸢尾 · 深蓝底色</div>
-   <div style="color:#b9a98f;font-size:11px;margin-top:6px">实际数字由小组件实时读取，并非静态图片</div>
+ <h1>原版 Logo · iPhone 小组件 V3</h1>
+ <p class="sub">以现有 Hermes App 正式 Logo 为唯一主视觉，恢复原本的黑金、骨白和哥特徽章质感。已有令牌继续使用，不需要重新配对。</p>
+ <section class="preview-section" aria-label="V3 官方 Logo 组件设计预览">
+  <div class="preview-grid">
+   <div class="widget-mock">
+    <div class="wm-header"><span class="wm-fleur">⚜</span> HERMES TO DO</div>
+    <img class="wm-logo" src="../hermestodo/icons/icon-512.webp" onerror="this.src='../hermestodo/icons/icon-192.png'" alt="Hermes 正式 Logo：白色兜帽、金色光环、哥特装甲与鸢尾纹章" />
+    <div class="wm-left"><div class="wm-kicker">未完成</div><div class="wm-value">0</div></div>
+    <div class="wm-bottom"><span>今日完成</span><strong>0</strong></div>
+    <div class="wm-sync">更新 22:50</div>
+   </div>
+   <div class="preview-copy">
+    <div class="label">V3 / ORIGINAL EMBLEM</div>
+    <h2>直接使用正式 Logo</h2>
+    <p>完整保留光环、白色兜帽、黑金装甲和鸢尾纹章。不更换人物、不裁切头像、不叠加遮盖画面的蓝色蒙层。</p>
+    <p>小组件里的文字和数字仍然由你自己的服务器接口实时提供；左侧只是构图预览。</p>
+    <p class="preview-caption">模拟效果示意 · 实际显示以 Scriptable 真机为准</p>
+   </div>
   </div>
- </div>
+ </section>
  <section class="panel">
   <h2>在 iPhone 上操作</h2>
   <ol class="steps">
    <li>先安装 <a href="https://apps.apple.com/app/id1405459188">Scriptable</a>。</li>
-   <li>在此页面点击<strong>「复制 V2 脚本」</strong>。</li>
-   <li>打开 Scriptable，点右上角 <strong>＋</strong> 新建脚本，长按编辑区域并<strong>粘贴</strong>，命名为 <strong>Hermes To Do</strong>。</li>
-   <li>点击 Scriptable 里的运行按钮，粘贴腾讯云 Agent 私聊给你的<strong>只读令牌</strong>，完成配对。</li>
+   <li>在此页面点击<strong>「复制 V3 脚本」</strong>。</li>
+   <li>打开 Scriptable，找到<strong>原来的 Hermes To Do 脚本</strong>，将旧代码全选并替换为 V3。如果还没装过，则点右上角 <strong>＋</strong> 新建脚本，命名为 <strong>Hermes To Do</strong>。</li>
+   <li>点击 Scriptable 里的运行按钮预览。<strong>已配对的手机不需要重新输入令牌</strong>；首次安装才需要粘贴腾讯云 Agent 私聊发给你的只读令牌。</li>
    <li>返回 iPhone 桌面，长按空白处 → 添加小组件 → Scriptable → 选择<strong>中尺寸</strong> → 编辑小组件并选择这个脚本。</li>
   </ol>
   <div class="buttons">
-   <button type="button" id="copy">复制 V2 脚本</button>
+   <button type="button" id="copy">复制 V3 脚本</button>
    <a class="btn" href="./Hermes-To-Do-Widget.js" download="Hermes-To-Do-Widget.js">下载 JS 文件</a>
   </div>
   <p class="status" id="status" role="status" aria-live="polite">正在载入脚本…</p>
