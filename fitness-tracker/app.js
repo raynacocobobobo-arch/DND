@@ -618,7 +618,7 @@ function renderFollowalong(){
  function section(num,name,length){
   return '<div class="fa-video-block" data-follow-block="'+num+'">'+
    '<div class="fa-video-head"><h2>'+name+'</h2><small>'+length+'</small></div>'+
-   '<div class="fa-player"><video id="fa-video-'+num+'" controls playsinline webkit-playsinline preload="metadata" poster="./art/follow-poster-v526.webp?v=5.26.0" aria-label="'+name+'"></video>'+
+   '<div class="fa-player"><video id="fa-video-'+num+'" controls playsinline webkit-playsinline preload="metadata" poster="'+(num===2?'./art/follow-poster-crunch-v537.webp?v=5.37.0':'./art/follow-poster-v526.webp?v=5.26.0')+'" aria-label="'+name+'"></video>'+
    '<div class="fa-video-state" id="fa-video-state-'+num+'" role="status" aria-live="polite">视频检查中…</div></div>'+
    '<div class="fa-local-video-tools" id="fa-local-tools-'+num+'" hidden>'+
     '<button type="button" data-follow-import="'+num+'">从本机导入 '+num+'.mp4</button>'+
@@ -632,8 +632,7 @@ function renderFollowalong(){
    section(1,'第一段 · 肩臂舒展','06:13 · 12 个动作')+
    '<div class="fa-chapters-head"><strong>动作时间线</strong><span id="fa-current-chapter">点击动作，跳转并播放</span></div>'+
    '<div class="fa-chapters" aria-label="第一段的十二个动作跳转时间点">'+chapterButtons+'</div>'+
-   section(2,'第二段 · 跟练视频','03:08')+
-   '<div class="fa-awake-info" id="fa-awake-info" role="status" aria-live="polite">播放时尝试保持屏幕常亮</div>'+
+   section(2,'第二段 · 卷腹示范','03:08')+
   '</section></div>';
 }
 
@@ -1517,7 +1516,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.36.0_inline';
+   const key='fitness_sw_reloaded_v5.37.0_inline';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
