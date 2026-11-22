@@ -2,7 +2,7 @@ name: Fitness actual browser screenshot (isolated data)
 on:
   push:
     branches: ["test/fitness-weight-browser-capture-20261122"]
-    paths: [".github/workflows/fitness-weight-two-day-screenshot.yml"]
+    paths: [".github/workflows/fitness-weight-two-day-screenshot.yml", "fitness-tracker/app.js", "fitness-tracker/v530-nav-composite.css"]
 permissions:
   contents: write
 jobs:
@@ -60,12 +60,19 @@ jobs:
                 viewportHeight:innerHeight,scrollHeight:document.documentElement.scrollHeight,
                 cardBottom:document.querySelector('.weight-board')?.getBoundingClientRect().bottom,
                 navTop:document.querySelector('#mobileNav')?.getBoundingClientRect().top,
+                calendarHeight:document.querySelector('.cal30-board')?.getBoundingClientRect().height,
+                calendarGridHeight:document.querySelector('.cal30-grid')?.getBoundingClientRect().height,
+                weightHeight:document.querySelector('.weight-board')?.getBoundingClientRect().height,
+                valueLabels:Array.from(document.querySelectorAll('.weight-chart svg text')).map(t=>t.textContent),
                 errors:[]})""")
               diagnostics["pageerrors"]=errors
               Path("fitness-tracker/qa/fitness-actual-two-day-diagnostics.json").write_text(json.dumps(diagnostics,indent=2,ensure_ascii=False))
               print("SCREENSHOT_DIAGNOSTICS",json.dumps(diagnostics,ensure_ascii=False))
               assert diagnostics["chartPoints"]==2, "Expected two actual SVG weight dots"
               assert diagnostics["calendarCells"]==21, "Expected 21 date cells"
+              assert diagnostics["calendarGridHeight"]<245, "Calendar was stretched taller than reference"
+              assert diagnostics["cardBottom"]<diagnostics["navTop"], "Weight card is hidden under bottom nav"
+              assert len(diagnostics["valueLabels"])==2, "Actual weight values are not visible"
               assert not errors, "JS error: "+str(errors)
               browser.close()
           httpd.shutdown()
