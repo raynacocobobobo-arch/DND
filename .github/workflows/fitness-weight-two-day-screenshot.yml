@@ -43,7 +43,7 @@ jobs:
               errors=[]
               page.on("pageerror",lambda e: errors.append(str(e)))
               page.clock.install(time=datetime(2026,11,22,10,44,tzinfo=ZoneInfo("Asia/Shanghai")))
-              script = """() => { if (location.pathname.includes('/fitness-tracker/')) { localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s)); localStorage.setItem('hermes_fitness_rest_days_v1','[]'); } }""" % json.dumps(state,ensure_ascii=False)
+              script = """(() => { if (location.pathname.includes('/fitness-tracker/')) { localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s)); localStorage.setItem('hermes_fitness_rest_days_v1','[]'); } })();""" % json.dumps(state,ensure_ascii=False)
               page.add_init_script(script)
               page.goto(address,wait_until="networkidle",timeout=60000)
               page.locator('[data-view="calendar"]').first.click()
