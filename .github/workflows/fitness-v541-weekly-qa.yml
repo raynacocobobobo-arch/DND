@@ -76,7 +76,7 @@ jobs:
               page.clock.install(time=datetime(2026,11,23,0,3,tzinfo=ZoneInfo('Asia/Shanghai')))
               page.add_init_script("""(() => {
                 const state=%s;
-                state.eatingWindows['2026-11-22'].startAt=new Date(2026,10,22,17,19).getTime();
+                state.eatingWindows['2026-11-22'].startAt=new Date(2026,10,22,9,19).getTime();
                 if(!localStorage.getItem('hermes_fitness_journal_v1'))
                   localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(state));
               })();"""%json.dumps(fixture,ensure_ascii=False))
