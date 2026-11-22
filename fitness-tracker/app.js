@@ -592,76 +592,249 @@ function updateExercisePreview(card,source){
 }
 
 
-/* V5.25: video followalong is intentionally separate from calorie/records state. */
+/* V5.36 — two independent follow-along videos; no changes to fitness records or calories. */
 const FOLLOW_ALONG_KEY='fitness_followalong_sessions_v1';
 function followalongCount(){try{const x=JSON.parse(localStorage.getItem(FOLLOW_ALONG_KEY)||'{}');return Number.isInteger(x.count)&&x.count>=0?x.count:0}catch(e){return 0}}
-/* V5.26.0 — the user's original MP4, downloaded just once per browser cache. */
+const FOLLOW_CHAPTERS=[
+ ['00:00','抱头外展',0],['00:29','向上外展',29],['00:59','叉腰后展',59],
+ ['01:29','一字外展',89],['01:59','内屈揉肩',119],['02:29','T字外展',149],
+ ['02:59','上下摆臂',179],['03:29','斜向拉升',209],['03:59','顺向转盘',239],
+ ['04:29','逆向转盘',269],['04:59','右手拉伸',299],['05:29','左手拉伸',329]
+];
 const FOLLOW_VIDEO_PARTS=13;
 const FOLLOW_VIDEO_TOTAL_BYTES=7725210;
 const FOLLOW_VIDEO_CACHE='fitness-video-v526-offline';
+const FOLLOW_MEDIA_CACHE='fitness-follow-user-v536';
 let followVideoObjectUrl=null,followVideoPromise=null;
+const followLocalUrls={1:null,2:null};
+let followWakeLock=null,followWakePending=false;
+
 function renderFollowalong(){
+ const chapterButtons=FOLLOW_CHAPTERS.map((c,i)=>
+  '<button type="button" class="fa-chapter" data-follow-jump="'+c[2]+'" aria-label="跳转到第'+(i+1)+'节 '+c[1]+'，'+c[0]+'">'+
+   '<span class="fa-chapter-time">'+c[0]+'</span>'+
+   '<span class="fa-chapter-title" aria-hidden="true">'+Array.from(c[1]).map(ch=>'<span class="fa-chapter-glyph">'+safe(ch)+'</span>').join('')+'</span>'+
+  '</button>').join('');
+ function section(num,name,length){
+  return '<div class="fa-video-block" data-follow-block="'+num+'">'+
+   '<div class="fa-video-head"><h2>'+name+'</h2><small>'+length+'</small></div>'+
+   '<div class="fa-player"><video id="fa-video-'+num+'" controls playsinline webkit-playsinline preload="metadata" poster="./art/follow-poster-v526.webp?v=5.26.0" aria-label="'+name+'"></video>'+
+   '<div class="fa-video-state" id="fa-video-state-'+num+'" role="status" aria-live="polite">视频检查中…</div></div>'+
+   '<div class="fa-local-video-tools" id="fa-local-tools-'+num+'" hidden>'+
+    '<button type="button" data-follow-import="'+num+'">从本机导入 '+num+'.mp4</button>'+
+    '<input type="file" hidden accept="video/mp4,.mp4" data-follow-file="'+num+'" aria-label="选择 '+num+'.mp4"/>'+
+   '</div>'+
+  '</div>';
+ }
  return '<div class="fa-page">'+
- '<header class="fa-hero"><h1 class="fa-hero-heading" aria-label="仪式训练">仪式训练</h1></header>'+
- '<section class="fa-player-sheet"><div class="fa-player">'+
- '<video id="fa-video" controls playsinline preload="none" poster="./art/follow-poster-v526.webp?v=5.26.0" aria-label="跟练视频"></video>'+
- '<div class="fa-video-state" id="fa-video-state" role="status" aria-live="polite">视频准备中…</div>'+
- '</div></section></div>';
+  '<header class="fa-hero"><h1 class="fa-hero-heading" aria-label="仪式训练">仪式训练</h1></header>'+
+  '<section class="fa-player-sheet">'+
+   section(1,'第一段 · 肩臂舒展','06:13 · 12 个动作')+
+   '<div class="fa-chapters-head"><strong>动作时间线</strong><span id="fa-current-chapter">点击动作，跳转并播放</span></div>'+
+   '<div class="fa-chapters" aria-label="第一段的十二个动作跳转时间点">'+chapterButtons+'</div>'+
+   section(2,'第二段 · 跟练视频','03:08')+
+   '<div class="fa-awake-info" id="fa-awake-info" role="status" aria-live="polite">播放时尝试保持屏幕常亮</div>'+
+  '</section></div>';
 }
+
 async function followVideoPart(index,cache){
  const url='./media/posture-parts/p'+String(index).padStart(2,'0')+'.bin?v=5.26.0';
  let response=cache?await cache.match(url,{ignoreSearch:true}):null;
  if(!response){
   response=await fetch(url);
-  if(!response.ok)throw new Error('视频资源未能加载');
+  if(!response.ok)throw new Error('旧视频资源未能加载');
   if(cache)await cache.put(url,response.clone());
  }
  return response.arrayBuffer();
 }
-function hydrateFollowVideo(){
- const video=document.getElementById('fa-video');
+function followVideoStatus(num,msg){
+ const node=document.getElementById('fa-video-state-'+num);
+ if(node){node.hidden=!msg;if(msg)node.textContent=msg}
+}
+function followShowImport(num,show){
+ const el=document.getElementById('fa-local-tools-'+num);
+ if(el)el.hidden=!show;
+}
+function followUseUrl(num,url){
+ const video=document.getElementById('fa-video-'+num);
  if(!video)return;
- const status=document.getElementById('fa-video-state');
- if(followVideoObjectUrl){
-  video.src=followVideoObjectUrl;if(status)status.hidden=true;return;
- }
+ video.src=url;video.preload='metadata';
+ followVideoStatus(num,'');followShowImport(num,false);
+}
+async function followLegacyVideo(){
+ if(followVideoObjectUrl)return followVideoObjectUrl;
  if(!followVideoPromise){
   followVideoPromise=(async()=>{
    const cache=typeof caches==='undefined'?null:await caches.open(FOLLOW_VIDEO_CACHE);
    let downloaded=0;
    const parts=await Promise.all(Array.from({length:FOLLOW_VIDEO_PARTS},async(_,i)=>{
-    const data=await followVideoPart(i,cache);
-    downloaded++;
-    const tip=document.getElementById('fa-video-state');
-    if(tip&&view==='followalong')tip.textContent='正在准备视频 '+Math.round(downloaded/FOLLOW_VIDEO_PARTS*100)+'%';
-    return data;
+    const part=await followVideoPart(i,cache);downloaded++;
+    if(view==='followalong')followVideoStatus(1,'正在准备原有跟练视频 '+Math.round(downloaded/FOLLOW_VIDEO_PARTS*100)+'%');
+    return part;
    }));
-   const size=parts.reduce((n,p)=>n+p.byteLength,0);
-   if(size!==FOLLOW_VIDEO_TOTAL_BYTES)throw new Error('视频资源不完整，请重新加载');
+   const bytes=parts.reduce((s,p)=>s+p.byteLength,0);
+   if(bytes!==FOLLOW_VIDEO_TOTAL_BYTES)throw new Error('原视频数据不完整');
    return URL.createObjectURL(new Blob(parts,{type:'video/mp4'}));
   })().catch(err=>{followVideoPromise=null;throw err});
  }
- followVideoPromise.then(url=>{
-  followVideoObjectUrl=url;
-  const current=document.getElementById('fa-video');
-  if(!current)return;
-  current.src=url;
-  const tip=document.getElementById('fa-video-state');
-  if(tip)tip.hidden=true;
- }).catch(()=>{
-  const tip=document.getElementById('fa-video-state');
-  if(tip&&view==='followalong')tip.innerHTML='<button type="button" class="fa-video-retry" data-follow-retry>重新加载视频</button>';
+ followVideoObjectUrl=await followVideoPromise;return followVideoObjectUrl;
+}
+async function followMediaCheck(num){
+ const video=document.getElementById('fa-video-'+num);if(!video)return;
+ const path='./media/'+num+'.mp4';
+ if(followLocalUrls[num]){followUseUrl(num,followLocalUrls[num]);return;}
+ try{
+  if('caches' in window){
+   const cached=await caches.open(FOLLOW_MEDIA_CACHE);
+   const resp=await cached.match(path,{ignoreSearch:true});
+   if(resp&&resp.ok){
+    const blob=await resp.blob();
+    if(blob.size>0){
+     followLocalUrls[num]=URL.createObjectURL(blob);
+     followUseUrl(num,followLocalUrls[num]);return;
+    }
+   }
+  }
+ }catch(e){/* CacheStorage may be unavailable in private browsing. */}
+ try{
+  const head=await fetch(path,{method:'HEAD',cache:'no-store'});
+  const type=head.headers.get('content-type')||'';
+  if(head.ok&&(type.includes('video/')||type.includes('application/octet-stream'))){
+   followUseUrl(num,path);return;
+  }
+ }catch(e){/* Uploaded videos may not be deployed yet. */}
+ if(num===1){
+  followVideoStatus(1,'新版 1.mp4 尚未部署，正在加载旧视频…');
+  followShowImport(1,true);
+  try{
+   const legacy=await followLegacyVideo();
+   const current=document.getElementById('fa-video-1');
+   if(current&&view==='followalong'&&!current.src)followUseUrl(1,legacy);
+   followShowImport(1,true);
+  }catch(e){followVideoStatus(1,'视频暂时不可用，请从本机导入 1.mp4');followShowImport(1,true);}
+ }else{
+  followVideoStatus(2,'尚未找到 2.mp4，可以从本机导入');
+  followShowImport(2,true);
+ }
+}
+function hydrateFollowVideo(){
+ if(view!=='followalong')return;
+ followMediaCheck(1);
+ followMediaCheck(2);
+ followUpdateWakeLabel();
+}
+function followHasPlayingVideo(){
+ return view==='followalong'&&[1,2].some(i=>{
+  const v=document.getElementById('fa-video-'+i);
+  return v&&!v.paused&&!v.ended;
  });
 }
+function followUpdateWakeLabel(message){
+ const el=document.getElementById('fa-awake-info');if(!el)return;
+ if(message){el.textContent=message;return;}
+ if(followWakeLock&&!followWakeLock.released)el.textContent='屏幕常亮已开启 · 播放结束自动关闭';
+ else if(!navigator.wakeLock||typeof navigator.wakeLock.request!=='function')
+  el.textContent='此浏览器不支持自动常亮，请在系统设置中调整自动锁定';
+ else el.textContent=followHasPlayingVideo()?'正在申请屏幕常亮…':'视频播放时自动申请屏幕常亮';
+}
+async function followAcquireWake(){
+ if(!followHasPlayingVideo()||document.hidden||view!=='followalong'||followWakePending)return;
+ if(!navigator.wakeLock||typeof navigator.wakeLock.request!=='function'){followUpdateWakeLabel();return;}
+ if(followWakeLock&&!followWakeLock.released)return;
+ followWakePending=true;
+ try{
+  const lock=await navigator.wakeLock.request('screen');
+  if(!followHasPlayingVideo()||document.hidden){await lock.release();return;}
+  followWakeLock=lock;
+  lock.addEventListener('release',()=>{
+   if(followWakeLock===lock)followWakeLock=null;
+   followUpdateWakeLabel();
+  });
+  followUpdateWakeLabel();
+ }catch(err){
+  followUpdateWakeLabel('系统未允许常亮；可检查低电量模式与屏幕锁定设置');
+ }finally{followWakePending=false;}
+}
+function followReleaseWake(){
+ const current=followWakeLock;followWakeLock=null;
+ if(current&&!current.released)current.release().catch(()=>{});
+ followUpdateWakeLabel();
+}
+function followChapterHighlight(sec){
+ let current=-1;
+ for(let i=0;i<FOLLOW_CHAPTERS.length;i++)if(sec>=FOLLOW_CHAPTERS[i][2])current=i;
+ document.querySelectorAll('.fa-chapter').forEach((button,i)=>{
+  const active=i===current;button.classList.toggle('active',active);
+  if(active)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current');
+ });
+ const label=document.getElementById('fa-current-chapter');
+ if(label&&current>=0)label.textContent=(current+1)+' / 12 · '+FOLLOW_CHAPTERS[current][1];
+}
 document.addEventListener('click',e=>{
- if(!e.target.closest('[data-follow-retry]'))return;
- followVideoPromise=null;
- const status=document.getElementById('fa-video-state');
- if(status){status.hidden=false;status.textContent='视频准备中…'}
- hydrateFollowVideo();
+ const jump=e.target.closest('[data-follow-jump]');
+ if(jump){
+  const video=document.getElementById('fa-video-1');if(!video)return;
+  const target=Number(jump.dataset.followJump);if(!Number.isFinite(target)||target<0)return;
+  const seek=()=>{
+   if(Number.isFinite(video.duration)&&target>=video.duration){toast('动作时间超过视频长度');return}
+   // Wait until the target keyframe is ready before resuming. iOS/Chromium
+   // can otherwise restart at 00:00 when play() races with currentTime.
+   if(!video.paused)video.pause();
+   const resume=()=>{
+    followChapterHighlight(target);
+    const run=video.play();
+    if(run&&run.catch)run.catch(()=>toast('请点击视频播放按钮继续'));
+   };
+   if(Math.abs(video.currentTime-target)<0.25){resume();return;}
+   video.addEventListener('seeked',resume,{once:true});
+   try{video.currentTime=target;}catch(e){
+    video.removeEventListener('seeked',resume);
+    toast('视频尚未就绪，无法跳转');
+   }
+  };
+  if(video.readyState>=1)seek();
+  else if(video.src){video.addEventListener('loadedmetadata',seek,{once:true});video.load();}
+  else toast('先导入第一段视频才能跳转');
+  return;
+ }
+ const upload=e.target.closest('[data-follow-import]');
+ if(upload){document.querySelector('[data-follow-file="'+upload.dataset.followImport+'"]')?.click();return;}
 });
-
-function switchView(v){if(v==='steps')v='overview';if(!['overview','followalong','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;wbCalorieDetailOpen=false;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
+document.addEventListener('change',async e=>{
+ const input=e.target.closest('[data-follow-file]');if(!input)return;
+ const num=Number(input.dataset.followFile),file=input.files?.[0];if(!file||![1,2].includes(num))return;
+ if(!(/\.mp4$/i.test(file.name)||file.type==='video/mp4')){toast('请选 MP4 文件');return}
+ if(followLocalUrls[num])URL.revokeObjectURL(followLocalUrls[num]);
+ followLocalUrls[num]=URL.createObjectURL(file);followUseUrl(num,followLocalUrls[num]);
+ try{
+  if('caches' in window){
+   const cache=await caches.open(FOLLOW_MEDIA_CACHE);
+   await cache.put('./media/'+num+'.mp4',new Response(file,{headers:{'content-type':'video/mp4'}}));
+   toast(num+'.mp4 已导入，并缓存到本机');
+  }else toast('视频已导入，但此设备无法离线保存');
+ }catch(e){toast('视频已导入；存储空间不足，下次可能需再次选择')}
+ input.value='';
+});
+document.addEventListener('play',e=>{
+ if(!e.target.matches?.('.fa-player video'))return;
+ const player=e.target;
+ document.querySelectorAll('.fa-player video').forEach(v=>{if(v!==player&&!v.paused)v.pause()});
+ followAcquireWake();
+},true);
+document.addEventListener('timeupdate',e=>{
+ if(e.target.id==='fa-video-1')followChapterHighlight(e.target.currentTime);
+},true);
+document.addEventListener('pause',e=>{
+ if(e.target.matches?.('.fa-player video')&&!followHasPlayingVideo())followReleaseWake();
+},true);
+document.addEventListener('ended',e=>{
+ if(e.target.matches?.('.fa-player video')&&!followHasPlayingVideo())followReleaseWake();
+},true);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden)followReleaseWake();
+ else if(followHasPlayingVideo())followAcquireWake();
+});
+function switchView(v){if(view==='followalong'&&v!=='followalong')followReleaseWake();if(v==='steps')v='overview';if(!['overview','followalong','calendar','training','history','settings'].includes(v))return;wbOpenKey=null;wbCalorieDetailOpen=false;view=v;render();window.scrollTo({top:0,behavior:'instant'})}
 function toast(message){let el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400)}
 function pullForm(){const f=document.getElementById('recordForm');if(!f)return;for(const input of f.querySelectorAll('[name]'))draft[input.name]=input.value}
 function updatePreview(){const k=document.getElementById('previewKcal'),desc=document.getElementById('previewLine'),rule=document.getElementById('previewRule');if(k)k.innerHTML=`${calc(draft)??'—'}<small>kcal</small>`;if(desc)desc.textContent=previewDescription(draft);if(rule)rule.textContent=previewRule(draft)}
@@ -1344,7 +1517,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   // A claimed worker does not replace already-running JS; reload once when no form is being edited.
   if(document.activeElement?.closest('form')||wbOpenKey){toast('新版本已就绪，请完成本次输入后重新打开');return}
   try{
-   const key='fitness_sw_reloaded_v5.30.0_inline';
+   const key='fitness_sw_reloaded_v5.36.0_inline';
    if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');location.reload()}
   }catch(e){location.reload()}
  });
