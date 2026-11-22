@@ -46,7 +46,7 @@ jobs:
               script = """(() => { if (location.pathname.includes('/fitness-tracker/')) { localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s)); localStorage.setItem('hermes_fitness_rest_days_v1','[]'); } })();""" % json.dumps(state,ensure_ascii=False)
               page.add_init_script(script)
               page.goto(address,wait_until="networkidle",timeout=60000)
-              page.locator('[data-view="calendar"]').first.click()
+              page.locator('#mobileNav [data-view="calendar"]').click()
               page.locator('.weight-board').wait_for(state="visible",timeout=12000)
               page.screenshot(path="fitness-tracker/qa/fitness-actual-two-day-weight.png",full_page=False,animations="disabled")
               page.locator('.weight-board').screenshot(path="fitness-tracker/qa/fitness-actual-weight-section.png",animations="disabled")
