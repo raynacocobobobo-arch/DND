@@ -87,12 +87,14 @@ jobs:
                 duration2:document.querySelector('#fa-video-2').duration,
                 source1:document.querySelector('#fa-video-1').currentSrc,
                 source2:document.querySelector('#fa-video-2').currentSrc,
-                writingMode:getComputedStyle(document.querySelector('.fa-chapter-title')).writingMode
+                writingMode:getComputedStyle(document.querySelector('.fa-chapter-title')).writingMode,
+                glyphPositions:[...document.querySelectorAll('.fa-chapter:first-child .fa-chapter-glyph')].map(e=>Math.round(e.getBoundingClientRect().top))
               })""")
               assert abs(dims['duration1']-373.4)<2,dims
               assert abs(dims['duration2']-188.383)<2,dims
               assert '1.mp4' in dims['source1'] and '2.mp4' in dims['source2'],dims
-              assert dims['writingMode']=='vertical-rl',dims
+              assert dims['writingMode']=='horizontal-tb',dims
+              assert len(dims['glyphPositions'])==4 and dims['glyphPositions']==sorted(set(dims['glyphPositions'])),dims
               styles=page.evaluate("""() => {
                 const inspect=(selector)=>{
                   const el=document.querySelector(selector),cs=getComputedStyle(el),r=el.getBoundingClientRect();
