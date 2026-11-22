@@ -1,0 +1,85 @@
+name: Fitness actual browser screenshot (isolated data)
+on:
+  push:
+    branches: ["test/fitness-weight-browser-capture-20261122"]
+    paths: [".github/workflows/fitness-weight-two-day-screenshot.yml"]
+permissions:
+  contents: write
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Chromium browser automation
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install chromium --with-deps
+      - name: Capture actual site rendering with demo records
+        run: |
+          cat > /tmp/capture_fitness.py <<'PY'
+          import json, threading, http.server, socketserver
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          from playwright.sync_api import sync_playwright
+
+          days = {"2026-11-18":278,"2026-11-19":341,"2026-11-20":347,"2026-11-21":384,"2026-11-22":7}
+          records = [{"id":"demo-"+day,"date":day,"type":"cardio","exercise":"截图演示训练","duration_min":20,"calories":kcal,"createdAt":day+"T10:00:00","note":"仅在隔离浏览器内"} for day,kcal in days.items()]
+          state = {"version":1,"records":records,"settings":{"weight":65,"age":36,"weeklyGoal":1500},"stepDiary":{},"weightHistory":{"2026-11-21":65.4,"2026-11-22":65.0}}
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self, fmt, *args): pass
+          httpd=socketserver.TCPServer(("127.0.0.1",0),Handler)
+          threading.Thread(target=httpd.serve_forever, daemon=True).start()
+          address="http://127.0.0.1:%s/fitness-tracker/" % httpd.server_address[1]
+
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={"width":402,"height":874},device_scale_factor=2,is_mobile=True,has_touch=True,timezone_id="Asia/Shanghai",locale="zh-CN",service_workers="block")
+              page=context.new_page()
+              errors=[]
+              page.on("pageerror",lambda e: errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,22,10,44,tzinfo=ZoneInfo("Asia/Shanghai")))
+              script = """() => { if (location.pathname.includes('/fitness-tracker/')) { localStorage.setItem('hermes_fitness_journal_v1', JSON.stringify(%s)); localStorage.setItem('hermes_fitness_rest_days_v1','[]'); } }""" % json.dumps(state,ensure_ascii=False)
+              page.add_init_script(script)
+              page.goto(address,wait_until="networkidle",timeout=60000)
+              page.locator('[data-view="calendar"]').first.click()
+              page.locator('.weight-board').wait_for(state="visible",timeout=12000)
+              page.screenshot(path="fitness-tracker/qa/fitness-actual-two-day-weight.png",full_page=False,animations="disabled")
+              page.locator('.weight-board').screenshot(path="fitness-tracker/qa/fitness-actual-weight-section.png",animations="disabled")
+              diagnostics=page.evaluate("""() => ({
+                title:document.title,
+                weightValue:document.querySelector('#weightInput')?.value,
+                chartPoints:document.querySelectorAll('.weight-chart circle').length,
+                chartPolyLine:document.querySelector('.weight-chart polyline')?.getAttribute('points'),
+                calendarCells:document.querySelectorAll('.cal30-day').length,
+                calendarText:document.querySelector('.cal30-heading')?.textContent,
+                viewportHeight:innerHeight,scrollHeight:document.documentElement.scrollHeight,
+                cardBottom:document.querySelector('.weight-board')?.getBoundingClientRect().bottom,
+                navTop:document.querySelector('#mobileNav')?.getBoundingClientRect().top,
+                errors:[]})""")
+              diagnostics["pageerrors"]=errors
+              Path("fitness-tracker/qa/fitness-actual-two-day-diagnostics.json").write_text(json.dumps(diagnostics,indent=2,ensure_ascii=False))
+              print("SCREENSHOT_DIAGNOSTICS",json.dumps(diagnostics,ensure_ascii=False))
+              assert diagnostics["chartPoints"]==2, "Expected two actual SVG weight dots"
+              assert diagnostics["calendarCells"]==21, "Expected 21 date cells"
+              assert not errors, "JS error: "+str(errors)
+              browser.close()
+          httpd.shutdown()
+          PY
+          mkdir -p fitness-tracker/qa
+          python /tmp/capture_fitness.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fitness-real-browser-two-weights
+          path: fitness-tracker/qa/fitness-actual-*
+      - name: Commit screenshot to this testing branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fitness-tracker/qa/fitness-actual-*
+          git commit -m "test: capture actual fitness calendar with two-day weight data"
+          git push origin HEAD:test/fitness-weight-browser-capture-20261122
