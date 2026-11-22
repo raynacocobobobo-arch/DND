@@ -1,0 +1,31 @@
+name: Import fitness MP4 media to feature branch
+on:
+  push:
+    branches: [feature/fitness-two-videos-timeline-20261122]
+    paths: [.github/workflows/import-fitness-videos-20261122.yml]
+permissions:
+  contents: write
+jobs:
+  import-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download validated transcodes
+        env:
+          MEDIA_URL: 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-9258-8209-947e-3ee143eb6dd6/raw?se=2026-11-22T03%3A41%3A23Z&sp=r&sv=2026-06-06&sr=b&scid=b9d2b590-c421-56a4-b60d-ab8d5fe46b67&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-21T05%3A09%3A36Z&ske=2026-11-22T05%3A09%3A36Z&sks=b&skv=2026-06-06&sig=UJjlV9/YeomUqNzabABqDjC4ANMv4LmoJ1frRKn4%2Bv4%3D'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 180 --silent --show-error "$MEDIA_URL" -o /tmp/fitness-media.zip
+          echo 'f06d33779369bff737747b89069efe48e32c7b5269b90d2c4ffeb768bf327b33  /tmp/fitness-media.zip' | sha256sum -c -
+          unzip -o -q /tmp/fitness-media.zip -d fitness-tracker
+          echo 'd5fa9efa61d31b7b25dabe759026f91f81d3a288cd9c29f07453c2b1f0a4921b  fitness-tracker/media/1.mp4' | sha256sum -c -
+          echo '37c06207704d86a56abac915e49f4b3c1b3c8359738b9067ecd306bc88524a31  fitness-tracker/media/2.mp4' | sha256sum -c -
+          file fitness-tracker/media/{1,2}.mp4
+      - name: Commit assets to this feature branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add fitness-tracker/media/1.mp4 fitness-tracker/media/2.mp4
+          git commit -m 'media(fitness): add H.264 training videos 1 and 2'
+          git push origin HEAD:feature/fitness-two-videos-timeline-20261122
