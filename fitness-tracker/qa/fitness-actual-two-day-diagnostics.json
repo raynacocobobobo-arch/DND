@@ -7,11 +7,11 @@
   "calendarText": "最近21天11月2日 — 11月22日",
   "viewportHeight": 874,
   "scrollHeight": 874,
-  "cardBottom": 763.140625,
+  "cardBottom": 745.796875,
   "navTop": 813,
-  "calendarHeight": 387.0625,
-  "calendarGridHeight": 235.96875,
-  "weightHeight": 204.078125,
+  "calendarHeight": 376.09375,
+  "calendarGridHeight": 225,
+  "weightHeight": 197.703125,
   "valueLabels": [
     "65.4",
     "65.0"
