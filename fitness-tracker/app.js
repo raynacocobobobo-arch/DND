@@ -27,7 +27,7 @@ function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function monday(d=new Date()){return addDays(d,-((d.getDay()+6)%7))}
 function formatDate(s){const d=dateFromISO(s);return `${d.getMonth()+1}月${d.getDate()}日`}
 function getWeekDates(){let m=monday(new Date());return Array.from({length:7},(_,i)=>localDate(addDays(m,i)))}
-function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{},weightHistory:{}}}
+function initialState(){return {version:1,settings:{...DEFAULT_SETTINGS},records:SEED_RECORDS.map((r,i)=>({...r,id:'original-'+i,createdAt:r.date+'T09:00:00',original:true})),stepDiary:{},weightHistory:{},eatingWindows:{}}}
 
 const RECOVERY_KEY='hermes_fitness_journal_recovery_v1';
 let storageReadIssue='';
@@ -58,6 +58,16 @@ function cleanWeightHistory(value){
  }
  return result;
 }
+function cleanEatingWindows(v){
+ const out={};
+ if(!v||typeof v!=='object'||Array.isArray(v))return out;
+ for(const [day,w] of Object.entries(v)){
+  const ms=Number(w?.startAt);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isSafeInteger(ms)||ms<Date.UTC(2000,0,1)||ms>Date.UTC(2100,0,1))continue;
+  if(localDate(new Date(ms))===day)out[day]={startAt:ms};
+ }
+ return out;
+}
 function readState(){
  let raw;
  try{raw=localStorage.getItem(STORAGE_KEY)}
@@ -65,7 +75,7 @@ function readState(){
  if(raw===null)return initialState();
  const v=parsedFitnessState(raw);
  if(!v){storageReadIssue='检测到无法解析的原有记录，已禁止自动覆盖';return initialState()}
- return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary),weightHistory:cleanWeightHistory(v.weightHistory)};
+ return {version:1,records:v.records,settings:{...DEFAULT_SETTINGS,...v.settings},stepDiary:cleanStepDiary(v.stepDiary),weightHistory:cleanWeightHistory(v.weightHistory),eatingWindows:cleanEatingWindows(v.eatingWindows)};
 }
 let state=readState(),view='overview',historyFilter='week',historySelectedDate=null,draft=emptyDraft('strength');
 /* Preserve old raw step inputs while retiring interval subtraction.
@@ -216,7 +226,7 @@ function restoreFitnessSnapshot(){
   catch(e){toast('原始内容备份失败，已取消恢复');return false}
  }
  storageReadIssue='';
- state={version:1,records:saved.records,settings:{...DEFAULT_SETTINGS,...saved.settings},stepDiary:cleanStepDiary(saved.stepDiary),weightHistory:cleanWeightHistory(saved.weightHistory)};
+ state={version:1,records:saved.records,settings:{...DEFAULT_SETTINGS,...saved.settings},stepDiary:cleanStepDiary(saved.stepDiary),weightHistory:cleanWeightHistory(saved.weightHistory),eatingWindows:cleanEatingWindows(saved.eatingWindows)};
  if(!persist()){state=prior;storageReadIssue=wasBlocked;return false}
  view='history';historySelectedDate=null;render();toast('已恢复本地快照：'+saved.records.length+' 条记录');return true;
 }
@@ -306,7 +316,7 @@ function totalRecs(list){return list.reduce((n,r)=>n+(Number(r.calories)||0),0)}
 function recordsOfDate(date){return state.records.filter(r=>r.date===date)}
 function viewTitle(){return {overview:['外勤日志',''],followalong:['仪式训练',''],calendar:['行动日历','运动自动打卡，休息日可手动标记。'],training:[draft.id?'编辑训练记录':'记录运动','输入实际完成量，即时估算热量消耗。'],history:['调查档案','按日期查看和修改每一条记录。'],settings:['装备整备','体重、目标和备份，都由你控制。']}[view]}
 function navHTML(){return [['overview','打卡'],['followalong','仪式'],['calendar','日历'],['history','档案'],['settings','整备']].map(([k,t])=>`<button type="button" aria-label="${t}" class="nav-btn ${view===k?'active':''}" data-view="${k}" ${view===k?'aria-current="page"':''}>${icon(k==='overview'?'training':k==='history'?'journal':k)}<span>${t}</span></button>`).join('')}
-function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.35.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
+function render(){/* V2历史记录不自动重算。 */document.body.dataset.screen=view;document.getElementById('desktopNav').innerHTML=navHTML();document.getElementById('mobileNav').innerHTML=navHTML();const [heading,sub]=viewTitle();const top=(view==='overview'||view==='followalong')?'':`<header class="topline"><div><div class="eyebrow">FITNESS RECORD · V5.38.0</div><h1 class="page-title" ${view==='calendar'?'aria-label="行动日历"':''}>${safe(heading)}</h1><div class="page-sub">${safe(sub)}</div></div><span class="date-chip">${safe(formatDate(localDate()))} · ${DAY_NAMES[new Date().getDay()]}</span></header>`;document.getElementById('content').innerHTML=top+({overview:renderQuickHome,followalong:renderFollowalong,calendar:renderCalendar,training:renderTraining,history:renderHistory,settings:renderSettings}[view]());if(view==='followalong')hydrateFollowVideo();}
 function renderOverview(){const today=localDate(),wk=getWeekDates(),byDay=wk.map(day=>totalRecs(recordsOfDate(day))),wTotal=byDay.reduce((a,b)=>a+b,0),dTotal=totalRecs(recordsOfDate(today)),goal=Number(state.settings.weeklyGoal)||1500,pct=Math.round(wTotal/goal*100),highest=Math.max(...byDay,goal/7,1),plan=PLANS[new Date().getDay()],tomorrow=PLANS[(new Date().getDay()+1)%7];return `
  <div class="overview-grid"><section class="card hero"><div><div class="hero-label">今日已记录消耗</div><div class="big-number">${dTotal}<small>千卡 kcal</small></div></div><div class="hero-bottom"><div class="hero-hint">${recordsOfDate(today).length?`今天已记 ${recordsOfDate(today).length} 项运动，继续完成下一组。`:'今天还没有记录，开始添加第一项训练。'}</div><button type="button" class="hero-btn" data-view="training">＋ 记录运动</button></div></section><div class="hero-stats"><section class="card stat"><span class="label">本周累计</span><div class="num">${wTotal}<small>kcal</small></div><span class="note">周目标 ${goal.toLocaleString('zh-CN')} kcal</span></section><section class="card stat"><span class="label">本周已记录</span><div class="num">${state.records.filter(r=>wk.includes(r.date)).length}<small>条</small></div><span class="note">实际训练记录</span></section></div></div>
  <div class="overview-grid section-block"><section class="card"><div class="section-title"><div><h2>本周运动消耗</h2><p>${formatDate(wk[0])} — ${formatDate(wk[6])}</p></div><span class="date-chip">${pct}% 目标</span></div><div class="week-chart">${byDay.map((v,i)=>`<div class="bar-col ${wk[i]===today?'today':''}" title="${safe(wk[i])}：${v} 千卡"><div class="bar-rail"><div class="bar-fill" style="height:${v?Math.max(v/highest*100,4):0}%"></div></div><span class="bar-label">周${WEEK_SHORT[i]}</span></div>`).join('')}</div><div class="week-total"><span>已完成 <strong>${wTotal}</strong> / ${goal} kcal</span><strong>${pct}%</strong></div><div class="progress-track" role="progressbar" aria-label="每周目标进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(pct,100)}"><div class="progress-bar" style="width:${Math.min(pct,100)}%"></div></div></section>
@@ -844,7 +854,7 @@ function exportFile(textContent,fileName,mime){const a=document.createElement('a
 function exportRawFitnessData(){try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw){toast('没有原始内容可导出');return}exportFile(raw,`健身记录-原始保护-${localDate()}.txt`,'text/plain;charset=utf-8');toast('原始内容已导出')}catch(e){toast('原始内容读取失败')}}
 function exportJSON(){exportFile(JSON.stringify({...state,restDays:[...restDays].sort(),exportedAt:new Date().toISOString()},null,2),`运动手账-备份-${localDate()}.json`,'application/json;charset=utf-8');toast('JSON 备份已导出')}
 function exportCSV(){const headers=['日期','类型','项目','组数','每组次数','总次数','时长(分钟)','每组秒数','步数','距离(米)','重量(kg)','估算千卡','游泳来回数','跑步距离(km)'];const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const lines=state.records.map(r=>[r.date,prettyType(r.type),recordName(r),r.sets,r.repsPerSet,r.reps,r.duration_min,r.secondsPerSet,r.steps,r.distance_m,r.loadKg,r.calories,r.laps,r.distance_km].map(cell).join(','));exportFile('\ufeff'+headers.map(cell).join(',')+'\r\n'+lines.join('\r\n'),`运动手账-记录-${localDate()}.csv`,'text/csv;charset=utf-8');toast('CSV 已导出')}
-function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','running','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;const beforeImport=state,readBlock=storageReadIssue; if(readBlock&&!archivePriorFitnessData(localStorage.getItem(STORAGE_KEY))){throw new Error('原始内容无法保护，已取消导入')};storageReadIssue='';state={version:1,records:clean,settings,stepDiary:Object.prototype.hasOwnProperty.call(v,'stepDiary')?cleanStepDiary(v.stepDiary):state.stepDiary,weightHistory:Object.prototype.hasOwnProperty.call(v,'weightHistory')?cleanWeightHistory(v.weightHistory):state.weightHistory};if(!persist()){state=beforeImport;storageReadIssue=readBlock;throw new Error('记录未写入，请勿删除原始备份')};if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
+function importJSONFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const v=JSON.parse(String(reader.result));const records=Array.isArray(v)?v:v.records;if(!Array.isArray(records))throw new Error('JSON 中找不到记录数组');const clean=records.map((r,i)=>{if(typeof r!=='object'||!r||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!['walking','cardio','running','swimming','strength','situps','hold'].includes(r.type)||!Number.isFinite(Number(r.calories))||Number(r.calories)<0)throw new Error(`第 ${i+1} 条记录无效`);let type=r.type==='situps'?'strength':r.type;return {...r,type,exercise:r.type==='situps'?'仰卧起坐':r.exercise,id:typeof r.id==='string'&&r.id?r.id:uid(),calories:Number(r.calories),createdAt:r.createdAt||r.date+'T09:00:00'}});if(!confirm(`这份文件包含 ${clean.length} 条记录。确定覆盖当前 ${state.records.length} 条记录吗？`))return;const settings=v.settings&&typeof v.settings==='object'?{...state.settings,...v.settings,weight:Number(v.settings.weight)||state.settings.weight,weeklyGoal:Number(v.settings.weeklyGoal)||state.settings.weeklyGoal}:state.settings;const beforeImport=state,readBlock=storageReadIssue; if(readBlock&&!archivePriorFitnessData(localStorage.getItem(STORAGE_KEY))){throw new Error('原始内容无法保护，已取消导入')};storageReadIssue='';state={version:1,records:clean,settings,stepDiary:Object.prototype.hasOwnProperty.call(v,'stepDiary')?cleanStepDiary(v.stepDiary):state.stepDiary,weightHistory:Object.prototype.hasOwnProperty.call(v,'weightHistory')?cleanWeightHistory(v.weightHistory):state.weightHistory,eatingWindows:Object.prototype.hasOwnProperty.call(v,'eatingWindows')?cleanEatingWindows(v.eatingWindows):state.eatingWindows};if(!persist()){state=beforeImport;storageReadIssue=readBlock;throw new Error('记录未写入，请勿删除原始备份')};if(Array.isArray(v.restDays)){const loadedRestDays=new Set(v.restDays.filter(validRestDate));if(persistRestDays(loadedRestDays))restDays=loadedRestDays;}view='overview';render();toast(`成功导入 ${clean.length} 条记录`)}catch(e){alert('导入失败：'+e.message)}};reader.readAsText(file,'utf-8')}
 
 const QUICK_ITEMS=[
  {key:'elliptical',name:'椭圆机',unit:'分钟',value:0,step:20,max:480,type:'cardio',exercise:'椭圆机',note:'轻量·每次20分钟',iconName:'activity'},
@@ -1249,6 +1259,86 @@ function if6Tile(q,info,calories){
  '<span class="if6-quantity'+(wide?' long':'')+'"><strong>'+label+'</strong><small>'+safe(q.unit)+'</small></span>'+
  '<span class="if6-energy'+kcalDensity+'"><span class="if6-energy-content">'+IF6_FLAME+'<strong>'+kcalText+'</strong><em>kcal</em></span></span></button>';
 }
+
+/* V5.38 — daily eating-window log. End = planned 8h window, never an assertion of a finished fast. */
+const EAT_MS=8*60*60*1000;
+let eatEditOpen=false;
+function eatClock(ms){const d=new Date(ms);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function eatEnd(w,day){
+ const end=w.startAt+EAT_MS;
+ return (localDate(new Date(end))===day?'':'次日')+eatClock(end);
+}
+function eatStatus(w){return Date.now()<w.startAt+EAT_MS?'进食中':'窗口已结束'}
+function renderEatStrip(){
+ const day=localDate(),w=state.eatingWindows?.[day];
+ const controls=w?
+  '<span class="if6-eat-time">'+eatClock(w.startAt)+'<i>—</i>'+eatEnd(w,day)+'</span>'+
+  '<span class="if6-eat-status" data-eating-status>'+eatStatus(w)+'</span>'+
+  '<button class="if6-eat-action subtle" type="button" data-eating-edit>调整</button>':
+  '<span class="if6-eat-placeholder">第一餐时记录时间</span>'+
+  '<button class="if6-eat-action" type="button" data-eating-start>开始进食</button>';
+ return '<section class="if6-eat" aria-label="今日16比8进食窗口记录">'+
+  '<span class="if6-eat-title"><strong>进食窗口</strong><small>16:8</small></span>'+
+  '<div class="if6-eat-details">'+controls+'</div></section>';
+}
+function renderEatDialog(){
+ if(!eatEditOpen)return '';
+ const day=localDate(),today=state.eatingWindows?.[day];
+ const recent=Object.entries(state.eatingWindows||{}).filter(([d])=>d<=day).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+ const history=recent.length?recent.map(([d,w])=>'<div class="if6-eat-history-row"><span>'+formatDate(d)+'</span><strong>'+eatClock(w.startAt)+'—'+eatEnd(w,d)+'</strong></div>').join(''):'<p>暂无历史记录</p>';
+ return '<div class="if6-eat-overlay">'+
+  '<button class="if6-eat-backdrop" type="button" data-eating-close aria-label="关闭调整面板"></button>'+
+  '<div class="if6-eat-sheet" role="dialog" aria-modal="true" aria-labelledby="eat-title">'+
+   '<h2 id="eat-title">进食时间</h2>'+
+   '<p>只记录第一口食物的实际时间；结束时间自动按 8 小时计算。</p>'+
+   '<form id="eatingTimeForm"><label for="eatingStartTime">今日开始时间</label>'+
+    '<input id="eatingStartTime" type="time" required value="'+eatClock(today?.startAt??Date.now())+'">'+
+    '<div class="if6-eat-form-actions"><button type="button" data-eating-close>取消</button><button type="submit">保存</button></div>'+
+   '</form>'+
+   (today?'<button type="button" data-eating-remove class="if6-eat-remove">撤销今日打卡</button>':'')+
+   '<div class="if6-eat-history"><h3>最近 7 次记录</h3>'+history+'</div>'+
+   '<p class="if6-eat-footnote">时间是计划窗口，不是禁食完成证明；窗口外可以正常喝水。</p>'+
+  '</div></div>';
+}
+function saveEatTime(time){
+ const day=localDate(),ms=Math.trunc(time);
+ if(!Number.isSafeInteger(ms)||localDate(new Date(ms))!==day||ms>Date.now()+60000){
+  toast('只能记录今天已经发生的进食时间');return false;
+ }
+ const old=state.eatingWindows||{};
+ state.eatingWindows={...old,[day]:{startAt:ms}};
+ if(!persist()){state.eatingWindows=old;return false}
+ eatEditOpen=false;render();toast('进食开始时间已保存');return true;
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-eating-start]')){saveEatTime(Date.now());return}
+ if(e.target.closest('[data-eating-edit]')){eatEditOpen=true;render();document.getElementById('eatingStartTime')?.focus();return}
+ if(e.target.closest('[data-eating-close]')){eatEditOpen=false;render();return}
+ if(e.target.closest('[data-eating-remove]')){
+  if(!confirm('确定撤销今天的进食打卡吗？'))return;
+  const old=state.eatingWindows||{},next={...old};delete next[localDate()];
+  state.eatingWindows=next;
+  if(!persist()){state.eatingWindows=old;return}
+  eatEditOpen=false;render();toast('今日记录已撤销');
+ }
+});
+document.addEventListener('submit',e=>{
+ if(e.target.id!=='eatingTimeForm')return;
+ e.preventDefault();
+ const value=e.target.querySelector('#eatingStartTime')?.value;
+ if(!/^\d{2}:\d{2}$/.test(value||'')){toast('请输入有效的时间');return}
+ const [hours,minutes]=value.split(':').map(Number);
+ if(hours>23||minutes>59){toast('时间格式有误');return}
+ const dt=new Date();dt.setHours(hours,minutes,0,0);
+ saveEatTime(dt.getTime());
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&eatEditOpen){eatEditOpen=false;render()}});
+setInterval(()=>{
+ if(document.hidden||view!=='overview')return;
+ const node=document.querySelector('[data-eating-status]'),w=state.eatingWindows?.[localDate()];
+ if(node&&w)node.textContent=eatStatus(w);
+},30000);
+
 function renderQuickHome(){
  const today=localDate(),records=recordsOfDate(today);
  const dayTotal=totalRecs(records);
@@ -1280,7 +1370,9 @@ function renderQuickHome(){
  '<div class="if6-stat-week"><div class="if6-week-upper"><span class="if6-stat-label">本周进度</span><strong class="if6-week-percent" style="--week-fit:'+percentFont+'px">'+percentText+'</strong></div>'+
  '<span class="if6-week-cal">'+weekly.toLocaleString('zh-CN')+' / '+target.toLocaleString('zh-CN')+' kcal</span>'+
  '<div class="if6-track" role="progressbar" aria-label="本周热量目标完成进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.min(100,Math.max(0,percentage))+'"><span class="if6-track-fill" style="width:'+fill.toFixed(1)+'%"></span></div></div></section>'+
+ renderEatStrip()+
  '<section class="if6-grid" aria-label="今日十二项运动">'+tiles.map(({item,info,calories})=>if6Tile(item,info,calories)).join('')+'</section></div>'+
+ renderEatDialog()+
  (wbCalorieDetailOpen?wbTodayDetailPanel(records):wbOpenKey?
  '<div class="wb-modal"><button type="button" class="wb-modal-backdrop" data-wb-close aria-label="关闭操作面板"></button>'+
  '<div class="wb-modal-sheet" role="dialog" aria-modal="true" aria-label="记录运动">'+wbEditor(QUICK_ITEMS.find(q=>q.key===wbOpenKey))+'</div></div>':'');
