@@ -74,6 +74,15 @@ jobs:
               assert diagnostics["cardBottom"]<diagnostics["navTop"], "Weight card is hidden under bottom nav"
               assert len(diagnostics["valueLabels"])==2, "Actual weight values are not visible"
               assert not errors, "JS error: "+str(errors)
+              # Simulate a 60px iPhone PWA top safe-area inset; keep navigation unobstructed.
+              page.add_style_tag(content='body[data-screen="calendar"] .main { padding-top:66px !important; }')
+              safe=page.evaluate("""() => ({
+                bottom:document.querySelector('.weight-board').getBoundingClientRect().bottom,
+                nav:document.querySelector('#mobileNav').getBoundingClientRect().top,
+                grid:document.querySelector('.cal30-grid').getBoundingClientRect().height})""")
+              print("SAFE_AREA_DIAGNOSTICS",json.dumps(safe,ensure_ascii=False))
+              page.screenshot(path="fitness-tracker/qa/fitness-actual-with-safe-area.png",full_page=False,animations="disabled")
+              assert safe["bottom"] < safe["nav"], "iPhone safe area obscures weight tracker"
               browser.close()
           httpd.shutdown()
           PY
