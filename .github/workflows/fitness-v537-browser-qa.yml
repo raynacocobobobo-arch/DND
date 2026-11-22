@@ -1,0 +1,74 @@
+name: Fitness V5.37 correct video screenshot QA
+on:
+  push:
+    branches: [fix/fitness-crunch-title-poster-20261122]
+    paths: [.github/workflows/fitness-v537-browser-qa.yml, fitness-tracker/app.js, fitness-tracker/art/follow-poster-crunch-v537.webp]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Check correct poster and capture actual mobile webpage
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/fitness_qa.py <<'PY'
+          import os,threading,http.server,socketserver,json
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          server=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          address='http://127.0.0.1:%s/fitness-tracker/' % server.server_address[1]
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':390,'height':844},
+                  device_scale_factor=2,is_mobile=True,has_touch=True,locale='zh-CN',service_workers='block')
+              page=context.new_page()
+              errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.goto(address,wait_until='networkidle',timeout=90000)
+              page.locator('#mobileNav [data-view="followalong"]').click()
+              page.locator('[data-follow-block="2"]').wait_for(state='visible')
+              summary=page.evaluate("""() => ({
+                title:document.title,
+                heading1:document.querySelector('[data-follow-block="1"] .fa-video-head h2')?.textContent,
+                heading2:document.querySelector('[data-follow-block="2"] .fa-video-head h2')?.textContent,
+                poster1:document.querySelector('#fa-video-1')?.getAttribute('poster'),
+                poster2:document.querySelector('#fa-video-2')?.getAttribute('poster'),
+                awakeTextCount:document.querySelectorAll('.fa-awake-info').length,
+                chapterCount:document.querySelectorAll('.fa-chapter').length,
+                activeScroll:document.documentElement.scrollTop
+              })""")
+              print('V537_QA',json.dumps(summary,ensure_ascii=False),flush=True)
+              assert summary['heading2']=='第二段 · 卷腹示范'
+              assert summary['poster2'].endswith('follow-poster-crunch-v537.webp?v=5.37.0')
+              assert summary['poster1']!=summary['poster2']
+              assert summary['awakeTextCount']==0
+              assert summary['chapterCount']==12
+              assert not errors,errors
+              poster_check=page.request.get(address+'art/follow-poster-crunch-v537.webp')
+              assert poster_check.status==200,poster_check.status
+              assert len(poster_check.body())>15000
+              page.screenshot(path='fitness-tracker/qa/v537-real-mobile-top.png',full_page=False,animations='disabled')
+              second=page.locator('[data-follow-block="2"]')
+              second.screenshot(path='fitness-tracker/qa/v537-real-second-video.png',animations='disabled')
+              second.scroll_into_view_if_needed()
+              page.screenshot(path='fitness-tracker/qa/v537-real-mobile-crunch-visible.png',full_page=False,animations='disabled')
+              browser.close()
+          server.shutdown()
+          PY
+          python /tmp/fitness_qa.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fitness-v537-correct-browser-screens
+          path: fitness-tracker/qa/v537-real-*.png
