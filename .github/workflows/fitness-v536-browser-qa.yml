@@ -66,7 +66,17 @@ jobs:
               assert '1.mp4' in dims['source1'] and '2.mp4' in dims['source2'],dims
               assert dims['writingMode']=='vertical-rl',dims
               page.locator('[data-follow-jump="329"]').click()
-              page.wait_for_function("document.querySelector('#fa-video-1').currentTime>=328.5",timeout=10000)
+              page.wait_for_timeout(1600)
+              diag=page.evaluate("""() => { const v=document.getElementById('fa-video-1'); return {
+                currentTime:v.currentTime,duration:v.duration,readyState:v.readyState,
+                networkState:v.networkState,seeking:v.seeking,seekable:v.seekable.length,
+                currentSrc:v.currentSrc,error:v.error?.message,
+                selected:[...document.querySelectorAll('.fa-chapter.active')].map(x=>x.textContent),
+                status:document.getElementById('fa-awake-info').textContent
+              }; }""")
+              print("SEEK_DIAGNOSTICS",json.dumps(diag,ensure_ascii=False),flush=True)
+              page.screenshot(path='fitness-tracker/qa/v536-actual-mobile-with-timeline.png',full_page=True,animations='disabled')
+              page.wait_for_function("document.querySelector('#fa-video-1').currentTime>=328.5",timeout=12000)
               page.wait_for_function("window.__wakeEvents.includes('request:screen')",timeout=10000)
               page.evaluate("document.querySelector('#fa-video-1').pause()")
               page.wait_for_function("window.__wakeEvents.includes('release')",timeout=10000)
