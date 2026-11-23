@@ -1193,7 +1193,7 @@ function wbMatches(q,r){
 }
 function wbToday(q,records){
  const list=records.filter(r=>wbMatches(q,r));
- if(!list.length)return {count:0,value:0,label:'0 '+q.unit,list};
+ if(!list.length)return {count:0,value:0,label:q.key==='situps'?'0 热量等效次':'0 '+q.unit,list};
  if(q.key==='steps'){
   const latest=list.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
   const total=stepInt(state.stepDiary?.[localDate()]?.total)??(Number(latest?.steps)||0);
@@ -1321,12 +1321,13 @@ function if6Tile(q,info,calories){
  const kcalText=calories.toLocaleString('zh-CN');
  const kcalDensity=kcalText.length>7?' kcal-very-long':kcalText.length>5?' kcal-long':'';
  const label=amount.toLocaleString('zh-CN');
+ const displayUnit=q.key==='situps'?'等效次':q.unit;
  const wide=label.length>=5;
  return '<button type="button" class="if6-card'+(info.count?' is-done':'')+'" data-wb-open="'+q.key+
- '" aria-label="'+safe(q.name)+'，今日 '+label+' '+safe(q.unit)+'，消耗'+calories.toLocaleString('zh-CN')+'千卡">'+
+ '" aria-label="'+safe(q.name)+'，今日 '+label+' '+safe(displayUnit)+'，消耗'+calories.toLocaleString('zh-CN')+'千卡">'+
  '<span class="if6-icon">'+if6ExerciseIcon(q)+'</span>'+
  '<span class="if6-card-name">'+safe(q.name)+'</span>'+
- '<span class="if6-quantity'+(wide?' long':'')+'"><strong>'+label+'</strong><small>'+safe(q.unit)+'</small></span>'+
+ '<span class="if6-quantity'+(wide?' long':'')+'"><strong>'+label+'</strong><small>'+safe(displayUnit)+'</small></span>'+
  '<span class="if6-energy'+kcalDensity+'"><span class="if6-energy-content">'+IF6_FLAME+'<strong>'+kcalText+'</strong><em>kcal</em></span></span></button>';
 }
 
