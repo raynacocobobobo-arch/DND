@@ -1565,6 +1565,10 @@ document.addEventListener('click',e=>{
   input.value=choice==='plank'?'1':'0';
   input.step=choice==='plank'?'1':'20';input.max=choice==='plank'?'100':'6000';
   form.querySelector('[data-wb-quantity-unit]').textContent=choice==='plank'?'组':'次';
+  const decrease=form.querySelector('[data-wb-step="-1"]');
+  const increase=form.querySelector('[data-wb-step="1"]');
+  if(decrease)decrease.setAttribute('aria-label',choice==='plank'?'减少1组':'减少20次');
+  if(increase)increase.setAttribute('aria-label',choice==='plank'?'增加1组':'增加60次');
   wbPreview(form);return;
  }
  const step=e.target.closest('[data-wb-step]');
