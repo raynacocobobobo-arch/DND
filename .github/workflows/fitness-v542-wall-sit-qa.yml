@@ -1,0 +1,88 @@
+name: Fitness V5.42 wall sit quick-entry QA
+on:
+  push:
+    branches: [fix/fitness-wall-sit-default-4-v542-20261123]
+    paths: [.github/workflows/fitness-v542-wall-sit-qa.yml, fitness-tracker/app.js]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Chromium
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Verify wall sit 4 groups and one-per-tap decrement in actual mobile page
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/wall_sit_qa.py <<'PY'
+          import json,threading,http.server,socketserver
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          server=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          address='http://127.0.0.1:%s/fitness-tracker/' % server.server_address[1]
+          state={"version":1,"records":[],"settings":{"weight":65,"age":36,"weeklyGoal":1500},
+                 "stepDiary":{},"weightHistory":{"2026-11-22":65.4},
+                 "eatingWindows":{}}
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              ctx=browser.new_context(viewport={"width":390,"height":844},device_scale_factor=2,
+                  is_mobile=True,has_touch=True,locale='zh-CN',timezone_id='Asia/Shanghai',service_workers='block')
+              page=ctx.new_page();errors=[]
+              page.on("pageerror",lambda e:errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,23,12,15,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.add_init_script("""(() => {
+                if (!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(%s));
+              })();""" % json.dumps(state,ensure_ascii=False))
+              page.goto(address,wait_until='networkidle',timeout=80000)
+              assert page.locator('[data-wb-open="wall-sit"]').count()==1
+              before=page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert '0' in before, "Home must show actual zero recorded, not fake four groups"
+              page.locator('[data-wb-open="wall-sit"]').click()
+              control=page.locator('[data-wb-form="wall-sit"] [name="wb-count"]')
+              assert control.input_value()=='4', "Default must be four groups"
+              minus=page.locator('[data-wb-form="wall-sit"] [data-wb-step="-1"]')
+              plus=page.locator('[data-wb-form="wall-sit"] [data-wb-step="1"]')
+              assert '减少1组' in minus.get_attribute('aria-label')
+              for expected in ('3','2','1','0'):
+                  minus.click()
+                  assert control.input_value()==expected, f"minus should go to {expected}"
+              plus.click(); assert control.input_value()=='1'
+              plus.click(); assert control.input_value()=='2'
+              plus.click(); assert control.input_value()=='3'
+              page.screenshot(path='fitness-tracker/qa/v542-wall-sit-three-groups-editor.png',full_page=False,animations='disabled')
+              page.locator('[data-wb-form="wall-sit"] button[type="submit"]').click()
+              saved=page.evaluate("""() => {
+                const s=JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'));
+                return {records:s.records,weightHistory:s.weightHistory,eatingWindows:s.eatingWindows}
+              }""")
+              hits=[r for r in saved['records'] if r.get('exercise')=='靠墙静蹲']
+              assert len(hits)==1 and hits[0].get('sets')==3, saved
+              assert saved['weightHistory']==state['weightHistory'], 'unrelated data changed'
+              page.locator('[data-wb-open="wall-sit"]').click()
+              assert page.locator('[data-wb-form="wall-sit"] [name="wb-count"]').input_value()=='4'
+              page.screenshot(path='fitness-tracker/qa/v542-wall-sit-default-four.png',full_page=False,animations='disabled')
+              assert not errors,errors
+              print('V542_PASS',json.dumps({'default':4,'minusStep':1,'savedSets':3,'persistedRecords':len(saved['records']),
+                'preservedWeight':True,'errors':errors},ensure_ascii=False),flush=True)
+              browser.close()
+          server.shutdown()
+          PY
+          python /tmp/wall_sit_qa.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v542-real-browser-qa
+          path: fitness-tracker/qa/v542-*
