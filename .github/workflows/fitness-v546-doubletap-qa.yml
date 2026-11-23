@@ -88,7 +88,7 @@ jobs:
               assert after['amount']=='6',after
               assert abs(after['scale']-1)<.02 and after['touchAction']=='manipulation',after
               page.screenshot(path='fitness-tracker/qa/v546-02-twice-plus-no-zoom.png',full_page=False,animations='disabled')
-              page.locator('[data-wb-close]').click()
+              page.locator('.wb-editor-close').click()
               page.locator('#mobileNav [data-view="calendar"]').click()
               assert page.evaluate("getComputedStyle(document.querySelector('html')).touchAction")=='manipulation'
               page.screenshot(path='fitness-tracker/qa/v546-03-calendar-unzoomed.png',full_page=False,animations='disabled')
