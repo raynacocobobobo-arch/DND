@@ -1,0 +1,175 @@
+name: Fitness V5.43 ritual video, landscape and 35s timer QA
+on:
+  push:
+    branches: [feature/fitness-ritual-fullscreen-timer-v543-20261123]
+    paths: [.github/workflows/fitness-v543-ritual-qa.yml, fitness-tracker/app.js, fitness-tracker/v543-ritual-timer.css]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare Chromium
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Validate real media, immersive landscape and timer
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/qa_v543.py <<'PY'
+          import json,threading,http.server,socketserver,re,os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+              def send_head(self):
+                  self.partial=None
+                  path=self.translate_path(self.path)
+                  header=self.headers.get('Range','')
+                  m=re.match(r'bytes=(\d+)-(\d*)',header) if header else None
+                  if os.path.isfile(path) and m:
+                      total=os.path.getsize(path)
+                      start=int(m.group(1));stop=min(total-1,int(m.group(2)) if m.group(2) else total-1)
+                      if start<=stop<total:
+                          f=open(path,'rb');f.seek(start);self.partial=stop-start+1
+                          self.send_response(206)
+                          self.send_header('Content-Type',self.guess_type(path))
+                          self.send_header('Accept-Ranges','bytes')
+                          self.send_header('Content-Range',f'bytes {start}-{stop}/{total}')
+                          self.send_header('Content-Length',str(self.partial))
+                          self.end_headers();return f
+                  return super().send_head()
+              def copyfile(self,src,dst):
+                  if self.partial is None:return super().copyfile(src,dst)
+                  n=self.partial
+                  while n:
+                      chunk=src.read(min(65536,n))
+                      if not chunk:break
+                      dst.write(chunk);n-=len(chunk)
+          server=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          addr='http://127.0.0.1:%s/fitness-tracker/' % server.server_address[1]
+          initial={"version":1,"settings":{"weight":65,"age":36,"weeklyGoal":1500},
+             "records":[{"id":"test-exercise","date":"2026-11-23","exercise":"靠墙静蹲","type":"hold","sets":3,"calories":6}],
+             "weightHistory":{"2026-11-22":65.4},"eatingWindows":{},"stepDiary":{}}
+          def frame(pg):
+              return pg.evaluate("""() => {
+                const block=document.querySelector('.fa-video-block.is-landscape-fullscreen');
+                const rect=block?.getBoundingClientRect();
+                const video=document.querySelector('#fa-video-1');
+                return {
+                  viewport:[innerWidth,innerHeight],
+                  expanded:!!block,
+                  bounds:rect&&{left:rect.left,top:rect.top,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom},
+                  transform:block&&getComputedStyle(block).transform,
+                  navDisplay:getComputedStyle(document.querySelector('#mobileNav')).display,
+                  playerControls:video?.controls,
+                  videoDuration:video?.duration,
+                  chapterCount:document.querySelectorAll('.fa-chapter, .fa-chapters,[data-follow-jump]').length,
+                  timer:document.querySelector('[data-ritual-timer-clock]')?.textContent,
+                  title2:document.querySelector('[data-follow-block="2"] h2')?.textContent,
+                  timerRect:document.querySelector('.fa-rest')?.getBoundingClientRect().height,
+                  source1:video?.currentSrc,
+                  source2:document.querySelector('#fa-video-2')?.currentSrc
+                };
+              }""")
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True,args=['--autoplay-policy=no-user-gesture-required'])
+              context=browser.new_context(viewport={'width':390,'height':844},
+                 device_scale_factor=2,is_mobile=True,has_touch=True,locale='zh-CN',
+                 timezone_id='Asia/Shanghai',service_workers='block')
+              page=context.new_page();errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,23,12,30,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.add_init_script("""(() => {
+                if(!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(%s));
+              })();"""%json.dumps(initial,ensure_ascii=False))
+              page.goto(addr,wait_until='networkidle',timeout=90000)
+              page.locator('#mobileNav [data-view="followalong"]').click()
+              assert page.locator('.fa-rest').count()==1
+              assert page.locator('.fa-chapters,[data-follow-jump]').count()==0
+              assert page.locator('.fa-video-block').count()==2
+              assert page.locator('.fa-rest-trigger').count()==1
+              assert page.locator('.fa-rest-display').inner_text()=='00:35'
+              page.wait_for_function("""() =>
+                document.querySelector('#fa-video-1')?.readyState>=1 &&
+                document.querySelector('#fa-video-2')?.readyState>=1
+              """,timeout=45000)
+              before=frame(page)
+              print("V543_BEFORE",json.dumps(before,ensure_ascii=False),flush=True)
+              assert abs(before['videoDuration']-376.465)<1.5,before
+              assert "1.mp4" in before['source1'] and "2.mp4" in before['source2'],before
+              assert before['playerControls'] is False
+              assert before['chapterCount']==0 and before['title2']=='第二段 · 卷腹示范'
+              assert before['timerRect']>=115 and before['timerRect']<=160,before
+              page.screenshot(path='fitness-tracker/qa/v543-01-ritual-with-timer.png',full_page=False,animations='disabled')
+              page.locator('.fa-rest-trigger').click()
+              assert page.locator('.fa-rest-trigger.is-running').count()==1
+              page.clock.fast_forward(15000)
+              mid=page.locator('[data-ritual-timer-clock]').inner_text()
+              print('V543_15S_TIMER',mid,flush=True)
+              assert mid=='00:20',mid
+              page.clock.fast_forward(20000)
+              afterTimer=page.locator('[data-ritual-timer-clock]').inner_text()
+              assert afterTimer=='00:00',afterTimer
+              assert page.locator('.fa-rest-trigger.is-complete').count()==1
+              page.screenshot(path='fitness-tracker/qa/v543-02-timer-complete.png',full_page=False,animations='disabled')
+              page.locator('.fa-rest-trigger').click()
+              assert page.locator('[data-ritual-timer-clock]').inner_text()=='00:35'
+              page.locator('[data-ritual-timer-reset]').click()
+              assert page.locator('.fa-rest-trigger.is-running').count()==0
+              page.locator('[data-ritual-landscape="1"]').click()
+              immersive=frame(page)
+              print('V543_FULLSCREEN_PORTRAIT',json.dumps(immersive,ensure_ascii=False),flush=True)
+              assert immersive['expanded'] and immersive['navDisplay']=='none'
+              assert abs(immersive['bounds']['left'])<2 and abs(immersive['bounds']['top'])<2,immersive
+              assert abs(immersive['bounds']['width']-immersive['viewport'][0])<3,immersive
+              assert abs(immersive['bounds']['height']-immersive['viewport'][1])<3,immersive
+              assert immersive['transform']!='none',immersive
+              page.screenshot(path='fitness-tracker/qa/v543-03-portrait-rotated-landscape.png',full_page=False,animations='disabled')
+              page.set_viewport_size({'width':844,'height':390})
+              wide=frame(page)
+              print('V543_FULLSCREEN_LANDSCAPE',json.dumps(wide,ensure_ascii=False),flush=True)
+              assert wide['expanded'] and abs(wide['bounds']['width']-844)<3 and abs(wide['bounds']['height']-390)<3,wide
+              page.screenshot(path='fitness-tracker/qa/v543-04-real-landscape-viewport.png',full_page=False,animations='disabled')
+              page.set_viewport_size({'width':390,'height':844})
+              page.locator('[data-ritual-landscape="1"]').click()
+              assert not frame(page)['expanded']
+              # Seeking is still available without the retired twelve-card timeline.
+              seek=page.locator('[data-ritual-seek="1"]')
+              seek.fill('50')
+              page.wait_for_function("document.querySelector('#fa-video-1').currentTime>180",timeout=15000)
+              page.screenshot(path='fitness-tracker/qa/v543-05-seek-controls.png',full_page=False,animations='disabled')
+              page.locator('[data-ritual-landscape="2"]').click()
+              assert frame(page)['expanded']
+              page.locator('[data-ritual-landscape="2"]').click()
+              page.set_viewport_size({'width':375,'height':667})
+              page.evaluate('window.scrollTo(0,document.documentElement.scrollHeight)')
+              page.screenshot(path='fitness-tracker/qa/v543-06-short-screen-second-video.png',full_page=False,animations='disabled')
+              stored=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              assert stored['records']==initial['records'],stored
+              assert stored['weightHistory']==initial['weightHistory'],stored
+              assert not errors,errors
+              Path('fitness-tracker/qa/v543-diagnostics.json').write_text(json.dumps({
+                 'before':before,'fullscreenPortrait':immersive,'fullscreenLandscape':wide,
+                 'timerAt15s':mid,'timerAt35s':afterTimer,'errors':errors},ensure_ascii=False,indent=2))
+              print('V543_QA_PASSED',json.dumps({'timer':afterTimer,'firstDuration':before['videoDuration'],
+                 'removedChapters':True,'portraitFullScreen':True,'wideFullScreen':True,'errors':errors},ensure_ascii=False),flush=True)
+              browser.close()
+          server.shutdown()
+          PY
+          python /tmp/qa_v543.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v543-actual-ritual-mobile-screens
+          path: fitness-tracker/qa/v543-*
