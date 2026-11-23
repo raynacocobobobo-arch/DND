@@ -1,0 +1,110 @@
+name: Fitness V5.46 double-tap zoom mobile browser QA
+on:
+  push:
+    branches: [fix/fitness-double-tap-zoom-v546-20261123]
+    paths: [.github/workflows/fitness-v546-doubletap-qa.yml, fitness-tracker/v546-doubletap.css]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install touch-capable browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Verify double-tap does not zoom, repeated taps still work
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/qa_v546.py <<'PY'
+          import json,threading,http.server,socketserver
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          server=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=server.serve_forever,daemon=True).start()
+          url='http://127.0.0.1:%d/fitness-tracker/'%server.server_address[1]
+          fixture={'version':1,'records':[],'settings':{'weight':65,'age':36,'weeklyGoal':1500},
+                   'stepDiary':{},'weightHistory':{'2026-11-22':65.4},'eatingWindows':{}}
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=2,
+                is_mobile=True,has_touch=True,locale='zh-CN',timezone_id='Asia/Shanghai',service_workers='block')
+              page=context.new_page();errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,23,16,30,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.add_init_script("""(() => {
+                if(!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(%s));
+              })();"""%json.dumps(fixture,ensure_ascii=False))
+              page.goto(url,wait_until='networkidle',timeout=75000)
+              assert page.locator('.if6-card').count()==12
+              before=page.evaluate("""() => ({
+                scale:window.visualViewport.scale,
+                width:window.visualViewport.width,
+                touch:matchMedia('(pointer:coarse)').matches,
+                touchActions:{
+                  html:getComputedStyle(document.documentElement).touchAction,
+                  body:getComputedStyle(document.body).touchAction,
+                  card:getComputedStyle(document.querySelector('.if6-card')).touchAction,
+                  nav:getComputedStyle(document.querySelector('#mobileNav')).touchAction},
+                meta:document.querySelector('meta[name="viewport"]').content
+              })""")
+              print('V546_BEFORE',json.dumps(before,ensure_ascii=False),flush=True)
+              assert before['touch'] and all(v=='manipulation' for v in before['touchActions'].values()),before
+              assert 'user-scalable=no' not in before['meta'] and 'maximum-scale=1' not in before['meta'],before
+              page.screenshot(path='fitness-tracker/qa/v546-01-home-before-doubletap.png',full_page=False,animations='disabled')
+              # On the banner, a double-tap should not magnify the entire web page.
+              page.touchscreen.tap(100,160)
+              page.touchscreen.tap(100,160)
+              doubletap=page.evaluate("""() => ({
+                scale:window.visualViewport.scale,width:window.visualViewport.width,
+                viewportWidth:window.innerWidth})""")
+              print('V546_DOUBLE_TAP_BANNER',json.dumps(doubletap),flush=True)
+              assert abs(doubletap['scale']-1)<.02,doubletap
+              # Opening a modal must not change the page scale; plus tapped twice
+              # should increment twice, rather than invoking double-tap zoom.
+              page.locator('[data-wb-open="wall-sit"]').click()
+              form=page.locator('[data-wb-form="wall-sit"]')
+              assert form.locator('[name="wb-count"]').input_value()=='4'
+              plus=form.locator('[data-wb-step="1"]')
+              r=plus.bounding_box()
+              x=r['x']+r['width']/2;y=r['y']+r['height']/2
+              page.touchscreen.tap(x,y)
+              page.touchscreen.tap(x,y)
+              after=page.evaluate("""() => ({
+                scale:window.visualViewport.scale,width:window.visualViewport.width,
+                touchAction:getComputedStyle(document.querySelector('[data-wb-step="1"]')).touchAction,
+                amount:document.querySelector('[data-wb-form="wall-sit"] [name="wb-count"]').value})""")
+              print('V546_DOUBLE_TAP_PLUS',json.dumps(after),flush=True)
+              assert after['amount']=='6',after
+              assert abs(after['scale']-1)<.02 and after['touchAction']=='manipulation',after
+              page.screenshot(path='fitness-tracker/qa/v546-02-twice-plus-no-zoom.png',full_page=False,animations='disabled')
+              page.locator('[data-wb-close]').click()
+              page.locator('#mobileNav [data-view="calendar"]').click()
+              assert page.evaluate("getComputedStyle(document.querySelector('html')).touchAction")=='manipulation'
+              page.screenshot(path='fitness-tracker/qa/v546-03-calendar-unzoomed.png',full_page=False,animations='disabled')
+              saved=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              assert saved['records']==fixture['records'] and saved['weightHistory']==fixture['weightHistory'],saved
+              assert not errors,errors
+              Path('fitness-tracker/qa/v546-diagnostics.json').write_text(json.dumps(
+                {'before':before,'banner':doubletap,'doublePlus':after,'noOtherDataModified':True,'errors':errors},ensure_ascii=False,indent=2))
+              print('V546_PASS',json.dumps({'bannerScale':doubletap['scale'],'plusScale':after['scale'],
+                'valueAfterDoubleTap':after['amount'],'pinchZoomAllowedByViewport':True,'errors':errors}),flush=True)
+              browser.close()
+          server.shutdown()
+          PY
+          python /tmp/qa_v546.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v546-real-doubletap-screens
+          path: fitness-tracker/qa/v546-*
