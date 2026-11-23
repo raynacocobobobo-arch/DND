@@ -105,7 +105,7 @@ jobs:
               assert '12kcal' in ''.join(page.locator('[data-wb-open="wall-sit"]').inner_text().split())
               page.screenshot(path='fitness-tracker/qa/v544-04-home-after-both.png',full_page=False,animations='disabled')
               page.reload(wait_until='networkidle')
-              assert '9 组' in page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert '9组' in ''.join(page.locator('[data-wb-open="wall-sit"]').inner_text().split())
               assert page.locator('.if6-card').count()==12
               assert not errors,errors
               result={'plank':added[0],'wall':newest[0],'totalGroups':9,'totalCalories':12,'oldRecordsUnchanged':True,'errors':errors}
