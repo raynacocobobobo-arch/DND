@@ -1,11 +1,11 @@
-/* V5.45 — core training shares one card for sit-ups and 30s planks in its quick-entry modal.
+/* V5.47 — wall sit and plank share a single card, both 30 seconds per set.
    No new tile, no change to daily home grid height or original 12-image layout. */
-body[data-screen="overview"] .wb-editor .wb-core-choices{
+body[data-screen="overview"] .wb-editor .wb-hold-choices{
  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
  gap:8px!important;margin:8px 0 12px!important;
  width:100%!important;min-width:0!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice{
+body[data-screen="overview"] .wb-editor .wb-hold-choice{
  display:flex!important;flex-direction:column!important;align-items:center!important;
  justify-content:center!important;gap:4px!important;
  box-sizing:border-box!important;min-height:62px!important;
@@ -16,28 +16,28 @@ body[data-screen="overview"] .wb-editor .wb-core-choice{
  box-shadow:inset 0 0 0 1px #e8b981!important;
  cursor:pointer!important;touch-action:manipulation!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice strong{
+body[data-screen="overview"] .wb-editor .wb-hold-choice strong{
  font:900 15px/1.25 "Songti SC","STSong",serif!important;
  color:inherit!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice small{
+body[data-screen="overview"] .wb-editor .wb-hold-choice small{
  font:800 11px/1.2 Georgia,"Songti SC",serif!important;
  color:inherit!important;opacity:.86!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice.is-selected{
+body[data-screen="overview"] .wb-editor .wb-hold-choice.is-selected{
  background:#953023!important;
  border-color:#3b160e!important;
  box-shadow:inset 0 0 0 1px #d49a68!important;
  color:#ffeaca!important;-webkit-text-fill-color:#ffeaca!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice.is-selected strong,
-body[data-screen="overview"] .wb-editor .wb-core-choice.is-selected small{
+body[data-screen="overview"] .wb-editor .wb-hold-choice.is-selected strong,
+body[data-screen="overview"] .wb-editor .wb-hold-choice.is-selected small{
  color:#ffeaca!important;-webkit-text-fill-color:#ffeaca!important;
 }
-body[data-screen="overview"] .wb-editor .wb-core-choice:focus-visible{
+body[data-screen="overview"] .wb-editor .wb-hold-choice:focus-visible{
  outline:3px solid #a73b22!important;outline-offset:2px!important;
 }
 @media(max-width:355px){
- body[data-screen="overview"] .wb-editor .wb-core-choices{gap:5px!important}
- body[data-screen="overview"] .wb-editor .wb-core-choice strong{font-size:13px!important}
+ body[data-screen="overview"] .wb-editor .wb-hold-choices{gap:5px!important}
+ body[data-screen="overview"] .wb-editor .wb-hold-choice strong{font-size:13px!important}
 }
