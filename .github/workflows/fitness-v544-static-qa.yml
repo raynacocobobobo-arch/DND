@@ -1,0 +1,121 @@
+name: Fitness V5.44 static hold grouping real browser QA
+on:
+  push:
+    branches: [feature/fitness-static-plank-v544-20261123]
+    paths: [.github/workflows/fitness-v544-static-qa.yml, fitness-tracker/app.js, fitness-tracker/v544-static-plank.css]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare Chromium
+        run: |
+          node --check fitness-tracker/app.js
+          python -m pip install playwright
+          python -m playwright install chromium --with-deps
+      - name: Test grouped static-training modal, exact durations, calories, persistence, visuals
+        run: |
+          mkdir -p fitness-tracker/qa
+          cat > /tmp/v544_qa.py <<'PY'
+          import http.server,socketserver,threading,json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          class Handler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          httpd=socketserver.ThreadingTCPServer(('127.0.0.1',0),Handler)
+          threading.Thread(target=httpd.serve_forever,daemon=True).start()
+          url='http://127.0.0.1:%d/fitness-tracker/'%httpd.server_address[1]
+          fixture={'version':1,'settings':{'weight':65,'age':36,'weeklyGoal':1500},
+            'records':[
+              {'id':'legacy-wall','type':'hold','exercise':'靠墙静蹲','date':'2026-11-23','sets':2,'secondsPerSet':45,'calories':3,'createdAt':'2026-11-23T01:00:00.000Z'},
+              {'id':'legacy-plank','type':'hold','exercise':'平板支撑','date':'2026-11-23','sets':2,'secondsPerSet':30,'calories':2,'createdAt':'2026-11-23T01:10:00.000Z'}],
+            'weightHistory':{'2026-11-22':65.4},'eatingWindows':{},'stepDiary':{}}
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True)
+              context=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=2,
+                 is_mobile=True,has_touch=True,locale='zh-CN',
+                 timezone_id='Asia/Shanghai',service_workers='block')
+              page=context.new_page();errors=[]
+              page.on('pageerror',lambda e:errors.append(str(e)))
+              page.clock.install(time=datetime(2026,11,23,13,30,tzinfo=ZoneInfo('Asia/Shanghai')))
+              page.add_init_script("""(() => {
+                if(!localStorage.getItem('hermes_fitness_journal_v1'))
+                  localStorage.setItem('hermes_fitness_journal_v1',JSON.stringify(%s));
+              })();""" % json.dumps(fixture,ensure_ascii=False))
+              page.goto(url,wait_until='networkidle',timeout=90000)
+              assert page.locator('.if6-card').count()==12
+              tile=page.locator('[data-wb-open="wall-sit"]')
+              assert tile.count()==1
+              assert '静态训练' in tile.inner_text()
+              assert '4 组' in tile.inner_text()
+              assert '5 kcal' in tile.inner_text()
+              page.screenshot(path='fitness-tracker/qa/v544-01-home-combined.png',full_page=False,animations='disabled')
+              tile.click()
+              form=page.locator('[data-wb-form="wall-sit"]')
+              count=form.locator('[name="wb-count"]')
+              assert count.input_value()=='4'
+              assert form.locator('[name="wb-hold-choice"]').input_value()=='wall'
+              assert form.locator('[data-wb-hold-choice="wall"]').get_attribute('aria-pressed')=='true'
+              assert '4组 × 45秒' in form.locator('[data-wb-preview]').inner_text()
+              form.screenshot(path='fitness-tracker/qa/v544-02-wall-default-four.png',animations='disabled')
+              form.locator('[data-wb-step="-1"]').click()
+              assert count.input_value()=='3'
+              form.locator('[data-wb-step="1"]').click()
+              assert count.input_value()=='4'
+              form.locator('[data-wb-hold-choice="plank"]').click()
+              assert form.locator('[name="wb-hold-choice"]').input_value()=='plank'
+              assert form.locator('[data-wb-hold-choice="plank"]').get_attribute('aria-pressed')=='true'
+              assert count.input_value()=='1'
+              preview=form.locator('[data-wb-preview]').inner_text()
+              assert '平板支撑' in preview and '1组 × 30秒' in preview and '1 kcal' in preview,preview
+              form.screenshot(path='fitness-tracker/qa/v544-03-plank-one-set.png',animations='disabled')
+              form.locator('[data-wb-step="1"]').click()
+              assert count.input_value()=='2'
+              form.locator('[data-wb-step="-1"]').click()
+              assert count.input_value()=='1'
+              form.locator('button[type="submit"]').click()
+              saved=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              added=[r for r in saved['records'] if r['id'] not in ('legacy-wall','legacy-plank')]
+              assert len(added)==1 and added[0]['exercise']=='平板支撑',added
+              assert added[0]['sets']==1 and added[0]['secondsPerSet']==30,added
+              assert added[0]['calories']==1 and added[0]['metUsed']==2.8,added
+              assert saved['records'][:2]==fixture['records'],saved
+              assert saved['weightHistory']==fixture['weightHistory'],saved
+              tile=page.locator('[data-wb-open="wall-sit"]')
+              assert '5 组' in tile.inner_text() and '6 kcal' in tile.inner_text(),tile.inner_text()
+              tile.click()
+              form=page.locator('[data-wb-form="wall-sit"]')
+              assert form.locator('[name="wb-count"]').input_value()=='4'
+              assert form.locator('[name="wb-hold-choice"]').input_value()=='wall'
+              form.locator('button[type="submit"]').click()
+              saved2=page.evaluate("""() => JSON.parse(localStorage.getItem('hermes_fitness_journal_v1'))""")
+              newest=[r for r in saved2['records'] if r['id'] not in ('legacy-wall','legacy-plank',added[0]['id'])]
+              assert len(newest)==1 and newest[0]['exercise']=='靠墙静蹲',newest
+              assert newest[0]['sets']==4 and newest[0]['secondsPerSet']==45 and newest[0]['calories']==6,newest
+              assert '9 组' in page.locator('[data-wb-open="wall-sit"]').inner_text(),page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert '12 kcal' in page.locator('[data-wb-open="wall-sit"]').inner_text()
+              page.screenshot(path='fitness-tracker/qa/v544-04-home-after-both.png',full_page=False,animations='disabled')
+              page.reload(wait_until='networkidle')
+              assert '9 组' in page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert page.locator('.if6-card').count()==12
+              assert not errors,errors
+              result={'plank':added[0],'wall':newest[0],'totalGroups':9,'totalCalories':12,'oldRecordsUnchanged':True,'errors':errors}
+              Path('fitness-tracker/qa/v544-diagnostics.json').write_text(json.dumps(result,indent=2,ensure_ascii=False))
+              print('V544_PASS',json.dumps(result,ensure_ascii=False),flush=True)
+              browser.close()
+          httpd.shutdown()
+          PY
+          python /tmp/v544_qa.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-v544-static-training-actual-screens
+          path: fitness-tracker/qa/v544-*
