@@ -1,0 +1,44 @@
+name: Import revised first fitness film
+on:
+  push:
+    branches: ["feature/fitness-ritual-fullscreen-timer-v543-20261123"]
+    paths: [".github/workflows/fitness-v543-import-video.yml"]
+permissions:
+  contents: write
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install video utilities
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Download and verify supplied 1_优化.mp4
+        env:
+          SOURCE_URL: 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-78b4-8209-b40d-7358cc45ff84/raw?se=2026-11-23T04%3A49%3A32Z&sp=r&sv=2026-06-06&sr=b&scid=32035706-3640-565d-bd41-49be060e8cf4&skoid=03727f49-62d3-42ac-8350-1c0e6559d238&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-23T03%3A09%3A28Z&ske=2026-11-24T03%3A09%3A28Z&sks=b&skv=2026-06-06&sig=NDjsjnA51ZqCNcyeXb4Ettp2QRpRBhajJKu5o6BsyCo%3D'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 180 --silent --show-error "$SOURCE_URL" -o /tmp/first-input.mp4
+          echo '14bcd301bd3a471117b6af9852473d41ac570f255b4974aeec4952d2eacef6b9  /tmp/first-input.mp4' | sha256sum -c -
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json /tmp/first-input.mp4
+      - name: Replace video with iPhone-compatible H264 version and make matching poster
+        run: |
+          set -euo pipefail
+          ffmpeg -hide_banner -loglevel error -y -i /tmp/first-input.mp4 -map 0:v:0 -map 0:a:0?             -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p -r 25             -c:a aac -b:a 112k -movflags +faststart fitness-tracker/media/1.mp4
+          ffmpeg -hide_banner -loglevel error -y -ss 5 -i fitness-tracker/media/1.mp4             -frames:v 1 -vf 'scale=640:-2' -c:v libwebp -quality 82             fitness-tracker/art/follow-poster-v543.webp
+          test "$(stat -c%s fitness-tracker/media/1.mp4)" -gt 3000000
+          test "$(stat -c%s fitness-tracker/art/follow-poster-v543.webp)" -gt 3000
+          ffprobe -v error -show_entries format=duration,size:stream=codec_name,width,height -of json fitness-tracker/media/1.mp4
+          sha256sum fitness-tracker/media/1.mp4 fitness-tracker/art/follow-poster-v543.webp
+      - name: Remove old video chunks and obsolete poster
+        run: |
+          set -euo pipefail
+          git rm -r fitness-tracker/media/posture-parts
+          git rm fitness-tracker/art/follow-poster-v526.webp
+          git add fitness-tracker/media/1.mp4 fitness-tracker/art/follow-poster-v543.webp
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'media(fitness): replace first film and remove old split media'
+          git fetch origin feature/fitness-ritual-fullscreen-timer-v543-20261123
+          git rebase origin/feature/fitness-ritual-fullscreen-timer-v543-20261123
+          git push origin HEAD:feature/fitness-ritual-fullscreen-timer-v543-20261123
