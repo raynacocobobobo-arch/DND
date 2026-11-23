@@ -56,8 +56,8 @@ jobs:
               assert tile.count()==1
               assert '静态训练' in tile.inner_text()
               print('V544_CARD_INITIAL',repr(tile.inner_text()),flush=True)
-              assert '4组' in tile.inner_text().replace(' ','')
-              assert '5 kcal' in tile.inner_text()
+              assert '4组' in ''.join(tile.inner_text().split())
+              assert '5kcal' in ''.join(tile.inner_text().split())
               page.screenshot(path='fitness-tracker/qa/v544-01-home-combined.png',full_page=False,animations='disabled')
               tile.click()
               form=page.locator('[data-wb-form="wall-sit"]')
@@ -91,7 +91,7 @@ jobs:
               assert saved['records'][:2]==fixture['records'],saved
               assert saved['weightHistory']==fixture['weightHistory'],saved
               tile=page.locator('[data-wb-open="wall-sit"]')
-              assert '5组' in tile.inner_text().replace(' ','') and '6 kcal' in tile.inner_text(),tile.inner_text()
+              assert '5组' in ''.join(tile.inner_text().split()) and '6kcal' in ''.join(tile.inner_text().split()),tile.inner_text()
               tile.click()
               form=page.locator('[data-wb-form="wall-sit"]')
               assert form.locator('[name="wb-count"]').input_value()=='4'
@@ -101,8 +101,8 @@ jobs:
               newest=[r for r in saved2['records'] if r['id'] not in ('legacy-wall','legacy-plank',added[0]['id'])]
               assert len(newest)==1 and newest[0]['exercise']=='靠墙静蹲',newest
               assert newest[0]['sets']==4 and newest[0]['secondsPerSet']==45 and newest[0]['calories']==6,newest
-              assert '9组' in page.locator('[data-wb-open="wall-sit"]').inner_text().replace(' ',''),page.locator('[data-wb-open="wall-sit"]').inner_text()
-              assert '12 kcal' in page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert '9组' in ''.join(page.locator('[data-wb-open="wall-sit"]').inner_text().split()),page.locator('[data-wb-open="wall-sit"]').inner_text()
+              assert '12kcal' in ''.join(page.locator('[data-wb-open="wall-sit"]').inner_text().split())
               page.screenshot(path='fitness-tracker/qa/v544-04-home-after-both.png',full_page=False,animations='disabled')
               page.reload(wait_until='networkidle')
               assert '9 组' in page.locator('[data-wb-open="wall-sit"]').inner_text()
