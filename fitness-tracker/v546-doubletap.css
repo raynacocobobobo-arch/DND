@@ -1,0 +1,14 @@
+/* V5.46 — prevent mobile Safari/PWA double-tap zoom without disabling pinch zoom.
+   'manipulation' allows panning and pinch-zoom; it only suppresses double-tap zoom
+   and the associated click delay. Never use maximum-scale=1 or user-scalable=no. */
+@media (pointer: coarse) {
+  html, body, body .app, body .main, body #content, body .mobile-nav,
+  button, a, [role="button"], label, input, select, textarea {
+    touch-action: manipulation !important;
+  }
+}
+/* Cover hybrid/tablet pointer environments, too: taps on panels or media posters
+   should not unexpectedly scale the whole document. */
+html, body {
+  touch-action: manipulation;
+}
