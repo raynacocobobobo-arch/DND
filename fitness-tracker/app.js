@@ -861,7 +861,7 @@ const QUICK_ITEMS=[
  {key:'lat',name:'拉背',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'拉背',note:'20次/组',iconName:'training'},
  {key:'row',name:'划船',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'划船',note:'20次/组',iconName:'training'},
  {key:'fly',name:'飞鸟及引体',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'飞鸟及引体',note:'20次/组',iconName:'training'},
- {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:0,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'每组45秒',iconName:'hold'},
+ {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:4,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'每组45秒',iconName:'hold'},
  {key:'situps',name:'仰卧起坐',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'仰卧起坐',note:'20次/组',iconName:'training'},
  {key:'dumbbell',name:'哑铃',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'哑铃',note:'20次/组',iconName:'training'},
  {key:'back',name:'臀桥及背部',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'背部运动',note:'20次/组',iconName:'training'},
@@ -1159,6 +1159,7 @@ function wbToday(q,records){
  return {count:list.length,value,label,list};
 }
 function wbDelta(q,dir){
+ if(q.key==='wall-sit')return 1;
  if(q.key==='swim'&&dir<0)return 5;
  if(q.type==='strength')return dir>0?60:20;
  if(q.key==='running'||q.key==='elliptical')return dir>0?20:10;
@@ -1166,7 +1167,8 @@ function wbDelta(q,dir){
 }
 
 function wbEditor(q){
- const v=q.key==='swim'?emptyDraft(q.type).laps:0;
+ // The quick-entry editor starts wall sits at four sets; saved totals remain unchanged.
+ const v=q.key==='swim'?emptyDraft(q.type).laps:q.key==='wall-sit'?q.value:0;
  const unit=q.unit;
  const info=wbToday(q,recordsOfDate(localDate()));
  const completedCalories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
