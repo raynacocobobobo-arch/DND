@@ -913,8 +913,8 @@ const QUICK_ITEMS=[
  {key:'lat',name:'拉背',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'拉背',note:'20次/组',iconName:'training'},
  {key:'row',name:'划船',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'划船',note:'20次/组',iconName:'training'},
  {key:'fly',name:'飞鸟及引体',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'飞鸟及引体',note:'20次/组',iconName:'training'},
- {key:'wall-sit',name:'静态训练',unit:'组',value:4,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'静蹲45秒 / 平板30秒',iconName:'hold'},
- {key:'situps',name:'仰卧起坐',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'仰卧起坐',note:'20次/组',iconName:'training'},
+ {key:'wall-sit',name:'靠墙静蹲',unit:'组',value:4,step:1,max:100,type:'hold',exercise:'靠墙静蹲',note:'每组30秒',iconName:'hold'},
+ {key:'situps',name:'核心训练',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'仰卧起坐',note:'仰卧起坐 / 平板支撑',iconName:'training'},
  {key:'dumbbell',name:'哑铃',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'哑铃',note:'20次/组',iconName:'training'},
  {key:'back',name:'臀桥及背部',unit:'次',value:0,step:20,max:6000,type:'strength',exercise:'背部运动',note:'20次/组',iconName:'training'},
  {key:'bike',name:'自行车',unit:'分钟',value:0,step:20,max:480,type:'cardio',exercise:'自行车',note:'休闲骑行',iconName:'activity'},
@@ -925,7 +925,7 @@ const QUICK_ITEMS=[
 function defaultExerciseProfile(q){
  const w=Number(state.settings.weight)||65,min=met=>netEnergy(w,met,1);
  if(q.type==='strength')return {perSet:20,rate:min(q.key==='situps'?2.8:q.key==='back'?3.0:3.5)*3/60};
- if(q.type==='hold')return {perSet:45,rate:min(2.8)};
+ if(q.type==='hold')return {perSet:30,rate:min(2.8)};
  if(q.key==='elliptical')return {rate:min(4)};
  if(q.key==='running')return {rate:min(4.8)};
  if(q.key==='swim')return {rate:min(5.3)*2.5};
@@ -1184,7 +1184,8 @@ let wbOpenKey=null;
 let wbCalorieDetailOpen=false;
 let wbBusy=false;
 function wbMatches(q,r){
- if(q.key==='wall-sit')return r.type==='hold'&&['靠墙静蹲','平板支撑'].includes(r.exercise);
+ if(q.key==='wall-sit')return r.type==='hold'&&r.exercise==='靠墙静蹲';
+ if(q.key==='situps')return (r.type==='strength'&&r.exercise==='仰卧起坐')||(r.type==='hold'&&r.exercise==='平板支撑');
  if(q.key==='steps')return r.type==='walking';
  if(q.key==='running')return (r.type==='running'&&(r.exercise||'跑步')==='跑步')||(r.type==='cardio'&&r.exercise==='跑步');
  if(q.key==='swim')return r.type==='swimming'&&(r.stroke||r.exercise)==='蛙泳';
@@ -1197,6 +1198,16 @@ function wbToday(q,records){
   const latest=list.slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
   const total=stepInt(state.stepDiary?.[localDate()]?.total)??(Number(latest?.steps)||0);
   return {count:list.length,value:total,label:total.toLocaleString('zh-CN')+' 步',list};
+ }
+ if(q.key==='situps'){
+  // Site-only energy equivalence: 2.8 MET for both, 3 seconds per sit-up.
+  // 30s plank ≈ 10 sit-ups on this model; physiological benefits are NOT equivalent.
+  const situpsReps=list.filter(r=>r.type==='strength').reduce((sum,r)=>sum+(Number(r.reps)||Number(r.sets)*Number(r.repsPerSet)||0),0);
+  const planks=list.filter(r=>r.type==='hold');
+  const plankSets=planks.reduce((sum,r)=>sum+(Number(r.sets)||0),0);
+  const plankSeconds=planks.reduce((sum,r)=>sum+(Number(r.duration_sec)||Number(r.sets)*Number(r.secondsPerSet)||0),0);
+  const equivalent=Math.round(situpsReps+plankSeconds/3);
+  return {count:list.length,value:equivalent,label:equivalent.toLocaleString('zh-CN')+' 热量等效次',list,situpsReps,plankSets,plankSeconds};
  }
  const oldTimedSwims=q.key==='swim'?list.filter(r=>!(Number(r.laps)>0)).length:0;
  const oldDistanceRuns=q.key==='running'?list.filter(r=>!(Number(r.duration_min)>0)&&Number(r.distance_km)>0).length:0;
@@ -1227,19 +1238,19 @@ function wbEditor(q){
  const completedCalories=info.list.reduce((n,r)=>n+(Number(r.calories)||0),0);
  const header=q.key==='steps'?'今日已有 '+info.label+' · '+completedCalories+' kcal · 输入当天总步数':
   '今日已累计 '+info.label+' · '+completedCalories+' kcal · 以下只记录本次新增';
- const holdChoice=q.key==='wall-sit'?'<div class="wb-hold-choices" role="group" aria-label="选择静态训练动作">'+
-  '<input type="hidden" name="wb-hold-choice" value="wall">'+
-  '<button type="button" class="wb-hold-choice is-selected" data-wb-hold-choice="wall" aria-pressed="true"><strong>靠墙静蹲</strong><small>45 秒/组</small></button>'+
-  '<button type="button" class="wb-hold-choice" data-wb-hold-choice="plank" aria-pressed="false"><strong>平板支撑</strong><small>30 秒/组</small></button></div>':'';
+ const coreChoice=q.key==='situps'?'<div class="wb-core-choices" role="group" aria-label="选择核心训练动作">'+
+  '<input type="hidden" name="wb-core-choice" value="situps">'+
+  '<button type="button" class="wb-core-choice is-selected" data-wb-core-choice="situps" aria-pressed="true"><strong>仰卧起坐</strong><small>按次数记录</small></button>'+
+  '<button type="button" class="wb-core-choice" data-wb-core-choice="plank" aria-pressed="false"><strong>平板支撑</strong><small>30 秒/组</small></button></div>':'';
  const extra=q.key==='swim'?'<div style="display:grid;gap:8px;margin:10px 0"><label>本次总分钟（选填）<input class="input" type="number" name="wb-minutes" min="0" step="0.5" placeholder="不填按每圈2.5分钟推算"></label><label>其中休息分钟<input class="input" type="number" name="wb-rest" min="0" step="0.5" value="0"></label></div>':
   q.key==='running'?'<div style="margin:10px 0"><label>跑步机速度 km/h（坡度0%，按快走）<input class="input" type="number" name="wb-speed" min="3" max="7.1" step="0.05" value="6.25"></label></div>':'';
  return '<form class="wb-editor" data-wb-form="'+q.key+'" novalidate>'+
   '<div class="wb-editor-title"><strong>'+safe(q.name)+'</strong>'+
   '<button type="button" class="wb-editor-close" data-wb-close aria-label="关闭">×</button></div>'+
-  '<div class="wb-editor-meta">'+safe(header)+'</div>'+holdChoice+
+  '<div class="wb-editor-meta">'+safe(header)+'</div>'+coreChoice+
   '<label class="wb-editor-entry-label" for="wb-count-'+q.key+'">'+(q.key==='steps'?'今日总步数':'本次新增')+'</label>'+
   '<div class="wb-editor-controls"><button type="button" data-wb-step="-1" aria-label="减少'+wbDelta(q,-1)+unit+'">−</button>'+
-  '<div class="wb-editor-number"><input id="wb-count-'+q.key+'" type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="0" max="'+q.max+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量"><span>'+unit+'</span></div>'+
+  '<div class="wb-editor-number"><input id="wb-count-'+q.key+'" type="number" name="wb-count" inputmode="numeric" step="'+q.step+'" min="0" max="'+q.max+'" value="'+v+'" aria-label="'+safe(q.name)+'本次数量"><span data-wb-quantity-unit>'+unit+'</span></div>'+
   '<button type="button" data-wb-step="1" aria-label="增加'+wbDelta(q,1)+unit+'">＋</button></div>'+
   extra+'<div class="wb-editor-help" data-wb-preview>'+safe(wbPreviewText(q,v))+'</div>'+
   '<button type="submit" class="wb-save">'+(q.key==='steps'?'更新今日累计步数':'保存本次新增')+'</button></form>';
@@ -1479,12 +1490,14 @@ function wbPreviewText(q,n,extra){
  if(q.key==='steps')return '今日步数：'+n.toLocaleString('zh-CN')+' 步';
  const next=info.value+n;
  const km=q.key==='swim'?' · 本次 '+(n*50)+' 米':'';
- if(q.key==='wall-sit')return '本次'+(extra?.exercise||'靠墙静蹲')+' '+n+'组 × '+(extra?.secondsPerSet||45)+'秒 · 额外热量约 '+quickCalories(q,n,extra)+' kcal（估算）；保存后该类累计 '+next+'组';
+ if(q.key==='wall-sit')return '本次靠墙静蹲 '+n+'组 × 30秒 · 额外热量约 '+quickCalories(q,n,extra)+' kcal（估算）；保存后累计 '+next+'组';
+ if(q.key==='situps'&&extra?.type==='hold')return '本次平板支撑 '+n+'组 × 30秒 · 额外热量约 '+quickCalories(q,n,extra)+' kcal；按本站热量模型约等效 '+n*10+'次仰卧起坐（不代表训练效果相同）';
+ if(q.key==='situps')return '本次仰卧起坐 '+n+'次 · 额外热量约 '+quickCalories(q,n,extra)+' kcal；保存后核心训练热量等效累计 '+next+'次';
  return '本次新增 '+n+' '+q.unit+km+' · 额外热量约 '+quickCalories(q,n,extra)+' kcal（估算）；保存后今日累计 '+next+' '+q.unit;
 }
 function wbSave(q,n,extra){
  if(wbBusy)return false;
- if(!wbQuantityValid(q,n)){toast('请填写大于0的有效本次运动量');return false}
+ if(!wbQuantityValid(q,n)||(q.key==='situps'&&extra?.type==='hold'&&n>100)){toast('请填写大于0的有效本次运动量');return false}
  if(q.key==='steps'){wbOpenKey=null;return saveDailySteps(n)}
  wbBusy=true;
  try{
@@ -1493,7 +1506,9 @@ function wbSave(q,n,extra){
   if(!persist()){state.records.pop();return false}
   const cumulative=wbToday(q,recordsOfDate(record.date));
   wbOpenKey=null;render();
-  toast('本次新增 '+(q.key==='wall-sit'?(extra?.exercise||'靠墙静蹲'):q.name)+' '+n+q.unit+'；今日该类累计 '+cumulative.label);
+  const actualName=q.key==='situps'?(extra?.type==='hold'?'平板支撑':'仰卧起坐'):q.name;
+  const actualUnit=q.key==='situps'&&extra?.type==='hold'?'组':q.unit;
+  toast('本次新增 '+actualName+' '+n+actualUnit+'；今日该类累计 '+cumulative.label);
   return true;
  }catch(err){toast(err.message||'保存失败');return false}
  finally{wbBusy=false}
@@ -1508,10 +1523,10 @@ function wbExtra(form){
  if(form.dataset.wbForm==='running'){
   const speed=read('wb-speed');if(speed!==undefined&&speed!=='')extra.speedKmh=Number(speed);
  }
- if(form.dataset.wbForm==='wall-sit'){
-  const plank=read('wb-hold-choice')==='plank';
-  extra.exercise=plank?'平板支撑':'靠墙静蹲';
-  extra.secondsPerSet=plank?30:45;
+ if(form.dataset.wbForm==='situps'&&read('wb-core-choice')==='plank'){
+  extra.type='hold';extra.exercise='平板支撑';
+  extra.sets=Number(read('wb-count'));
+  extra.secondsPerSet=30;
  }
  return extra;
 }
@@ -1534,18 +1549,21 @@ document.addEventListener('click',e=>{
  const open=e.target.closest('[data-wb-open]');
  if(open){wbSetModalKey(wbOpenKey===open.dataset.wbOpen?null:open.dataset.wbOpen);return}
  if(e.target.closest('[data-wb-close]')){wbSetModalKey(null);return}
- const hold=e.target.closest('[data-wb-hold-choice]');
- if(hold){
-  const form=hold.closest('[data-wb-form="wall-sit"]');
+ const core=e.target.closest('[data-wb-core-choice]');
+ if(core){
+  const form=core.closest('[data-wb-form="situps"]');
   if(!form)return;
-  const choice=hold.dataset.wbHoldChoice==='plank'?'plank':'wall';
-  form.querySelector('[name="wb-hold-choice"]').value=choice;
-  form.querySelectorAll('[data-wb-hold-choice]').forEach(button=>{
-   const selected=button.dataset.wbHoldChoice===choice;
+  const choice=core.dataset.wbCoreChoice==='plank'?'plank':'situps';
+  form.querySelector('[name="wb-core-choice"]').value=choice;
+  form.querySelectorAll('[data-wb-core-choice]').forEach(button=>{
+   const selected=button.dataset.wbCoreChoice===choice;
    button.classList.toggle('is-selected',selected);
    button.setAttribute('aria-pressed',String(selected));
   });
-  form.querySelector('[name="wb-count"]').value=choice==='plank'?'1':'4';
+  const input=form.querySelector('[name="wb-count"]');
+  input.value=choice==='plank'?'1':'0';
+  input.step=choice==='plank'?'1':'20';input.max=choice==='plank'?'100':'6000';
+  form.querySelector('[data-wb-quantity-unit]').textContent=choice==='plank'?'组':'次';
   wbPreview(form);return;
  }
  const step=e.target.closest('[data-wb-step]');
@@ -1554,7 +1572,9 @@ document.addEventListener('click',e=>{
   if(!q||!input)return;
   const n=Number(input.value),current=input.value!==''&&Number.isFinite(n)?n:0;
   const dir=Number(step.dataset.wbStep);
-  const newValue=Math.max(0,Math.min(q.max,current+dir*wbDelta(q,dir)));
+  const isPlank=q.key==='situps'&&form.querySelector('[name="wb-core-choice"]')?.value==='plank';
+  const delta=isPlank?1:wbDelta(q,dir),max=isPlank?100:q.max;
+  const newValue=Math.max(0,Math.min(max,current+dir*delta));
   input.value=String(newValue);
   wbPreview(form);return;
  }
