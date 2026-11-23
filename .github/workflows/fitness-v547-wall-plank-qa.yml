@@ -119,7 +119,7 @@ jobs:
               page.reload(wait_until='networkidle')
               assert '12组' in card(page,'wall-sit') and '40次' in card(page,'situps')
               page.locator('#mobileNav [data-view="settings"]').click()
-              assert '4 组 × 30秒' in page.locator('.ft-rules-panel').inner_text() or '4 组 × 30秒' in page.locator('#content').inner_text()
+              assert '靠墙静蹲4组×30秒' in normalized(page.locator('.ft-rules-panel').inner_text()),normalized(page.locator('.ft-rules-panel').inner_text())
               assert '6' in page.locator('.ft-rules-panel').inner_text() and '8' in page.locator('.ft-rules-panel').inner_text()
               page.locator('#mobileNav [data-view="overview"]').click()
               page.set_viewport_size({'width':375,'height':667})
