@@ -1109,6 +1109,18 @@ function saveTodayWeight(form){
  if(!persist()){state=prior;return false}render();toast('今日体重已保存');return true;
 }
 /* V5.11.0: Thirty consecutive dates, no padding blanks, clear month boundaries. */
+function isGymTrainingRecord(r){
+ const type=String(r.type||'');
+ const exercise=String(r.exercise||r.stroke||'').trim();
+ const preset=String(r.presetKey||'');
+ if(type==='running'||type==='swimming')return true;
+ if(type==='cardio')return !/^(自行车|骑行|户外骑行)$/.test(exercise);
+ if(type==='strength'){
+  if(['lat','row','fly'].includes(preset))return true;
+  return /推胸|拉背|高位下拉|坐姿划船|器械划船|飞鸟及引体|引体向上|腿举|腿屈伸|蝴蝶机|夹胸/.test(exercise);
+ }
+ return false;
+}
 function renderCalendar(){
  const today=localDate();
  const end=calendarWindowEnd>today?today:calendarWindowEnd;
@@ -1147,7 +1159,7 @@ function renderCalendar(){
   const isBoundary=i>0&&date.slice(0,7)!==days[i-1].slice(0,7);
   const num=Number(date.slice(8)),dayName=weekdays[dateFromISO(date).getDay()];
   const display=isBoundary?monthNum+'/'+num:String(num);
-  const status=record?'workout':isRest?'rest':'empty';
+  const status=record?'workout '+(recordsOfDate(date).some(isGymTrainingRecord)?'gym-workout':'non-gym') :isRest?'rest':'empty';
   const level=kcal>=300?'high':kcal>=100?'medium':kcal>0?'light':'';
   const metric=record?kcal.toLocaleString('zh-CN')+'<small>kcal</small>':isRest?'休息':'—';
   const label=date+' 周'+dayName+'，'+(record?'消耗'+kcal+'千卡':isRest?'休息打卡':'无运动记录');
