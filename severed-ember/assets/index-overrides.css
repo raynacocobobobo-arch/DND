@@ -226,3 +226,7 @@
 #view-rules .rules-model-primary{display:block;color:inherit}
 #view-rules .rules-model-card-link{font:11px/1.5 var(--sans);color:#deb985;text-decoration:none}
 #view-rules .rules-model-card-link:hover{text-decoration:underline}
+
+/* Rules navigation: independent collapsible sections and unit groups. */
+.rules-rail-tree .rules-section-toggle{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:8px 9px;color:#e7d2ab;font-weight:600;font-size:14px;border-bottom:1px solid #8e795335}.rules-rail-tree .rules-section-toggle::-webkit-details-marker{display:none}.rules-rail-tree .rules-nav-section[open]>.rules-section-toggle .rules-nav-caret{transform:rotate(90deg)}.rules-rail-tree .rules-section-children{padding-left:8px}.rules-rail-tree .rules-nav-section:not([open])>.rules-section-children{display:none}
+#view-rules .rules-atlas-card img{height:auto;max-height:none;aspect-ratio:891/920;object-fit:contain;flex:0 0 auto}
