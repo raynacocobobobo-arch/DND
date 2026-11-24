@@ -1,0 +1,80 @@
+name: Sync verified wedding shotlist originals
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'wedding/shotlist/sync-request.json'
+      - '.github/workflows/wedding-shotlist-sync.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: wedding-shotlist-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Fetch pinned public wedding source
+        run: |
+          set -euo pipefail
+          source_sha=$(python -c 'import json;print(json.load(open("wedding/shotlist/sync-request.json"))["source_commit"])')
+          [[ "$source_sha" =~ ^[0-9a-f]{40}$ ]]
+          git init "$RUNNER_TEMP/wedding-source"
+          git -C "$RUNNER_TEMP/wedding-source" fetch --depth=1 https://github.com/raynacocobobobo-arch/wedding.git "$source_sha"
+          git -C "$RUNNER_TEMP/wedding-source" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/wedding-source" rev-parse HEAD)" = "$source_sha"
+      - name: Verify and copy only wedding reference assets and data
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, re, shutil
+          from pathlib import Path
+          src=Path(os.environ['RUNNER_TEMP'])/'wedding-source'/'shotlist'
+          dst=Path('wedding/shotlist')
+          index=json.loads((src/'word-source/index.json').read_text())
+          old=json.loads((dst/'word-source/index.json').read_text())
+          known={r['sha256'] for r in old}
+          if not known.issubset({r['sha256'] for r in index}): raise ValueError('Source would remove previously published images')
+          report=json.loads((src/'reference-import-report.json').read_text())
+          if report['word_original_images']!=len(index) or report['word_image_hash_failures']!=0: raise ValueError('Source report mismatch')
+          for row in index:
+              p=row['path']; h=row['sha256']
+              if not re.fullmatch(r'[a-f0-9]{64}\.(jpeg|jpg|png|webp|gif|bmp)',p,re.I) or p.split('.')[0]!=h: raise ValueError('Unsafe path')
+              original=Path('assets/references/word')/p
+              thumb=Path('assets/references/word-thumbs')/(h+'.jpg')
+              raw=(src/original).read_bytes()
+              if len(raw)!=row['bytes'] or hashlib.sha256(raw).hexdigest()!=h: raise ValueError('Hash mismatch '+p)
+              for rel in (original,thumb):
+                  if not (src/rel).is_file(): raise ValueError('Missing asset '+str(rel))
+                  out=dst/rel
+                  if out.exists() and out.read_bytes()!=(src/rel).read_bytes(): raise ValueError('Existing asset differs '+str(rel))
+                  if not out.exists():
+                      out.parent.mkdir(parents=True,exist_ok=True)
+                      shutil.copy2(src/rel,out)
+          data=json.loads((src/'data.js').read_text().strip().removeprefix('window.ENWAN_DATA = ').removesuffix(';'))
+          current=json.loads((dst/'data.js').read_text().strip().removeprefix('window.ENWAN_DATA = ').removesuffix(';'))
+          prior={c['id']:set(c.get('images',[])) for c in current['cards'] if re.fullmatch(r'C\d{2}-\d{2}',c['id'])}
+          after={c['id']:set(c.get('images',[])) for c in data['cards'] if re.fullmatch(r'C\d{2}-\d{2}',c['id'])}
+          if len(after)!=102 or any(not images.issubset(after.get(k,set())) for k,images in prior.items()): raise ValueError('Existing action references would regress')
+          for c in data['cards']:
+              for p in c.get('images',[]):
+                  if not p.startswith('assets/references/') or '..' in p.split('/') or not (dst/p).is_file(): raise ValueError('Missing reference '+p)
+          for name in ('data.js','reference-import-report.json','word-source/index.json'):
+              shutil.copy2(src/name,dst/name)
+          print(f'Validated {len(index)} Word originals, {len(index)} thumbnails; no prior asset removed.')
+          PY
+          node --check wedding/shotlist/data.js
+      - name: Commit only verified shotlist changes
+        run: |
+          set -euo pipefail
+          git add -- wedding/shotlist/assets/references/word wedding/shotlist/assets/references/word-thumbs wedding/shotlist/data.js wedding/shotlist/reference-import-report.json wedding/shotlist/word-source/index.json
+          if git diff --cached --quiet; then exit 0; fi
+          git diff --cached --name-only
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Sync verified wedding shotlist reference assets"
+          git push origin HEAD:gh-pages
