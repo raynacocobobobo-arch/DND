@@ -69,12 +69,12 @@ function setupUnitAtlas(){
    if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
    n=n.nextElementSibling;
   }
-  return {id:h.id,name:h.textContent.trim(),group:groups[groupKey]||'未归类',side,role,points,img,terms:phrases.join(' '),order:i};
+  return {id:h.id,name:h.textContent.trim(),group:side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"暗黑天使","11":"机械教"}[sequence+1]||'剧情援军'):(groups[groupKey]||'未归类'),side,role,points,img,terms:phrases.join(' '),order:i};
  });
  const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
- const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使','黑暗机械教','审判庭与舰船武装'];
+ const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','死亡守望','灰骑士','暗黑天使','钢铁之手','克里格死亡军团','机械教','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','黑暗机械教','审判庭与舰船武装'];
  const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-tabletop1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-tabletop2')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();

@@ -220,3 +220,9 @@
   .frame>.left-rail{z-index:81}
   body.nav-open{overflow:hidden}
 }
+
+#rules-start .rules-allied-faction{margin:32px 0 14px;padding:10px 0;border-top:1px solid #9f8a6179;color:#d8bf91;font-size:19px;scroll-margin-top:105px}
+#rules-start figure.rules-zip-portrait figcaption{padding:9px 12px;text-align:center;color:#d8bf91;background:#111a19;font:12px/1.6 var(--sans)}
+#view-rules .rules-model-primary{display:block;color:inherit}
+#view-rules .rules-model-card-link{font:11px/1.5 var(--sans);color:#deb985;text-decoration:none}
+#view-rules .rules-model-card-link:hover{text-decoration:underline}
