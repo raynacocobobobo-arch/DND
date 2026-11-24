@@ -18,9 +18,9 @@
   ],
   "counts": {
     "reviewed": 560,
-    "approved": 68,
+    "approved": 80,
     "excluded": 480,
-    "pending": 12,
+    "pending": 0,
     "unreviewed": 922,
     "user_uploads": 0
   },
