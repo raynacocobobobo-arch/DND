@@ -14,11 +14,12 @@
     "reviews/W0401-0500.json"
   ],
   "counts": {
-    "reviewed": 240,
-    "approved": 20,
-    "excluded": 220,
+    "reviewed": 270,
+    "approved": 31,
+    "excluded": 239,
     "pending": 0,
-    "unreviewed": 1242
+    "unreviewed": 1212,
+    "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",

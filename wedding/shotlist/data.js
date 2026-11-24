@@ -2691,7 +2691,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W453.jpeg",
-        "assets/references/reviewed/W462.jpeg"
+        "assets/references/reviewed/W462.jpeg",
+        "assets/references/reviewed/W471.jpeg"
       ],
       "image_notes": [
         {
@@ -2701,6 +2702,10 @@ window.ENWAN_DATA = {
         {
           "source": "W462",
           "reason": "A02：家人帮助中式妆造的动作明确，与W453礼服整理场景不同"
+        },
+        {
+          "source": "W471",
+          "reason": "明确的长辈帮新人整理领带动作，与W453女方整理衣服的关系和机位不同；广告情境作为动作参考。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2793,9 +2798,16 @@ window.ENWAN_DATA = {
       "camera": "手部、饰物、发型、面部细节与人物整体；避免只拍孤立商品。",
       "delivery_check": "妆发、饰物、衣料和调整动作；注意不拍隐私部位。",
       "is_core": false,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W481.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W481",
+          "reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A05",
@@ -2821,9 +2833,16 @@ window.ENWAN_DATA = {
       "camera": "门侧拍双方关系，切参与者与围观反应；不堵门口。",
       "delivery_check": "关键互动＋参与者反应＋现场欢笑；流程不存在则略过。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W484.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W484",
+          "reason": "明确门口双方互动与朋友反应，可参考从门内侧拍接亲游戏高潮；广告片仅作调度参考。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A07",
@@ -3083,9 +3102,16 @@ window.ENWAN_DATA = {
       "camera": "主机守入场正面与全景，辅机拍侧后方及等待者反应。",
       "delivery_check": "入场全程＋等待者反应；不挡宾客或仪式通道。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W492.png"
+      ],
+      "image_notes": [
+        {
+          "source": "W492",
+          "reason": "有仪式行进空间和新人双人关系，可参考侧方机位；画面有字幕，注明影视参考而非婚礼实拍。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A19",
@@ -3111,9 +3137,26 @@ window.ENWAN_DATA = {
       "camera": "主机连续守讲话者；辅机拍倾听者及同框，避开主持人动线。",
       "delivery_check": "双方表情、讲话与倾听关系；连续声音优先。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W486.jpeg",
+        "assets/references/reviewed/W487.jpeg",
+        "assets/references/reviewed/W490.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W486",
+          "reason": "广角交代仪式双方、宾客与场地关系，作为A20誓言段落的场面机位参考，与双方特写互补；不判断精确仪式时点。"
+        },
+        {
+          "source": "W487",
+          "reason": "讲话者的中近景直接适用于誓言画面，保留捧花和视线方向；与W490倾听者构成互补机位。"
+        },
+        {
+          "source": "W490",
+          "reason": "明确倾听对象与自然表情，和W487讲话者相反方向；作为誓言段反应镜头参考。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A21",
@@ -3126,12 +3169,17 @@ window.ENWAN_DATA = {
       "delivery_check": "取戒、戴戒过程、戴好后的手和自然反应。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W426.jpeg"
+        "assets/references/reviewed/W426.jpeg",
+        "assets/references/reviewed/W480.jpeg"
       ],
       "image_notes": [
         {
           "source": "W426",
           "reason": "A21：戒指与指尖接触、双方手部位置明确，适合戒指佩戴近景；非仪式实拍"
+        },
+        {
+          "source": "W480",
+          "reason": "清晰展示婚戒佩戴动作与侧向手部构图；区别W426钻戒特写，作为不同戒指与角度的参考。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3146,9 +3194,16 @@ window.ENWAN_DATA = {
       "camera": "主机守新人；辅机拍家人、朋友和现场反应。",
       "delivery_check": "完成时刻＋新人反应＋现场氛围；真实动作优先。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W489.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W489",
+          "reason": "同框呈现新人亲密靠近与宾客庆祝反应，适合仪式欢庆机位；不凭单帧推定具体仪式结束时刻。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A23",
@@ -3160,9 +3215,16 @@ window.ENWAN_DATA = {
       "camera": "主机拍抛花者与花的轨迹；辅机守接花人群反应。",
       "delivery_check": "抛出、飞行、接住或落地、真实反应；注意人群安全。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W498.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W498",
+          "reason": "花束与接花群体同框，清楚呈现抛捧花过程中的接花反应，直接适用于A23。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A31",
@@ -3237,9 +3299,16 @@ window.ENWAN_DATA = {
       "camera": "从侧面拍双人，补照片或相机屏幕、手与笑容。",
       "delivery_check": "实际照片与真实反应；不要求回忆特定故事或表演感动。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W473.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W473",
+          "reason": "清楚表现照片回看与记忆影像的屏幕拍法；仅作为A26照片回忆的物件细节参考，不推断二人同时观看。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A27",
@@ -3257,7 +3326,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 20,
+    "images": 31,
     "core_cards": 26,
     "additional_cards": 7
   }

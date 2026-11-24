@@ -218,5 +218,126 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W462.jpeg",
     "git_blob": "ae3e7f6cc19931516ed289257278a4d41dc83e5d"
+  },
+  {
+    "source_key": "W471",
+    "sha256": "95ba6b8e57f20292550f617108ef2c1ea0c9bbfe3c71c8825ad14c5f1e2c350f",
+    "file_size": 103518,
+    "assigned_card_id": "A02",
+    "visual_description": "中年男子双手为西装青年整理红色领带，双人侧面中景，背景有婚庆装饰",
+    "match_reason": "明确的长辈帮新人整理领带动作，与W453女方整理衣服的关系和机位不同；广告情境作为动作参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W471.jpeg",
+    "git_blob": "3a15aa795080c3fa08283227a99508f4fcf51743"
+  },
+  {
+    "source_key": "W473",
+    "sha256": "06e09fe6bd4196a6718e08d9c6c38057ef74e746ed761518fe9c14a798c23230",
+    "file_size": 110679,
+    "assigned_card_id": "A26",
+    "visual_description": "双手持相机，屏幕显示户外两人合照，过肩特写",
+    "match_reason": "清楚表现照片回看与记忆影像的屏幕拍法；仅作为A26照片回忆的物件细节参考，不推断二人同时观看。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W473.jpeg",
+    "git_blob": "93e08d74c515ad3cc0beb3e3935d3d4544b08088"
+  },
+  {
+    "source_key": "W480",
+    "sha256": "61f406bf2eafb7917c3f319a7e43e298cfecf2809582b575200be46a7fb44bbd",
+    "file_size": 45140,
+    "assigned_card_id": "A21",
+    "visual_description": "一人双手扶住对方手指，将素圈戒指推入无名指，横幅手部特写",
+    "match_reason": "清晰展示婚戒佩戴动作与侧向手部构图；区别W426钻戒特写，作为不同戒指与角度的参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W480.jpeg",
+    "git_blob": "1a56f489d4bea6fc91518f2706286bfc7108e058"
+  },
+  {
+    "source_key": "W481",
+    "sha256": "4ffd7e402952bba3a9c33a614f1952152e15b57e2098146a3bd785310422db8a",
+    "file_size": 190492,
+    "assigned_card_id": "A30",
+    "visual_description": "走廊内西装男子背向镜头，双手同时提整衣领，对称中景",
+    "match_reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W481.jpeg",
+    "git_blob": "2e32487d41664d7be34f9dbe0b5c7b6ba0e5cef2"
+  },
+  {
+    "source_key": "W484",
+    "sha256": "20f8f9917e0f4269f2976bfe3658fa9aa5fac7e5b704fc24db74d7cb5bc9361c",
+    "file_size": 102457,
+    "assigned_card_id": "A06",
+    "visual_description": "喜字门口西装青年持捧花，伴郎和门内女子举手欢呼",
+    "match_reason": "明确门口双方互动与朋友反应，可参考从门内侧拍接亲游戏高潮；广告片仅作调度参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W484.jpeg",
+    "git_blob": "a0a6147a05fcda97daa7717e05fc539de2d66223"
+  },
+  {
+    "source_key": "W486",
+    "sha256": "c15fc28ee901ed595ba7ef92dab2dcb871b2fd34b89020b4d07b06a173804680",
+    "file_size": 244969,
+    "assigned_card_id": "A20",
+    "visual_description": "婚礼白绿花艺舞台前新人站立，宾客两侧，彩纸散落，字幕提及亲友见证",
+    "match_reason": "广角交代仪式双方、宾客与场地关系，作为A20誓言段落的场面机位参考，与双方特写互补；不判断精确仪式时点。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W486.jpeg",
+    "git_blob": "ea9f544794d98264a8828dae4556073c28c9d1df"
+  },
+  {
+    "source_key": "W487",
+    "sha256": "2f927e051094459c49f5c4aa9af81d87d76a8e6751a9ebfade94b53c85d9f626",
+    "file_size": 173855,
+    "assigned_card_id": "A20",
+    "visual_description": "戴头纱的新娘手捧花束面向对方开口，字幕“亲爱的”",
+    "match_reason": "讲话者的中近景直接适用于誓言画面，保留捧花和视线方向；与W490倾听者构成互补机位。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W487.jpeg",
+    "git_blob": "cf2f6c75e7f22fc4409cb179e262f1a204a80819"
+  },
+  {
+    "source_key": "W489",
+    "sha256": "fcba3dc7807002d77a97178dc99562f63fe68e9ebd4b3c18db3a460ce7b6af55",
+    "file_size": 245716,
+    "assigned_card_id": "A22",
+    "visual_description": "花艺台前新人靠近，男方手臂环女方腰部，前景宾客举手鼓掌",
+    "match_reason": "同框呈现新人亲密靠近与宾客庆祝反应，适合仪式欢庆机位；不凭单帧推定具体仪式结束时刻。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W489.jpeg",
+    "git_blob": "7e3f099849ba259383f5599acde69543c0e39c16"
+  },
+  {
+    "source_key": "W490",
+    "sha256": "526843dffea0c5650caee8df30772f6c68d9a302c6b60854ecf03ebd5ecaf6df",
+    "file_size": 126687,
+    "assigned_card_id": "A20",
+    "visual_description": "新娘头纱虚化作前景，新郎望向新娘微笑，正面中近景",
+    "match_reason": "明确倾听对象与自然表情，和W487讲话者相反方向；作为誓言段反应镜头参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W490.jpeg",
+    "git_blob": "0022c80c4202e51338c559a3c0151887cd03b3d1"
+  },
+  {
+    "source_key": "W492",
+    "sha256": "4da82f117461a2260ef7d95c71d5f048b407534eb7860a19e1e1e93d84624890",
+    "file_size": 475884,
+    "assigned_card_id": "A18",
+    "visual_description": "新娘持花与礼服新郎并行于教堂花艺通道，宾客在侧鼓掌，侧面中景",
+    "match_reason": "有仪式行进空间和新人双人关系，可参考侧方机位；画面有字幕，注明影视参考而非婚礼实拍。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W492.png",
+    "git_blob": "714e8cdcf9f9b32a10a9cd96cfb0a5c1a162d8d9"
+  },
+  {
+    "source_key": "W498",
+    "sha256": "83349d75f07360a1801ceca807e730d79ea00af8911c48e6a9c67a7c3a54a87e",
+    "file_size": 205381,
+    "assigned_card_id": "A23",
+    "visual_description": "低机位拍多人朝天空伸手，其中一人伸手接向空中花束，后方新娘及宾客笑着举手",
+    "match_reason": "花束与接花群体同框，清楚呈现抛捧花过程中的接花反应，直接适用于A23。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W498.jpeg",
+    "git_blob": "72aa5f6ac67e10f0ff74ce4e1f29229d8c55911c"
   }
 ]
