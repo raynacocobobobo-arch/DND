@@ -438,5 +438,71 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W526.jpeg",
     "git_blob": "bf2b8f3e3b968f6e0023ac4c1b68dae9f890c46f"
+  },
+  {
+    "source_key": "W538",
+    "sha256": "45bbbe997949744abe79f0e17a66cdeeaf1601e5b0d2687034486e597db72b95",
+    "file_size": 105757,
+    "assigned_card_id": "A10",
+    "visual_description": "两只手从画面两侧向中间伸出，左手指尖落于台面，右手掌朝向对方",
+    "match_reason": "清晰展示牵手前的伸手动作与手部近景，可与已有牵手完成态互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W538.jpeg",
+    "git_blob": "aa514b7a1644d00160aa189989992791ee16492e"
+  },
+  {
+    "source_key": "W546",
+    "sha256": "4301df1295d2aeaa1278d40ee3bc77bf3684cf0b479532826a8e91596218c592",
+    "file_size": 72991,
+    "assigned_card_id": "A13",
+    "visual_description": "风中女子笑着靠在男子身前，两人并肩向侧方微笑，天空作背景",
+    "match_reason": "半身侧面取景和前后错位的自然依靠明确，区别于已有并排站姿",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W546.jpeg",
+    "git_blob": "8e71f651075f5e7bf6796cdafa580fb14eaee151"
+  },
+  {
+    "source_key": "W549",
+    "sha256": "5617ef68365f4257cdeee9a700d46883ccf3dd2952d2abf95f6f8f196959816d",
+    "file_size": 136135,
+    "assigned_card_id": "A12",
+    "visual_description": "海边栏杆前两人紧紧拥抱，从男子背后拍摄，女子双手环颈",
+    "match_reason": "背面中远景明确展示拥抱完成态，可与已有正侧面亲密互动互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W549.jpeg",
+    "git_blob": "ea5058adb49589ed079adf05b51f8f8644a28bdf"
+  },
+  {
+    "source_key": "W551",
+    "sha256": "fb078904be85b110743d22884b7b8ffc713d4da4a25635739cf7539685f67b04",
+    "file_size": 63827,
+    "assigned_card_id": "A10",
+    "visual_description": "双人胸前十指交握的手部特写，背景为女子微笑的虚焦面部",
+    "match_reason": "紧扣手部完成态且背景保留情绪，补充W538伸手前的细节",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W551.jpeg",
+    "git_blob": "72834ee88a31ff92c2c693c50cd5dbf8827b8286"
+  },
+  {
+    "source_key": "W552",
+    "sha256": "ac0c823422b17004a739a24b8b9c0576c76f019f2babfa4ecd012929c952a97f",
+    "file_size": 130392,
+    "assigned_card_id": "A15",
+    "visual_description": "游乐场栏杆前男女并肩，女子举小型相机，男子凑近看",
+    "match_reason": "双人共享相机的动作和中景站位清楚，适合婚礼补拍中互相看照片",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W552.jpeg",
+    "git_blob": "b8dacb33ca55fcb6ba34d6c12d38c924883657f5"
+  },
+  {
+    "source_key": "W556",
+    "sha256": "22ed0907f9575bd02db4e752101b0d8589e3d8aec2d6f50f6213514c46002dd5",
+    "file_size": 92095,
+    "assigned_card_id": "A11",
+    "visual_description": "从敞开车门内向外拍两人相对微笑靠近，逆光形成轮廓",
+    "match_reason": "车门天然框景的双人相对姿势明确，作为转场停留时对视机位参考；不是车内牵手",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W556.jpeg",
+    "git_blob": "b03f41fa12adc007a22aaefa50c3bc7c12e6e00b"
   }
 ]

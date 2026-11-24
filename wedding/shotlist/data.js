@@ -2921,12 +2921,22 @@ window.ENWAN_DATA = {
       "delivery_check": "伸手、接触、握住、自然走开；一次即可。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W320.jpeg"
+        "assets/references/reviewed/W320.jpeg",
+        "assets/references/reviewed/W538.jpeg",
+        "assets/references/reviewed/W551.jpeg"
       ],
       "image_notes": [
         {
           "source": "W320",
           "reason": "A10：握手及手掌覆盖关系明确，可用于牵手近景调度；非婚礼实拍"
+        },
+        {
+          "source": "W538",
+          "reason": "清晰展示牵手前的伸手动作与手部近景，可与已有牵手完成态互补"
+        },
+        {
+          "source": "W551",
+          "reason": "紧扣手部完成态且背景保留情绪，补充W538伸手前的细节"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2943,7 +2953,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W356.jpeg",
-        "assets/references/reviewed/W526.jpeg"
+        "assets/references/reviewed/W526.jpeg",
+        "assets/references/reviewed/W556.jpeg"
       ],
       "image_notes": [
         {
@@ -2953,6 +2964,10 @@ window.ENWAN_DATA = {
         {
           "source": "W526",
           "reason": "示范简洁对视站姿和侧面双人取景，注明时装广告参考而非婚礼实拍"
+        },
+        {
+          "source": "W556",
+          "reason": "车门天然框景的双人相对姿势明确，作为转场停留时对视机位参考；不是车内牵手"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2969,7 +2984,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W404.jpeg",
-        "assets/references/reviewed/W517.jpeg"
+        "assets/references/reviewed/W517.jpeg",
+        "assets/references/reviewed/W549.jpeg"
       ],
       "image_notes": [
         {
@@ -2979,6 +2995,10 @@ window.ENWAN_DATA = {
         {
           "source": "W517",
           "reason": "明确亲密互动及逆光侧面取景，有可操作的补拍参考价值"
+        },
+        {
+          "source": "W549",
+          "reason": "背面中远景明确展示拥抱完成态，可与已有正侧面亲密互动互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2996,7 +3016,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W240.jpeg",
         "assets/references/reviewed/W265.jpeg",
-        "assets/references/reviewed/W521.jpeg"
+        "assets/references/reviewed/W521.jpeg",
+        "assets/references/reviewed/W546.jpeg"
       ],
       "image_notes": [
         {
@@ -3010,6 +3031,10 @@ window.ENWAN_DATA = {
         {
           "source": "W521",
           "reason": "明确并肩依靠与共同望向远景的动作，补充背面构图"
+        },
+        {
+          "source": "W546",
+          "reason": "半身侧面取景和前后错位的自然依靠明确，区别于已有并排站姿"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3046,12 +3071,17 @@ window.ENWAN_DATA = {
       "delivery_check": "完成一张真实照片；不要求故意拍丑或演争吵。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W253.jpeg"
+        "assets/references/reviewed/W253.jpeg",
+        "assets/references/reviewed/W552.jpeg"
       ],
       "image_notes": [
         {
           "source": "W253",
           "reason": "A15：一方持相机记录另一方的自然状态，双人空间关系明确，可作为互拍调度参考；非婚礼实拍"
+        },
+        {
+          "source": "W552",
+          "reason": "双人共享相机的动作和中景站位清楚，适合婚礼补拍中互相看照片"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3377,7 +3407,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 40,
+    "images": 46,
     "core_cards": 26,
     "additional_cards": 7
   }
