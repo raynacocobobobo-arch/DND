@@ -746,5 +746,125 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W688.jpeg",
     "git_blob": "079d0af49c4e66d5bbe68c4dd2dd862daf63c8da"
+  },
+  {
+    "source_key": "W689",
+    "sha256": "fae56661d92d40e1c400e2616eddd6974ff0a7a7f04ce0c85e1c2f0205636586",
+    "assigned_card_id": "A26",
+    "visual_description": "短发女子穿白色无袖上衣，微笑着举起一张黑色小尺寸拍立得相片给画外同伴看，人物与照片同框。",
+    "match_reason": "采用：补充A26现有的相机屏幕近景和相框展示，提供手持即时照片及观看者表情的中近景；不是单纯静物。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W689.jpeg",
+    "git_blob": "e6170358721c79a3e16a7b794c2c7d15fc748e41"
+  },
+  {
+    "source_key": "W692",
+    "sha256": "ca9471c4524600d2cc3c9dac2359d7b65a3cd3388fe09308d5ab43d70a168cbf",
+    "assigned_card_id": "A16",
+    "visual_description": "一男一女并肩坐在照片墙前，男子伸手举手机自拍，女子靠近并把手放在脸侧，手机和两人关系均清楚。",
+    "match_reason": "采用：补充A16已有的双人自拍参考，提供手机伸臂、两人贴近和照片墙背景的正面自拍构图；与W331的持花自拍场景不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W692.jpeg",
+    "git_blob": "2beaff71d1e77e7dd9d759f83ab6f0e30311b76a"
+  },
+  {
+    "source_key": "W698",
+    "sha256": "5b2885ed5ea29b49fac2b6eb7886e0fa36b39a44d30c6b016bde3e8ebaf8399d",
+    "assigned_card_id": "A15",
+    "visual_description": "室内柜台前，女子把手机横向举向男子拍摄，男子转头看她并微笑；两人、手机和拍摄方向同时入镜。",
+    "match_reason": "采用：补充A15互拍参考，清楚呈现摄影者与被摄者同框及侧向拍摄关系；不同于现有席地、沙发和桌面场景。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W698.jpeg",
+    "git_blob": "6918a253313d6ac8f9bb9b63fc4dccaa94d44c00"
+  },
+  {
+    "source_key": "W702",
+    "sha256": "dc90c0560b1806497c1287a6de7f7ba4dde69687a45eba5cd27942011633a2df",
+    "assigned_card_id": "A13",
+    "visual_description": "居家客厅中，男女并排坐在地毯上靠近沙发，男子从侧后方贴近女子并共同伸手取桌上物品，前景有一只狗，完整交代室内空间和坐姿关系。",
+    "match_reason": "采用：补充A13坐姿依靠参考，提供地毯低坐、沙发与宠物构成的生活化宽景；与现有长椅、沙发和高位俯拍不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W702.jpeg",
+    "git_blob": "bf658ee67be2f8a43cfbfcd909dda601281a2239"
+  },
+  {
+    "source_key": "W705",
+    "sha256": "e9e4b0b794ad4e9d5610fc0bef7a024ea3ee056896bbbf970abce3950b0857bf",
+    "assigned_card_id": "A25",
+    "visual_description": "室内门口，女子双手持一件扁平白色礼物或信封递向男子，男子伸手接取，两人面对面微笑，前景有虚化花束。",
+    "match_reason": "采用：补充A25礼物交接的双人中景，明确呈现递出与接取关系；与现有W377红包手部近景不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W705.jpeg",
+    "git_blob": "bbfeccb287ff22fe047d2e94bb3d334e1eb0e88f"
+  },
+  {
+    "source_key": "W709",
+    "sha256": "3f33d247d2dc3945931820cb9a147ec4adfa60c0f45bfb9aaa32e4112f097bb6",
+    "assigned_card_id": "A25",
+    "visual_description": "室内暖光环境中，女子微笑着把一只深色长方礼盒递向画面前景的另一人，礼盒与双方手部形成明确交接中心。",
+    "match_reason": "采用：补充A25礼盒交接的过肩构图，前景接收者与递礼者同框；与W705扁平信封的正面中景不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W709.jpeg",
+    "git_blob": "75983de974a3ed35b1bb659e8fcfca2d25411529"
+  },
+  {
+    "source_key": "W719",
+    "sha256": "8621640992d29a9385908e87b922b638641c9337d00bec8c3ca54d998a19c5a2",
+    "assigned_card_id": "A24",
+    "visual_description": "宴席桌旁男女并肩贴近，男子揽住女子肩部，两侧各有亲友举手机为他们拍照，桌面花艺和餐具交代聚会环境。",
+    "match_reason": "采用：补充A24亲友同框交流，呈现新人被亲友围绕拍摄的社交场景及前景手机构图；与现有三人共看手机不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W719.jpeg",
+    "git_blob": "6196cddef9784fd655dc28c4b3150adb0237b7cf"
+  },
+  {
+    "source_key": "W737",
+    "sha256": "6f12c78639910d2cb13b323bef7c440f771603ab2ddc6bc51cb3e4605433d169",
+    "assigned_card_id": "A25",
+    "visual_description": "户外节日建筑前，两名男子面对面各自拿着小礼盒，低头查看并完成互相递送，双方全身和环境同时入镜。",
+    "match_reason": "采用：补充A25礼物交换的双人全景/中远景，明确双方相对站位和交接场景；与W377红包手部、W705室内中景不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W737.png",
+    "git_blob": "4315ae853aa93b772aeb119350c8b4e822235193"
+  },
+  {
+    "source_key": "W741",
+    "sha256": "5fe1f4f501c305418e11ed629ceade4f75a7f6b52e9c823e897de39ebeddabde",
+    "assigned_card_id": "A13",
+    "visual_description": "图书馆长桌前，男子坐着看手机或书，女子把头自然靠在他的肩上，桌上摊开书本，书架作背景。",
+    "match_reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W741.jpeg",
+    "git_blob": "dc6fec4731125aef2944233ff48baaa8cce7b1c8"
+  },
+  {
+    "source_key": "W768",
+    "sha256": "eaba626a5357e3308b3b957480f246429a67993ccfee308b3628fb62664af3c1",
+    "assigned_card_id": "A05",
+    "visual_description": "门口内侧男子面带微笑站在门边，前景女子从门外进入，红色礼盒位于两人之间，形成明确的到达与迎接空间关系。",
+    "match_reason": "采用：补充A05门口迎接/到达的双人构图，前景背影、门框和迎接者反应同时入镜；A05此前无图片参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W768.jpeg",
+    "git_blob": "b892955758e250c0a99dec8b6302fc39c2547fb8"
+  },
+  {
+    "source_key": "W770",
+    "sha256": "cf1351ae01645bfbcee2cb9b2ec0c2728a247682bee05ba0c494ea2c57ba6567",
+    "assigned_card_id": "A25",
+    "visual_description": "室内两人面对面坐/站，男子把一支红玫瑰递向女子，女子转头微笑回应，花朵和双方表情均可辨。",
+    "match_reason": "采用：补充A25单枝鲜花递送的双人中景，呈现赠花者与接收者的视线关系；与W777手部花束交接细节互补。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W770.jpeg",
+    "git_blob": "845fe8da66262220d3dcf14805484c721101a797"
+  },
+  {
+    "source_key": "W777",
+    "sha256": "9a3f3ca9eb8905938720080cddd219eeec320f57de2d45bbb7f07f8fbfcb16f8",
+    "assigned_card_id": "A25",
+    "visual_description": "汽车后备厢上方，两个人的手分别从两侧托住一束混合花材，花束正在双方手间交接，画面清楚保留接收与递出手势。",
+    "match_reason": "采用：补充A25赠花的手部交接特写；与W770单枝玫瑰的双人表情中景互补，花束交接动作明确。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W777.jpeg",
+    "git_blob": "575afb79f39f346f3efdffed70681cc196c123e0"
   }
 ]

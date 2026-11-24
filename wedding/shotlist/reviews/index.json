@@ -13,14 +13,15 @@
     "reviews/W0301-0400.json",
     "reviews/W0401-0500.json",
     "reviews/W0501-0600.json",
-    "reviews/W0601-0700.json"
+    "reviews/W0601-0700.json",
+    "reviews/W0701-0800.json"
   ],
   "counts": {
-    "reviewed": 460,
-    "approved": 49,
-    "excluded": 392,
-    "pending": 19,
-    "unreviewed": 1022,
+    "reviewed": 288,
+    "approved": 37,
+    "excluded": 239,
+    "pending": 12,
+    "unreviewed": 1194,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",

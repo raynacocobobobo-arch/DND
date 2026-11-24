@@ -2819,9 +2819,16 @@ window.ENWAN_DATA = {
       "camera": "先保留距离与相见的空间；双机分拍两人的第一眼。",
       "delivery_check": "初见双方反应＋走近；只有真实初见才称首次相见。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W768.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W768",
+          "reason": "采用：补充A05门口迎接/到达的双人构图，前景背影、门框和迎接者反应同时入镜；A05此前无图片参考。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A06",
@@ -3056,7 +3063,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W521.jpeg",
         "assets/references/reviewed/W546.jpeg",
         "assets/references/reviewed/W587.jpeg",
-        "assets/references/reviewed/W674.jpeg"
+        "assets/references/reviewed/W674.jpeg",
+        "assets/references/reviewed/W702.jpeg",
+        "assets/references/reviewed/W741.jpeg"
       ],
       "image_notes": [
         {
@@ -3082,6 +3091,14 @@ window.ENWAN_DATA = {
         {
           "source": "W674",
           "reason": "补充年长夫妻的坐姿依靠，亦可作新人或长辈双人自然互动参考"
+        },
+        {
+          "source": "W702",
+          "reason": "采用：补充A13坐姿依靠参考，提供地毯低坐、沙发与宠物构成的生活化宽景；与现有长椅、沙发和高位俯拍不同。"
+        },
+        {
+          "source": "W741",
+          "reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3122,7 +3139,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W552.jpeg",
         "assets/references/reviewed/W654.jpeg",
         "assets/references/reviewed/W661.jpeg",
-        "assets/references/reviewed/W688.jpeg"
+        "assets/references/reviewed/W688.jpeg",
+        "assets/references/reviewed/W698.jpeg"
       ],
       "image_notes": [
         {
@@ -3144,6 +3162,10 @@ window.ENWAN_DATA = {
         {
           "source": "W688",
           "reason": "室内明亮双人拍摄关系完整，补充干净场景的互拍参考"
+        },
+        {
+          "source": "W698",
+          "reason": "采用：补充A15互拍参考，清楚呈现摄影者与被摄者同框及侧向拍摄关系；不同于现有席地、沙发和桌面场景。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3159,12 +3181,17 @@ window.ENWAN_DATA = {
       "delivery_check": "举机＋同框＋拍下或看图；自拍是新人自己的纪念。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W331.jpeg"
+        "assets/references/reviewed/W331.jpeg",
+        "assets/references/reviewed/W692.jpeg"
       ],
       "image_notes": [
         {
           "source": "W331",
           "reason": "A16：双人靠头并看向自拍手机，动作完整，适合宴会或补拍自拍参考；非婚礼实拍"
+        },
+        {
+          "source": "W692",
+          "reason": "采用：补充A16已有的双人自拍参考，提供手机伸臂、两人贴近和照片墙背景的正面自拍构图；与W331的持花自拍场景不同。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3450,12 +3477,17 @@ window.ENWAN_DATA = {
       "delivery_check": "关系清晰的群体镜头＋人物反应；不影响就餐。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W577.jpeg"
+        "assets/references/reviewed/W577.jpeg",
+        "assets/references/reviewed/W719.jpeg"
       ],
       "image_notes": [
         {
           "source": "W577",
           "reason": "三人共同观看手机的中景站位关系清晰，可供新人和亲友同框交流参考；广告画面非实拍婚礼"
+        },
+        {
+          "source": "W719",
+          "reason": "采用：补充A24亲友同框交流，呈现新人被亲友围绕拍摄的社交场景及前景手机构图；与现有三人共看手机不同。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3471,12 +3503,37 @@ window.ENWAN_DATA = {
       "delivery_check": "交接、打开、反应；没有礼物不临时制造惊喜。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W377.jpeg"
+        "assets/references/reviewed/W377.jpeg",
+        "assets/references/reviewed/W705.jpeg",
+        "assets/references/reviewed/W709.jpeg",
+        "assets/references/reviewed/W737.png",
+        "assets/references/reviewed/W770.jpeg",
+        "assets/references/reviewed/W777.jpeg"
       ],
       "image_notes": [
         {
           "source": "W377",
           "reason": "A25：红包在双手交接中心，可参考婚礼赠礼手部细节；非婚礼实拍"
+        },
+        {
+          "source": "W705",
+          "reason": "采用：补充A25礼物交接的双人中景，明确呈现递出与接取关系；与现有W377红包手部近景不同。"
+        },
+        {
+          "source": "W709",
+          "reason": "采用：补充A25礼盒交接的过肩构图，前景接收者与递礼者同框；与W705扁平信封的正面中景不同。"
+        },
+        {
+          "source": "W737",
+          "reason": "采用：补充A25礼物交换的双人全景/中远景，明确双方相对站位和交接场景；与W377红包手部、W705室内中景不同。"
+        },
+        {
+          "source": "W770",
+          "reason": "采用：补充A25单枝鲜花递送的双人中景，呈现赠花者与接收者的视线关系；与W777手部花束交接细节互补。"
+        },
+        {
+          "source": "W777",
+          "reason": "采用：补充A25赠花的手部交接特写；与W770单枝玫瑰的双人表情中景互补，花束交接动作明确。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3493,7 +3550,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W473.jpeg",
-        "assets/references/reviewed/W510.jpeg"
+        "assets/references/reviewed/W510.jpeg",
+        "assets/references/reviewed/W689.jpeg"
       ],
       "image_notes": [
         {
@@ -3503,6 +3561,10 @@ window.ENWAN_DATA = {
         {
           "source": "W510",
           "reason": "共同展示或搬挂照片的完整动作，可作为婚礼回忆环节的生活化调度参考"
+        },
+        {
+          "source": "W689",
+          "reason": "采用：补充A26现有的相机屏幕近景和相框展示，提供手持即时照片及观看者表情的中近景；不是单纯静物。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3523,7 +3585,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 68,
+    "images": 80,
     "core_cards": 26,
     "additional_cards": 7
   }
