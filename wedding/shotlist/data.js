@@ -2854,9 +2854,21 @@ window.ENWAN_DATA = {
       "camera": "车外侧方拍上车；另一机从安全位置拍家人送别、车内互动。",
       "delivery_check": "上车全景＋车门细节＋车内表情＋送别动作。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W504.jpeg",
+        "assets/references/reviewed/W506.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W504",
+          "reason": "上车动作和车门框景明确，提供车内向外的调度参考"
+        },
+        {
+          "source": "W506",
+          "reason": "离家转场中具有明确告别互动，与W504登车全景形成不同动作及景别"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A08",
@@ -2868,9 +2880,21 @@ window.ENWAN_DATA = {
       "camera": "固定安全位置拍双人中景、手和靠肩；不得影响驾驶或安全带。",
       "delivery_check": "车内环境＋牵手＋靠肩或交流。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W507.jpeg",
+        "assets/references/reviewed/W509.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W507",
+          "reason": "真实车厢内的安慰互动，车内全景清楚交代坐姿及距离"
+        },
+        {
+          "source": "W509",
+          "reason": "补充W507车内关系全景的手部细节，动作明确且不重复景别"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A09",
@@ -2918,12 +2942,17 @@ window.ENWAN_DATA = {
       "delivery_check": "两方各一反应＋同框＋自然笑或沉默；不要求一定笑。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W356.jpeg"
+        "assets/references/reviewed/W356.jpeg",
+        "assets/references/reviewed/W526.jpeg"
       ],
       "image_notes": [
         {
           "source": "W356",
           "reason": "A11：面对面站定、视线相接，双人中近景清楚；影视广告参考，保留水印"
+        },
+        {
+          "source": "W526",
+          "reason": "示范简洁对视站姿和侧面双人取景，注明时装广告参考而非婚礼实拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2939,12 +2968,17 @@ window.ENWAN_DATA = {
       "delivery_check": "靠近＋拥抱＋双方反应；不要求奔跑扑抱或亲吻。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W404.jpeg"
+        "assets/references/reviewed/W404.jpeg",
+        "assets/references/reviewed/W517.jpeg"
       ],
       "image_notes": [
         {
           "source": "W404",
           "reason": "A12：拥抱贴肩及手部位置明确，适合亲密近景；广告调度参考"
+        },
+        {
+          "source": "W517",
+          "reason": "明确亲密互动及逆光侧面取景，有可操作的补拍参考价值"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2961,7 +2995,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W240.jpeg",
-        "assets/references/reviewed/W265.jpeg"
+        "assets/references/reviewed/W265.jpeg",
+        "assets/references/reviewed/W521.jpeg"
       ],
       "image_notes": [
         {
@@ -2971,6 +3006,10 @@ window.ENWAN_DATA = {
         {
           "source": "W265",
           "reason": "A13：侧身贴肩、单臂搂靠及同向视线清晰，适用于双人补拍；非婚礼实拍"
+        },
+        {
+          "source": "W521",
+          "reason": "明确并肩依靠与共同望向远景的动作，补充背面构图"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2985,9 +3024,16 @@ window.ENWAN_DATA = {
       "camera": "保持安全距离，拍背面转向与回头后的反应；不要求甩头发。",
       "delivery_check": "一次回头即可；有自然笑更好，不强求。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W522.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W522",
+          "reason": "单方转头看向另一方，过肩侧面机位可直接复用，和W521背面依靠不同"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A15",
@@ -3300,12 +3346,17 @@ window.ENWAN_DATA = {
       "delivery_check": "实际照片与真实反应；不要求回忆特定故事或表演感动。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W473.jpeg"
+        "assets/references/reviewed/W473.jpeg",
+        "assets/references/reviewed/W510.jpeg"
       ],
       "image_notes": [
         {
           "source": "W473",
           "reason": "清楚表现照片回看与记忆影像的屏幕拍法；仅作为A26照片回忆的物件细节参考，不推断二人同时观看。"
+        },
+        {
+          "source": "W510",
+          "reason": "共同展示或搬挂照片的完整动作，可作为婚礼回忆环节的生活化调度参考"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3326,7 +3377,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 31,
+    "images": 40,
     "core_cards": 26,
     "additional_cards": 7
   }

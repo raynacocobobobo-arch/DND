@@ -339,5 +339,104 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W498.jpeg",
     "git_blob": "72aa5f6ac67e10f0ff74ce4e1f29229d8c55911c"
+  },
+  {
+    "source_key": "W504",
+    "sha256": "16c86afdb1211997cbf97b7c7564bc240138e925d26d56bd81299ae5e8202065",
+    "file_size": 121507,
+    "assigned_card_id": "A07",
+    "visual_description": "从车厢内部向敞开的侧门拍摄，中式礼服新娘在亲友陪同下抬腿进入车辆",
+    "match_reason": "上车动作和车门框景明确，提供车内向外的调度参考",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W504.jpeg",
+    "git_blob": "1d459bb668f0d133ff977dbe8c0de02c4fa74faa"
+  },
+  {
+    "source_key": "W506",
+    "sha256": "0ab75638e2ef022ba4f7a81d11676ec8b8f310ab883d03dee80e31d4a3ab5c98",
+    "file_size": 83396,
+    "assigned_card_id": "A07",
+    "visual_description": "车窗半降，新娘在车内与窗外亲友握手告别，手部近景",
+    "match_reason": "离家转场中具有明确告别互动，与W504登车全景形成不同动作及景别",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W506.jpeg",
+    "git_blob": "e861379e6c6f9b468632dd64f42beb25d7143316"
+  },
+  {
+    "source_key": "W507",
+    "sha256": "087216531747c78c4825663c425308d7102b187513116c2159e9510ee75a8987",
+    "file_size": 145660,
+    "assigned_card_id": "A08",
+    "visual_description": "新娘在车内向窗外挥手或告别，旁边红衣男子伸手搭她肩背，双方坐在车座上",
+    "match_reason": "真实车厢内的安慰互动，车内全景清楚交代坐姿及距离",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W507.jpeg",
+    "git_blob": "cdfa6bb54558c0b8bb95f5b8ec375b14671fc07d"
+  },
+  {
+    "source_key": "W509",
+    "sha256": "a5bbbe53121a4d8331ab2d328a22f77103ac69580cfe106ea7a8ae2da8686ad7",
+    "file_size": 79613,
+    "assigned_card_id": "A08",
+    "visual_description": "车内红色婚服人物双手相握的近景，安全带及座位背景可辨",
+    "match_reason": "补充W507车内关系全景的手部细节，动作明确且不重复景别",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W509.jpeg",
+    "git_blob": "9b23bcefb4d8e6a43a0c3580b2d18ee8f913341f"
+  },
+  {
+    "source_key": "W510",
+    "sha256": "dde3cb411059085363ad75acd1bc078bebc504f97e87b7743e80399b463b6a0c",
+    "file_size": 174176,
+    "assigned_card_id": "A26",
+    "visual_description": "室内男女共同搬举大型相框，逆光窗帘与暖色光线构成空间",
+    "match_reason": "共同展示或搬挂照片的完整动作，可作为婚礼回忆环节的生活化调度参考",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W510.jpeg",
+    "git_blob": "3d34579674427db073166c343345133b945f4054"
+  },
+  {
+    "source_key": "W517",
+    "sha256": "224d43159f022e37afaef031ef07d9724cd83dacdf65a8f29faab20025297ed1",
+    "file_size": 116986,
+    "assigned_card_id": "A12",
+    "visual_description": "夕阳逆光下男女近距离相拥相视，女子手扶男子肩部，太阳位于两人面部之间",
+    "match_reason": "明确亲密互动及逆光侧面取景，有可操作的补拍参考价值",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W517.jpeg",
+    "git_blob": "8fe09efdb8b419d03bda01df6b7d91063e0747a0"
+  },
+  {
+    "source_key": "W521",
+    "sha256": "eab089592715ff5e938375be7a3472613de5a9183f8d339f0dff62fc0b0264be",
+    "file_size": 186919,
+    "assigned_card_id": "A13",
+    "visual_description": "男女背面中景，女子头靠男子肩部，共同望向远处海湾",
+    "match_reason": "明确并肩依靠与共同望向远景的动作，补充背面构图",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W521.jpeg",
+    "git_blob": "95f3b830f81a5307699c652d00bd5c27d70a63cb"
+  },
+  {
+    "source_key": "W522",
+    "sha256": "748a10d3d0eaaef3d2272fc6f5deeb3c285d4d768a8eb60ea9c8be985a3530b0",
+    "file_size": 158074,
+    "assigned_card_id": "A14",
+    "visual_description": "同一海湾护栏场景女子由面向远景转向身旁男子，男子近景虚化",
+    "match_reason": "单方转头看向另一方，过肩侧面机位可直接复用，和W521背面依靠不同",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W522.jpeg",
+    "git_blob": "b71644c7bad1e15cc8ddf877def8978948551a98"
+  },
+  {
+    "source_key": "W526",
+    "sha256": "70c0bffb35c67052a35a9dc295341eee84ef6c80d0cd3b295460294e6e8e559e",
+    "file_size": 112777,
+    "assigned_card_id": "A11",
+    "visual_description": "黑色背景下男女站定相向，双方侧面中景，手臂自然垂下",
+    "match_reason": "示范简洁对视站姿和侧面双人取景，注明时装广告参考而非婚礼实拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W526.jpeg",
+    "git_blob": "bf2b8f3e3b968f6e0023ac4c1b68dae9f890c46f"
   }
 ]
