@@ -2906,9 +2906,16 @@ window.ENWAN_DATA = {
       "camera": "侧跟拍全身；前方安全定点拍迎面；后方拍背影。",
       "delivery_check": "一个来回以内；全景、中景、背影、牵手细节。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W581.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W581",
+          "reason": "夜间双人并肩散步的背面全景，灯笼形成纵深，适合参考夜间转场构图；不要求复制焰火或广告情境"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A10",
@@ -3017,7 +3024,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W240.jpeg",
         "assets/references/reviewed/W265.jpeg",
         "assets/references/reviewed/W521.jpeg",
-        "assets/references/reviewed/W546.jpeg"
+        "assets/references/reviewed/W546.jpeg",
+        "assets/references/reviewed/W587.jpeg"
       ],
       "image_notes": [
         {
@@ -3035,6 +3043,10 @@ window.ENWAN_DATA = {
         {
           "source": "W546",
           "reason": "半身侧面取景和前后错位的自然依靠明确，区别于已有并排站姿"
+        },
+        {
+          "source": "W587",
+          "reason": "双人坐姿自然依靠的高位俯拍，可补充已有站姿参考；生活广告仅作机位示范"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3340,9 +3352,16 @@ window.ENWAN_DATA = {
       "camera": "用中景拍真实谈话；切发言者、倾听者、长辈与朋友。",
       "delivery_check": "关系清晰的群体镜头＋人物反应；不影响就餐。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W577.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W577",
+          "reason": "三人共同观看手机的中景站位关系清晰，可供新人和亲友同框交流参考；广告画面非实拍婚礼"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A25",
@@ -3407,7 +3426,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 46,
+    "images": 49,
     "core_cards": 26,
     "additional_cards": 7
   }

@@ -504,5 +504,38 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W556.jpeg",
     "git_blob": "b03f41fa12adc007a22aaefa50c3bc7c12e6e00b"
+  },
+  {
+    "source_key": "W577",
+    "sha256": "8e2ad6d1317541f591b80fe3fd9ce4f611a4795967621538fc94e72befb29ee7",
+    "file_size": 280432,
+    "assigned_card_id": "A24",
+    "visual_description": "三人并排坐在看台，中央女子横持手机，两侧男子探身微笑看屏幕",
+    "match_reason": "三人共同观看手机的中景站位关系清晰，可供新人和亲友同框交流参考；广告画面非实拍婚礼",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W577.jpeg",
+    "git_blob": "d81d951e3a944b05b1a279e6e3637e1625b820e0"
+  },
+  {
+    "source_key": "W581",
+    "sha256": "ce1430dcb5d21ae8576cca429434a2b71b47649b26d5950016d065b203c9d05a",
+    "file_size": 94164,
+    "assigned_card_id": "A09",
+    "visual_description": "红灯笼夜巷，两人背对镜头并肩向前走，远处上方有焰火",
+    "match_reason": "夜间双人并肩散步的背面全景，灯笼形成纵深，适合参考夜间转场构图；不要求复制焰火或广告情境",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W581.jpeg",
+    "git_blob": "7a6e6c11e054c48718ddc6d872f7196e9d9415e9"
+  },
+  {
+    "source_key": "W587",
+    "sha256": "d3db34d94965c071189ed82a21ab938a02fd4eb94ecee0d629f9141ad84c225f",
+    "file_size": 212747,
+    "assigned_card_id": "A13",
+    "visual_description": "俯拍绿色沙发，两人并肩坐靠，男子手臂搭过女子肩背",
+    "match_reason": "双人坐姿自然依靠的高位俯拍，可补充已有站姿参考；生活广告仅作机位示范",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W587.jpeg",
+    "git_blob": "e0a559db4a6694054163105096169c0e4b23d662"
   }
 ]
