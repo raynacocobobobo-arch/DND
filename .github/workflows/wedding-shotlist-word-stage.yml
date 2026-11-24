@@ -1,0 +1,76 @@
+name: Stage verified Word shotlist images
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wedding-shotlist-word-stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: wedding-shotlist-word-stage
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Wait for verified Word source
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 60); do
+            if curl -fsSL --max-time 15 'https://raw.githubusercontent.com/raynacocobobobo-arch/wedding/main/shotlist/reference-import-report.json' -o "$RUNNER_TEMP/report.json"; then
+              if python -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d.get("word_original_images",0)>=47 and d["word_original_images"]==d["word_thumbnails"] and d["word_image_hash_failures"]==0' "$RUNNER_TEMP/report.json"; then
+                cat "$RUNNER_TEMP/report.json"
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          exit 1
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          sparse-checkout: |
+            wedding/shotlist
+      - name: Fetch verified wedding source
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/raynacocobobobo-arch/wedding.git "$RUNNER_TEMP/wedding-source"
+          git -C "$RUNNER_TEMP/wedding-source" sparse-checkout set shotlist
+          cd "$RUNNER_TEMP/wedding-source"
+          git rev-parse HEAD
+          node shotlist/check-data.cjs
+          node --check shotlist/app.js
+          node --check shotlist/sw.js
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          root=Path("shotlist")
+          rows=json.loads((root/"word-source/index.json").read_text())
+          report=json.loads((root/"reference-import-report.json").read_text())
+          assert len(rows)==report["word_original_images"]==report["word_thumbnails"]
+          for r in rows:
+              p=root/"assets/references/word"/r["path"]
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==r["sha256"]
+              assert (root/"assets/references/word-thumbs"/(r["sha256"]+".jpg")).is_file()
+          print("Verified",len(rows),"Word originals")
+          PY
+      - name: Stage only website assets
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/wedding-source/shotlist"
+          DST="wedding/shotlist"
+          mkdir -p "$DST/assets/references" "$DST/word-source"
+          for f in index.html app.js data.js style.css sw.js manifest.webmanifest icon.svg reference-import-report.json; do
+            cp "$SRC/$f" "$DST/$f"
+          done
+          cp -a "$SRC/assets/references/." "$DST/assets/references/"
+          cp "$SRC/word-source/index.json" "$DST/word-source/index.json"
+          git add -- "$DST"
+          git diff --cached --name-only | python -c 'import sys; p=sys.stdin.read().splitlines(); assert p and all(x.startswith("wedding/shotlist/") for x in p)'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Stage verified Word reference images"
+          git push origin HEAD:refs/heads/shotlist-word-release
+          git rev-parse HEAD
