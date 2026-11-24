@@ -54,10 +54,10 @@ function setupUnitAtlas(){
  const roles={
  'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g05':'步兵','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
  'reinforcements':'精锐 灵能 步兵 机动 步兵 技术 精锐 步兵 精锐 精锐 载具 NPC','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵 步兵',
- 'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物 载具 载具 精锐',
- 'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具 载具 载具',
+ 'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物 载具 载具 精锐 指挥',
+ 'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具 载具 载具 载具 指挥',
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
- 'enemy-units-g05':'指挥 步兵 载具 技术 载具','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵 技术 指挥 指挥','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能'};
+ 'enemy-units-g05':'指挥 步兵 载具 技术 载具 技术 精锐 指挥 步兵','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵 技术 指挥 指挥','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能'};
  const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
   const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-modelcards5')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-modelcards6')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
