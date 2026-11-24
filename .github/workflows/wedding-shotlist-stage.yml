@@ -1,0 +1,66 @@
+name: Stage wedding shotlist photo release
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wedding-shotlist-stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: wedding-shotlist-stage
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Wait for verified public source revision
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 90); do
+            if curl -fsSL --max-time 15 'https://raw.githubusercontent.com/raynacocobobobo-arch/wedding/main/shotlist/reference-import-report.json' -o "$RUNNER_TEMP/shotlist-report.json"; then
+              if python -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d["original_full_images"]>0 and d["original_full_images"]==d["original_thumbnails"] and not d["failures"]' "$RUNNER_TEMP/shotlist-report.json"; then
+                cat "$RUNNER_TEMP/shotlist-report.json"
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          echo "No verified source image report" >&2
+          exit 1
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          sparse-checkout: |
+            wedding/shotlist
+          fetch-depth: 1
+      - name: Fetch verified shotlist source
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/raynacocobobobo-arch/wedding.git "$RUNNER_TEMP/wedding-source"
+          git -C "$RUNNER_TEMP/wedding-source" sparse-checkout set shotlist
+          cd "$RUNNER_TEMP/wedding-source"
+          git rev-parse HEAD
+          node shotlist/check-data.cjs
+          node --check shotlist/app.js
+          node --check shotlist/sw.js
+          python -c 'import json; d=json.load(open("shotlist/reference-import-report.json")); assert d["original_full_images"]>0 and not d["failures"]'
+      - name: Stage only the public shotlist assets
+        run: |
+          set -euo pipefail
+          SRC="$RUNNER_TEMP/wedding-source/shotlist"
+          DST="wedding/shotlist"
+          mkdir -p "$DST/assets/references" "$DST/legacy-source"
+          for f in index.html app.js data.js style.css sw.js manifest.webmanifest icon.svg reference-import-report.json; do
+            cp "$SRC/$f" "$DST/$f"
+          done
+          cp -a "$SRC/assets/references/." "$DST/assets/references/"
+          cp -a "$SRC/legacy-source/." "$DST/legacy-source/"
+          git add -- "$DST"
+          git diff --cached --name-only | python -c 'import sys; p=sys.stdin.read().splitlines(); assert p and all(x.startswith("wedding/shotlist/") for x in p)'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Stage verified original wedding shotlist images"
+          git push origin HEAD:refs/heads/shotlist-photo-release
+          git rev-parse HEAD
