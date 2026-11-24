@@ -1,0 +1,25 @@
+name: Verify live wedding shotlist
+on:
+  push:
+    paths:
+      - '.github/workflows/wedding-shotlist-live-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          python - <<'PY'
+          import urllib.request,json
+          base='https://raynacocobobobo-arch.github.io/DND/wedding/shotlist/'
+          for p in ['index.html','reference-import-report.json','assets/references/legacy/bride/f/1.jpg','assets/references/legacy/bride/t/1.jpg']:
+              with urllib.request.urlopen(base+p,timeout=30) as r:
+                  b=r.read()
+                  print(p,r.status,r.headers.get('Content-Type'),len(b))
+                  assert r.status==200
+                  if p.endswith('.jpg'): assert b.startswith(b'\xff\xd8')
+                  if p.endswith('.json'): assert json.loads(b)['original_full_images']==188
+                  if p.endswith('.html'): assert b'data.js' in b
+          PY
