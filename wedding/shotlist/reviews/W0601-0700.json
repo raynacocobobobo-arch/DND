@@ -330,12 +330,14 @@
     "match_reason": "完整双人背影与海边环境，补充白天开放场地的散步调度，作为参考",
     "assigned_card_id": "A09",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 613,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W613.jpeg",
+    "git_blob": "ca0c0b0e9f42913728c3473cb76b15308a7f0b9f"
   },
   {
     "source_key": "W614",
@@ -382,12 +384,14 @@
     "match_reason": "以双人身体两侧框住手部和远景，有独立环境构图价值",
     "assigned_card_id": "A10",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 615,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W615.jpeg",
+    "git_blob": "05b8dfb7804d3f8f19756dcc6c8707b0f1b6007d"
   },
   {
     "source_key": "W616",
@@ -434,12 +438,14 @@
     "match_reason": "区别于W581和W613的背面远景，提供侧向跟拍、手臂延伸和前后错步参考；现场改为慢走，不复制奔跑。",
     "assigned_card_id": "A09",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 617,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W617.jpeg",
+    "git_blob": "d8362dcb786b858b46286b39cb05efad137691a7"
   },
   {
     "source_key": "W618",
@@ -642,12 +648,14 @@
     "match_reason": "与W629/W630并列骑行不同，提供前后错位与侧后视线的中景；在封闭场地低速直行或停稳模拟，不在开放道路回头。",
     "assigned_card_id": "A32",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 625,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W625.jpeg",
+    "git_blob": "93eccc45f0cf8598cd9d497c5710c65268b6b931"
   },
   {
     "source_key": "W626",
@@ -746,12 +754,14 @@
     "match_reason": "双人各骑一辆、空间关系明确；仅建议安全封闭场地低速拍摄",
     "assigned_card_id": "A32",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 629,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W629.jpeg",
+    "git_blob": "f617a9b8a7648721d8872c1f498d8d89610d93fe"
   },
   {
     "source_key": "W630",
@@ -772,12 +782,14 @@
     "match_reason": "与W629全景互补，可参考停稳车辆后的双人视线和中景构图",
     "assigned_card_id": "A32",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 630,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W630.jpeg",
+    "git_blob": "f0ccaf2df9382ef50e2223490045e8eb6456256b"
   },
   {
     "source_key": "W631",
@@ -850,12 +862,14 @@
     "match_reason": "不同于各骑一车，补充同一辆道具旁的前后站位与推车参考；不安排搭乘或推行中的危险动作。",
     "assigned_card_id": "A32",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 633,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W633.jpeg",
+    "git_blob": "61fd87e5d06b221bf09855bad60d43c148bbcbdb"
   },
   {
     "source_key": "W634",
@@ -928,12 +942,14 @@
     "match_reason": "停稳准备状态与骑行远景互补，可在安全场地静态拍摄，保留原图角落水印",
     "assigned_card_id": "A32",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 636,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W636.jpeg",
+    "git_blob": "9041b388d3fb6eda3aaee6b6afdf5432e3763d42"
   },
   {
     "source_key": "W637",
@@ -1318,12 +1334,14 @@
     "match_reason": "补充W507车厢全景和W509手部近景之外的肩靠表情特写；借鉴婚车内静态机位，不照搬公交场景。",
     "assigned_card_id": "A08",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 651,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W651.png",
+    "git_blob": "c7f7084bdee1d40d9179ce020e45a7f320311873"
   },
   {
     "source_key": "W652",
@@ -1396,12 +1414,14 @@
     "match_reason": "拍摄者与被摄者同时入镜，明确互拍动作和道具互动",
     "assigned_card_id": "A15",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 654,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W654.jpeg",
+    "git_blob": "d999d47f39b67fae43a8b905e579613c78cf3595"
   },
   {
     "source_key": "W655",
@@ -1500,12 +1520,14 @@
     "match_reason": "补充W507的车厢日间全景和W509的手部细节，提供夜间车内双人表情构图；车辆停稳后拍摄。",
     "assigned_card_id": "A08",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 658,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W658.jpeg",
+    "git_blob": "91de46db04be1417df7215b14211cce93836f82b"
   },
   {
     "source_key": "W659",
@@ -1578,12 +1600,14 @@
     "match_reason": "不同于W654席地互拍和W688沙发互拍，提供站立被摄者与摄影者屈身的空间关系；婚礼可将餐盘替换为捧花或信物。",
     "assigned_card_id": "A15",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 661,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W661.jpeg",
+    "git_blob": "e6024c666cfe11da258c7d0f66c5a22566c18dfe"
   },
   {
     "source_key": "W662",
@@ -1838,12 +1862,14 @@
     "match_reason": "区别于整掌交握，补充轻松勾指互动和并坐时手臂距离，不需要新建动作卡；平台标志在角落。",
     "assigned_card_id": "A10",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 671,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W671.jpeg",
+    "git_blob": "07316fb75ec69c46b622c0afe012a299ca1f8dc2"
   },
   {
     "source_key": "W672",
@@ -1916,12 +1942,14 @@
     "match_reason": "补充年长夫妻的坐姿依靠，亦可作新人或长辈双人自然互动参考",
     "assigned_card_id": "A13",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 674,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W674.jpeg",
+    "git_blob": "08843f53a748b6e10d0472e141a9309dfd39cc43"
   },
   {
     "source_key": "W675",
@@ -1968,12 +1996,14 @@
     "match_reason": "作为W678和W392完整动作之后的剪影补充镜头，不作为独立动作教学；适合有窗光的室内静态模拟。",
     "assigned_card_id": "A17",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 676,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W676.jpeg",
+    "git_blob": "d8a681b106d284e81b21ad24f5d0c1ef2cda0343"
   },
   {
     "source_key": "W677",
@@ -2020,12 +2050,14 @@
     "match_reason": "完整双人转身关系，补充暖逆光慢舞氛围机位",
     "assigned_card_id": "A17",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 678,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W678.jpeg",
+    "git_blob": "e7f522be3630d205127a110b755dbc1b67b0d7fd"
   },
   {
     "source_key": "W679",
@@ -2072,12 +2104,14 @@
     "match_reason": "与W678强逆光氛围图互补，提供更清楚的举手、转身及双方视线关系；底部广告字不影响动作主体。",
     "assigned_card_id": "A17",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 680,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W680.jpeg",
+    "git_blob": "3272779369724aea29b7150582d8ab0b58e73581"
   },
   {
     "source_key": "W681",
@@ -2098,12 +2132,14 @@
     "match_reason": "补充双人慢舞脚步与机位细节，与W680上半身镜头互补；仅作为完整舞蹈动作卡的细节，不要求特定步法。",
     "assigned_card_id": "A17",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 681,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W681.jpeg",
+    "git_blob": "fb9ae6dbad8fc1fcd21a577b6a11c03abaafd336"
   },
   {
     "source_key": "W682",
@@ -2280,11 +2316,13 @@
     "match_reason": "室内明亮双人拍摄关系完整，补充干净场景的互拍参考",
     "assigned_card_id": "A15",
     "review_status": "pending",
-    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。",
+    "review_notes": "2026-11-24 二次视觉复核，逐图查看并比较相邻镜头及正式动作卡；原始字节SHA-256、Git blob SHA和尺寸已核验。通过待上传，未计入上线。 原图Git对象已校验；等待Pages部署确认。",
     "sort_order": 688,
     "match_confidence": "high",
     "match_type": "reference",
     "created_at": "2026-11-24T14:09:54Z",
-    "updated_at": "2026-11-24T14:09:54Z"
+    "updated_at": "2026-11-24T14:09:54Z",
+    "path": "assets/references/reviewed/W688.jpeg",
+    "git_blob": "079d0af49c4e66d5bbe68c4dd2dd862daf63c8da"
   }
 ]

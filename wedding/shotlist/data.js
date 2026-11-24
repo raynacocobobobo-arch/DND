@@ -2882,7 +2882,9 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W507.jpeg",
-        "assets/references/reviewed/W509.jpeg"
+        "assets/references/reviewed/W509.jpeg",
+        "assets/references/reviewed/W651.png",
+        "assets/references/reviewed/W658.jpeg"
       ],
       "image_notes": [
         {
@@ -2892,6 +2894,14 @@ window.ENWAN_DATA = {
         {
           "source": "W509",
           "reason": "补充W507车内关系全景的手部细节，动作明确且不重复景别"
+        },
+        {
+          "source": "W651",
+          "reason": "补充W507车厢全景和W509手部近景之外的肩靠表情特写；借鉴婚车内静态机位，不照搬公交场景。"
+        },
+        {
+          "source": "W658",
+          "reason": "补充W507的车厢日间全景和W509的手部细节，提供夜间车内双人表情构图；车辆停稳后拍摄。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2907,12 +2917,22 @@ window.ENWAN_DATA = {
       "delivery_check": "一个来回以内；全景、中景、背影、牵手细节。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W581.jpeg"
+        "assets/references/reviewed/W581.jpeg",
+        "assets/references/reviewed/W613.jpeg",
+        "assets/references/reviewed/W617.jpeg"
       ],
       "image_notes": [
         {
           "source": "W581",
           "reason": "夜间双人并肩散步的背面全景，灯笼形成纵深，适合参考夜间转场构图；不要求复制焰火或广告情境"
+        },
+        {
+          "source": "W613",
+          "reason": "完整双人背影与海边环境，补充白天开放场地的散步调度，作为参考"
+        },
+        {
+          "source": "W617",
+          "reason": "区别于W581和W613的背面远景，提供侧向跟拍、手臂延伸和前后错步参考；现场改为慢走，不复制奔跑。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2930,7 +2950,9 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W320.jpeg",
         "assets/references/reviewed/W538.jpeg",
-        "assets/references/reviewed/W551.jpeg"
+        "assets/references/reviewed/W551.jpeg",
+        "assets/references/reviewed/W615.jpeg",
+        "assets/references/reviewed/W671.jpeg"
       ],
       "image_notes": [
         {
@@ -2944,6 +2966,14 @@ window.ENWAN_DATA = {
         {
           "source": "W551",
           "reason": "紧扣手部完成态且背景保留情绪，补充W538伸手前的细节"
+        },
+        {
+          "source": "W615",
+          "reason": "以双人身体两侧框住手部和远景，有独立环境构图价值"
+        },
+        {
+          "source": "W671",
+          "reason": "区别于整掌交握，补充轻松勾指互动和并坐时手臂距离，不需要新建动作卡；平台标志在角落。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3025,7 +3055,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W265.jpeg",
         "assets/references/reviewed/W521.jpeg",
         "assets/references/reviewed/W546.jpeg",
-        "assets/references/reviewed/W587.jpeg"
+        "assets/references/reviewed/W587.jpeg",
+        "assets/references/reviewed/W674.jpeg"
       ],
       "image_notes": [
         {
@@ -3047,6 +3078,10 @@ window.ENWAN_DATA = {
         {
           "source": "W587",
           "reason": "双人坐姿自然依靠的高位俯拍，可补充已有站姿参考；生活广告仅作机位示范"
+        },
+        {
+          "source": "W674",
+          "reason": "补充年长夫妻的坐姿依靠，亦可作新人或长辈双人自然互动参考"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3084,7 +3119,10 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W253.jpeg",
-        "assets/references/reviewed/W552.jpeg"
+        "assets/references/reviewed/W552.jpeg",
+        "assets/references/reviewed/W654.jpeg",
+        "assets/references/reviewed/W661.jpeg",
+        "assets/references/reviewed/W688.jpeg"
       ],
       "image_notes": [
         {
@@ -3094,6 +3132,18 @@ window.ENWAN_DATA = {
         {
           "source": "W552",
           "reason": "双人共享相机的动作和中景站位清楚，适合婚礼补拍中互相看照片"
+        },
+        {
+          "source": "W654",
+          "reason": "拍摄者与被摄者同时入镜，明确互拍动作和道具互动"
+        },
+        {
+          "source": "W661",
+          "reason": "不同于W654席地互拍和W688沙发互拍，提供站立被摄者与摄影者屈身的空间关系；婚礼可将餐盘替换为捧花或信物。"
+        },
+        {
+          "source": "W688",
+          "reason": "室内明亮双人拍摄关系完整，补充干净场景的互拍参考"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3130,12 +3180,32 @@ window.ENWAN_DATA = {
       "delivery_check": "一次自然动作，不要求抛举、快速旋转或练习编舞。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W392.jpeg"
+        "assets/references/reviewed/W392.jpeg",
+        "assets/references/reviewed/W676.jpeg",
+        "assets/references/reviewed/W678.jpeg",
+        "assets/references/reviewed/W680.jpeg",
+        "assets/references/reviewed/W681.jpeg"
       ],
       "image_notes": [
         {
           "source": "W392",
           "reason": "A17：牵手举过头顶的转身动作明确、两人站位完整；非婚礼实拍"
+        },
+        {
+          "source": "W676",
+          "reason": "作为W678和W392完整动作之后的剪影补充镜头，不作为独立动作教学；适合有窗光的室内静态模拟。"
+        },
+        {
+          "source": "W678",
+          "reason": "完整双人转身关系，补充暖逆光慢舞氛围机位"
+        },
+        {
+          "source": "W680",
+          "reason": "与W678强逆光氛围图互补，提供更清楚的举手、转身及双方视线关系；底部广告字不影响动作主体。"
+        },
+        {
+          "source": "W681",
+          "reason": "补充双人慢舞脚步与机位细节，与W680上半身镜头互补；仅作为完整舞蹈动作卡的细节，不要求特定步法。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3176,9 +3246,36 @@ window.ENWAN_DATA = {
       "camera": "先拍环境与双人关系，再拍并行、前后跟随和手脚细节。",
       "delivery_check": "骑行关系、环境和停下后的互动；安全优先。",
       "is_core": false,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/W625.jpeg",
+        "assets/references/reviewed/W629.jpeg",
+        "assets/references/reviewed/W630.jpeg",
+        "assets/references/reviewed/W633.jpeg",
+        "assets/references/reviewed/W636.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W625",
+          "reason": "与W629/W630并列骑行不同，提供前后错位与侧后视线的中景；在封闭场地低速直行或停稳模拟，不在开放道路回头。"
+        },
+        {
+          "source": "W629",
+          "reason": "双人各骑一辆、空间关系明确；仅建议安全封闭场地低速拍摄"
+        },
+        {
+          "source": "W630",
+          "reason": "与W629全景互补，可参考停稳车辆后的双人视线和中景构图"
+        },
+        {
+          "source": "W633",
+          "reason": "不同于各骑一车，补充同一辆道具旁的前后站位与推车参考；不安排搭乘或推行中的危险动作。"
+        },
+        {
+          "source": "W636",
+          "reason": "停稳准备状态与骑行远景互补，可在安全场地静态拍摄，保留原图角落水印"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A18",
@@ -3426,7 +3523,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 49,
+    "images": 68,
     "core_cards": 26,
     "additional_cards": 7
   }
