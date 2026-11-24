@@ -1,0 +1,119 @@
+name: Extract official Blue Horror model portrait
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/severed-ember-blue-horror-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install portrait extraction dependencies
+        run: pip install --disable-pip-version-check pymupdf Pillow numpy scipy
+      - name: Extract painted miniature from official Games Workshop PDF
+        run: |
+          python - <<'PY'
+          import io, urllib.request, re
+          from pathlib import Path
+          import fitz
+          import numpy as np
+          from scipy import ndimage as ndi
+          from PIL import Image
+          url="https://assets.warhammer-community.com/eng_jun_25_aos_factionpack_disciples_of_tzeentch-49xpxoosha-si7fabi4ok.pdf"
+          req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0"})
+          with urllib.request.urlopen(req,timeout=60) as r:
+              data=r.read(100*1024*1024)
+          assert data[:4]==b'%PDF'
+          doc=fitz.open(stream=data,filetype="pdf")
+          pages=[]
+          for i,page in enumerate(doc):
+              t=" ".join(page.get_text().upper().split())
+              if "BLUE HORRORS AND BRIMSTONE HORRORS" in t and "SPLIT AGAIN" in t:
+                  pages.append(i)
+          assert pages, "Official Blue Horrors page not found"
+          candidates=[]
+          for i in pages:
+              for item in doc[i].get_images(full=True):
+                  xref,smask,w,h=item[:4]
+                  if w<200 or h<180: continue
+                  try:
+                      pix=fitz.Pixmap(doc,xref)
+                      if pix.colorspace and pix.colorspace.n>3: pix=fitz.Pixmap(fitz.csRGB,pix)
+                      im=Image.open(io.BytesIO(pix.tobytes("png"))).convert("RGBA")
+                      if smask:
+                          mask=fitz.Pixmap(doc,smask)
+                          a=Image.open(io.BytesIO(mask.tobytes("png"))).convert("L")
+                          if a.size==im.size: im.putalpha(a)
+                      arr=np.array(im)
+                      rgb=arr[:,:,:3].astype(np.int16)
+                      r,g,b=rgb[:,:,0],rgb[:,:,1],rgb[:,:,2]
+                      blue=(b-r>35)&(g-r>12)&(b-g>0)&(arr[:,:,3]>160)
+                      if blue.sum()>800:
+                          candidates.append((int(blue.sum()),i,xref,im,blue))
+                  except Exception as e: print("Skip image",xref,str(e))
+          assert candidates,"No painted blue miniature extracted from official document"
+          candidates.sort(key=lambda x:x[0],reverse=True)
+          for score,page,xref,im,blue in candidates:
+              a=np.array(im)
+              alpha=a[:,:,3]
+              if (alpha<30).mean()>.03:
+                  fg=alpha>24
+              else:
+                  rgb=a[:,:,:3]
+                  white=(rgb.min(axis=2)>238)
+                  if white.mean()<.35: continue
+                  fg=~white
+              dil=ndi.binary_dilation(fg,iterations=2)
+              labels,n=ndi.label(dil)
+              hits=np.bincount(labels[blue],minlength=n+1);hits[0]=0
+              label=int(hits.argmax())
+              if hits[label]<800 or hits[label]<.65*score: continue
+              component=labels==label
+              yy,xx=np.where(component)
+              if not len(xx): continue
+              box=(max(0,int(xx.min())-6),max(0,int(yy.min())-6),min(im.width,int(xx.max())+7),min(im.height,int(yy.max())+7))
+              if box[2]-box[0]<180 or box[3]-box[1]<200: continue
+              # Preserve the complete connected blue model and its base; never render the PDF's text or rules banners.
+              keep=(component&fg)
+              arr=a.copy()
+              arr[:,:,3]=np.where(keep,arr[:,:,3],0)
+              cut=Image.fromarray(arr,"RGBA").crop(box)
+              white=Image.new("RGB",cut.size,"white")
+              white.paste(cut,mask=cut.getchannel("A"))
+              out=Path("severed-ember/assets/rules/models")
+              out.mkdir(parents=True,exist_ok=True)
+              white.save(out/"blue-horror-official.webp",quality=94,method=6)
+              preview=white.copy()
+              preview.thumbnail((831,860),Image.Resampling.LANCZOS)
+              canvas=Image.new("RGB",(891,920),"white")
+              canvas.paste(preview,((891-preview.width)//2,(920-preview.height)//2))
+              canvas.save(out/"blue-horror-official-standard.webp",quality=92,method=6)
+              assert Image.open(out/"blue-horror-official-standard.webp").size==(891,920)
+              print("Official source page",page+1,"embedded image",xref,"original crop",white.size,"blue pixels",int(hits[label]))
+              break
+          else: raise RuntimeError("No suitable standalone white/transparent blue miniature; no image published")
+          PY
+      - name: Commit only the two new model portraits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add severed-ember/assets/rules/models/blue-horror-official.webp severed-ember/assets/rules/models/blue-horror-official-standard.webp
+          git diff --cached --quiet && exit 0
+          git commit -m "Extract official painted Blue Horror miniature on standard white canvas"
+          for attempt in 1 2 3; do
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+            if git push origin HEAD:gh-pages; then exit 0; fi
+          done
+          exit 1
