@@ -1167,11 +1167,12 @@ function renderCalendar(){
  '<button type="button" data-cal-shift="7" aria-label="向后七天" '+(latest?'disabled':'')+'>›</button></div></header>'+
  '<div class="cal30-months" aria-label="月份分隔">'+monthlyGuide+'</div>'+
  '<div class="cal30-grid" role="group" aria-label="连续21天每日运动消耗">'+cells+'</div>'+
- '<footer class="cal30-footer">'+
+ '<footer class="cal30-footer" style="grid-template-columns:repeat(5,minmax(0,1fr))">'+
  '<div class="cal30-stat"><span>总消耗</span><strong>'+energy.toLocaleString('zh-CN')+'</strong><small>kcal</small></div>'+
  '<div class="cal30-stat"><span>运动</span><strong>'+workouts+'</strong><small>天</small></div>'+
  '<div class="cal30-stat"><span>打卡</span><strong>'+checkins+'</strong><small>天</small></div>'+
  '<div class="cal30-stat"><span>连续</span><strong>'+windowStreak(days)+'</strong><small>天</small></div>'+
+ '<div class="cal30-stat" title="按当前日历总消耗 ÷ 7700 × 50% 估算，不代表实际减重"><span>等效消耗</span><strong>'+(energy/15400).toFixed(2)+'</strong><small>kg</small></div>'+
  '</footer>'+
  (!latest?'<button type="button" class="cal30-back" data-cal-today>回到最近21天</button>':'')+
  (latest&&dayKind(today)!=='workout'?'<div class="cal30-rest">'+renderRestButton()+'</div>':'')+
