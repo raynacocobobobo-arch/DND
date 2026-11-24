@@ -5,7 +5,7 @@
     "file_size": 219855,
     "assigned_card_id": "A13",
     "visual_description": "男女并肩站立，女子双手挽男子手臂，双方侧脸靠近微笑，逆光中景",
-    "match_reason": "A13并肩靠在一起的站姿类比；非婚礼实拍，原图待上传",
+    "match_reason": "A13并肩靠在一起的站姿类比；非婚礼实拍",
     "match_type": "reference",
     "path": "assets/references/reviewed/W240.jpeg",
     "git_blob": "85a436c2ce0a456b85783bb7298a0e4723772a57"
@@ -16,7 +16,7 @@
     "file_size": 249626,
     "assigned_card_id": "A15",
     "visual_description": "窗边女子双手持相机微笑，男子背对镜头立于操作台前",
-    "match_reason": "A15：一方持相机记录另一方的自然状态，双人空间关系明确，可作为互拍调度参考；非婚礼实拍，原图待上传",
+    "match_reason": "A15：一方持相机记录另一方的自然状态，双人空间关系明确，可作为互拍调度参考；非婚礼实拍",
     "match_type": "reference",
     "path": "assets/references/reviewed/W253.jpeg",
     "git_blob": "774862298125abdadd2043344e4fb9ec9cbc4364"
@@ -27,7 +27,7 @@
     "file_size": 57371,
     "assigned_card_id": "A13",
     "visual_description": "户外双人紧靠，男子搂住女子肩部，双方同向望远处",
-    "match_reason": "A13：侧身贴肩、单臂搂靠及同向视线清晰，适用于双人补拍；非婚礼实拍，原图待上传",
+    "match_reason": "A13：侧身贴肩、单臂搂靠及同向视线清晰，适用于双人补拍；非婚礼实拍",
     "match_type": "reference",
     "path": "assets/references/reviewed/W265.jpeg",
     "git_blob": "5b2540df78a1623c76a236c81af5677deafda4ac"

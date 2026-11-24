@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "source_counts": {
+    "W": 1027,
+    "R": 455
+  },
+  "source_files": {
+    "W": "婚礼.docx",
+    "R": "常规调度_副本2.docx"
+  },
+  "files": [
+    "reviews/W0201-0300.json",
+    "reviews/W0301-0400.json",
+    "reviews/W0401-0500.json"
+  ],
+  "counts": {
+    "reviewed": 240,
+    "approved": 20,
+    "excluded": 220,
+    "pending": 0,
+    "unreviewed": 1242
+  },
+  "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
+  "migrated_at": "2026-11-24",
+  "note": "迁移自既有逐图审核记录；保留原有审核依据，不等同于本次重新审查。"
+}
