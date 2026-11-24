@@ -50,16 +50,16 @@ function renderTimeline(){
 
 function setupUnitAtlas(){
  const target=document.getElementById('rules-atlas'),grid=document.getElementById('atlas-grid');if(!target||!grid)return;
- const groups={'friendly-g01':'薪传议会','friendly-g05':'余火守卫','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使'};
+ const groups={'friendly-g01':'薪传议会','friendly-g05':'余火守卫','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使','enemy-units-g07':'黑暗机械教','enemy-units-g08':'审判庭与舰船武装'};
  const roles={
  'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g05':'步兵','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
- 'reinforcements':'精锐 灵能 步兵 机动 步兵 技术','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵',
- 'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物',
+ 'reinforcements':'精锐 灵能 步兵 机动 步兵 技术 精锐 步兵 精锐 精锐 载具','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵 步兵',
+ 'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物 载具 载具 精锐',
  'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具',
- 'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物',
- 'enemy-units-g05':'指挥 步兵 载具 技术','enemy-units-g06':'步兵'};
+ 'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
+ 'enemy-units-g05':'指挥 步兵 载具 技术 载具','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能'};
  const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
-  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':h.id.startsWith('rules-enemy-units-g06-')?'opposition':'enemy';
+  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
   const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
   const role=(roles[groupKey]||'').split(' ')[sequence]||'其他';
@@ -74,7 +74,7 @@ function setupUnitAtlas(){
  const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
- const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使'];
+ const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','剧情援军','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','暗黑天使','黑暗机械教','审判庭与舰船武装'];
  const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261117-lazy1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-tabletop1')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
