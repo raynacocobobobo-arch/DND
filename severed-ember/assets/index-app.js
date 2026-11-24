@@ -57,7 +57,7 @@ function setupUnitAtlas(){
  'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物 载具 载具 精锐',
  'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具',
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
- 'enemy-units-g05':'指挥 步兵 载具 技术 载具','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能'};
+ 'enemy-units-g05':'指挥 步兵 载具 技术 载具','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵 技术','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能'};
  const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
   const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-atlasfix1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261124-navfaction2')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
@@ -170,7 +170,7 @@ const active=group.dataset.volume===activeVolume;
 group.classList.toggle('active',active);
 if(active && group.querySelector(':scope > .rail-mini'))group.open=true;
 });
-document.querySelectorAll('.rail-subitem').forEach(a=>a.classList.toggle('active',a.hash==='#'+key));const activeRuleLink=document.querySelector('.rules-rail-group a.rail-subitem.active');if(activeRuleLink){const unitGroup=activeRuleLink.closest('details.rules-nav-group');if(unitGroup)unitGroup.open=true;}document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.getElementById('nav-quick').setAttribute('aria-expanded','false');document.getElementById('nav-quick').hidden=k==='home';document.getElementById('nav-shade').hidden=true;document.body.classList.remove('nav-open');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else if(matched&&!isParagraph){/* First-level chapters always open at their own hero, clear of the sticky top bar. */const current=document.getElementById('view-'+k);const chapterTop=current?.querySelector(':scope > .subhero')||current;const stickyHeader=document.querySelector('.topbar');const offset=(stickyHeader?.getBoundingClientRect().height||0)+8;if(chapterTop){const top=window.scrollY+chapterTop.getBoundingClientRect().top-offset;window.scrollTo({top:Math.max(0,top),behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}else{window.scrollTo({top:0,behavior:'instant'});}}));}
+document.querySelectorAll('.rail-subitem').forEach(a=>a.classList.toggle('active',a.hash==='#'+key));const activeRuleLink=document.querySelector('.rules-rail-group a.rail-subitem.active');if(activeRuleLink){for(let parent=activeRuleLink.parentElement;parent;parent=parent.parentElement){if(parent.matches('details.rules-nav-group,details.rules-nav-section'))parent.open=true;}}document.getElementById('drawer').classList.remove('open');document.getElementById('menubutton').setAttribute('aria-expanded','false');document.getElementById('nav-quick').setAttribute('aria-expanded','false');document.getElementById('nav-quick').hidden=k==='home';document.getElementById('nav-shade').hidden=true;document.body.classList.remove('nav-open');document.title='破碎余烬隐修会 · '+pageTitles[k];const isParagraph=!!matched&&key!==`codex-v${matched[1]}`;const deepAnchor=isParagraph||inEnemyArchive||inRulesArchive;requestAnimationFrame(()=>requestAnimationFrame(()=>{if(deepAnchor){const target=document.getElementById(key);if(target)target.scrollIntoView({block:'start',behavior:'instant'});}else if(matched&&!isParagraph){/* First-level chapters always open at their own hero, clear of the sticky top bar. */const current=document.getElementById('view-'+k);const chapterTop=current?.querySelector(':scope > .subhero')||current;const stickyHeader=document.querySelector('.topbar');const offset=(stickyHeader?.getBoundingClientRect().height||0)+8;if(chapterTop){const top=window.scrollY+chapterTop.getBoundingClientRect().top-offset;window.scrollTo({top:Math.max(0,top),behavior:'instant'});}else{window.scrollTo({top:0,behavior:'instant'});}}else{window.scrollTo({top:0,behavior:'instant'});}}));}
 
 // Continue reading from chapter-side tracking, do not fabricate progress.
 try{const v=JSON.parse(localStorage.getItem('ember-last-read')||'null');const a=document.getElementById('v32-continue');if(v?.page && /^\d\d-[\w-]+\.html$/.test(v.page)){a.href='chapters/'+v.page+'?resume=1'+(v.anchor?'#'+encodeURIComponent(v.anchor):'');a.textContent='继续上次阅读 · '+(v.chapter||'档案');a.hidden=false}}catch{}
@@ -186,6 +186,7 @@ document.querySelectorAll('.rail-group').forEach(group=>{
     // without navigating away or moving the reading position.
     if(hasSubmenu && group.open){group.open=false;return;}
     if(hasSubmenu)group.open=true;
+    if(group.dataset.volume==='rules')return;
     // A chapter without subchapters (Volume I) directly opens the volume.
     const target=group.dataset.volume==='rules'?'#rules':'#codex-v'+group.dataset.volume;
     if(location.hash===target)route();
