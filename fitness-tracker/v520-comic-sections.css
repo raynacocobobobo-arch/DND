@@ -5,3 +5,16 @@ body[data-screen="calendar"],body[data-screen="history"],body[data-screen="setti
 /* Keep the five calendar statistics on a single row, including narrow screens. */
 body[data-screen="calendar"] .cal30-footer .cal30-stat > span{white-space:nowrap;}
 body[data-screen="calendar"] .cal30-footer .cal30-stat strong{white-space:nowrap;}
+
+/* Calendar: green marks days with activity but no gym-based training. */
+body[data-screen="calendar"] .cal30-day.workout.non-gym,
+body[data-screen="calendar"] .cal30-day.workout.non-gym.high {
+  background: #557a4b !important;
+  border-color: #182416 !important;
+  box-shadow: inset 0 0 0 1px #a6c58a !important;
+}
+body[data-screen="calendar"] .cal30-day.workout.non-gym .cal30-date strong,
+body[data-screen="calendar"] .cal30-day.workout.non-gym .cal30-date small,
+body[data-screen="calendar"] .cal30-day.workout.non-gym .cal30-kcal {
+  color: #f1f2d4 !important;
+}
