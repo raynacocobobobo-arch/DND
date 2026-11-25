@@ -2785,12 +2785,22 @@ window.ENWAN_DATA = {
       "delivery_check": "试穿过程、礼服整体和合身细节；与正式婚纱展示区分。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W430.jpeg"
+        "assets/references/reviewed/W430.jpeg",
+        "assets/references/reviewed/W869.jpeg",
+        "assets/references/reviewed/W872.jpeg"
       ],
       "image_notes": [
         {
           "source": "W430",
           "reason": "A29：试装后揭晓婚纱、展示给伴侣，场景及服饰关系明确"
+        },
+        {
+          "source": "W869",
+          "reason": "采用：试装时服装与人物同框的全身构图"
+        },
+        {
+          "source": "W872",
+          "reason": "采用：服装试装时的双人站位及室内环境关系"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2806,12 +2816,22 @@ window.ENWAN_DATA = {
       "delivery_check": "妆发、饰物、衣料和调整动作；注意不拍隐私部位。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W481.jpeg"
+        "assets/references/reviewed/W481.jpeg",
+        "assets/references/reviewed/W871.jpeg",
+        "assets/references/reviewed/W875.jpeg"
       ],
       "image_notes": [
         {
           "source": "W481",
           "reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。"
+        },
+        {
+          "source": "W871",
+          "reason": "采用：服饰材质及手部整理细节"
+        },
+        {
+          "source": "W875",
+          "reason": "采用：戒指及手部服饰细节特写，不冒充交换戒指"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2939,7 +2959,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W581.jpeg",
         "assets/references/reviewed/W613.jpeg",
         "assets/references/reviewed/W617.jpeg",
-        "assets/references/reviewed/W809.jpeg"
+        "assets/references/reviewed/W809.jpeg",
+        "assets/references/reviewed/W902.jpeg"
       ],
       "image_notes": [
         {
@@ -2957,6 +2978,10 @@ window.ENWAN_DATA = {
         {
           "source": "W809",
           "reason": "牵手散步动作与双方站位完整；相较W807-W808，人物表情和牵手关系更清楚，作为A09不同机位参考。"
+        },
+        {
+          "source": "W902",
+          "reason": "采用：背面双人散步的对称纵深构图，画面有少量转场图形"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3126,7 +3151,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W794.png",
         "assets/references/reviewed/W830.jpeg",
         "assets/references/reviewed/W846.jpeg",
-        "assets/references/reviewed/W860.jpeg"
+        "assets/references/reviewed/W860.jpeg",
+        "assets/references/reviewed/W905.jpeg"
       ],
       "image_notes": [
         {
@@ -3176,6 +3202,10 @@ window.ENWAN_DATA = {
         {
           "source": "W860",
           "reason": "采用：并肩贴近的低角度双人肖像，区别于W859看手机"
+        },
+        {
+          "source": "W905",
+          "reason": "采用：双人环境站姿与远处海面，服装可替换为礼服"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3235,7 +3265,10 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W834.jpeg",
         "assets/references/reviewed/W835.jpeg",
         "assets/references/reviewed/W843.jpeg",
-        "assets/references/reviewed/W845.jpeg"
+        "assets/references/reviewed/W845.jpeg",
+        "assets/references/reviewed/W861.jpeg",
+        "assets/references/reviewed/W862.jpeg",
+        "assets/references/reviewed/W867.jpeg"
       ],
       "image_notes": [
         {
@@ -3313,6 +3346,18 @@ window.ENWAN_DATA = {
         {
           "source": "W845",
           "reason": "采用：共同看图时自然惊喜表情及双人贴近关系"
+        },
+        {
+          "source": "W861",
+          "reason": "采用：亲友共同看图的近景及自然反应"
+        },
+        {
+          "source": "W862",
+          "reason": "采用：共同看图的完整坐姿及空间中景，与W861互补"
+        },
+        {
+          "source": "W867",
+          "reason": "采用：被拍者反向拍摄摄影者的正面主观机位"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3519,7 +3564,17 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W842.jpeg",
         "assets/references/reviewed/W848.jpeg",
         "assets/references/reviewed/W849.jpeg",
-        "assets/references/reviewed/W853.jpeg"
+        "assets/references/reviewed/W853.jpeg",
+        "assets/references/reviewed/W864.jpeg",
+        "assets/references/reviewed/W876.jpeg",
+        "assets/references/reviewed/W880.jpeg",
+        "assets/references/reviewed/W883.jpeg",
+        "assets/references/reviewed/W887.jpeg",
+        "assets/references/reviewed/W888.jpeg",
+        "assets/references/reviewed/W889.jpeg",
+        "assets/references/reviewed/W890.jpeg",
+        "assets/references/reviewed/W897.jpeg",
+        "assets/references/reviewed/W907.jpeg"
       ],
       "image_notes": [
         {
@@ -3553,6 +3608,46 @@ window.ENWAN_DATA = {
         {
           "source": "W853",
           "reason": "采用：轻松搞怪单人摆姿，适合新郎或伴郎互动拍摄"
+        },
+        {
+          "source": "W864",
+          "reason": "采用：单人环境肖像与中心构图"
+        },
+        {
+          "source": "W876",
+          "reason": "采用：单人安静情绪肖像，冷暖光层次清晰"
+        },
+        {
+          "source": "W880",
+          "reason": "采用：单人自然侧面情绪镜头，适合新郎访谈或反应"
+        },
+        {
+          "source": "W883",
+          "reason": "采用：侧向情绪细节，区别于W880环境中景"
+        },
+        {
+          "source": "W887",
+          "reason": "采用：自然坐姿与手部支撑，适合单人侧面肖像"
+        },
+        {
+          "source": "W888",
+          "reason": "采用：站姿与自然回望反应，适合转场肖像"
+        },
+        {
+          "source": "W889",
+          "reason": "采用：单人自然手势与中近景，适合交流反应补拍"
+        },
+        {
+          "source": "W890",
+          "reason": "采用：坐姿侧脸及画外视线，可作婚礼交流反应"
+        },
+        {
+          "source": "W897",
+          "reason": "采用：自然交流反应近景；低清仅作景别参考"
+        },
+        {
+          "source": "W907",
+          "reason": "采用：环境人像的留白与小人物尺度"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -3733,7 +3828,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W577.jpeg",
         "assets/references/reviewed/W719.jpeg",
         "assets/references/reviewed/W874.jpeg",
-        "assets/references/reviewed/W847.jpeg"
+        "assets/references/reviewed/W847.jpeg",
+        "assets/references/reviewed/W896.jpeg"
       ],
       "image_notes": [
         {
@@ -3751,6 +3847,10 @@ window.ENWAN_DATA = {
         {
           "source": "W847",
           "reason": "采用：活动中的自然反应和站坐关系，可用于亲友互动"
+        },
+        {
+          "source": "W896",
+          "reason": "采用：双人餐桌交流的空间全景；原图低清仅作构图参考"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3867,7 +3967,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 130,
+    "images": 150,
     "core_cards": 26,
     "additional_cards": 7
   }

@@ -20,13 +20,13 @@
   ],
   "counts": {
     "reviewed": 772,
-    "approved": 130,
+    "approved": 150,
     "excluded": 563,
-    "pending": 79,
+    "pending": 59,
     "unreviewed": 710,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "扩展复筛后累计772条，发布清单130张，待上传79张。"
+  "note": "扩展复筛后累计772条，发布清单150张，待上传59张。"
 }
