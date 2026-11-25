@@ -3206,7 +3206,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W024.jpeg",
         "assets/references/reviewed/W056.jpeg",
         "assets/references/reviewed/W071.png",
-        "assets/references/reviewed/W171.jpeg"
+        "assets/references/reviewed/W171.jpeg",
+        "assets/references/reviewed/W176.png"
       ],
       "image_notes": [
         {
@@ -3260,6 +3261,10 @@ window.ENWAN_DATA = {
         {
           "source": "W171",
           "reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补"
+        },
+        {
+          "source": "W176",
+          "reason": "采用：拥抱时正面情绪清晰，与W171接吻和W169环境全景互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3843,7 +3848,12 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W1009.jpeg",
         "assets/references/reviewed/W1014.jpeg",
         "assets/references/reviewed/W1017.jpeg",
-        "assets/references/reviewed/W1018.jpeg"
+        "assets/references/reviewed/W1018.jpeg",
+        "assets/references/reviewed/W195.jpeg",
+        "assets/references/reviewed/R018.jpeg",
+        "assets/references/reviewed/R020.jpeg",
+        "assets/references/reviewed/R025.jpeg",
+        "assets/references/reviewed/R044.jpeg"
       ],
       "image_notes": [
         {
@@ -4033,6 +4043,26 @@ window.ENWAN_DATA = {
         {
           "source": "W1018",
           "reason": "采用：环境中景的单人持物行走，适用礼物或花束道具"
+        },
+        {
+          "source": "W195",
+          "reason": "采用：低机位全身与建筑竖线构图，可迁移到安全场地的新人单人肖像"
+        },
+        {
+          "source": "R018",
+          "reason": "采用：男性逆光侧背肖像，轮廓光与低机位明确，使用安全光源复现"
+        },
+        {
+          "source": "R020",
+          "reason": "采用：自然风与仰角半身肖像，干净背景、面部清楚"
+        },
+        {
+          "source": "R025",
+          "reason": "采用：低对比冷色侧光、安静半身肖像，适合窗光或布景复现"
+        },
+        {
+          "source": "R044",
+          "reason": "采用：行进回头半身至中景、空间纵深清楚，适合新人单人自然调度"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4621,7 +4651,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 280,
+    "images": 286,
     "core_cards": 26,
     "additional_cards": 7
   }
