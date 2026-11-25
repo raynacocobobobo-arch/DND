@@ -3060,7 +3060,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W918.jpeg",
         "assets/references/reviewed/W936.jpeg",
         "assets/references/reviewed/W937.jpeg",
-        "assets/references/reviewed/W944.jpeg"
+        "assets/references/reviewed/W944.jpeg",
+        "assets/references/reviewed/W793.png"
       ],
       "image_notes": [
         {
@@ -3090,6 +3091,10 @@ window.ENWAN_DATA = {
         {
           "source": "W944",
           "reason": "采用：双人亲密互动写真中的侧卧/俯身及触脸姿态，作为摆姿参考。"
+        },
+        {
+          "source": "W793",
+          "reason": "采用：框中框的拥抱背面，与W792递花动作不同"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3112,7 +3117,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W587.jpeg",
         "assets/references/reviewed/W674.jpeg",
         "assets/references/reviewed/W702.jpeg",
-        "assets/references/reviewed/W741.jpeg"
+        "assets/references/reviewed/W741.jpeg",
+        "assets/references/reviewed/W794.png"
       ],
       "image_notes": [
         {
@@ -3146,6 +3152,10 @@ window.ENWAN_DATA = {
         {
           "source": "W741",
           "reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。"
+        },
+        {
+          "source": "W794",
+          "reason": "采用：并肩坐姿及一方看另一方的视线安排"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3161,12 +3171,17 @@ window.ENWAN_DATA = {
       "delivery_check": "一次回头即可；有自然笑更好，不强求。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W522.jpeg"
+        "assets/references/reviewed/W522.jpeg",
+        "assets/references/reviewed/W805.jpeg"
       ],
       "image_notes": [
         {
           "source": "W522",
           "reason": "单方转头看向另一方，过肩侧面机位可直接复用，和W521背面依靠不同"
+        },
+        {
+          "source": "W805",
+          "reason": "采用：前后错位与回望视线，适合双人叙事补拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3411,8 +3426,15 @@ window.ENWAN_DATA = {
       "camera": "环境全景、半身侧面、面部近景与手部细节，利用窗光及前景层次。",
       "delivery_check": "主体动作或情绪清楚，景别与构图有区别。",
       "is_core": false,
-      "images": [],
-      "image_notes": [],
+      "images": [
+        "assets/references/reviewed/W790.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W790",
+          "reason": "采用：单人低头整理头发的情绪近景，文字不遮挡主要动作"
+        }
+      ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
     },
     {
@@ -3624,7 +3646,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W709.jpeg",
         "assets/references/reviewed/W737.png",
         "assets/references/reviewed/W770.jpeg",
-        "assets/references/reviewed/W777.jpeg"
+        "assets/references/reviewed/W777.jpeg",
+        "assets/references/reviewed/W792.png"
       ],
       "image_notes": [
         {
@@ -3650,6 +3673,10 @@ window.ENWAN_DATA = {
         {
           "source": "W777",
           "reason": "采用：补充A25赠花的手部交接特写；与W770单枝玫瑰的双人表情中景互补，花束交接动作明确。"
+        },
+        {
+          "source": "W792",
+          "reason": "采用：利用前景遮挡和双方递接关系表现赠花"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"

@@ -1066,5 +1066,55 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W944.jpeg",
     "git_blob": "9f1242f0f9a3b2f81f668c04a269c5e3621e1ceb"
+  },
+  {
+    "source_key": "W790",
+    "sha256": "261f0ffd84ebfe92e5a4e36c7fc97b6b4b21da1939841cf2ebeb42f654ff14d3",
+    "assigned_card_id": "A34",
+    "visual_description": "夜街女子低头手扶颈侧，灯光散景",
+    "match_reason": "采用：单人低头整理头发的情绪近景，文字不遮挡主要动作",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W790.jpeg",
+    "git_blob": "a75d4b1e8316845f222a65525c365fa58de73479"
+  },
+  {
+    "source_key": "W792",
+    "sha256": "8538b5de6ba601bc45031a8af150c86013ef0ee43d2fa16629ea5c4c083f5a0b",
+    "assigned_card_id": "A25",
+    "visual_description": "从室内窗框拍向门外，男子向女子递大束花",
+    "match_reason": "采用：利用前景遮挡和双方递接关系表现赠花",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W792.png",
+    "git_blob": "f76c9180b724325def4212daab2035103932487a"
+  },
+  {
+    "source_key": "W793",
+    "sha256": "8aab1ff455eeda4d399b480f1f318c4b40a3da92290a186e2c53805b49ac49a5",
+    "assigned_card_id": "A12",
+    "visual_description": "同一门外场景，两人背向镜头靠近拥抱",
+    "match_reason": "采用：框中框的拥抱背面，与W792递花动作不同",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W793.png",
+    "git_blob": "423fa77f84e4681cde5e5165d615381489386692"
+  },
+  {
+    "source_key": "W794",
+    "sha256": "6581ae2cbaf4fcfdc0222b5f38975eb0c39646ed2fa076a755593bc8639069c0",
+    "assigned_card_id": "A13",
+    "visual_description": "沙发上男女并肩坐着，女方望向左侧，男方侧头看她",
+    "match_reason": "采用：并肩坐姿及一方看另一方的视线安排",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W794.png",
+    "git_blob": "4eee53e5f16d33dc3e3d6a6d59ef6a5064fa2e12"
+  },
+  {
+    "source_key": "W805",
+    "sha256": "3fafe2540bbc2df97696496606d5285a5b4a3ca5f55007760f8348f43435067c",
+    "assigned_card_id": "A14",
+    "visual_description": "男子近景回头看向窗边远处坐着的女子",
+    "match_reason": "采用：前后错位与回望视线，适合双人叙事补拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W805.jpeg",
+    "git_blob": "3caf80e403c467b5ff85747b616033e442574a8c"
   }
 ]
