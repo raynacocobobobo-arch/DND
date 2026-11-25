@@ -2852,7 +2852,12 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W947.jpeg",
         "assets/references/reviewed/W052.jpeg",
         "assets/references/reviewed/W054.jpeg",
-        "assets/references/reviewed/W055.jpeg"
+        "assets/references/reviewed/W055.jpeg",
+        "assets/references/reviewed/W061.jpeg",
+        "assets/references/reviewed/W064.jpeg",
+        "assets/references/reviewed/W065.png",
+        "assets/references/reviewed/W067.png",
+        "assets/references/reviewed/W073.png"
       ],
       "image_notes": [
         {
@@ -2878,6 +2883,26 @@ window.ENWAN_DATA = {
         {
           "source": "W055",
           "reason": "采用：相见后的喜悦反应，与W054察觉阶段互补"
+        },
+        {
+          "source": "W061",
+          "reason": "采用：相见反应的干净正面单人机位"
+        },
+        {
+          "source": "W064",
+          "reason": "采用：相见的反向越肩中景，与W061互补"
+        },
+        {
+          "source": "W065",
+          "reason": "采用：迎接时由对方肩后拍摄来者的空间关系"
+        },
+        {
+          "source": "W067",
+          "reason": "采用：相见的反向机位与焦点层次，补充W065"
+        },
+        {
+          "source": "W073",
+          "reason": "采用：到达迎接的前后景距离及车门框景"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2915,7 +2940,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W504.jpeg",
-        "assets/references/reviewed/W506.jpeg"
+        "assets/references/reviewed/W506.jpeg",
+        "assets/references/reviewed/W072.png"
       ],
       "image_notes": [
         {
@@ -2925,6 +2951,10 @@ window.ENWAN_DATA = {
         {
           "source": "W506",
           "reason": "离家转场中具有明确告别互动，与W504登车全景形成不同动作及景别"
+        },
+        {
+          "source": "W072",
+          "reason": "采用：上下车时利用车门框景的侧面机位，不推断具体方向"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3154,7 +3184,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W793.png",
         "assets/references/reviewed/W938.jpeg",
         "assets/references/reviewed/W024.jpeg",
-        "assets/references/reviewed/W056.jpeg"
+        "assets/references/reviewed/W056.jpeg",
+        "assets/references/reviewed/W071.png"
       ],
       "image_notes": [
         {
@@ -3200,6 +3231,10 @@ window.ENWAN_DATA = {
         {
           "source": "W056",
           "reason": "采用：拥抱全貌与环境中远景"
+        },
+        {
+          "source": "W071",
+          "reason": "采用：完整拥抱动作的背侧中景"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3228,7 +3263,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W846.jpeg",
         "assets/references/reviewed/W860.jpeg",
         "assets/references/reviewed/W905.jpeg",
-        "assets/references/reviewed/W034.jpeg"
+        "assets/references/reviewed/W034.jpeg",
+        "assets/references/reviewed/W1004.jpeg"
       ],
       "image_notes": [
         {
@@ -3286,6 +3322,10 @@ window.ENWAN_DATA = {
         {
           "source": "W034",
           "reason": "采用：同向视线、双人侧影及环境留白"
+        },
+        {
+          "source": "W1004",
+          "reason": "采用：双人靠近的环境中景及前景层次"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3366,7 +3406,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W867.jpeg",
         "assets/references/reviewed/W919.jpeg",
         "assets/references/reviewed/W920.jpeg",
-        "assets/references/reviewed/W948.jpeg"
+        "assets/references/reviewed/W948.jpeg",
+        "assets/references/reviewed/W1005.jpeg",
+        "assets/references/reviewed/W1013.jpeg"
       ],
       "image_notes": [
         {
@@ -3468,6 +3510,14 @@ window.ENWAN_DATA = {
         {
           "source": "W948",
           "reason": "采用：互拍时的俏皮道具及越肩构图"
+        },
+        {
+          "source": "W1005",
+          "reason": "采用：共同看手机的双人近景，区别W1004环境机位"
+        },
+        {
+          "source": "W1013",
+          "reason": "采用：多位亲友共同拍摄同一对象的前后景调度；不复刻动物道具"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3740,7 +3790,15 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W033.jpeg",
         "assets/references/reviewed/W037.jpeg",
         "assets/references/reviewed/W038.jpeg",
-        "assets/references/reviewed/W039.jpeg"
+        "assets/references/reviewed/W039.jpeg",
+        "assets/references/reviewed/W057.jpeg",
+        "assets/references/reviewed/W060.jpeg",
+        "assets/references/reviewed/W068.png",
+        "assets/references/reviewed/W1007.jpeg",
+        "assets/references/reviewed/W1009.jpeg",
+        "assets/references/reviewed/W1014.jpeg",
+        "assets/references/reviewed/W1017.jpeg",
+        "assets/references/reviewed/W1018.jpeg"
       ],
       "image_notes": [
         {
@@ -3898,6 +3956,38 @@ window.ENWAN_DATA = {
         {
           "source": "W039",
           "reason": "采用：单人礼服高位全身构图与空间几何"
+        },
+        {
+          "source": "W057",
+          "reason": "采用：单人回望情绪及逆光环境肖像"
+        },
+        {
+          "source": "W060",
+          "reason": "采用：自然侧向眼神的紧凑肖像特写"
+        },
+        {
+          "source": "W068",
+          "reason": "采用：单人转场的动态半身与环境关系，婚礼场地须安全"
+        },
+        {
+          "source": "W1007",
+          "reason": "采用：单人持手机的自然站姿及侧面构图，拍摄对象可替换"
+        },
+        {
+          "source": "W1009",
+          "reason": "采用：展臂姿势与倾斜低机位可用于单人自然情绪，保留字幕原图"
+        },
+        {
+          "source": "W1014",
+          "reason": "采用：自然笑容、抬手与侧光的单人近景，可替换道具"
+        },
+        {
+          "source": "W1017",
+          "reason": "采用：隔透明介质的自然情绪肖像及色彩层次，不复刻鱼缸"
+        },
+        {
+          "source": "W1018",
+          "reason": "采用：环境中景的单人持物行走，适用礼物或花束道具"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4286,7 +4376,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W045.jpeg",
         "assets/references/reviewed/W046.jpeg",
         "assets/references/reviewed/W048.jpeg",
-        "assets/references/reviewed/W050.jpeg"
+        "assets/references/reviewed/W050.jpeg",
+        "assets/references/reviewed/W1001.jpeg",
+        "assets/references/reviewed/W1022.jpeg"
       ],
       "image_notes": [
         {
@@ -4460,13 +4552,21 @@ window.ENWAN_DATA = {
         {
           "source": "W050",
           "reason": "采用：夜间情绪特写，补充W045环境中景"
+        },
+        {
+          "source": "W1001",
+          "reason": "采用：夜间庆祝远景及留白，用安全光源替代火花"
+        },
+        {
+          "source": "W1022",
+          "reason": "采用：夜景人物与大型灯光环境的尺度关系"
         }
       ],
       "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
     }
   ],
   "reviewed_release": {
-    "images": 249,
+    "images": 269,
     "core_cards": 26,
     "additional_cards": 7
   }
