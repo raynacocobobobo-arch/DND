@@ -3123,7 +3123,10 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W674.jpeg",
         "assets/references/reviewed/W702.jpeg",
         "assets/references/reviewed/W741.jpeg",
-        "assets/references/reviewed/W794.png"
+        "assets/references/reviewed/W794.png",
+        "assets/references/reviewed/W830.jpeg",
+        "assets/references/reviewed/W846.jpeg",
+        "assets/references/reviewed/W860.jpeg"
       ],
       "image_notes": [
         {
@@ -3161,6 +3164,18 @@ window.ENWAN_DATA = {
         {
           "source": "W794",
           "reason": "采用：并肩坐姿及一方看另一方的视线安排"
+        },
+        {
+          "source": "W830",
+          "reason": "采用：自然坐姿、桌面与绿植层次可作为轻松双人补拍"
+        },
+        {
+          "source": "W846",
+          "reason": "采用：有前景遮挡的双人坐姿构图，空间层次明确"
+        },
+        {
+          "source": "W860",
+          "reason": "采用：并肩贴近的低角度双人肖像，区别于W859看手机"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3214,7 +3229,13 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W819.jpeg",
         "assets/references/reviewed/W821.jpeg",
         "assets/references/reviewed/W823.jpeg",
-        "assets/references/reviewed/W826.jpeg"
+        "assets/references/reviewed/W826.jpeg",
+        "assets/references/reviewed/W827.jpeg",
+        "assets/references/reviewed/W828.jpeg",
+        "assets/references/reviewed/W834.jpeg",
+        "assets/references/reviewed/W835.jpeg",
+        "assets/references/reviewed/W843.jpeg",
+        "assets/references/reviewed/W845.jpeg"
       ],
       "image_notes": [
         {
@@ -3268,6 +3289,30 @@ window.ENWAN_DATA = {
         {
           "source": "W826",
           "reason": "采用：互拍时的侧面中近景和背景暖光"
+        },
+        {
+          "source": "W827",
+          "reason": "采用：拍摄者与被摄者同框全景，人物距离清楚"
+        },
+        {
+          "source": "W828",
+          "reason": "采用：共同看图之前靠近动作，与W829完成态互补"
+        },
+        {
+          "source": "W834",
+          "reason": "采用：拍摄手势及手机前景特写，补充横屏机位"
+        },
+        {
+          "source": "W835",
+          "reason": "采用：拍摄者主观角度与被摄者举杯姿态"
+        },
+        {
+          "source": "W843",
+          "reason": "采用：越肩互拍构图，清楚呈现拍摄对象表情"
+        },
+        {
+          "source": "W845",
+          "reason": "采用：共同看图时自然惊喜表情及双人贴近关系"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3285,7 +3330,10 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W331.jpeg",
         "assets/references/reviewed/W692.jpeg",
-        "assets/references/reviewed/W844.jpeg"
+        "assets/references/reviewed/W844.jpeg",
+        "assets/references/reviewed/W854.jpeg",
+        "assets/references/reviewed/W855.jpeg",
+        "assets/references/reviewed/W856.jpeg"
       ],
       "image_notes": [
         {
@@ -3299,6 +3347,18 @@ window.ENWAN_DATA = {
         {
           "source": "W844",
           "reason": "采用：双人自拍动作完整，补充A16室内暖色正面机位。"
+        },
+        {
+          "source": "W854",
+          "reason": "采用：双人站立自拍，手机与人物同框"
+        },
+        {
+          "source": "W855",
+          "reason": "采用：不同于正面自拍的高位环境机位及台阶几何"
+        },
+        {
+          "source": "W856",
+          "reason": "采用：双人自拍的完整坐姿及手臂延伸"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3452,12 +3512,47 @@ window.ENWAN_DATA = {
       "delivery_check": "主体动作或情绪清楚，景别与构图有区别。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W790.jpeg"
+        "assets/references/reviewed/W790.jpeg",
+        "assets/references/reviewed/W832.jpeg",
+        "assets/references/reviewed/W836.jpeg",
+        "assets/references/reviewed/W839.jpeg",
+        "assets/references/reviewed/W842.jpeg",
+        "assets/references/reviewed/W848.jpeg",
+        "assets/references/reviewed/W849.jpeg",
+        "assets/references/reviewed/W853.jpeg"
       ],
       "image_notes": [
         {
           "source": "W790",
           "reason": "采用：单人低头整理头发的情绪近景，文字不遮挡主要动作"
+        },
+        {
+          "source": "W832",
+          "reason": "采用：单人侧视情绪特写，适合拍摄自然反应"
+        },
+        {
+          "source": "W836",
+          "reason": "采用：单人举杯肖像，中近景和暖光背景可迁移"
+        },
+        {
+          "source": "W839",
+          "reason": "采用：单人情绪和妆造近景，适合宴会反应镜头"
+        },
+        {
+          "source": "W842",
+          "reason": "采用：从低头到抬眼的单人反应构图"
+        },
+        {
+          "source": "W848",
+          "reason": "采用：单人回头及气球道具的明快肖像"
+        },
+        {
+          "source": "W849",
+          "reason": "采用：单人抬手互动及环境斜线构图，与W848不同"
+        },
+        {
+          "source": "W853",
+          "reason": "采用：轻松搞怪单人摆姿，适合新郎或伴郎互动拍摄"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -3637,7 +3732,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W577.jpeg",
         "assets/references/reviewed/W719.jpeg",
-        "assets/references/reviewed/W874.jpeg"
+        "assets/references/reviewed/W874.jpeg",
+        "assets/references/reviewed/W847.jpeg"
       ],
       "image_notes": [
         {
@@ -3651,6 +3747,10 @@ window.ENWAN_DATA = {
         {
           "source": "W874",
           "reason": "双人对坐、发起者与回应者同框，适合A24亲友/新人交流的机位参考；明确为剧情调度，不推断具体关系。"
+        },
+        {
+          "source": "W847",
+          "reason": "采用：活动中的自然反应和站坐关系，可用于亲友互动"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3767,7 +3867,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 80,
+    "images": 130,
     "core_cards": 26,
     "additional_cards": 7
   }
