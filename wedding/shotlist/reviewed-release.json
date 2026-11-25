@@ -3300,5 +3300,104 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/R245.jpeg",
     "git_blob": "44308f218e6a95390740d9fbffbebb3febdb57cd"
+  },
+  {
+    "source_key": "R288",
+    "sha256": "6af891df2d9c2a7194741cb065bb1b61edfda6258c9d3160b6d3e2fdeddf017e",
+    "file_size": 140586,
+    "assigned_card_id": "A21",
+    "visual_description": "一方手托另一方手背并为其戴戒指",
+    "match_reason": "采用：戒指与指尖交互明确，补充横向紧凑特写；非仪式实拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R288.jpeg",
+    "git_blob": "aa9228346eaf9984df93a09684007bf2df1c543c"
+  },
+  {
+    "source_key": "R297",
+    "sha256": "4ce20df06e4add6027eb347de137ca093e30334b89fa74e5e8a6ccd6b699f4e7",
+    "file_size": 125003,
+    "assigned_card_id": "A21",
+    "visual_description": "暖色散景中手掌相叠、戒指轮廓高光",
+    "match_reason": "采用：补充戒指佩戴后手部的暖色剪影及高光细节；非仪式实拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R297.jpeg",
+    "git_blob": "4226e47c5985bab24c143b6e5e2a5f861ede83da"
+  },
+  {
+    "source_key": "R302",
+    "sha256": "06b40f3f0d47aba0a9382c9b63903011b52542919d84d666c9fbcb8780cd3692",
+    "file_size": 151927,
+    "assigned_card_id": "A34",
+    "visual_description": "女子手贴近耳侧，蓝白逆光侧脸近景",
+    "match_reason": "采用：柔和侧逆光及手部自然姿态，补充室内肖像的冷色光线参考",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R302.jpeg",
+    "git_blob": "9c05ea25b9632b6586dd78a2323018a2c5579a88"
+  },
+  {
+    "source_key": "R311",
+    "sha256": "30dc1c4f22046ae75559bd4bade670ea4ece03c9fc1bd4ccda7294f5980a885b",
+    "file_size": 110368,
+    "assigned_card_id": "A34",
+    "visual_description": "户外草坡人物屈膝坐姿，侧面逆光",
+    "match_reason": "采用：补充室外单人低坐、侧身和宽景留白；背景马匹非必要",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R311.jpeg",
+    "git_blob": "a4276a2a2ee07343220ee214c4953b60f7b81137"
+  },
+  {
+    "source_key": "R318",
+    "sha256": "2eed051de23fdbc90ceab2431dcc176c04ef7e674fad5c094f26ff788f5a309e",
+    "file_size": 64106,
+    "assigned_card_id": "A34",
+    "visual_description": "宽阔屋檐下人物背向栏杆远景",
+    "match_reason": "采用：屋檐横向框景、人物尺度与远景留白，适合安全场地单人情绪环境镜头",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R318.jpeg",
+    "git_blob": "7f2df045f37765e1fde6fbfe1ea49b3f11199b04"
+  },
+  {
+    "source_key": "R322",
+    "sha256": "05fcec25b9ab44a6291ac89285773162dd14aa39b2bc45d21cb793642161985c",
+    "file_size": 66719,
+    "assigned_card_id": "A34",
+    "visual_description": "对称通道尽头单人逆光剪影",
+    "match_reason": "采用：中心透视、对称构图及逆光人物尺度，适合酒店通廊或仪式空间补拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R322.jpeg",
+    "git_blob": "cca0595faa57c90652ecc5d31882d6e7381a32d9"
+  },
+  {
+    "source_key": "R335",
+    "sha256": "7338f813f92edeece74874c03e69f5ce89c54c87d7d91191a0f6a8f7a129f076",
+    "file_size": 76243,
+    "assigned_card_id": "A34",
+    "visual_description": "白浴袍头包毛巾女子正面安静肖像",
+    "match_reason": "采用：补充晨间妆造前的正面静态表情及暗背景柔光，非婚礼实拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R335.jpeg",
+    "git_blob": "e9150522ab46ec220c2670d67cd7044735de686f"
+  },
+  {
+    "source_key": "R339",
+    "sha256": "991515252cd97983f06f2d053b88402d6d23d434abc8f9a74e0ca72c257a2ee3",
+    "file_size": 112672,
+    "assigned_card_id": "A24",
+    "visual_description": "礼服人群中一人俯身与周围人交流",
+    "match_reason": "采用：宴会交流的群体空间、前后景层次及侧向全景，作为调度类比",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R339.jpeg",
+    "git_blob": "3412677ffb31a10058eae6b5717b0a8c16baa16a"
+  },
+  {
+    "source_key": "R342",
+    "sha256": "2376d19d8e5533cda121bd318b22400593e56ce4be6928c2ac9bfd20e861ce26",
+    "file_size": 99797,
+    "assigned_card_id": "A34",
+    "visual_description": "木门框景下戴眼镜的西装男子低机位半身",
+    "match_reason": "采用：补充室内木质门框、自然侧视及正式着装肖像",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R342.jpeg",
+    "git_blob": "034d733d721acdb51ee81265b133cb44c6267903"
   }
 ]

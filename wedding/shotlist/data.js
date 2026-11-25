@@ -3883,7 +3883,13 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/R178.jpeg",
         "assets/references/reviewed/R197.jpeg",
         "assets/references/reviewed/R219.jpeg",
-        "assets/references/reviewed/R245.jpeg"
+        "assets/references/reviewed/R245.jpeg",
+        "assets/references/reviewed/R302.jpeg",
+        "assets/references/reviewed/R311.jpeg",
+        "assets/references/reviewed/R318.jpeg",
+        "assets/references/reviewed/R322.jpeg",
+        "assets/references/reviewed/R335.jpeg",
+        "assets/references/reviewed/R342.jpeg"
       ],
       "image_notes": [
         {
@@ -4153,6 +4159,30 @@ window.ENWAN_DATA = {
         {
           "source": "R245",
           "reason": "采用：补充风中行进的自然笑容与逆光中景，与静态逆光参考互补"
+        },
+        {
+          "source": "R302",
+          "reason": "采用：柔和侧逆光及手部自然姿态，补充室内肖像的冷色光线参考"
+        },
+        {
+          "source": "R311",
+          "reason": "采用：补充室外单人低坐、侧身和宽景留白；背景马匹非必要"
+        },
+        {
+          "source": "R318",
+          "reason": "采用：屋檐横向框景、人物尺度与远景留白，适合安全场地单人情绪环境镜头"
+        },
+        {
+          "source": "R322",
+          "reason": "采用：中心透视、对称构图及逆光人物尺度，适合酒店通廊或仪式空间补拍"
+        },
+        {
+          "source": "R335",
+          "reason": "采用：补充晨间妆造前的正面静态表情及暗背景柔光，非婚礼实拍"
+        },
+        {
+          "source": "R342",
+          "reason": "采用：补充室内木质门框、自然侧视及正式着装肖像"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4235,7 +4265,9 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W426.jpeg",
-        "assets/references/reviewed/W480.jpeg"
+        "assets/references/reviewed/W480.jpeg",
+        "assets/references/reviewed/R288.jpeg",
+        "assets/references/reviewed/R297.jpeg"
       ],
       "image_notes": [
         {
@@ -4245,6 +4277,14 @@ window.ENWAN_DATA = {
         {
           "source": "W480",
           "reason": "清晰展示婚戒佩戴动作与侧向手部构图；区别W426钻戒特写，作为不同戒指与角度的参考。"
+        },
+        {
+          "source": "R288",
+          "reason": "采用：戒指与指尖交互明确，补充横向紧凑特写；非仪式实拍"
+        },
+        {
+          "source": "R297",
+          "reason": "采用：补充戒指佩戴后手部的暖色剪影及高光细节；非仪式实拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4350,7 +4390,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W042.jpeg",
         "assets/references/reviewed/W043.jpeg",
         "assets/references/reviewed/W044.jpeg",
-        "assets/references/reviewed/W1023.jpeg"
+        "assets/references/reviewed/W1023.jpeg",
+        "assets/references/reviewed/R339.jpeg"
       ],
       "image_notes": [
         {
@@ -4388,6 +4429,10 @@ window.ENWAN_DATA = {
         {
           "source": "W1023",
           "reason": "采用：亲友并肩分享所见的自然手势与表情"
+        },
+        {
+          "source": "R339",
+          "reason": "采用：宴会交流的群体空间、前后景层次及侧向全景，作为调度类比"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4741,7 +4786,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 304,
+    "images": 313,
     "core_cards": 26,
     "additional_cards": 7
   }
