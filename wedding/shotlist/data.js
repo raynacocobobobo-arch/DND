@@ -2818,7 +2818,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W481.jpeg",
         "assets/references/reviewed/W871.jpeg",
-        "assets/references/reviewed/W875.jpeg"
+        "assets/references/reviewed/W875.jpeg",
+        "assets/references/reviewed/R153.jpeg"
       ],
       "image_notes": [
         {
@@ -2832,6 +2833,10 @@ window.ENWAN_DATA = {
         {
           "source": "W875",
           "reason": "采用：戒指及手部服饰细节特写，不冒充交换戒指"
+        },
+        {
+          "source": "R153",
+          "reason": "采用：可参考中式或民族礼服头饰细节及侧脸层次，不照搬具体服饰"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3025,7 +3030,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W030.jpeg",
         "assets/references/reviewed/W032.jpeg",
         "assets/references/reviewed/W035.jpeg",
-        "assets/references/reviewed/W036.jpeg"
+        "assets/references/reviewed/W036.jpeg",
+        "assets/references/reviewed/R166.jpeg"
       ],
       "image_notes": [
         {
@@ -3067,6 +3073,10 @@ window.ENWAN_DATA = {
         {
           "source": "W036",
           "reason": "采用：长辈双人慢走及远景尺度关系"
+        },
+        {
+          "source": "R166",
+          "reason": "采用：补充高机位框景与双人步态，适合庭院散步远景"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3439,7 +3449,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W948.jpeg",
         "assets/references/reviewed/W1005.jpeg",
         "assets/references/reviewed/W1013.jpeg",
-        "assets/references/reviewed/W1026.jpeg"
+        "assets/references/reviewed/W1026.jpeg",
+        "assets/references/reviewed/R242.jpeg"
       ],
       "image_notes": [
         {
@@ -3553,6 +3564,10 @@ window.ENWAN_DATA = {
         {
           "source": "W1026",
           "reason": "采用：亲友协助拍摄的侧面手部调度，不推断设备具体类型"
+        },
+        {
+          "source": "R242",
+          "reason": "采用：补充行进中互拍与摄影者在后方的位置关系，安全场地执行"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3863,7 +3878,12 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/R112.jpeg",
         "assets/references/reviewed/R126.jpeg",
         "assets/references/reviewed/R129.jpeg",
-        "assets/references/reviewed/R136.jpeg"
+        "assets/references/reviewed/R136.jpeg",
+        "assets/references/reviewed/R156.jpeg",
+        "assets/references/reviewed/R178.jpeg",
+        "assets/references/reviewed/R197.jpeg",
+        "assets/references/reviewed/R219.jpeg",
+        "assets/references/reviewed/R245.jpeg"
       ],
       "image_notes": [
         {
@@ -4113,6 +4133,26 @@ window.ENWAN_DATA = {
         {
           "source": "R136",
           "reason": "采用：新郎西装站姿、窗光与竖向建筑线，适合酒店窗边单人肖像"
+        },
+        {
+          "source": "R156",
+          "reason": "采用：补充坐姿托腮与侧向窗光，适合婚房安静肖像"
+        },
+        {
+          "source": "R178",
+          "reason": "采用：补充建筑斜线与低机位大留白，适合新郎单人环境调度"
+        },
+        {
+          "source": "R197",
+          "reason": "采用：补充肩后跟随与太阳轮廓光，适合新郎行进转场"
+        },
+        {
+          "source": "R219",
+          "reason": "采用：补充雨天备选单人侧向全景，在安全平坦场地拍摄"
+        },
+        {
+          "source": "R245",
+          "reason": "采用：补充风中行进的自然笑容与逆光中景，与静态逆光参考互补"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4701,7 +4741,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 296,
+    "images": 304,
     "core_cards": 26,
     "additional_cards": 7
   }

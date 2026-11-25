@@ -3212,5 +3212,93 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/R136.jpeg",
     "git_blob": "0363d96d71517f956b78f6daed35a108b011c44f"
+  },
+  {
+    "source_key": "R153",
+    "sha256": "2385d0f6111ec151a1e6fe0027b1c896740bfecc187b18848b2234fa605f33d9",
+    "file_size": 90720,
+    "assigned_card_id": "A30",
+    "visual_description": "银色垂饰与女子侧脸同框",
+    "match_reason": "采用：可参考中式或民族礼服头饰细节及侧脸层次，不照搬具体服饰",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R153.jpeg",
+    "git_blob": "cfc089a966f6181231af63e109666ded8deeca52"
+  },
+  {
+    "source_key": "R156",
+    "sha256": "a9889b88f517a89c9f059b37842f1e19dafbf3a39e61d58fac4b2a2c170121e5",
+    "file_size": 146663,
+    "assigned_card_id": "A34",
+    "visual_description": "柔和窗光下女子托腮侧望",
+    "match_reason": "采用：补充坐姿托腮与侧向窗光，适合婚房安静肖像",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R156.jpeg",
+    "git_blob": "b7d6f2b4c04df0b6d5c5d440a51e4dcaf41c9c05"
+  },
+  {
+    "source_key": "R166",
+    "sha256": "772d17d519a761cdd3626887e44072f3b8303e2585975163f2bccb23d4eac833",
+    "file_size": 146691,
+    "assigned_card_id": "A09",
+    "visual_description": "隔窗俯视两人在庭院并肩行进",
+    "match_reason": "采用：补充高机位框景与双人步态，适合庭院散步远景",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R166.jpeg",
+    "git_blob": "e43f490e8752ed383898b20d54c182a2f864000d"
+  },
+  {
+    "source_key": "R178",
+    "sha256": "b43a89e4b28b6aef54a9e115095d6e17fb66e77bc226c460371306494d1b7747",
+    "file_size": 89646,
+    "assigned_card_id": "A34",
+    "visual_description": "白衬衫男子在几何建筑下背向行进",
+    "match_reason": "采用：补充建筑斜线与低机位大留白，适合新郎单人环境调度",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R178.jpeg",
+    "git_blob": "481393cdf8464652370e553633e4afa7ac2bed31"
+  },
+  {
+    "source_key": "R197",
+    "sha256": "06b52a0f1ed733ed26861ef8dbe7663e92b6e85fea42f24ae7584c2f1abd322d",
+    "file_size": 87781,
+    "assigned_card_id": "A34",
+    "visual_description": "背光白衣男性沿建筑行进",
+    "match_reason": "采用：补充肩后跟随与太阳轮廓光，适合新郎行进转场",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R197.jpeg",
+    "git_blob": "f5eaab2ce91bb5ce2791354fee6b067c898a588a"
+  },
+  {
+    "source_key": "R219",
+    "sha256": "ece2bbd5344b874f6a3ce59ab6fcd4e56e0afe1309046607c36d27f46897a92c",
+    "file_size": 112317,
+    "assigned_card_id": "A34",
+    "visual_description": "雨天撑伞女子沿砖墙侧向行进",
+    "match_reason": "采用：补充雨天备选单人侧向全景，在安全平坦场地拍摄",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R219.jpeg",
+    "git_blob": "cabe543cb68f0043d509a2fa4e1b1fdfff8fc50d"
+  },
+  {
+    "source_key": "R242",
+    "sha256": "b7a61a744e140c29cc306bd12a6aa5c706b1ffa5115ee5d72a157373b95939ff",
+    "file_size": 165924,
+    "assigned_card_id": "A15",
+    "visual_description": "女子走在前方，男子持相机跟拍同框",
+    "match_reason": "采用：补充行进中互拍与摄影者在后方的位置关系，安全场地执行",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R242.jpeg",
+    "git_blob": "1061ece7075aab7c66b134299f3f2d93830e7e20"
+  },
+  {
+    "source_key": "R245",
+    "sha256": "09d419c6df44aabfcd7730ca78e15ce61e28478ec26f7d579396120c26f0de10",
+    "file_size": 122571,
+    "assigned_card_id": "A34",
+    "visual_description": "夕阳逆光女子微笑迎向镜头",
+    "match_reason": "采用：补充风中行进的自然笑容与逆光中景，与静态逆光参考互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R245.jpeg",
+    "git_blob": "44308f218e6a95390740d9fbffbebb3febdb57cd"
   }
 ]
