@@ -23,9 +23,10 @@ function buildRelease(data, groups, index) {
   "use strict";
   const ROOT="wedding/shotlist/", API="https://api.github.com/repos/raynacocobobobo-arch/DND",BRANCH="gh-pages",CATS=["环境与场布","晨间准备","单人肖像","新人双人互动","家庭与亲友","接亲与转场","婚礼仪式","宴会与庆祝"], LEVELS=["纪实优先","轻引导","条件选拍"];
   const $=id=>document.getElementById(id), node=(tag,txt,cls)=>{const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}, button=(txt,fn)=>{const b=node("button",txt);b.type="button";b.onclick=fn;return b}, opt=(v,t)=>{const o=node("option",t);o.value=v;return o};
-  let token="",head="",baseTree="",data=null,index=null,groups={},published=[],dirty=false,staged=new Map(),busy=false,selectedCard="",page=0,selectedImage="",draftNew=false,requestedCard=/^#card-(A\d+)$/.exec(location.hash)?.[1]||"";
+  let token="",head="",baseTree="",data=null,index=null,groups={},published=[],dirty=false,staged=new Map(),busy=false,selectedCard="",page=0,selectedImage="",draftNew=false,requestedCard=/^#card-(A\d+)$/.exec(location.hash)?.[1]||"",pendingDelete=null,lastRemoved=null;
   const rows=()=>Object.values(groups).flat();
   const status=t=>{$("status").textContent=t};
+  function syncUndo(){$("quick-undo").hidden=!lastRemoved||!token||!data;$("quick-undo").disabled=busy;}
   const b64=bytes=>{let s="";for(let i=0;i<bytes.length;i+=16384)s+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(s)};
   const decode=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,"")),c=>c.charCodeAt(0)));
   async function api(path,method="GET",body){
@@ -39,22 +40,22 @@ function buildRelease(data, groups, index) {
   async function load(){
     const h=await currentHead(), c=await api("/git/commits/"+h);
     const raw=await readFile("data.js",h), next=JSON.parse(raw.trim().replace(/^window.ENWAN_DATA\s*=\s*/,"").replace(/;$/,"")), idx=JSON.parse(await readFile("reviews/index.json",h)), nextGroups={};
-    for(const p of idx.files){if(!/^reviews\/(?:[WR]\d{4}-\d{4}|uploads)\.json$/.test(p))throw Error("审查分片路径异常");nextGroups[p]=JSON.parse(await readFile(p,h))}
+    for(const p of idx.files)if(!/^reviews\/(?:[WR]\d{4}-\d{4}|uploads)\.json$/.test(p))throw Error("审查分片路径异常");for(let i=0;i<idx.files.length;i+=5){const batch=idx.files.slice(i,i+5);const entries=await Promise.all(batch.map(async p=>[p,JSON.parse(await readFile(p,h))]));for(const [p,rs] of entries)nextGroups[p]=rs;}
     const manifest=JSON.parse(await readFile("reviewed-release.json",h)), lookup=new Map(manifest.map(r=>[r.source_key,r]));for(const r of Object.values(nextGroups).flat()){if(r.review_status!=="approved")continue;const m=lookup.get(r.source_key);if(!m||m.sha256!==r.sha256||m.assigned_card_id!==r.assigned_card_id||(m.file_size!=null&&m.file_size!==r.file_size)||(r.path&&r.path!==m.path)||(r.git_blob&&r.git_blob!==m.git_blob))throw Error("历史发布记录不一致："+r.source_key);r.path=m.path;r.git_blob=m.git_blob;}const before=JSON.stringify(next.cards.map(c=>[c.id,[...c.images].sort()]));const rel=buildRelease(next,nextGroups,idx);if(before!==JSON.stringify(next.cards.map(c=>[c.id,[...c.images].sort()])))throw Error("仓库中动作卡与审查账本不一致，禁止覆盖");
-    head=h;baseTree=c.tree.sha;data=next;index=idx;groups=nextGroups;published=rel;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;page=0;selectedCard=data.cards[0]?.id||"";selectedImage="";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;render();status("已连接 GitHub。直接在下方动作卡照片上操作，完成后点击提交并发布。");focusRequested();
+    head=h;baseTree=c.tree.sha;data=next;index=idx;groups=nextGroups;published=rel;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;page=0;selectedCard=data.cards[0]?.id||"";selectedImage="";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;render();status("已连接 GitHub。照片操作会自动保存，无需再次提交。");focusRequested();syncUndo();
   }
-  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("editor").inert=on;$("visual").inert=on;$("task-admin").inert=on}
-  async function run(fn){if(busy)return;locked(true);try{await fn()}catch(e){status(e.message||"操作失败")}finally{locked(false)}}
+  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("editor").inert=on;$("visual").inert=on;$("task-admin").inert=on;syncUndo()}
+  async function run(fn){if(busy)return;locked(true);try{await fn()}catch(e){status((dirty?"尚未保存：":"")+(e.message||"操作失败"));if(dirty)$("publish").hidden=false}finally{locked(false)}}
   function cardOptions(select, includeBlank=false){let prev=select.value;select.replaceChildren();if(includeBlank)select.append(opt("","请选择动作卡"));for(const c of data.cards)select.append(opt(c.id,c.category+" · "+c.title+" ("+c.id+")"));if([...select.options].some(o=>o.value===prev))select.value=prev;}
-  function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("有未发布的修改。点击“提交并发布”统一保存。")}
+  function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("正在自动保存到 GitHub…");if(busy)return publishChanges();return run(publishChanges)}
   function render(){
     const c=index.counts;$("counts").textContent=`原稿已审 ${c.reviewed}/1482 · 已发布 ${c.approved} · 排除 ${c.excluded} · 待发布 ${c.pending} · 后台新增 ${c.user_uploads||0} · 动作卡 ${data.cards.length}`;
-    $("publish").disabled=busy||!dirty;$("dirty").textContent=dirty?"有未提交的修改":"已与 GitHub 同步";cardOptions($("upload-card"),true);cardOptions($("card-select"));
+    $("publish").hidden=!dirty;$("publish").disabled=busy||!dirty;$("dirty").textContent=dirty?"有未保存的修改 · 自动保存失败时可重试":"已与 GitHub 同步";cardOptions($("upload-card"),true);cardOptions($("card-select"));
     $("card-select").value=selectedCard;renderCard();renderImages();renderVisual();renderTasks();
   }
   function imageUrl(r){if(staged.has(r.source_key))return staged.get(r.source_key).url;if(r.path&&new RegExp("^assets/references/reviewed/"+r.source_key+"\\.(jpeg|png|webp|gif)$").test(r.path))return new URL(r.path,location.href).href;return null}
   function renderImages(){
-    const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>(filter==="all"||r.review_status===filter)&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
+    const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>(filter==="all"||(filter==="removed"?r.review_status==="excluded"&&r.path&&r.git_blob:r.review_status===filter))&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
     const limit=20;page=Math.max(0,Math.min(page,Math.ceil(list.length/limit)-1));$("page").textContent=`${list.length} 条 · 第 ${page+1}/${Math.max(1,Math.ceil(list.length/limit))} 页`;$("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=list.length;
     const g=$("images");g.replaceChildren();
     for(const r of list.slice(page*limit,(page+1)*limit)){
@@ -72,8 +73,8 @@ function buildRelease(data, groups, index) {
     $("ctitle").value=c.title;$("ccat").value=c.category;$("clevel").value=c.action_level||LEVELS[1];$("cwhen").value=c.applicable_when||"";$("cprompt").value=c.prompt||"";$("ccamera").value=c.camera||"";$("ccheck").value=c.delivery_check||"";
     $("card-images").textContent="已采用 "+c.images.length+" 张图片";
   }
-  $("login").onclick=()=>run(async()=>{token=$("token").value.trim();$("token").value="";if(!token.startsWith("github_pat_")){token="";throw Error("请使用限定 DND 仓库的 Fine-grained personal access token")}try{await load()}catch(e){token="";throw e}});
-  $("reload").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并重新读取 GitHub？"))return;run(load)};
+  $("login").onclick=()=>run(async()=>{token=$("token").value.trim();$("token").value="";if(!token.startsWith("github_pat_")){token="";throw Error("请使用限定 DND 仓库的 Fine-grained personal access token")}try{await load()}catch(e){token="";throw e}if(pendingDelete){const target=pendingDelete;pendingDelete=null;await deletePhoto(target)}});
+  $("reload").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并重新读取 GitHub？"))return;lastRemoved=null;run(load)};
   $("logout").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并退出？"))return;token="";location.reload()};
   $("search").oninput=()=>{page=0;renderImages()};$("filter").onchange=()=>{page=0;renderImages()};$("prev").onclick=()=>{page--;renderImages()};$("next").onclick=()=>{page++;renderImages()};
   for(const x of CATS)$("ccat").append(opt(x,x));for(const x of LEVELS)$("clevel").append(opt(x,x));
@@ -110,27 +111,30 @@ function buildRelease(data, groups, index) {
     (groups["reviews/uploads.json"]??=[]).push(r);staged.set(id,{path,sha:b.sha,url:URL.createObjectURL(f)});return r;
   }
   function canEdit(card){
-    if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("token").focus();status("照片已显示。连接 GitHub 后即可编辑和发布到所有设备。");return false;
+    if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("token").focus();status("首次编辑需要连接 GitHub；本页后续操作无需重复授权。");return false;
   }
   function focusRequested(){if(!requestedCard)return;const id=requestedCard;requestedCard="";const c=document.getElementById("card-"+id);if(c)c.scrollIntoView({behavior:"smooth",block:"start"})}
   function exclude(r,why){r.last_card_id=r.assigned_card_id;r.assigned_card_id=null;r.review_status="excluded";r.review_notes=(r.review_notes||"")+"；原采用依据："+r.match_reason+"；用户移除 "+new Date().toISOString();r.match_reason=why;}
+  function requestDelete(target){if(busy)return;if(!token||!data){pendingDelete=target;canEdit(target.card);status("连接 GitHub 后，将继续删除这张照片："+target.source);return}run(()=>deletePhoto(target))}
+  async function deletePhoto(target){const r=rows().find(r=>r.source_key===target.source&&r.path===target.path&&r.assigned_card_id===target.card&&r.review_status==="approved");if(!r){status("照片已被移除或归属已改变，请核对最新列表。");return}if(!confirm("删除 "+target.source+"？\n将立即从网站移除，原图仍可从回收站恢复。"))return;lastRemoved={source:r.source_key,card:r.assigned_card_id,path:r.path,reason:r.match_reason};exclude(r,"用户手动从 "+(data.cards.find(c=>c.id===target.card)?.title||target.card)+" 移除");await mark();status("已删除 "+target.source+"，GitHub 已保存；网站部署后生效。可撤销最近删除。");syncUndo()}
+  $("quick-undo").onclick=()=>run(async()=>{const u=lastRemoved;if(!u)return;const r=rows().find(r=>r.source_key===u.source&&r.path===u.path&&r.review_status==="excluded");if(!r||!data.cards.some(c=>c.id===u.card))throw Error("原动作卡或照片已变更，请从回收站恢复");r.assigned_card_id=u.card;r.review_status="approved";r.match_reason=u.reason;r.review_notes=(r.review_notes||"")+"；撤销移除 "+new Date().toISOString();lastRemoved=null;await mark();status("已恢复 "+u.source+"，GitHub 已保存。");syncUndo()});
   function pickFiles(card,old){
     if(!canEdit(card))return;const inp=node("input");inp.type="file";inp.accept="image/jpeg,image/png,image/webp,image/gif";inp.multiple=!old;inp.onchange=()=>run(async()=>{
       const files=[...inp.files];if(!files.length)return;
-      if(old){if(!confirm("用所选照片替换 "+old.source_key+"？旧图将移入可恢复档案。"))return;const added=await stageImage(files[0],card,"用户手动替换："+files[0].name,"用户手动替换 "+old.source_key);exclude(old,"用户手动替换为 "+added.source_key);mark();return}
-      let n=0;const errors=[];for(const f of files){try{await stageImage(f,card);n++}catch(e){errors.push(f.name+"："+e.message)}}if(n)mark();status("已暂存 "+n+" 张新照片"+(errors.length?"；未添加："+errors.join("；"):"。点击提交并发布生效。"));
+      if(old){if(!confirm("用所选照片替换 "+old.source_key+"？旧图将移入可恢复档案。"))return;const added=await stageImage(files[0],card,"用户手动替换："+files[0].name,"用户手动替换 "+old.source_key);exclude(old,"用户手动替换为 "+added.source_key);await mark();return}
+      let n=0;const errors=[];for(const f of files){try{await stageImage(f,card);n++}catch(e){errors.push(f.name+"："+e.message)}}if(n)await mark();status("已保存 "+n+" 张新照片"+(errors.length?"；未添加："+errors.join("；"):"。GitHub Pages 部署后生效。"));
     });inp.click();
   }
   function renderVisual(){
     const view=data||window.ENWAN_DATA;if(!view){$("visual-summary").textContent="未能读取网站数据，请刷新。";return}
     const editable=!!(token&&data),cat=$("visual-cat").value,q=$("visual-search").value.trim().toLowerCase(),only=$("visual-filled").checked;
     const visible=view.cards.filter(c=>(!cat||c.category===cat)&&(!only||c.images.length)&&(!q||[c.id,c.title,c.category,...(c.image_notes||[]).map(n=>n.source)].join(" ").toLowerCase().includes(q)));
-    $("visual-summary").textContent=(editable?"编辑模式 · 修改后统一发布":"预览模式 · 照片可直接浏览，修改需授权")+" · "+view.cards.length+" 张动作卡 / "+view.cards.reduce((n,c)=>n+c.images.length,0)+" 张照片";
+    $("visual-summary").textContent=(editable?"已连接 · 操作后自动保存":"直接浏览照片 · 首次编辑时连接 GitHub")+" · "+view.cards.length+" 张动作卡 / "+view.cards.reduce((n,c)=>n+c.images.length,0)+" 张照片";
     const g=$("visual-cards");g.replaceChildren();let last="";
     for(const c of visible){
       if(c.category!==last){g.append(node("h3",c.category,"category-heading"));last=c.category}
       const card=node("article",undefined,"visual-card");card.id="card-"+c.id;
-      const h=node("div",undefined,"visual-head"),label=node("div");label.append(node("small",c.id+" · "+(c.action_level||"选拍")),node("h3",c.title));const controls=node("div",undefined,"row");controls.append(button("编辑卡片",()=>openCard(c.id)),button("＋ 添加照片",()=>pickFiles(c.id)));h.append(label,controls);card.append(h);
+      const h=node("div",undefined,"visual-head"),label=node("div");label.append(node("small",c.id+" · "+c.images.length+" 张照片"),node("h3",c.title));const controls=node("div",undefined,"row");controls.append(button("编辑卡片",()=>openCard(c.id)),button("＋ 添加照片",()=>pickFiles(c.id)));h.append(label,controls);card.append(h);
       if(c.prompt)card.append(node("p",c.prompt,"card-prompt"));
       const photos=node("div",undefined,"photo-grid");
       for(const [i,path] of c.images.entries()){
@@ -138,10 +142,10 @@ function buildRelease(data, groups, index) {
         const source=record?.source_key||c.image_notes?.[i]?.source||path.split("/").pop(),tile=node("figure",undefined,"photo-tile"),url=record?imageUrl(record):new URL(path,location.href).href;
         if(url){const a=node("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";const img=node("img");img.src=url;img.alt=c.title+" · "+source;img.loading="lazy";img.onerror=()=>{img.alt="照片加载失败："+source};a.append(img);tile.append(a)}
         const cap=node("figcaption",source);tile.append(cap);
-        const actions=node("div",undefined,"photo-actions");
-        actions.append(button("替换",()=>{if(canEdit(c.id)&&record)pickFiles(c.id,record)}),button("删除",()=>{if(!canEdit(c.id)||!record)return;if(!confirm("从网站移除这张照片？可从审查档案恢复。"))return;exclude(record,"用户手动从 "+c.title+" 移除");mark()}));
+        const del=button("删除",()=>requestDelete({source,card:c.id,path}));del.className="quick-delete";del.setAttribute("aria-label","删除照片 "+source);tile.append(del);
+        const actions=node("div",undefined,"photo-actions");const more=node("details",undefined,"photo-more");more.append(node("summary","更多操作"));more.append(button("替换照片",()=>{if(canEdit(c.id)&&record)pickFiles(c.id,record)}));
         const move=node("select");move.setAttribute("aria-label","移动照片至动作卡");move.append(opt("","移动至…"));for(const target of view.cards.filter(x=>x.id!==c.id))move.append(opt(target.id,target.category+" · "+target.title));
-        move.onchange=()=>{if(!move.value)return;if(!canEdit(c.id)||!record){move.value="";return}const target=data.cards.find(x=>x.id===move.value);if(!target||!confirm("移动至「"+target.title+"」？")){move.value="";return}record.review_notes=(record.review_notes||"")+"；原归属 "+record.assigned_card_id+"；用户手动调整 "+new Date().toISOString();record.assigned_card_id=target.id;record.match_reason="用户手动调整至 "+target.title;mark()};actions.append(move);tile.append(actions);photos.append(tile);
+        move.onchange=()=>{if(!move.value)return;if(!canEdit(c.id)||!record){move.value="";return}const target=data.cards.find(x=>x.id===move.value);if(!target||!confirm("移动至「"+target.title+"」？")){move.value="";return}record.review_notes=(record.review_notes||"")+"；原归属 "+record.assigned_card_id+"；用户手动调整 "+new Date().toISOString();record.assigned_card_id=target.id;record.match_reason="用户手动调整至 "+target.title;mark()};more.append(move);actions.append(more);tile.append(actions);photos.append(tile);
       }
       const add=button("＋ 添加照片",()=>pickFiles(c.id));add.className="photo-add";photos.append(add);card.append(photos);g.append(card);
     }
@@ -149,19 +153,20 @@ function buildRelease(data, groups, index) {
   }
   for(const cat of CATS)$("visual-cat").append(opt(cat,cat));
   $("visual-cat").onchange=renderVisual;$("visual-search").oninput=renderVisual;$("visual-filled").onchange=renderVisual;$("visual-new").onclick=openNew;
-  $("add-image").onclick=()=>run(async()=>{const f=$("upload").files[0],card=$("upload-card").value;if(!f||!card)throw Error("请选择图片和动作卡");await stageImage(f,card,$("description").value.trim(),$("reason").value.trim());$("upload").value="";mark()});
-  $("publish").onclick=()=>run(async()=>{
+  $("add-image").onclick=()=>run(async()=>{const f=$("upload").files[0],card=$("upload-card").value;if(!f||!card)throw Error("请选择图片和动作卡");await stageImage(f,card,$("description").value.trim(),$("reason").value.trim());$("upload").value="";await mark()});
+  async function publishChanges(){
     if(!dirty)return;validateTasks(data);if(data.cards.some(c=>!c.title?.trim()||!c.prompt?.trim()||!c.camera?.trim()||!CATS.includes(c.category)))throw Error("有未填写完整的动作卡，先保存卡片内容");
-    if(!confirm("提交全部暂存修改到 DND 正式分支？提交后将触发 GitHub Pages 发布。"))return;
-    if(await currentHead()!==head)throw Error("仓库已被其他任务更新。本次修改仍暂存，请先处理冲突，不会覆盖最新版本。");
+    
+    if(await currentHead()!==head)throw Error("保存冲突：仓库已有更新，本次修改尚未发布。请重新读取后重做，未覆盖其他修改。");
     const manifest=buildRelease(data,groups,index), tree=await api("/git/trees/"+baseTree+"?recursive=1");if(tree.truncated)throw Error("仓库树不完整，无法安全发布");
     const byPath=new Map(tree.tree.map(x=>[x.path,x]));for(const r of manifest){const item=staged.get(r.source_key)||byPath.get(ROOT+r.path);if(!item||item.sha!==r.git_blob)throw Error("原图文件或 Git 哈希不匹配："+r.source_key)}
     const contents={"data.js":"window.ENWAN_DATA = "+JSON.stringify(data,null,2)+";\n","reviewed-release.json":JSON.stringify(manifest,null,2)+"\n","reviews/index.json":JSON.stringify(index,null,2)+"\n"};
     for(const [p,rs] of Object.entries(groups))contents[p]="[\n"+rs.map(r=>JSON.stringify(r)).join(",\n")+"\n]\n";
     const entries=Object.entries(contents).map(([p,content])=>({path:ROOT+p,mode:"100644",type:"blob",content}));for(const x of staged.values())entries.push({path:ROOT+x.path,mode:"100644",type:"blob",sha:x.sha});
     const t=await api("/git/trees","POST",{base_tree:baseTree,tree:entries});const c=await api("/git/commits","POST",{message:"Update wedding action cards and verified reference ledger",tree:t.sha,parents:[head]});if(await currentHead()!==head)throw Error("检测到并发修改，未覆盖正式分支");await api("/git/refs/heads/"+BRANCH,"PATCH",{sha:c.sha,force:false});
-    head=c.sha;baseTree=t.sha;for(const x of staged.values())URL.revokeObjectURL(x.url);staged.clear();dirty=false;render();status("已提交 "+head.slice(0,8)+"，GitHub Pages 部署由 GitHub 执行；请在 Actions 查看成功后刷新网站。");$("actions").hidden=false;
-  });
+    head=c.sha;baseTree=t.sha;for(const x of staged.values())URL.revokeObjectURL(x.url);staged.clear();dirty=false;render();status("已自动保存 · "+head.slice(0,8)+" · GitHub Pages 部署后生效。");$("actions").hidden=false;syncUndo();
+  }
+  $("publish").onclick=()=>run(publishChanges);
 
   let taskDraft=false,taskSelected="";
   const phases=v=>v.stages.filter(s=>/^S\d+$/.test(s.id)), flatTasks=v=>v.stages.flatMap(s=>s.items.map(t=>({t,s}))), viewData=()=>data||window.ENWAN_DATA;
@@ -174,6 +179,6 @@ function buildRelease(data, groups, index) {
   function moveTask(delta){if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;const arr=item.s.items,i=arr.indexOf(item.t),n=i+delta;if(n<0||n>=arr.length)return;if(!/^S\d+$/.test(item.s.id)&&arr[n].id.replace(/-\d+$/,"")!==item.t.id.replace(/-\d+$/,""))return alert("原版顺序保持不变，仅可调整同组内要点");[arr[i],arr[n]]=[arr[n],arr[i]];mark()}
   $("task-up").onclick=()=>moveTask(-1);$("task-down").onclick=()=>moveTask(1);
   $("task-delete").onclick=()=>{if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;if(flatTasks(data).some(x=>x.t.parent_id===item.t.id))return alert("先移动此任务的详细拍摄点");if(!confirm("删除任务："+item.t.title+"？本机项目中此任务的历史完成状态会失效。"))return;item.s.items=item.s.items.filter(x=>x!==item.t);taskSelected="";mark()};
-  renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载正式网站照片。可直接浏览，编辑时连接 GitHub。");focusRequested();
+  renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载照片。点击任一照片的删除按钮即可操作；首次修改需连接 GitHub。");focusRequested();
   window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
 })();
