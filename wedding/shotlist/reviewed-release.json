@@ -2970,5 +2970,71 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W1027.png",
     "git_blob": "11f99abadba2af42ca77ff55bc6705eb1d1b738c"
+  },
+  {
+    "source_key": "W076",
+    "sha256": "4947ab7f0fd482e0a391d04fc174ed322311d6702b7e8ca7a3d93a32333be5ad",
+    "file_size": 351005,
+    "assigned_card_id": "A10",
+    "visual_description": "街道两人牵手并侧头相望",
+    "match_reason": "采用：手部与全身步态清楚，提供轻快牵引及步行互动参考；仅在封闭安全场地复拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W076.png",
+    "git_blob": "3569bf3b407cb2a286382e2fd195a87789af0671"
+  },
+  {
+    "source_key": "W087",
+    "sha256": "bb4170df513a09bea7e13b0fc78c4ea4d2b4720122788b072239c7157a7f31a5",
+    "file_size": 160070,
+    "assigned_card_id": "A11",
+    "visual_description": "室内男女侧身站定面对面",
+    "match_reason": "采用：双人相对站姿及视线明确，提供自然对视中景；可在婚礼走廊替代场地复拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W087.jpeg",
+    "git_blob": "a256a983955a45dd97e27b91390998740c92986f"
+  },
+  {
+    "source_key": "W129",
+    "sha256": "04a047538229d78de8ab4086cb247eecd769b0e456ce5fd7c5a65f3386b8ccdb",
+    "file_size": 77020,
+    "assigned_card_id": "A05",
+    "visual_description": "女子戴帽探身仰头看向男子",
+    "match_reason": "采用：明确到达后俏皮迎接姿势，补充一方探身与另一方反应；角落水印保留原样",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W129.jpeg",
+    "git_blob": "e58c5266882d3d759ce1386cc0a218ed70092de1"
+  },
+  {
+    "source_key": "W145",
+    "sha256": "cb4120a053ebaa8442115aae6a377a59f80c8d05294794fa3a667a5c4c7a5cfc",
+    "file_size": 122161,
+    "assigned_card_id": "A16",
+    "visual_description": "两人贴近并看向伸出的手机",
+    "match_reason": "采用：持机自拍姿态、脸部靠近与视线明确，适合竖屏参考；原始水印保留",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W145.jpeg",
+    "git_blob": "1650d65a26e0ea1cd11ae4e76d40f02856773b96"
+  },
+  {
+    "source_key": "W169",
+    "sha256": "7be49b47858047e6fd668a4adfbddf89178191ddf661515de70108d73ad9cacb",
+    "file_size": 227472,
+    "assigned_card_id": "A05",
+    "visual_description": "机场大厅带行李的两人相拥远景",
+    "match_reason": "采用：完整迎接拥抱及空间位置，适合新人见面后自然靠近参考；只借鉴静态安全动作",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W169.jpeg",
+    "git_blob": "175f23931cf778bcf7a1964b27f8c70394cc3cba"
+  },
+  {
+    "source_key": "W171",
+    "sha256": "1c018fb427fde1ff308d7ef80416fe1e6e09e85f00e853d902e5965eb724f223",
+    "file_size": 109440,
+    "assigned_card_id": "A12",
+    "visual_description": "两人拥抱接吻的近景",
+    "match_reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W171.jpeg",
+    "git_blob": "88f3dc8bd601a13287996f0b5e632f0ac6c18065"
   }
 ]

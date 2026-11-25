@@ -10,6 +10,7 @@
   },
   "files": [
     "reviews/W0001-0100.json",
+    "reviews/W0101-0200.json",
     "reviews/W0201-0300.json",
     "reviews/W0301-0400.json",
     "reviews/W0401-0500.json",
@@ -21,14 +22,14 @@
     "reviews/W1001-1027.json"
   ],
   "counts": {
-    "reviewed": 872,
-    "approved": 274,
-    "excluded": 598,
+    "reviewed": 972,
+    "approved": 280,
+    "excluded": 692,
     "pending": 0,
-    "unreviewed": 610,
+    "unreviewed": 510,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "累计872条，发布清单274张，待上传0张。"
+  "note": "累计972条，发布清单280张，待上传0张。"
 }

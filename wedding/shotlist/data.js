@@ -2857,7 +2857,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W064.jpeg",
         "assets/references/reviewed/W065.png",
         "assets/references/reviewed/W067.png",
-        "assets/references/reviewed/W073.png"
+        "assets/references/reviewed/W073.png",
+        "assets/references/reviewed/W129.jpeg",
+        "assets/references/reviewed/W169.jpeg"
       ],
       "image_notes": [
         {
@@ -2903,6 +2905,14 @@ window.ENWAN_DATA = {
         {
           "source": "W073",
           "reason": "采用：到达迎接的前后景距离及车门框景"
+        },
+        {
+          "source": "W129",
+          "reason": "采用：明确到达后俏皮迎接姿势，补充一方探身与另一方反应；角落水印保留原样"
+        },
+        {
+          "source": "W169",
+          "reason": "采用：完整迎接拥抱及空间位置，适合新人见面后自然靠近参考；只借鉴静态安全动作"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3082,7 +3092,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W807.jpeg",
         "assets/references/reviewed/W933.jpeg",
         "assets/references/reviewed/W934.jpeg",
-        "assets/references/reviewed/W025.jpeg"
+        "assets/references/reviewed/W025.jpeg",
+        "assets/references/reviewed/W076.png"
       ],
       "image_notes": [
         {
@@ -3128,6 +3139,10 @@ window.ENWAN_DATA = {
         {
           "source": "W025",
           "reason": "采用：主观机位牵手带领动作，手与人物关系明确"
+        },
+        {
+          "source": "W076",
+          "reason": "采用：手部与全身步态清楚，提供轻快牵引及步行互动参考；仅在封闭安全场地复拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3145,7 +3160,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W356.jpeg",
         "assets/references/reviewed/W526.jpeg",
-        "assets/references/reviewed/W556.jpeg"
+        "assets/references/reviewed/W556.jpeg",
+        "assets/references/reviewed/W087.jpeg"
       ],
       "image_notes": [
         {
@@ -3159,6 +3175,10 @@ window.ENWAN_DATA = {
         {
           "source": "W556",
           "reason": "车门天然框景的双人相对姿势明确，作为转场停留时对视机位参考；不是车内牵手"
+        },
+        {
+          "source": "W087",
+          "reason": "采用：双人相对站姿及视线明确，提供自然对视中景；可在婚礼走廊替代场地复拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3185,7 +3205,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W938.jpeg",
         "assets/references/reviewed/W024.jpeg",
         "assets/references/reviewed/W056.jpeg",
-        "assets/references/reviewed/W071.png"
+        "assets/references/reviewed/W071.png",
+        "assets/references/reviewed/W171.jpeg"
       ],
       "image_notes": [
         {
@@ -3235,6 +3256,10 @@ window.ENWAN_DATA = {
         {
           "source": "W071",
           "reason": "采用：完整拥抱动作的背侧中景"
+        },
+        {
+          "source": "W171",
+          "reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3549,7 +3574,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W922.jpeg",
         "assets/references/reviewed/W940.jpeg",
         "assets/references/reviewed/W1024.jpeg",
-        "assets/references/reviewed/W1025.jpeg"
+        "assets/references/reviewed/W1025.jpeg",
+        "assets/references/reviewed/W145.jpeg"
       ],
       "image_notes": [
         {
@@ -3599,6 +3625,10 @@ window.ENWAN_DATA = {
         {
           "source": "W1025",
           "reason": "采用：侧向双人自拍机位与W1024正面结果互补"
+        },
+        {
+          "source": "W145",
+          "reason": "采用：持机自拍姿态、脸部靠近与视线明确，适合竖屏参考；原始水印保留"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4591,7 +4621,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 274,
+    "images": 280,
     "core_cards": 26,
     "additional_cards": 7
   }
