@@ -2675,8 +2675,15 @@ window.ENWAN_DATA = {
       "camera": "全身交代裙型；侧面抓整理动作；用镜子或门框做前景。",
       "delivery_check": "全身＋整理细节＋表情；不要求甩裙、旋转或重复试衣。",
       "is_core": true,
-      "images": [],
-      "image_notes": [],
+      "images": [
+        "assets/references/reviewed/W939.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W939",
+          "reason": "采用：展示礼服裙摆体量及正面行进姿态，参考新娘展示婚纱；粉色礼服非白色婚纱。"
+        }
+      ],
       "reference_note": ""
     },
     {
@@ -2820,12 +2827,17 @@ window.ENWAN_DATA = {
       "delivery_check": "初见双方反应＋走近；只有真实初见才称首次相见。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W768.jpeg"
+        "assets/references/reviewed/W768.jpeg",
+        "assets/references/reviewed/W791.png"
       ],
       "image_notes": [
         {
           "source": "W768",
           "reason": "采用：补充A05门口迎接/到达的双人构图，前景背影、门框和迎接者反应同时入镜；A05此前无图片参考。"
+        },
+        {
+          "source": "W791",
+          "reason": "双方位置、花束与到达门口的关系清楚；可作为新人到达/迎接的动作参考，注明影视广告参考而非婚礼实拍。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2926,7 +2938,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W581.jpeg",
         "assets/references/reviewed/W613.jpeg",
-        "assets/references/reviewed/W617.jpeg"
+        "assets/references/reviewed/W617.jpeg",
+        "assets/references/reviewed/W809.jpeg"
       ],
       "image_notes": [
         {
@@ -2940,6 +2953,10 @@ window.ENWAN_DATA = {
         {
           "source": "W617",
           "reason": "区别于W581和W613的背面远景，提供侧向跟拍、手臂延伸和前后错步参考；现场改为慢走，不复制奔跑。"
+        },
+        {
+          "source": "W809",
+          "reason": "牵手散步动作与双方站位完整；相较W807-W808，人物表情和牵手关系更清楚，作为A09不同机位参考。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -2959,7 +2976,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W538.jpeg",
         "assets/references/reviewed/W551.jpeg",
         "assets/references/reviewed/W615.jpeg",
-        "assets/references/reviewed/W671.jpeg"
+        "assets/references/reviewed/W671.jpeg",
+        "assets/references/reviewed/W941.jpeg",
+        "assets/references/reviewed/W942.jpeg"
       ],
       "image_notes": [
         {
@@ -2981,6 +3000,14 @@ window.ENWAN_DATA = {
         {
           "source": "W671",
           "reason": "区别于整掌交握，补充轻松勾指互动和并坐时手臂距离，不需要新建动作卡；平台标志在角落。"
+        },
+        {
+          "source": "W941",
+          "reason": "采用：横向伸手及交握细节，补充牵手近景。"
+        },
+        {
+          "source": "W942",
+          "reason": "采用：与W941手部特写互补的表情和伸臂姿态；男子未完整入镜。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3029,7 +3056,11 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W404.jpeg",
         "assets/references/reviewed/W517.jpeg",
-        "assets/references/reviewed/W549.jpeg"
+        "assets/references/reviewed/W549.jpeg",
+        "assets/references/reviewed/W918.jpeg",
+        "assets/references/reviewed/W936.jpeg",
+        "assets/references/reviewed/W937.jpeg",
+        "assets/references/reviewed/W944.jpeg"
       ],
       "image_notes": [
         {
@@ -3043,6 +3074,22 @@ window.ENWAN_DATA = {
         {
           "source": "W549",
           "reason": "背面中远景明确展示拥抱完成态，可与已有正侧面亲密互动互补"
+        },
+        {
+          "source": "W918",
+          "reason": "采用：完整双人拥抱关系，补充绿植背景的中远景侧后机位；广告调度参考。"
+        },
+        {
+          "source": "W936",
+          "reason": "采用：亲密互动时腰背及搭肩手部位置的局部细节，与W937完整双人姿态互补。"
+        },
+        {
+          "source": "W937",
+          "reason": "采用：双人搭肩环腰和对视的完整中景，非婚礼实拍。"
+        },
+        {
+          "source": "W944",
+          "reason": "采用：双人亲密互动写真中的侧卧/俯身及触脸姿态，作为摆姿参考。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3140,7 +3187,10 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W654.jpeg",
         "assets/references/reviewed/W661.jpeg",
         "assets/references/reviewed/W688.jpeg",
-        "assets/references/reviewed/W698.jpeg"
+        "assets/references/reviewed/W698.jpeg",
+        "assets/references/reviewed/W820.jpeg",
+        "assets/references/reviewed/W829.jpeg",
+        "assets/references/reviewed/W859.jpeg"
       ],
       "image_notes": [
         {
@@ -3166,6 +3216,18 @@ window.ENWAN_DATA = {
         {
           "source": "W698",
           "reason": "采用：补充A15互拍参考，清楚呈现摄影者与被摄者同框及侧向拍摄关系；不同于现有席地、沙发和桌面场景。"
+        },
+        {
+          "source": "W820",
+          "reason": "拍摄者与被拍者关系明确，补充A15互拍动作的户外站立机位；非婚礼实拍，作为调度参考。"
+        },
+        {
+          "source": "W829",
+          "reason": "双方共同看手机的关系清楚，补充A15拍摄后共同看图的室内桌边构图；与W820拍摄瞬间不同。"
+        },
+        {
+          "source": "W859",
+          "reason": "采用：同看手机屏幕的近景站位，适合A15共同看照片参考；不作为已经发生自拍的证据。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3182,7 +3244,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W331.jpeg",
-        "assets/references/reviewed/W692.jpeg"
+        "assets/references/reviewed/W692.jpeg",
+        "assets/references/reviewed/W844.jpeg"
       ],
       "image_notes": [
         {
@@ -3192,6 +3255,10 @@ window.ENWAN_DATA = {
         {
           "source": "W692",
           "reason": "采用：补充A16已有的双人自拍参考，提供手机伸臂、两人贴近和照片墙背景的正面自拍构图；与W331的持花自拍场景不同。"
+        },
+        {
+          "source": "W844",
+          "reason": "采用：双人自拍动作完整，补充A16室内暖色正面机位。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3211,7 +3278,13 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W676.jpeg",
         "assets/references/reviewed/W678.jpeg",
         "assets/references/reviewed/W680.jpeg",
-        "assets/references/reviewed/W681.jpeg"
+        "assets/references/reviewed/W681.jpeg",
+        "assets/references/reviewed/W927.jpeg",
+        "assets/references/reviewed/W928.jpeg",
+        "assets/references/reviewed/W929.jpeg",
+        "assets/references/reviewed/W930.jpeg",
+        "assets/references/reviewed/W931.jpeg",
+        "assets/references/reviewed/W932.jpeg"
       ],
       "image_notes": [
         {
@@ -3233,6 +3306,30 @@ window.ENWAN_DATA = {
         {
           "source": "W681",
           "reason": "补充双人慢舞脚步与机位细节，与W680上半身镜头互补；仅作为完整舞蹈动作卡的细节，不要求特定步法。"
+        },
+        {
+          "source": "W927",
+          "reason": "采用：宴会灯光下双人转身的近机位，保留举臂关系。"
+        },
+        {
+          "source": "W928",
+          "reason": "采用：与W927动作近景互补的空间远景，参考舞池人物位置及前景层次，画面偏软，不作动作细节教学。"
+        },
+        {
+          "source": "W929",
+          "reason": "采用：转身起始阶段，女子正侧面及男子背面站位；广告参考。"
+        },
+        {
+          "source": "W930",
+          "reason": "采用：转身中段的相对视线与高位牵手，作为W929–W932动作序列。"
+        },
+        {
+          "source": "W931",
+          "reason": "采用：转身阶段的背面姿态，与前两帧互补。"
+        },
+        {
+          "source": "W932",
+          "reason": "采用：动作序列的表情近景补充，不作独立完整动作。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3478,7 +3575,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W577.jpeg",
-        "assets/references/reviewed/W719.jpeg"
+        "assets/references/reviewed/W719.jpeg",
+        "assets/references/reviewed/W874.jpeg"
       ],
       "image_notes": [
         {
@@ -3488,6 +3586,10 @@ window.ENWAN_DATA = {
         {
           "source": "W719",
           "reason": "采用：补充A24亲友同框交流，呈现新人被亲友围绕拍摄的社交场景及前景手机构图；与现有三人共看手机不同。"
+        },
+        {
+          "source": "W874",
+          "reason": "双人对坐、发起者与回应者同框，适合A24亲友/新人交流的机位参考；明确为剧情调度，不推断具体关系。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"

@@ -866,5 +866,205 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W777.jpeg",
     "git_blob": "575afb79f39f346f3efdffed70681cc196c123e0"
+  },
+  {
+    "source_key": "W791",
+    "sha256": "7a66d81ea8fe6eccbe39594b90040cb74e534cbbb5739cefed8f9a97b7b2a0f3",
+    "assigned_card_id": "A05",
+    "visual_description": "男子撑透明伞、手持花束站在门外，面向门内站立的女子，呈现到门口赠花/迎接关系。",
+    "match_reason": "双方位置、花束与到达门口的关系清楚；可作为新人到达/迎接的动作参考，注明影视广告参考而非婚礼实拍。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W791.png",
+    "git_blob": "389c55f3833884a99973c0ed262a515adda24bd4"
+  },
+  {
+    "source_key": "W809",
+    "sha256": "c6ea67a153364f4bafd3324433b3f00b16273a3fe892e6c65ee479fa813fbcf4",
+    "assigned_card_id": "A09",
+    "visual_description": "户外绿地，两人并肩向前行走并牵手，女子转头微笑看向男子，双人全身关系清楚。",
+    "match_reason": "牵手散步动作与双方站位完整；相较W807-W808，人物表情和牵手关系更清楚，作为A09不同机位参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W809.jpeg",
+    "git_blob": "230292bf6431cad057ba7257ecccd9f3aca27b51"
+  },
+  {
+    "source_key": "W820",
+    "sha256": "d6fa4377b45ff14a79b5961adfba176e7bbf4e23266afd21284198ab14db4b49",
+    "assigned_card_id": "A15",
+    "visual_description": "户外男子微笑举手机拍摄画面外女子，手机与拍摄者同框，动作清楚。",
+    "match_reason": "拍摄者与被拍者关系明确，补充A15互拍动作的户外站立机位；非婚礼实拍，作为调度参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W820.jpeg",
+    "git_blob": "c6598e4f6d98c88222272a1681948ef48529cb82"
+  },
+  {
+    "source_key": "W829",
+    "sha256": "5718b894b3682dfeb7cacc344a906b383e1e8a4221124d62874fb14d098cb845",
+    "assigned_card_id": "A15",
+    "visual_description": "餐桌边女子手持手机查看屏幕，男子靠近并微笑看向同一屏幕。",
+    "match_reason": "双方共同看手机的关系清楚，补充A15拍摄后共同看图的室内桌边构图；与W820拍摄瞬间不同。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W829.jpeg",
+    "git_blob": "bed755d321cbcbe3da2e53cf3c2f77dbc78cf1bf"
+  },
+  {
+    "source_key": "W844",
+    "sha256": "9a113c7e8c0cce013638498983c1f7f030408525b3bdbf77154f85152aafd84a",
+    "assigned_card_id": "A16",
+    "visual_description": "暖色室内餐吧，女子向前伸臂自拍，男子从侧后方靠近，两人面向自拍镜头。",
+    "match_reason": "采用：双人自拍动作完整，补充A16室内暖色正面机位。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W844.jpeg",
+    "git_blob": "4507b954e72391791369b20fa13db91fb29b097c"
+  },
+  {
+    "source_key": "W859",
+    "sha256": "ead23d20cca096055c7700b007f21662c059bf90f1455ba88bf97492497e595a",
+    "assigned_card_id": "A15",
+    "visual_description": "户外建筑前男女并肩靠近，一同低头看向女子手持的手机。",
+    "match_reason": "采用：同看手机屏幕的近景站位，适合A15共同看照片参考；不作为已经发生自拍的证据。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W859.jpeg",
+    "git_blob": "990e689bee5dc8d2997e709e42517c8936082da4"
+  },
+  {
+    "source_key": "W874",
+    "sha256": "742122ae022f9e4d9ab8ff0d7566861e021301f0c6371e56bca04916cdabff8f",
+    "assigned_card_id": "A24",
+    "visual_description": "室内沙发上男子面向女子伸手示意或递出物件，女子在画面左侧回应，双方对坐交流。",
+    "match_reason": "双人对坐、发起者与回应者同框，适合A24亲友/新人交流的机位参考；明确为剧情调度，不推断具体关系。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W874.jpeg",
+    "git_blob": "c2956840dbeca5557962a286a84398442e8aab60"
+  },
+  {
+    "source_key": "W918",
+    "sha256": "8d2090e68cc252f5ff6c4b05f69e67af6ae537d86e685910b309fed290e0e18f",
+    "assigned_card_id": "A12",
+    "visual_description": "绿植墙旁的露天咖啡座，一男一女站立相拥，双方手臂环抱对方肩背，女子背向镜头。",
+    "match_reason": "采用：完整双人拥抱关系，补充绿植背景的中远景侧后机位；广告调度参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W918.jpeg",
+    "git_blob": "ced464201769caf95af4799936f2f4fec1d9519c"
+  },
+  {
+    "source_key": "W927",
+    "sha256": "1fe95b1af97e386af93e3229485127be887e048e8643ee8296b8015c494b4013",
+    "assigned_card_id": "A17",
+    "visual_description": "金色装饰与镜面球灯的室内舞池，男子抬手牵引女子转身，女子浅色长裙背向镜头举臂。",
+    "match_reason": "采用：宴会灯光下双人转身的近机位，保留举臂关系。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W927.jpeg",
+    "git_blob": "7176950184881cc175bce833a528cc388559db38"
+  },
+  {
+    "source_key": "W928",
+    "sha256": "f7d844a0ece6b61e685197f985dbbb1e16d7ee017ddbb0469c99ffedbb6386a1",
+    "assigned_card_id": "A17",
+    "visual_description": "金色宴会空间远景，舞伴位于画面偏右，前景桌面灯光虚化，双人站立起舞。",
+    "match_reason": "采用：与W927动作近景互补的空间远景，参考舞池人物位置及前景层次，画面偏软，不作动作细节教学。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W928.jpeg",
+    "git_blob": "d20d95c801a7f12541aa6a7acd30541fcf73fab5"
+  },
+  {
+    "source_key": "W929",
+    "sha256": "a22ff58a4c20921e37839a0bcc0543f39eef995b2ca57c9fdff0781636dfe0c4",
+    "assigned_card_id": "A17",
+    "visual_description": "户外建筑旁，条纹上衣女子举起右臂，与背向镜头的男子举手相接。",
+    "match_reason": "采用：转身起始阶段，女子正侧面及男子背面站位；广告参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W929.jpeg",
+    "git_blob": "ea3a302638f69848a376e7d095151bfe3249ee14"
+  },
+  {
+    "source_key": "W930",
+    "sha256": "07ea12ef71f2f8ef93067c8cea92d6786a325ca80155ef6eb1f7c736efce4635",
+    "assigned_card_id": "A17",
+    "visual_description": "同一户外场景，男女牵手举过头顶，女子低头微笑、男子侧身望向她。",
+    "match_reason": "采用：转身中段的相对视线与高位牵手，作为W929–W932动作序列。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W930.jpeg",
+    "git_blob": "b3ff739214e9e2d2d20864b14fa47bf73923cb01"
+  },
+  {
+    "source_key": "W931",
+    "sha256": "21cbb332d20e15233d02e7760bcf9a8d22ccdc2b626c16445bf57ee73186b9f0",
+    "assigned_card_id": "A17",
+    "visual_description": "户外女子从镜头方向转向背面，男子侧面微笑，双方仍保持高位牵手。",
+    "match_reason": "采用：转身阶段的背面姿态，与前两帧互补。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W931.jpeg",
+    "git_blob": "53b4c50cdf951b3a8194024d114493dafe861985"
+  },
+  {
+    "source_key": "W932",
+    "sha256": "7d41cd60ec9dc415488c5475e5f96ee8dc2ab3a7197510cb512e84d152508b8a",
+    "assigned_card_id": "A17",
+    "visual_description": "女子低头笑着举臂转身的近景，右侧露出男子抬起的手臂。",
+    "match_reason": "采用：动作序列的表情近景补充，不作独立完整动作。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W932.jpeg",
+    "git_blob": "77983c3164464217443ba8136caad7373ad2cc31"
+  },
+  {
+    "source_key": "W936",
+    "sha256": "2a7ec29c04f904723bb9508b70d6d0c390ea5a4b6ae880e4e380cc9b8d81ae2d",
+    "assigned_card_id": "A12",
+    "visual_description": "窗边室内，蓝衣男子用手环住黑衣女子腰背，女子手臂搭肩；画面截去部分头部。",
+    "match_reason": "采用：亲密互动时腰背及搭肩手部位置的局部细节，与W937完整双人姿态互补。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W936.jpeg",
+    "git_blob": "45592a8211895fb50eceeeda3c4bbfb2f83d2dca"
+  },
+  {
+    "source_key": "W937",
+    "sha256": "b9e13eba5c48a0fdb4695208a7779785a0ac27429297e37a72556144633dfb3c",
+    "assigned_card_id": "A12",
+    "visual_description": "窗边男女面对面站立相拥，女子双手搭在男子肩部，男子环住女子腰背，两人对视。",
+    "match_reason": "采用：双人搭肩环腰和对视的完整中景，非婚礼实拍。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W937.jpeg",
+    "git_blob": "cbbd8066322bfbe940f673e63315ceb6f5ad7c5f"
+  },
+  {
+    "source_key": "W939",
+    "sha256": "23b41dc8e513d17aad2b51b33e7e0f43321072c01b3c2f8f6fb6ca7805054443",
+    "assigned_card_id": "A01",
+    "visual_description": "户外道路上女子穿粉色层叠蓬裙，正面向镜头，双手轻提裙摆，背景绿树。",
+    "match_reason": "采用：展示礼服裙摆体量及正面行进姿态，参考新娘展示婚纱；粉色礼服非白色婚纱。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W939.jpeg",
+    "git_blob": "726087fa871b432e422a3a11694e411231348153"
+  },
+  {
+    "source_key": "W941",
+    "sha256": "00ed6a57b2835802c2c3a015a253ffb5a1585c8a4b72f9d6b0f96fcd34fffb5b",
+    "assigned_card_id": "A10",
+    "visual_description": "粉色珠宝广告背景，深色袖口男子的手与佩戴金色手镯的女子手相握，手部特写。",
+    "match_reason": "采用：横向伸手及交握细节，补充牵手近景。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W941.jpeg",
+    "git_blob": "9ff960386cd1001ea453e3d2d23826f2f4aec826"
+  },
+  {
+    "source_key": "W942",
+    "sha256": "f05354576e133c84cba09680cc37ba28b8e811012ef993f213c1b1b23a52c085",
+    "assigned_card_id": "A10",
+    "visual_description": "白色礼服女子在粉色背景前微笑伸臂，握住画面左侧男子伸出的手。",
+    "match_reason": "采用：与W941手部特写互补的表情和伸臂姿态；男子未完整入镜。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W942.jpeg",
+    "git_blob": "17994611a139820e26046166965e8adc7e170db7"
+  },
+  {
+    "source_key": "W944",
+    "sha256": "d13bba5ca42955a64afc78d2cb443c631b64decaa20fa69b2f53234b031820a0",
+    "assigned_card_id": "A12",
+    "visual_description": "粉色背景，白色礼服女子侧卧撑头，黑色礼服男子俯身靠近，女子抬手触碰男子脸侧。",
+    "match_reason": "采用：双人亲密互动写真中的侧卧/俯身及触脸姿态，作为摆姿参考。",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W944.jpeg",
+    "git_blob": "9f1242f0f9a3b2f81f668c04a269c5e3621e1ceb"
   }
 ]
