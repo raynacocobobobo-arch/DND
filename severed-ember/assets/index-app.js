@@ -53,7 +53,7 @@ function setupUnitAtlas(){
  const groups={'friendly-g01':'薪传议会','friendly-g05':'余火守卫','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使','enemy-units-g07':'黑暗机械教','enemy-units-g08':'审判庭与舰船武装'};
  const roles={
  'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g05':'步兵','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
- 'reinforcements':'精锐 灵能 步兵 机动 步兵 技术 精锐 步兵 精锐 精锐 载具 NPC','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵 步兵',
+ 'reinforcements':'精锐 灵能 步兵 机动 步兵 技术 精锐 步兵 精锐 精锐 载具 NPC 载具','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵 步兵',
  'enemy-units-g02':'灵能 指挥 步兵 机动 精锐 精锐 精锐 技术 指挥 怪物 载具 载具 精锐 指挥',
  'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具 载具 载具 载具 指挥 载具 载具 载具',
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
@@ -69,12 +69,12 @@ function setupUnitAtlas(){
    if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
    n=n.nextElementSibling;
   }
-  return {id:h.id,name:h.textContent.trim(),group:side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"暗黑天使","11":"机械教","12":"无主之地"}[sequence+1]||'剧情援军'):(groups[groupKey]||'未归类'),side,role,points,img,terms:phrases.join(' '),order:i};
+  return {id:h.id,name:h.textContent.trim(),group:side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"暗黑天使","11":"机械教","12":"无主之地","13":"其他剧情援军"}[sequence+1]||'剧情援军'):(groups[groupKey]||'未归类'),side,role,points,img,terms:phrases.join(' '),order:i};
  });
  const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
- const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','死亡守望','灰骑士','暗黑天使','钢铁之手','克里格死亡军团','机械教','无主之地','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','黑暗机械教','审判庭与舰船武装'];
+ const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','死亡守望','灰骑士','暗黑天使','钢铁之手','克里格死亡军团','机械教','其他剧情援军','无主之地','混沌恶魔','混沌星际战士','混沌机械','混沌叛军','兽人','黑暗机械教','审判庭与舰船武装'];
  const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-rules-sidebar-v1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-campaign-match-v2')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
