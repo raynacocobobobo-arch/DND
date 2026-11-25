@@ -1,5 +1,5 @@
 window.ENWAN_DATA = {
-  "version": "6.0",
+  "version": "6.1",
   "stages": [
     {
       "id": "S1",
@@ -6383,5 +6383,315 @@ window.ENWAN_DATA = {
     "接亲与转场",
     "婚礼仪式",
     "宴会与庆祝"
-  ]
+  ],
+  "flow_layout": {
+    "mode": "original-groups",
+    "groups": [
+      {
+        "id": "G-L-groom-1",
+        "title": "小区空镜",
+        "stage_id": "L-groom-P1"
+      },
+      {
+        "id": "G-L-groom-2",
+        "title": "主家房子空镜",
+        "stage_id": "L-groom-P1"
+      },
+      {
+        "id": "G-L-groom-3",
+        "title": "屋里空镜",
+        "stage_id": "L-groom-P1"
+      },
+      {
+        "id": "G-L-groom-4",
+        "title": "细节空镜",
+        "stage_id": "L-groom-P1"
+      },
+      {
+        "id": "G-L-groom-5",
+        "title": "新郎 化妆",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-6",
+        "title": "穿衣",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-7",
+        "title": "新郎酷炫造型镜头",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-8",
+        "title": "新郎变装（转场镜头）",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-9",
+        "title": "新郎情感镜头",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-10",
+        "title": "伴郎",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-11",
+        "title": "新郎父母",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-12",
+        "title": "新郎亲友",
+        "stage_id": "L-groom-P2"
+      },
+      {
+        "id": "G-L-groom-13",
+        "title": "出发仪式",
+        "stage_id": "L-groom-P3"
+      },
+      {
+        "id": "G-L-groom-14",
+        "title": "上车镜头",
+        "stage_id": "L-groom-P3"
+      },
+      {
+        "id": "G-L-groom-15",
+        "title": "车内镜头",
+        "stage_id": "L-groom-P3"
+      },
+      {
+        "id": "G-L-groom-16",
+        "title": "车队镜头",
+        "stage_id": "L-groom-P3"
+      },
+      {
+        "id": "G-L-groom-17",
+        "title": "挤门镜头",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-18",
+        "title": "新郎伴郎挤门进门热闹的镜头",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-19",
+        "title": "游戏镜头",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-20",
+        "title": "献花、亲吻",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-21",
+        "title": "女方家接亲仪式",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-22",
+        "title": "女方出发仪式",
+        "stage_id": "L-groom-P4"
+      },
+      {
+        "id": "G-L-groom-23",
+        "title": "车队镜头（返程）",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-24",
+        "title": "车内镜头（返程）",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-25",
+        "title": "男方家挤门镜头",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-26",
+        "title": "男方家接亲仪式",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-27",
+        "title": "男方家唯美镜头",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-28",
+        "title": "有无 first look",
+        "stage_id": "L-groom-P5"
+      },
+      {
+        "id": "G-L-groom-29",
+        "title": "去酒店车队",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-groom-30",
+        "title": "酒店下车、入门镜头",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-groom-31",
+        "title": "酒店的空镜",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-groom-32",
+        "title": "酒店场布空镜",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-groom-33",
+        "title": "酒店典礼",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-groom-34",
+        "title": "大合影",
+        "stage_id": "L-groom-P6"
+      },
+      {
+        "id": "G-L-bride-1",
+        "title": "小区空镜",
+        "stage_id": "L-bride-Q1"
+      },
+      {
+        "id": "G-L-bride-2",
+        "title": "主家房子布置空镜",
+        "stage_id": "L-bride-Q1"
+      },
+      {
+        "id": "G-L-bride-3",
+        "title": "屋里布置空镜",
+        "stage_id": "L-bride-Q1"
+      },
+      {
+        "id": "G-L-bride-4",
+        "title": "细节空镜",
+        "stage_id": "L-bride-Q1"
+      },
+      {
+        "id": "G-L-bride-5",
+        "title": "化妆",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-6",
+        "title": "新娘晨袍单人摆拍",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-7",
+        "title": "屋里布景场景摆拍",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-8",
+        "title": "新娘伴娘晨袍摆拍",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-9",
+        "title": "新娘变装（转场镜头）",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-10",
+        "title": "秀禾服换妆造",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-11",
+        "title": "秀禾服单人摆拍",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-12",
+        "title": "新娘伴娘秀禾服摆拍",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-13",
+        "title": "新娘情感镜头",
+        "stage_id": "L-bride-Q2"
+      },
+      {
+        "id": "G-L-bride-14",
+        "title": "伴娘",
+        "stage_id": "L-bride-Q3"
+      },
+      {
+        "id": "G-L-bride-15",
+        "title": "新娘父母",
+        "stage_id": "L-bride-Q3"
+      },
+      {
+        "id": "G-L-bride-16",
+        "title": "新娘父母与新娘互动",
+        "stage_id": "L-bride-Q3"
+      },
+      {
+        "id": "G-L-bride-17",
+        "title": "新娘亲友",
+        "stage_id": "L-bride-Q3"
+      },
+      {
+        "id": "G-L-bride-18",
+        "title": "挤门镜头",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-19",
+        "title": "游戏镜头",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-20",
+        "title": "献花、亲吻",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-21",
+        "title": "女方家改口仪式",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-22",
+        "title": "女方出发仪式",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-23",
+        "title": "有无 first look",
+        "stage_id": "L-bride-Q4"
+      },
+      {
+        "id": "G-L-bride-24",
+        "title": "酒店的空镜",
+        "stage_id": "L-bride-Q5"
+      },
+      {
+        "id": "G-L-bride-25",
+        "title": "酒店场布空镜",
+        "stage_id": "L-bride-Q5"
+      },
+      {
+        "id": "G-L-bride-26",
+        "title": "酒店典礼",
+        "stage_id": "L-bride-Q5"
+      },
+      {
+        "id": "G-L-bride-27",
+        "title": "大合影",
+        "stage_id": "L-bride-Q5"
+      }
+    ]
+  }
 };
