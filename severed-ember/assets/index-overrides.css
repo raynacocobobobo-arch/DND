@@ -230,3 +230,28 @@
 /* Rules navigation: independent collapsible sections and unit groups. */
 .rules-rail-tree .rules-section-toggle{display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:8px 9px;color:#e7d2ab;font-weight:600;font-size:14px;border-bottom:1px solid #8e795335}.rules-rail-tree .rules-section-toggle::-webkit-details-marker{display:none}.rules-rail-tree .rules-nav-section[open]>.rules-section-toggle .rules-nav-caret{transform:rotate(90deg)}.rules-rail-tree .rules-section-children{padding-left:8px}.rules-rail-tree .rules-nav-section:not([open])>.rules-section-children{display:none}
 #view-rules .rules-atlas-card img{height:auto;max-height:none;aspect-ratio:891/920;object-fit:contain;flex:0 0 auto}
+
+
+/* 2026-11-25: equal vertical rhythm for rules sidebar levels 1–3. */
+.rules-rail-group .rules-nav-section{margin:0!important}
+.rules-rail-group .rules-section-toggle,
+.rules-rail-group .rules-nav-toggle{
+  box-sizing:border-box;
+  min-height:34px;
+  line-height:20px;
+  padding-top:7px!important;
+  padding-bottom:7px!important;
+}
+.rules-rail-group .rules-section-toggle{padding-left:9px!important;padding-right:9px!important}
+.rules-rail-group .rules-nav-toggle{padding-left:0!important;padding-right:9px!important}
+.rules-rail-group .rules-rail-tree a.rail-subitem{
+  box-sizing:border-box;
+  min-height:34px;
+  line-height:20px;
+  padding-top:7px!important;
+  padding-bottom:7px!important;
+}
+.rules-rail-group .rules-nav-level2,
+.rules-rail-group .rules-nav-level3,
+.rules-rail-group .rules-nav-level4{line-height:20px}
+.rules-rail-group .rules-nav-units{margin:0!important}
