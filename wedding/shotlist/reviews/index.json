@@ -18,14 +18,14 @@
     "reviews/W0801-0900.json"
   ],
   "counts": {
-    "reviewed": 660,
+    "reviewed": 670,
     "approved": 80,
-    "excluded": 573,
+    "excluded": 583,
     "pending": 7,
-    "unreviewed": 822,
+    "unreviewed": 812,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "截至2026-11-25已逐图视觉复核W229–W888；新增W789–W888共100条独立记录。pending为视觉通过但尚未发布的原图；excluded为明确排除。"
+  "note": "截至2026-11-25已逐图视觉复核W229–W898；新增W789–W888共100条、W889–W898共10条独立记录。pending为视觉通过但尚未发布的原图；excluded为明确排除。"
 }
