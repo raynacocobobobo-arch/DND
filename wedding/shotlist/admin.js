@@ -14,14 +14,14 @@ function buildRelease(data, groups, index) {
     published.push({source_key:r.source_key,sha256:r.sha256,file_size:r.file_size,assigned_card_id:r.assigned_card_id,visual_description:r.visual_description,match_reason:r.match_reason,match_type:r.match_type,path:r.path,git_blob:r.git_blob});
   }
   published.sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
-  for(const c of cards){const m=published.filter(r=>r.assigned_card_id===c.id);c.images=m.map(r=>r.path);c.image_notes=m.map(r=>({source:r.source_key,reason:r.match_reason}));c.reference_note=m.length?"已逐图审核的动作参考；影视或广告画面仅作为调度示范。":"";}
+  for(const c of cards){const order=new Map((c.images||[]).map((p,i)=>[p,i]));const m=published.filter(r=>r.assigned_card_id===c.id).sort((a,b)=>(order.get(a.path)??Infinity)-(order.get(b.path)??Infinity));c.images=m.map(r=>r.path);c.image_notes=m.map(r=>({source:r.source_key,reason:r.match_reason}));c.reference_note=m.length?"已逐图审核的动作参考；影视或广告画面仅作为调度示范。":"";}
   const original=rows.filter(r=>/^[WR]\d+$/.test(r.source_key)), approved=original.filter(r=>r.review_status==="approved").length, excluded=original.filter(r=>r.review_status==="excluded").length,pending=original.filter(r=>r.review_status==="pending").length;
   index.files=Object.keys(groups).sort();index.counts={reviewed:original.length,approved,excluded,pending,unreviewed:1482-original.length,user_uploads:rows.length-original.length};data.reviewed_release={images:published.length,core_cards:cards.filter(c=>c.is_core).length,additional_cards:cards.filter(c=>!c.is_core).length};
   return published;
 }
 (function admin(){
   "use strict";
-  const ROOT="wedding/shotlist/", API="https://api.github.com/repos/raynacocobobobo-arch/DND",BRANCH="gh-pages",CATS=["晨间准备","接亲与转场","新人双人补拍","仪式现场","宴会与收尾"], LEVELS=["纪实优先","轻引导","条件选拍"];
+  const ROOT="wedding/shotlist/", API="https://api.github.com/repos/raynacocobobobo-arch/DND",BRANCH="gh-pages",CATS=["环境与场布","晨间准备","单人肖像","新人双人互动","家庭与亲友","接亲与转场","婚礼仪式","宴会与庆祝"], LEVELS=["纪实优先","轻引导","条件选拍"];
   const $=id=>document.getElementById(id), node=(tag,txt,cls)=>{const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}, button=(txt,fn)=>{const b=node("button",txt);b.type="button";b.onclick=fn;return b}, opt=(v,t)=>{const o=node("option",t);o.value=v;return o};
   let token="",head="",baseTree="",data=null,index=null,groups={},published=[],dirty=false,staged=new Map(),busy=false,selectedCard="",page=0,selectedImage="",draftNew=false,requestedCard=/^#card-(A\d+)$/.exec(location.hash)?.[1]||"";
   const rows=()=>Object.values(groups).flat();
@@ -40,17 +40,17 @@ function buildRelease(data, groups, index) {
     const h=await currentHead(), c=await api("/git/commits/"+h);
     const raw=await readFile("data.js",h), next=JSON.parse(raw.trim().replace(/^window.ENWAN_DATA\s*=\s*/,"").replace(/;$/,"")), idx=JSON.parse(await readFile("reviews/index.json",h)), nextGroups={};
     for(const p of idx.files){if(!/^reviews\/(?:[WR]\d{4}-\d{4}|uploads)\.json$/.test(p))throw Error("审查分片路径异常");nextGroups[p]=JSON.parse(await readFile(p,h))}
-    const before=JSON.stringify(next.cards.map(c=>[c.id,c.images]));const rel=buildRelease(next,nextGroups,idx);if(before!==JSON.stringify(next.cards.map(c=>[c.id,c.images])))throw Error("仓库中动作卡与审查账本不一致，禁止覆盖");
+    const manifest=JSON.parse(await readFile("reviewed-release.json",h)), lookup=new Map(manifest.map(r=>[r.source_key,r]));for(const r of Object.values(nextGroups).flat()){if(r.review_status!=="approved")continue;const m=lookup.get(r.source_key);if(!m||m.sha256!==r.sha256||m.assigned_card_id!==r.assigned_card_id||m.file_size!==r.file_size||(r.path&&r.path!==m.path)||(r.git_blob&&r.git_blob!==m.git_blob))throw Error("历史发布记录不一致："+r.source_key);r.path=m.path;r.git_blob=m.git_blob;}const before=JSON.stringify(next.cards.map(c=>[c.id,[...c.images].sort()]));const rel=buildRelease(next,nextGroups,idx);if(before!==JSON.stringify(next.cards.map(c=>[c.id,[...c.images].sort()])))throw Error("仓库中动作卡与审查账本不一致，禁止覆盖");
     head=h;baseTree=c.tree.sha;data=next;index=idx;groups=nextGroups;published=rel;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;page=0;selectedCard=data.cards[0]?.id||"";selectedImage="";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;render();status("已连接 GitHub。直接在下方动作卡照片上操作，完成后点击提交并发布。");focusRequested();
   }
-  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("editor").inert=on;$("visual").inert=on}
+  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("editor").inert=on;$("visual").inert=on;$("task-admin").inert=on}
   async function run(fn){if(busy)return;locked(true);try{await fn()}catch(e){status(e.message||"操作失败")}finally{locked(false)}}
   function cardOptions(select, includeBlank=false){let prev=select.value;select.replaceChildren();if(includeBlank)select.append(opt("","请选择动作卡"));for(const c of data.cards)select.append(opt(c.id,c.category+" · "+c.title+" ("+c.id+")"));if([...select.options].some(o=>o.value===prev))select.value=prev;}
   function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("有未发布的修改。点击“提交并发布”统一保存。")}
   function render(){
     const c=index.counts;$("counts").textContent=`原稿已审 ${c.reviewed}/1482 · 已发布 ${c.approved} · 排除 ${c.excluded} · 待发布 ${c.pending} · 后台新增 ${c.user_uploads||0} · 动作卡 ${data.cards.length}`;
     $("publish").disabled=busy||!dirty;$("dirty").textContent=dirty?"有未提交的修改":"已与 GitHub 同步";cardOptions($("upload-card"),true);cardOptions($("card-select"));
-    $("card-select").value=selectedCard;renderCard();renderImages();renderVisual();
+    $("card-select").value=selectedCard;renderCard();renderImages();renderVisual();renderTasks();
   }
   function imageUrl(r){if(staged.has(r.source_key))return staged.get(r.source_key).url;if(r.path&&new RegExp("^assets/references/reviewed/"+r.source_key+"\\.(jpeg|png|webp|gif)$").test(r.path))return new URL(r.path,location.href).href;return null}
   function renderImages(){
@@ -95,7 +95,7 @@ function buildRelease(data, groups, index) {
     if(!c)return;Object.assign(c,{title,category:$("ccat").value,action_level:$("clevel").value,applicable_when:$("cwhen").value.trim(),prompt:promptText,camera,delivery_check:$("ccheck").value.trim()});draftNew=false;$("card-dialog").close();mark();requestedCard=c.id;focusRequested();
   };
   $("new-card").onclick=openNew;
-  $("delete-card").onclick=()=>{const c=data.cards.find(x=>x.id===selectedCard);if(!c)return;if(rows().some(r=>r.assigned_card_id===c.id)){alert("请先移动或移除该卡的所有图片");return}if(!confirm("删除 "+c.title+"？可从 Git 历史恢复。"))return;data.cards=data.cards.filter(x=>x.id!==c.id);selectedCard=data.cards[0]?.id||"";$("card-dialog").close();mark()};
+  $("delete-card").onclick=()=>{const c=data.cards.find(x=>x.id===selectedCard);if(!c)return;if(data.stages.some(s=>s.items.some(t=>(t.reference_ids||[]).includes(c.id)))){alert("请先取消拍摄任务对该动作卡的关联");return}if(rows().some(r=>r.assigned_card_id===c.id)){alert("请先移动或移除该卡的所有图片");return}if(!confirm("删除 "+c.title+"？可从 Git 历史恢复。"))return;data.cards=data.cards.filter(x=>x.id!==c.id);selectedCard=data.cards[0]?.id||"";$("card-dialog").close();mark()};
   async function stageImage(f,card,desc,reason){
     const exts={"image/jpeg":"jpeg","image/png":"png","image/webp":"webp","image/gif":"gif"};
     if(!exts[f.type]||f.size>15*1024*1024||!f.size)throw Error("仅支持不超过15MB的 JPG、PNG、WebP、GIF");
@@ -151,7 +151,7 @@ function buildRelease(data, groups, index) {
   $("visual-cat").onchange=renderVisual;$("visual-search").oninput=renderVisual;$("visual-filled").onchange=renderVisual;$("visual-new").onclick=openNew;
   $("add-image").onclick=()=>run(async()=>{const f=$("upload").files[0],card=$("upload-card").value;if(!f||!card)throw Error("请选择图片和动作卡");await stageImage(f,card,$("description").value.trim(),$("reason").value.trim());$("upload").value="";mark()});
   $("publish").onclick=()=>run(async()=>{
-    if(!dirty)return;if(data.cards.some(c=>!c.title?.trim()||!c.prompt?.trim()||!c.camera?.trim()||!CATS.includes(c.category)))throw Error("有未填写完整的动作卡，先保存卡片内容");
+    if(!dirty)return;validateTasks(data);if(data.cards.some(c=>!c.title?.trim()||!c.prompt?.trim()||!c.camera?.trim()||!CATS.includes(c.category)))throw Error("有未填写完整的动作卡，先保存卡片内容");
     if(!confirm("提交全部暂存修改到 DND 正式分支？提交后将触发 GitHub Pages 发布。"))return;
     if(await currentHead()!==head)throw Error("仓库已被其他任务更新。本次修改仍暂存，请先处理冲突，不会覆盖最新版本。");
     const manifest=buildRelease(data,groups,index), tree=await api("/git/trees/"+baseTree+"?recursive=1");if(tree.truncated)throw Error("仓库树不完整，无法安全发布");
@@ -162,6 +162,18 @@ function buildRelease(data, groups, index) {
     const t=await api("/git/trees","POST",{base_tree:baseTree,tree:entries});const c=await api("/git/commits","POST",{message:"Update wedding action cards and verified reference ledger",tree:t.sha,parents:[head]});if(await currentHead()!==head)throw Error("检测到并发修改，未覆盖正式分支");await api("/git/refs/heads/"+BRANCH,"PATCH",{sha:c.sha,force:false});
     head=c.sha;baseTree=t.sha;for(const x of staged.values())URL.revokeObjectURL(x.url);staged.clear();dirty=false;render();status("已提交 "+head.slice(0,8)+"，GitHub Pages 部署由 GitHub 执行；请在 Actions 查看成功后刷新网站。");$("actions").hidden=false;
   });
-  renderVisual();if(window.ENWAN_DATA)status("已加载正式网站照片。可直接浏览，编辑时连接 GitHub。");focusRequested();
+
+  let taskDraft=false,taskSelected="";
+  const phases=v=>v.stages.filter(s=>/^S\d+$/.test(s.id)), flatTasks=v=>v.stages.flatMap(s=>s.items.map(t=>({t,s}))), viewData=()=>data||window.ENWAN_DATA;
+  function validateTasks(v){const all=flatTasks(v),ids=new Set(all.map(x=>x.t.id)),cardIds=new Set(v.cards.map(c=>c.id));if(ids.size!==all.length)throw Error("拍摄任务编号重复");for(const {t,s} of all){if(!t.title?.trim()||!["必拍","选拍"].includes(t.priority)||!["all","bride","groom"].includes(t.side)||!Array.isArray(t.reference_ids)||new Set(t.reference_ids).size!==t.reference_ids.length||t.reference_ids.some(id=>!cardIds.has(id)))throw Error("无效拍摄任务："+t.id);if(!/^S\d+$/.test(s.id)){if(!phases(v).some(p=>p.id===t.phase_id)||t.parent_id&&!phases(v).some(p=>p.id===t.phase_id&&p.items.some(x=>x.id===t.parent_id)))throw Error("详细拍摄点归属无效："+t.id)}}}
+  function parentOptions(v,phase,current){const sel=$("tparent");sel.replaceChildren(opt("","不指定主任务（阶段内独立详细点）"));for(const t of phases(v).find(s=>s.id===phase)?.items||[])sel.append(opt(t.id,t.title+" · "+t.id));sel.value=current||"";}
+  function renderTasks(){const v=viewData();if(!v)return;const all=flatTasks(v),q=$("task-search").value.trim().toLowerCase(),sel=$("task-select");sel.replaceChildren();for(const {t,s} of all.filter(({t,s})=>!q||(t.id+" "+t.title+" "+s.title).toLowerCase().includes(q)))sel.append(opt(t.id,t.title+" · "+t.id));if(!taskDraft){if(![...sel.options].some(o=>o.value===taskSelected))taskSelected=sel.options[0]?.value||"";sel.value=taskSelected;}const item=all.find(x=>x.t.id===taskSelected),t=taskDraft?null:item?.t;$("task-form").hidden=!taskDraft&&!t;if(!taskDraft&&!t)return;const isDetail=!!item&&!taskDraft&&!/^S\d+$/.test(item.s.id);$("tphase").replaceChildren(...phases(v).map(s=>opt(s.id,s.title)));$("tphase").value=t?(isDetail?t.phase_id:item.s.id):phases(v)[0]?.id;$("ttitle").value=t?.title||"";$("tpriority").value=t?.priority||"选拍";$("tside").value=t?.side||"all";parentOptions(v,$("tphase").value,t?.parent_id);$("tparent").disabled=!isDetail;$("trefs").replaceChildren();for(const c of v.cards){const l=node("label",undefined,"check"),inp=node("input");inp.type="checkbox";inp.value=c.id;inp.checked=(t?.reference_ids||[]).includes(c.id);l.append(inp,document.createTextNode(c.title+" · "+c.id));$("trefs").append(l)}$("task-info").textContent=taskDraft?"新主任务（将生成新 ID）":t.id+" · "+(isDetail?"原版详细拍摄点":"主任务");for(const id of ["task-up","task-down","task-delete"])$(id).disabled=taskDraft}
+  $("task-search").oninput=()=>{taskDraft=false;renderTasks()};$("task-select").onchange=()=>{taskDraft=false;taskSelected=$("task-select").value;renderTasks()};$("tphase").onchange=()=>parentOptions(viewData(),$("tphase").value,"");
+  $("task-new").onclick=()=>{if(!canEdit())return;taskDraft=true;taskSelected="";renderTasks();$("ttitle").focus()};
+  $("task-save").onclick=()=>{if(!canEdit())return;const title=$("ttitle").value.trim(),phase=$("tphase").value,stage=phases(data).find(s=>s.id===phase);if(!title||!stage)return alert("请填写任务名称和阶段");let item=flatTasks(data).find(x=>x.t.id===taskSelected),t=item?.t;if(taskDraft){t={id:"T-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),title,priority:"选拍",side:"all",reference_ids:[]};stage.items.push(t)}else if(!t)return;const isDetail=!taskDraft&&!/^S\d+$/.test(item.s.id);if(isDetail){t.phase_id=phase;t.parent_id=$("tparent").value||null}else if(!taskDraft&&item.s.id!==phase){item.s.items=item.s.items.filter(x=>x!==t);stage.items.push(t);for(const {t:x} of flatTasks(data))if(x.parent_id===t.id)x.phase_id=phase}Object.assign(t,{title,priority:$("tpriority").value,side:$("tside").value,reference_ids:[...$("trefs").querySelectorAll("input:checked")].map(x=>x.value)});taskDraft=false;taskSelected=t.id;$("task-search").value="";validateTasks(data);mark()};
+  function moveTask(delta){if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;const arr=item.s.items,i=arr.indexOf(item.t),n=i+delta;if(n<0||n>=arr.length)return;[arr[i],arr[n]]=[arr[n],arr[i]];mark()}
+  $("task-up").onclick=()=>moveTask(-1);$("task-down").onclick=()=>moveTask(1);
+  $("task-delete").onclick=()=>{if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;if(flatTasks(data).some(x=>x.t.parent_id===item.t.id))return alert("先移动此任务的详细拍摄点");if(!confirm("删除任务："+item.t.title+"？本机项目中此任务的历史完成状态会失效。"))return;item.s.items=item.s.items.filter(x=>x!==item.t);taskSelected="";mark()};
+  renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载正式网站照片。可直接浏览，编辑时连接 GitHub。");focusRequested();
   window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
 })();

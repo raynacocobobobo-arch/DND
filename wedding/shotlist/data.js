@@ -1,5 +1,5 @@
 window.ENWAN_DATA = {
-  "version": "5.0",
+  "version": "6.0",
   "stages": [
     {
       "id": "S1",
@@ -10,67 +10,95 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "场地外观",
           "priority": "必拍",
-          "id": "S1-1"
+          "id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "婚礼日期与新人姓名",
           "priority": "必拍",
-          "id": "S1-2"
+          "id": "S1-2",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "婚房全景",
           "priority": "必拍",
-          "id": "S1-3"
+          "id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "戒指与婚礼信物",
           "priority": "必拍",
-          "id": "S1-4"
+          "id": "S1-4",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "请柬及誓言卡",
           "priority": "选拍",
-          "id": "S1-5"
+          "id": "S1-5",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "窗光及空间细节",
           "priority": "选拍",
-          "id": "S1-6"
+          "id": "S1-6",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "工作人员布置",
           "priority": "选拍",
-          "id": "S1-7"
+          "id": "S1-7",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "bride",
           "title": "婚纱全貌",
           "priority": "必拍",
-          "id": "S1-8"
+          "id": "S1-8",
+          "reference_ids": [
+            "A01",
+            "A29"
+          ]
         },
         {
           "side": "bride",
           "title": "婚鞋及首饰",
           "priority": "必拍",
-          "id": "S1-9"
+          "id": "S1-9",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "西装与领结",
           "priority": "必拍",
-          "id": "S1-10"
+          "id": "S1-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "皮鞋及袖扣",
           "priority": "必拍",
-          "id": "S1-11"
+          "id": "S1-11",
+          "reference_ids": [
+            "A30"
+          ]
         }
       ]
     },
@@ -83,91 +111,139 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "准备时的自然交流",
           "priority": "选拍",
-          "id": "S2-1"
+          "id": "S2-1",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "亲友协助及反应",
           "priority": "必拍",
-          "id": "S2-2"
+          "id": "S2-2",
+          "reference_ids": [
+            "A02",
+            "A24"
+          ]
         },
         {
           "side": "bride",
           "title": "化妆全景",
           "priority": "必拍",
-          "id": "S2-3"
+          "id": "S2-3",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "bride",
           "title": "眼妆与唇妆",
           "priority": "必拍",
-          "id": "S2-4"
+          "id": "S2-4",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "bride",
           "title": "整理发型及头饰",
           "priority": "必拍",
-          "id": "S2-5"
+          "id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "bride",
           "title": "伴娘协助穿婚纱",
           "priority": "必拍",
-          "id": "S2-6"
+          "id": "S2-6",
+          "reference_ids": [
+            "A02",
+            "A29"
+          ]
         },
         {
           "side": "bride",
           "title": "母亲整理婚纱",
           "priority": "必拍",
-          "id": "S2-7"
+          "id": "S2-7",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "side": "bride",
           "title": "佩戴首饰及婚鞋",
           "priority": "必拍",
-          "id": "S2-8"
+          "id": "S2-8",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "bride",
           "title": "窗边肖像",
           "priority": "选拍",
-          "id": "S2-9"
+          "id": "S2-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "side": "groom",
           "title": "穿衬衫及西装",
           "priority": "必拍",
-          "id": "S2-10"
+          "id": "S2-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "整理领带",
           "priority": "必拍",
-          "id": "S2-11"
+          "id": "S2-11",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "袖扣及手表",
           "priority": "必拍",
-          "id": "S2-12"
+          "id": "S2-12",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "穿皮鞋",
           "priority": "必拍",
-          "id": "S2-13"
+          "id": "S2-13",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "side": "groom",
           "title": "伴郎整理衣领",
           "priority": "必拍",
-          "id": "S2-14"
+          "id": "S2-14",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "side": "groom",
           "title": "镜前整理仪容",
           "priority": "选拍",
-          "id": "S2-15"
+          "id": "S2-15",
+          "reference_ids": [
+            "A30",
+            "A34"
+          ]
         }
       ]
     },
@@ -180,61 +256,93 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "父母看到新人造型",
           "priority": "必拍",
-          "id": "S3-1"
+          "id": "S3-1",
+          "reference_ids": [
+            "A03"
+          ]
         },
         {
           "side": "all",
           "title": "父母整理衣物",
           "priority": "必拍",
-          "id": "S3-2"
+          "id": "S3-2",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "side": "all",
           "title": "新人和父母交流",
           "priority": "必拍",
-          "id": "S3-3"
+          "id": "S3-3",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "父母祝福",
           "priority": "必拍",
-          "id": "S3-4"
+          "id": "S3-4",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "祖辈互动",
           "priority": "选拍",
-          "id": "S3-5"
+          "id": "S3-5",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "家庭合影",
           "priority": "必拍",
-          "id": "S3-6"
+          "id": "S3-6",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "side": "all",
           "title": "亲友拥抱",
           "priority": "选拍",
-          "id": "S3-7"
+          "id": "S3-7",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "伴郎伴娘互动",
           "priority": "选拍",
-          "id": "S3-8"
+          "id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "bride",
           "title": "母女牵手",
           "priority": "选拍",
-          "id": "S3-9"
+          "id": "S3-9",
+          "reference_ids": [
+            "A04"
+          ]
         },
         {
           "side": "groom",
           "title": "父子并肩",
           "priority": "选拍",
-          "id": "S3-10"
+          "id": "S3-10",
+          "reference_ids": [
+            "A04"
+          ]
         }
       ]
     },
@@ -247,79 +355,120 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "敲门与开门",
           "priority": "必拍",
-          "id": "S4-1"
+          "id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "side": "all",
           "title": "接亲游戏",
           "priority": "必拍",
-          "id": "S4-2"
+          "id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "side": "all",
           "title": "双方首次见面反应",
           "priority": "必拍",
-          "id": "S4-3"
+          "id": "S4-3",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "side": "all",
           "title": "献花或求婚",
           "priority": "必拍",
-          "id": "S4-4"
+          "id": "S4-4",
+          "reference_ids": [
+            "A28",
+            "A25"
+          ]
         },
         {
           "side": "all",
           "title": "敬茶与接茶",
           "priority": "必拍",
-          "id": "S4-5"
+          "id": "S4-5",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "side": "all",
           "title": "父母祝福及回礼",
           "priority": "必拍",
-          "id": "S4-6"
+          "id": "S4-6",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "出门送别",
           "priority": "必拍",
-          "id": "S4-7"
+          "id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "上车与出发",
           "priority": "必拍",
-          "id": "S4-8"
+          "id": "S4-8",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "side": "all",
           "title": "车内交流",
           "priority": "选拍",
-          "id": "S4-9"
+          "id": "S4-9",
+          "reference_ids": [
+            "A08"
+          ]
         },
         {
           "side": "all",
           "title": "抵达下一场地",
           "priority": "必拍",
-          "id": "S4-10"
+          "id": "S4-10",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "side": "bride",
           "title": "新娘等待接亲",
           "priority": "必拍",
-          "id": "S4-11"
+          "id": "S4-11",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "side": "groom",
           "title": "接亲车队出发",
           "priority": "必拍",
-          "id": "S4-12"
+          "id": "S4-12",
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "新郎与伴郎到达",
           "priority": "必拍",
-          "id": "S4-13"
+          "id": "S4-13",
+          "reference_ids": [
+            "A05",
+            "A06"
+          ]
         }
       ]
     },
@@ -332,61 +481,98 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "并肩站立",
           "priority": "选拍",
-          "id": "S5-1"
+          "id": "S5-1",
+          "reference_ids": [
+            "A11",
+            "A13"
+          ]
         },
         {
           "side": "all",
           "title": "牵手散步",
           "priority": "选拍",
-          "id": "S5-2"
+          "id": "S5-2",
+          "reference_ids": [
+            "A09",
+            "A10"
+          ]
         },
         {
           "side": "all",
           "title": "并肩聊天",
           "priority": "选拍",
-          "id": "S5-3"
+          "id": "S5-3",
+          "reference_ids": [
+            "A13",
+            "A09"
+          ]
         },
         {
           "side": "all",
           "title": "相视转头",
           "priority": "选拍",
-          "id": "S5-4"
+          "id": "S5-4",
+          "reference_ids": [
+            "A11",
+            "A14"
+          ]
         },
         {
           "side": "all",
           "title": "拥抱依靠",
           "priority": "选拍",
-          "id": "S5-5"
+          "id": "S5-5",
+          "reference_ids": [
+            "A12",
+            "A13"
+          ]
         },
         {
           "side": "all",
           "title": "整理捧花或衣物",
           "priority": "选拍",
-          "id": "S5-6"
+          "id": "S5-6",
+          "reference_ids": [
+            "A02",
+            "A25"
+          ]
         },
         {
           "side": "all",
           "title": "建筑或户外大景",
           "priority": "选拍",
-          "id": "S5-7"
+          "id": "S5-7",
+          "reference_ids": [
+            "A31",
+            "A09"
+          ]
         },
         {
           "side": "all",
           "title": "背影与脚步",
           "priority": "选拍",
-          "id": "S5-8"
+          "id": "S5-8",
+          "reference_ids": [
+            "A09"
+          ]
         },
         {
           "side": "all",
           "title": "单人肖像",
           "priority": "选拍",
-          "id": "S5-9"
+          "id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "side": "all",
           "title": "伴郎伴娘合影",
           "priority": "选拍",
-          "id": "S5-10"
+          "id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         }
       ]
     },
@@ -399,55 +585,81 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "仪式区全景",
           "priority": "必拍",
-          "id": "S6-1"
+          "id": "S6-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "通道及舞台",
           "priority": "必拍",
-          "id": "S6-2"
+          "id": "S6-2",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "花艺及桌花",
           "priority": "必拍",
-          "id": "S6-3"
+          "id": "S6-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "签到台与指示牌",
           "priority": "必拍",
-          "id": "S6-4"
+          "id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "空场前景横移",
           "priority": "选拍",
-          "id": "S6-5"
+          "id": "S6-5",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "宾客签到与入场",
           "priority": "必拍",
-          "id": "S6-6"
+          "id": "S6-6",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "新人迎宾",
           "priority": "必拍",
-          "id": "S6-7"
+          "id": "S6-7",
+          "reference_ids": [
+            "A24",
+            "A05"
+          ]
         },
         {
           "side": "all",
           "title": "儿童及老人细节",
           "priority": "选拍",
-          "id": "S6-8"
+          "id": "S6-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "主持人准备",
           "priority": "必拍",
-          "id": "S6-9"
+          "id": "S6-9",
+          "reference_ids": []
         }
       ]
     },
@@ -460,91 +672,140 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "开场与全场环境",
           "priority": "必拍",
-          "id": "S7-1"
+          "id": "S7-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "新郎入场",
           "priority": "必拍",
-          "id": "S7-2"
+          "id": "S7-2",
+          "reference_ids": [
+            "A18"
+          ]
         },
         {
           "side": "all",
           "title": "新娘及陪同人员入场",
           "priority": "必拍",
-          "id": "S7-3"
+          "id": "S7-3",
+          "reference_ids": [
+            "A18",
+            "A19"
+          ]
         },
         {
           "side": "all",
           "title": "首次见面反应",
           "priority": "必拍",
-          "id": "S7-4"
+          "id": "S7-4",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "side": "all",
           "title": "交接与父母反应",
           "priority": "必拍",
-          "id": "S7-5"
+          "id": "S7-5",
+          "reference_ids": [
+            "A19",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "共同走向舞台",
           "priority": "必拍",
-          "id": "S7-6"
+          "id": "S7-6",
+          "reference_ids": [
+            "A18"
+          ]
         },
         {
           "side": "all",
           "title": "主持人开场",
           "priority": "必拍",
-          "id": "S7-7"
+          "id": "S7-7",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "誓言完整声音",
           "priority": "必拍",
-          "id": "S7-8"
+          "id": "S7-8",
+          "reference_ids": [
+            "A20"
+          ]
         },
         {
           "side": "all",
           "title": "交换戒指",
           "priority": "必拍",
-          "id": "S7-9"
+          "id": "S7-9",
+          "reference_ids": [
+            "A21"
+          ]
         },
         {
           "side": "all",
           "title": "亲吻或拥抱",
           "priority": "必拍",
-          "id": "S7-10"
+          "id": "S7-10",
+          "reference_ids": [
+            "A12",
+            "A22"
+          ]
         },
         {
           "side": "all",
           "title": "父母致辞",
           "priority": "必拍",
-          "id": "S7-11"
+          "id": "S7-11",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "side": "all",
           "title": "证婚及祝福",
           "priority": "必拍",
-          "id": "S7-12"
+          "id": "S7-12",
+          "reference_ids": [
+            "A20",
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "礼成退场",
           "priority": "必拍",
-          "id": "S7-13"
+          "id": "S7-13",
+          "reference_ids": [
+            "A22",
+            "A18"
+          ]
         },
         {
           "side": "all",
           "title": "宾客掌声及落泪",
           "priority": "选拍",
-          "id": "S7-14"
+          "id": "S7-14",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "撒花与礼花",
           "priority": "选拍",
-          "id": "S7-15"
+          "id": "S7-15",
+          "reference_ids": [
+            "A22"
+          ]
         }
       ]
     },
@@ -557,67 +818,100 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "宴会厅全景",
           "priority": "必拍",
-          "id": "S8-1"
+          "id": "S8-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "二次入场（如有）",
           "priority": "选拍",
-          "id": "S8-2"
+          "id": "S8-2",
+          "reference_ids": [
+            "A18"
+          ]
         },
         {
           "side": "all",
           "title": "新人答谢",
           "priority": "必拍",
-          "id": "S8-3"
+          "id": "S8-3",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "举杯祝酒",
           "priority": "必拍",
-          "id": "S8-4"
+          "id": "S8-4",
+          "reference_ids": [
+            "A33",
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "敬酒及亲友交流",
           "priority": "必拍",
-          "id": "S8-5"
+          "id": "S8-5",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "切蛋糕（如有）",
           "priority": "选拍",
-          "id": "S8-6"
+          "id": "S8-6",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "游戏及表演（如有）",
           "priority": "选拍",
-          "id": "S8-7"
+          "id": "S8-7",
+          "reference_ids": [
+            "A24",
+            "A35"
+          ]
         },
         {
           "side": "all",
           "title": "亲友合影",
           "priority": "必拍",
-          "id": "S8-8"
+          "id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "side": "all",
           "title": "餐桌细节",
           "priority": "选拍",
-          "id": "S8-9"
+          "id": "S8-9",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "side": "all",
           "title": "送客告别",
           "priority": "必拍",
-          "id": "S8-10"
+          "id": "S8-10",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "side": "all",
           "title": "收尾空镜",
           "priority": "选拍",
-          "id": "S8-11"
+          "id": "S8-11",
+          "reference_ids": [
+            "A31"
+          ]
         }
       ]
     },
@@ -630,61 +924,90 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "First Look",
           "priority": "选拍",
-          "id": "S9-1"
+          "id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "side": "all",
           "title": "私人誓言",
           "priority": "选拍",
-          "id": "S9-2"
+          "id": "S9-2",
+          "reference_ids": [
+            "A20"
+          ]
         },
         {
           "side": "all",
           "title": "中式拜堂",
           "priority": "选拍",
-          "id": "S9-3"
+          "id": "S9-3",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "改口敬茶",
           "priority": "选拍",
-          "id": "S9-4"
+          "id": "S9-4",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "side": "all",
           "title": "户外证婚",
           "priority": "选拍",
-          "id": "S9-5"
+          "id": "S9-5",
+          "reference_ids": [
+            "A18",
+            "A20"
+          ]
         },
         {
           "side": "all",
           "title": "第一支舞",
           "priority": "选拍",
-          "id": "S9-6"
+          "id": "S9-6",
+          "reference_ids": [
+            "A17"
+          ]
         },
         {
           "side": "all",
           "title": "抛捧花",
           "priority": "选拍",
-          "id": "S9-7"
+          "id": "S9-7",
+          "reference_ids": [
+            "A23"
+          ]
         },
         {
           "side": "all",
           "title": "投影及回忆环节",
           "priority": "选拍",
-          "id": "S9-8"
+          "id": "S9-8",
+          "reference_ids": [
+            "A26"
+          ]
         },
         {
           "side": "all",
           "title": "烟花或灯光秀",
           "priority": "选拍",
-          "id": "S9-9"
+          "id": "S9-9",
+          "reference_ids": [
+            "A35"
+          ]
         },
         {
           "side": "all",
           "title": "宠物与孩子参与",
           "priority": "选拍",
-          "id": "S9-10"
+          "id": "S9-10",
+          "reference_ids": [
+            "A24"
+          ]
         }
       ]
     },
@@ -697,37 +1020,43 @@ window.ENWAN_DATA = {
           "side": "all",
           "title": "检查誓言及致辞录音",
           "priority": "必拍",
-          "id": "S10-1"
+          "id": "S10-1",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "检查入场与戒指镜头",
           "priority": "必拍",
-          "id": "S10-2"
+          "id": "S10-2",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "检查父母反应",
           "priority": "必拍",
-          "id": "S10-3"
+          "id": "S10-3",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "收齐各机位素材",
           "priority": "必拍",
-          "id": "S10-4"
+          "id": "S10-4",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "两份独立素材备份",
           "priority": "必拍",
-          "id": "S10-5"
+          "id": "S10-5",
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "记录特殊环节及缺失素材",
           "priority": "必拍",
-          "id": "S10-6"
+          "id": "S10-6",
+          "reference_ids": []
         }
       ]
     },
@@ -741,140 +1070,236 @@ window.ENWAN_DATA = {
           "title": "小区空镜： 小区大门 / 门头环境",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "建议稳定器低速推进或横移"
+          "source_tip": "建议稳定器低速推进或横移",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-1-2",
           "title": "小区空镜： 楼栋外立面 + 天空",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "低角度仰拍，注意留出天空"
+          "source_tip": "低角度仰拍，注意留出天空",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-1-3",
           "title": "小区空镜： 单元门 / 楼道入口",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "新人走出镜头的起点"
+          "source_tip": "新人走出镜头的起点",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-1-4",
           "title": "小区空镜： 小区道路与绿化",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "可作为片头转场素材"
+          "source_tip": "可作为片头转场素材",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-2-1",
           "title": "主家房子空镜： 房子外景 / 大门口全景",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-2-2",
           "title": "主家房子空镜： 门楣喜字与对联",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "顺光拍摄，保证红色不过曝"
+          "source_tip": "顺光拍摄，保证红色不过曝",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-2-3",
           "title": "主家房子空镜： 婚房窗户 + 喜字贴",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-2-4",
           "title": "主家房子空镜： 客厅整体环境",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "交代场景，注意收好杂物"
+          "source_tip": "交代场景，注意收好杂物",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-1",
           "title": "屋里空镜： 喜字 / 窗花 / 拉花",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-2",
           "title": "屋里空镜： 喜床与四件套",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "俯拍或斜俯，铺平被面"
+          "source_tip": "俯拍或斜俯，铺平被面",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-3",
           "title": "屋里空镜： 果盘 / 喜糖 / 茶具",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-4",
           "title": "屋里空镜： 气球与背景墙布置",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-5",
           "title": "屋里空镜： 灯光与窗帘细节",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "逆光拍纱帘更有质感"
+          "source_tip": "逆光拍纱帘更有质感",
+          "phase_id": "S1",
+          "parent_id": "S1-6",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-6",
           "title": "屋里空镜： 客厅 / 餐厅整体环境",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-3-7",
           "title": "屋里空镜： 相框 / 摆件等小物件",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-4-1",
           "title": "细节空镜：戒指、手捧花、秀禾： 戒指特写（旋转 / 光影）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "微距，可用手机补光打透"
+          "source_tip": "微距，可用手机补光打透",
+          "phase_id": "S1",
+          "parent_id": "S1-4",
+          "reference_ids": []
         },
         {
           "id": "L-groom-4-2",
           "title": "细节空镜：戒指、手捧花、秀禾： 手捧花特写",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-4",
+          "reference_ids": []
         },
         {
           "id": "L-groom-4-3",
           "title": "细节空镜：戒指、手捧花、秀禾： 秀禾服面料与刺绣细节",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-4-4",
           "title": "细节空镜：戒指、手捧花、秀禾： 头饰 / 首饰细节",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-4-5",
           "title": "细节空镜：戒指、手捧花、秀禾： 婚鞋 / 团扇等配饰",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-11",
+          "reference_ids": [
+            "A30"
+          ]
         }
       ]
     },
@@ -888,259 +1313,433 @@ window.ENWAN_DATA = {
           "title": "新郎 化妆： 发型造型过程",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-5-2",
           "title": "新郎 化妆： 面部 / 侧脸特写",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-15",
+          "reference_ids": [
+            "A30",
+            "A34"
+          ]
         },
         {
           "id": "L-groom-5-3",
           "title": "新郎 化妆： 化妆师补妆工作镜头",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "带到手部动作更有故事感"
+          "source_tip": "带到手部动作更有故事感",
+          "phase_id": "S2",
+          "parent_id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-5-4",
           "title": "新郎 化妆： 镜中倒影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-15",
+          "reference_ids": [
+            "A30",
+            "A34"
+          ]
         },
         {
           "id": "L-groom-6-1",
           "title": "穿衣： 甩西服，穿上西服",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "慢动作，一次成型"
+          "source_tip": "慢动作，一次成型",
+          "phase_id": "S2",
+          "parent_id": "S2-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-6-2",
           "title": "穿衣： 整理袖口与领口",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-6-3",
           "title": "穿衣： 系扣子 / 打领带",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-11",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-6-4",
           "title": "穿衣： 更换秀禾（中式礼服）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-6-5",
           "title": "穿衣： 穿鞋穿袜",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "低角度，注意避开尴尬角度"
+          "source_tip": "低角度，注意避开尴尬角度",
+          "phase_id": "S2",
+          "parent_id": "S2-13",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-6-6",
           "title": "穿衣： 镜前整理仪容",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-15",
+          "reference_ids": [
+            "A30",
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-1",
           "title": "新郎酷炫造型镜头： 甩披风 / 西装（慢动作）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-2",
           "title": "新郎酷炫造型镜头： 走位转身、回头",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-3",
           "title": "新郎酷炫造型镜头： 侧脸剪影 / 逆光",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-4",
           "title": "新郎酷炫造型镜头： 低角度仰拍",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-5",
           "title": "新郎酷炫造型镜头： 整理领结 / 袖口的小动作",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-7-6",
           "title": "新郎酷炫造型镜头： 墨镜、道具造型",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-8-1",
           "title": "新郎变装（转场镜头）： 第一套造型 → 第二套造型转场",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-8-2",
           "title": "新郎变装（转场镜头）： 遮挡转场（手 / 门 / 衣服挡镜头）",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-8-3",
           "title": "新郎变装（转场镜头）： 换装定格 / 快速剪辑素材",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-9-1",
           "title": "新郎情感镜头： 采访：新娘的十个优点",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "录音要清晰，可用领夹麦"
+          "source_tip": "录音要清晰，可用领夹麦",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-9-2",
           "title": "新郎情感镜头： 采访：十件难忘的事",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-9-3",
           "title": "新郎情感镜头： 给新娘打电话（通话过程与表情）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-9-4",
           "title": "新郎情感镜头： 翻看婚纱照 / 相册",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": [
+            "A26"
+          ]
         },
         {
           "id": "L-groom-9-5",
           "title": "新郎情感镜头： 独白 / 望向窗外",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-groom-10-1",
           "title": "伴郎： 伴郎拿手机闪光灯拍新郎",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A15"
+          ]
         },
         {
           "id": "L-groom-10-2",
           "title": "伴郎： 展示红包",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": []
         },
         {
           "id": "L-groom-10-3",
           "title": "伴郎： 扔红包给新郎",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": []
         },
         {
           "id": "L-groom-10-4",
           "title": "伴郎： 给新郎整理衣服",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-14",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "id": "L-groom-10-5",
           "title": "伴郎： 伴郎团互动 / 合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24",
+            "A27"
+          ]
         },
         {
           "id": "L-groom-11-1",
           "title": "新郎父母： 摆果盘",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": []
         },
         {
           "id": "L-groom-11-2",
           "title": "新郎父母： 接待宾客",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-groom-11-3",
           "title": "新郎父母： 发放 / 佩戴胸花",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-10",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-11-4",
           "title": "新郎父母： 父母为儿子整理衣装",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "很有情绪的一刻，别错过"
+          "source_tip": "很有情绪的一刻，别错过",
+          "phase_id": "S3",
+          "parent_id": "S3-2",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "id": "L-groom-11-5",
           "title": "新郎父母： 父母叮嘱 / 不舍的表情",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-4",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-12-1",
           "title": "新郎亲友： 宾客聊天发笑",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-groom-12-2",
           "title": "新郎亲友： 众人交谈",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-groom-12-3",
           "title": "新郎亲友： 亲友签到 / 合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-6",
+          "reference_ids": [
+            "A27"
+          ]
         }
       ]
     },
@@ -1154,133 +1753,204 @@ window.ENWAN_DATA = {
           "title": "出发仪式： 客厅出发仪式（主机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "不断机，一镜到底"
+          "source_tip": "不断机，一镜到底",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": []
         },
         {
           "id": "L-groom-13-2",
           "title": "出发仪式： 出发仪式（侧机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": []
         },
         {
           "id": "L-groom-13-3",
           "title": "出发仪式： 新人出门跟拍",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-13-4",
           "title": "出发仪式： 家人送别 / 开门红包",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-14-1",
           "title": "上车镜头： 出门到上车全过程（主机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-8",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "id": "L-groom-14-2",
           "title": "上车镜头： 新人上车特写（侧机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-8",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "id": "L-groom-14-3",
           "title": "上车镜头： 婚车花饰 / 车头特写",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-14-4",
           "title": "上车镜头： 车队启动出发",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-15-1",
           "title": "车内镜头： 新人在车内状态",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-9",
+          "reference_ids": [
+            "A08"
+          ]
         },
         {
           "id": "L-groom-15-2",
           "title": "车内镜头： 车内互动 / 牵手细节",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-9",
+          "reference_ids": [
+            "A08"
+          ]
         },
         {
           "id": "L-groom-15-3",
           "title": "车内镜头： 车窗外的风景",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-1",
           "title": "车队镜头： 车辆启动",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-2",
           "title": "车队镜头： 出发",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-3",
           "title": "车队镜头： 抵达",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-4",
           "title": "车队镜头： 头车行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-5",
           "title": "车队镜头： 车队侧面",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-6",
           "title": "车队镜头： 车轮行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-7",
           "title": "车队镜头： 路边行驶空镜",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-16-8",
           "title": "车队镜头： 航拍（2-5个镜头）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "提前确认禁飞区与报备"
+          "source_tip": "提前确认禁飞区与报备",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         }
       ]
     },
@@ -1294,168 +1964,284 @@ window.ENWAN_DATA = {
           "title": "挤门镜头： 门外挤门（主机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-17-2",
           "title": "挤门镜头： 门缝塞红包（侧机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-17-3",
           "title": "挤门镜头： 开门瞬间",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-18-1",
           "title": "新郎伴郎挤门进门热闹的镜头： 挤门热闹场面",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-18-2",
           "title": "新郎伴郎挤门进门热闹的镜头： 进门瞬间",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-18-3",
           "title": "新郎伴郎挤门进门热闹的镜头： 打礼花 / 撒红包",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "礼花抓好爆发瞬间"
+          "source_tip": "礼花抓好爆发瞬间",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-19-1",
           "title": "游戏镜头： 游戏过程（主机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "不断机"
+          "source_tip": "不断机",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-19-2",
           "title": "游戏镜头： 新郎视角（正打）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-19-3",
           "title": "游戏镜头： 新娘视角（反打）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-19-4",
           "title": "游戏镜头： 伴郎伴娘互动",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-20-1",
           "title": "献花、亲吻： 献花全过程（主机位 · 不断机）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "全片最不能漏的镜头之一"
+          "source_tip": "全片最不能漏的镜头之一",
+          "phase_id": "S4",
+          "parent_id": "S4-4",
+          "reference_ids": [
+            "A28",
+            "A25"
+          ]
         },
         {
           "id": "L-groom-20-2",
           "title": "献花、亲吻： 献花（侧机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-4",
+          "reference_ids": [
+            "A28",
+            "A25"
+          ]
         },
         {
           "id": "L-groom-20-3",
           "title": "献花、亲吻： 亲吻瞬间",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-4",
+          "reference_ids": [
+            "A12"
+          ]
         },
         {
           "id": "L-groom-20-4",
           "title": "献花、亲吻： 新人与父母 / 亲友互动",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-3",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-21-1",
           "title": "女方家接亲仪式： 新人吃饭",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-21-2",
           "title": "女方家接亲仪式： 被喂饭镜头",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-21-3",
           "title": "女方家接亲仪式： 敬茶 / 改口",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-5",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "id": "L-groom-21-4",
           "title": "女方家接亲仪式： 长辈祝福",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-6",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-22-1",
           "title": "女方出发仪式： 盖盖头",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-2",
           "title": "女方出发仪式： 上轿饭",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-3",
           "title": "女方出发仪式： 送苹果",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-4",
           "title": "女方出发仪式： 穿婚鞋",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-8",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-groom-22-5",
           "title": "女方出发仪式： 出门 / 上轿",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "id": "L-groom-22-6",
           "title": "女方出发仪式： 母女告别",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": "情绪高点，务必留机位"
+          "source_tip": "情绪高点，务必留机位",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         }
       ]
     },
@@ -1469,189 +2255,305 @@ window.ENWAN_DATA = {
           "title": "车队镜头（返程）： 车辆启动",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-2",
           "title": "车队镜头（返程）： 出发",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-3",
           "title": "车队镜头（返程）： 抵达",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-4",
           "title": "车队镜头（返程）： 头车行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-5",
           "title": "车队镜头（返程）： 车队侧面",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-6",
           "title": "车队镜头（返程）： 车轮行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-7",
           "title": "车队镜头（返程）： 路边行驶空镜",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-23-8",
           "title": "车队镜头（返程）： 航拍（2-5个镜头）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-24-1",
           "title": "车内镜头（返程）： 新人在车内状态",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-9",
+          "reference_ids": [
+            "A08"
+          ]
         },
         {
           "id": "L-groom-24-2",
           "title": "车内镜头（返程）： 车内互动 / 牵手细节",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-9",
+          "reference_ids": [
+            "A08"
+          ]
         },
         {
           "id": "L-groom-24-3",
           "title": "车内镜头（返程）： 车窗外的风景",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-25-1",
           "title": "男方家挤门镜头： 新人挤门",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-25-2",
           "title": "男方家挤门镜头： 发红包",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-25-3",
           "title": "男方家挤门镜头： 进门打礼花",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "抓好礼花爆发瞬间"
+          "source_tip": "抓好礼花爆发瞬间",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-25-4",
           "title": "男方家挤门镜头： 进门瞬间",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-groom-26-1",
           "title": "男方家接亲仪式： 穿裤子",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-26-2",
           "title": "男方家接亲仪式： 洗脸",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-26-3",
           "title": "男方家接亲仪式： 挂窗帘",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-26-4",
           "title": "男方家接亲仪式： 敬茶 / 改口",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-5",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "id": "L-groom-27-1",
           "title": "男方家唯美镜头： 新人唯美摆拍（2-3组）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": null,
+          "reference_ids": [
+            "A11",
+            "A12",
+            "A13"
+          ]
         },
         {
           "id": "L-groom-27-2",
           "title": "男方家唯美镜头： 光影 / 逆光剪影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": null,
+          "reference_ids": [
+            "A11",
+            "A13"
+          ]
         },
         {
           "id": "L-groom-27-3",
           "title": "男方家唯美镜头： 场地大景 / 小景",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-7",
+          "reference_ids": [
+            "A31",
+            "A09"
+          ]
         },
         {
           "id": "L-groom-27-4",
           "title": "男方家唯美镜头： 手部 / 眼神细节",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": null,
+          "reference_ids": [
+            "A10",
+            "A11"
+          ]
         },
         {
           "id": "L-groom-28-1",
           "title": "有无 first look： first look（新郎等待 → 回头）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "多机位同时记录，不要喊口令"
+          "source_tip": "多机位同时记录，不要喊口令",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-groom-28-2",
           "title": "有无 first look： 反应特写（新郎）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-groom-28-3",
           "title": "有无 first look： 反应特写（新娘）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-groom-28-4",
           "title": "有无 first look： 相拥 / 亲吻",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A12"
+          ]
         }
       ]
     },
@@ -1665,217 +2567,355 @@ window.ENWAN_DATA = {
           "title": "去酒店车队： 车辆启动",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-2",
           "title": "去酒店车队： 出发",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-3",
           "title": "去酒店车队： 抵达",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-4",
           "title": "去酒店车队： 头车行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-5",
           "title": "去酒店车队： 车队侧面",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-6",
           "title": "去酒店车队： 车轮行驶",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-7",
           "title": "去酒店车队： 路边行驶空镜",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-29-8",
           "title": "去酒店车队： 航拍（2-5个镜头）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-12",
+          "reference_ids": []
         },
         {
           "id": "L-groom-30-1",
           "title": "酒店下车、入门镜头： 下车",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "id": "L-groom-30-2",
           "title": "酒店下车、入门镜头： 跟随新人进入酒店",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "稳定器跟拍，不断机"
+          "source_tip": "稳定器跟拍，不断机",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "id": "L-groom-30-3",
           "title": "酒店下车、入门镜头： 亲友迎接 / 撒花",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-7",
+          "reference_ids": [
+            "A05",
+            "A24"
+          ]
         },
         {
           "id": "L-groom-30-4",
           "title": "酒店下车、入门镜头： 走廊 / 电梯跟拍",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-10",
+          "reference_ids": [
+            "A07"
+          ]
         },
         {
           "id": "L-groom-31-1",
           "title": "酒店的空镜： 酒店外景 / 门头",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-31-2",
           "title": "酒店的空镜： 酒店大堂环境",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-31-3",
           "title": "酒店的空镜： 指示牌 / 迎宾区",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-1",
           "title": "酒店场布空镜： 签到台 / 迎宾区",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-2",
           "title": "酒店场布空镜： 主舞台布置",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-2",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-3",
           "title": "酒店场布空镜： 花艺 / 桌花细节",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-4",
           "title": "酒店场布空镜： 灯牌 / LOGO 细节",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-5",
           "title": "酒店场布空镜： 餐桌布置",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-9",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-32-6",
           "title": "酒店场布空镜： 喜糖 / 伴手礼",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-9",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-33-1",
           "title": "酒店典礼： 典礼全景（固定大景机位）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": "全程不断机，用于保底"
+          "source_tip": "全程不断机，用于保底",
+          "phase_id": "S7",
+          "parent_id": "S7-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-groom-33-2",
           "title": "酒店典礼： 典礼主机位（不断机）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-groom-33-3",
           "title": "酒店典礼： 侧机位（新人反应）",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": "S7-4",
+          "reference_ids": [
+            "A05",
+            "A20"
+          ]
         },
         {
           "id": "L-groom-33-4",
           "title": "酒店典礼： 亲友反应 / 宾客席",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": "S7-14",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-groom-33-5",
           "title": "酒店典礼： 交换戒指 / 誓词特写",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": null,
+          "reference_ids": [
+            "A20",
+            "A21"
+          ]
         },
         {
           "id": "L-groom-34-1",
           "title": "大合影： 全家福大合影",
           "side": "groom",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-groom-34-2",
           "title": "大合影： 男方家族合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-groom-34-3",
           "title": "大合影： 女方家族合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-groom-34-4",
           "title": "大合影： 伴郎伴娘团合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-groom-34-5",
           "title": "大合影： 朋友 / 同事合影",
           "side": "groom",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         }
       ]
     },
@@ -1889,147 +2929,247 @@ window.ENWAN_DATA = {
           "title": "小区空镜： 小区大门 / 门头环境",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "稳定器低速推进或横移"
+          "source_tip": "稳定器低速推进或横移",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-1-2",
           "title": "小区空镜： 楼栋外立面 + 天空",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "低角度仰拍，留出天空"
+          "source_tip": "低角度仰拍，留出天空",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-1-3",
           "title": "小区空镜： 单元门 / 楼道入口",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "新人走出镜头的起点"
+          "source_tip": "新人走出镜头的起点",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-1-4",
           "title": "小区空镜： 小区道路与绿化",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "可作片头转场素材"
+          "source_tip": "可作片头转场素材",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-2-1",
           "title": "主家房子布置空镜： 房子外景 / 大门口全景",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-2-2",
           "title": "主家房子布置空镜： 门楣喜字与对联",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "顺光拍摄，保证红色不过曝"
+          "source_tip": "顺光拍摄，保证红色不过曝",
+          "phase_id": "S1",
+          "parent_id": "S1-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-2-3",
           "title": "主家房子布置空镜： 婚房窗户 + 喜字贴",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-2-4",
           "title": "主家房子布置空镜： 客厅整体环境",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "交代场景，注意收好杂物"
+          "source_tip": "交代场景，注意收好杂物",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-1",
           "title": "屋里布置空镜： 喜字 / 窗花 / 拉花",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-2",
           "title": "屋里布置空镜： 喜床与四件套",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "俯拍或斜俯，铺平被面"
+          "source_tip": "俯拍或斜俯，铺平被面",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-3",
           "title": "屋里布置空镜： 果盘 / 喜糖 / 茶具",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-4",
           "title": "屋里布置空镜： 气球与背景墙布置",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-5",
           "title": "屋里布置空镜： 灯光与窗帘细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "逆光拍纱帘更有质感"
+          "source_tip": "逆光拍纱帘更有质感",
+          "phase_id": "S1",
+          "parent_id": "S1-6",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-6",
           "title": "屋里布置空镜： 客厅 / 餐厅整体环境",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-3-7",
           "title": "屋里布置空镜： 相框 / 摆件等小物件",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-4-1",
           "title": "细节空镜： 婚鞋",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "可放在喜字、花瓣上"
+          "source_tip": "可放在喜字、花瓣上",
+          "phase_id": "S1",
+          "parent_id": "S1-9",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-4-2",
           "title": "细节空镜： 秀禾服（面料与刺绣）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-8",
+          "reference_ids": [
+            "A01",
+            "A29"
+          ]
         },
         {
           "id": "L-bride-4-3",
           "title": "细节空镜： 戒指",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "微距，可用手机补光打透"
+          "source_tip": "微距，可用手机补光打透",
+          "phase_id": "S1",
+          "parent_id": "S1-4",
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-4",
           "title": "细节空镜： 团扇",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-9",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-4-5",
           "title": "细节空镜： 誓言卡",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-5",
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-6",
           "title": "细节空镜： 伴手礼",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": []
         }
       ]
     },
@@ -2043,231 +3183,389 @@ window.ENWAN_DATA = {
           "title": "化妆：镜前化妆： 镜前化妆过程",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-3",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-5-2",
           "title": "化妆：镜前化妆： 面部 / 侧脸特写",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-4",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-5-3",
           "title": "化妆：镜前化妆： 眼妆 / 唇妆细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-4",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-5-4",
           "title": "化妆：镜前化妆： 化妆师工作镜头",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "带到手部动作更有故事感"
+          "source_tip": "带到手部动作更有故事感",
+          "phase_id": "S2",
+          "parent_id": "S2-3",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-5-5",
           "title": "化妆：镜前化妆： 镜中倒影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-3",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-6-1",
           "title": "新娘晨袍单人摆拍： 化妆镜前单人摆拍",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-6-2",
           "title": "新娘晨袍单人摆拍： 窗边 / 床边坐姿摆拍",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "利用自然光，画面更干净"
+          "source_tip": "利用自然光，画面更干净",
+          "phase_id": "S2",
+          "parent_id": "S2-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-6-3",
           "title": "新娘晨袍单人摆拍： 回眸 / 侧脸",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-7-1",
           "title": "屋里布景场景摆拍： 每个布景场景拍满 2-3 组",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-7-2",
           "title": "屋里布景场景摆拍： 正面 / 侧身 / 回眸 多角度",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-7-3",
           "title": "屋里布景场景摆拍： 手部、裙摆、头饰细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-8",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-8-1",
           "title": "新娘伴娘晨袍摆拍： 姐妹互动（说笑 / 拥抱）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24",
+            "A27"
+          ]
         },
         {
           "id": "L-bride-8-2",
           "title": "新娘伴娘晨袍摆拍： 摆造型合影",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-8-3",
           "title": "新娘伴娘晨袍摆拍： 化妆间里的自然抓拍",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-8-4",
           "title": "新娘伴娘晨袍摆拍： 一起看镜头 / 欢呼",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24",
+            "A27"
+          ]
         },
         {
           "id": "L-bride-9-1",
           "title": "新娘变装（转场镜头）： 第一套造型 → 第二套造型转场",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-9-2",
           "title": "新娘变装（转场镜头）： 遮挡转场（手 / 门 / 衣服挡镜头）",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-9-3",
           "title": "新娘变装（转场镜头）： 换装定格 / 快速剪辑素材",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-10-1",
           "title": "秀禾服换妆造： 换秀禾服过程",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-6",
+          "reference_ids": [
+            "A29",
+            "A30"
+          ]
         },
         {
           "id": "L-bride-10-2",
           "title": "秀禾服换妆造： 补妆 / 换发型",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-10-3",
           "title": "秀禾服换妆造： 佩戴头饰",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-10-4",
           "title": "秀禾服换妆造： 镜前整理仪容",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-5",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-11-1",
           "title": "秀禾服单人摆拍： 坐姿 / 站姿摆拍（2-3组）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-11-2",
           "title": "秀禾服单人摆拍： 团扇 / 手部细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-8",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-11-3",
           "title": "秀禾服单人摆拍： 裙摆 / 头饰特写",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-8",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-11-4",
           "title": "秀禾服单人摆拍： 回眸 / 情绪镜头",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-9",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-12-1",
           "title": "新娘伴娘秀禾服摆拍： 姐妹互动 / 摆造型",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24",
+            "A27"
+          ]
         },
         {
           "id": "L-bride-12-2",
           "title": "新娘伴娘秀禾服摆拍： 伴娘为新娘整理衣装",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-6",
+          "reference_ids": [
+            "A02",
+            "A29"
+          ]
         },
         {
           "id": "L-bride-12-3",
           "title": "新娘伴娘秀禾服摆拍： 合影 / 欢呼",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-13-1",
           "title": "新娘情感镜头： 采访：与新郎相识的过程",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-13-2",
           "title": "新娘情感镜头： 采访：一件感动或印象深刻的事",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-13-3",
           "title": "新娘情感镜头： 采访：对两人未来生活的想法",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-13-4",
           "title": "新娘情感镜头： 情绪特写 / 眼眶",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": null,
+          "reference_ids": [
+            "A34"
+          ]
         }
       ]
     },
@@ -2281,98 +3579,169 @@ window.ENWAN_DATA = {
           "title": "伴娘：早上为婚礼做准备： 换装 / 化妆",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S2",
+          "parent_id": "S2-1",
+          "reference_ids": [
+            "A30"
+          ]
         },
         {
           "id": "L-bride-14-2",
           "title": "伴娘：早上为婚礼做准备： 整理道具、准备堵门",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-bride-14-3",
           "title": "伴娘：早上为婚礼做准备： 姐妹合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-15-1",
           "title": "新娘父母：早上筹备婚礼： 布置屋子 / 摆果盘",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-15-2",
           "title": "新娘父母：早上筹备婚礼： 招呼亲友",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-15-3",
           "title": "新娘父母：早上筹备婚礼： 整理喜被 / 喜庆物品",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S1",
+          "parent_id": "S1-7",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-15-4",
           "title": "新娘父母：早上筹备婚礼： 父母忙碌的背影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-16-1",
           "title": "新娘父母与新娘互动： 晨袍化妆时 1 组",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "原文指定的第一个时机"
+          "source_tip": "原文指定的第一个时机",
+          "phase_id": "S3",
+          "parent_id": "S3-3",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "id": "L-bride-16-2",
           "title": "新娘父母与新娘互动： 换好秀禾后 1 组",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": "原文指定的第二个时机"
+          "source_tip": "原文指定的第二个时机",
+          "phase_id": "S3",
+          "parent_id": "S3-1",
+          "reference_ids": [
+            "A03"
+          ]
         },
         {
           "id": "L-bride-16-3",
           "title": "新娘父母与新娘互动： 母亲为女儿整理衣装 / 戴首饰",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-2",
+          "reference_ids": [
+            "A02"
+          ]
         },
         {
           "id": "L-bride-16-4",
           "title": "新娘父母与新娘互动： 拥抱 / 叮嘱 / 不舍",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "情绪高点，务必留机位"
+          "source_tip": "情绪高点，务必留机位",
+          "phase_id": "S3",
+          "parent_id": "S3-4",
+          "reference_ids": [
+            "A04"
+          ]
         },
         {
           "id": "L-bride-17-1",
           "title": "新娘亲友：早上筹备婚礼： 亲友到场 / 签到",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-17-2",
           "title": "新娘亲友：早上筹备婚礼： 聊天发笑 / 忙碌",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-8",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-17-3",
           "title": "新娘亲友：早上筹备婚礼： 亲友合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S3",
+          "parent_id": "S3-6",
+          "reference_ids": [
+            "A27"
+          ]
         }
       ]
     },
@@ -2386,147 +3755,249 @@ window.ENWAN_DATA = {
           "title": "挤门镜头： 伴娘及亲朋好友堵门（1组 · 2-3镜头）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-bride-18-2",
           "title": "挤门镜头： 新娘开心的看堵门（1组 · 1-2镜头）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-11",
+          "reference_ids": [
+            "A34"
+          ]
         },
         {
           "id": "L-bride-18-3",
           "title": "挤门镜头： 新郎进门瞬间（1组 · 1-2镜头）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-1",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-bride-19-1",
           "title": "游戏镜头： 新郎伴郎做游戏（中景）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-bride-19-2",
           "title": "游戏镜头： 新娘与伴娘的反应",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A06"
+          ]
         },
         {
           "id": "L-bride-20-1",
           "title": "献花、亲吻： 新郎单膝跪地（中景）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-4",
+          "reference_ids": [
+            "A28"
+          ]
         },
         {
           "id": "L-bride-20-2",
           "title": "献花、亲吻： 亲吻（中景）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-4",
+          "reference_ids": [
+            "A12"
+          ]
         },
         {
           "id": "L-bride-20-3",
           "title": "献花、亲吻： 伴郎伴娘鼓掌欢呼（中景）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-2",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-20-4",
           "title": "献花、亲吻： 新娘反应特写",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-3",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-bride-21-1",
           "title": "女方家改口仪式： 敬茶 / 改口（中景 · 不断机）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-5",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "id": "L-bride-21-2",
           "title": "女方家改口仪式： 父母递红包 / 叮嘱",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-6",
+          "reference_ids": [
+            "A03",
+            "A04"
+          ]
         },
         {
           "id": "L-bride-21-3",
           "title": "女方家改口仪式： 新人表情特写",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-5",
+          "reference_ids": [
+            "A33"
+          ]
         },
         {
           "id": "L-bride-22-1",
           "title": "女方出发仪式： 上轿饭",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-22-2",
           "title": "女方出发仪式： 盖盖头",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-22-3",
           "title": "女方出发仪式： 出门 / 上轿 跟拍",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "id": "L-bride-22-4",
           "title": "女方出发仪式： 母女告别",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "情绪高点，务必留机位"
+          "source_tip": "情绪高点，务必留机位",
+          "phase_id": "S4",
+          "parent_id": "S4-7",
+          "reference_ids": [
+            "A07",
+            "A04"
+          ]
         },
         {
           "id": "L-bride-23-1",
           "title": "有无 first look： 新娘反应镜头（微表情与动作）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-bride-23-2",
           "title": "有无 first look： 裙摆特写",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A01"
+          ]
         },
         {
           "id": "L-bride-23-3",
           "title": "有无 first look： 脚步特写",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": []
         },
         {
           "id": "L-bride-23-4",
           "title": "有无 first look： 搭在新郎肩上的手（特写）",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         },
         {
           "id": "L-bride-23-5",
           "title": "有无 first look： 中景跟随镜头",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S9",
+          "parent_id": "S9-1",
+          "reference_ids": [
+            "A05"
+          ]
         }
       ]
     },
@@ -2540,126 +4011,214 @@ window.ENWAN_DATA = {
           "title": "酒店的空镜： 酒店外景 / 门头",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-24-2",
           "title": "酒店的空镜： 酒店大堂环境",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-24-3",
           "title": "酒店的空镜： 指示牌 / 迎宾区",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-25-1",
           "title": "酒店场布空镜： 签到台 / 迎宾区",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-25-2",
           "title": "酒店场布空镜： 主舞台布置",
           "side": "bride",
           "priority": "必拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-2",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-25-3",
           "title": "酒店场布空镜： 花艺 / 桌花细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-3",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-25-4",
           "title": "酒店场布空镜： 灯牌 / LOGO 细节",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S6",
+          "parent_id": "S6-4",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-25-5",
           "title": "酒店场布空镜： 餐桌布置 / 喜糖伴手礼",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-9",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-26-1",
           "title": "酒店典礼： 典礼全景（固定大景机位）",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": "全程不断机，用于保底"
+          "source_tip": "全程不断机，用于保底",
+          "phase_id": "S7",
+          "parent_id": "S7-1",
+          "reference_ids": [
+            "A31"
+          ]
         },
         {
           "id": "L-bride-26-2",
           "title": "酒店典礼： 典礼主机位（不断机）",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": null,
+          "reference_ids": []
         },
         {
           "id": "L-bride-26-3",
           "title": "酒店典礼： 侧机位（新娘反应）",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": "S7-4",
+          "reference_ids": [
+            "A05",
+            "A20"
+          ]
         },
         {
           "id": "L-bride-26-4",
           "title": "酒店典礼： 亲友反应 / 宾客席",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": "S7-14",
+          "reference_ids": [
+            "A24"
+          ]
         },
         {
           "id": "L-bride-26-5",
           "title": "酒店典礼： 交换戒指 / 誓词特写",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S7",
+          "parent_id": null,
+          "reference_ids": [
+            "A20",
+            "A21"
+          ]
         },
         {
           "id": "L-bride-27-1",
           "title": "大合影： 全家福大合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-27-2",
           "title": "大合影： 女方家族合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-27-3",
           "title": "大合影： 男方家族合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-27-4",
           "title": "大合影： 伴娘伴郎团合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S5",
+          "parent_id": "S5-10",
+          "reference_ids": [
+            "A27"
+          ]
         },
         {
           "id": "L-bride-27-5",
           "title": "大合影： 朋友 / 同事合影",
           "side": "bride",
           "priority": "选拍",
-          "source_tip": ""
+          "source_tip": "",
+          "phase_id": "S8",
+          "parent_id": "S8-8",
+          "reference_ids": [
+            "A27"
+          ]
         }
       ]
     }
@@ -2719,7 +4278,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A03",
-      "category": "晨间准备",
+      "category": "家庭与亲友",
       "title": "新人与父母相见",
       "action_level": "纪实优先",
       "applicable_when": "父母第一次看到已换好婚服的新人时。",
@@ -2745,7 +4304,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A04",
-      "category": "晨间准备",
+      "category": "家庭与亲友",
       "title": "与父母依偎或拥抱",
       "action_level": "纪实优先",
       "applicable_when": "送嫁前、仪式前或仪式结束时家人自然靠近。",
@@ -3012,7 +4571,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A09",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "并肩散步",
       "action_level": "轻引导",
       "applicable_when": "转场或仪式前后，找平整安全且不拥挤的短路段。",
@@ -3083,7 +4642,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A10",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "伸手与牵手",
       "action_level": "轻引导",
       "applicable_when": "散步起步前、等候时或由一方牵另一方离开。",
@@ -3159,7 +4718,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A11",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "站定自然对视",
       "action_level": "轻引导",
       "applicable_when": "有安静背景、柔和光线且两人可短暂停留。",
@@ -3195,7 +4754,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A12",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "自然拥抱与亲密互动",
       "action_level": "轻引导",
       "applicable_when": "初见、等待或仪式结束后，且新人愿意。",
@@ -3281,7 +4840,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A13",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "并肩靠在一起",
       "action_level": "轻引导",
       "applicable_when": "休息区、长椅、窗边或可眺望的安全位置。",
@@ -3372,7 +4931,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A14",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "一方回头看另一方",
       "action_level": "轻引导",
       "applicable_when": "散步、到达门口或新人本来在向前走时。",
@@ -3413,7 +4972,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A15",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "互相拍照与看照片",
       "action_level": "轻引导",
       "applicable_when": "等待期间有手机或新人自己的相机。",
@@ -3574,7 +5133,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A16",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "双人自拍",
       "action_level": "轻引导",
       "applicable_when": "休息间隙或有适合自拍的背景。",
@@ -3655,7 +5214,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A17",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "牵手慢舞或小转身",
       "action_level": "轻引导",
       "applicable_when": "仅限新人喜欢、场地宽敞且衣裙鞋履安全时。",
@@ -3741,7 +5300,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A28",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "求婚与惊喜",
       "action_level": "条件选拍",
       "applicable_when": "婚礼影片确实包含求婚回忆或当天安排了求婚环节时。",
@@ -3767,7 +5326,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A32",
-      "category": "新人双人补拍",
+      "category": "新人双人互动",
       "title": "双人骑行与户外道具互动",
       "action_level": "条件选拍",
       "applicable_when": "新人喜欢骑行，场地允许且有安全保护时。",
@@ -3808,7 +5367,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A34",
-      "category": "新人双人补拍",
+      "category": "单人肖像",
       "title": "单人自然肖像与情绪",
       "action_level": "选拍",
       "applicable_when": "晨间准备、转场等待、补拍或宴会反应；适用于新人及亲友。",
@@ -4199,7 +5758,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A18",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "入场与走向仪式区",
       "action_level": "纪实优先",
       "applicable_when": "司仪发出入场信号、门开或新人开始行走时。",
@@ -4220,7 +5779,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A19",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "父母陪伴与交接",
       "action_level": "纪实优先",
       "applicable_when": "有父母陪伴入场、交接或婚礼约定的家人互动时。",
@@ -4234,7 +5793,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A20",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "誓言与相互注视",
       "action_level": "纪实优先",
       "applicable_when": "仪式双方讲话、听誓言或主持人引导交流时。",
@@ -4265,7 +5824,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A21",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "交换戒指",
       "action_level": "纪实优先",
       "applicable_when": "确认戒指所在方位与交换顺序，提前就位。",
@@ -4301,7 +5860,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A22",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "仪式结束拥抱与欢庆",
       "action_level": "纪实优先",
       "applicable_when": "仪式宣布完成、新人自然拥抱或现场庆祝时。",
@@ -4322,7 +5881,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A23",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "抛捧花",
       "action_level": "纪实优先",
       "applicable_when": "仅在现场确实安排抛捧花时执行。",
@@ -4343,7 +5902,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A31",
-      "category": "仪式现场",
+      "category": "环境与场布",
       "title": "场地布置与空间空镜",
       "action_level": "纪实优先",
       "applicable_when": "仪式区、宴会厅、签到台、婚礼静物及重要空间尚未被宾客遮挡时。",
@@ -4379,7 +5938,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A33",
-      "category": "仪式现场",
+      "category": "婚礼仪式",
       "title": "敬茶/奉茶与递杯",
       "action_level": "纪实优先",
       "applicable_when": "婚礼流程确有敬茶/奉茶时；普通递杯画面只作手部动作类比。",
@@ -4393,7 +5952,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A24",
-      "category": "宴会与收尾",
+      "category": "家庭与亲友",
       "title": "与亲友同框交流",
       "action_level": "纪实优先",
       "applicable_when": "宾客到场、宴席间隙、仪式结束后。",
@@ -4459,7 +6018,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A25",
-      "category": "宴会与收尾",
+      "category": "宴会与庆祝",
       "title": "交换礼物或赠花",
       "action_level": "条件选拍",
       "applicable_when": "确有礼物、信件或花束准备时，可安排在安静间隙。",
@@ -4510,7 +6069,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A26",
-      "category": "宴会与收尾",
+      "category": "宴会与庆祝",
       "title": "照片展示与回忆",
       "action_level": "条件选拍",
       "applicable_when": "新人自备照片、相册、拍立得或婚礼影像投影时。",
@@ -4556,7 +6115,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A27",
-      "category": "宴会与收尾",
+      "category": "家庭与亲友",
       "title": "亲友合影",
       "action_level": "纪实优先",
       "applicable_when": "亲友到齐、合影流程或自然集体自拍时。",
@@ -4570,7 +6129,7 @@ window.ENWAN_DATA = {
     },
     {
       "id": "A35",
-      "category": "宴会与收尾",
+      "category": "宴会与庆祝",
       "title": "夜间庆祝与光影互动",
       "action_level": "条件选拍",
       "applicable_when": "婚宴尾声、户外派对、灯光秀或夜间补拍，有安全可控光源及场地。",
@@ -4813,6 +6372,16 @@ window.ENWAN_DATA = {
   "reviewed_release": {
     "images": 318,
     "core_cards": 26,
-    "additional_cards": 7
-  }
+    "additional_cards": 9
+  },
+  "reference_categories": [
+    "环境与场布",
+    "晨间准备",
+    "单人肖像",
+    "新人双人互动",
+    "家庭与亲友",
+    "接亲与转场",
+    "婚礼仪式",
+    "宴会与庆祝"
+  ]
 };
