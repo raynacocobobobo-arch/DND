@@ -2448,5 +2448,55 @@
     "match_type": "none",
     "media": "word/media/image898.jpeg",
     "ext": "jpeg"
+  },
+  {
+    "source_key": "W899",
+    "source_refs": [
+      "W899"
+    ],
+    "source_document": "婚礼.docx",
+    "source_order": 899,
+    "sha256": "be6ffb24e2bb7cb03c98f8240c1d450cd85dfbb71acb8fca603fc1a9d2797526",
+    "mime_type": "image/jpeg",
+    "file_size": 3644,
+    "width": 293,
+    "height": 163,
+    "storage_path": null,
+    "thumbnail_path": null,
+    "visual_description": "暗背景中男子正面微笑，底部对白字幕",
+    "match_reason": "单人剧情对白，缺少婚礼动作",
+    "assigned_card_id": null,
+    "review_status": "excluded",
+    "review_notes": "2026-11-25 原图等比例联系表逐图视觉复核；SHA-256由DOCX媒体原始字节计算。",
+    "sort_order": 899,
+    "match_confidence": "high",
+    "match_type": "none",
+    "media": "word/media/image899.jpeg",
+    "ext": "jpeg"
+  },
+  {
+    "source_key": "W900",
+    "source_refs": [
+      "W900"
+    ],
+    "source_document": "婚礼.docx",
+    "source_order": 900,
+    "sha256": "f225b5fc511441724ef330ba29695b5bb31db054bf8d8ca65e80573e8229d8e4",
+    "mime_type": "image/jpeg",
+    "file_size": 3701,
+    "width": 292,
+    "height": 163,
+    "storage_path": null,
+    "thumbnail_path": null,
+    "visual_description": "暗室桌前浅色衣服人物，横向运动模糊",
+    "match_reason": "严重模糊的过渡帧，动作不可辨",
+    "assigned_card_id": null,
+    "review_status": "excluded",
+    "review_notes": "2026-11-25 原图等比例联系表逐图视觉复核；SHA-256由DOCX媒体原始字节计算。",
+    "sort_order": 900,
+    "match_confidence": "high",
+    "match_type": "none",
+    "media": "word/media/image900.jpeg",
+    "ext": "jpeg"
   }
 ]
