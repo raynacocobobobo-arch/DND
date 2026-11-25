@@ -2915,5 +2915,60 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W1022.jpeg",
     "git_blob": "13280ddfa105caeb772fb80634e98bbf0b5b2c0a"
+  },
+  {
+    "source_key": "W1023",
+    "sha256": "cbbae03ed0dafceb2895e52afe50924794d871652af1a4d09194dafd8e0b19ad",
+    "file_size": 367797,
+    "assigned_card_id": "A24",
+    "visual_description": "两位女子并肩，一方伸臂指向画外并笑",
+    "match_reason": "采用：亲友并肩分享所见的自然手势与表情",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W1023.jpeg",
+    "git_blob": "cf24fd011a24b97ab886a5dca0e54bc9715429d7"
+  },
+  {
+    "source_key": "W1024",
+    "sha256": "0446fb99c8d7b62fa486bc382122a52b2ac5b490b8422d39d7aabf6d1969286c",
+    "file_size": 360405,
+    "assigned_card_id": "A16",
+    "visual_description": "两位女子正面靠近镜头比剪刀手自拍",
+    "match_reason": "采用：亲友正面自拍的表情及手势",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W1024.jpeg",
+    "git_blob": "196b4a12f73a4f48bf91b3fa7e0e83d2c7d92e70"
+  },
+  {
+    "source_key": "W1025",
+    "sha256": "ccea1f6106ea9a296aeba78bbd40225a4135e630f70c4d6792603cb4f3446d65",
+    "file_size": 317271,
+    "assigned_card_id": "A16",
+    "visual_description": "两位女子靠近看左侧举起的手机",
+    "match_reason": "采用：侧向双人自拍机位与W1024正面结果互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W1025.jpeg",
+    "git_blob": "33e24e2af5205645958b999740b3863659695763"
+  },
+  {
+    "source_key": "W1026",
+    "sha256": "84386c71069547c1724dff38edb6f529379ac6f9dac1766383d4c436e6b02d09",
+    "file_size": 349332,
+    "assigned_card_id": "A15",
+    "visual_description": "戴头纱女子侧身举起小型设备，另一女子伸手协助",
+    "match_reason": "采用：亲友协助拍摄的侧面手部调度，不推断设备具体类型",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W1026.jpeg",
+    "git_blob": "b084bcfd21511f72c56333b4562b88aa19c6ac5f"
+  },
+  {
+    "source_key": "W1027",
+    "sha256": "21f53a576454b38fc6f7ba83d44a46ec8f57b9d8c2f87d7bee478808f9d04c15",
+    "file_size": 329931,
+    "assigned_card_id": "A26",
+    "visual_description": "两人坐在大幅旅行影像投影前",
+    "match_reason": "采用：回忆影像与人物同框的环境全景",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W1027.png",
+    "git_blob": "11f99abadba2af42ca77ff55bc6705eb1d1b738c"
   }
 ]

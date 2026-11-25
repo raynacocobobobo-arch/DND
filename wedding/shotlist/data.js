@@ -3408,7 +3408,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W920.jpeg",
         "assets/references/reviewed/W948.jpeg",
         "assets/references/reviewed/W1005.jpeg",
-        "assets/references/reviewed/W1013.jpeg"
+        "assets/references/reviewed/W1013.jpeg",
+        "assets/references/reviewed/W1026.jpeg"
       ],
       "image_notes": [
         {
@@ -3518,6 +3519,10 @@ window.ENWAN_DATA = {
         {
           "source": "W1013",
           "reason": "采用：多位亲友共同拍摄同一对象的前后景调度；不复刻动物道具"
+        },
+        {
+          "source": "W1026",
+          "reason": "采用：亲友协助拍摄的侧面手部调度，不推断设备具体类型"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3542,7 +3547,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W913.jpeg",
         "assets/references/reviewed/W914.jpeg",
         "assets/references/reviewed/W922.jpeg",
-        "assets/references/reviewed/W940.jpeg"
+        "assets/references/reviewed/W940.jpeg",
+        "assets/references/reviewed/W1024.jpeg",
+        "assets/references/reviewed/W1025.jpeg"
       ],
       "image_notes": [
         {
@@ -3584,6 +3591,14 @@ window.ENWAN_DATA = {
         {
           "source": "W940",
           "reason": "采用：双人自拍式前后站位与挥手互动"
+        },
+        {
+          "source": "W1024",
+          "reason": "采用：亲友正面自拍的表情及手势"
+        },
+        {
+          "source": "W1025",
+          "reason": "采用：侧向双人自拍机位与W1024正面结果互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4184,7 +4199,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W896.jpeg",
         "assets/references/reviewed/W042.jpeg",
         "assets/references/reviewed/W043.jpeg",
-        "assets/references/reviewed/W044.jpeg"
+        "assets/references/reviewed/W044.jpeg",
+        "assets/references/reviewed/W1023.jpeg"
       ],
       "image_notes": [
         {
@@ -4218,6 +4234,10 @@ window.ENWAN_DATA = {
         {
           "source": "W044",
           "reason": "采用：与W043互补的另一侧反应机位"
+        },
+        {
+          "source": "W1023",
+          "reason": "采用：亲友并肩分享所见的自然手势与表情"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4287,7 +4307,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W473.jpeg",
         "assets/references/reviewed/W510.jpeg",
         "assets/references/reviewed/W689.jpeg",
-        "assets/references/reviewed/W945.jpeg"
+        "assets/references/reviewed/W945.jpeg",
+        "assets/references/reviewed/W1027.png"
       ],
       "image_notes": [
         {
@@ -4305,6 +4326,10 @@ window.ENWAN_DATA = {
         {
           "source": "W945",
           "reason": "采用：纪念照片展示和情侣合影式互动"
+        },
+        {
+          "source": "W1027",
+          "reason": "采用：回忆影像与人物同框的环境全景"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4566,7 +4591,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 269,
+    "images": 274,
     "core_cards": 26,
     "additional_cards": 7
   }
