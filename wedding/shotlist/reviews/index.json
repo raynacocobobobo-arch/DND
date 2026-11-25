@@ -19,14 +19,14 @@
     "reviews/W0901-1000.json"
   ],
   "counts": {
-    "reviewed": 693,
+    "reviewed": 772,
     "approved": 100,
-    "excluded": 593,
-    "pending": 0,
-    "unreviewed": 789,
+    "excluded": 563,
+    "pending": 109,
+    "unreviewed": 710,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "截至2026-11-25已有693条审核记录，100张进入发布清单；本轮补发7张pending并新增13张已复核通过图。尚有789张未审，W909–W1000未通过图的独立记录仍待补齐。Pages部署需核验。"
+  "note": "W789–W1000扩展复筛212张，保留20张，109张待上传，83张排除；新增79条。"
 }

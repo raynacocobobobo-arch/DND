@@ -3402,6 +3402,20 @@ window.ENWAN_DATA = {
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
+      "id": "A34",
+      "category": "新人双人补拍",
+      "title": "单人自然肖像与情绪",
+      "action_level": "选拍",
+      "applicable_when": "晨间准备、转场等待、补拍或宴会反应；适用于新人及亲友。",
+      "prompt": "选择侧脸、低头、回眸、坐姿、自然手势或笑容；真实情绪不要求重复表演。",
+      "camera": "环境全景、半身侧面、面部近景与手部细节，利用窗光及前景层次。",
+      "delivery_check": "主体动作或情绪清楚，景别与构图有区别。",
+      "is_core": false,
+      "images": [],
+      "image_notes": [],
+      "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
+    },
+    {
       "id": "A18",
       "category": "仪式现场",
       "title": "入场与走向仪式区",
@@ -3684,6 +3698,20 @@ window.ENWAN_DATA = {
       "images": [],
       "image_notes": [],
       "reference_note": ""
+    },
+    {
+      "id": "A35",
+      "category": "宴会与收尾",
+      "title": "夜间庆祝与光影互动",
+      "action_level": "条件选拍",
+      "applicable_when": "婚宴尾声、户外派对、灯光秀或夜间补拍，有安全可控光源及场地。",
+      "prompt": "自然并肩、相视、举灯、围聚、回头或欢呼；优先LED安全光效，不安排持明火奔跑或贴近火花。",
+      "camera": "环境全景、双人及群体中景、逆光剪影、表情近景和手部光效。",
+      "delivery_check": "人物关系、光影层次、不同景别及安全性。",
+      "is_core": false,
+      "images": [],
+      "image_notes": [],
+      "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
     }
   ],
   "reviewed_release": {
