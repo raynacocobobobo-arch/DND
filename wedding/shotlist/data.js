@@ -4091,7 +4091,26 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W968.jpeg",
         "assets/references/reviewed/W969.jpeg",
         "assets/references/reviewed/W972.jpeg",
-        "assets/references/reviewed/W973.jpeg"
+        "assets/references/reviewed/W973.jpeg",
+        "assets/references/reviewed/W974.jpeg",
+        "assets/references/reviewed/W975.jpeg",
+        "assets/references/reviewed/W978.jpeg",
+        "assets/references/reviewed/W979.jpeg",
+        "assets/references/reviewed/W981.jpeg",
+        "assets/references/reviewed/W984.jpeg",
+        "assets/references/reviewed/W985.jpeg",
+        "assets/references/reviewed/W986.jpeg",
+        "assets/references/reviewed/W988.jpeg",
+        "assets/references/reviewed/W989.jpeg",
+        "assets/references/reviewed/W990.jpeg",
+        "assets/references/reviewed/W992.jpeg",
+        "assets/references/reviewed/W993.jpeg",
+        "assets/references/reviewed/W994.jpeg",
+        "assets/references/reviewed/W995.jpeg",
+        "assets/references/reviewed/W996.jpeg",
+        "assets/references/reviewed/W998.jpeg",
+        "assets/references/reviewed/W999.jpeg",
+        "assets/references/reviewed/W1000.jpeg"
       ],
       "image_notes": [
         {
@@ -4165,13 +4184,89 @@ window.ENWAN_DATA = {
         {
           "source": "W973",
           "reason": "采用：群体围圈的向心构图，使用安全LED光源模拟"
+        },
+        {
+          "source": "W974",
+          "reason": "采用：光影插入特写，区别于W964冷色环境远景"
+        },
+        {
+          "source": "W975",
+          "reason": "采用：群体庆祝中人物表情和前后景关系"
+        },
+        {
+          "source": "W978",
+          "reason": "采用：夜间庆祝的大环境远景及人物尺度"
+        },
+        {
+          "source": "W979",
+          "reason": "采用：群体行进与光点轨迹构图，可用安全替代道具"
+        },
+        {
+          "source": "W981",
+          "reason": "采用：围聚互动和中心光源的群体近景"
+        },
+        {
+          "source": "W984",
+          "reason": "采用：双人侧向对视及光效前景"
+        },
+        {
+          "source": "W985",
+          "reason": "采用：与W984相视不同，补充并肩向前的表情"
+        },
+        {
+          "source": "W986",
+          "reason": "采用：群体坐姿庆祝及环境中远景"
+        },
+        {
+          "source": "W988",
+          "reason": "采用：仅参考俯拍几何和人物留白；现场用安全灯效模拟"
+        },
+        {
+          "source": "W989",
+          "reason": "采用：夜间回头姿态与逆光轮廓"
+        },
+        {
+          "source": "W990",
+          "reason": "采用：夜间回头后的情绪特写，与W989景别互补"
+        },
+        {
+          "source": "W992",
+          "reason": "采用：夜间伸手互动及环境留白，安全道具替代"
+        },
+        {
+          "source": "W993",
+          "reason": "采用：双人道具互动的剪影手部插入镜头"
+        },
+        {
+          "source": "W994",
+          "reason": "采用：双人剪影与海面反射的大环境构图"
+        },
+        {
+          "source": "W995",
+          "reason": "采用：单人夜间半身肖像及暖冷光对比"
+        },
+        {
+          "source": "W996",
+          "reason": "采用：微距光影细节，区别于W974暖色散景"
+        },
+        {
+          "source": "W998",
+          "reason": "采用：双人并排手部与服饰细节的局部构图"
+        },
+        {
+          "source": "W999",
+          "reason": "采用：群体手部与蓝金配色，区别于W998侧面局部"
+        },
+        {
+          "source": "W1000",
+          "reason": "采用：长辈参与夜间庆祝的单人反应近景"
         }
       ],
       "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
     }
   ],
   "reviewed_release": {
-    "images": 190,
+    "images": 209,
     "core_cards": 26,
     "additional_cards": 7
   }
