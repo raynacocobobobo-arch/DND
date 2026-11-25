@@ -1116,5 +1116,55 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W805.jpeg",
     "git_blob": "3caf80e403c467b5ff85747b616033e442574a8c"
+  },
+  {
+    "source_key": "W807",
+    "sha256": "8a3794790e910bedffe97227640484286c1cce21e6f5dc6a720b5d812aa39987",
+    "assigned_card_id": "A10",
+    "visual_description": "绿地步道两人并行，男子伸手靠近女子手臂",
+    "match_reason": "采用：牵手前伸手动作，区别于W809完成态",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W807.jpeg",
+    "git_blob": "2674ee2166f7e69f302957a070f1a570333f3e39"
+  },
+  {
+    "source_key": "W819",
+    "sha256": "9f91ad5c3036fb967fbb5a2c3b9cfa20d11fa7ecc88c036ba262b984e8ab4ba5",
+    "assigned_card_id": "A15",
+    "visual_description": "男子在绿地举黑色手机拍摄，面部与手机近景",
+    "match_reason": "采用：摄影者视线及手机前景，补充互拍近景",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W819.jpeg",
+    "git_blob": "a22528f82f914217de68375733c0c199d8a7a29a"
+  },
+  {
+    "source_key": "W821",
+    "sha256": "810d1ac70e7cd0f4e0e7c2a1403aa320fb421c817a3da0a23a2b438ee889a81a",
+    "assigned_card_id": "A15",
+    "visual_description": "手持手机屏幕显示户外女子肖像，手指触屏",
+    "match_reason": "采用：拍摄结果的屏幕插入镜头，与人物互拍互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W821.jpeg",
+    "git_blob": "a8bdfe2b387fec5c21f228b566080bd5efa373f4"
+  },
+  {
+    "source_key": "W823",
+    "sha256": "26b668fda8d6ab2e02c0657eb713db0b6b6c8f1fb60ca11babb9e088dfd142db",
+    "assigned_card_id": "A15",
+    "visual_description": "户外男女面对面，女子胸前持手机，男方低头",
+    "match_reason": "采用：互拍之后面对面交流及手机道具位置",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W823.jpeg",
+    "git_blob": "ce198ebc3cc3320848a195152faf70a724fef330"
+  },
+  {
+    "source_key": "W826",
+    "sha256": "f494f228b3ed4f85a8261cfea5d07f08458f477751b4a7b9ffba04529d3d6182",
+    "assigned_card_id": "A15",
+    "visual_description": "暖色室内男子专注举手机，脸与手同时入镜",
+    "match_reason": "采用：互拍时的侧面中近景和背景暖光",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W826.jpeg",
+    "git_blob": "de2ef67a1da5a2a9f084a01dab35eb3dff711170"
   }
 ]

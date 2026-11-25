@@ -2978,7 +2978,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W615.jpeg",
         "assets/references/reviewed/W671.jpeg",
         "assets/references/reviewed/W941.jpeg",
-        "assets/references/reviewed/W942.jpeg"
+        "assets/references/reviewed/W942.jpeg",
+        "assets/references/reviewed/W807.jpeg"
       ],
       "image_notes": [
         {
@@ -3008,6 +3009,10 @@ window.ENWAN_DATA = {
         {
           "source": "W942",
           "reason": "采用：与W941手部特写互补的表情和伸臂姿态；男子未完整入镜。"
+        },
+        {
+          "source": "W807",
+          "reason": "采用：牵手前伸手动作，区别于W809完成态"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3205,7 +3210,11 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W698.jpeg",
         "assets/references/reviewed/W820.jpeg",
         "assets/references/reviewed/W829.jpeg",
-        "assets/references/reviewed/W859.jpeg"
+        "assets/references/reviewed/W859.jpeg",
+        "assets/references/reviewed/W819.jpeg",
+        "assets/references/reviewed/W821.jpeg",
+        "assets/references/reviewed/W823.jpeg",
+        "assets/references/reviewed/W826.jpeg"
       ],
       "image_notes": [
         {
@@ -3243,6 +3252,22 @@ window.ENWAN_DATA = {
         {
           "source": "W859",
           "reason": "采用：同看手机屏幕的近景站位，适合A15共同看照片参考；不作为已经发生自拍的证据。"
+        },
+        {
+          "source": "W819",
+          "reason": "采用：摄影者视线及手机前景，补充互拍近景"
+        },
+        {
+          "source": "W821",
+          "reason": "采用：拍摄结果的屏幕插入镜头，与人物互拍互补"
+        },
+        {
+          "source": "W823",
+          "reason": "采用：互拍之后面对面交流及手机道具位置"
+        },
+        {
+          "source": "W826",
+          "reason": "采用：互拍时的侧面中近景和背景暖光"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
