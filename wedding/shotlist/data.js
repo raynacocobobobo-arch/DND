@@ -3889,7 +3889,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/R318.jpeg",
         "assets/references/reviewed/R322.jpeg",
         "assets/references/reviewed/R335.jpeg",
-        "assets/references/reviewed/R342.jpeg"
+        "assets/references/reviewed/R342.jpeg",
+        "assets/references/reviewed/R357.jpeg",
+        "assets/references/reviewed/R362.jpeg"
       ],
       "image_notes": [
         {
@@ -4183,6 +4185,14 @@ window.ENWAN_DATA = {
         {
           "source": "R342",
           "reason": "采用：补充室内木质门框、自然侧视及正式着装肖像"
+        },
+        {
+          "source": "R357",
+          "reason": "采用：补充投影背景与人物中央剪影的单人光影调度，水印保留"
+        },
+        {
+          "source": "R362",
+          "reason": "采用：补充持花姿态与投影影子关系，适合婚礼创作性光影肖像"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4343,7 +4353,9 @@ window.ENWAN_DATA = {
       "is_core": false,
       "images": [
         "assets/references/reviewed/W924.jpeg",
-        "assets/references/reviewed/W926.jpeg"
+        "assets/references/reviewed/W926.jpeg",
+        "assets/references/reviewed/R377.jpeg",
+        "assets/references/reviewed/R391.jpeg"
       ],
       "image_notes": [
         {
@@ -4353,6 +4365,14 @@ window.ENWAN_DATA = {
         {
           "source": "W926",
           "reason": "采用：宴会灯光细节及空间氛围插入镜头"
+        },
+        {
+          "source": "R377",
+          "reason": "采用：可迁移到婚礼回忆照片区的空间空镜，参考中轴和纵深，不作真实婚礼案例"
+        },
+        {
+          "source": "R391",
+          "reason": "采用：可参考婚礼场地入口的门洞框景、中轴及明暗层次，不将建筑当作婚礼场地"
         }
       ],
       "reference_note": ""
@@ -4503,7 +4523,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W510.jpeg",
         "assets/references/reviewed/W689.jpeg",
         "assets/references/reviewed/W945.jpeg",
-        "assets/references/reviewed/W1027.png"
+        "assets/references/reviewed/W1027.png",
+        "assets/references/reviewed/R353.jpeg"
       ],
       "image_notes": [
         {
@@ -4525,6 +4546,10 @@ window.ENWAN_DATA = {
         {
           "source": "W1027",
           "reason": "采用：回忆影像与人物同框的环境全景"
+        },
+        {
+          "source": "R353",
+          "reason": "采用：可参考家庭照片及成长回忆的平铺构图和光影层次"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4786,7 +4811,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 313,
+    "images": 318,
     "core_cards": 26,
     "additional_cards": 7
   }

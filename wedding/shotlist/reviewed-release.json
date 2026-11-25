@@ -3399,5 +3399,60 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/R342.jpeg",
     "git_blob": "034d733d721acdb51ee81265b133cb44c6267903"
+  },
+  {
+    "source_key": "R353",
+    "sha256": "e0cea4b84a9a289a9e5a12926fa3276427655c0874e693a068de1169a871f979",
+    "file_size": 266643,
+    "assigned_card_id": "A26",
+    "visual_description": "桌面多张旧照片与斑驳暖光俯拍",
+    "match_reason": "采用：可参考家庭照片及成长回忆的平铺构图和光影层次",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R353.jpeg",
+    "git_blob": "bf94c384db22e8fe31119abd8b0670dcb8f2d67f"
+  },
+  {
+    "source_key": "R357",
+    "sha256": "f72ba02991b46bb81b35fbc856187fa978b2ce3d458e5ebb2e5b7e571316c1fc",
+    "file_size": 191185,
+    "assigned_card_id": "A34",
+    "visual_description": "正面人物背影立于飞鸟投影前",
+    "match_reason": "采用：补充投影背景与人物中央剪影的单人光影调度，水印保留",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R357.jpeg",
+    "git_blob": "2d8172678a61123c55bf68272a4e366821a1686d"
+  },
+  {
+    "source_key": "R362",
+    "sha256": "ec8addda26fb109d632d9a86a8f1522e961ef5643ee268f4106d8ade2a8f5ee0",
+    "file_size": 108035,
+    "assigned_card_id": "A34",
+    "visual_description": "持花女子与墙上放大影子同框",
+    "match_reason": "采用：补充持花姿态与投影影子关系，适合婚礼创作性光影肖像",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R362.jpeg",
+    "git_blob": "73964afd3da3ee281df31ba3c976af26443c33f7"
+  },
+  {
+    "source_key": "R377",
+    "sha256": "5a46db851d05e5acc20a5197ab26e8976033118f26798fd53fa9f5ca57d67829",
+    "file_size": 100910,
+    "assigned_card_id": "A31",
+    "visual_description": "对称照片展廊与墙面相框",
+    "match_reason": "采用：可迁移到婚礼回忆照片区的空间空镜，参考中轴和纵深，不作真实婚礼案例",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R377.jpeg",
+    "git_blob": "0641087d58937364fb440dee1a09ef54be27596b"
+  },
+  {
+    "source_key": "R391",
+    "sha256": "3a8a25d0eea54df5e9dc2b496e29586ad9a005b2c094562c39fc7983d6d48b1e",
+    "file_size": 148553,
+    "assigned_card_id": "A31",
+    "visual_description": "暗色拱门框住中轴白塔和阶梯",
+    "match_reason": "采用：可参考婚礼场地入口的门洞框景、中轴及明暗层次，不将建筑当作婚礼场地",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R391.jpeg",
+    "git_blob": "42573f4cc6bb70f39a2778330c6a3a5035d6fb02"
   }
 ]
