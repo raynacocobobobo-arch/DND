@@ -134,7 +134,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-optional-factions')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-final-models')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
