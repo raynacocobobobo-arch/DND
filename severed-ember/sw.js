@@ -2,7 +2,7 @@
  * No precaching of the entire codex, no offline-first HTML, no stale navigation.
  */
 'use strict';
-const CACHE_NAME='ember-image-cache-v2-20261125-models-hires';
+const CACHE_NAME='ember-image-cache-v3-20261125-ember-white-protected-originals';
 const CACHE_PREFIX='ember-image-cache-';
 const MAX_ENTRIES=120;
 
