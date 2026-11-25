@@ -3295,7 +3295,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W862.jpeg",
         "assets/references/reviewed/W867.jpeg",
         "assets/references/reviewed/W919.jpeg",
-        "assets/references/reviewed/W920.jpeg"
+        "assets/references/reviewed/W920.jpeg",
+        "assets/references/reviewed/W948.jpeg"
       ],
       "image_notes": [
         {
@@ -3393,6 +3394,10 @@ window.ENWAN_DATA = {
         {
           "source": "W920",
           "reason": "采用：互拍中的屏幕取景和手部插入镜头"
+        },
+        {
+          "source": "W948",
+          "reason": "采用：互拍时的俏皮道具及越肩构图"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3643,7 +3648,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W910.jpeg",
         "assets/references/reviewed/W916.jpeg",
         "assets/references/reviewed/W917.jpeg",
-        "assets/references/reviewed/W943.jpeg"
+        "assets/references/reviewed/W943.jpeg",
+        "assets/references/reviewed/W959.jpeg"
       ],
       "image_notes": [
         {
@@ -3733,6 +3739,10 @@ window.ENWAN_DATA = {
         {
           "source": "W943",
           "reason": "采用：单人礼服卧姿和柔焦肖像，不要求婚纱身份"
+        },
+        {
+          "source": "W959",
+          "reason": "采用：单人自然侧脸情绪和冷暖背景"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4063,13 +4073,105 @@ window.ENWAN_DATA = {
       "camera": "环境全景、双人及群体中景、逆光剪影、表情近景和手部光效。",
       "delivery_check": "人物关系、光影层次、不同景别及安全性。",
       "is_core": false,
-      "images": [],
-      "image_notes": [],
+      "images": [
+        "assets/references/reviewed/W949.jpeg",
+        "assets/references/reviewed/W950.jpeg",
+        "assets/references/reviewed/W952.jpeg",
+        "assets/references/reviewed/W953.jpeg",
+        "assets/references/reviewed/W954.jpeg",
+        "assets/references/reviewed/W955.jpeg",
+        "assets/references/reviewed/W956.jpeg",
+        "assets/references/reviewed/W957.jpeg",
+        "assets/references/reviewed/W958.jpeg",
+        "assets/references/reviewed/W960.jpeg",
+        "assets/references/reviewed/W962.jpeg",
+        "assets/references/reviewed/W964.jpeg",
+        "assets/references/reviewed/W965.jpeg",
+        "assets/references/reviewed/W967.jpeg",
+        "assets/references/reviewed/W968.jpeg",
+        "assets/references/reviewed/W969.jpeg",
+        "assets/references/reviewed/W972.jpeg",
+        "assets/references/reviewed/W973.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "W949",
+          "reason": "采用：庆祝光影与拍摄互动，需用安全距离或替代光效"
+        },
+        {
+          "source": "W950",
+          "reason": "采用：夜间双人远景与光效前景的空间构图"
+        },
+        {
+          "source": "W952",
+          "reason": "采用：夜间光轨与人物中景构图，安全替代光效可复现"
+        },
+        {
+          "source": "W953",
+          "reason": "采用：夜间背面肖像与手部道具构图"
+        },
+        {
+          "source": "W954",
+          "reason": "采用：双人亲密互动与光点前景，适合夜间补拍"
+        },
+        {
+          "source": "W955",
+          "reason": "采用：亲友群体围圈和庆祝走位，使用安全光效"
+        },
+        {
+          "source": "W956",
+          "reason": "采用：多人共同举手的局部庆祝构图"
+        },
+        {
+          "source": "W957",
+          "reason": "采用：夜间群体背影和大面积天空留白"
+        },
+        {
+          "source": "W958",
+          "reason": "采用：单人环境肖像与日落光点构图"
+        },
+        {
+          "source": "W960",
+          "reason": "采用：单人动态近景，保留运动感但使用安全道具"
+        },
+        {
+          "source": "W962",
+          "reason": "采用：夜间人物表情特写与前景光斑"
+        },
+        {
+          "source": "W964",
+          "reason": "采用：夜间光效空镜插入，可用安全道具替代"
+        },
+        {
+          "source": "W965",
+          "reason": "采用：单人夜间半身肖像，人物与道具位置清楚"
+        },
+        {
+          "source": "W967",
+          "reason": "采用：夜间光斑前景与表情近景"
+        },
+        {
+          "source": "W968",
+          "reason": "采用：亲友并肩互动及侧向机位"
+        },
+        {
+          "source": "W969",
+          "reason": "采用：多人手部庆祝细节，区别于W956低角度剪影"
+        },
+        {
+          "source": "W972",
+          "reason": "采用：单人欢庆完整上半身姿态与夜间散景"
+        },
+        {
+          "source": "W973",
+          "reason": "采用：群体围圈的向心构图，使用安全LED光源模拟"
+        }
+      ],
       "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
     }
   ],
   "reviewed_release": {
-    "images": 170,
+    "images": 190,
     "core_cards": 26,
     "additional_cards": 7
   }
