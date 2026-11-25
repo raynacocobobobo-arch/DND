@@ -27,14 +27,14 @@
     "reviews/R0401-0455.json"
   ],
   "counts": {
-    "reviewed": 1472,
+    "reviewed": 1482,
     "approved": 318,
-    "excluded": 1154,
+    "excluded": 1164,
     "pending": 0,
-    "unreviewed": 10,
+    "unreviewed": 0,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "累计1472条，发布清单318张，待上传0张。"
+  "note": "全部1482条审查完成，发布清单318张，待上传0张。"
 }
