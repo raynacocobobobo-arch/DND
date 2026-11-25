@@ -14,17 +14,18 @@
     "reviews/W0401-0500.json",
     "reviews/W0501-0600.json",
     "reviews/W0601-0700.json",
-    "reviews/W0701-0800.json"
+    "reviews/W0701-0800.json",
+    "reviews/W0801-0900.json"
   ],
   "counts": {
-    "reviewed": 560,
+    "reviewed": 660,
     "approved": 80,
-    "excluded": 480,
-    "pending": 0,
-    "unreviewed": 922,
+    "excluded": 573,
+    "pending": 7,
+    "unreviewed": 822,
     "user_uploads": 0
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "迁移自既有逐图审核记录；保留原有审核依据，不等同于本次重新审查。"
+  "note": "截至2026-11-25已逐图视觉复核W229–W888；新增W789–W888共100条独立记录。pending为视觉通过但尚未发布的原图；excluded为明确排除。"
 }
