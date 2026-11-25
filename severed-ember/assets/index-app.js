@@ -51,7 +51,7 @@ function renderTimeline(){
 function setupUnitAtlas(){
  const target=document.getElementById('rules-atlas'),grid=document.getElementById('atlas-grid');if(!target||!grid)return;
  const groups={'friendly-g01':'薪传议会','friendly-g05':'余火守卫','friendly-g02':'内环精锐','friendly-g03':'突击老兵','friendly-g04':'卡利班代行者','reinforcements':'剧情援军','enemy-units-g01':'混沌恶魔','enemy-units-g02':'混沌星际战士','enemy-units-g03':'混沌机械','enemy-units-g04':'混沌叛军','enemy-units-g05':'兽人','enemy-units-g06':'暗黑天使','enemy-units-g07':'黑暗机械教','enemy-units-g08':'审判庭与舰船武装','enemy-units-g09':'混沌泰坦'};
- const groupOverrides={'rules-enemy-units-g03-u08':'混沌泰坦','rules-enemy-units-g03-u10':'混沌泰坦','rules-enemy-units-g03-u13':'混沌泰坦','rules-enemy-units-g03-u14':'混沌泰坦','rules-enemy-units-g03-u15':'混沌泰坦'};
+ const groupOverrides={'rules-enemy-units-g03-u12':'混沌星际战士','rules-enemy-units-g03-u08':'混沌泰坦','rules-enemy-units-g03-u10':'混沌泰坦','rules-enemy-units-g03-u13':'混沌泰坦','rules-enemy-units-g03-u14':'混沌泰坦','rules-enemy-units-g03-u15':'混沌泰坦'};
  const roles={
  'friendly-g01':'指挥 灵能 技术 支援 支援','friendly-g05':'步兵','friendly-g02':'精锐 精锐 精锐','friendly-g03':'机动 近战 机动 重火力 灵能 技术 阵地','friendly-g04':'支援 支援 支援',
  'reinforcements':'精锐 灵能 步兵 机动 步兵 技术 精锐 步兵 精锐 精锐 载具 NPC 载具','enemy-units-g01':'怪物 指挥 指挥 指挥 步兵 步兵 步兵',
@@ -135,7 +135,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-unit-campaign-roles-v2')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-roster-options-v3')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
