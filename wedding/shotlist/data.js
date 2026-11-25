@@ -2965,7 +2965,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W613.jpeg",
         "assets/references/reviewed/W617.jpeg",
         "assets/references/reviewed/W809.jpeg",
-        "assets/references/reviewed/W902.jpeg"
+        "assets/references/reviewed/W902.jpeg",
+        "assets/references/reviewed/W028.jpeg"
       ],
       "image_notes": [
         {
@@ -2987,6 +2988,10 @@ window.ENWAN_DATA = {
         {
           "source": "W902",
           "reason": "采用：背面双人散步的对称纵深构图，画面有少量转场图形"
+        },
+        {
+          "source": "W028",
+          "reason": "采用：低机位双人行进交谈及环境关系"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3011,7 +3016,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W942.jpeg",
         "assets/references/reviewed/W807.jpeg",
         "assets/references/reviewed/W933.jpeg",
-        "assets/references/reviewed/W934.jpeg"
+        "assets/references/reviewed/W934.jpeg",
+        "assets/references/reviewed/W025.jpeg"
       ],
       "image_notes": [
         {
@@ -3053,6 +3059,10 @@ window.ENWAN_DATA = {
         {
           "source": "W934",
           "reason": "采用：牵手完成态与W933接触阶段互补"
+        },
+        {
+          "source": "W025",
+          "reason": "采用：主观机位牵手带领动作，手与人物关系明确"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3107,7 +3117,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W937.jpeg",
         "assets/references/reviewed/W944.jpeg",
         "assets/references/reviewed/W793.png",
-        "assets/references/reviewed/W938.jpeg"
+        "assets/references/reviewed/W938.jpeg",
+        "assets/references/reviewed/W024.jpeg"
       ],
       "image_notes": [
         {
@@ -3145,6 +3156,10 @@ window.ENWAN_DATA = {
         {
           "source": "W938",
           "reason": "采用：拥抱中的越肩表情特写，与W937全貌互补"
+        },
+        {
+          "source": "W024",
+          "reason": "采用：亲密互动的手部进入画面及自然反应，不要求复刻食物"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3243,7 +3258,9 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W522.jpeg",
         "assets/references/reviewed/W805.jpeg",
-        "assets/references/reviewed/W912.jpeg"
+        "assets/references/reviewed/W912.jpeg",
+        "assets/references/reviewed/W009.jpeg",
+        "assets/references/reviewed/W011.jpeg"
       ],
       "image_notes": [
         {
@@ -3257,6 +3274,14 @@ window.ENWAN_DATA = {
         {
           "source": "W912",
           "reason": "采用：一方回望另一方的越肩中远景"
+        },
+        {
+          "source": "W009",
+          "reason": "采用：行进中回头看跟拍方，完整环境中景"
+        },
+        {
+          "source": "W011",
+          "reason": "采用：越肩回望机位，与W009无遮挡机位互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3491,7 +3516,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W931.jpeg",
         "assets/references/reviewed/W932.jpeg",
         "assets/references/reviewed/W923.jpeg",
-        "assets/references/reviewed/W935.jpeg"
+        "assets/references/reviewed/W935.jpeg",
+        "assets/references/reviewed/W029.jpeg"
       ],
       "image_notes": [
         {
@@ -3545,6 +3571,10 @@ window.ENWAN_DATA = {
         {
           "source": "W935",
           "reason": "采用：慢舞段落的脚步与裙摆细节，与W936中景互补"
+        },
+        {
+          "source": "W029",
+          "reason": "采用：牵手转身或慢舞的双人全身调度"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3649,7 +3679,19 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W916.jpeg",
         "assets/references/reviewed/W917.jpeg",
         "assets/references/reviewed/W943.jpeg",
-        "assets/references/reviewed/W959.jpeg"
+        "assets/references/reviewed/W959.jpeg",
+        "assets/references/reviewed/W001.jpeg",
+        "assets/references/reviewed/W002.jpeg",
+        "assets/references/reviewed/W004.jpeg",
+        "assets/references/reviewed/W007.jpeg",
+        "assets/references/reviewed/W008.png",
+        "assets/references/reviewed/W013.jpeg",
+        "assets/references/reviewed/W016.jpeg",
+        "assets/references/reviewed/W018.jpeg",
+        "assets/references/reviewed/W019.jpeg",
+        "assets/references/reviewed/W021.jpeg",
+        "assets/references/reviewed/W023.jpeg",
+        "assets/references/reviewed/W026.jpeg"
       ],
       "image_notes": [
         {
@@ -3743,6 +3785,54 @@ window.ENWAN_DATA = {
         {
           "source": "W959",
           "reason": "采用：单人自然侧脸情绪和冷暖背景"
+        },
+        {
+          "source": "W001",
+          "reason": "采用：持花单人回头的侧面近景"
+        },
+        {
+          "source": "W002",
+          "reason": "采用：持花正面笑容，和W001侧面互补"
+        },
+        {
+          "source": "W004",
+          "reason": "采用：单人全身自然运动与大面积环境留白"
+        },
+        {
+          "source": "W007",
+          "reason": "采用：运动中的回望表情和发丝动势近景"
+        },
+        {
+          "source": "W008",
+          "reason": "采用：手部前景框景与俏皮单人互动"
+        },
+        {
+          "source": "W013",
+          "reason": "采用：单人庆祝摆姿，界面保留，仅作动作参考"
+        },
+        {
+          "source": "W016",
+          "reason": "采用：礼服侧身全身站姿，短视频界面保留"
+        },
+        {
+          "source": "W018",
+          "reason": "采用：单人庆祝的伸展姿态，保留界面仅作动作参考"
+        },
+        {
+          "source": "W019",
+          "reason": "采用：宴席单人坐姿和举杯自然表情"
+        },
+        {
+          "source": "W021",
+          "reason": "采用：蓝调环境中的单人动态转身全身构图"
+        },
+        {
+          "source": "W023",
+          "reason": "采用：单人静态回望与W021动态转身互补"
+        },
+        {
+          "source": "W026",
+          "reason": "采用：宴席或夜间单人回头举杯近景"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4110,7 +4200,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W996.jpeg",
         "assets/references/reviewed/W998.jpeg",
         "assets/references/reviewed/W999.jpeg",
-        "assets/references/reviewed/W1000.jpeg"
+        "assets/references/reviewed/W1000.jpeg",
+        "assets/references/reviewed/W014.jpeg",
+        "assets/references/reviewed/W015.jpeg"
       ],
       "image_notes": [
         {
@@ -4260,13 +4352,21 @@ window.ENWAN_DATA = {
         {
           "source": "W1000",
           "reason": "采用：长辈参与夜间庆祝的单人反应近景"
+        },
+        {
+          "source": "W014",
+          "reason": "采用：近距离光源与人物虚实关系，采用安全LED道具"
+        },
+        {
+          "source": "W015",
+          "reason": "采用：庆祝情绪反应近景，与W014光源特写互补"
         }
       ],
       "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
     }
   ],
   "reviewed_release": {
-    "images": 209,
+    "images": 229,
     "core_cards": 26,
     "additional_cards": 7
   }
