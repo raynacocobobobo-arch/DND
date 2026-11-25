@@ -135,7 +135,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-no-signature-options-v5')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-model-hd-v5')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
