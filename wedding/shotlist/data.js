@@ -3853,7 +3853,17 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/R018.jpeg",
         "assets/references/reviewed/R020.jpeg",
         "assets/references/reviewed/R025.jpeg",
-        "assets/references/reviewed/R044.jpeg"
+        "assets/references/reviewed/R044.jpeg",
+        "assets/references/reviewed/R052.jpeg",
+        "assets/references/reviewed/R059.jpeg",
+        "assets/references/reviewed/R077.jpeg",
+        "assets/references/reviewed/R088.jpeg",
+        "assets/references/reviewed/R093.jpeg",
+        "assets/references/reviewed/R105.jpeg",
+        "assets/references/reviewed/R112.jpeg",
+        "assets/references/reviewed/R126.jpeg",
+        "assets/references/reviewed/R129.jpeg",
+        "assets/references/reviewed/R136.jpeg"
       ],
       "image_notes": [
         {
@@ -4063,6 +4073,46 @@ window.ENWAN_DATA = {
         {
           "source": "R044",
           "reason": "采用：行进回头半身至中景、空间纵深清楚，适合新人单人自然调度"
+        },
+        {
+          "source": "R052",
+          "reason": "采用：自然风吹发、回望微笑与浅景深，补充户外柔光新娘肖像"
+        },
+        {
+          "source": "R059",
+          "reason": "采用：太阳轮廓光与衣摆动态、完整人物尺度及空间留白，补充户外逆光调度"
+        },
+        {
+          "source": "R077",
+          "reason": "采用：黑背景单侧柔光、红色礼服与上扬视线，补充中式礼服独立肖像"
+        },
+        {
+          "source": "R088",
+          "reason": "采用：正面近景、克制表情与柔和侧光，适合新郎单人肖像"
+        },
+        {
+          "source": "R093",
+          "reason": "采用：人物挺拔站姿、仰角与两侧建筑空间关系，补充新娘建筑环境肖像"
+        },
+        {
+          "source": "R105",
+          "reason": "采用：花树背景与浅色衣着、上扬视线，适合花园婚礼新娘单人中景"
+        },
+        {
+          "source": "R112",
+          "reason": "采用：长辈自然凝望、背景虚化与侧光，补充长辈单人情绪肖像"
+        },
+        {
+          "source": "R126",
+          "reason": "采用：树木前景、石桥和长辈小尺度人物，补充长辈户外环境肖像及空间层次"
+        },
+        {
+          "source": "R129",
+          "reason": "采用：窗边自然柔光、手扶帘与侧脸，适合婚房晨间自然单人调度"
+        },
+        {
+          "source": "R136",
+          "reason": "采用：新郎西装站姿、窗光与竖向建筑线，适合酒店窗边单人肖像"
         }
       ],
       "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
@@ -4651,7 +4701,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 286,
+    "images": 296,
     "core_cards": 26,
     "additional_cards": 7
   }
