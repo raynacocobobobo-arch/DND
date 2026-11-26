@@ -60,18 +60,18 @@ function setupUnitAtlas(){
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
  'enemy-units-g05':'指挥 步兵 载具 技术 载具 技术 精锐 指挥 步兵','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵 技术 指挥 指挥','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能 近战 近战'};
  const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"],#rules-start h5[id^="rules-neutral-model-"]')].map((h,i)=>{
-  const isCollection=h.hasAttribute('data-collection-count'),isNeutral=isCollection||h.id==='rules-reinforcements-g12';
+  const isLostWorld=h.id.startsWith('rules-neutral-model-'),isNeutral=isLostWorld||h.id==='rules-reinforcements-g12';
   const side=isNeutral?'neutral':h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
   const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
-  const role=isCollection?'模型收藏':isNeutral?'NPC':(roles[groupKey]||'').split(' ')[sequence]||'其他';
+  const role=isLostWorld?(h.dataset.neutralRole||'步兵'):isNeutral?'NPC':(roles[groupKey]||'').split(' ')[sequence]||'其他';
   let n=h.nextElementSibling,img='',points=null,phrases=[];
   while(n&&!/^H[3456]$/.test(n.tagName)){
    if(!img&&n.matches?.('figure.rules-unit-portrait'))img=n.querySelector('img')?.getAttribute('src')||'';
    if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
    n=n.nextElementSibling;
   }
-  return {id:h.id,name:h.textContent.trim(),group:isCollection?h.dataset.neutralGroup:isNeutral?'无主之地':side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"隐修会神遗物军械库","14":"隐修会神遗物军械库","15":"隐修会神遗物军械库","11":"机械教","12":"无主之地","13":"帝国泰坦"}[sequence+1]||'剧情援军'):(groupOverrides[h.id]||groups[groupKey]||'未归类'),side,role,points,img,collectionCount:isCollection?+h.dataset.collectionCount:null,terms:phrases.join(' '),order:i};
+  return {id:h.id,name:h.textContent.trim(),group:isLostWorld?h.dataset.neutralGroup:isNeutral?'无主之地':side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"隐修会神遗物军械库","14":"隐修会神遗物军械库","15":"隐修会神遗物军械库","11":"机械教","12":"无主之地","13":"帝国泰坦"}[sequence+1]||'剧情援军'):(groupOverrides[h.id]||groups[groupKey]||'未归类'),side,role,points,img,modelCount:isLostWorld?+h.dataset.modelCount:null,terms:phrases.join(' '),order:i};
  });
  const navIds=[...document.querySelectorAll('.rules-rail-tree a.rail-subitem')].map(a=>a.hash.slice(1));
  const navRank=new Map(navIds.map((id,i)=>[id,i]));
@@ -118,7 +118,7 @@ function setupUnitAtlas(){
    const body=document.createElement('div');body.className='rules-atlas-info';
    const title=document.createElement('strong');title.textContent=x.name;
    const desc=document.createElement('small');desc.textContent=x.group+' · '+x.role;
-   const cost=document.createElement('em');cost.textContent=x.collectionCount!==null?'收藏 ×'+x.collectionCount:x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
+   const cost=document.createElement('em');cost.textContent=x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v14.html')
+    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v15.html')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
