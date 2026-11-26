@@ -118,7 +118,7 @@ function setupUnitAtlas(){
    const body=document.createElement('div');body.className='rules-atlas-info';
    const title=document.createElement('strong');title.textContent=x.name;
    const desc=document.createElement('small');desc.textContent=x.group+' · '+x.role;
-   const cost=document.createElement('em');cost.textContent=x.collectionCount!==null?'收藏 ×'+x.collectionCount+(x.img?'':' · 图版待补录'):x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
+   const cost=document.createElement('em');cost.textContent=x.collectionCount!==null?'收藏 ×'+x.collectionCount:x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261126-neutral-order-v1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261126-copy-clean-v1')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
