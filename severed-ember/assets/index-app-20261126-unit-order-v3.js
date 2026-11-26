@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment-20261126-unit-order-v3.html')
+    rulesRequest=fetch('assets/rules-fragment-20261126-unit-order-v4.html')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
