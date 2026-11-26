@@ -1,18 +1,19 @@
 
 <div class="subhero cornered rules-subhero"><div class="sub-img" style="background-image:url('assets/rules/rules-top-battle-hd-20261116.webp')"></div><div class="sub-shade"></div><div class="sub-content"><div class="eyebrow">BATTLE CODEX · TABLETOP RULES</div><h1>桌面规则</h1><p>第三章编制军册、剧情援军、敌对势力、单位速查与战役任务。</p><a class="btn strong" href="#rules-atlas">单位速查图鉴</a><a class="btn" href="#rules-friendly">隐修会军册</a><a class="btn" href="#rules-scenarios">战役任务</a></div></div>
-<nav class="rules-section-nav" aria-label="桌面规则六大分类"><a href="#rules-atlas">单位速查图鉴</a><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-enemy-units">敌军与战役对立方</a><a href="#rules-scenarios">战役任务</a></nav>
-<section class="rules-hub" aria-label="桌面规则六大入口">
+<nav class="rules-section-nav" aria-label="桌面规则七大分类"><a href="#rules-atlas">单位速查图鉴</a><a href="#rules-start">规则总览</a><a href="#rules-friendly">隐修会军册</a><a href="#rules-reinforcements">剧情援军</a><a href="#rules-neutral-units">中立单位</a><a href="#rules-enemy-units">敌军与战役对立方</a><a href="#rules-scenarios">战役任务</a></nav>
+<section class="rules-hub" aria-label="桌面规则七大入口">
 <a href="#rules-atlas"><small>01 / FIELD INDEX</small><strong>单位速查图鉴</strong><span>图片图鉴及多条件筛选</span></a>
 <a href="#rules-start"><small>02 / RULES</small><strong>规则总览</strong><span>通用能力与规则使用说明</span></a>
 <a href="#rules-friendly"><small>03 / CENOBIUM</small><strong>隐修会军册</strong><span>第三章五项组织 · 19 张数据卡</span></a>
-<a href="#rules-reinforcements"><small>04 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教、军团援军与中立角色 · 12 张</span></a>
-<a href="#rules-enemy-units"><small>05 / OPPOSITION</small><strong>敌军与战役对立方</strong><span>混沌、兽人、黑暗机械教与战役对立方</span></a>
-<a href="#rules-scenarios"><small>06 / MISSIONS</small><strong>战役任务</strong><span>五大战役 · 两场独立遭遇战</span></a>
+<a href="#rules-reinforcements"><small>04 / ALLIES</small><strong>剧情援军</strong><span>死亡守望、灰骑士、克里格、机械教、军团援军 · 12 张</span></a>
+<a href="#rules-neutral-units"><small>05 / NEUTRAL</small><strong>中立单位</strong><span>小吵闹与遗落的世界模型收藏</span></a>
+<a href="#rules-enemy-units"><small>06 / OPPOSITION</small><strong>敌军与战役对立方</strong><span>混沌、兽人、黑暗机械教与战役对立方</span></a>
+<a href="#rules-scenarios"><small>07 / MISSIONS</small><strong>战役任务</strong><span>五大战役 · 两场独立遭遇战</span></a>
 </section>
 <section class="rules-atlas" id="rules-atlas" aria-label="单位速查图鉴"><div class="rules-atlas-head"><div><small>FIELD INDEX / MINIATURE ATLAS</small><h2>单位速查图鉴</h2><p>编制归属取自第三章；职能标签仅供检索，原始数据卡不变。</p></div><a href="#rules-friendly">隐修会军册</a></div>
 <div class="rules-atlas-filters">
 <label>关键词<input id="atlas-q" type="search" placeholder="名称、组织、武器、特殊规则"/></label>
-<label>所属阵营／任务关系<select id="atlas-side"><option value="all">全部阵营与任务关系</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="enemy">敌对势力</option><option value="opposition">战役对立方</option></select></label>
+<label>所属阵营／任务关系<select id="atlas-side"><option value="all">全部阵营与任务关系</option><option value="friendly">隐修会</option><option value="reinforcements">剧情援军</option><option value="neutral">中立单位</option><option value="enemy">敌对势力</option><option value="opposition">战役对立方</option></select></label>
 <label>组织 / 势力<select id="atlas-group"><option value="all">全部组织</option></select></label>
 <label>战场职能<select id="atlas-role"><option value="all">全部职能</option></select></label>
 <label>分值下限<input id="atlas-min" type="number" min="0" placeholder="不限"/></label>
@@ -20,7 +21,7 @@
 <label>排序<select id="atlas-sort"><option value="original">原目录顺序</option><option value="up">分值升序</option><option value="down">分值降序</option><option value="name">名称排序</option></select></label>
 <button type="button" id="atlas-reset">重置筛选</button></div>
 <p id="atlas-count" class="rules-atlas-count" aria-live="polite"></p><div class="rules-atlas-grid" id="atlas-grid"></div><p id="atlas-empty" class="rules-atlas-empty" hidden>没有匹配的数据卡。</p>
-<p class="rules-atlas-note">分值取自数据卡；部分单位以每台或每只计。</p></section>
+<p class="rules-atlas-note">分值取自数据卡；部分单位以每台或每只计。收藏模型仅记录数量，规则及分值待定。</p></section>
 <div class="rules-reading"><article class="rules-document" id="rules-start"><h3>规则总览</h3><details class="rules-howto"><summary>如何使用规则与单位图鉴</summary><p>从所属组织或战役势力选择数据卡，按关键词、职能与原文分值筛选，再打开原始数据卡核对属性和特殊规则。按战役任务中的编制、部署及胜负条件进行对战。</p></details>
 <p>通用规则：<br>破碎律法的余烬</p>
 <p>模型被摧毁时，移除前可立即进行一次射击（仅限手枪或爆弹枪）或近战，命中骰加一。</p>
@@ -484,6 +485,115 @@
 <p>1台 · 无主之地 · 中立民用机器人 · NPC · 不计分</p>
 <p>灰炉废弃矿务设施的民用服务机器人，仍保有巡检、引导与语音播报功能，不具备作战编制。</p>
 <p><strong>规则：</strong>仅在模组 3「灰炉防线」登场。作为中立非战斗角色，不参与双方编制，不进行攻击、不占领目标、不阻挡移动或视线，不作为攻击目标，其存在与移除不影响胜负判定。</p>
+
+<h5 id="rules-neutral-model-01" data-neutral-group="阿尔比恩王国" data-collection-count="7">圣誓剑卫</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-01" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-oath-swordguard.webp" target="_blank" rel="noopener noreferrer" aria-label="查看圣誓剑卫完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-oath-swordguard.webp" alt="圣誓剑卫模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×7 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-02" data-neutral-group="阿尔比恩王国" data-collection-count="1">圣誓战鼓手</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-02" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-oath-drummer.webp" target="_blank" rel="noopener noreferrer" aria-label="查看圣誓战鼓手完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-oath-drummer.webp" alt="圣誓战鼓手模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-03" data-neutral-group="阿尔比恩王国" data-collection-count="1">圣誓执剑官</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-03" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-oath-sword-officer.webp" target="_blank" rel="noopener noreferrer" aria-label="查看圣誓执剑官完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-oath-sword-officer.webp" alt="圣誓执剑官模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-04" data-neutral-group="阿尔比恩王国" data-collection-count="1">圣誓百夫长</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-04" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-oath-centurion.webp" target="_blank" rel="noopener noreferrer" aria-label="查看圣誓百夫长完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-oath-centurion.webp" alt="圣誓百夫长模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-05" data-neutral-group="阿尔比恩王国" data-collection-count="3">狮鹫骑士</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-05" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-griffon-knights.webp" target="_blank" rel="noopener noreferrer" aria-label="查看狮鹫骑士完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-griffon-knights.webp" alt="狮鹫骑士模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×3 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-06" data-neutral-group="阿尔比恩王国" data-collection-count="1">巡猎狮鹫</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-06" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-hunting-griffon.webp" target="_blank" rel="noopener noreferrer" aria-label="查看巡猎狮鹫完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-hunting-griffon.webp" alt="巡猎狮鹫模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-07" data-neutral-group="阿尔比恩王国" data-collection-count="1">圣典法师</h5>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-08" data-neutral-group="阿尔比恩王国" data-collection-count="2">圣典侍徒</h5>
+<p>收藏编制 ×2 · 阿尔比恩王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-09" data-neutral-group="阿尔比恩王国" data-collection-count="1">辉光圣仪</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-09" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/albion-luminous-rite.webp" target="_blank" rel="noopener noreferrer" aria-label="查看辉光圣仪完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/albion-luminous-rite.webp" alt="辉光圣仪模型涂装参考" loading="lazy" decoding="async" width="1233" height="1275" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 阿尔比恩王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-10" data-neutral-group="阿瓦隆原生生物" data-collection-count="3">荆棘怨灵</h5>
+<p>收藏编制 ×3 · 阿瓦隆原生生物 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-11" data-neutral-group="阿瓦隆原生生物" data-collection-count="1">枯林女巫</h5>
+<p>收藏编制 ×1 · 阿瓦隆原生生物 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-12" data-neutral-group="阿瓦隆原生生物" data-collection-count="7">穴居劣鬼</h5>
+<p>收藏编制 ×7 · 阿瓦隆原生生物 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-13" data-neutral-group="尼姆鲁德神权王国" data-collection-count="4">尼姆鲁德铳卫</h5>
+<p>收藏编制 ×4 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-14" data-neutral-group="尼姆鲁德神权王国" data-collection-count="3">尼姆鲁德斧卫</h5>
+<p>收藏编制 ×3 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-15" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">炼狱军督</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-15" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/nimrud-infernal-overseer.webp" target="_blank" rel="noopener noreferrer" aria-label="查看炼狱军督完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/nimrud-infernal-overseer.webp" alt="炼狱军督模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-16" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">炼狱执旗官</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-16" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/nimrud-infernal-standard.webp" target="_blank" rel="noopener noreferrer" aria-label="查看炼狱执旗官完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/nimrud-infernal-standard.webp" alt="炼狱执旗官模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-17" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">炼狱战鼓手</h5>
+<figure class="rules-unit-portrait rules-zip-portrait" data-unit="rules-neutral-model-17" style="display:block;width:min(100%,520px);max-width:100%;margin:18px auto 25px;padding:0;border:1px solid #8b765876;background:#111a19;box-shadow:0 6px 22px #0005;overflow:hidden"><a href="assets/lost-worlds/models/nimrud-infernal-drummer.webp" target="_blank" rel="noopener noreferrer" aria-label="查看炼狱战鼓手完整图版" style="display:block;width:100%"><img src="assets/lost-worlds/models/nimrud-infernal-drummer.webp" alt="炼狱战鼓手模型涂装参考" loading="lazy" decoding="async" width="1254" height="1254" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain"></a></figure>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 模型涂装参考 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-18" data-neutral-group="尼姆鲁德神权王国" data-collection-count="3">哈苏特行刑者</h5>
+<p>收藏编制 ×3 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-19" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">钢铁恶魔</h5>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-20" data-neutral-group="尼姆鲁德神权王国" data-collection-count="4">铸炉侍从（钢铁恶魔）</h5>
+<p>收藏编制 ×4 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-21" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">震地臼炮</h5>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-22" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">食人魔苦役</h5>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-23" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">鞭刑监官</h5>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-24" data-neutral-group="尼姆鲁德神权王国" data-collection-count="1">熔狱火炮</h5>
+<p>收藏编制 ×1 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-25" data-neutral-group="尼姆鲁德神权王国" data-collection-count="4">铸炉侍从（熔狱火炮）</h5>
+<p>收藏编制 ×4 · 尼姆鲁德神权王国 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-26" data-neutral-group="扎格罗斯诸族" data-collection-count="1">黯誓暴君</h5>
+<p>收藏编制 ×1 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-27" data-neutral-group="扎格罗斯诸族" data-collection-count="1">战争猛犸</h5>
+<p>收藏编制 ×1 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-28" data-neutral-group="扎格罗斯诸族" data-collection-count="5">荒原掠夺者</h5>
+<p>收藏编制 ×5 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-29" data-neutral-group="扎格罗斯诸族" data-collection-count="3">裂齿猎犬</h5>
+<p>收藏编制 ×3 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-30" data-neutral-group="扎格罗斯诸族" data-collection-count="3">黯誓武士</h5>
+<p>收藏编制 ×3 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-31" data-neutral-group="扎格罗斯诸族" data-collection-count="1">黯誓执旗者</h5>
+<p>收藏编制 ×1 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-32" data-neutral-group="扎格罗斯诸族" data-collection-count="1">黯誓唤战者</h5>
+<p>收藏编制 ×1 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
+
+<h5 id="rules-neutral-model-33" data-neutral-group="扎格罗斯诸族" data-collection-count="1">黯誓驭兽者</h5>
+<p>收藏编制 ×1 · 扎格罗斯诸族 · 图版待补录 · 规则与分值待定</p>
 <h4 id="rules-enemy-units">敌军与战役对立方</h4><p class="rules-codex-note">此处按战役中的对立方归档；暗黑天使在这里表示剧情对立方，不代表将其永久定义为敌对阵营。</p>
 <h5 id="rules-enemy-units-g01">混沌恶魔</h5>
 <h6 id="rules-enemy-units-g01-u01">亚空间掠食实体</h6>

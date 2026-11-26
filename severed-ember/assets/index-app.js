@@ -59,24 +59,28 @@ function setupUnitAtlas(){
  'enemy-units-g03':'怪物 载具 载具 载具 重火力 阵地 载具 载具 载具 载具 载具 指挥 载具 载具 载具',
  'enemy-units-g04':'步兵 重火力 步兵 支援 指挥 步兵 重火力 精锐 步兵 灵能 怪物 近战',
  'enemy-units-g05':'指挥 步兵 载具 技术 载具 技术 精锐 指挥 步兵','enemy-units-g06':'步兵','enemy-units-g07':'指挥 机动 重火力 近战 步兵 技术 指挥 指挥','enemy-units-g08':'指挥 步兵 支援 指挥 步兵 灵能 近战 近战'};
- const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"]')].map((h,i)=>{
-  const side=h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
+ const all=[...document.querySelectorAll('#rules-start h6[id^="rules-friendly-g"],#rules-start h6[id^="rules-enemy-units-g"],#rules-start h5[id^="rules-reinforcements-g"],#rules-start h5[id^="rules-neutral-model-"]')].map((h,i)=>{
+  const isCollection=h.hasAttribute('data-collection-count'),isNeutral=isCollection||h.id==='rules-reinforcements-g12';
+  const side=isNeutral?'neutral':h.id.startsWith('rules-friendly-')?'friendly':h.id.startsWith('rules-reinforcements-')?'reinforcements':/^rules-enemy-units-g0[68]-/.test(h.id)?'opposition':'enemy';
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
   const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
-  const role=(roles[groupKey]||'').split(' ')[sequence]||'其他';
+  const role=isCollection?'模型收藏':isNeutral?'NPC':(roles[groupKey]||'').split(' ')[sequence]||'其他';
   let n=h.nextElementSibling,img='',points=null,phrases=[];
   while(n&&!/^H[3456]$/.test(n.tagName)){
    if(!img&&n.matches?.('figure.rules-unit-portrait'))img=n.querySelector('img')?.getAttribute('src')||'';
    if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
    n=n.nextElementSibling;
   }
-  return {id:h.id,name:h.textContent.trim(),group:side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"暗黑天使","11":"机械教","12":"无主之地","13":"帝国泰坦"}[sequence+1]||'剧情援军'):(groupOverrides[h.id]||groups[groupKey]||'未归类'),side,role,points,img,terms:phrases.join(' '),order:i};
+  return {id:h.id,name:h.textContent.trim(),group:isCollection?h.dataset.neutralGroup:isNeutral?'无主之地':side==='reinforcements'?({"1":"死亡守望","2":"灰骑士","3":"克里格死亡军团","4":"克里格死亡军团","5":"机械教","6":"机械教","7":"钢铁之手","8":"钢铁之手","9":"钢铁之手","10":"暗黑天使","11":"机械教","12":"无主之地","13":"帝国泰坦"}[sequence+1]||'剧情援军'):(groupOverrides[h.id]||groups[groupKey]||'未归类'),side,role,points,img,collectionCount:isCollection?+h.dataset.collectionCount:null,terms:phrases.join(' '),order:i};
  });
+ const navIds=[...document.querySelectorAll('.rules-rail-tree a.rail-subitem')].map(a=>a.hash.slice(1));
+ const navRank=new Map(navIds.map((id,i)=>[id,i]));
+ all.sort((a,b)=>(navRank.get(a.id)??Infinity)-(navRank.get(b.id)??Infinity)||a.order-b.order);all.forEach((x,i)=>x.order=i);
  const ctl=id=>document.getElementById(id),q=ctl('atlas-q'),side=ctl('atlas-side'),g=ctl('atlas-group'),role=ctl('atlas-role'),min=ctl('atlas-min'),max=ctl('atlas-max'),sort=ctl('atlas-sort');
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
- const groupOrder=['薪传议会','余火守卫','内环精锐','突击老兵','卡利班代行者','死亡守望','灰骑士','暗黑天使','钢铁之手','克里格死亡军团','机械教','帝国泰坦','无主之地','混沌恶魔','混沌星际战士','混沌机械','混沌泰坦','混沌叛军','兽人','黑暗机械教','审判庭与舰船武装'];
- const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',enemy:'敌对势力',opposition:'战役对立方'};
+ const groupOrder=[...new Set(all.map(x=>x.group))];
+ const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',neutral:'中立单位',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
   const selected=select.value;
@@ -114,14 +118,14 @@ function setupUnitAtlas(){
    const body=document.createElement('div');body.className='rules-atlas-info';
    const title=document.createElement('strong');title.textContent=x.name;
    const desc=document.createElement('small');desc.textContent=x.group+' · '+x.role;
-   const cost=document.createElement('em');cost.textContent=x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
+   const cost=document.createElement('em');cost.textContent=x.collectionCount!==null?'收藏 ×'+x.collectionCount+(x.img?'':' · 图版待补录'):x.role==='NPC'?'不计分':x.points===null?'分值以原文为准':x.points+' 分';
    body.append(title,desc,cost);a.append(body);frag.append(a);
   }
   grid.replaceChildren(frag);empty.hidden=!!list.length;
   empty.textContent=low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。';
   const factionTotal=all.filter(x=>side.value==='all'||x.side===side.value).length;
   const selection=[sideNames[side.value],g.value==='all'?null:g.value,role.value==='all'?null:role.value].filter(Boolean).join(' / ');
-  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 张数据卡'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+'）':'');
+  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 个单位条目'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 中立单位 '+all.filter(x=>x.side==='neutral').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+'）':'');
  }
  side.addEventListener('change',()=>{updateGroups();updateRoles();render()});
  g.addEventListener('change',()=>{updateRoles();render()});
@@ -135,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261125-model-hd-v5')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261126-neutral-order-v1')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
