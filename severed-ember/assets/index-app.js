@@ -80,7 +80,7 @@ function setupUnitAtlas(){
  // The faction is authoritative: only groups within that faction are selectable.
  // Rebuild dependent facets on each change to prevent mixed friend/enemy filters.
  const groupOrder=[...new Set(all.map(x=>x.group))];
- const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',neutral:'中立单位',enemy:'敌对势力',opposition:'战役对立方'};
+ const sideNames={all:'全部阵营与任务关系',friendly:'隐修会',reinforcements:'剧情援军',neutral:'中立方及遗落世界',enemy:'敌对势力',opposition:'战役对立方'};
  const createOption=(value,label)=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;};
  function setFacetOptions(select,placeholder,items){
   const selected=select.value;
@@ -125,7 +125,7 @@ function setupUnitAtlas(){
   empty.textContent=low!==null&&high!==null&&low>high?'分值下限不能高于上限，请调整分值范围。':'当前阵营、势力、职能或关键词下没有匹配的数据卡，可重置筛选。';
   const factionTotal=all.filter(x=>side.value==='all'||x.side===side.value).length;
   const selection=[sideNames[side.value],g.value==='all'?null:g.value,role.value==='all'?null:role.value].filter(Boolean).join(' / ');
-  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 个单位条目'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 中立单位 '+all.filter(x=>x.side==='neutral').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+'）':'');
+  counter.textContent='当前：'+selection+' · 显示 '+list.length+' / '+factionTotal+' 个单位条目'+(side.value==='all'?'（隐修会 '+all.filter(x=>x.side==='friendly').length+' · 援军 '+all.filter(x=>x.side==='reinforcements').length+' · 敌对势力 '+all.filter(x=>x.side==='enemy').length+' · 战役对立方 '+all.filter(x=>x.side==='opposition').length+' · 中立方及遗落世界 '+all.filter(x=>x.side==='neutral').length+'）':'');
  }
  side.addEventListener('change',()=>{updateGroups();updateRoles();render()});
  g.addEventListener('change',()=>{updateRoles();render()});
@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment.html?v=20261126-copy-clean-v1')
+    rulesRequest=fetch('assets/rules-fragment.html?v=20261126-unit-order-v2')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
