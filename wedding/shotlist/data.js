@@ -3707,20 +3707,14 @@ window.ENWAN_DATA = {
       "is_core": false,
       "images": [
         "assets/references/reviewed/W481.jpeg",
-        "assets/references/reviewed/U8addb2bda2b0de1246050548.jpeg",
         "assets/references/reviewed/U40c9a8da502b501ff1d2929e.jpeg",
         "assets/references/reviewed/U437cfd52ad4d8d24424b0dc9.jpeg",
-        "assets/references/reviewed/U7216217e0e35e49269fe0a87.jpeg",
-        "assets/references/reviewed/Ue77d303bb83480cbca8c8c08.jpeg"
+        "assets/references/reviewed/U7216217e0e35e49269fe0a87.jpeg"
       ],
       "image_notes": [
         {
           "source": "W481",
           "reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。"
-        },
-        {
-          "source": "U8addb2bda2b0de1246050548",
-          "reason": "采用（影视/广告调度类比）：婚鞋穿戴和步伐的低角度细节；不同于既有西装肩部整理。"
         },
         {
           "source": "U40c9a8da502b501ff1d2929e",
@@ -3733,10 +3727,6 @@ window.ENWAN_DATA = {
         {
           "source": "U7216217e0e35e49269fe0a87",
           "reason": "采用（影视/广告调度类比）：晨间戴耳饰的侧后方机位和手部动作，补足现有发饰/西装画面。"
-        },
-        {
-          "source": "Ue77d303bb83480cbca8c8c08",
-          "reason": "采用（影视/广告调度类比）：可类比伴娘或造型师晨间协助，补双人准备和自然反应。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3753,20 +3743,14 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W768.jpeg",
-        "assets/references/reviewed/W947.jpeg",
         "assets/references/reviewed/W052.jpeg",
         "assets/references/reviewed/W061.jpeg",
-        "assets/references/reviewed/W064.jpeg",
-        "assets/references/reviewed/W067.png"
+        "assets/references/reviewed/W064.jpeg"
       ],
       "image_notes": [
         {
           "source": "W768",
           "reason": "采用：补充A05门口迎接/到达的双人构图，前景背影、门框和迎接者反应同时入镜；A05此前无图片参考。"
-        },
-        {
-          "source": "W947",
-          "reason": "采用：迎接场景的前后景和双人站位，适合入场转场"
         },
         {
           "source": "W052",
@@ -3779,10 +3763,6 @@ window.ENWAN_DATA = {
         {
           "source": "W064",
           "reason": "采用：相见的反向越肩中景，与W061互补"
-        },
-        {
-          "source": "W067",
-          "reason": "采用：相见的反向机位与焦点层次，补充W065"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3879,10 +3859,7 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W613.jpeg",
         "assets/references/reviewed/W617.jpeg",
         "assets/references/reviewed/W809.jpeg",
-        "assets/references/reviewed/W030.jpeg",
-        "assets/references/reviewed/W035.jpeg",
-        "assets/references/reviewed/W036.jpeg",
-        "assets/references/reviewed/R166.jpeg"
+        "assets/references/reviewed/W035.jpeg"
       ],
       "image_notes": [
         {
@@ -3898,20 +3875,8 @@ window.ENWAN_DATA = {
           "reason": "牵手散步动作与双方站位完整；相较W807-W808，人物表情和牵手关系更清楚，作为A09不同机位参考。"
         },
         {
-          "source": "W030",
-          "reason": "采用：并肩散步背面纵深机位"
-        },
-        {
           "source": "W035",
           "reason": "采用：并肩转场的俏皮姿势与宽阔建筑环境"
-        },
-        {
-          "source": "W036",
-          "reason": "采用：长辈双人慢走及远景尺度关系"
-        },
-        {
-          "source": "R166",
-          "reason": "采用：补充高机位框景与双人步态，适合庭院散步远景"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -3927,23 +3892,11 @@ window.ENWAN_DATA = {
       "delivery_check": "伸手、接触、握住、自然走开；一次即可。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W320.jpeg",
-        "assets/references/reviewed/W538.jpeg",
         "assets/references/reviewed/W551.jpeg",
         "assets/references/reviewed/W615.jpeg",
-        "assets/references/reviewed/W671.jpeg",
-        "assets/references/reviewed/W941.jpeg",
         "assets/references/reviewed/W025.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W320",
-          "reason": "A10：握手及手掌覆盖关系明确，可用于牵手近景调度；非婚礼实拍"
-        },
-        {
-          "source": "W538",
-          "reason": "清晰展示牵手前的伸手动作与手部近景，可与已有牵手完成态互补"
-        },
         {
           "source": "W551",
           "reason": "紧扣手部完成态且背景保留情绪，补充W538伸手前的细节"
@@ -3951,14 +3904,6 @@ window.ENWAN_DATA = {
         {
           "source": "W615",
           "reason": "以双人身体两侧框住手部和远景，有独立环境构图价值"
-        },
-        {
-          "source": "W671",
-          "reason": "区别于整掌交握，补充轻松勾指互动和并坐时手臂距离，不需要新建动作卡；平台标志在角落。"
-        },
-        {
-          "source": "W941",
-          "reason": "采用：横向伸手及交握细节，补充牵手近景。"
         },
         {
           "source": "W025",
@@ -4009,19 +3954,13 @@ window.ENWAN_DATA = {
       "delivery_check": "靠近＋拥抱＋双方反应；不要求奔跑扑抱或亲吻。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W404.jpeg",
         "assets/references/reviewed/W517.jpeg",
         "assets/references/reviewed/W549.jpeg",
-        "assets/references/reviewed/W918.jpeg",
         "assets/references/reviewed/W937.jpeg",
         "assets/references/reviewed/W938.jpeg",
         "assets/references/reviewed/W176.png"
       ],
       "image_notes": [
-        {
-          "source": "W404",
-          "reason": "A12：拥抱贴肩及手部位置明确，适合亲密近景；广告调度参考"
-        },
         {
           "source": "W517",
           "reason": "明确亲密互动及逆光侧面取景，有可操作的补拍参考价值"
@@ -4029,10 +3968,6 @@ window.ENWAN_DATA = {
         {
           "source": "W549",
           "reason": "背面中远景明确展示拥抱完成态，可与已有正侧面亲密互动互补"
-        },
-        {
-          "source": "W918",
-          "reason": "采用：完整双人拥抱关系，补充绿植背景的中远景侧后机位；广告调度参考。"
         },
         {
           "source": "W937",
@@ -4064,10 +3999,7 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W265.jpeg",
         "assets/references/reviewed/W521.jpeg",
         "assets/references/reviewed/W546.jpeg",
-        "assets/references/reviewed/W587.jpeg",
-        "assets/references/reviewed/W674.jpeg",
-        "assets/references/reviewed/W741.jpeg",
-        "assets/references/reviewed/W846.jpeg"
+        "assets/references/reviewed/W674.jpeg"
       ],
       "image_notes": [
         {
@@ -4087,20 +4019,8 @@ window.ENWAN_DATA = {
           "reason": "半身侧面取景和前后错位的自然依靠明确，区别于已有并排站姿"
         },
         {
-          "source": "W587",
-          "reason": "双人坐姿自然依靠的高位俯拍，可补充已有站姿参考；生活广告仅作机位示范"
-        },
-        {
           "source": "W674",
           "reason": "补充年长夫妻的坐姿依靠，亦可作新人或长辈双人自然互动参考"
-        },
-        {
-          "source": "W741",
-          "reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。"
-        },
-        {
-          "source": "W846",
-          "reason": "采用：有前景遮挡的双人坐姿构图，空间层次明确"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4858,7 +4778,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 146,
+    "images": 130,
     "core_cards": 26,
     "additional_cards": 9
   },

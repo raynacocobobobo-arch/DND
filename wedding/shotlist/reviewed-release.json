@@ -77,17 +77,6 @@
     "git_blob": "b7d6f2b4c04df0b6d5c5d440a51e4dcaf41c9c05"
   },
   {
-    "source_key": "R166",
-    "sha256": "772d17d519a761cdd3626887e44072f3b8303e2585975163f2bccb23d4eac833",
-    "file_size": 146691,
-    "assigned_card_id": "A09",
-    "visual_description": "隔窗俯视两人在庭院并肩行进",
-    "match_reason": "采用：补充高机位框景与双人步态，适合庭院散步远景",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/R166.jpeg",
-    "git_blob": "e43f490e8752ed383898b20d54c182a2f864000d"
-  },
-  {
     "source_key": "R178",
     "sha256": "b43a89e4b28b6aef54a9e115095d6e17fb66e77bc226c460371306494d1b7747",
     "file_size": 89646,
@@ -163,17 +152,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/R353.jpeg",
     "git_blob": "bf94c384db22e8fe31119abd8b0670dcb8f2d67f"
-  },
-  {
-    "source_key": "U8addb2bda2b0de1246050548",
-    "sha256": "8addb2bda2b0de12460505488ad229bb11706b99fccae52af226d0f833866f1e",
-    "file_size": 145147,
-    "assigned_card_id": "A30",
-    "visual_description": "低机位拍白色高跟鞋与脚步，地面反光。",
-    "match_reason": "采用（影视/广告调度类比）：婚鞋穿戴和步伐的低角度细节；不同于既有西装肩部整理。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/U8addb2bda2b0de1246050548.jpeg",
-    "git_blob": "2bb07a55eb7a69d2c5cf2ae2cd8fe5ff642a1513"
   },
   {
     "source_key": "U16e33b218d9a23c5fda2593e",
@@ -253,17 +231,6 @@
     "git_blob": "45d1df86d178d52cb71c1eded63a728d9a32fdf8"
   },
   {
-    "source_key": "Ue77d303bb83480cbca8c8c08",
-    "sha256": "e77d303bb83480cbca8c8c08840a76271a7aa515723f44df2e8022d6faeca253",
-    "file_size": 127672,
-    "assigned_card_id": "A30",
-    "visual_description": "站立女子持吹风机为坐着的女子整理头发，两人微笑。",
-    "match_reason": "采用（影视/广告调度类比）：可类比伴娘或造型师晨间协助，补双人准备和自然反应。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/Ue77d303bb83480cbca8c8c08.jpeg",
-    "git_blob": "77b90b1ba1e2a156961f8362da7cf5e591db06e4"
-  },
-  {
     "source_key": "W002",
     "sha256": "19018ac2f223c414d22cec4f6603f554b69dd16010a5a9a44d84dc79bfa530a3",
     "file_size": 151578,
@@ -341,17 +308,6 @@
     "git_blob": "281c23b2a9e1c2d6a00f25a5e0ef9386d575290d"
   },
   {
-    "source_key": "W030",
-    "sha256": "09fa87f6add99042703501b94b0b1b10f6478a453f6223cd94cfd2e2d2d7cb51",
-    "file_size": 184219,
-    "assigned_card_id": "A09",
-    "visual_description": "桥上两人并肩背对镜头，通道延伸",
-    "match_reason": "采用：并肩散步背面纵深机位",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W030.jpeg",
-    "git_blob": "0083a558344bfde784f9d3093c4b05e485e75217"
-  },
-  {
     "source_key": "W035",
     "sha256": "14ffa37339d944e2c1b13dc723d19a5d0fb65fcb08e96aff51c847de81d56805",
     "file_size": 144547,
@@ -361,17 +317,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W035.jpeg",
     "git_blob": "e51edfa7b99b19f53f2467fe67d1ce13a1a67369"
-  },
-  {
-    "source_key": "W036",
-    "sha256": "d32238e9cde403a7a0042d4e99ca45abccaef41c0979f36990147b096f10eda5",
-    "file_size": 124311,
-    "assigned_card_id": "A09",
-    "visual_description": "年长男女并肩背影走向建筑，广场全景",
-    "match_reason": "采用：长辈双人慢走及远景尺度关系",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W036.jpeg",
-    "git_blob": "e37a9b3c13b8c27575bdf1a1ddf61e29dd71a69b"
   },
   {
     "source_key": "W039",
@@ -429,17 +374,6 @@
     "git_blob": "6bc75cd8731ee99cbc75223ace9a4b2786081797"
   },
   {
-    "source_key": "W067",
-    "sha256": "51b07cf66f3c5ffb196cf281da8981d1b1b27c2cf54b0814b143e0b5bedeaffa",
-    "file_size": 184037,
-    "assigned_card_id": "A05",
-    "visual_description": "蓝衣女子背影清晰，远处人物虚化靠近",
-    "match_reason": "采用：相见的反向机位与焦点层次，补充W065",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W067.png",
-    "git_blob": "1201e0d84aa4513961a54b5fffc6edce59139974"
-  },
-  {
     "source_key": "W145",
     "sha256": "cb4120a053ebaa8442115aae6a377a59f80c8d05294794fa3a667a5c4c7a5cfc",
     "file_size": 122161,
@@ -482,17 +416,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W265.jpeg",
     "git_blob": "5b2540df78a1623c76a236c81af5677deafda4ac"
-  },
-  {
-    "source_key": "W320",
-    "sha256": "de1e1c3d2f9e17c6ae231f286ac6a8cc62307b2028087ab94ac6ddc554511b83",
-    "file_size": 77908,
-    "assigned_card_id": "A10",
-    "visual_description": "双人隔桌手部交叠，女方双手覆盖男方手掌",
-    "match_reason": "A10：握手及手掌覆盖关系明确，可用于牵手近景调度；非婚礼实拍",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W320.jpeg",
-    "git_blob": "85206987ab1c2d0efbb33a41f0d60b6531c96911"
   },
   {
     "source_key": "W356",
@@ -559,17 +482,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W401.jpeg",
     "git_blob": "7053b2540eb849ed5e7c11016bf31ae4897b56ec"
-  },
-  {
-    "source_key": "W404",
-    "sha256": "9f013283190005d8ef3d4547260e9a66ac32ba35a5cb2d5acf0be384f28c70f5",
-    "file_size": 104915,
-    "assigned_card_id": "A12",
-    "visual_description": "女子闭眼拥抱男方，双方手搭肩颈，戒指清晰",
-    "match_reason": "A12：拥抱贴肩及手部位置明确，适合亲密近景；广告调度参考",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W404.jpeg",
-    "git_blob": "0e87b0246ce9b8b1ed7b95edfce1c852d4724df1"
   },
   {
     "source_key": "W426",
@@ -847,17 +759,6 @@
     "git_blob": "bf2b8f3e3b968f6e0023ac4c1b68dae9f890c46f"
   },
   {
-    "source_key": "W538",
-    "sha256": "45bbbe997949744abe79f0e17a66cdeeaf1601e5b0d2687034486e597db72b95",
-    "file_size": 105757,
-    "assigned_card_id": "A10",
-    "visual_description": "两只手从画面两侧向中间伸出，左手指尖落于台面，右手掌朝向对方",
-    "match_reason": "清晰展示牵手前的伸手动作与手部近景，可与已有牵手完成态互补",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W538.jpeg",
-    "git_blob": "aa514b7a1644d00160aa189989992791ee16492e"
-  },
-  {
     "source_key": "W546",
     "sha256": "4301df1295d2aeaa1278d40ee3bc77bf3684cf0b479532826a8e91596218c592",
     "file_size": 72991,
@@ -922,17 +823,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W577.jpeg",
     "git_blob": "d81d951e3a944b05b1a279e6e3637e1625b820e0"
-  },
-  {
-    "source_key": "W587",
-    "sha256": "d3db34d94965c071189ed82a21ab938a02fd4eb94ecee0d629f9141ad84c225f",
-    "file_size": 212747,
-    "assigned_card_id": "A13",
-    "visual_description": "俯拍绿色沙发，两人并肩坐靠，男子手臂搭过女子肩背",
-    "match_reason": "双人坐姿自然依靠的高位俯拍，可补充已有站姿参考；生活广告仅作机位示范",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W587.jpeg",
-    "git_blob": "e0a559db4a6694054163105096169c0e4b23d662"
   },
   {
     "source_key": "W613",
@@ -1034,17 +924,6 @@
     "git_blob": "e6024c666cfe11da258c7d0f66c5a22566c18dfe"
   },
   {
-    "source_key": "W671",
-    "sha256": "dbebd31a729db289552c9b9eceb7de81380113e55baf2c3c3fbcddbb5645dc27",
-    "file_size": 138021,
-    "assigned_card_id": "A10",
-    "visual_description": "海边黄昏两人并坐，伸手以小指相勾，双人中景。",
-    "match_reason": "区别于整掌交握，补充轻松勾指互动和并坐时手臂距离，不需要新建动作卡；平台标志在角落。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W671.jpeg",
-    "git_blob": "07316fb75ec69c46b622c0afe012a299ca1f8dc2"
-  },
-  {
     "source_key": "W674",
     "sha256": "1a1974b847c9a3f33239f7d37f03f01b091d96fd4dd84b16b217561a2012da05",
     "file_size": 191635,
@@ -1126,16 +1005,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W737.png",
     "git_blob": "4315ae853aa93b772aeb119350c8b4e822235193"
-  },
-  {
-    "source_key": "W741",
-    "sha256": "5fe1f4f501c305418e11ed629ceade4f75a7f6b52e9c823e897de39ebeddabde",
-    "assigned_card_id": "A13",
-    "visual_description": "图书馆长桌前，男子坐着看手机或书，女子把头自然靠在他的肩上，桌上摊开书本，书架作背景。",
-    "match_reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W741.jpeg",
-    "git_blob": "dc6fec4731125aef2944233ff48baaa8cce7b1c8"
   },
   {
     "source_key": "W768",
@@ -1257,17 +1126,6 @@
     "git_blob": "9fc8929a9950d316b5d899226186898da86ceb0e"
   },
   {
-    "source_key": "W846",
-    "sha256": "c45c6dc9b3c931576bf73d7340cd63d3748dcdcfc2b8e2d9b12c97b37eacabbd",
-    "file_size": 342666,
-    "assigned_card_id": "A13",
-    "visual_description": "透过前景栏杆拍到男女并坐长椅，旁边有气球",
-    "match_reason": "采用：有前景遮挡的双人坐姿构图，空间层次明确",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W846.jpeg",
-    "git_blob": "e4d28df3716f21400400e427a47e273ce8c0307c"
-  },
-  {
     "source_key": "W854",
     "sha256": "289ba8466ecab5fd1085d21b664dd87dfeade5fa4e3ec717450d73746a6d8194",
     "file_size": 194499,
@@ -1288,17 +1146,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W896.jpeg",
     "git_blob": "5598d5d1371fa470dc35168db7a5c0a217c88afd"
-  },
-  {
-    "source_key": "W918",
-    "sha256": "8d2090e68cc252f5ff6c4b05f69e67af6ae537d86e685910b309fed290e0e18f",
-    "file_size": 215761,
-    "assigned_card_id": "A12",
-    "visual_description": "绿植墙旁的露天咖啡座，一男一女站立相拥，双方手臂环抱对方肩背，女子背向镜头。",
-    "match_reason": "采用：完整双人拥抱关系，补充绿植背景的中远景侧后机位；广告调度参考。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W918.jpeg",
-    "git_blob": "ced464201769caf95af4799936f2f4fec1d9519c"
   },
   {
     "source_key": "W920",
@@ -1411,17 +1258,6 @@
     "git_blob": "4baa6335daa986fb51c8fc9c92b135f2b4c42936"
   },
   {
-    "source_key": "W941",
-    "sha256": "00ed6a57b2835802c2c3a015a253ffb5a1585c8a4b72f9d6b0f96fcd34fffb5b",
-    "file_size": 168300,
-    "assigned_card_id": "A10",
-    "visual_description": "粉色珠宝广告背景，深色袖口男子的手与佩戴金色手镯的女子手相握，手部特写。",
-    "match_reason": "采用：横向伸手及交握细节，补充牵手近景。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W941.jpeg",
-    "git_blob": "9ff960386cd1001ea453e3d2d23826f2f4aec826"
-  },
-  {
     "source_key": "W943",
     "sha256": "93d4e8cc142b9725595b01c80c803881380eeb10317079edb5988e5b76123cc6",
     "file_size": 174947,
@@ -1442,17 +1278,6 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W945.jpeg",
     "git_blob": "2a1cfe0701c744e148d87dd86ac576da1ce25a3c"
-  },
-  {
-    "source_key": "W947",
-    "sha256": "6083c668d0fc7856068f6f417f179bf4a12a5c7aef57b2bc221c300a49105a77",
-    "file_size": 193524,
-    "assigned_card_id": "A05",
-    "visual_description": "花艺棚架下男女并肩到达，前景有人递花或迎接",
-    "match_reason": "采用：迎接场景的前后景和双人站位，适合入场转场",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W947.jpeg",
-    "git_blob": "cb45f7a616527bc8011b5afda735ccd7b1c6b76e"
   },
   {
     "source_key": "W954",
