@@ -25,6 +25,7 @@ function buildRelease(data, groups, index) {
   const $=id=>document.getElementById(id), node=(tag,txt,cls)=>{const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}, button=(txt,fn)=>{const b=node("button",txt);b.type="button";b.onclick=fn;return b}, opt=(v,t)=>{const o=node("option",t);o.value=v;return o};
   let token="",head="",baseTree="",data=null,index=null,groups={},published=[],dirty=false,staged=new Map(),busy=false,selectedCard="",page=0,selectedImage="",draftNew=false,requestedCard=/^#card-(A\d+)$/.exec(location.hash)?.[1]||"",pendingDelete=null,lastRemoved=null;
   const rows=()=>Object.values(groups).flat();
+  const uploadQueue=[],localPreviews=new Map();let uploading=false,uploadSeq=0;
   const status=t=>{$("status").textContent=t};
   function syncUndo(){$("quick-undo").hidden=!lastRemoved||!token||!data;$("quick-undo").disabled=busy;}
   const b64=bytes=>{let s="";for(let i=0;i<bytes.length;i+=16384)s+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(s)};
@@ -41,7 +42,7 @@ function buildRelease(data, groups, index) {
   function applySnapshot(v){if(!/^[a-f0-9]{40}$/.test(v?.head||"")||!v.data?.cards||!v.index?.counts||!v.groups||!Array.isArray(v.published))throw Error("服务器未返回完整保存结果，请重新读取核对");head=v.head;baseTree=v.baseTree;data=v.data;index=v.index;groups=v.groups;published=v.published;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;selectedCard=data.cards.some(c=>c.id===selectedCard)?selectedCard:data.cards[0]?.id||"";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;$("connect-retry").hidden=true;render();syncUndo()}
   async function load(){status("正在读取正式照片，可先点击要删除的照片…");applySnapshot(await server("load"));status("已连接 · 点击删除即可自动保存。");focusRequested()}
   async function loginComplete(){await load();if(pendingDelete){const target=pendingDelete;pendingDelete=null;await deletePhoto(target)}}
-  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("email-link").disabled=on;$("connect-retry").disabled=on;$("editor").inert=on;$("visual").inert=on&&!!data;$("task-admin").inert=on;syncUndo()}
+  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("email-link").disabled=on;$("connect-retry").disabled=on;$("editor").inert=on;$("visual").inert=on&&!!data&&!uploading;$("task-admin").inert=on;syncUndo()}
   async function run(fn){if(busy)return;locked(true);try{await fn()}catch(e){status((dirty?"尚未保存：":"")+(e.message||"操作失败"));if(dirty)$("publish").hidden=false}finally{locked(false)}}
   function cardOptions(select, includeBlank=false){let prev=select.value;select.replaceChildren();if(includeBlank)select.append(opt("","请选择动作卡"));for(const c of data.cards)select.append(opt(c.id,c.category+" · "+c.title+" ("+c.id+")"));if([...select.options].some(o=>o.value===prev))select.value=prev;}
   function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("正在自动保存到 GitHub…");if(busy)return publishChanges();return run(publishChanges)}
@@ -50,7 +51,7 @@ function buildRelease(data, groups, index) {
     $("publish").hidden=!dirty;$("publish").disabled=busy||!dirty;$("dirty").textContent=dirty?"有未保存的修改 · 自动保存失败时可重试":"已与 GitHub 同步";cardOptions($("upload-card"),true);cardOptions($("card-select"));
     $("card-select").value=selectedCard;renderCard();renderImages();renderVisual();renderTasks();
   }
-  function imageUrl(r){if(staged.has(r.source_key))return staged.get(r.source_key).url;if(r.path&&new RegExp("^assets/references/reviewed/"+r.source_key+"\\.(jpeg|png|webp|gif)$").test(r.path))return new URL(r.path,location.href).href;return null}
+  function imageUrl(r){if(localPreviews.has(r.source_key))return localPreviews.get(r.source_key);if(staged.has(r.source_key))return staged.get(r.source_key).url;if(r.path&&new RegExp("^assets/references/reviewed/"+r.source_key+"\\.(jpeg|png|webp|gif)$").test(r.path))return new URL(r.path,location.href).href;return null}
   function renderImages(){
     const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>(filter==="all"||(filter==="removed"?r.review_status==="excluded"&&r.path&&r.git_blob:r.review_status===filter))&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
     const limit=20;page=Math.max(0,Math.min(page,Math.ceil(list.length/limit)-1));$("page").textContent=`${list.length} 条 · 第 ${page+1}/${Math.max(1,Math.ceil(list.length/limit))} 页`;$("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=list.length;
@@ -109,24 +110,65 @@ function buildRelease(data, groups, index) {
     (groups["reviews/uploads.json"]??=[]).push(r);staged.set(id,{path,sha:b.sha,url:URL.createObjectURL(f)});return r;
   }
   function canEdit(card){
-    if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("admin-email").focus();status("普通链接需要登录；使用专用管理链接可直接编辑。");return false;
+    if(uploading){status("照片正在保存，可以继续添加照片或浏览，其他编辑请在保存结束后操作。");return false}if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("admin-email").focus();status("普通链接需要登录；使用专用管理链接可直接编辑。");return false;
   }
   function focusRequested(){if(!requestedCard)return;const id=requestedCard;requestedCard="";const c=document.getElementById("card-"+id);if(c)c.scrollIntoView({behavior:"smooth",block:"start"})}
   function exclude(r,why){r.last_card_id=r.assigned_card_id;r.assigned_card_id=null;r.review_status="excluded";r.review_notes=(r.review_notes||"")+"；原采用依据："+r.match_reason+"；用户移除 "+new Date().toISOString();r.match_reason=why;}
   function requestDelete(target){if(busy){if(!data){pendingDelete=target;status("正在读取照片，读取成功后将删除 "+target.source)}else status("正在保存，请稍后再操作");return}if(dirty){status("上一项修改尚未保存，请先重试保存或重新读取");return}if(!token||!data){pendingDelete=target;canEdit(target.card);status("登录管理员后继续删除 "+target.source);return}run(()=>deletePhoto(target))}
   async function deletePhoto(target){if(dirty)throw Error("上一项修改尚未保存");const r=rows().find(r=>r.source_key===target.source&&r.path===target.path&&r.assigned_card_id===target.card&&r.review_status==="approved");if(!r){status("这张照片已移除或归属变化，请重新读取确认");return}status("正在删除 "+target.source+" · 保存至正式仓库…");const v=await server("delete_photo",{source:target.source,card:target.card,path:target.path});if(v.published?.some(x=>x.source_key===target.source))throw Error("删除尚未生效，请重新读取核对");applySnapshot(v);lastRemoved={source:target.source,card:target.card,path:target.path};$("actions").hidden=false;status("已删除 "+target.source+" · "+head.slice(0,8)+" · 可撤销；公开网站部署后生效");syncUndo()}
   $("quick-undo").onclick=()=>run(async()=>{if(dirty)throw Error("请先处理尚未保存的修改");const u=lastRemoved;if(!u)return;status("正在恢复 "+u.source+"…");const v=await server("restore_photo",{source:u.source,card:u.card,path:u.path});if(!v.published?.some(x=>x.source_key===u.source&&x.assigned_card_id===u.card))throw Error("恢复尚未生效，请重新读取核对");applySnapshot(v);lastRemoved=null;status("已恢复 "+u.source+" · "+head.slice(0,8));syncUndo()});
-  function pickFiles(card,old){
+  function pickReplacement(card,old){
     if(!canEdit(card))return;const inp=node("input");inp.type="file";inp.accept="image/jpeg,image/png,image/webp,image/gif";inp.multiple=!old;inp.onchange=()=>run(async()=>{
       const files=[...inp.files];if(!files.length)return;
       if(old){if(!confirm("用所选照片替换 "+old.source_key+"？旧图将移入可恢复档案。"))return;const added=await stageImage(files[0],card,"用户手动替换："+files[0].name,"用户手动替换 "+old.source_key);exclude(old,"用户手动替换为 "+added.source_key);await mark();return}
       let n=0;const errors=[];for(const f of files){try{await stageImage(f,card);n++}catch(e){errors.push(f.name+"："+e.message)}}if(n)await mark();status("已保存 "+n+" 张新照片"+(errors.length?"；未添加："+errors.join("；"):"。GitHub Pages 部署后生效。"));
     });inp.click();
   }
+
+  async function prepareUpload(item){
+    const f=item.file,exts={"image/jpeg":"jpeg","image/png":"png","image/webp":"webp","image/gif":"gif"};
+    if(!f.size||f.size>15*1024*1024||!exts[f.type])throw Error("仅支持不超过15MB的 JPG、PNG、WebP、GIF");
+    let width,height;
+    try{if(typeof createImageBitmap!=="function")throw Error("fallback");const b=await createImageBitmap(f);width=b.width;height=b.height;b.close()}
+    catch{const im=new Image();await new Promise((resolve,reject)=>{im.onload=resolve;im.onerror=()=>reject(Error("无法读取图片"));im.src=item.url});width=im.naturalWidth;height=im.naturalHeight}
+    return {name:f.name,width,height,content:b64(new Uint8Array(await f.arrayBuffer()))}
+  }
+  function discardUpload(item,keepUrl=false){const i=uploadQueue.indexOf(item);if(i>=0)uploadQueue.splice(i,1);if(!keepUrl)URL.revokeObjectURL(item.url)}
+  function retryUpload(item){if(item.state!=="failed")return;item.state="queued";item.error="";renderVisual();void drainUploads()}
+  function queuePhotos(card,files){
+    for(const file of files)uploadQueue.push({id:++uploadSeq,card,file,url:URL.createObjectURL(file),state:"queued",error:""});
+    renderVisual();status("已加入上传队列 · "+uploadQueue.filter(x=>x.state!=="failed").length+" 张");void drainUploads()
+  }
+  async function drainUploads(){
+    if(uploading||busy||dirty||!uploadQueue.some(x=>x.state==="queued"))return;
+    uploading=true;locked(true);
+    let saved=0,duplicates=0,failed=0;
+    try{
+      while(uploadQueue.some(x=>x.state==="queued")){
+        const first=uploadQueue.find(x=>x.state==="queued"),batch=[];let bytes=0;
+        for(const item of uploadQueue){if(item.state!=="queued"||item.card!==first.card)continue;if(batch.length>=12||batch.length&&bytes+item.file.size>15*1024*1024)break;batch.push(item);bytes+=item.file.size}
+        for(const item of batch)item.state="uploading";renderVisual();status("正在上传 "+batch.length+" 张 · 已保存 "+saved+" 张；可继续添加");
+        const valid=[],payload=[];
+        for(const item of batch){try{payload.push(await prepareUpload(item));valid.push(item)}catch(e){item.state="failed";item.error=e.message||"无法读取";failed++}}
+        if(!valid.length){renderVisual();continue}
+        try{
+          const v=await server("add_photos",{card:first.card,files:payload});
+          if(!Array.isArray(v.results)||v.results.length!==valid.length||!Array.isArray(v.published))throw Error("上传返回结果不完整，请重试核对");
+          for(let i=0;i<valid.length;i++){const r=v.results[i],item=valid[i];if(r.status==="added"||r.status==="already"){const m=v.published.find(x=>x.source_key===r.source_key&&x.assigned_card_id===item.card);if(!m)throw Error("服务器未确认照片归属");const old=localPreviews.get(r.source_key);if(old)URL.revokeObjectURL(old);localPreviews.set(r.source_key,item.url);discardUpload(item,true);saved++}else{discardUpload(item);duplicates++}}
+          applySnapshot(v);$("actions").hidden=false;
+        }catch(e){for(const item of valid){if(uploadQueue.includes(item)){item.state="failed";item.error=e.message||"网络错误";failed++}}renderVisual()}
+      }
+    }finally{uploading=false;locked(false);renderVisual();status("本轮上传完成：已保存 "+saved+" 张"+(duplicates?" · 重复跳过 "+duplicates+" 张":"")+(failed?" · 失败 "+failed+" 张，可在照片上重试":"")+(saved?" · 公开网站部署后生效":""))}
+  }
+  function pickFiles(card,old){
+    if(old)return pickReplacement(card,old);
+    if(!token||!data){canEdit(card);return}if((busy&&!uploading)||dirty){status("请先处理当前修改，再添加照片");return}
+    const inp=node("input");inp.type="file";inp.accept="image/jpeg,image/png,image/webp,image/gif";inp.multiple=true;inp.onchange=()=>{const files=[...inp.files];if(files.length)queuePhotos(card,files)};inp.click()
+  }
   function renderVisual(){
     const view=data||window.ENWAN_DATA;if(!view){$("visual-summary").textContent="未能读取网站数据，请刷新。";return}
     const editable=!!(token&&data),cat=$("visual-cat").value,q=$("visual-search").value.trim().toLowerCase(),only=$("visual-filled").checked;
-    const visible=view.cards.filter(c=>(!cat||c.category===cat)&&(!only||c.images.length)&&(!q||[c.id,c.title,c.category,...(c.image_notes||[]).map(n=>n.source)].join(" ").toLowerCase().includes(q)));
+    const visible=view.cards.filter(c=>(!cat||c.category===cat)&&(!only||c.images.length||uploadQueue.some(x=>x.card===c.id))&&(!q||[c.id,c.title,c.category,...(c.image_notes||[]).map(n=>n.source)].join(" ").toLowerCase().includes(q)));
     $("visual-summary").textContent=(editable?"已登录 · 操作后自动保存":"预览模式 · 请使用专用管理链接")+" · "+view.cards.length+" 张动作卡 / "+view.cards.reduce((n,c)=>n+c.images.length,0)+" 张照片";
     const g=$("visual-cards");g.replaceChildren();let last="";
     for(const c of visible){
@@ -145,6 +187,7 @@ function buildRelease(data, groups, index) {
         const move=node("select");move.setAttribute("aria-label","移动照片至动作卡");move.append(opt("","移动至…"));for(const target of view.cards.filter(x=>x.id!==c.id))move.append(opt(target.id,target.category+" · "+target.title));
         move.onchange=()=>{if(!move.value)return;if(!canEdit(c.id)||!record){move.value="";return}const target=data.cards.find(x=>x.id===move.value);if(!target||!confirm("移动至「"+target.title+"」？")){move.value="";return}record.review_notes=(record.review_notes||"")+"；原归属 "+record.assigned_card_id+"；用户手动调整 "+new Date().toISOString();record.assigned_card_id=target.id;record.match_reason="用户手动调整至 "+target.title;mark()};more.append(move);actions.append(more);tile.append(actions);photos.append(tile);
       }
+      for(const item of uploadQueue.filter(x=>x.card===c.id)){const tile=node("figure",undefined,"photo-tile pending-photo"),im=node("img");im.src=item.url;im.alt=item.file.name;tile.append(im,node("figcaption",item.file.name),node("div",item.state==="failed"?"上传失败："+item.error:item.state==="uploading"?"正在上传…":"等待上传","upload-state "+item.state));if(item.state==="failed"){tile.append(button("重试",()=>retryUpload(item)),button("移除",()=>{discardUpload(item);renderVisual()}))}photos.append(tile)}
       const add=button("＋ 添加照片",()=>pickFiles(c.id));add.className="photo-add";photos.append(add);card.append(photos);g.append(card);
     }
     if(!visible.length)g.append(node("p","没有匹配的动作卡"));
@@ -170,5 +213,5 @@ function buildRelease(data, groups, index) {
   const authHash=new URLSearchParams(location.hash.slice(1));const access=authHash.get("access");if(access){rememberDevice(access);history.replaceState(null,"",location.pathname+location.search)}else if(authHash.get("access_token")&&authHash.get("refresh_token")){rememberDevice("");remember({access_token:authHash.get("access_token"),refresh_token:authHash.get("refresh_token"),expires_in:Number(authHash.get("expires_in")||3600)});history.replaceState(null,"",location.pathname+location.search)}else{restore();restoreDevice()}
   async function connect(){try{await loginComplete()}catch(e){if(!data){$("auth").hidden=false;$("connect-retry").hidden=false;if(!deviceAccess)$("auth").open=true;}throw e}}
   $("connect-retry").onclick=()=>run(connect);if(deviceAccess||session){$("auth").hidden=true;run(connect)}
-  window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
+  window.addEventListener("beforeunload",e=>{if(dirty||uploadQueue.length){e.preventDefault();e.returnValue=""}});
 })();

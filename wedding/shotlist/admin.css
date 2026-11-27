@@ -11,3 +11,6 @@
 
 /* V6.5 mobile direct entry */
 .quick-status{flex-wrap:wrap}.quick-status #status{min-width:0;overflow-wrap:anywhere}.quick-status button{touch-action:manipulation}.quick-delete{min-height:44px;min-width:48px}.visual .filters{gap:8px}@media(max-width:600px){header{padding:14px 16px;gap:6px}header h1{font-size:20px;margin:4px 0}header p{font-size:12px}main{padding:8px}.quick-status{top:0;padding:4px 0}.quick-status #status{font-size:12px}.visual{padding:8px}.visual-head h2{font-size:18px;margin-bottom:4px}.visual .filters{margin:10px 0}.visual .filters input[type=search]{width:100%}.quick-delete{top:4px;right:4px;min-height:44px;min-width:48px;padding:7px}.photo-grid{gap:6px}.photo-tile img{aspect-ratio:4/3}.quick-help{font-size:12px!important}}
+
+/* V6.6 queued uploads */
+.pending-photo{border:1px dashed #8d9f92}.pending-photo img{opacity:.8}.pending-photo figcaption{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.upload-state{font-size:12px;padding:6px 8px;background:#edf2ee;color:#405f4a;overflow-wrap:anywhere}.upload-state.failed{background:#fcebec;color:#a02e32}.pending-photo button{font-size:12px;margin:5px}.upload-state.uploading{font-weight:600}
