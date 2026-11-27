@@ -1,5 +1,5 @@
 window.ENWAN_DATA = {
-  "version": "6.1",
+  "version": "6.7",
   "stages": [
     {
       "id": "S1",
@@ -11,9 +11,7 @@ window.ENWAN_DATA = {
           "title": "场地外观",
           "priority": "必拍",
           "id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -27,9 +25,7 @@ window.ENWAN_DATA = {
           "title": "婚房全景",
           "priority": "必拍",
           "id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -50,55 +46,42 @@ window.ENWAN_DATA = {
           "title": "窗光及空间细节",
           "priority": "选拍",
           "id": "S1-6",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "工作人员布置",
           "priority": "选拍",
           "id": "S1-7",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "婚纱全貌",
           "priority": "必拍",
           "id": "S1-8",
-          "reference_ids": [
-            "A01",
-            "A29"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "婚鞋及首饰",
           "priority": "必拍",
           "id": "S1-9",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "西装与领结",
           "priority": "必拍",
           "id": "S1-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "皮鞋及袖扣",
           "priority": "必拍",
           "id": "S1-11",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -112,138 +95,105 @@ window.ENWAN_DATA = {
           "title": "准备时的自然交流",
           "priority": "选拍",
           "id": "S2-1",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "亲友协助及反应",
           "priority": "必拍",
           "id": "S2-2",
-          "reference_ids": [
-            "A02",
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "化妆全景",
           "priority": "必拍",
           "id": "S2-3",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "眼妆与唇妆",
           "priority": "必拍",
           "id": "S2-4",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "整理发型及头饰",
           "priority": "必拍",
           "id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "伴娘协助穿婚纱",
           "priority": "必拍",
           "id": "S2-6",
-          "reference_ids": [
-            "A02",
-            "A29"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "母亲整理婚纱",
           "priority": "必拍",
           "id": "S2-7",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "佩戴首饰及婚鞋",
           "priority": "必拍",
           "id": "S2-8",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "窗边肖像",
           "priority": "选拍",
           "id": "S2-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "穿衬衫及西装",
           "priority": "必拍",
           "id": "S2-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "整理领带",
           "priority": "必拍",
           "id": "S2-11",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "袖扣及手表",
           "priority": "必拍",
           "id": "S2-12",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "穿皮鞋",
           "priority": "必拍",
           "id": "S2-13",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "伴郎整理衣领",
           "priority": "必拍",
           "id": "S2-14",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "镜前整理仪容",
           "priority": "选拍",
           "id": "S2-15",
-          "reference_ids": [
-            "A30",
-            "A34"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -257,92 +207,70 @@ window.ENWAN_DATA = {
           "title": "父母看到新人造型",
           "priority": "必拍",
           "id": "S3-1",
-          "reference_ids": [
-            "A03"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "父母整理衣物",
           "priority": "必拍",
           "id": "S3-2",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "新人和父母交流",
           "priority": "必拍",
           "id": "S3-3",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "父母祝福",
           "priority": "必拍",
           "id": "S3-4",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "祖辈互动",
           "priority": "选拍",
           "id": "S3-5",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "家庭合影",
           "priority": "必拍",
           "id": "S3-6",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "亲友拥抱",
           "priority": "选拍",
           "id": "S3-7",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "伴郎伴娘互动",
           "priority": "选拍",
           "id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "母女牵手",
           "priority": "选拍",
           "id": "S3-9",
-          "reference_ids": [
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
           "title": "父子并肩",
           "priority": "选拍",
           "id": "S3-10",
-          "reference_ids": [
-            "A04"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -356,102 +284,77 @@ window.ENWAN_DATA = {
           "title": "敲门与开门",
           "priority": "必拍",
           "id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "接亲游戏",
           "priority": "必拍",
           "id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "双方首次见面反应",
           "priority": "必拍",
           "id": "S4-3",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "献花或求婚",
           "priority": "必拍",
           "id": "S4-4",
-          "reference_ids": [
-            "A28",
-            "A25"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "敬茶与接茶",
           "priority": "必拍",
           "id": "S4-5",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "父母祝福及回礼",
           "priority": "必拍",
           "id": "S4-6",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "出门送别",
           "priority": "必拍",
           "id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "上车与出发",
           "priority": "必拍",
           "id": "S4-8",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "车内交流",
           "priority": "选拍",
           "id": "S4-9",
-          "reference_ids": [
-            "A08"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "抵达下一场地",
           "priority": "必拍",
           "id": "S4-10",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "side": "bride",
           "title": "新娘等待接亲",
           "priority": "必拍",
           "id": "S4-11",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "side": "groom",
@@ -465,10 +368,7 @@ window.ENWAN_DATA = {
           "title": "新郎与伴郎到达",
           "priority": "必拍",
           "id": "S4-13",
-          "reference_ids": [
-            "A05",
-            "A06"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -482,97 +382,70 @@ window.ENWAN_DATA = {
           "title": "并肩站立",
           "priority": "选拍",
           "id": "S5-1",
-          "reference_ids": [
-            "A11",
-            "A13"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "牵手散步",
           "priority": "选拍",
           "id": "S5-2",
-          "reference_ids": [
-            "A09",
-            "A10"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "并肩聊天",
           "priority": "选拍",
           "id": "S5-3",
-          "reference_ids": [
-            "A13",
-            "A09"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "相视转头",
           "priority": "选拍",
           "id": "S5-4",
-          "reference_ids": [
-            "A11",
-            "A14"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "拥抱依靠",
           "priority": "选拍",
           "id": "S5-5",
-          "reference_ids": [
-            "A12",
-            "A13"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "整理捧花或衣物",
           "priority": "选拍",
           "id": "S5-6",
-          "reference_ids": [
-            "A02",
-            "A25"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "建筑或户外大景",
           "priority": "选拍",
           "id": "S5-7",
-          "reference_ids": [
-            "A31",
-            "A09"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "背影与脚步",
           "priority": "选拍",
           "id": "S5-8",
-          "reference_ids": [
-            "A09"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "单人肖像",
           "priority": "选拍",
           "id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "伴郎伴娘合影",
           "priority": "选拍",
           "id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -586,73 +459,56 @@ window.ENWAN_DATA = {
           "title": "仪式区全景",
           "priority": "必拍",
           "id": "S6-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "通道及舞台",
           "priority": "必拍",
           "id": "S6-2",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "花艺及桌花",
           "priority": "必拍",
           "id": "S6-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "签到台与指示牌",
           "priority": "必拍",
           "id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "空场前景横移",
           "priority": "选拍",
           "id": "S6-5",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "宾客签到与入场",
           "priority": "必拍",
           "id": "S6-6",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "新人迎宾",
           "priority": "必拍",
           "id": "S6-7",
-          "reference_ids": [
-            "A24",
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "儿童及老人细节",
           "priority": "选拍",
           "id": "S6-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -673,56 +529,42 @@ window.ENWAN_DATA = {
           "title": "开场与全场环境",
           "priority": "必拍",
           "id": "S7-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "新郎入场",
           "priority": "必拍",
           "id": "S7-2",
-          "reference_ids": [
-            "A18"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "新娘及陪同人员入场",
           "priority": "必拍",
           "id": "S7-3",
-          "reference_ids": [
-            "A18",
-            "A19"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "首次见面反应",
           "priority": "必拍",
           "id": "S7-4",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "交接与父母反应",
           "priority": "必拍",
           "id": "S7-5",
-          "reference_ids": [
-            "A19",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "共同走向舞台",
           "priority": "必拍",
           "id": "S7-6",
-          "reference_ids": [
-            "A18"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -736,76 +578,56 @@ window.ENWAN_DATA = {
           "title": "誓言完整声音",
           "priority": "必拍",
           "id": "S7-8",
-          "reference_ids": [
-            "A20"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "交换戒指",
           "priority": "必拍",
           "id": "S7-9",
-          "reference_ids": [
-            "A21"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "亲吻或拥抱",
           "priority": "必拍",
           "id": "S7-10",
-          "reference_ids": [
-            "A12",
-            "A22"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "父母致辞",
           "priority": "必拍",
           "id": "S7-11",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "证婚及祝福",
           "priority": "必拍",
           "id": "S7-12",
-          "reference_ids": [
-            "A20",
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "礼成退场",
           "priority": "必拍",
           "id": "S7-13",
-          "reference_ids": [
-            "A22",
-            "A18"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "宾客掌声及落泪",
           "priority": "选拍",
           "id": "S7-14",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "撒花与礼花",
           "priority": "选拍",
           "id": "S7-15",
-          "reference_ids": [
-            "A22"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -819,46 +641,35 @@ window.ENWAN_DATA = {
           "title": "宴会厅全景",
           "priority": "必拍",
           "id": "S8-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "二次入场（如有）",
           "priority": "选拍",
           "id": "S8-2",
-          "reference_ids": [
-            "A18"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "新人答谢",
           "priority": "必拍",
           "id": "S8-3",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "举杯祝酒",
           "priority": "必拍",
           "id": "S8-4",
-          "reference_ids": [
-            "A33",
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "敬酒及亲友交流",
           "priority": "必拍",
           "id": "S8-5",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -872,46 +683,35 @@ window.ENWAN_DATA = {
           "title": "游戏及表演（如有）",
           "priority": "选拍",
           "id": "S8-7",
-          "reference_ids": [
-            "A24",
-            "A35"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "亲友合影",
           "priority": "必拍",
           "id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "餐桌细节",
           "priority": "选拍",
           "id": "S8-9",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "送客告别",
           "priority": "必拍",
           "id": "S8-10",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "收尾空镜",
           "priority": "选拍",
           "id": "S8-11",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -925,18 +725,14 @@ window.ENWAN_DATA = {
           "title": "First Look",
           "priority": "选拍",
           "id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "私人誓言",
           "priority": "选拍",
           "id": "S9-2",
-          "reference_ids": [
-            "A20"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
@@ -950,64 +746,49 @@ window.ENWAN_DATA = {
           "title": "改口敬茶",
           "priority": "选拍",
           "id": "S9-4",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "户外证婚",
           "priority": "选拍",
           "id": "S9-5",
-          "reference_ids": [
-            "A18",
-            "A20"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "第一支舞",
           "priority": "选拍",
           "id": "S9-6",
-          "reference_ids": [
-            "A17"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "抛捧花",
           "priority": "选拍",
           "id": "S9-7",
-          "reference_ids": [
-            "A23"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "投影及回忆环节",
           "priority": "选拍",
           "id": "S9-8",
-          "reference_ids": [
-            "A26"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "烟花或灯光秀",
           "priority": "选拍",
           "id": "S9-9",
-          "reference_ids": [
-            "A35"
-          ]
+          "reference_ids": []
         },
         {
           "side": "all",
           "title": "宠物与孩子参与",
           "priority": "选拍",
           "id": "S9-10",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -1073,9 +854,7 @@ window.ENWAN_DATA = {
           "source_tip": "建议稳定器低速推进或横移",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-1-2",
@@ -1085,9 +864,7 @@ window.ENWAN_DATA = {
           "source_tip": "低角度仰拍，注意留出天空",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-1-3",
@@ -1097,9 +874,7 @@ window.ENWAN_DATA = {
           "source_tip": "新人走出镜头的起点",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-1-4",
@@ -1109,9 +884,7 @@ window.ENWAN_DATA = {
           "source_tip": "可作为片头转场素材",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-2-1",
@@ -1121,9 +894,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-2-2",
@@ -1133,9 +904,7 @@ window.ENWAN_DATA = {
           "source_tip": "顺光拍摄，保证红色不过曝",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-2-3",
@@ -1145,9 +914,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-2-4",
@@ -1157,9 +924,7 @@ window.ENWAN_DATA = {
           "source_tip": "交代场景，注意收好杂物",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-1",
@@ -1169,9 +934,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-2",
@@ -1181,9 +944,7 @@ window.ENWAN_DATA = {
           "source_tip": "俯拍或斜俯，铺平被面",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-3",
@@ -1193,9 +954,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-7",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-4",
@@ -1205,9 +964,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-5",
@@ -1217,9 +974,7 @@ window.ENWAN_DATA = {
           "source_tip": "逆光拍纱帘更有质感",
           "phase_id": "S1",
           "parent_id": "S1-6",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-6",
@@ -1229,9 +984,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-3-7",
@@ -1241,9 +994,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-4-1",
@@ -1273,9 +1024,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-4-4",
@@ -1285,9 +1034,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-4-5",
@@ -1297,9 +1044,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-11",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -1316,9 +1061,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-5-2",
@@ -1328,10 +1071,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-15",
-          "reference_ids": [
-            "A30",
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-5-3",
@@ -1341,9 +1081,7 @@ window.ENWAN_DATA = {
           "source_tip": "带到手部动作更有故事感",
           "phase_id": "S2",
           "parent_id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-5-4",
@@ -1353,10 +1091,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-15",
-          "reference_ids": [
-            "A30",
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-1",
@@ -1366,9 +1101,7 @@ window.ENWAN_DATA = {
           "source_tip": "慢动作，一次成型",
           "phase_id": "S2",
           "parent_id": "S2-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-2",
@@ -1378,9 +1111,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-3",
@@ -1390,9 +1121,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-11",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-4",
@@ -1402,9 +1131,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-5",
@@ -1414,9 +1141,7 @@ window.ENWAN_DATA = {
           "source_tip": "低角度，注意避开尴尬角度",
           "phase_id": "S2",
           "parent_id": "S2-13",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-6-6",
@@ -1426,10 +1151,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-15",
-          "reference_ids": [
-            "A30",
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-1",
@@ -1439,9 +1161,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-2",
@@ -1451,9 +1171,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-3",
@@ -1463,9 +1181,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-4",
@@ -1475,9 +1191,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-5",
@@ -1487,9 +1201,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-7-6",
@@ -1499,9 +1211,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-8-1",
@@ -1561,9 +1271,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": null,
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-9-4",
@@ -1573,9 +1281,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": null,
-          "reference_ids": [
-            "A26"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-9-5",
@@ -1585,9 +1291,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-10-1",
@@ -1597,9 +1301,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A15"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-10-2",
@@ -1629,9 +1331,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-14",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-10-5",
@@ -1641,10 +1341,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24",
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-11-1",
@@ -1664,9 +1361,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-11-3",
@@ -1676,9 +1371,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-10",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-11-4",
@@ -1688,9 +1381,7 @@ window.ENWAN_DATA = {
           "source_tip": "很有情绪的一刻，别错过",
           "phase_id": "S3",
           "parent_id": "S3-2",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-11-5",
@@ -1700,10 +1391,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-4",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-12-1",
@@ -1713,9 +1401,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-12-2",
@@ -1725,9 +1411,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-12-3",
@@ -1737,9 +1421,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-6",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -1776,10 +1458,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-13-4",
@@ -1789,10 +1468,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-14-1",
@@ -1802,9 +1478,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-8",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-14-2",
@@ -1814,9 +1488,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-8",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-14-3",
@@ -1846,9 +1518,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-9",
-          "reference_ids": [
-            "A08"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-15-2",
@@ -1858,9 +1528,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-9",
-          "reference_ids": [
-            "A08"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-15-3",
@@ -1967,9 +1635,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-17-2",
@@ -1979,9 +1645,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-17-3",
@@ -1991,9 +1655,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-18-1",
@@ -2003,9 +1665,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-18-2",
@@ -2015,9 +1675,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-18-3",
@@ -2027,9 +1685,7 @@ window.ENWAN_DATA = {
           "source_tip": "礼花抓好爆发瞬间",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-19-1",
@@ -2039,9 +1695,7 @@ window.ENWAN_DATA = {
           "source_tip": "不断机",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-19-2",
@@ -2051,9 +1705,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-19-3",
@@ -2063,9 +1715,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-19-4",
@@ -2075,9 +1725,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-20-1",
@@ -2087,10 +1735,7 @@ window.ENWAN_DATA = {
           "source_tip": "全片最不能漏的镜头之一",
           "phase_id": "S4",
           "parent_id": "S4-4",
-          "reference_ids": [
-            "A28",
-            "A25"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-20-2",
@@ -2100,10 +1745,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-4",
-          "reference_ids": [
-            "A28",
-            "A25"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-20-3",
@@ -2113,9 +1755,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-4",
-          "reference_ids": [
-            "A12"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-20-4",
@@ -2125,10 +1765,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-3",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-21-1",
@@ -2158,9 +1795,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-5",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-21-4",
@@ -2170,10 +1805,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-6",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-1",
@@ -2213,9 +1845,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-8",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-5",
@@ -2225,10 +1855,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-22-6",
@@ -2238,10 +1865,7 @@ window.ENWAN_DATA = {
           "source_tip": "情绪高点，务必留机位",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -2338,9 +1962,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-9",
-          "reference_ids": [
-            "A08"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-24-2",
@@ -2350,9 +1972,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-9",
-          "reference_ids": [
-            "A08"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-24-3",
@@ -2372,9 +1992,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-25-2",
@@ -2384,9 +2002,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-25-3",
@@ -2396,9 +2012,7 @@ window.ENWAN_DATA = {
           "source_tip": "抓好礼花爆发瞬间",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-25-4",
@@ -2408,9 +2022,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-26-1",
@@ -2450,9 +2062,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-5",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-27-1",
@@ -2462,11 +2072,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": null,
-          "reference_ids": [
-            "A11",
-            "A12",
-            "A13"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-27-2",
@@ -2476,10 +2082,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": null,
-          "reference_ids": [
-            "A11",
-            "A13"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-27-3",
@@ -2489,10 +2092,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-7",
-          "reference_ids": [
-            "A31",
-            "A09"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-27-4",
@@ -2502,10 +2102,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": null,
-          "reference_ids": [
-            "A10",
-            "A11"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-28-1",
@@ -2515,9 +2112,7 @@ window.ENWAN_DATA = {
           "source_tip": "多机位同时记录，不要喊口令",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-28-2",
@@ -2527,9 +2122,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-28-3",
@@ -2539,9 +2132,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-28-4",
@@ -2551,9 +2142,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A12"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -2650,9 +2239,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-10",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-30-2",
@@ -2662,9 +2249,7 @@ window.ENWAN_DATA = {
           "source_tip": "稳定器跟拍，不断机",
           "phase_id": "S4",
           "parent_id": "S4-10",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-30-3",
@@ -2674,10 +2259,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-7",
-          "reference_ids": [
-            "A05",
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-30-4",
@@ -2687,9 +2269,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-10",
-          "reference_ids": [
-            "A07"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-31-1",
@@ -2709,9 +2289,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-31-3",
@@ -2721,9 +2299,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-1",
@@ -2733,9 +2309,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-2",
@@ -2745,9 +2319,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-2",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-3",
@@ -2757,9 +2329,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-4",
@@ -2769,9 +2339,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-5",
@@ -2781,9 +2349,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-9",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-32-6",
@@ -2793,9 +2359,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-9",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-33-1",
@@ -2805,9 +2369,7 @@ window.ENWAN_DATA = {
           "source_tip": "全程不断机，用于保底",
           "phase_id": "S7",
           "parent_id": "S7-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-33-2",
@@ -2827,10 +2389,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": "S7-4",
-          "reference_ids": [
-            "A05",
-            "A20"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-33-4",
@@ -2840,9 +2399,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": "S7-14",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-33-5",
@@ -2852,10 +2409,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": null,
-          "reference_ids": [
-            "A20",
-            "A21"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-34-1",
@@ -2865,9 +2419,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-34-2",
@@ -2877,9 +2429,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-34-3",
@@ -2889,9 +2439,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-34-4",
@@ -2901,9 +2449,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-groom-34-5",
@@ -2913,9 +2459,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -2932,9 +2476,7 @@ window.ENWAN_DATA = {
           "source_tip": "稳定器低速推进或横移",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-1-2",
@@ -2944,9 +2486,7 @@ window.ENWAN_DATA = {
           "source_tip": "低角度仰拍，留出天空",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-1-3",
@@ -2956,9 +2496,7 @@ window.ENWAN_DATA = {
           "source_tip": "新人走出镜头的起点",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-1-4",
@@ -2968,9 +2506,7 @@ window.ENWAN_DATA = {
           "source_tip": "可作片头转场素材",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-2-1",
@@ -2980,9 +2516,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-2-2",
@@ -2992,9 +2526,7 @@ window.ENWAN_DATA = {
           "source_tip": "顺光拍摄，保证红色不过曝",
           "phase_id": "S1",
           "parent_id": "S1-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-2-3",
@@ -3004,9 +2536,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-2-4",
@@ -3016,9 +2546,7 @@ window.ENWAN_DATA = {
           "source_tip": "交代场景，注意收好杂物",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-1",
@@ -3028,9 +2556,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-2",
@@ -3040,9 +2566,7 @@ window.ENWAN_DATA = {
           "source_tip": "俯拍或斜俯，铺平被面",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-3",
@@ -3052,9 +2576,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-7",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-4",
@@ -3064,9 +2586,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-5",
@@ -3076,9 +2596,7 @@ window.ENWAN_DATA = {
           "source_tip": "逆光拍纱帘更有质感",
           "phase_id": "S1",
           "parent_id": "S1-6",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-6",
@@ -3088,9 +2606,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-3-7",
@@ -3100,9 +2616,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-1",
@@ -3112,9 +2626,7 @@ window.ENWAN_DATA = {
           "source_tip": "可放在喜字、花瓣上",
           "phase_id": "S1",
           "parent_id": "S1-9",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-2",
@@ -3124,10 +2636,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-8",
-          "reference_ids": [
-            "A01",
-            "A29"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-3",
@@ -3147,9 +2656,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-9",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-4-5",
@@ -3186,9 +2693,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-3",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-5-2",
@@ -3198,9 +2703,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-4",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-5-3",
@@ -3210,9 +2713,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-4",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-5-4",
@@ -3222,9 +2723,7 @@ window.ENWAN_DATA = {
           "source_tip": "带到手部动作更有故事感",
           "phase_id": "S2",
           "parent_id": "S2-3",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-5-5",
@@ -3234,9 +2733,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-3",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-6-1",
@@ -3246,9 +2743,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-6-2",
@@ -3258,9 +2753,7 @@ window.ENWAN_DATA = {
           "source_tip": "利用自然光，画面更干净",
           "phase_id": "S2",
           "parent_id": "S2-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-6-3",
@@ -3270,9 +2763,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-7-1",
@@ -3282,9 +2773,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-7-2",
@@ -3294,9 +2783,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-7-3",
@@ -3306,9 +2793,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-8",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-8-1",
@@ -3318,10 +2803,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24",
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-8-2",
@@ -3331,9 +2813,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-8-3",
@@ -3343,9 +2823,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-8-4",
@@ -3355,10 +2833,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24",
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-9-1",
@@ -3398,10 +2873,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-6",
-          "reference_ids": [
-            "A29",
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-10-2",
@@ -3411,9 +2883,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-10-3",
@@ -3423,9 +2893,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-10-4",
@@ -3435,9 +2903,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-5",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-11-1",
@@ -3447,9 +2913,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-11-2",
@@ -3459,9 +2923,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-8",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-11-3",
@@ -3471,9 +2933,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-8",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-11-4",
@@ -3483,9 +2943,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-9",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-12-1",
@@ -3495,10 +2953,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24",
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-12-2",
@@ -3508,10 +2963,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-6",
-          "reference_ids": [
-            "A02",
-            "A29"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-12-3",
@@ -3521,9 +2973,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-13-1",
@@ -3563,9 +3013,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": null,
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -3582,9 +3030,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S2",
           "parent_id": "S2-1",
-          "reference_ids": [
-            "A30"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-14-2",
@@ -3594,9 +3040,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-14-3",
@@ -3606,9 +3050,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-15-1",
@@ -3618,9 +3060,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-7",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-15-2",
@@ -3630,9 +3070,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-15-3",
@@ -3642,9 +3080,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S1",
           "parent_id": "S1-7",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-15-4",
@@ -3654,9 +3090,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-16-1",
@@ -3666,10 +3100,7 @@ window.ENWAN_DATA = {
           "source_tip": "原文指定的第一个时机",
           "phase_id": "S3",
           "parent_id": "S3-3",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-16-2",
@@ -3679,9 +3110,7 @@ window.ENWAN_DATA = {
           "source_tip": "原文指定的第二个时机",
           "phase_id": "S3",
           "parent_id": "S3-1",
-          "reference_ids": [
-            "A03"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-16-3",
@@ -3691,9 +3120,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-2",
-          "reference_ids": [
-            "A02"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-16-4",
@@ -3703,9 +3130,7 @@ window.ENWAN_DATA = {
           "source_tip": "情绪高点，务必留机位",
           "phase_id": "S3",
           "parent_id": "S3-4",
-          "reference_ids": [
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-17-1",
@@ -3715,9 +3140,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-17-2",
@@ -3727,9 +3150,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-8",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-17-3",
@@ -3739,9 +3160,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S3",
           "parent_id": "S3-6",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -3758,9 +3177,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-18-2",
@@ -3770,9 +3187,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-11",
-          "reference_ids": [
-            "A34"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-18-3",
@@ -3782,9 +3197,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-1",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-19-1",
@@ -3794,9 +3207,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-19-2",
@@ -3806,9 +3217,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A06"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-20-1",
@@ -3818,9 +3227,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-4",
-          "reference_ids": [
-            "A28"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-20-2",
@@ -3830,9 +3237,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-4",
-          "reference_ids": [
-            "A12"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-20-3",
@@ -3842,9 +3247,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-2",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-20-4",
@@ -3854,9 +3257,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-3",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-21-1",
@@ -3866,9 +3267,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-5",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-21-2",
@@ -3878,10 +3277,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-6",
-          "reference_ids": [
-            "A03",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-21-3",
@@ -3891,9 +3287,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-5",
-          "reference_ids": [
-            "A33"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-22-1",
@@ -3923,10 +3317,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-22-4",
@@ -3936,10 +3327,7 @@ window.ENWAN_DATA = {
           "source_tip": "情绪高点，务必留机位",
           "phase_id": "S4",
           "parent_id": "S4-7",
-          "reference_ids": [
-            "A07",
-            "A04"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-23-1",
@@ -3949,9 +3337,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-23-2",
@@ -3961,9 +3347,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A01"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-23-3",
@@ -3983,9 +3367,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-23-5",
@@ -3995,9 +3377,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S9",
           "parent_id": "S9-1",
-          "reference_ids": [
-            "A05"
-          ]
+          "reference_ids": []
         }
       ]
     },
@@ -4024,9 +3404,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-24-3",
@@ -4036,9 +3414,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-25-1",
@@ -4048,9 +3424,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-25-2",
@@ -4060,9 +3434,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-2",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-25-3",
@@ -4072,9 +3444,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-3",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-25-4",
@@ -4084,9 +3454,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S6",
           "parent_id": "S6-4",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-25-5",
@@ -4096,9 +3464,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-9",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-26-1",
@@ -4108,9 +3474,7 @@ window.ENWAN_DATA = {
           "source_tip": "全程不断机，用于保底",
           "phase_id": "S7",
           "parent_id": "S7-1",
-          "reference_ids": [
-            "A31"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-26-2",
@@ -4130,10 +3494,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": "S7-4",
-          "reference_ids": [
-            "A05",
-            "A20"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-26-4",
@@ -4143,9 +3504,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": "S7-14",
-          "reference_ids": [
-            "A24"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-26-5",
@@ -4155,10 +3514,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S7",
           "parent_id": null,
-          "reference_ids": [
-            "A20",
-            "A21"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-27-1",
@@ -4168,9 +3524,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-27-2",
@@ -4180,9 +3534,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-27-3",
@@ -4192,9 +3544,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-27-4",
@@ -4204,9 +3554,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S5",
           "parent_id": "S5-10",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         },
         {
           "id": "L-bride-27-5",
@@ -4216,9 +3564,7 @@ window.ENWAN_DATA = {
           "source_tip": "",
           "phase_id": "S8",
           "parent_id": "S8-8",
-          "reference_ids": [
-            "A27"
-          ]
+          "reference_ids": []
         }
       ]
     }
