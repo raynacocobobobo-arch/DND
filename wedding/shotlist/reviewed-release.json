@@ -110,6 +110,17 @@
     "git_blob": "44308f218e6a95390740d9fbffbebb3febdb57cd"
   },
   {
+    "source_key": "R288",
+    "sha256": "6af891df2d9c2a7194741cb065bb1b61edfda6258c9d3160b6d3e2fdeddf017e",
+    "file_size": 140586,
+    "assigned_card_id": "A21",
+    "visual_description": "一方手托另一方手背并为其戴戒指",
+    "match_reason": "采用：戒指与指尖交互明确，补充横向紧凑特写；非仪式实拍",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R288.jpeg",
+    "git_blob": "aa9228346eaf9984df93a09684007bf2df1c543c"
+  },
+  {
     "source_key": "R302",
     "sha256": "06b40f3f0d47aba0a9382c9b63903011b52542919d84d666c9fbcb8780cd3692",
     "file_size": 151927,

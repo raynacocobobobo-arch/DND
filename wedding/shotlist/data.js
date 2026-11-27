@@ -4465,7 +4465,8 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W426.jpeg",
-        "assets/references/reviewed/W480.jpeg"
+        "assets/references/reviewed/W480.jpeg",
+        "assets/references/reviewed/R288.jpeg"
       ],
       "image_notes": [
         {
@@ -4475,6 +4476,10 @@ window.ENWAN_DATA = {
         {
           "source": "W480",
           "reason": "清晰展示婚戒佩戴动作与侧向手部构图；区别W426钻戒特写，作为不同戒指与角度的参考。"
+        },
+        {
+          "source": "R288",
+          "reason": "采用：戒指与指尖交互明确，补充横向紧凑特写；非仪式实拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4783,7 +4788,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 131,
+    "images": 132,
     "core_cards": 26,
     "additional_cards": 9
   },
