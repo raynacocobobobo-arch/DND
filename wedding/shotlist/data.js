@@ -4719,7 +4719,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W945.jpeg",
         "assets/references/reviewed/W1027.png",
         "assets/references/reviewed/R353.jpeg",
-        "assets/references/reviewed/U16e33b218d9a23c5fda2593e.jpeg"
+        "assets/references/reviewed/U16e33b218d9a23c5fda2593e.jpeg",
+        "assets/references/reviewed/W008.png"
       ],
       "image_notes": [
         {
@@ -4745,6 +4746,10 @@ window.ENWAN_DATA = {
         {
           "source": "U16e33b218d9a23c5fda2593e",
           "reason": "采用（影视/广告调度类比）：父母与新人回看旧照片的手部与道具关系，可配回忆段落。"
+        },
+        {
+          "source": "W008",
+          "reason": "用户批量恢复至 照片展示与回忆"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4838,7 +4843,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 142,
+    "images": 143,
     "core_cards": 26,
     "additional_cards": 9
   },

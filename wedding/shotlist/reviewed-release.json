@@ -297,6 +297,17 @@
     "git_blob": "beff620c6b8de4e1315dfe5b9949f9f8923abe10"
   },
   {
+    "source_key": "W008",
+    "sha256": "e60c83619e3f45a12d569fc1f24ba23b43a96ab603afdebda8dab818219bb33b",
+    "file_size": 290053,
+    "assigned_card_id": "A26",
+    "visual_description": "蓝衣女子双手在镜头前围出形状并微笑",
+    "match_reason": "用户批量恢复至 照片展示与回忆",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W008.png",
+    "git_blob": "edbfa3436ddec0f70ce501766f581cfbedb33943"
+  },
+  {
     "source_key": "W009",
     "sha256": "e737b7f5c0767a85841253f21e5d4275f468046ba0c7dda28b12538cfa0cf8ed",
     "file_size": 177705,
