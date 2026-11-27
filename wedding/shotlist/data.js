@@ -4366,7 +4366,6 @@ window.ENWAN_DATA = {
       "is_core": false,
       "images": [
         "assets/references/reviewed/W481.jpeg",
-        "assets/references/reviewed/R153.jpeg",
         "assets/references/reviewed/U8addb2bda2b0de1246050548.jpeg",
         "assets/references/reviewed/U40c9a8da502b501ff1d2929e.jpeg",
         "assets/references/reviewed/U437cfd52ad4d8d24424b0dc9.jpeg",
@@ -4377,10 +4376,6 @@ window.ENWAN_DATA = {
         {
           "source": "W481",
           "reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。"
-        },
-        {
-          "source": "R153",
-          "reason": "采用：可参考中式或民族礼服头饰细节及侧脸层次，不照搬具体服饰"
         },
         {
           "source": "U8addb2bda2b0de1246050548",
@@ -5527,7 +5522,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 149,
+    "images": 148,
     "core_cards": 26,
     "additional_cards": 9
   },

@@ -66,17 +66,6 @@
     "git_blob": "0363d96d71517f956b78f6daed35a108b011c44f"
   },
   {
-    "source_key": "R153",
-    "sha256": "2385d0f6111ec151a1e6fe0027b1c896740bfecc187b18848b2234fa605f33d9",
-    "file_size": 90720,
-    "assigned_card_id": "A30",
-    "visual_description": "银色垂饰与女子侧脸同框",
-    "match_reason": "采用：可参考中式或民族礼服头饰细节及侧脸层次，不照搬具体服饰",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/R153.jpeg",
-    "git_blob": "cfc089a966f6181231af63e109666ded8deeca52"
-  },
-  {
     "source_key": "R156",
     "sha256": "a9889b88f517a89c9f059b37842f1e19dafbf3a39e61d58fac4b2a2c170121e5",
     "file_size": 146663,
