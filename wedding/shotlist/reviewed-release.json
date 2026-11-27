@@ -363,6 +363,28 @@
     "git_blob": "c5865a2f6a67489bd64c4c49e86643522cfe085f"
   },
   {
+    "source_key": "W043",
+    "sha256": "80f47ba8e3d7f82aebb6e7e2075658841ef02e657ef46f5e7141a8113a9c807e",
+    "file_size": 191579,
+    "assigned_card_id": "A14",
+    "visual_description": "女子越过另一礼服人物肩部望向对方",
+    "match_reason": "用户批量恢复至 一方回头看另一方",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W043.jpeg",
+    "git_blob": "7ac0b7f41e450d2937f9d4a80245194c68909549"
+  },
+  {
+    "source_key": "W044",
+    "sha256": "12102426e20070129daa915678a38f6df647cad423d26853f86fe9adcc0a059b",
+    "file_size": 182826,
+    "assigned_card_id": "A14",
+    "visual_description": "亮片礼服女子看向前景人物，反向近景",
+    "match_reason": "用户批量恢复至 一方回头看另一方",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W044.jpeg",
+    "git_blob": "eed843dd843351510d60ab57d400d47ef94a02ad"
+  },
+  {
     "source_key": "W052",
     "sha256": "ea1f011aab585671dceba858b358c36b5f8e2733ec752e50008368bb83d8e9be",
     "file_size": 168403,

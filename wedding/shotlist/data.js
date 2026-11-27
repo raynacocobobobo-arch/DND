@@ -4038,7 +4038,9 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W522.jpeg",
         "assets/references/reviewed/W805.jpeg",
-        "assets/references/reviewed/W009.jpeg"
+        "assets/references/reviewed/W009.jpeg",
+        "assets/references/reviewed/W043.jpeg",
+        "assets/references/reviewed/W044.jpeg"
       ],
       "image_notes": [
         {
@@ -4052,6 +4054,14 @@ window.ENWAN_DATA = {
         {
           "source": "W009",
           "reason": "采用：行进中回头看跟拍方，完整环境中景"
+        },
+        {
+          "source": "W043",
+          "reason": "用户批量恢复至 一方回头看另一方"
+        },
+        {
+          "source": "W044",
+          "reason": "用户批量恢复至 一方回头看另一方"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4788,7 +4798,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 132,
+    "images": 134,
     "core_cards": 26,
     "additional_cards": 9
   },
