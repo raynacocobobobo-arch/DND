@@ -1068,6 +1068,7 @@ function windowStreak(days){
 }
 function renderWeightTracker(){
   const today=localDate(),history=state.weightHistory||{},todayWeight=history[today];
+  const hasTodayWeight=Number.isFinite(Number(todayWeight))&&Number(todayWeight)>0;
   const all=Object.entries(history).filter(([d,w])=>d<=today&&Number.isFinite(Number(w))&&Number(w)>0).sort((a,b)=>a[0].localeCompare(b[0]));
   const latest=all[all.length-1],recentStart=localDate(addDays(dateFromISO(today),-6));
   const recent=all.filter(([d])=>d>=recentStart);
@@ -1086,21 +1087,20 @@ function renderWeightTracker(){
     });
     const coordinates=pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
     const shape=pts.length>1?'<polyline points="'+coordinates+'" fill="none" stroke="#a42e21" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>':'';
-    const dots=pts.map(p=>'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.8" fill="#a42e21" stroke="#fff0c5" stroke-width="1.6"><title>'+p.date+' '+p.weight.toFixed(1)+' kg</title></circle>').join('');
-    const valuesText=pts.map(p=>'<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-8).toFixed(1)+'" font-size="11" font-weight="850" text-anchor="middle" fill="#78251d">'+p.weight.toFixed(1)+'</text>').join('');
-    chart='<div class="weight-chart"><svg viewBox="0 0 300 68" preserveAspectRatio="none" role="img" aria-label="最近7天真实体重记录，共'+recent.length+'天">'+
-      '<path d="M16 28H284 M16 55H284" stroke="#bb9260" stroke-width=".7" stroke-dasharray="3 4" opacity=".6"/>'+shape+dots+valuesText+'</svg>'+
+    const dots=pts.map(p=>'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.8" fill="'+(p.date===today?'#557a4b':'#a42e21')+'" stroke="#fff0c5" stroke-width="1.6"><title>'+p.date+' '+p.weight.toFixed(1)+' kg</title></circle>').join('');
+    const valuesText=pts.map(p=>'<span aria-hidden="true" style="position:absolute;left:'+(p.x/300*100).toFixed(3)+'%;top:'+(Math.max(11,p.y-8)/68*100).toFixed(3)+'%;transform:translate(-50%,-85%);font-size:12px;line-height:1;font-weight:850;font-variant-numeric:tabular-nums;color:#78251d;white-space:nowrap;pointer-events:none">'+p.weight.toFixed(1)+'</span>').join('');
+    chart='<div class="weight-chart"><div style="position:relative"><svg viewBox="0 0 300 68" preserveAspectRatio="none" role="img" aria-label="最近7天真实体重记录，共'+recent.length+'天">'+
+      '<path d="M16 28H284 M16 55H284" stroke="#bb9260" stroke-width=".7" stroke-dasharray="3 4" opacity=".6"/>'+shape+dots+'</svg>'+valuesText+'</div>'+
       '<div class="weight-chart-labels"><span>'+formatDate(recent[0][0])+'</span><span>'+formatDate(recent[recent.length-1][0])+'</span></div></div>';
   }
-  const status=hasFullWeek?'最近7日平均 '+average.toFixed(2)+' kg':'已记录 '+recent.length+'/7 天 · 每日波动属正常';
+  const status=hasFullWeek?'最近7日平均 '+average.toFixed(2)+' kg':'已记录 '+recent.length+'/7 天';
   const trend='<div class="weight-trend-top"><strong>最近7天体重</strong><span>'+status+'</span></div>';
-  const tip=hasFullWeek?'参考7日均值，不用单日涨跌判断减脂':'每天如实记录，满7天再看均值趋势';
   return '<section class="weight-board" aria-label="体重跟踪"><div class="weight-header"><h2>体重跟踪</h2><span>'+
-    (latest?'最近 '+Number(latest[1]).toFixed(1)+' kg · '+formatDate(latest[0]):'尚无记录')+'</span></div>'+
-    '<form id="weightForm" class="weight-form"><label for="weightInput">今日体重</label>'+
+    (hasTodayWeight?'今日已记录 '+Number(todayWeight).toFixed(1)+' kg':latest?'最近 '+Number(latest[1]).toFixed(1)+' kg · '+formatDate(latest[0]):'尚无记录')+'</span></div>'+
+    (hasTodayWeight?'':'<form id="weightForm" class="weight-form"><label for="weightInput">今日体重</label>'+
     '<div class="weight-input"><input id="weightInput" name="weight" type="number" min="1" max="500" step="0.1" inputmode="decimal" placeholder="输入体重" value="'+(todayWeight??'')+'" required><span>kg</span></div>'+
-    '<button type="submit">'+(todayWeight?'更新':'记录')+'</button></form>'+
-    trend+chart+'<p class="weight-trend-tip">'+tip+'</p></section>';
+    '<button type="submit">记录</button></form>')+
+    trend+chart+'</section>';
 }
 function saveTodayWeight(form){
  const value=Number(form.elements.weight.value);
