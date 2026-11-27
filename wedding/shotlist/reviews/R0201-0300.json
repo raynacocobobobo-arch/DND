@@ -2663,17 +2663,19 @@
     "file_size": 73278,
     "width": 1280,
     "height": 720,
-    "storage_path": null,
-    "thumbnail_path": null,
+    "storage_path": "assets/references/reviewed/R300.jpeg",
+    "thumbnail_path": "assets/references/reviewed/R300.jpeg",
     "visual_description": "手持卡片或书页的局部",
     "match_reason": "排除：主体模糊且商品情节，不作照片展示",
     "assigned_card_id": null,
     "review_status": "excluded",
-    "review_notes": "2026-11-25 原始文档提取、逐图视觉审查，比较相邻镜头与既有调度类型；原图SHA-256及Git Blob 471feacc19ce485a7f6331de0ef1b8ba7c73962a。",
+    "review_notes": "2026-11-25 原始文档提取、逐图视觉审查，比较相邻镜头与既有调度类型；原图SHA-256及Git Blob 471feacc19ce485a7f6331de0ef1b8ba7c73962a。；原稿排除图重新挂载到回收站（不改变排除状态）。",
     "sort_order": 300,
     "match_confidence": "high",
     "match_type": "none",
     "media": "word/media/image300.jpeg",
-    "ext": "jpeg"
+    "ext": "jpeg",
+    "path": "assets/references/reviewed/R300.jpeg",
+    "git_blob": "471feacc19ce485a7f6331de0ef1b8ba7c73962a"
   }
 ]
