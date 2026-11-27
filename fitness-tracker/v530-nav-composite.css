@@ -248,3 +248,13 @@ body[data-screen="calendar"] .weight-empty {margin:8px 0 4px;}
   }
   body[data-screen="calendar"] .weight-chart svg { height:58px !important; }
 }
+
+/* Rolling training advice: use the existing paper card and keep it compact. */
+body[data-screen="calendar"] .training-advice { flex:0 0 auto !important; }
+body[data-screen="calendar"] .training-advice-meta { font-size:11px; line-height:1.35; font-weight:700; color:#704d32; margin:6px 0 3px; }
+body[data-screen="calendar"] .training-advice-copy { font-size:12px; line-height:1.45; color:#25170f; margin:0; }
+body[data-screen="calendar"] .training-advice-copy strong { color:#55713e; font-weight:900; }
+@media (max-width:850px) and (min-height:700px) {
+ body[data-screen="calendar"] #content { overflow-y:auto !important; overflow-x:hidden !important; }
+ body[data-screen="calendar"] .cal30-shell { flex:0 0 auto !important; overflow:visible !important; }
+}
