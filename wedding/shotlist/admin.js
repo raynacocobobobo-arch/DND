@@ -62,7 +62,7 @@ function buildRelease(data, groups, index) {
   }
   function updateTargetOptions(){const s=$("bulk-target"),prev=s.value;s.replaceChildren(opt("",libraryMode==="trash"?"恢复到原动作卡":"选择目标动作卡"));if(data)for(const cat of CATS){const group=node("optgroup");group.label=cat;for(const c of data.cards.filter(c=>c.category===cat))group.append(opt(c.id,c.title));if(group.children.length)s.append(group)}if([...s.options].some(x=>x.value===prev))s.value=prev}
   function syncBulk(){
-    const map=selectedMap(),n=map.size,trash=libraryMode==="trash",unavailable=busy||dirty||!data||!token;
+    const map=selectedMap(),n=map.size,trash=libraryMode==="trash",unavailable=busy||dirty||!data||!token;$("trash-import").disabled=unavailable;
     $("bulk-bar").hidden=!n;$("bulk-count").textContent="已选 "+n+" 张";$("bulk-move").hidden=trash;$("bulk-delete").hidden=trash;$("bulk-restore").hidden=!trash;$("bulk-purge").hidden=!trash;
     $("bulk-move").disabled=unavailable||!$("bulk-target").value;$("bulk-delete").disabled=unavailable;$("bulk-restore").disabled=unavailable;$("bulk-purge").disabled=unavailable;$("bulk-target").disabled=unavailable;$("bulk-clear").disabled=busy;
     $("select-live").disabled=unavailable||!liveVisible.length;$("select-trash-page").disabled=unavailable||!trashPage.length;$("select-trash-all").disabled=unavailable||!trashVisible.length;
