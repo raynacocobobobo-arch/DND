@@ -4310,7 +4310,6 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W445.jpeg",
         "assets/references/reviewed/W452.jpeg",
-        "assets/references/reviewed/W455.jpeg",
         "assets/references/reviewed/U20fb4e90c239973bc9780869.jpeg",
         "assets/references/reviewed/U513d0cb6e3ae77c642f2e1c1.jpeg"
       ],
@@ -4322,10 +4321,6 @@ window.ENWAN_DATA = {
         {
           "source": "W452",
           "reason": "A04：与W445正面抱不同的背后亲昵姿势，父女关系和肢体接触明确"
-        },
-        {
-          "source": "W455",
-          "reason": "A04：父女依偎不同于正面拥抱，挽臂、眼神和站姿均清晰"
         },
         {
           "source": "U20fb4e90c239973bc9780869",
@@ -5532,7 +5527,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 150,
+    "images": 149,
     "core_cards": 26,
     "additional_cards": 9
   },

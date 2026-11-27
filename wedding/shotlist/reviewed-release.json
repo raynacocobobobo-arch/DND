@@ -649,17 +649,6 @@
     "git_blob": "67d5911308df60b9c1910c30a95e3cbe1643a842"
   },
   {
-    "source_key": "W455",
-    "sha256": "1f42e9e77eabb81585db863b6c593395570bd3497d54b4e80f27414b4af8b5f8",
-    "file_size": 140855,
-    "assigned_card_id": "A04",
-    "visual_description": "新娘挽着父亲手臂抬头望父亲，父亲面向前方",
-    "match_reason": "A04：父女依偎不同于正面拥抱，挽臂、眼神和站姿均清晰",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W455.jpeg",
-    "git_blob": "3ab5633d9c76afca3f8916e8a3ee54d384801823"
-  },
-  {
     "source_key": "W471",
     "sha256": "95ba6b8e57f20292550f617108ef2c1ea0c9bbfe3c71c8825ad14c5f1e2c350f",
     "file_size": 103518,
