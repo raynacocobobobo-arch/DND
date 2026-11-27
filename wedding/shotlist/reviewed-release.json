@@ -242,17 +242,6 @@
     "git_blob": "a171fa0ddff0edc560cf848a370b11e35c317704"
   },
   {
-    "source_key": "U2308c8242904973dcd243112",
-    "sha256": "2308c8242904973dcd243112892dd0b4c4e21ae5833b1d60e6cea82a5fe3245f",
-    "file_size": 170404,
-    "assigned_card_id": "A02",
-    "visual_description": "女子与深色西装男子同框，递交或协助整理衣物。",
-    "match_reason": "采用（影视/广告调度类比）：可类比家人协助新郎准备，形成双人关系及镜前/侧方中景。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/U2308c8242904973dcd243112.jpeg",
-    "git_blob": "fc498a13e19e466a1f207df420895b5181ce3385"
-  },
-  {
     "source_key": "U7216217e0e35e49269fe0a87",
     "sha256": "7216217e0e35e49269fe0a87442ad18d5d5bc7f07e6126562f6956366e005a32",
     "file_size": 80354,

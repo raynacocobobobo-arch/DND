@@ -3602,17 +3602,12 @@ window.ENWAN_DATA = {
       "delivery_check": "动作发生前就位；不要求家人重复整理或刻意掉泪。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W471.jpeg",
-        "assets/references/reviewed/U2308c8242904973dcd243112.jpeg"
+        "assets/references/reviewed/W471.jpeg"
       ],
       "image_notes": [
         {
           "source": "W471",
           "reason": "明确的长辈帮新人整理领带动作，与W453女方整理衣服的关系和机位不同；广告情境作为动作参考。"
-        },
-        {
-          "source": "U2308c8242904973dcd243112",
-          "reason": "采用（影视/广告调度类比）：可类比家人协助新郎准备，形成双人关系及镜前/侧方中景。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4863,7 +4858,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 147,
+    "images": 146,
     "core_cards": 26,
     "additional_cards": 9
   },
