@@ -176,6 +176,28 @@
     "git_blob": "bf94c384db22e8fe31119abd8b0670dcb8f2d67f"
   },
   {
+    "source_key": "R377",
+    "sha256": "5a46db851d05e5acc20a5197ab26e8976033118f26798fd53fa9f5ca57d67829",
+    "file_size": 100910,
+    "assigned_card_id": "A31",
+    "visual_description": "对称照片展廊与墙面相框",
+    "match_reason": "采用：可迁移到婚礼回忆照片区的空间空镜，参考中轴和纵深，不作真实婚礼案例",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R377.jpeg",
+    "git_blob": "0641087d58937364fb440dee1a09ef54be27596b"
+  },
+  {
+    "source_key": "R391",
+    "sha256": "3a8a25d0eea54df5e9dc2b496e29586ad9a005b2c094562c39fc7983d6d48b1e",
+    "file_size": 148553,
+    "assigned_card_id": "A31",
+    "visual_description": "暗色拱门框住中轴白塔和阶梯",
+    "match_reason": "采用：可参考婚礼场地入口的门洞框景、中轴及明暗层次，不将建筑当作婚礼场地",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/R391.jpeg",
+    "git_blob": "42573f4cc6bb70f39a2778330c6a3a5035d6fb02"
+  },
+  {
     "source_key": "U16e33b218d9a23c5fda2593e",
     "sha256": "16e33b218d9a23c5fda2593e77ba95b6d7d2a5ee3c1c13630011d1c4cc4352b8",
     "file_size": 172707,
