@@ -1151,34 +1151,49 @@ function trainingAdviceData(records,today){
  const frequentGym=count(gym)>=4||lastGymVolume>=360;
  const gymReady=gap(gym)>=(frequentGym?2:1);
  const swimDue=gap(pool)>=3&&count(pool)<2;
- const previousKnee=recent(knee).filter(r=>r.date===days[5]);
- const previousCardio=previousKnee.filter(r=>r.type==='cardio'||r.type==='running').reduce((n,r)=>n+(Number(r.duration_min)||0),0);
- const kneeBusy=previousCardio>=40||[days[4],days[5]].every(d=>rows.some(r=>r.date===d&&(r.type==='running'||r.type==='cardio'||swim(r))));
+ const run=r=>r.type==='running'||(r.type==='cardio'&&/跑步/.test(name(r)));
+ const ell=r=>r.type==='cardio'&&(key(r)==='elliptical'||/椭圆机/.test(name(r)));
+ const minutes=(rs,pred)=>rs.filter(pred).reduce((n,r)=>n+Math.max(0,Number(r.duration_min)||0),0);
+ const todayRun=minutes(todayRows,run),todayEll=minutes(todayRows,ell);
+ const cardioStarted=has(run)||has(ell);
+ const past=rows.filter(r=>r.date!==today);
+ const recentRun=minutes(past,run),recentEll=minutes(past,ell);
+ const yesterday=rows.filter(r=>r.date===days[5]);
+ const kneeBusy=minutes(yesterday,run)+minutes(yesterday,ell)>=60||[days[4],days[5]].every(d=>rows.some(r=>r.date===d&&run(r)));
  const daily=[];
  if(!has(sit))daily.push('仰卧起坐60次');
  if(!has(hold))daily.push('靠墙及平板4组（膝不适只做平板）');
  if(!has(back))daily.push('臀桥及背部60次');
  const advice=[];
  if(daily.length)advice.push('今日：'+daily.join('、')+'。');
- const gymPlan=frequentGym?'拉背、划船各60次，飞鸟及引体60次':'拉背、划船、飞鸟及引体各60次';
- if(has(swim)||has(upper)){
-  if(!daily.length)advice.push('今日计划已基本完成，不必再加练。');
-  else advice.push('其余训练不必追加。');
- }else if(swimDue){
-  advice.push('可选：膝部舒适时蛙泳10–20圈'+(gymReady?'；不游泳则做'+gymPlan:'')+'。');
- }else if(gymReady){
-  advice.push('可选：'+gymPlan+'（按熟悉重量分组）。');
+ const gymPlan='拉背、划船、飞鸟及引体各60次';
+ if(has(swim)){
+  advice.push('今日游泳已记录，不安排跑步机和椭圆机。');
+ }else if(swimDue&&!cardioStarted){
+  advice.push('膝部舒适时安排蛙泳10–20圈，取消跑步机和椭圆机。');
+ }else if(cardioStarted||gymReady||has(upper)){
+  // Three 20-minute blocks are an optional normal session, not a mandatory quota.
+  const targetRun=!kneeBusy&&recentRun<recentEll?40:20;
+  const targetEll=60-targetRun;
+  const remaining=Math.max(0,60-todayRun-todayEll);
+  const blocks=Math.floor(remaining/20);
+  const runBlocks=Math.min(blocks,Math.max(0,Math.floor((targetRun-todayRun)/20)));
+  const ellBlocks=Math.min(blocks-runBlocks,Math.max(0,Math.floor((targetEll-todayEll)/20)));
+  const rest=blocks-runBlocks-ellBlocks;
+  const addRun=runBlocks*20,addEll=(ellBlocks+rest)*20;
+  const options=[addRun?'跑步机'+addRun+'分钟':'',addEll?'椭圆机'+addEll+'分钟':''].filter(Boolean);
+  if(!blocks)advice.push('今日有氧无需再加量。');
+  else advice.push((cardioStarted?'如仍需有氧，可补':'可安排')+options.join('、')+'，按体感调整。');
+  if(gymReady&&!has(upper))advice.push('可做'+gymPlan+'。');
  }else{
-  advice.push('今天不安排器械上肢，轻松散步或休息。');
+  advice.push('今天不安排器械上肢，可轻松散步或休息。');
  }
- if(kneeBusy&&!has(swim)&&!has(upper))advice.push('不额外加跑步机；膝痛时停做蛙泳及屈膝动作。');
- else if(!has(swim)&&swimDue)advice.push('膝痛时不做蛙泳。');
  return advice;
 }
 function renderTrainingAdvice(){
  const a=trainingAdviceData(state.records,localDate());
  return '<section class="weight-board training-advice" aria-label="训练建议"><div class="weight-header"><h2>训练建议</h2></div>'+
- '<p class="training-advice-copy" style="margin-top:5px">'+a.map(x=>safe(x).replace(/仰卧起坐|靠墙及平板|臀桥及背部|平板|拉背|划船|飞鸟及引体|蛙泳|跑步机|60次|4组|10–20圈/g,m=>'<b>'+m+'</b>')).join('')+'</p></section>';
+ '<p class="training-advice-copy" style="margin-top:5px">'+a.map(x=>safe(x).replace(/仰卧起坐|靠墙及平板|臀桥及背部|平板|拉背|划船|飞鸟及引体|蛙泳|跑步机|60次|4组|10–20圈|20分钟|40分钟|60分钟/g,m=>'<b>'+m+'</b>')).join('')+'</p></section>';
 }
 function renderCalendar(){
  const today=localDate();
