@@ -4243,7 +4243,7 @@ window.ENWAN_DATA = {
           "reason": "采用：展示礼服裙摆体量及正面行进姿态，参考新娘展示婚纱；粉色礼服非白色婚纱。"
         }
       ],
-      "reference_note": ""
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A02",
@@ -4256,15 +4256,10 @@ window.ENWAN_DATA = {
       "delivery_check": "动作发生前就位；不要求家人重复整理或刻意掉泪。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W453.jpeg",
         "assets/references/reviewed/W462.jpeg",
         "assets/references/reviewed/W471.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W453",
-          "reason": "A02：家人整理父亲礼服的互助动作完整，可指导西式晨间准备"
-        },
         {
           "source": "W462",
           "reason": "A02：家人帮助中式妆造的动作明确，与W453礼服整理场景不同"
@@ -5754,7 +5749,7 @@ window.ENWAN_DATA = {
           "reason": "采用：补充持花姿态与投影影子关系，适合婚礼创作性光影肖像"
         }
       ],
-      "reference_note": "影视、广告及日常人物画面仅作为动作与构图参考。"
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A18",
@@ -5934,7 +5929,7 @@ window.ENWAN_DATA = {
           "reason": "采用：可参考婚礼场地入口的门洞框景、中轴及明暗层次，不将建筑当作婚礼场地"
         }
       ],
-      "reference_note": ""
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A33",
@@ -6366,11 +6361,11 @@ window.ENWAN_DATA = {
           "reason": "采用：夜景人物与大型灯光环境的尺度关系"
         }
       ],
-      "reference_note": "影视广告画面仅作为光影、构图及动作参考，使用安全替代道具。"
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     }
   ],
   "reviewed_release": {
-    "images": 318,
+    "images": 317,
     "core_cards": 26,
     "additional_cards": 9
   },

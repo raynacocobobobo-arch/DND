@@ -9,6 +9,11 @@
     "R": "常规调度_副本2.docx"
   },
   "files": [
+    "reviews/R0001-0100.json",
+    "reviews/R0101-0200.json",
+    "reviews/R0201-0300.json",
+    "reviews/R0301-0400.json",
+    "reviews/R0401-0455.json",
     "reviews/W0001-0100.json",
     "reviews/W0101-0200.json",
     "reviews/W0201-0300.json",
@@ -19,17 +24,12 @@
     "reviews/W0701-0800.json",
     "reviews/W0801-0900.json",
     "reviews/W0901-1000.json",
-    "reviews/W1001-1027.json",
-    "reviews/R0001-0100.json",
-    "reviews/R0101-0200.json",
-    "reviews/R0201-0300.json",
-    "reviews/R0301-0400.json",
-    "reviews/R0401-0455.json"
+    "reviews/W1001-1027.json"
   ],
   "counts": {
     "reviewed": 1482,
-    "approved": 318,
-    "excluded": 1164,
+    "approved": 317,
+    "excluded": 1165,
     "pending": 0,
     "unreviewed": 0,
     "user_uploads": 0
