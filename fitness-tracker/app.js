@@ -1121,31 +1121,75 @@ function isGymTrainingRecord(r){
  }
  return false;
 }
-function renderTrainingAdvice(){
- const today=localDate(),days=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(today),i-6)));
- const rows=state.records.filter(r=>days.includes(r.date));
+function trainingAdviceData(records,today){
+ const days=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(today),i-6)));
+ const groups=[
+  {key:'pull',name:'拉背/划船',match:r=>['lat','row'].includes(r.presetKey)||/拉背|划船|高位下拉/.test(r.exercise||'')},
+  {key:'fly',name:'飞鸟/引体',match:r=>r.presetKey==='fly'||/飞鸟|引体|夹胸/.test(r.exercise||'')},
+  {key:'dumbbell',name:'哑铃',match:r=>r.presetKey==='dumbbell'||/哑铃|杠铃弯举|杠铃推举/.test(r.exercise||'')},
+  {key:'back',name:'臀桥/背部',match:r=>r.presetKey==='back'||/臀桥|背部运动/.test(r.exercise||'')},
+  {key:'core',name:'仰卧起坐',match:r=>r.presetKey==='situps'||/仰卧起坐|卷腹/.test(r.exercise||'')},
+  {key:'other',name:'其他力量',match:()=>true}
+ ];
+ const positive=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
+ const reps=r=>positive(r.reps)||positive(r.sets)*positive(r.repsPerSet);
+ const holdSeconds=r=>positive(r.duration_sec)||positive(r.sets)*positive(r.secondsPerSet);
+ const rows=records.filter(r=>days.includes(r.date));
  const byDay=days.map(d=>rows.filter(r=>r.date===d));
- const countDays=pred=>byDay.filter(list=>list.some(pred)).length;
- const aerobic=r=>['cardio','running','swimming'].includes(r.type);
- const strength=r=>['strength','hold'].includes(r.type);
  const active=byDay.filter(list=>list.length).length;
- const gym=countDays(isGymTrainingRecord),aerobicDays=countDays(aerobic),strengthDays=countDays(strength);
- const swimDays=countDays(r=>r.type==='swimming');
- const last=byDay.slice(0,-1);
- const recentGym=last.slice(-3).every(list=>list.some(isGymTrainingRecord));
- const recentStrength=last.slice(-2).every(list=>list.some(strength));
- const todayHasGym=byDay[6].some(isGymTrainingRecord);
- let heading='',advice='';
- if(!active){heading='从轻量活动开始';advice='近7天暂无记录。可先安排散步或轻量训练，按实际完成情况记录。';}
- else if(recentGym||recentStrength){heading='优先恢复';advice=todayHasGym?'近期训练较集中，下一次可安排轻松走路或休息，视身体感受再恢复力量训练。':'过去几天训练较集中，今天可安排轻松走路或休息，避免重复高负荷训练。';}
- else if(aerobicDays<2&&strengthDays<2){heading='补充训练结构';advice='近期有氧和力量记录较少，可择日安排轻量椭圆机或游泳，并穿插居家力量训练。';}
- else if(strengthDays<2){heading='补充力量训练';advice='近7天力量训练记录较少，可择日安排哑铃、臀桥或平板支撑，按平时训练量进行。';}
- else if(aerobicDays<2){heading='补充有氧训练';advice='近7天专项有氧记录较少，可择日安排轻量椭圆机、跑步机快走或游泳。';}
- else if(!swimDays){heading='丰富有氧方式';advice='有氧和力量均有记录，可在方便且身体状态良好时安排一次游泳，或继续原有训练节奏。';}
- else{heading='保持训练节奏';advice='近7天有氧、力量与游泳均有记录，继续交替安排，保留恢复时间，无需额外追赶热量。';}
- return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>最近7天</span></div>'+
- '<div class="training-advice-meta">健身房 '+gym+' 天 · 有氧 '+aerobicDays+' 天 · 力量 '+strengthDays+' 天</div>'+
- '<p class="training-advice-copy"><strong>'+heading+'：</strong>'+advice+'</p></section>';
+ const gym=byDay.filter(list=>list.some(isGymTrainingRecord)).length;
+ const strength=rows.filter(r=>r.type==='strength'||r.type==='hold');
+ const stats=groups.map(g=>({...g,values:days.map(()=>0),seen:days.map(()=>false)}));
+ for(const r of rows.filter(r=>r.type==='strength')){
+  const g=stats.find(x=>x.match(r));const i=days.indexOf(r.date);
+  g.values[i]+=reps(r);g.seen[i]=true;
+ }
+ for(const [key,name,match] of [
+  ['wall','靠墙静蹲',r=>/靠墙|静蹲/.test(r.exercise||'')],
+  ['plank','平板支撑',r=>/平板/.test(r.exercise||'')]
+ ]){
+  const values=days.map(d=>rows.filter(r=>r.date===d&&r.type==='hold'&&match(r)).reduce((n,r)=>n+holdSeconds(r),0));
+  const seen=days.map(d=>rows.some(r=>r.date===d&&r.type==='hold'&&match(r)));
+  stats.push({key,name,values,seen,unit:'秒'});
+ }
+ const summarized=stats.map(g=>{
+  const daysCount=g.seen.filter(Boolean).length;
+  let i=g.seen.length-1;if(!g.seen[i])i--;
+  let streak=0;while(i>=0&&g.seen[i]){streak++;i--;}
+  const volume=g.values.reduce((n,v)=>n+v,0);
+  return {...g,daysCount,streak,volume,unit:g.unit||'次'};
+ }).filter(g=>g.daysCount);
+ const repeated=summarized.filter(g=>g.daysCount>=4&&g.streak>=3)
+  .sort((a,b)=>b.streak-a.streak||b.daysCount-a.daysCount||Number(b.unit==='次')-Number(a.unit==='次')||b.volume-a.volume);
+ const aerobicMinutes=rows.filter(r=>r.type==='cardio'||r.type==='running').reduce((n,r)=>n+positive(r.duration_min),0);
+ const swimDistance=rows.filter(r=>r.type==='swimming').reduce((n,r)=>n+(positive(r.distance_m)||positive(r.laps)*50),0);
+ const swimMinutes=rows.filter(r=>r.type==='swimming').reduce((n,r)=>n+Math.max(0,positive(r.duration_min)-positive(r.rest_min)),0);
+ const steps=rows.filter(r=>r.type==='walking').reduce((n,r)=>n+positive(r.steps),0);
+ const cardioParts=[aerobicMinutes?'有氧 '+Math.round(aerobicMinutes)+'分钟':'',swimDistance?'游泳 '+Math.round(swimDistance)+'米':swimMinutes?'游泳 '+Math.round(swimMinutes)+'分钟':''].filter(Boolean);
+ const fmt=g=>g.name+' '+(g.volume?(g.unit==='秒'?Math.round(g.volume/60*10)/10+'分钟':Math.round(g.volume)+'次')+' / ':'')+g.daysCount+'天';
+ let evidence='',heading='',advice='';
+ if(!active){evidence='近7天暂无运动记录';heading='轻量起步';advice='先从散步或熟悉的轻量动作开始。';}
+ else if(repeated.length){
+  const focus=repeated.slice(0,2);evidence=focus.map(fmt).join(' · ');
+  heading='错开重复动作';
+  advice=focus.map(g=>g.name).join('、')+'近期较密集；下一次可少做同类动作，改为轻松走路、骑车或休息。';
+ }else{
+  const strengthDays=byDay.filter(list=>list.some(r=>r.type==='strength'||r.type==='hold')).length;
+  const top=summarized.slice().sort((a,b)=>b.daysCount-a.daysCount||Number(b.unit==='次')-Number(a.unit==='次')||b.volume-a.volume)[0];
+  evidence=[top?fmt(top):'',...cardioParts].filter(Boolean).slice(0,2).join(' · ')||('日常步数 '+Math.round(steps)+'步');
+  if(!strength.length){heading='补充力量';advice='近7天未记录力量动作；可择日加入熟悉的轻量哑铃或居家动作。';}
+  else if(strengthDays===1&&active>=3){heading='补充力量频率';advice='力量只记录1天；身体状态允许时，可另择一天练习熟悉动作。';}
+  else if(!aerobicMinutes&&!swimDistance&&!swimMinutes){heading='补充有氧';advice='近7天未记录专项有氧，可择日安排轻松骑车或跑步机快走。';}
+  else if(active===7){heading='留出恢复时间';advice='每天均有运动记录；继续交替项目，身体疲劳时安排轻量活动或休息。';}
+  else{heading='维持训练节奏';advice='有氧和力量均有记录，继续交替安排；根据实际负重和身体感受调整。';}
+ }
+ return {evidence,heading,advice,gym,active};
+}
+function renderTrainingAdvice(){
+ const a=trainingAdviceData(state.records,localDate());
+ return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>近7天 · 健身房 '+a.gym+'天</span></div>'+
+ '<div class="training-advice-meta">'+a.evidence+'</div>'+
+ '<p class="training-advice-copy"><strong>'+a.heading+'：</strong>'+a.advice+'</p></section>';
 }
 function renderCalendar(){
  const today=localDate();
