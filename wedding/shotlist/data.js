@@ -4412,7 +4412,6 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W768.jpeg",
-        "assets/references/reviewed/W791.png",
         "assets/references/reviewed/W947.jpeg",
         "assets/references/reviewed/W052.jpeg",
         "assets/references/reviewed/W061.jpeg",
@@ -4423,10 +4422,6 @@ window.ENWAN_DATA = {
         {
           "source": "W768",
           "reason": "采用：补充A05门口迎接/到达的双人构图，前景背影、门框和迎接者反应同时入镜；A05此前无图片参考。"
-        },
-        {
-          "source": "W791",
-          "reason": "双方位置、花束与到达门口的关系清楚；可作为新人到达/迎接的动作参考，注明影视广告参考而非婚礼实拍。"
         },
         {
           "source": "W947",
@@ -5522,7 +5517,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 148,
+    "images": 147,
     "core_cards": 26,
     "additional_cards": 9
   },

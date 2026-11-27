@@ -1169,17 +1169,6 @@
     "git_blob": "575afb79f39f346f3efdffed70681cc196c123e0"
   },
   {
-    "source_key": "W791",
-    "sha256": "7a66d81ea8fe6eccbe39594b90040cb74e534cbbb5739cefed8f9a97b7b2a0f3",
-    "file_size": 225096,
-    "assigned_card_id": "A05",
-    "visual_description": "男子撑透明伞、手持花束站在门外，面向门内站立的女子，呈现到门口赠花/迎接关系。",
-    "match_reason": "双方位置、花束与到达门口的关系清楚；可作为新人到达/迎接的动作参考，注明影视广告参考而非婚礼实拍。",
-    "match_type": "reference",
-    "path": "assets/references/reviewed/W791.png",
-    "git_blob": "389c55f3833884a99973c0ed262a515adda24bd4"
-  },
-  {
     "source_key": "W792",
     "sha256": "8538b5de6ba601bc45031a8af150c86013ef0ee43d2fa16629ea5c4c083f5a0b",
     "file_size": 251650,
