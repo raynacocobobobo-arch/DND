@@ -1121,6 +1121,32 @@ function isGymTrainingRecord(r){
  }
  return false;
 }
+function renderTrainingAdvice(){
+ const today=localDate(),days=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(today),i-6)));
+ const rows=state.records.filter(r=>days.includes(r.date));
+ const byDay=days.map(d=>rows.filter(r=>r.date===d));
+ const countDays=pred=>byDay.filter(list=>list.some(pred)).length;
+ const aerobic=r=>['cardio','running','swimming'].includes(r.type);
+ const strength=r=>['strength','hold'].includes(r.type);
+ const active=byDay.filter(list=>list.length).length;
+ const gym=countDays(isGymTrainingRecord),aerobicDays=countDays(aerobic),strengthDays=countDays(strength);
+ const swimDays=countDays(r=>r.type==='swimming');
+ const last=byDay.slice(0,-1);
+ const recentGym=last.slice(-3).every(list=>list.some(isGymTrainingRecord));
+ const recentStrength=last.slice(-2).every(list=>list.some(strength));
+ const todayHasGym=byDay[6].some(isGymTrainingRecord);
+ let heading='',advice='';
+ if(!active){heading='从轻量活动开始';advice='近7天暂无记录。可先安排散步或轻量训练，按实际完成情况记录。';}
+ else if(recentGym||recentStrength){heading='优先恢复';advice=todayHasGym?'近期训练较集中，下一次可安排轻松走路或休息，视身体感受再恢复力量训练。':'过去几天训练较集中，今天可安排轻松走路或休息，避免重复高负荷训练。';}
+ else if(aerobicDays<2&&strengthDays<2){heading='补充训练结构';advice='近期有氧和力量记录较少，可择日安排轻量椭圆机或游泳，并穿插居家力量训练。';}
+ else if(strengthDays<2){heading='补充力量训练';advice='近7天力量训练记录较少，可择日安排哑铃、臀桥或平板支撑，按平时训练量进行。';}
+ else if(aerobicDays<2){heading='补充有氧训练';advice='近7天专项有氧记录较少，可择日安排轻量椭圆机、跑步机快走或游泳。';}
+ else if(!swimDays){heading='丰富有氧方式';advice='有氧和力量均有记录，可在方便且身体状态良好时安排一次游泳，或继续原有训练节奏。';}
+ else{heading='保持训练节奏';advice='近7天有氧、力量与游泳均有记录，继续交替安排，保留恢复时间，无需额外追赶热量。';}
+ return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>最近7天</span></div>'+
+ '<div class="training-advice-meta">健身房 '+gym+' 天 · 有氧 '+aerobicDays+' 天 · 力量 '+strengthDays+' 天</div>'+
+ '<p class="training-advice-copy"><strong>'+heading+'：</strong>'+advice+'</p></section>';
+}
 function renderCalendar(){
  const today=localDate();
  const end=calendarWindowEnd>today?today:calendarWindowEnd;
@@ -1188,7 +1214,7 @@ function renderCalendar(){
  '</footer>'+
  (!latest?'<button type="button" class="cal30-back" data-cal-today>回到最近21天</button>':'')+
  (latest&&dayKind(today)!=='workout'?'<div class="cal30-rest">'+renderRestButton()+'</div>':'')+
- '</section>'+renderWeightTracker()+'</div>';
+ '</section>'+renderWeightTracker()+renderTrainingAdvice()+'</div>';
 }
 
 
