@@ -2241,12 +2241,13 @@
     "match_reason": "排除：与182同组，字幕且职业主题",
     "assigned_card_id": null,
     "review_status": "excluded",
-    "review_notes": "2026-11-25 原始文档提取、逐图视觉审查，比较相邻镜头与既有调度类型；原图SHA-256及Git Blob 420e26444e210f08a506a94ba5efbd10699b7344。",
+    "review_notes": "用户确认永久删除，不再补录；仅保留编号及 SHA-256 等审查记录，防止重复导入。2026-11-27T15:36:08Z",
     "sort_order": 183,
     "match_confidence": "high",
     "match_type": "none",
     "media": "word/media/image183.png",
-    "ext": "png"
+    "ext": "png",
+    "purged_at": "2026-11-27T15:36:08Z"
   },
   {
     "source_key": "R184",
