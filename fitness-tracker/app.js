@@ -1150,16 +1150,16 @@ function trainingAdviceData(records,today){
  const upperReps=sum(upper,reps),sitReps=sum(sit,reps),plankMin=sum(plank,sec)/60;
  const wallMin=sum(wall,sec)/60,runMin=sum(treadmill,r=>p(r.duration_min)),ellMin=sum(elliptical,r=>p(r.duration_min)),bikeMin=sum(bike,r=>p(r.duration_min));
  const swimM=sum(swim,r=>p(r.distance_m)||p(r.laps)*50),swimMin=sum(swim,r=>Math.max(0,p(r.duration_min)-p(r.rest_min)));
- const upperAdvice=!upperDays?'可择日安排熟悉的器械上肢训练。':gap(upper)<=1&&(streak(upper)>=3||upperDays>=4)?'器械训练密集，下一次先错开同类动作。':upperDays>=4?'本周器械次数较集中，恢复后再练，不急于加量。':gap(upper)>=3?'若恢复良好，可安排一次器械上肢。':'保持间隔，按原训练量练习。';
+ const upperAdvice=!upperDays?'安排一次器械上肢训练。':gap(upper)<=1&&(streak(upper)>=3||upperDays>=4)?'暂缓拉背、划船等器械训练。':upperDays>=4?'恢复后再练器械，不加量。':gap(upper)>=3?'恢复良好时安排器械上肢。':'按原训练量练习，留出间隔。';
  let coreAdvice;
- if(!coreDays)coreAdvice='优先安排一次轻量腹部核心。';
- else if(gap(core)===0)coreAdvice='今日已有核心记录，不必重复补量。';
- else if(gap(core)<=1&&streak(core)>=2)coreAdvice='近几天核心连续安排，可先恢复，下次兼顾卷腹和平板。';
- else if(coreDays<2||gap(core)>=3)coreAdvice='优先补一次腹部核心，量以舒适为准。';
- else if(!sit.length||!plank.length)coreAdvice='下次可补充'+(!sit.length?'仰卧起坐':'平板支撑')+'，与现有动作交替。';
- else coreAdvice='保持核心训练节奏，按恢复情况交替卷腹与平板。';
- const kneeAdvice=!kneeDays?'暂无相关记录，按舒适程度安排。':kneeDays>=5&&gap(knee)<=1?'近期膝相关动作频繁，下一次减少重复屈膝安排。':gap(knee)===0?'今天已有膝相关活动，避免机械叠加。':'错开跑步机、静蹲等项目，按膝部感受调整。';
- const swimAdvice=!swimDays?'近7天未游泳，方便时可择日安排。':gap(swim)===0?'今日已游泳，不必再追距离。':gap(swim)>=4?'距上次已'+gap(swim)+'天，状态良好可择日游泳。':'保持原游泳节奏，不必额外增加距离。';
+ if(!coreDays)coreAdvice='优先做仰卧起坐、平板支撑。';
+ else if(gap(core)===0)coreAdvice='今日核心已练，不再加量。';
+ else if(gap(core)<=1&&streak(core)>=2)coreAdvice='核心先恢复，下次交替练卷腹和平板。';
+ else if(coreDays<2||gap(core)>=3)coreAdvice='优先做轻量仰卧起坐、平板支撑。';
+ else if(!sit.length||!plank.length)coreAdvice='下次补充'+(!sit.length?'仰卧起坐':'平板支撑')+'，与现有动作交替。';
+ else coreAdvice='交替做仰卧起坐和平板支撑。';
+ const kneeAdvice=!kneeDays?'按膝部感受安排运动。':kneeDays>=5&&gap(knee)<=1?'减少静蹲、跑步机等重复屈膝训练。':gap(knee)===0?'今日不再叠加膝部训练。':'错开跑步机与静蹲。';
+ const swimAdvice=!swimDays?'膝部舒适时安排一次游泳。':gap(swim)===0?'今日不再追加游泳。':gap(swim)>=4?'膝部舒适时安排一次游泳。':'维持原游泳频率和距离。';
  const kneeParts=[wall.length?'静蹲'+fmt(wallMin)+'分':'',treadmill.length?'跑步机'+fmt(runMin)+'分':'',elliptical.length?'椭圆机'+fmt(ellMin)+'分':'',bike.length?'骑行'+fmt(bikeMin)+'分':'',leg.length?'腿部器械'+count(leg)+'天':''].filter(Boolean);
  return [
   {label:'腹部核心',evidence:coreDays?coreDays+'天 · 仰卧起坐'+fmt(sitReps)+'次 · 平板'+fmt(plankMin)+'分':'暂无记录',advice:coreAdvice,focus:true},
@@ -1171,7 +1171,7 @@ function trainingAdviceData(records,today){
 function renderTrainingAdvice(){
  const a=trainingAdviceData(state.records,localDate());
  return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>近7天 · 核心优先</span></div>'+
- '<div class="training-advice-four">'+a.map(x=>'<div class="training-advice-row'+(x.focus?' focus':'')+'"><strong>'+safe(x.label)+'</strong><div><span>'+safe(x.evidence)+'</span><p>'+safe(x.advice)+'</p></div></div>').join('')+'</div></section>';
+ '<div class="training-advice-four">'+a.map(x=>'<div class="training-advice-row'+(x.focus?' focus':'')+'"><strong>'+safe(x.label)+'</strong><p>'+safe(x.advice)+'</p></div>').join('')+'</div></section>';
 }
 function renderCalendar(){
  const today=localDate();
