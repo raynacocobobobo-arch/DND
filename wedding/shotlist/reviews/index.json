@@ -24,17 +24,36 @@
     "reviews/W0701-0800.json",
     "reviews/W0801-0900.json",
     "reviews/W0901-1000.json",
-    "reviews/W1001-1027.json"
+    "reviews/W1001-1027.json",
+    "reviews/uploads.json"
   ],
   "counts": {
     "reviewed": 1482,
-    "approved": 316,
-    "excluded": 1166,
+    "approved": 140,
+    "excluded": 1342,
     "pending": 0,
     "unreviewed": 0,
-    "user_uploads": 0
+    "user_uploads": 10
   },
   "canonical": "raynacocobobobo-arch/DND:gh-pages/wedding/shotlist",
   "migrated_at": "2026-11-24",
-  "note": "全部1482条审查完成，发布清单318张，待上传0张。"
+  "note": "全部1482条审查完成，发布清单318张，待上传0张。",
+  "supplemental_reviews": [
+    {
+      "file": "reviews/supplemental/life-growth-complete-review.json",
+      "source_document": "人生成长_副本.docx",
+      "counts": {
+        "historical_duplicate": 528,
+        "internal_duplicate": 1,
+        "excluded": 401,
+        "approved": 10,
+        "pending": 0,
+        "unreviewed": 0,
+        "previous_displayed": 316,
+        "previous_retained": 140,
+        "previous_removed": 176,
+        "final_displayed": 150
+      }
+    }
+  ]
 }

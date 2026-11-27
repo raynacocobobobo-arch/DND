@@ -46,7 +46,7 @@ function buildRelease(data, groups, index) {
   function cardOptions(select, includeBlank=false){let prev=select.value;select.replaceChildren();if(includeBlank)select.append(opt("","请选择动作卡"));for(const c of data.cards)select.append(opt(c.id,c.category+" · "+c.title+" ("+c.id+")"));if([...select.options].some(o=>o.value===prev))select.value=prev;}
   function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("正在自动保存到 GitHub…");if(busy)return publishChanges();return run(publishChanges)}
   function render(){
-    const c=index.counts;$("counts").textContent=`原稿已审 ${c.reviewed}/1482 · 已发布 ${c.approved} · 排除 ${c.excluded} · 待发布 ${c.pending} · 后台新增 ${c.user_uploads||0} · 动作卡 ${data.cards.length}`;
+    const c=index.counts;$("counts").textContent=`原稿已审 ${c.reviewed}/1482 · 已发布 ${published.length} · 原稿排除 ${c.excluded} · 待发布 ${c.pending} · 补充及新增 ${c.user_uploads||0} · 动作卡 ${data.cards.length}`;
     $("publish").hidden=!dirty;$("publish").disabled=busy||!dirty;$("dirty").textContent=dirty?"有未保存的修改 · 自动保存失败时可重试":"已与 GitHub 同步";cardOptions($("upload-card"),true);cardOptions($("card-select"));
     $("card-select").value=selectedCard;renderCard();renderImages();renderVisual();renderTasks();
   }

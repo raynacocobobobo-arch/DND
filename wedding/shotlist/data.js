@@ -4256,12 +4256,17 @@ window.ENWAN_DATA = {
       "delivery_check": "动作发生前就位；不要求家人重复整理或刻意掉泪。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W471.jpeg"
+        "assets/references/reviewed/W471.jpeg",
+        "assets/references/reviewed/U2308c8242904973dcd243112.jpeg"
       ],
       "image_notes": [
         {
           "source": "W471",
           "reason": "明确的长辈帮新人整理领带动作，与W453女方整理衣服的关系和机位不同；广告情境作为动作参考。"
+        },
+        {
+          "source": "U2308c8242904973dcd243112",
+          "reason": "采用（影视/广告调度类比）：可类比家人协助新郎准备，形成双人关系及镜前/侧方中景。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4305,7 +4310,9 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W445.jpeg",
         "assets/references/reviewed/W452.jpeg",
-        "assets/references/reviewed/W455.jpeg"
+        "assets/references/reviewed/W455.jpeg",
+        "assets/references/reviewed/U20fb4e90c239973bc9780869.jpeg",
+        "assets/references/reviewed/U513d0cb6e3ae77c642f2e1c1.jpeg"
       ],
       "image_notes": [
         {
@@ -4319,6 +4326,14 @@ window.ENWAN_DATA = {
         {
           "source": "W455",
           "reason": "A04：父女依偎不同于正面拥抱，挽臂、眼神和站姿均清晰"
+        },
+        {
+          "source": "U20fb4e90c239973bc9780869",
+          "reason": "采用（影视/广告调度类比）：家人与新人拥抱的侧面中景，具有送别/祝福类情绪参考。"
+        },
+        {
+          "source": "U513d0cb6e3ae77c642f2e1c1",
+          "reason": "采用（影视/广告调度类比）：补足女性与长辈并肩依偎的家庭关系，不同于原有父女拥抱。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4334,22 +4349,12 @@ window.ENWAN_DATA = {
       "delivery_check": "试穿过程、礼服整体和合身细节；与正式婚纱展示区分。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W430.jpeg",
-        "assets/references/reviewed/W869.jpeg",
-        "assets/references/reviewed/W872.jpeg"
+        "assets/references/reviewed/W430.jpeg"
       ],
       "image_notes": [
         {
           "source": "W430",
           "reason": "A29：试装后揭晓婚纱、展示给伴侣，场景及服饰关系明确"
-        },
-        {
-          "source": "W869",
-          "reason": "采用：试装时服装与人物同框的全身构图"
-        },
-        {
-          "source": "W872",
-          "reason": "采用：服装试装时的双人站位及室内环境关系"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4366,9 +4371,12 @@ window.ENWAN_DATA = {
       "is_core": false,
       "images": [
         "assets/references/reviewed/W481.jpeg",
-        "assets/references/reviewed/W871.jpeg",
-        "assets/references/reviewed/W875.jpeg",
-        "assets/references/reviewed/R153.jpeg"
+        "assets/references/reviewed/R153.jpeg",
+        "assets/references/reviewed/U8addb2bda2b0de1246050548.jpeg",
+        "assets/references/reviewed/U40c9a8da502b501ff1d2929e.jpeg",
+        "assets/references/reviewed/U437cfd52ad4d8d24424b0dc9.jpeg",
+        "assets/references/reviewed/U7216217e0e35e49269fe0a87.jpeg",
+        "assets/references/reviewed/Ue77d303bb83480cbca8c8c08.jpeg"
       ],
       "image_notes": [
         {
@@ -4376,16 +4384,28 @@ window.ENWAN_DATA = {
           "reason": "可直接参考新郎整理西装的服饰准备动作，背面中轴机位与家人整理区分。"
         },
         {
-          "source": "W871",
-          "reason": "采用：服饰材质及手部整理细节"
-        },
-        {
-          "source": "W875",
-          "reason": "采用：戒指及手部服饰细节特写，不冒充交换戒指"
-        },
-        {
           "source": "R153",
           "reason": "采用：可参考中式或民族礼服头饰细节及侧脸层次，不照搬具体服饰"
+        },
+        {
+          "source": "U8addb2bda2b0de1246050548",
+          "reason": "采用（影视/广告调度类比）：婚鞋穿戴和步伐的低角度细节；不同于既有西装肩部整理。"
+        },
+        {
+          "source": "U40c9a8da502b501ff1d2929e",
+          "reason": "采用（影视/广告调度类比）：新郎系领带的手部近景，动作清晰。"
+        },
+        {
+          "source": "U437cfd52ad4d8d24424b0dc9",
+          "reason": "采用（影视/广告调度类比）：新郎镜前整理仪容，正面反射机位明确。"
+        },
+        {
+          "source": "U7216217e0e35e49269fe0a87",
+          "reason": "采用（影视/广告调度类比）：晨间戴耳饰的侧后方机位和手部动作，补足现有发饰/西装画面。"
+        },
+        {
+          "source": "Ue77d303bb83480cbca8c8c08",
+          "reason": "采用（影视/广告调度类比）：可类比伴娘或造型师晨间协助，补双人准备和自然反应。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4405,15 +4425,9 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W791.png",
         "assets/references/reviewed/W947.jpeg",
         "assets/references/reviewed/W052.jpeg",
-        "assets/references/reviewed/W054.jpeg",
-        "assets/references/reviewed/W055.jpeg",
         "assets/references/reviewed/W061.jpeg",
         "assets/references/reviewed/W064.jpeg",
-        "assets/references/reviewed/W065.png",
-        "assets/references/reviewed/W067.png",
-        "assets/references/reviewed/W073.png",
-        "assets/references/reviewed/W129.jpeg",
-        "assets/references/reviewed/W169.jpeg"
+        "assets/references/reviewed/W067.png"
       ],
       "image_notes": [
         {
@@ -4433,14 +4447,6 @@ window.ENWAN_DATA = {
           "reason": "采用：相见迎接的越肩机位及张臂反应"
         },
         {
-          "source": "W054",
-          "reason": "采用：相见前寻找或察觉对方的表情近景"
-        },
-        {
-          "source": "W055",
-          "reason": "采用：相见后的喜悦反应，与W054察觉阶段互补"
-        },
-        {
           "source": "W061",
           "reason": "采用：相见反应的干净正面单人机位"
         },
@@ -4449,24 +4455,8 @@ window.ENWAN_DATA = {
           "reason": "采用：相见的反向越肩中景，与W061互补"
         },
         {
-          "source": "W065",
-          "reason": "采用：迎接时由对方肩后拍摄来者的空间关系"
-        },
-        {
           "source": "W067",
           "reason": "采用：相见的反向机位与焦点层次，补充W065"
-        },
-        {
-          "source": "W073",
-          "reason": "采用：到达迎接的前后景距离及车门框景"
-        },
-        {
-          "source": "W129",
-          "reason": "采用：明确到达后俏皮迎接姿势，补充一方探身与另一方反应；角落水印保留原样"
-        },
-        {
-          "source": "W169",
-          "reason": "采用：完整迎接拥抱及空间位置，适合新人见面后自然靠近参考；只借鉴静态安全动作"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4504,8 +4494,7 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W504.jpeg",
-        "assets/references/reviewed/W506.jpeg",
-        "assets/references/reviewed/W072.png"
+        "assets/references/reviewed/W506.jpeg"
       ],
       "image_notes": [
         {
@@ -4515,10 +4504,6 @@ window.ENWAN_DATA = {
         {
           "source": "W506",
           "reason": "离家转场中具有明确告别互动，与W504登车全景形成不同动作及景别"
-        },
-        {
-          "source": "W072",
-          "reason": "采用：上下车时利用车门框景的侧面机位，不推断具体方向"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4536,7 +4521,6 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W507.jpeg",
         "assets/references/reviewed/W509.jpeg",
-        "assets/references/reviewed/W651.png",
         "assets/references/reviewed/W658.jpeg"
       ],
       "image_notes": [
@@ -4547,10 +4531,6 @@ window.ENWAN_DATA = {
         {
           "source": "W509",
           "reason": "补充W507车内关系全景的手部细节，动作明确且不重复景别"
-        },
-        {
-          "source": "W651",
-          "reason": "补充W507车厢全景和W509手部近景之外的肩靠表情特写；借鉴婚车内静态机位，不照搬公交场景。"
         },
         {
           "source": "W658",
@@ -4570,23 +4550,15 @@ window.ENWAN_DATA = {
       "delivery_check": "一个来回以内；全景、中景、背影、牵手细节。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W581.jpeg",
         "assets/references/reviewed/W613.jpeg",
         "assets/references/reviewed/W617.jpeg",
         "assets/references/reviewed/W809.jpeg",
-        "assets/references/reviewed/W902.jpeg",
-        "assets/references/reviewed/W028.jpeg",
         "assets/references/reviewed/W030.jpeg",
-        "assets/references/reviewed/W032.jpeg",
         "assets/references/reviewed/W035.jpeg",
         "assets/references/reviewed/W036.jpeg",
         "assets/references/reviewed/R166.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W581",
-          "reason": "夜间双人并肩散步的背面全景，灯笼形成纵深，适合参考夜间转场构图；不要求复制焰火或广告情境"
-        },
         {
           "source": "W613",
           "reason": "完整双人背影与海边环境，补充白天开放场地的散步调度，作为参考"
@@ -4600,20 +4572,8 @@ window.ENWAN_DATA = {
           "reason": "牵手散步动作与双方站位完整；相较W807-W808，人物表情和牵手关系更清楚，作为A09不同机位参考。"
         },
         {
-          "source": "W902",
-          "reason": "采用：背面双人散步的对称纵深构图，画面有少量转场图形"
-        },
-        {
-          "source": "W028",
-          "reason": "采用：低机位双人行进交谈及环境关系"
-        },
-        {
           "source": "W030",
           "reason": "采用：并肩散步背面纵深机位"
-        },
-        {
-          "source": "W032",
-          "reason": "采用：双人散步正面机位，与W030背面互补"
         },
         {
           "source": "W035",
@@ -4647,12 +4607,7 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W615.jpeg",
         "assets/references/reviewed/W671.jpeg",
         "assets/references/reviewed/W941.jpeg",
-        "assets/references/reviewed/W942.jpeg",
-        "assets/references/reviewed/W807.jpeg",
-        "assets/references/reviewed/W933.jpeg",
-        "assets/references/reviewed/W934.jpeg",
-        "assets/references/reviewed/W025.jpeg",
-        "assets/references/reviewed/W076.png"
+        "assets/references/reviewed/W025.jpeg"
       ],
       "image_notes": [
         {
@@ -4680,28 +4635,8 @@ window.ENWAN_DATA = {
           "reason": "采用：横向伸手及交握细节，补充牵手近景。"
         },
         {
-          "source": "W942",
-          "reason": "采用：与W941手部特写互补的表情和伸臂姿态；男子未完整入镜。"
-        },
-        {
-          "source": "W807",
-          "reason": "采用：牵手前伸手动作，区别于W809完成态"
-        },
-        {
-          "source": "W933",
-          "reason": "采用：伸手接触前的掌心位置及动作特写"
-        },
-        {
-          "source": "W934",
-          "reason": "采用：牵手完成态与W933接触阶段互补"
-        },
-        {
           "source": "W025",
           "reason": "采用：主观机位牵手带领动作，手与人物关系明确"
-        },
-        {
-          "source": "W076",
-          "reason": "采用：手部与全身步态清楚，提供轻快牵引及步行互动参考；仅在封闭安全场地复拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4719,8 +4654,7 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W356.jpeg",
         "assets/references/reviewed/W526.jpeg",
-        "assets/references/reviewed/W556.jpeg",
-        "assets/references/reviewed/W087.jpeg"
+        "assets/references/reviewed/W556.jpeg"
       ],
       "image_notes": [
         {
@@ -4734,10 +4668,6 @@ window.ENWAN_DATA = {
         {
           "source": "W556",
           "reason": "车门天然框景的双人相对姿势明确，作为转场停留时对视机位参考；不是车内牵手"
-        },
-        {
-          "source": "W087",
-          "reason": "采用：双人相对站姿及视线明确，提供自然对视中景；可在婚礼走廊替代场地复拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4757,15 +4687,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W517.jpeg",
         "assets/references/reviewed/W549.jpeg",
         "assets/references/reviewed/W918.jpeg",
-        "assets/references/reviewed/W936.jpeg",
         "assets/references/reviewed/W937.jpeg",
-        "assets/references/reviewed/W944.jpeg",
-        "assets/references/reviewed/W793.png",
         "assets/references/reviewed/W938.jpeg",
-        "assets/references/reviewed/W024.jpeg",
-        "assets/references/reviewed/W056.jpeg",
-        "assets/references/reviewed/W071.png",
-        "assets/references/reviewed/W171.jpeg",
         "assets/references/reviewed/W176.png"
       ],
       "image_notes": [
@@ -4786,40 +4709,12 @@ window.ENWAN_DATA = {
           "reason": "采用：完整双人拥抱关系，补充绿植背景的中远景侧后机位；广告调度参考。"
         },
         {
-          "source": "W936",
-          "reason": "采用：亲密互动时腰背及搭肩手部位置的局部细节，与W937完整双人姿态互补。"
-        },
-        {
           "source": "W937",
           "reason": "采用：双人搭肩环腰和对视的完整中景，非婚礼实拍。"
         },
         {
-          "source": "W944",
-          "reason": "采用：双人亲密互动写真中的侧卧/俯身及触脸姿态，作为摆姿参考。"
-        },
-        {
-          "source": "W793",
-          "reason": "采用：框中框的拥抱背面，与W792递花动作不同"
-        },
-        {
           "source": "W938",
           "reason": "采用：拥抱中的越肩表情特写，与W937全貌互补"
-        },
-        {
-          "source": "W024",
-          "reason": "采用：亲密互动的手部进入画面及自然反应，不要求复刻食物"
-        },
-        {
-          "source": "W056",
-          "reason": "采用：拥抱全貌与环境中远景"
-        },
-        {
-          "source": "W071",
-          "reason": "采用：完整拥抱动作的背侧中景"
-        },
-        {
-          "source": "W171",
-          "reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补"
         },
         {
           "source": "W176",
@@ -4845,15 +4740,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W546.jpeg",
         "assets/references/reviewed/W587.jpeg",
         "assets/references/reviewed/W674.jpeg",
-        "assets/references/reviewed/W702.jpeg",
         "assets/references/reviewed/W741.jpeg",
-        "assets/references/reviewed/W794.png",
-        "assets/references/reviewed/W830.jpeg",
-        "assets/references/reviewed/W846.jpeg",
-        "assets/references/reviewed/W860.jpeg",
-        "assets/references/reviewed/W905.jpeg",
-        "assets/references/reviewed/W034.jpeg",
-        "assets/references/reviewed/W1004.jpeg"
+        "assets/references/reviewed/W846.jpeg"
       ],
       "image_notes": [
         {
@@ -4881,40 +4769,12 @@ window.ENWAN_DATA = {
           "reason": "补充年长夫妻的坐姿依靠，亦可作新人或长辈双人自然互动参考"
         },
         {
-          "source": "W702",
-          "reason": "采用：补充A13坐姿依靠参考，提供地毯低坐、沙发与宠物构成的生活化宽景；与现有长椅、沙发和高位俯拍不同。"
-        },
-        {
           "source": "W741",
           "reason": "采用：补充A13坐姿依靠的桌面侧前方构图，明确头部靠肩和共同活动；不同于现有沙发、长椅和背面远景。"
         },
         {
-          "source": "W794",
-          "reason": "采用：并肩坐姿及一方看另一方的视线安排"
-        },
-        {
-          "source": "W830",
-          "reason": "采用：自然坐姿、桌面与绿植层次可作为轻松双人补拍"
-        },
-        {
           "source": "W846",
           "reason": "采用：有前景遮挡的双人坐姿构图，空间层次明确"
-        },
-        {
-          "source": "W860",
-          "reason": "采用：并肩贴近的低角度双人肖像，区别于W859看手机"
-        },
-        {
-          "source": "W905",
-          "reason": "采用：双人环境站姿与远处海面，服装可替换为礼服"
-        },
-        {
-          "source": "W034",
-          "reason": "采用：同向视线、双人侧影及环境留白"
-        },
-        {
-          "source": "W1004",
-          "reason": "采用：双人靠近的环境中景及前景层次"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4932,9 +4792,7 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W522.jpeg",
         "assets/references/reviewed/W805.jpeg",
-        "assets/references/reviewed/W912.jpeg",
-        "assets/references/reviewed/W009.jpeg",
-        "assets/references/reviewed/W011.jpeg"
+        "assets/references/reviewed/W009.jpeg"
       ],
       "image_notes": [
         {
@@ -4946,16 +4804,8 @@ window.ENWAN_DATA = {
           "reason": "采用：前后错位与回望视线，适合双人叙事补拍"
         },
         {
-          "source": "W912",
-          "reason": "采用：一方回望另一方的越肩中远景"
-        },
-        {
           "source": "W009",
           "reason": "采用：行进中回头看跟拍方，完整环境中景"
-        },
-        {
-          "source": "W011",
-          "reason": "采用：越肩回望机位，与W009无遮挡机位互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4971,41 +4821,17 @@ window.ENWAN_DATA = {
       "delivery_check": "完成一张真实照片；不要求故意拍丑或演争吵。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W253.jpeg",
         "assets/references/reviewed/W552.jpeg",
         "assets/references/reviewed/W654.jpeg",
         "assets/references/reviewed/W661.jpeg",
-        "assets/references/reviewed/W688.jpeg",
-        "assets/references/reviewed/W698.jpeg",
         "assets/references/reviewed/W820.jpeg",
-        "assets/references/reviewed/W829.jpeg",
-        "assets/references/reviewed/W859.jpeg",
-        "assets/references/reviewed/W819.jpeg",
         "assets/references/reviewed/W821.jpeg",
-        "assets/references/reviewed/W823.jpeg",
-        "assets/references/reviewed/W826.jpeg",
-        "assets/references/reviewed/W827.jpeg",
-        "assets/references/reviewed/W828.jpeg",
-        "assets/references/reviewed/W834.jpeg",
         "assets/references/reviewed/W835.jpeg",
-        "assets/references/reviewed/W843.jpeg",
         "assets/references/reviewed/W845.jpeg",
-        "assets/references/reviewed/W861.jpeg",
-        "assets/references/reviewed/W862.jpeg",
-        "assets/references/reviewed/W867.jpeg",
-        "assets/references/reviewed/W919.jpeg",
         "assets/references/reviewed/W920.jpeg",
-        "assets/references/reviewed/W948.jpeg",
-        "assets/references/reviewed/W1005.jpeg",
-        "assets/references/reviewed/W1013.jpeg",
-        "assets/references/reviewed/W1026.jpeg",
-        "assets/references/reviewed/R242.jpeg"
+        "assets/references/reviewed/W1026.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W253",
-          "reason": "A15：一方持相机记录另一方的自然状态，双人空间关系明确，可作为互拍调度参考；非婚礼实拍"
-        },
         {
           "source": "W552",
           "reason": "双人共享相机的动作和中景站位清楚，适合婚礼补拍中互相看照片"
@@ -5019,104 +4845,28 @@ window.ENWAN_DATA = {
           "reason": "不同于W654席地互拍和W688沙发互拍，提供站立被摄者与摄影者屈身的空间关系；婚礼可将餐盘替换为捧花或信物。"
         },
         {
-          "source": "W688",
-          "reason": "室内明亮双人拍摄关系完整，补充干净场景的互拍参考"
-        },
-        {
-          "source": "W698",
-          "reason": "采用：补充A15互拍参考，清楚呈现摄影者与被摄者同框及侧向拍摄关系；不同于现有席地、沙发和桌面场景。"
-        },
-        {
           "source": "W820",
           "reason": "拍摄者与被拍者关系明确，补充A15互拍动作的户外站立机位；非婚礼实拍，作为调度参考。"
-        },
-        {
-          "source": "W829",
-          "reason": "双方共同看手机的关系清楚，补充A15拍摄后共同看图的室内桌边构图；与W820拍摄瞬间不同。"
-        },
-        {
-          "source": "W859",
-          "reason": "采用：同看手机屏幕的近景站位，适合A15共同看照片参考；不作为已经发生自拍的证据。"
-        },
-        {
-          "source": "W819",
-          "reason": "采用：摄影者视线及手机前景，补充互拍近景"
         },
         {
           "source": "W821",
           "reason": "采用：拍摄结果的屏幕插入镜头，与人物互拍互补"
         },
         {
-          "source": "W823",
-          "reason": "采用：互拍之后面对面交流及手机道具位置"
-        },
-        {
-          "source": "W826",
-          "reason": "采用：互拍时的侧面中近景和背景暖光"
-        },
-        {
-          "source": "W827",
-          "reason": "采用：拍摄者与被摄者同框全景，人物距离清楚"
-        },
-        {
-          "source": "W828",
-          "reason": "采用：共同看图之前靠近动作，与W829完成态互补"
-        },
-        {
-          "source": "W834",
-          "reason": "采用：拍摄手势及手机前景特写，补充横屏机位"
-        },
-        {
           "source": "W835",
           "reason": "采用：拍摄者主观角度与被摄者举杯姿态"
-        },
-        {
-          "source": "W843",
-          "reason": "采用：越肩互拍构图，清楚呈现拍摄对象表情"
         },
         {
           "source": "W845",
           "reason": "采用：共同看图时自然惊喜表情及双人贴近关系"
         },
         {
-          "source": "W861",
-          "reason": "采用：亲友共同看图的近景及自然反应"
-        },
-        {
-          "source": "W862",
-          "reason": "采用：共同看图的完整坐姿及空间中景，与W861互补"
-        },
-        {
-          "source": "W867",
-          "reason": "采用：被拍者反向拍摄摄影者的正面主观机位"
-        },
-        {
-          "source": "W919",
-          "reason": "采用：前景摄影者与远处被摄者的错位构图"
-        },
-        {
           "source": "W920",
           "reason": "采用：互拍中的屏幕取景和手部插入镜头"
         },
         {
-          "source": "W948",
-          "reason": "采用：互拍时的俏皮道具及越肩构图"
-        },
-        {
-          "source": "W1005",
-          "reason": "采用：共同看手机的双人近景，区别W1004环境机位"
-        },
-        {
-          "source": "W1013",
-          "reason": "采用：多位亲友共同拍摄同一对象的前后景调度；不复刻动物道具"
-        },
-        {
           "source": "W1026",
           "reason": "采用：亲友协助拍摄的侧面手部调度，不推断设备具体类型"
-        },
-        {
-          "source": "R242",
-          "reason": "采用：补充行进中互拍与摄影者在后方的位置关系，安全场地执行"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -5132,25 +4882,14 @@ window.ENWAN_DATA = {
       "delivery_check": "举机＋同框＋拍下或看图；自拍是新人自己的纪念。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W331.jpeg",
         "assets/references/reviewed/W692.jpeg",
         "assets/references/reviewed/W844.jpeg",
         "assets/references/reviewed/W854.jpeg",
-        "assets/references/reviewed/W855.jpeg",
-        "assets/references/reviewed/W856.jpeg",
-        "assets/references/reviewed/W913.jpeg",
-        "assets/references/reviewed/W914.jpeg",
-        "assets/references/reviewed/W922.jpeg",
         "assets/references/reviewed/W940.jpeg",
-        "assets/references/reviewed/W1024.jpeg",
         "assets/references/reviewed/W1025.jpeg",
         "assets/references/reviewed/W145.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W331",
-          "reason": "A16：双人靠头并看向自拍手机，动作完整，适合宴会或补拍自拍参考；非婚礼实拍"
-        },
         {
           "source": "W692",
           "reason": "采用：补充A16已有的双人自拍参考，提供手机伸臂、两人贴近和照片墙背景的正面自拍构图；与W331的持花自拍场景不同。"
@@ -5164,32 +4903,8 @@ window.ENWAN_DATA = {
           "reason": "采用：双人站立自拍，手机与人物同框"
         },
         {
-          "source": "W855",
-          "reason": "采用：不同于正面自拍的高位环境机位及台阶几何"
-        },
-        {
-          "source": "W856",
-          "reason": "采用：双人自拍的完整坐姿及手臂延伸"
-        },
-        {
-          "source": "W913",
-          "reason": "采用：利用前后距离构成创意双人自拍屏幕参考"
-        },
-        {
-          "source": "W914",
-          "reason": "采用：前后景错位自拍构图，与W913屏幕结果互补"
-        },
-        {
-          "source": "W922",
-          "reason": "采用：利用远近人物比例进行创意自拍与错位互动"
-        },
-        {
           "source": "W940",
           "reason": "采用：双人自拍式前后站位与挥手互动"
-        },
-        {
-          "source": "W1024",
-          "reason": "采用：亲友正面自拍的表情及手势"
         },
         {
           "source": "W1025",
@@ -5214,18 +4929,11 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W392.jpeg",
-        "assets/references/reviewed/W676.jpeg",
         "assets/references/reviewed/W678.jpeg",
-        "assets/references/reviewed/W680.jpeg",
         "assets/references/reviewed/W681.jpeg",
         "assets/references/reviewed/W927.jpeg",
         "assets/references/reviewed/W928.jpeg",
         "assets/references/reviewed/W929.jpeg",
-        "assets/references/reviewed/W930.jpeg",
-        "assets/references/reviewed/W931.jpeg",
-        "assets/references/reviewed/W932.jpeg",
-        "assets/references/reviewed/W923.jpeg",
-        "assets/references/reviewed/W935.jpeg",
         "assets/references/reviewed/W029.jpeg"
       ],
       "image_notes": [
@@ -5234,16 +4942,8 @@ window.ENWAN_DATA = {
           "reason": "A17：牵手举过头顶的转身动作明确、两人站位完整；非婚礼实拍"
         },
         {
-          "source": "W676",
-          "reason": "作为W678和W392完整动作之后的剪影补充镜头，不作为独立动作教学；适合有窗光的室内静态模拟。"
-        },
-        {
           "source": "W678",
           "reason": "完整双人转身关系，补充暖逆光慢舞氛围机位"
-        },
-        {
-          "source": "W680",
-          "reason": "与W678强逆光氛围图互补，提供更清楚的举手、转身及双方视线关系；底部广告字不影响动作主体。"
         },
         {
           "source": "W681",
@@ -5260,26 +4960,6 @@ window.ENWAN_DATA = {
         {
           "source": "W929",
           "reason": "采用：转身起始阶段，女子正侧面及男子背面站位；广告参考。"
-        },
-        {
-          "source": "W930",
-          "reason": "采用：转身中段的相对视线与高位牵手，作为W929–W932动作序列。"
-        },
-        {
-          "source": "W931",
-          "reason": "采用：转身阶段的背面姿态，与前两帧互补。"
-        },
-        {
-          "source": "W932",
-          "reason": "采用：动作序列的表情近景补充，不作独立完整动作。"
-        },
-        {
-          "source": "W923",
-          "reason": "采用：双人舞前交流的低机位倾斜构图，补充W927旋转动作"
-        },
-        {
-          "source": "W935",
-          "reason": "采用：慢舞段落的脚步与裙摆细节，与W936中景互补"
         },
         {
           "source": "W029",
@@ -5325,17 +5005,11 @@ window.ENWAN_DATA = {
       "delivery_check": "骑行关系、环境和停下后的互动；安全优先。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W625.jpeg",
         "assets/references/reviewed/W629.jpeg",
         "assets/references/reviewed/W630.jpeg",
-        "assets/references/reviewed/W633.jpeg",
         "assets/references/reviewed/W636.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W625",
-          "reason": "与W629/W630并列骑行不同，提供前后错位与侧后视线的中景；在封闭场地低速直行或停稳模拟，不在开放道路回头。"
-        },
         {
           "source": "W629",
           "reason": "双人各骑一辆、空间关系明确；仅建议安全封闭场地低速拍摄"
@@ -5343,10 +5017,6 @@ window.ENWAN_DATA = {
         {
           "source": "W630",
           "reason": "与W629全景互补，可参考停稳车辆后的双人视线和中景构图"
-        },
-        {
-          "source": "W633",
-          "reason": "不同于各骑一车，补充同一辆道具旁的前后站位与推车参考；不安排搭乘或推行中的危险动作。"
         },
         {
           "source": "W636",
@@ -5366,166 +5036,30 @@ window.ENWAN_DATA = {
       "delivery_check": "主体动作或情绪清楚，景别与构图有区别。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W790.jpeg",
-        "assets/references/reviewed/W832.jpeg",
         "assets/references/reviewed/W836.jpeg",
-        "assets/references/reviewed/W839.jpeg",
-        "assets/references/reviewed/W842.jpeg",
-        "assets/references/reviewed/W848.jpeg",
-        "assets/references/reviewed/W849.jpeg",
-        "assets/references/reviewed/W853.jpeg",
-        "assets/references/reviewed/W864.jpeg",
-        "assets/references/reviewed/W876.jpeg",
-        "assets/references/reviewed/W880.jpeg",
-        "assets/references/reviewed/W883.jpeg",
-        "assets/references/reviewed/W887.jpeg",
-        "assets/references/reviewed/W888.jpeg",
-        "assets/references/reviewed/W889.jpeg",
-        "assets/references/reviewed/W890.jpeg",
-        "assets/references/reviewed/W897.jpeg",
-        "assets/references/reviewed/W907.jpeg",
-        "assets/references/reviewed/W910.jpeg",
-        "assets/references/reviewed/W916.jpeg",
-        "assets/references/reviewed/W917.jpeg",
         "assets/references/reviewed/W943.jpeg",
         "assets/references/reviewed/W959.jpeg",
-        "assets/references/reviewed/W001.jpeg",
         "assets/references/reviewed/W002.jpeg",
-        "assets/references/reviewed/W004.jpeg",
         "assets/references/reviewed/W007.jpeg",
-        "assets/references/reviewed/W008.png",
-        "assets/references/reviewed/W013.jpeg",
-        "assets/references/reviewed/W016.jpeg",
-        "assets/references/reviewed/W018.jpeg",
-        "assets/references/reviewed/W019.jpeg",
-        "assets/references/reviewed/W021.jpeg",
         "assets/references/reviewed/W023.jpeg",
-        "assets/references/reviewed/W026.jpeg",
-        "assets/references/reviewed/W033.jpeg",
-        "assets/references/reviewed/W037.jpeg",
-        "assets/references/reviewed/W038.jpeg",
         "assets/references/reviewed/W039.jpeg",
-        "assets/references/reviewed/W057.jpeg",
-        "assets/references/reviewed/W060.jpeg",
-        "assets/references/reviewed/W068.png",
-        "assets/references/reviewed/W1007.jpeg",
-        "assets/references/reviewed/W1009.jpeg",
-        "assets/references/reviewed/W1014.jpeg",
-        "assets/references/reviewed/W1017.jpeg",
-        "assets/references/reviewed/W1018.jpeg",
-        "assets/references/reviewed/W195.jpeg",
-        "assets/references/reviewed/R018.jpeg",
         "assets/references/reviewed/R020.jpeg",
         "assets/references/reviewed/R025.jpeg",
-        "assets/references/reviewed/R044.jpeg",
-        "assets/references/reviewed/R052.jpeg",
-        "assets/references/reviewed/R059.jpeg",
         "assets/references/reviewed/R077.jpeg",
         "assets/references/reviewed/R088.jpeg",
-        "assets/references/reviewed/R093.jpeg",
-        "assets/references/reviewed/R105.jpeg",
-        "assets/references/reviewed/R112.jpeg",
-        "assets/references/reviewed/R126.jpeg",
         "assets/references/reviewed/R129.jpeg",
         "assets/references/reviewed/R136.jpeg",
         "assets/references/reviewed/R156.jpeg",
         "assets/references/reviewed/R178.jpeg",
-        "assets/references/reviewed/R197.jpeg",
-        "assets/references/reviewed/R219.jpeg",
         "assets/references/reviewed/R245.jpeg",
         "assets/references/reviewed/R302.jpeg",
         "assets/references/reviewed/R311.jpeg",
-        "assets/references/reviewed/R318.jpeg",
-        "assets/references/reviewed/R322.jpeg",
-        "assets/references/reviewed/R335.jpeg",
-        "assets/references/reviewed/R342.jpeg",
-        "assets/references/reviewed/R357.jpeg",
-        "assets/references/reviewed/R362.jpeg"
+        "assets/references/reviewed/R322.jpeg"
       ],
       "image_notes": [
         {
-          "source": "W790",
-          "reason": "采用：单人低头整理头发的情绪近景，文字不遮挡主要动作"
-        },
-        {
-          "source": "W832",
-          "reason": "采用：单人侧视情绪特写，适合拍摄自然反应"
-        },
-        {
           "source": "W836",
           "reason": "采用：单人举杯肖像，中近景和暖光背景可迁移"
-        },
-        {
-          "source": "W839",
-          "reason": "采用：单人情绪和妆造近景，适合宴会反应镜头"
-        },
-        {
-          "source": "W842",
-          "reason": "采用：从低头到抬眼的单人反应构图"
-        },
-        {
-          "source": "W848",
-          "reason": "采用：单人回头及气球道具的明快肖像"
-        },
-        {
-          "source": "W849",
-          "reason": "采用：单人抬手互动及环境斜线构图，与W848不同"
-        },
-        {
-          "source": "W853",
-          "reason": "采用：轻松搞怪单人摆姿，适合新郎或伴郎互动拍摄"
-        },
-        {
-          "source": "W864",
-          "reason": "采用：单人环境肖像与中心构图"
-        },
-        {
-          "source": "W876",
-          "reason": "采用：单人安静情绪肖像，冷暖光层次清晰"
-        },
-        {
-          "source": "W880",
-          "reason": "采用：单人自然侧面情绪镜头，适合新郎访谈或反应"
-        },
-        {
-          "source": "W883",
-          "reason": "采用：侧向情绪细节，区别于W880环境中景"
-        },
-        {
-          "source": "W887",
-          "reason": "采用：自然坐姿与手部支撑，适合单人侧面肖像"
-        },
-        {
-          "source": "W888",
-          "reason": "采用：站姿与自然回望反应，适合转场肖像"
-        },
-        {
-          "source": "W889",
-          "reason": "采用：单人自然手势与中近景，适合交流反应补拍"
-        },
-        {
-          "source": "W890",
-          "reason": "采用：坐姿侧脸及画外视线，可作婚礼交流反应"
-        },
-        {
-          "source": "W897",
-          "reason": "采用：自然交流反应近景；低清仅作景别参考"
-        },
-        {
-          "source": "W907",
-          "reason": "采用：环境人像的留白与小人物尺度"
-        },
-        {
-          "source": "W910",
-          "reason": "采用：单人侧面肖像与远近人物层次"
-        },
-        {
-          "source": "W916",
-          "reason": "采用：自然坐姿和低头手部动作，可用于新郎等待镜头"
-        },
-        {
-          "source": "W917",
-          "reason": "采用：等待后抬眼的情绪反应，与W916低头互补"
         },
         {
           "source": "W943",
@@ -5536,108 +5070,20 @@ window.ENWAN_DATA = {
           "reason": "采用：单人自然侧脸情绪和冷暖背景"
         },
         {
-          "source": "W001",
-          "reason": "采用：持花单人回头的侧面近景"
-        },
-        {
           "source": "W002",
           "reason": "采用：持花正面笑容，和W001侧面互补"
-        },
-        {
-          "source": "W004",
-          "reason": "采用：单人全身自然运动与大面积环境留白"
         },
         {
           "source": "W007",
           "reason": "采用：运动中的回望表情和发丝动势近景"
         },
         {
-          "source": "W008",
-          "reason": "采用：手部前景框景与俏皮单人互动"
-        },
-        {
-          "source": "W013",
-          "reason": "采用：单人庆祝摆姿，界面保留，仅作动作参考"
-        },
-        {
-          "source": "W016",
-          "reason": "采用：礼服侧身全身站姿，短视频界面保留"
-        },
-        {
-          "source": "W018",
-          "reason": "采用：单人庆祝的伸展姿态，保留界面仅作动作参考"
-        },
-        {
-          "source": "W019",
-          "reason": "采用：宴席单人坐姿和举杯自然表情"
-        },
-        {
-          "source": "W021",
-          "reason": "采用：蓝调环境中的单人动态转身全身构图"
-        },
-        {
           "source": "W023",
           "reason": "采用：单人静态回望与W021动态转身互补"
         },
         {
-          "source": "W026",
-          "reason": "采用：宴席或夜间单人回头举杯近景"
-        },
-        {
-          "source": "W033",
-          "reason": "采用：双人场景中单人安静情绪及前后景，不推断剧情"
-        },
-        {
-          "source": "W037",
-          "reason": "采用：单人礼服移动及横向构图层次"
-        },
-        {
-          "source": "W038",
-          "reason": "采用：等待时自然低头及手持物姿态"
-        },
-        {
           "source": "W039",
           "reason": "采用：单人礼服高位全身构图与空间几何"
-        },
-        {
-          "source": "W057",
-          "reason": "采用：单人回望情绪及逆光环境肖像"
-        },
-        {
-          "source": "W060",
-          "reason": "采用：自然侧向眼神的紧凑肖像特写"
-        },
-        {
-          "source": "W068",
-          "reason": "采用：单人转场的动态半身与环境关系，婚礼场地须安全"
-        },
-        {
-          "source": "W1007",
-          "reason": "采用：单人持手机的自然站姿及侧面构图，拍摄对象可替换"
-        },
-        {
-          "source": "W1009",
-          "reason": "采用：展臂姿势与倾斜低机位可用于单人自然情绪，保留字幕原图"
-        },
-        {
-          "source": "W1014",
-          "reason": "采用：自然笑容、抬手与侧光的单人近景，可替换道具"
-        },
-        {
-          "source": "W1017",
-          "reason": "采用：隔透明介质的自然情绪肖像及色彩层次，不复刻鱼缸"
-        },
-        {
-          "source": "W1018",
-          "reason": "采用：环境中景的单人持物行走，适用礼物或花束道具"
-        },
-        {
-          "source": "W195",
-          "reason": "采用：低机位全身与建筑竖线构图，可迁移到安全场地的新人单人肖像"
-        },
-        {
-          "source": "R018",
-          "reason": "采用：男性逆光侧背肖像，轮廓光与低机位明确，使用安全光源复现"
         },
         {
           "source": "R020",
@@ -5648,40 +5094,12 @@ window.ENWAN_DATA = {
           "reason": "采用：低对比冷色侧光、安静半身肖像，适合窗光或布景复现"
         },
         {
-          "source": "R044",
-          "reason": "采用：行进回头半身至中景、空间纵深清楚，适合新人单人自然调度"
-        },
-        {
-          "source": "R052",
-          "reason": "采用：自然风吹发、回望微笑与浅景深，补充户外柔光新娘肖像"
-        },
-        {
-          "source": "R059",
-          "reason": "采用：太阳轮廓光与衣摆动态、完整人物尺度及空间留白，补充户外逆光调度"
-        },
-        {
           "source": "R077",
           "reason": "采用：黑背景单侧柔光、红色礼服与上扬视线，补充中式礼服独立肖像"
         },
         {
           "source": "R088",
           "reason": "采用：正面近景、克制表情与柔和侧光，适合新郎单人肖像"
-        },
-        {
-          "source": "R093",
-          "reason": "采用：人物挺拔站姿、仰角与两侧建筑空间关系，补充新娘建筑环境肖像"
-        },
-        {
-          "source": "R105",
-          "reason": "采用：花树背景与浅色衣着、上扬视线，适合花园婚礼新娘单人中景"
-        },
-        {
-          "source": "R112",
-          "reason": "采用：长辈自然凝望、背景虚化与侧光，补充长辈单人情绪肖像"
-        },
-        {
-          "source": "R126",
-          "reason": "采用：树木前景、石桥和长辈小尺度人物，补充长辈户外环境肖像及空间层次"
         },
         {
           "source": "R129",
@@ -5700,14 +5118,6 @@ window.ENWAN_DATA = {
           "reason": "采用：补充建筑斜线与低机位大留白，适合新郎单人环境调度"
         },
         {
-          "source": "R197",
-          "reason": "采用：补充肩后跟随与太阳轮廓光，适合新郎行进转场"
-        },
-        {
-          "source": "R219",
-          "reason": "采用：补充雨天备选单人侧向全景，在安全平坦场地拍摄"
-        },
-        {
           "source": "R245",
           "reason": "采用：补充风中行进的自然笑容与逆光中景，与静态逆光参考互补"
         },
@@ -5720,28 +5130,8 @@ window.ENWAN_DATA = {
           "reason": "采用：补充室外单人低坐、侧身和宽景留白；背景马匹非必要"
         },
         {
-          "source": "R318",
-          "reason": "采用：屋檐横向框景、人物尺度与远景留白，适合安全场地单人情绪环境镜头"
-        },
-        {
           "source": "R322",
           "reason": "采用：中心透视、对称构图及逆光人物尺度，适合酒店通廊或仪式空间补拍"
-        },
-        {
-          "source": "R335",
-          "reason": "采用：补充晨间妆造前的正面静态表情及暗背景柔光，非婚礼实拍"
-        },
-        {
-          "source": "R342",
-          "reason": "采用：补充室内木质门框、自然侧视及正式着装肖像"
-        },
-        {
-          "source": "R357",
-          "reason": "采用：补充投影背景与人物中央剪影的单人光影调度，水印保留"
-        },
-        {
-          "source": "R362",
-          "reason": "采用：补充持花姿态与投影影子关系，适合婚礼创作性光影肖像"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -5824,9 +5214,7 @@ window.ENWAN_DATA = {
       "is_core": true,
       "images": [
         "assets/references/reviewed/W426.jpeg",
-        "assets/references/reviewed/W480.jpeg",
-        "assets/references/reviewed/R288.jpeg",
-        "assets/references/reviewed/R297.jpeg"
+        "assets/references/reviewed/W480.jpeg"
       ],
       "image_notes": [
         {
@@ -5836,14 +5224,6 @@ window.ENWAN_DATA = {
         {
           "source": "W480",
           "reason": "清晰展示婚戒佩戴动作与侧向手部构图；区别W426钻戒特写，作为不同戒指与角度的参考。"
-        },
-        {
-          "source": "R288",
-          "reason": "采用：戒指与指尖交互明确，补充横向紧凑特写；非仪式实拍"
-        },
-        {
-          "source": "R297",
-          "reason": "采用：补充戒指佩戴后手部的暖色剪影及高光细节；非仪式实拍"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -5902,9 +5282,7 @@ window.ENWAN_DATA = {
       "is_core": false,
       "images": [
         "assets/references/reviewed/W924.jpeg",
-        "assets/references/reviewed/W926.jpeg",
-        "assets/references/reviewed/R377.jpeg",
-        "assets/references/reviewed/R391.jpeg"
+        "assets/references/reviewed/W926.jpeg"
       ],
       "image_notes": [
         {
@@ -5914,14 +5292,6 @@ window.ENWAN_DATA = {
         {
           "source": "W926",
           "reason": "采用：宴会灯光细节及空间氛围插入镜头"
-        },
-        {
-          "source": "R377",
-          "reason": "采用：可迁移到婚礼回忆照片区的空间空镜，参考中轴和纵深，不作真实婚礼案例"
-        },
-        {
-          "source": "R391",
-          "reason": "采用：可参考婚礼场地入口的门洞框景、中轴及明暗层次，不将建筑当作婚礼场地"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -5953,13 +5323,8 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W577.jpeg",
         "assets/references/reviewed/W719.jpeg",
-        "assets/references/reviewed/W874.jpeg",
-        "assets/references/reviewed/W847.jpeg",
         "assets/references/reviewed/W896.jpeg",
         "assets/references/reviewed/W042.jpeg",
-        "assets/references/reviewed/W043.jpeg",
-        "assets/references/reviewed/W044.jpeg",
-        "assets/references/reviewed/W1023.jpeg",
         "assets/references/reviewed/R339.jpeg"
       ],
       "image_notes": [
@@ -5972,32 +5337,12 @@ window.ENWAN_DATA = {
           "reason": "采用：补充A24亲友同框交流，呈现新人被亲友围绕拍摄的社交场景及前景手机构图；与现有三人共看手机不同。"
         },
         {
-          "source": "W874",
-          "reason": "双人对坐、发起者与回应者同框，适合A24亲友/新人交流的机位参考；明确为剧情调度，不推断具体关系。"
-        },
-        {
-          "source": "W847",
-          "reason": "采用：活动中的自然反应和站坐关系，可用于亲友互动"
-        },
-        {
           "source": "W896",
           "reason": "采用：双人餐桌交流的空间全景；原图低清仅作构图参考"
         },
         {
           "source": "W042",
           "reason": "采用：亲友靠近交流的双人关系和低角度环境光"
-        },
-        {
-          "source": "W043",
-          "reason": "采用：交流正反打中倾听者的近景"
-        },
-        {
-          "source": "W044",
-          "reason": "采用：与W043互补的另一侧反应机位"
-        },
-        {
-          "source": "W1023",
-          "reason": "采用：亲友并肩分享所见的自然手势与表情"
         },
         {
           "source": "R339",
@@ -6021,7 +5366,6 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W705.jpeg",
         "assets/references/reviewed/W709.jpeg",
         "assets/references/reviewed/W737.png",
-        "assets/references/reviewed/W770.jpeg",
         "assets/references/reviewed/W777.jpeg",
         "assets/references/reviewed/W792.png"
       ],
@@ -6041,10 +5385,6 @@ window.ENWAN_DATA = {
         {
           "source": "W737",
           "reason": "采用：补充A25礼物交换的双人全景/中远景，明确双方相对站位和交接场景；与W377红包手部、W705室内中景不同。"
-        },
-        {
-          "source": "W770",
-          "reason": "采用：补充A25单枝鲜花递送的双人中景，呈现赠花者与接收者的视线关系；与W777手部花束交接细节互补。"
         },
         {
           "source": "W777",
@@ -6070,10 +5410,10 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W473.jpeg",
         "assets/references/reviewed/W510.jpeg",
-        "assets/references/reviewed/W689.jpeg",
         "assets/references/reviewed/W945.jpeg",
         "assets/references/reviewed/W1027.png",
-        "assets/references/reviewed/R353.jpeg"
+        "assets/references/reviewed/R353.jpeg",
+        "assets/references/reviewed/U16e33b218d9a23c5fda2593e.jpeg"
       ],
       "image_notes": [
         {
@@ -6083,10 +5423,6 @@ window.ENWAN_DATA = {
         {
           "source": "W510",
           "reason": "共同展示或搬挂照片的完整动作，可作为婚礼回忆环节的生活化调度参考"
-        },
-        {
-          "source": "W689",
-          "reason": "采用：补充A26现有的相机屏幕近景和相框展示，提供手持即时照片及观看者表情的中近景；不是单纯静物。"
         },
         {
           "source": "W945",
@@ -6099,6 +5435,10 @@ window.ENWAN_DATA = {
         {
           "source": "R353",
           "reason": "采用：可参考家庭照片及成长回忆的平铺构图和光影层次"
+        },
+        {
+          "source": "U16e33b218d9a23c5fda2593e",
+          "reason": "采用（影视/广告调度类比）：父母与新人回看旧照片的手部与道具关系，可配回忆段落。"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -6113,9 +5453,16 @@ window.ENWAN_DATA = {
       "camera": "先拍完整群像，再补拍摄者、被拍者和合影后的自然反应。",
       "delivery_check": "合影全景、人物站位和拍摄过程；不挡宾客动线。",
       "is_core": false,
-      "images": [],
-      "image_notes": [],
-      "reference_note": ""
+      "images": [
+        "assets/references/reviewed/U108d7f93ba9074427f15e945.jpeg"
+      ],
+      "image_notes": [
+        {
+          "source": "U108d7f93ba9074427f15e945",
+          "reason": "采用（影视/广告调度类比）：现有亲友合影卡为空；明确多人站位、靠拢与自拍动作。"
+        }
+      ],
+      "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     },
     {
       "id": "A35",
@@ -6128,76 +5475,21 @@ window.ENWAN_DATA = {
       "delivery_check": "人物关系、光影层次、不同景别及安全性。",
       "is_core": false,
       "images": [
-        "assets/references/reviewed/W949.jpeg",
-        "assets/references/reviewed/W950.jpeg",
-        "assets/references/reviewed/W952.jpeg",
-        "assets/references/reviewed/W953.jpeg",
         "assets/references/reviewed/W954.jpeg",
-        "assets/references/reviewed/W955.jpeg",
         "assets/references/reviewed/W956.jpeg",
         "assets/references/reviewed/W957.jpeg",
-        "assets/references/reviewed/W958.jpeg",
-        "assets/references/reviewed/W960.jpeg",
-        "assets/references/reviewed/W962.jpeg",
-        "assets/references/reviewed/W964.jpeg",
-        "assets/references/reviewed/W965.jpeg",
         "assets/references/reviewed/W967.jpeg",
-        "assets/references/reviewed/W968.jpeg",
-        "assets/references/reviewed/W969.jpeg",
-        "assets/references/reviewed/W972.jpeg",
         "assets/references/reviewed/W973.jpeg",
-        "assets/references/reviewed/W974.jpeg",
         "assets/references/reviewed/W975.jpeg",
         "assets/references/reviewed/W978.jpeg",
-        "assets/references/reviewed/W979.jpeg",
-        "assets/references/reviewed/W981.jpeg",
-        "assets/references/reviewed/W984.jpeg",
-        "assets/references/reviewed/W985.jpeg",
-        "assets/references/reviewed/W986.jpeg",
-        "assets/references/reviewed/W988.jpeg",
-        "assets/references/reviewed/W989.jpeg",
-        "assets/references/reviewed/W990.jpeg",
-        "assets/references/reviewed/W992.jpeg",
-        "assets/references/reviewed/W993.jpeg",
         "assets/references/reviewed/W994.jpeg",
-        "assets/references/reviewed/W995.jpeg",
-        "assets/references/reviewed/W996.jpeg",
-        "assets/references/reviewed/W998.jpeg",
-        "assets/references/reviewed/W999.jpeg",
         "assets/references/reviewed/W1000.jpeg",
-        "assets/references/reviewed/W014.jpeg",
-        "assets/references/reviewed/W015.jpeg",
-        "assets/references/reviewed/W045.jpeg",
-        "assets/references/reviewed/W046.jpeg",
-        "assets/references/reviewed/W048.jpeg",
-        "assets/references/reviewed/W050.jpeg",
-        "assets/references/reviewed/W1001.jpeg",
-        "assets/references/reviewed/W1022.jpeg"
+        "assets/references/reviewed/W014.jpeg"
       ],
       "image_notes": [
         {
-          "source": "W949",
-          "reason": "采用：庆祝光影与拍摄互动，需用安全距离或替代光效"
-        },
-        {
-          "source": "W950",
-          "reason": "采用：夜间双人远景与光效前景的空间构图"
-        },
-        {
-          "source": "W952",
-          "reason": "采用：夜间光轨与人物中景构图，安全替代光效可复现"
-        },
-        {
-          "source": "W953",
-          "reason": "采用：夜间背面肖像与手部道具构图"
-        },
-        {
           "source": "W954",
           "reason": "采用：双人亲密互动与光点前景，适合夜间补拍"
-        },
-        {
-          "source": "W955",
-          "reason": "采用：亲友群体围圈和庆祝走位，使用安全光效"
         },
         {
           "source": "W956",
@@ -6208,48 +5500,12 @@ window.ENWAN_DATA = {
           "reason": "采用：夜间群体背影和大面积天空留白"
         },
         {
-          "source": "W958",
-          "reason": "采用：单人环境肖像与日落光点构图"
-        },
-        {
-          "source": "W960",
-          "reason": "采用：单人动态近景，保留运动感但使用安全道具"
-        },
-        {
-          "source": "W962",
-          "reason": "采用：夜间人物表情特写与前景光斑"
-        },
-        {
-          "source": "W964",
-          "reason": "采用：夜间光效空镜插入，可用安全道具替代"
-        },
-        {
-          "source": "W965",
-          "reason": "采用：单人夜间半身肖像，人物与道具位置清楚"
-        },
-        {
           "source": "W967",
           "reason": "采用：夜间光斑前景与表情近景"
         },
         {
-          "source": "W968",
-          "reason": "采用：亲友并肩互动及侧向机位"
-        },
-        {
-          "source": "W969",
-          "reason": "采用：多人手部庆祝细节，区别于W956低角度剪影"
-        },
-        {
-          "source": "W972",
-          "reason": "采用：单人欢庆完整上半身姿态与夜间散景"
-        },
-        {
           "source": "W973",
           "reason": "采用：群体围圈的向心构图，使用安全LED光源模拟"
-        },
-        {
-          "source": "W974",
-          "reason": "采用：光影插入特写，区别于W964冷色环境远景"
         },
         {
           "source": "W975",
@@ -6260,64 +5516,8 @@ window.ENWAN_DATA = {
           "reason": "采用：夜间庆祝的大环境远景及人物尺度"
         },
         {
-          "source": "W979",
-          "reason": "采用：群体行进与光点轨迹构图，可用安全替代道具"
-        },
-        {
-          "source": "W981",
-          "reason": "采用：围聚互动和中心光源的群体近景"
-        },
-        {
-          "source": "W984",
-          "reason": "采用：双人侧向对视及光效前景"
-        },
-        {
-          "source": "W985",
-          "reason": "采用：与W984相视不同，补充并肩向前的表情"
-        },
-        {
-          "source": "W986",
-          "reason": "采用：群体坐姿庆祝及环境中远景"
-        },
-        {
-          "source": "W988",
-          "reason": "采用：仅参考俯拍几何和人物留白；现场用安全灯效模拟"
-        },
-        {
-          "source": "W989",
-          "reason": "采用：夜间回头姿态与逆光轮廓"
-        },
-        {
-          "source": "W990",
-          "reason": "采用：夜间回头后的情绪特写，与W989景别互补"
-        },
-        {
-          "source": "W992",
-          "reason": "采用：夜间伸手互动及环境留白，安全道具替代"
-        },
-        {
-          "source": "W993",
-          "reason": "采用：双人道具互动的剪影手部插入镜头"
-        },
-        {
           "source": "W994",
           "reason": "采用：双人剪影与海面反射的大环境构图"
-        },
-        {
-          "source": "W995",
-          "reason": "采用：单人夜间半身肖像及暖冷光对比"
-        },
-        {
-          "source": "W996",
-          "reason": "采用：微距光影细节，区别于W974暖色散景"
-        },
-        {
-          "source": "W998",
-          "reason": "采用：双人并排手部与服饰细节的局部构图"
-        },
-        {
-          "source": "W999",
-          "reason": "采用：群体手部与蓝金配色，区别于W998侧面局部"
         },
         {
           "source": "W1000",
@@ -6326,41 +5526,13 @@ window.ENWAN_DATA = {
         {
           "source": "W014",
           "reason": "采用：近距离光源与人物虚实关系，采用安全LED道具"
-        },
-        {
-          "source": "W015",
-          "reason": "采用：庆祝情绪反应近景，与W014光源特写互补"
-        },
-        {
-          "source": "W045",
-          "reason": "采用：夜间灯光环境中人物等待与视线的中景"
-        },
-        {
-          "source": "W046",
-          "reason": "采用：夜间庆祝转场的环境远景和人物尺度"
-        },
-        {
-          "source": "W048",
-          "reason": "采用：夜间暖色光点与自然人物反应中景"
-        },
-        {
-          "source": "W050",
-          "reason": "采用：夜间情绪特写，补充W045环境中景"
-        },
-        {
-          "source": "W1001",
-          "reason": "采用：夜间庆祝远景及留白，用安全光源替代火花"
-        },
-        {
-          "source": "W1022",
-          "reason": "采用：夜景人物与大型灯光环境的尺度关系"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
     }
   ],
   "reviewed_release": {
-    "images": 316,
+    "images": 150,
     "core_cards": 26,
     "additional_cards": 9
   },
@@ -6683,5 +5855,18 @@ window.ENWAN_DATA = {
         "stage_id": "L-bride-Q5"
       }
     ]
+  },
+  "reference_review": {
+    "source_document": "人生成长_副本.docx",
+    "reviewed_references": 940,
+    "unique_new_images": 411,
+    "adopted": 10,
+    "excluded": 401,
+    "historical_duplicate": 528,
+    "internal_duplicate": 1,
+    "previous_retained": 140,
+    "previous_removed": 176,
+    "images": 150,
+    "audit": "reviews/supplemental/life-growth-complete-review.json"
   }
 };
