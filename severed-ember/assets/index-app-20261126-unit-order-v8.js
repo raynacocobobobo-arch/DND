@@ -65,7 +65,7 @@ function setupUnitAtlas(){
   const groupKey=side==='reinforcements'?'reinforcements':h.id.slice(6).replace(/-u\d+$/,'');
   const sequence=+(h.id.match(/-u(\d+)$/)?.[1]||h.id.match(/-g(\d+)$/)?.[1]||1)-1;
   const role=isLostWorld?(h.dataset.neutralRole||'步兵'):isNeutral?'NPC':(roles[groupKey]||'').split(' ')[sequence]||'其他';
-  let n=h.nextElementSibling,img='',points=null,phrases=[];
+  let n=h.nextElementSibling,img='',points=isLostWorld&&h.dataset.points!==undefined?Number(h.dataset.points):null,phrases=[];
   while(n&&!/^H[3456]$/.test(n.tagName)){
    if(!img&&n.matches?.('figure.rules-unit-portrait'))img=n.querySelector('img')?.getAttribute('src')||'';
    if(n.tagName==='P'){const p=n.textContent.trim();if(phrases.length<4)phrases.push(p.slice(0,260));if(points===null){const x=p.match(/(\d{1,4})\s*分/);if(x)points=+x[1];}}
@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v16.html')
+    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v17.html')
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
