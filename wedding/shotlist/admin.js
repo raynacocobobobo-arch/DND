@@ -96,12 +96,61 @@ function buildRelease(data, groups, index) {
   }
   function requestPurge(){if(libraryMode!=="trash"||busy||dirty||!data||!token)return;const items=[...trashSelected.values()];if(!items.length)return;if(!confirm("彻底删除选中的 "+items.length+" 张照片？\n将从 GitHub 正式分支删除原图文件，无法在后台撤销或恢复。\nGit 历史版本不在此次删除范围内。"))return;run(()=>purgeSelected(items))}
 
+
+  async function readZipMedia(file,visit){
+    const tail=new Uint8Array(await file.slice(Math.max(0,file.size-65557)).arrayBuffer()),d=new DataView(tail.buffer);
+    let end=-1;for(let p=tail.length-22;p>=0;p--)if(d.getUint32(p,true)===0x06054b50&&p+22+d.getUint16(p+20,true)===tail.length){end=p;break}
+    if(end<0)throw Error("不能识别 Word 文件："+file.name);
+    const count=d.getUint16(end+10,true),size=d.getUint32(end+12,true),offset=d.getUint32(end+16,true);
+    if(d.getUint16(end+4,true)||d.getUint16(end+6,true)||count===65535||offset+size>file.size||size>32*1024*1024)throw Error("不支持此压缩包结构："+file.name);
+    const central=new Uint8Array(await file.slice(offset,offset+size).arrayBuffer()),v=new DataView(central.buffer),decoder=new TextDecoder();let pos=0;
+    for(let n=0;n<count;n++){
+      if(pos+46>central.length||v.getUint32(pos,true)!==0x02014b50)throw Error("Word 图片目录损坏");
+      const flags=v.getUint16(pos+8,true),method=v.getUint16(pos+10,true),compressed=v.getUint32(pos+20,true),plain=v.getUint32(pos+24,true),nameLen=v.getUint16(pos+28,true),extraLen=v.getUint16(pos+30,true),commentLen=v.getUint16(pos+32,true),local=v.getUint32(pos+42,true),name=decoder.decode(central.slice(pos+46,pos+46+nameLen));
+      pos+=46+nameLen+extraLen+commentLen;
+      if(!/^word\/media\/[^/]+\.(?:jpe?g|png|webp|gif)$/i.test(name)||!plain||plain>15*1024*1024)continue;
+      if(flags&1||![0,8].includes(method)||local+30>file.size)throw Error("不支持的图片编码："+name);
+      const header=new DataView(await file.slice(local,local+30).arrayBuffer());if(header.getUint32(0,true)!==0x04034b50)throw Error("图片数据损坏："+name);
+      const begin=local+30+header.getUint16(26,true)+header.getUint16(28,true);if(begin+compressed>file.size)throw Error("图片数据越界");
+      const raw=file.slice(begin,begin+compressed);
+      const bytes=method===0?new Uint8Array(await raw.arrayBuffer()):new Uint8Array(await new Response(raw.stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+      if(bytes.length!==plain)throw Error("原图解压长度不符："+name);
+      await visit(bytes,name);
+    }
+  }
+  async function importOriginalDocs(files){
+    if(!files.length)return;
+    const eligible=new Map(rows().filter(r=>!r.purged_at&&r.review_status==="excluded"&&/^[WR]\d+$/.test(r.source_key)&&!(r.path&&r.git_blob)).map(r=>[r.sha256,r.source_key]));
+    if(!eligible.size){status("原稿排除图已全部补录");return}
+    let batch=[],size=0,saved=0,scanned=0,matched=0,initial=eligible.size;
+    async function flush(){
+      if(!batch.length)return;
+      status("正在补录原稿 · 已保存 "+saved+" / "+initial+" 张；请保持页面打开");
+      const result=await server("import_trash",{files:batch});
+      if(!Array.isArray(result.results)||result.results.length!==batch.length)throw Error("补录结果未确认");
+      const ledger=new Map(Object.values(result.groups||{}).flat().map(r=>[r.source_key,r]));
+      for(const item of result.results){const r=ledger.get(item.source);if(item.status==="imported"||item.status==="already"){if(!r||r.purged_at||r.review_status!=="excluded"||!r.path||!r.git_blob)throw Error("补录结果校验失败："+item.source);if(item.status==="imported")saved++}else if(item.status!=="skipped")throw Error("未知补录结果")}
+      applySnapshot(result);batch=[];size=0;
+    }
+    for(const file of files){
+      status("正在读取 "+file.name+" · 已保存 "+saved+" 张");
+      await readZipMedia(file,async(bytes)=>{
+        scanned++;const sha=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes)),x=>x.toString(16).padStart(2,"0")).join(""),source=eligible.get(sha);
+        if(!source)return;eligible.delete(sha);matched++;
+        if(batch.length>=32||size+bytes.length>12*1024*1024)await flush();
+        batch.push({source,content:b64(bytes)});size+=bytes.length;
+      });
+      await flush();
+    }
+    status("原稿补录完成 · 扫描 "+scanned+" 张 · 匹配 "+matched+" 张 · 实际新增 "+saved+" 张 · 尚缺 "+rows().filter(r=>!r.purged_at&&r.review_status==="excluded"&&/^[WR]\d+$/.test(r.source_key)&&!(r.path&&r.git_blob)).length+" 张");
+  }
+
   function renderImages(){
-    const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>!r.purged_at&&(filter==="all"||(filter==="removed"?r.review_status==="excluded"&&r.path&&r.git_blob:r.review_status===filter))&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
-    const limit=20;page=Math.max(0,Math.min(page,Math.ceil(list.length/limit)-1));$("page").textContent=`${list.length} 条 · 第 ${page+1}/${Math.max(1,Math.ceil(list.length/limit))} 页`;$("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=list.length;
+    const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>!r.purged_at&&(filter==="all"||(filter==="removed"?r.review_status==="excluded":filter==="ready"?r.review_status==="excluded"&&r.path&&r.git_blob:filter==="missing"?r.review_status==="excluded"&&!(r.path&&r.git_blob):r.review_status===filter))&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
+    const missing=rows().filter(r=>!r.purged_at&&r.review_status==="excluded"&&/^[WR]\d+$/.test(r.source_key)&&!(r.path&&r.git_blob)).length;$("trash-import-panel").hidden=!missing;$("trash-import-count").textContent="原图待补录 "+missing+" 张";$("trash-import").disabled=busy||dirty;const limit=20;page=Math.max(0,Math.min(page,Math.ceil(list.length/limit)-1));$("page").textContent=`${list.length} 条 · 第 ${page+1}/${Math.max(1,Math.ceil(list.length/limit))} 页`;$("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=list.length;
     trashVisible=list.filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));trashPage=list.slice(page*limit,(page+1)*limit).filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));const g=$("images");g.replaceChildren();
     for(const r of list.slice(page*limit,(page+1)*limit)){
-      const a=node("article",undefined,"item");const url=imageUrl(r);if(url){const link=node("a");link.href=url;link.target="_blank";link.rel="noopener noreferrer";const im=node("img");im.src=url;im.loading="lazy";im.alt=r.source_key+" "+r.visual_description;link.append(im);a.append(link)}else a.append(node("div","未发布原图","noimage"));
+      const a=node("article",undefined,"item");const url=imageUrl(r);if(url){const link=node("a");link.href=url;link.target="_blank";link.rel="noopener noreferrer";const im=node("img");im.src=url;im.loading="lazy";im.alt=r.source_key+" "+r.visual_description;link.append(im);a.append(link)}else a.append(node("div",r.review_status==="excluded"?"原图待补录":"未发布原图","noimage"));
       const former=data.cards.find(c=>c.id===r.last_card_id);a.append(node("strong",r.source_key),node("small",former?"原位置："+former.title:r.last_card_id?"原动作卡已删除":"无原位置"));const details=node("details",undefined,"archive-meta");details.append(node("summary","审核记录"),node("p",r.visual_description),node("small",r.match_reason));a.append(details);if(r.review_status==="excluded"&&r.path&&r.git_blob)attachCheck(a,selectionRecord(r,true),trashSelected);
       g.append(a);
     }
@@ -249,7 +298,7 @@ function buildRelease(data, groups, index) {
   function moveTask(delta){if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;const arr=item.s.items,i=arr.indexOf(item.t),n=i+delta;if(n<0||n>=arr.length)return;if(!/^S\d+$/.test(item.s.id)&&arr[n].id.replace(/-\d+$/,"")!==item.t.id.replace(/-\d+$/,""))return alert("原版顺序保持不变，仅可调整同组内要点");[arr[i],arr[n]]=[arr[n],arr[i]];mark()}
   $("task-up").onclick=()=>moveTask(-1);$("task-down").onclick=()=>moveTask(1);
   $("task-delete").onclick=()=>{if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;if(flatTasks(data).some(x=>x.t.parent_id===item.t.id))return alert("先移动此任务的详细拍摄点");if(!confirm("删除任务："+item.t.title+"？本机项目中此任务的历史完成状态会失效。"))return;item.s.items=item.s.items.filter(x=>x!==item.t);taskSelected="";mark()};
-  $("tab-live").onclick=()=>switchLibrary("live");$("tab-trash").onclick=()=>switchLibrary("trash");$("bulk-target").onchange=syncBulk;$("bulk-clear").onclick=()=>{selectedMap().clear();libraryMode==="trash"?renderImages():renderVisual()};$("select-live").onclick=()=>selectRecords(liveVisible,liveSelected);$("select-trash-page").onclick=()=>selectRecords(trashPage,trashSelected);$("select-trash-all").onclick=()=>selectRecords(trashVisible,trashSelected);$("bulk-delete").onclick=()=>requestBatch("delete");$("bulk-move").onclick=()=>requestBatch("move");$("bulk-restore").onclick=()=>requestBatch("restore");$("bulk-purge").onclick=requestPurge;updateTargetOptions();renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载照片。勾选照片后批量操作；专用管理链接可直接编辑。");focusRequested();
+  $("tab-live").onclick=()=>switchLibrary("live");$("tab-trash").onclick=()=>switchLibrary("trash");$("bulk-target").onchange=syncBulk;$("bulk-clear").onclick=()=>{selectedMap().clear();libraryMode==="trash"?renderImages():renderVisual()};$("select-live").onclick=()=>selectRecords(liveVisible,liveSelected);$("select-trash-page").onclick=()=>selectRecords(trashPage,trashSelected);$("select-trash-all").onclick=()=>selectRecords(trashVisible,trashSelected);$("bulk-delete").onclick=()=>requestBatch("delete");$("bulk-move").onclick=()=>requestBatch("move");$("bulk-restore").onclick=()=>requestBatch("restore");$("bulk-purge").onclick=requestPurge;$("trash-import").onclick=()=>{if(!busy&&!dirty&&data&&token)$("trash-docs").click()};$("trash-docs").onchange=()=>{const files=[...$("trash-docs").files];$("trash-docs").value="";if(files.length)run(()=>importOriginalDocs(files))};updateTargetOptions();renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载照片。勾选照片后批量操作；专用管理链接可直接编辑。");focusRequested();
   const authHash=new URLSearchParams(location.hash.slice(1));const access=authHash.get("access");if(access){rememberDevice(access);history.replaceState(null,"",location.pathname+location.search)}else if(authHash.get("access_token")&&authHash.get("refresh_token")){rememberDevice("");remember({access_token:authHash.get("access_token"),refresh_token:authHash.get("refresh_token"),expires_in:Number(authHash.get("expires_in")||3600)});history.replaceState(null,"",location.pathname+location.search)}else{restore();restoreDevice()}
   async function connect(){try{await loginComplete()}catch(e){if(!data){$("auth").hidden=false;$("connect-retry").hidden=false;if(!deviceAccess)$("auth").open=true;}throw e}}
   $("connect-retry").onclick=()=>run(connect);if(deviceAccess||session){$("auth").hidden=true;run(connect)}

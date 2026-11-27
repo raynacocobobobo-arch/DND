@@ -20,3 +20,5 @@
 
 /* V6.9 irreversible removal */
 #bulk-purge{background:#a33232;color:#fff;border-color:#a33232}#bulk-purge:disabled{opacity:.45}@media(max-width:600px){#bulk-purge{white-space:nowrap}}
+
+.import-panel{padding:12px;margin:12px 0;background:#edf2ee;border:1px solid #c9d6cc;border-radius:8px}.import-panel p{font-size:13px;margin:5px 0 10px}.import-panel button{min-height:44px}
