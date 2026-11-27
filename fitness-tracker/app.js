@@ -1123,73 +1123,55 @@ function isGymTrainingRecord(r){
 }
 function trainingAdviceData(records,today){
  const days=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(today),i-6)));
- const groups=[
-  {key:'pull',name:'拉背/划船',match:r=>['lat','row'].includes(r.presetKey)||/拉背|划船|高位下拉/.test(r.exercise||'')},
-  {key:'fly',name:'飞鸟/引体',match:r=>r.presetKey==='fly'||/飞鸟|引体|夹胸/.test(r.exercise||'')},
-  {key:'dumbbell',name:'哑铃',match:r=>r.presetKey==='dumbbell'||/哑铃|杠铃弯举|杠铃推举/.test(r.exercise||'')},
-  {key:'back',name:'臀桥/背部',match:r=>r.presetKey==='back'||/臀桥|背部运动/.test(r.exercise||'')},
-  {key:'core',name:'仰卧起坐',match:r=>r.presetKey==='situps'||/仰卧起坐|卷腹/.test(r.exercise||'')},
-  {key:'other',name:'其他力量',match:()=>true}
- ];
- const positive=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
- const reps=r=>positive(r.reps)||positive(r.sets)*positive(r.repsPerSet);
- const holdSeconds=r=>positive(r.duration_sec)||positive(r.sets)*positive(r.secondsPerSet);
  const rows=records.filter(r=>days.includes(r.date));
- const byDay=days.map(d=>rows.filter(r=>r.date===d));
- const active=byDay.filter(list=>list.length).length;
- const gym=byDay.filter(list=>list.some(isGymTrainingRecord)).length;
- const strength=rows.filter(r=>r.type==='strength'||r.type==='hold');
- const stats=groups.map(g=>({...g,values:days.map(()=>0),seen:days.map(()=>false)}));
- for(const r of rows.filter(r=>r.type==='strength')){
-  const g=stats.find(x=>x.match(r));const i=days.indexOf(r.date);
-  g.values[i]+=reps(r);g.seen[i]=true;
- }
- for(const [key,name,match] of [
-  ['wall','靠墙静蹲',r=>/靠墙|静蹲/.test(r.exercise||'')],
-  ['plank','平板支撑',r=>/平板/.test(r.exercise||'')]
- ]){
-  const values=days.map(d=>rows.filter(r=>r.date===d&&r.type==='hold'&&match(r)).reduce((n,r)=>n+holdSeconds(r),0));
-  const seen=days.map(d=>rows.some(r=>r.date===d&&r.type==='hold'&&match(r)));
-  stats.push({key,name,values,seen,unit:'秒'});
- }
- const summarized=stats.map(g=>{
-  const daysCount=g.seen.filter(Boolean).length;
-  let i=g.seen.length-1;if(!g.seen[i])i--;
-  let streak=0;while(i>=0&&g.seen[i]){streak++;i--;}
-  const volume=g.values.reduce((n,v)=>n+v,0);
-  return {...g,daysCount,streak,volume,unit:g.unit||'次'};
- }).filter(g=>g.daysCount);
- const repeated=summarized.filter(g=>g.daysCount>=4&&g.streak>=3)
-  .sort((a,b)=>b.streak-a.streak||b.daysCount-a.daysCount||Number(b.unit==='次')-Number(a.unit==='次')||b.volume-a.volume);
- const aerobicMinutes=rows.filter(r=>r.type==='cardio'||r.type==='running').reduce((n,r)=>n+positive(r.duration_min),0);
- const swimDistance=rows.filter(r=>r.type==='swimming').reduce((n,r)=>n+(positive(r.distance_m)||positive(r.laps)*50),0);
- const swimMinutes=rows.filter(r=>r.type==='swimming').reduce((n,r)=>n+Math.max(0,positive(r.duration_min)-positive(r.rest_min)),0);
- const steps=rows.filter(r=>r.type==='walking').reduce((n,r)=>n+positive(r.steps),0);
- const cardioParts=[aerobicMinutes?'有氧 '+Math.round(aerobicMinutes)+'分钟':'',swimDistance?'游泳 '+Math.round(swimDistance)+'米':swimMinutes?'游泳 '+Math.round(swimMinutes)+'分钟':''].filter(Boolean);
- const fmt=g=>g.name+' '+(g.volume?(g.unit==='秒'?Math.round(g.volume/60*10)/10+'分钟':Math.round(g.volume)+'次')+' / ':'')+g.daysCount+'天';
- let evidence='',heading='',advice='';
- if(!active){evidence='近7天暂无运动记录';heading='轻量起步';advice='先从散步或熟悉的轻量动作开始。';}
- else if(repeated.length){
-  const focus=repeated.slice(0,2);evidence=focus.map(fmt).join(' · ');
-  heading='错开重复动作';
-  advice=focus.map(g=>g.name).join('、')+'近期较密集；下一次可少做同类动作，改为轻松走路、骑车或休息。';
- }else{
-  const strengthDays=byDay.filter(list=>list.some(r=>r.type==='strength'||r.type==='hold')).length;
-  const top=summarized.slice().sort((a,b)=>b.daysCount-a.daysCount||Number(b.unit==='次')-Number(a.unit==='次')||b.volume-a.volume)[0];
-  evidence=[top?fmt(top):'',...cardioParts].filter(Boolean).slice(0,2).join(' · ')||('日常步数 '+Math.round(steps)+'步');
-  if(!strength.length){heading='补充力量';advice='近7天未记录力量动作；可择日加入熟悉的轻量哑铃或居家动作。';}
-  else if(strengthDays===1&&active>=3){heading='补充力量频率';advice='力量只记录1天；身体状态允许时，可另择一天练习熟悉动作。';}
-  else if(!aerobicMinutes&&!swimDistance&&!swimMinutes){heading='补充有氧';advice='近7天未记录专项有氧，可择日安排轻松骑车或跑步机快走。';}
-  else if(active===7){heading='留出恢复时间';advice='每天均有运动记录；继续交替项目，身体疲劳时安排轻量活动或休息。';}
-  else{heading='维持训练节奏';advice='有氧和力量均有记录，继续交替安排；根据实际负重和身体感受调整。';}
- }
- return {evidence,heading,advice,gym,active};
+ const p=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
+ const name=r=>String(r.exercise||r.stroke||'');
+ const key=r=>String(r.presetKey||'');
+ const count=rs=>new Set(rs.map(r=>r.date)).size;
+ const sum=(rs,fn)=>rs.reduce((n,r)=>n+fn(r),0);
+ const reps=r=>p(r.reps)||p(r.sets)*p(r.repsPerSet);
+ const sec=r=>p(r.duration_sec)||p(r.sets)*p(r.secondsPerSet);
+ const fmt=n=>String(Math.round(n*10)/10);
+ const gap=rs=>rs.length?6-Math.max(...rs.map(r=>days.indexOf(r.date))):null;
+ const streak=rs=>{const seen=new Set(rs.map(r=>r.date));let i=6;if(!seen.has(days[i]))i--;let n=0;while(i>=0&&seen.has(days[i])){n++;i--;}return n;};
+ const upper=rows.filter(r=>r.type==='strength'&&(['lat','row','fly'].includes(key(r))||/拉背|划船|高位下拉|飞鸟|引体|推胸|夹胸|蝴蝶机/.test(name(r)))&&!/哑铃|杠铃/.test(name(r)));
+ const sit=rows.filter(r=>r.type==='strength'&&(key(r)==='situps'||/仰卧起坐|卷腹/.test(name(r))));
+ const plank=rows.filter(r=>r.type==='hold'&&/平板/.test(name(r)));
+ const core=sit.concat(plank);
+ const wall=rows.filter(r=>r.type==='hold'&&/靠墙|静蹲/.test(name(r)));
+ const treadmill=rows.filter(r=>r.type==='running'||(r.type==='cardio'&&/跑步|跑步机/.test(name(r))));
+ const elliptical=rows.filter(r=>r.type==='cardio'&&(key(r)==='elliptical'||/椭圆机/.test(name(r))));
+ const bike=rows.filter(r=>r.type==='cardio'&&(key(r)==='bike'||/自行车|骑行/.test(name(r))));
+ const leg=rows.filter(r=>r.type==='strength'&&/腿举|腿屈伸|深蹲|弓步|腿弯举/.test(name(r)));
+ const knee=wall.concat(treadmill,elliptical,bike,leg);
+ const swim=rows.filter(r=>r.type==='swimming');
+ const breast=swim.filter(r=>/蛙泳/.test(name(r))||key(r)==='swim');
+ const upperDays=count(upper),coreDays=count(core),kneeDays=count(knee),swimDays=count(swim);
+ const upperReps=sum(upper,reps),sitReps=sum(sit,reps),plankMin=sum(plank,sec)/60;
+ const wallMin=sum(wall,sec)/60,runMin=sum(treadmill,r=>p(r.duration_min)),ellMin=sum(elliptical,r=>p(r.duration_min)),bikeMin=sum(bike,r=>p(r.duration_min));
+ const swimM=sum(swim,r=>p(r.distance_m)||p(r.laps)*50),swimMin=sum(swim,r=>Math.max(0,p(r.duration_min)-p(r.rest_min)));
+ const upperAdvice=!upperDays?'可择日安排熟悉的器械上肢训练。':gap(upper)<=1&&(streak(upper)>=3||upperDays>=4)?'器械训练密集，下一次先错开同类动作。':upperDays>=4?'本周器械次数较集中，恢复后再练，不急于加量。':gap(upper)>=3?'若恢复良好，可安排一次器械上肢。':'保持间隔，按原训练量练习。';
+ let coreAdvice;
+ if(!coreDays)coreAdvice='优先安排一次轻量腹部核心。';
+ else if(gap(core)===0)coreAdvice='今日已有核心记录，不必重复补量。';
+ else if(gap(core)<=1&&streak(core)>=2)coreAdvice='近几天核心连续安排，可先恢复，下次兼顾卷腹和平板。';
+ else if(coreDays<2||gap(core)>=3)coreAdvice='优先补一次腹部核心，量以舒适为准。';
+ else if(!sit.length||!plank.length)coreAdvice='下次可补充'+(!sit.length?'仰卧起坐':'平板支撑')+'，与现有动作交替。';
+ else coreAdvice='保持核心训练节奏，按恢复情况交替卷腹与平板。';
+ const kneeAdvice=!kneeDays?'暂无相关记录，按舒适程度安排。':kneeDays>=5&&gap(knee)<=1?'近期膝相关动作频繁，下一次减少重复屈膝安排。':gap(knee)===0?'今天已有膝相关活动，避免机械叠加。':'错开跑步机、静蹲等项目，按膝部感受调整。';
+ const swimAdvice=!swimDays?'近7天未游泳，方便时可择日安排。':gap(swim)===0?'今日已游泳，不必再追距离。':gap(swim)>=4?'距上次已'+gap(swim)+'天，状态良好可择日游泳。':'保持原游泳节奏，不必额外增加距离。';
+ const kneeParts=[wall.length?'静蹲'+fmt(wallMin)+'分':'',treadmill.length?'跑步机'+fmt(runMin)+'分':'',elliptical.length?'椭圆机'+fmt(ellMin)+'分':'',bike.length?'骑行'+fmt(bikeMin)+'分':'',leg.length?'腿部器械'+count(leg)+'天':''].filter(Boolean);
+ return [
+  {label:'腹部核心',evidence:coreDays?coreDays+'天 · 仰卧起坐'+fmt(sitReps)+'次 · 平板'+fmt(plankMin)+'分':'暂无记录',advice:coreAdvice,focus:true},
+  {label:'上肢器械',evidence:upperDays?upperDays+'天 · '+fmt(upperReps)+'次':'暂无记录',advice:upperAdvice},
+  {label:'膝盖负荷',evidence:kneeParts.join(' · ')||'暂无相关记录',advice:kneeAdvice},
+  {label:'游泳',evidence:swimDays?swimDays+'天 · '+(swimM?fmt(swimM)+'米':swimMin?fmt(swimMin)+'分':'已记录')+(breast.length?' · 蛙泳':''):'暂无记录',advice:swimAdvice}
+ ];
 }
 function renderTrainingAdvice(){
  const a=trainingAdviceData(state.records,localDate());
- return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>近7天 · 健身房 '+a.gym+'天</span></div>'+
- '<div class="training-advice-meta">'+a.evidence+'</div>'+
- '<p class="training-advice-copy"><strong>'+a.heading+'：</strong>'+a.advice+'</p></section>';
+ return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>近7天 · 核心优先</span></div>'+
+ '<div class="training-advice-four">'+a.map(x=>'<div class="training-advice-row'+(x.focus?' focus':'')+'"><strong>'+safe(x.label)+'</strong><div><span>'+safe(x.evidence)+'</span><p>'+safe(x.advice)+'</p></div></div>').join('')+'</div></section>';
 }
 function renderCalendar(){
  const today=localDate();
