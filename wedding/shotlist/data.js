@@ -3925,7 +3925,10 @@ window.ENWAN_DATA = {
       "images": [
         "assets/references/reviewed/W356.jpeg",
         "assets/references/reviewed/W526.jpeg",
-        "assets/references/reviewed/W556.jpeg"
+        "assets/references/reviewed/W556.jpeg",
+        "assets/references/reviewed/W050.jpeg",
+        "assets/references/reviewed/W065.png",
+        "assets/references/reviewed/W067.png"
       ],
       "image_notes": [
         {
@@ -3939,6 +3942,18 @@ window.ENWAN_DATA = {
         {
           "source": "W556",
           "reason": "车门天然框景的双人相对姿势明确，作为转场停留时对视机位参考；不是车内牵手"
+        },
+        {
+          "source": "W050",
+          "reason": "用户批量恢复至 站定自然对视"
+        },
+        {
+          "source": "W065",
+          "reason": "用户批量恢复至 站定自然对视"
+        },
+        {
+          "source": "W067",
+          "reason": "用户批量恢复至 站定自然对视"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4808,7 +4823,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 136,
+    "images": 139,
     "core_cards": 26,
     "additional_cards": 9
   },

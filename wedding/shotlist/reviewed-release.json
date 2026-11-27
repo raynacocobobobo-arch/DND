@@ -407,6 +407,17 @@
     "git_blob": "eed843dd843351510d60ab57d400d47ef94a02ad"
   },
   {
+    "source_key": "W050",
+    "sha256": "e72ca473436a922f7f91cbd3aa846034aabd35a29e0a55de6627a9eda28f207b",
+    "file_size": 282143,
+    "assigned_card_id": "A11",
+    "visual_description": "红色灯光中男子面对镜头微笑近景",
+    "match_reason": "用户批量恢复至 站定自然对视",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W050.jpeg",
+    "git_blob": "cd7edd0a6b4ce658b1a02a076d6f75c9101b06cd"
+  },
+  {
     "source_key": "W052",
     "sha256": "ea1f011aab585671dceba858b358c36b5f8e2733ec752e50008368bb83d8e9be",
     "file_size": 168403,
@@ -438,6 +449,28 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W064.jpeg",
     "git_blob": "6bc75cd8731ee99cbc75223ace9a4b2786081797"
+  },
+  {
+    "source_key": "W065",
+    "sha256": "cb9f9af1cb0d306a018514142cfd95aa18d7a1595b407928eff79261828ee266",
+    "file_size": 139098,
+    "assigned_card_id": "A11",
+    "visual_description": "前景虚化男子，蓝衣女子从门口走出",
+    "match_reason": "用户批量恢复至 站定自然对视",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W065.png",
+    "git_blob": "80e7ed9e014b12a43b8fcce8128a8fd0c88115c1"
+  },
+  {
+    "source_key": "W067",
+    "sha256": "51b07cf66f3c5ffb196cf281da8981d1b1b27c2cf54b0814b143e0b5bedeaffa",
+    "file_size": 184037,
+    "assigned_card_id": "A11",
+    "visual_description": "蓝衣女子背影清晰，远处人物虚化靠近",
+    "match_reason": "用户批量恢复至 站定自然对视",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W067.png",
+    "git_blob": "1201e0d84aa4513961a54b5fffc6edce59139974"
   },
   {
     "source_key": "W145",
