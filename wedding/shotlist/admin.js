@@ -29,16 +29,19 @@ function buildRelease(data, groups, index) {
   function syncUndo(){$("quick-undo").hidden=!lastRemoved||!token||!data;$("quick-undo").disabled=busy;}
   const b64=bytes=>{let s="";for(let i=0;i<bytes.length;i+=16384)s+=String.fromCharCode(...bytes.subarray(i,i+16384));return btoa(s)};
   const decode=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,"")),c=>c.charCodeAt(0)));
-  let session=null;
-  function remember(s){session=s;token=s?.access_token||"";try{if(s)localStorage.setItem(SESSION_KEY,JSON.stringify({access_token:s.access_token,refresh_token:s.refresh_token,expires_at:s.expires_at||Math.floor(Date.now()/1000)+(s.expires_in||3600)}));else localStorage.removeItem(SESSION_KEY)}catch{}}
+  let session=null,deviceAccess="";const DEVICE_KEY="enwan-admin-device-v1";
+  function rememberDevice(v){deviceAccess=/^[A-Za-z0-9_-]{43}$/.test(v||"")?v:"";token=deviceAccess?"device":session?.access_token||"";try{if(deviceAccess)localStorage.setItem(DEVICE_KEY,deviceAccess);else localStorage.removeItem(DEVICE_KEY)}catch{}}
+  function restoreDevice(){try{rememberDevice(localStorage.getItem(DEVICE_KEY)||"")}catch{}}
+  function clearAccess(){rememberDevice("");remember(null)}
+  function remember(s){session=s;token=deviceAccess?"device":s?.access_token||"";try{if(s)localStorage.setItem(SESSION_KEY,JSON.stringify({access_token:s.access_token,refresh_token:s.refresh_token,expires_at:s.expires_at||Math.floor(Date.now()/1000)+(s.expires_in||3600)}));else localStorage.removeItem(SESSION_KEY)}catch{}}
   function restore(){try{const v=JSON.parse(localStorage.getItem(SESSION_KEY)||"null");if(v?.access_token&&v?.refresh_token){session=v;token=v.access_token}}catch{}}
   async function authCall(path,body){const r=await fetch(SUPABASE+"/auth/v1/"+path,{method:"POST",headers:{apikey:PUBLIC_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.msg||d.message||d.error_description||"登录失败，请核对账户");return d}
   async function refresh(){if(!session?.refresh_token)throw Error("请先登录管理员账户");try{remember(await authCall("token?grant_type=refresh_token",{refresh_token:session.refresh_token}))}catch(e){remember(null);$("auth").hidden=false;$("auth").open=true;throw Error("登录已失效，请重新登录")}}
-  async function server(action,payload={},retried=false){if(!session)throw Error("请先登录管理员账户");if(session.expires_at&&session.expires_at<Math.floor(Date.now()/1000)+60)await refresh();const r=await fetch(SUPABASE+"/functions/v1/enwan-admin",{method:"POST",headers:{apikey:PUBLIC_KEY,Authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},body:JSON.stringify({action,...payload})});const v=await r.json().catch(()=>({}));if(r.status===401&&!retried){await refresh();return server(action,payload,true)}if(!r.ok)throw Error(v.error||"服务端请求失败："+r.status);return v}
-  function applySnapshot(v){if(!/^[a-f0-9]{40}$/.test(v?.head||"")||!v.data?.cards||!v.index?.counts||!v.groups||!Array.isArray(v.published))throw Error("服务器未返回完整保存结果，请重新读取核对");head=v.head;baseTree=v.baseTree;data=v.data;index=v.index;groups=v.groups;published=v.published;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;selectedCard=data.cards.some(c=>c.id===selectedCard)?selectedCard:data.cards[0]?.id||"";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;render();syncUndo()}
-  async function load(){status("正在读取正式照片，可先点击要删除的照片…");applySnapshot(await server("load"));status("已登录。点击删除即可自动保存。");focusRequested()}
+  async function server(action,payload={},retried=false){if(!deviceAccess&&!session)throw Error("请使用专用管理链接或备用登录");if(!deviceAccess&&session.expires_at&&session.expires_at<Math.floor(Date.now()/1000)+60)await refresh();const headers={apikey:PUBLIC_KEY,"Content-Type":"application/json",...(deviceAccess?{"x-enwan-access":deviceAccess}:{Authorization:"Bearer "+session.access_token})};const r=await fetch(SUPABASE+"/functions/v1/enwan-admin",{method:"POST",headers,body:JSON.stringify({action,...payload})});const v=await r.json().catch(()=>({}));if(r.status===401&&!retried&&!deviceAccess){await refresh();return server(action,payload,true)}if(!r.ok)throw Error(v.error||"服务端请求失败："+r.status);return v}
+  function applySnapshot(v){if(!/^[a-f0-9]{40}$/.test(v?.head||"")||!v.data?.cards||!v.index?.counts||!v.groups||!Array.isArray(v.published))throw Error("服务器未返回完整保存结果，请重新读取核对");head=v.head;baseTree=v.baseTree;data=v.data;index=v.index;groups=v.groups;published=v.published;for(const s of staged.values())URL.revokeObjectURL(s.url);staged.clear();dirty=false;selectedCard=data.cards.some(c=>c.id===selectedCard)?selectedCard:data.cards[0]?.id||"";$("editor").hidden=false;$("writebar").hidden=false;$("auth").hidden=true;$("connect-retry").hidden=true;render();syncUndo()}
+  async function load(){status("正在读取正式照片，可先点击要删除的照片…");applySnapshot(await server("load"));status("已连接 · 点击删除即可自动保存。");focusRequested()}
   async function loginComplete(){await load();if(pendingDelete){const target=pendingDelete;pendingDelete=null;await deletePhoto(target)}}
-  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("email-link").disabled=on;$("editor").inert=on;$("visual").inert=on&&!!data;$("task-admin").inert=on;syncUndo()}
+  function locked(on){busy=on;$("publish").disabled=on||!dirty;$("reload").disabled=on;$("logout").disabled=on;$("login").disabled=on;$("email-link").disabled=on;$("connect-retry").disabled=on;$("editor").inert=on;$("visual").inert=on&&!!data;$("task-admin").inert=on;syncUndo()}
   async function run(fn){if(busy)return;locked(true);try{await fn()}catch(e){status((dirty?"尚未保存：":"")+(e.message||"操作失败"));if(dirty)$("publish").hidden=false}finally{locked(false)}}
   function cardOptions(select, includeBlank=false){let prev=select.value;select.replaceChildren();if(includeBlank)select.append(opt("","请选择动作卡"));for(const c of data.cards)select.append(opt(c.id,c.category+" · "+c.title+" ("+c.id+")"));if([...select.options].some(o=>o.value===prev))select.value=prev;}
   function mark(){dirty=true;published=buildRelease(data,groups,index);render();status("正在自动保存到 GitHub…");if(busy)return publishChanges();return run(publishChanges)}
@@ -67,10 +70,10 @@ function buildRelease(data, groups, index) {
     $("ctitle").value=c.title;$("ccat").value=c.category;$("clevel").value=c.action_level||LEVELS[1];$("cwhen").value=c.applicable_when||"";$("cprompt").value=c.prompt||"";$("ccamera").value=c.camera||"";$("ccheck").value=c.delivery_check||"";
     $("card-images").textContent="已采用 "+c.images.length+" 张图片";
   }
-  $("login").onclick=()=>run(async()=>{const email=$("admin-email").value.trim(),password=$("admin-password").value;$("admin-password").value="";if(!email||!password)throw Error("请填写管理员邮箱和密码");remember(await authCall("token?grant_type=password",{email,password}));try{await loginComplete()}catch(e){remember(null);throw e}});
+  $("login").onclick=()=>run(async()=>{const email=$("admin-email").value.trim(),password=$("admin-password").value;$("admin-password").value="";if(!email||!password)throw Error("请填写管理员邮箱和密码");rememberDevice("");remember(await authCall("token?grant_type=password",{email,password}));try{await loginComplete()}catch(e){remember(null);throw e}});
   $("email-link").onclick=()=>run(async()=>{const email=$("admin-email").value.trim();if(!email)throw Error("请输入管理员邮箱");const redirect=location.origin+location.pathname;await authCall("otp?redirect_to="+encodeURIComponent(redirect),{email,create_user:false});status("如账户有效，登录链接已发送，请查收邮件并返回后台。")});
   $("reload").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并重新读取 GitHub？"))return;lastRemoved=null;run(load)};
-  $("logout").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并退出？"))return;remember(null);location.reload()};
+  $("logout").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并退出？"))return;clearAccess();location.reload()};
   $("search").oninput=()=>{page=0;renderImages()};$("filter").onchange=()=>{page=0;renderImages()};$("prev").onclick=()=>{page--;renderImages()};$("next").onclick=()=>{page++;renderImages()};
   for(const x of CATS)$("ccat").append(opt(x,x));for(const x of LEVELS)$("clevel").append(opt(x,x));
   $("card-select").onchange=()=>{selectedCard=$("card-select").value;renderCard()};
@@ -106,7 +109,7 @@ function buildRelease(data, groups, index) {
     (groups["reviews/uploads.json"]??=[]).push(r);staged.set(id,{path,sha:b.sha,url:URL.createObjectURL(f)});return r;
   }
   function canEdit(card){
-    if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("admin-email").focus();status("首次编辑请登录管理员账户，后续自动保持登录。");return false;
+    if(token&&data)return true;requestedCard=card||requestedCard;$("auth").open=true;$("auth").scrollIntoView({behavior:"smooth",block:"start"});$("admin-email").focus();status("普通链接需要登录；使用专用管理链接可直接编辑。");return false;
   }
   function focusRequested(){if(!requestedCard)return;const id=requestedCard;requestedCard="";const c=document.getElementById("card-"+id);if(c)c.scrollIntoView({behavior:"smooth",block:"start"})}
   function exclude(r,why){r.last_card_id=r.assigned_card_id;r.assigned_card_id=null;r.review_status="excluded";r.review_notes=(r.review_notes||"")+"；原采用依据："+r.match_reason+"；用户移除 "+new Date().toISOString();r.match_reason=why;}
@@ -124,7 +127,7 @@ function buildRelease(data, groups, index) {
     const view=data||window.ENWAN_DATA;if(!view){$("visual-summary").textContent="未能读取网站数据，请刷新。";return}
     const editable=!!(token&&data),cat=$("visual-cat").value,q=$("visual-search").value.trim().toLowerCase(),only=$("visual-filled").checked;
     const visible=view.cards.filter(c=>(!cat||c.category===cat)&&(!only||c.images.length)&&(!q||[c.id,c.title,c.category,...(c.image_notes||[]).map(n=>n.source)].join(" ").toLowerCase().includes(q)));
-    $("visual-summary").textContent=(editable?"已登录 · 操作后自动保存":"直接浏览照片 · 首次编辑时登录管理员账户")+" · "+view.cards.length+" 张动作卡 / "+view.cards.reduce((n,c)=>n+c.images.length,0)+" 张照片";
+    $("visual-summary").textContent=(editable?"已登录 · 操作后自动保存":"预览模式 · 请使用专用管理链接")+" · "+view.cards.length+" 张动作卡 / "+view.cards.reduce((n,c)=>n+c.images.length,0)+" 张照片";
     const g=$("visual-cards");g.replaceChildren();let last="";
     for(const c of visible){
       if(c.category!==last){g.append(node("h3",c.category,"category-heading"));last=c.category}
@@ -163,7 +166,9 @@ function buildRelease(data, groups, index) {
   function moveTask(delta){if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;const arr=item.s.items,i=arr.indexOf(item.t),n=i+delta;if(n<0||n>=arr.length)return;if(!/^S\d+$/.test(item.s.id)&&arr[n].id.replace(/-\d+$/,"")!==item.t.id.replace(/-\d+$/,""))return alert("原版顺序保持不变，仅可调整同组内要点");[arr[i],arr[n]]=[arr[n],arr[i]];mark()}
   $("task-up").onclick=()=>moveTask(-1);$("task-down").onclick=()=>moveTask(1);
   $("task-delete").onclick=()=>{if(!canEdit()||taskDraft)return;const item=flatTasks(data).find(x=>x.t.id===taskSelected);if(!item)return;if(flatTasks(data).some(x=>x.t.parent_id===item.t.id))return alert("先移动此任务的详细拍摄点");if(!confirm("删除任务："+item.t.title+"？本机项目中此任务的历史完成状态会失效。"))return;item.s.items=item.s.items.filter(x=>x!==item.t);taskSelected="";mark()};
-  renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载照片。点击任一照片的删除按钮即可操作；首次修改需登录管理员账户。");focusRequested();
-  const authHash=new URLSearchParams(location.hash.slice(1));if(authHash.get("access_token")&&authHash.get("refresh_token")){remember({access_token:authHash.get("access_token"),refresh_token:authHash.get("refresh_token"),expires_in:Number(authHash.get("expires_in")||3600)});history.replaceState(null,"",location.pathname+location.search)}else restore();if(session)run(async()=>{try{await loginComplete()}catch(e){if(!data){$("auth").hidden=false;$("auth").open=true;}throw e}});
+  renderTasks();renderVisual();if(window.ENWAN_DATA)status("已加载照片。点击任一照片的删除按钮即可操作；专用管理链接可直接编辑。");focusRequested();
+  const authHash=new URLSearchParams(location.hash.slice(1));const access=authHash.get("access");if(access){rememberDevice(access);history.replaceState(null,"",location.pathname+location.search)}else if(authHash.get("access_token")&&authHash.get("refresh_token")){rememberDevice("");remember({access_token:authHash.get("access_token"),refresh_token:authHash.get("refresh_token"),expires_in:Number(authHash.get("expires_in")||3600)});history.replaceState(null,"",location.pathname+location.search)}else{restore();restoreDevice()}
+  async function connect(){try{await loginComplete()}catch(e){if(!data){$("auth").hidden=false;$("connect-retry").hidden=false;if(!deviceAccess)$("auth").open=true;}throw e}}
+  $("connect-retry").onclick=()=>run(connect);if(deviceAccess||session){$("auth").hidden=true;run(connect)}
   window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
 })();
