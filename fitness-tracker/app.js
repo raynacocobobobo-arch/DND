@@ -366,6 +366,13 @@ function previewRule(d){const m=calcMeta(d);if(!m)return '基于2024年成人MET
 function recordDescription(r){if(r.type==='walking')return (r.steps||0)+'步';if(r.type==='cardio')return (r.duration_min||0)+'分钟';if(r.type==='running')return Number(r.duration_min)>0?r.duration_min+'分钟'+(r.speedKmh?' · '+r.speedKmh+'km/h':''):(r.distance_km||0)+'km（旧记录）';if(r.type==='swimming')return Number(r.laps)>0?r.laps+'圈 · '+(r.distance_m||r.laps*50)+'米'+(r.duration_min?' · '+r.duration_min+'分钟':' · 时长推算'):(r.duration_min||0)+'分钟（旧记录）';if(r.type==='hold')return (r.sets||0)+'组 × '+(r.secondsPerSet||0)+'秒';if(r.type==='strength')return r.sets&&r.repsPerSet?r.sets+'组 × '+r.repsPerSet+'次 = '+r.reps+'次':(r.reps||0)+'次';return r.note||'运动记录';}
 function recordName(r){return r.type==='walking'?'走路':(r.presetKey==='back'||r.exercise==='背部运动')?'臀桥及背部':r.exercise||r.stroke||r.note||prettyType(r.type)}
 
+function historyRecordTime(r){
+ if(!r.createdAt||r.original)return '';
+ const d=new Date(r.createdAt);
+ if(!Number.isFinite(d.getTime()))return '';
+ const clock=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+ return '<time class="record-time" datetime="'+safe(d.toISOString())+'" title="'+safe(localDate(d)+' '+clock+' · 打卡记录时间')+'">'+clock+'</time>';
+}
 function historyRecordCard(r){
  const isSet=r.type==='strength'||r.type==='hold';
  const qty=isSet&&Number.isFinite(Number(r.sets))&&Number(r.sets)>0
@@ -385,6 +392,7 @@ function historyRecordCard(r){
  '<div class="record-meta"><strong>'+safe(recordName(r))+'</strong><small>'+safe(detail)+'</small></div>'+
  '<div class="record-metric"><div><strong>'+safe(qty.main)+'</strong><span>'+safe(qty.unit)+'</span></div>'+
  '<small class="record-energy">'+(Number(r.calories)||0)+' kcal · '+(r.calorieVersion===CALORIE_MODEL_VERSION?'新版额外热量估算':'旧算法记录')+'</small></div>'+
+ historyRecordTime(r)+
  '<button type="button" class="record-action" data-edit="'+safe(r.id)+'" aria-label="编辑 '+safe(recordName(r))+'">编辑</button>'+
  '<button type="button" class="record-action danger" data-delete="'+safe(r.id)+'" aria-label="删除 '+safe(recordName(r))+'">删除</button></div>';
 }
