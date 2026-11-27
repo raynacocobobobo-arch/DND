@@ -3973,7 +3973,10 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W549.jpeg",
         "assets/references/reviewed/W937.jpeg",
         "assets/references/reviewed/W938.jpeg",
-        "assets/references/reviewed/W176.png"
+        "assets/references/reviewed/W176.png",
+        "assets/references/reviewed/W056.jpeg",
+        "assets/references/reviewed/W169.jpeg",
+        "assets/references/reviewed/W171.jpeg"
       ],
       "image_notes": [
         {
@@ -3995,6 +3998,18 @@ window.ENWAN_DATA = {
         {
           "source": "W176",
           "reason": "采用：拥抱时正面情绪清晰，与W171接吻和W169环境全景互补"
+        },
+        {
+          "source": "W056",
+          "reason": "采用：拥抱全貌与环境中远景"
+        },
+        {
+          "source": "W169",
+          "reason": "用户批量恢复至 自然拥抱与亲密互动"
+        },
+        {
+          "source": "W171",
+          "reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4823,7 +4838,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 139,
+    "images": 142,
     "core_cards": 26,
     "additional_cards": 9
   },

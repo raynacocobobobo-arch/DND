@@ -429,6 +429,17 @@
     "git_blob": "8f9c7686d087890535afb47713f3db81791bd980"
   },
   {
+    "source_key": "W056",
+    "sha256": "125ce5cd560802b779d89d702045a7a99477580635b52695bf79d1822925a1a3",
+    "file_size": 154911,
+    "assigned_card_id": "A12",
+    "visual_description": "暮色天桥两人紧紧拥抱，远处城市作背景",
+    "match_reason": "采用：拥抱全貌与环境中远景",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W056.jpeg",
+    "git_blob": "08fc8d8ea026c2ac244d1681b87577fe72f50ddf"
+  },
+  {
     "source_key": "W061",
     "sha256": "89eab37d4a6396d85a2489130a6ac3766eeca3f32387d943db61f9db8e215207",
     "file_size": 144716,
@@ -482,6 +493,28 @@
     "match_type": "reference",
     "path": "assets/references/reviewed/W145.jpeg",
     "git_blob": "1650d65a26e0ea1cd11ae4e76d40f02856773b96"
+  },
+  {
+    "source_key": "W169",
+    "sha256": "7be49b47858047e6fd668a4adfbddf89178191ddf661515de70108d73ad9cacb",
+    "file_size": 227472,
+    "assigned_card_id": "A12",
+    "visual_description": "机场大厅带行李的两人相拥远景",
+    "match_reason": "用户批量恢复至 自然拥抱与亲密互动",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W169.jpeg",
+    "git_blob": "175f23931cf778bcf7a1964b27f8c70394cc3cba"
+  },
+  {
+    "source_key": "W171",
+    "sha256": "1c018fb427fde1ff308d7ef80416fe1e6e09e85f00e853d902e5965eb724f223",
+    "file_size": 109440,
+    "assigned_card_id": "A12",
+    "visual_description": "两人拥抱接吻的近景",
+    "match_reason": "采用：亲密互动、手臂环抱及侧向近景明确，与W169迎接全景互补",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W171.jpeg",
+    "git_blob": "88f3dc8bd601a13287996f0b5e632f0ac6c18065"
   },
   {
     "source_key": "W176",
