@@ -249,12 +249,51 @@ body[data-screen="calendar"] .weight-empty {margin:8px 0 4px;}
   body[data-screen="calendar"] .weight-chart svg { height:58px !important; }
 }
 
-/* Rolling training advice: use the existing paper card and keep it compact. */
-body[data-screen="calendar"] .training-advice { flex:0 0 auto !important; }
-body[data-screen="calendar"] .training-advice-meta { font-size:11px; line-height:1.35; font-weight:700; color:#704d32; margin:6px 0 3px; }
-body[data-screen="calendar"] .training-advice-copy { font-size:12px; line-height:1.45; color:#25170f; margin:0; }
-body[data-screen="calendar"] .training-advice-copy strong { color:#55713e; font-weight:900; }
-@media (max-width:850px) and (min-height:700px) {
- body[data-screen="calendar"] #content { overflow-y:auto !important; overflow-x:hidden !important; }
- body[data-screen="calendar"] .cal30-shell { flex:0 0 auto !important; overflow:visible !important; }
+/* One-screen calendar with exercise-specific advice. */
+body[data-screen="calendar"] .training-advice { flex:0 0 auto!important; }
+body[data-screen="calendar"] .training-advice-meta { font-size:11px;line-height:1.3;font-weight:750;color:#704d32;margin:4px 0 2px; }
+body[data-screen="calendar"] .training-advice-copy { font-size:12px;line-height:1.35;color:#25170f;margin:0; }
+body[data-screen="calendar"] .training-advice-copy strong { color:#55713e;font-weight:900; }
+@media (max-width:850px) {
+ body[data-screen="calendar"],body[data-screen="calendar"] .app { height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important; }
+ body[data-screen="calendar"] .main { box-sizing:border-box!important; height:100dvh!important;max-height:100dvh!important;min-height:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;padding-top:calc(env(safe-area-inset-top,0px) + 5px)!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 69px)!important; }
+ body[data-screen="calendar"] #content { display:flex!important;flex-direction:column!important;flex:1 1 0!important;height:100%!important;min-height:0!important;overflow:hidden!important; }
+ body[data-screen="calendar"] #content>.topline { height:clamp(76px,13dvh,120px)!important;min-height:0!important;max-height:120px!important;flex:0 0 auto!important;margin-bottom:5px!important;padding:6px 10px!important; }
+ body[data-screen="calendar"] .cal30-shell { flex:1 1 0!important;height:auto!important;min-height:0!important;gap:5px!important;overflow:hidden!important; }
+ body[data-screen="calendar"] .cal30-board { flex:1 1 0!important;min-height:0!important;padding:6px 8px!important; }
+ body[data-screen="calendar"] .cal30-header { min-height:32px!important;padding-bottom:3px!important; }
+ body[data-screen="calendar"] .cal30-months { height:19px!important;min-height:19px!important;margin-bottom:3px!important; }
+ body[data-screen="calendar"] .cal30-grid { flex:1 1 0!important; height:auto!important;min-height:0!important;max-height:230px!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;gap:3px!important; }
+ body[data-screen="calendar"] .cal30-day { padding:3px 1px!important;gap:1px!important;justify-content:center!important; }
+ body[data-screen="calendar"] .cal30-footer { margin-top:4px!important;padding-top:4px!important; }
+ body[data-screen="calendar"] .cal30-stat { font-size:10px!important;gap:0!important; }
+ body[data-screen="calendar"] .cal30-stat strong { font-size:clamp(16px,4.3vw,22px)!important; }
+ body[data-screen="calendar"] .cal30-rest { margin-top:2px!important; }
+ body[data-screen="calendar"] .cal30-back,body[data-screen="calendar"] .cal30-rest .rest-check-button { min-height:26px!important;margin-top:3px!important;padding:3px 7px!important; }
+ body[data-screen="calendar"] .weight-board { flex:0 0 auto!important;padding:5px 9px!important; }
+ body[data-screen="calendar"] .weight-header { padding-bottom:3px!important;border-bottom:1px solid #b48b61; }
+ body[data-screen="calendar"] .weight-header h2 { font-size:17px!important;line-height:1.1!important; }
+ body[data-screen="calendar"] .weight-form { margin-top:4px!important; }
+ body[data-screen="calendar"] .weight-input input,body[data-screen="calendar"] .weight-form button { height:30px!important;min-height:30px!important; }
+ body[data-screen="calendar"] .weight-trend-top { margin-top:4px!important; }
+ body[data-screen="calendar"] .weight-chart { margin-top:2px!important; }
+ body[data-screen="calendar"] .weight-chart svg { height:clamp(43px,6dvh,56px)!important; }
+ body[data-screen="calendar"] .training-advice-meta { margin:3px 0 2px!important; font-size:10px!important; }
+ body[data-screen="calendar"] .training-advice-copy { font-size:11px!important;line-height:1.35!important; }
+}
+@media (max-width:850px) and (max-height:640px) {
+ body[data-screen="calendar"] #content>.topline { height:65px!important; }
+ body[data-screen="calendar"] .cal30-shell { gap:4px!important; }
+ body[data-screen="calendar"] .cal30-header { min-height:29px!important; }
+ body[data-screen="calendar"] .cal30-day { padding:1px!important; }
+ body[data-screen="calendar"] .weight-board { padding:4px 7px!important; }
+ body[data-screen="calendar"] .weight-header h2 { font-size:16px!important; }
+ body[data-screen="calendar"] .weight-chart svg { height:39px!important; }
+}
+/* On unusually short viewports allow overflow rather than silently hiding data. */
+@media (max-width:850px) and (max-height:540px) {
+ body[data-screen="calendar"] #content { overflow-y:auto!important; }
+ body[data-screen="calendar"] .cal30-shell { flex:none!important;overflow:visible!important; }
+ body[data-screen="calendar"] .cal30-board { flex:none!important; }
+ body[data-screen="calendar"] .cal30-grid { flex:none!important;height:117px!important; }
 }
