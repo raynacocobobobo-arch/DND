@@ -60,11 +60,11 @@ function buildRelease(data, groups, index) {
     const label=node("label",undefined,"photo-select"),input=node("input");input.type="checkbox";input.checked=map.has(record.source);input.setAttribute("aria-label","选择照片 "+record.source);label.append(input);tile.append(label);tile.classList.toggle("selected-photo",input.checked);
     input.onchange=()=>{if(!token||!data){input.checked=false;canEdit(record.card);return}if(busy||dirty){input.checked=map.has(record.source);return}if(input.checked)map.set(record.source,record);else map.delete(record.source);tile.classList.toggle("selected-photo",input.checked);syncBulk()};
   }
-  function updateTargetOptions(){const s=$("bulk-target"),prev=s.value;s.replaceChildren(opt("",libraryMode==="trash"?"恢复到原动作卡":"选择目标动作卡"));if(data)for(const cat of CATS){const group=node("optgroup");group.label=cat;for(const c of data.cards.filter(c=>c.category===cat))group.append(opt(c.id,c.title));if(group.children.length)s.append(group)}if([...s.options].some(x=>x.value===prev))s.value=prev}
+  function updateTargetOptions(){const s=$("bulk-target"),prev=s.value;s.replaceChildren(opt("",libraryMode==="trash"?"选择恢复目标动作卡":"选择目标动作卡"));if(data)for(const cat of CATS){const group=node("optgroup");group.label=cat;for(const c of data.cards.filter(c=>c.category===cat))group.append(opt(c.id,c.title));if(group.children.length)s.append(group)}if([...s.options].some(x=>x.value===prev))s.value=prev}
   function syncBulk(){
     const map=selectedMap(),n=map.size,trash=libraryMode==="trash",unavailable=busy||dirty||!data||!token;$("trash-import").disabled=unavailable;
     $("bulk-bar").hidden=!n;$("bulk-count").textContent="已选 "+n+" 张";$("bulk-move").hidden=trash;$("bulk-delete").hidden=trash;$("bulk-restore").hidden=!trash;$("bulk-purge").hidden=!trash;
-    $("bulk-move").disabled=unavailable||!$("bulk-target").value;$("bulk-delete").disabled=unavailable;$("bulk-restore").disabled=unavailable;$("bulk-purge").disabled=unavailable;$("bulk-target").disabled=unavailable;$("bulk-clear").disabled=busy;
+    $("bulk-move").disabled=unavailable||!$("bulk-target").value;$("bulk-delete").disabled=unavailable;$("bulk-restore").disabled=unavailable||!$("bulk-target").value;$("bulk-purge").disabled=unavailable;$("bulk-target").disabled=unavailable;$("bulk-clear").disabled=busy;
     $("select-live").disabled=unavailable||!liveVisible.length;$("select-trash-page").disabled=unavailable||!trashPage.length;$("select-trash-all").disabled=unavailable||!trashVisible.length;
   }
   function selectRecords(records,map){if(busy||dirty||!data)return;const all=records.every(r=>map.has(r.source));for(const r of records)if(all)map.delete(r.source);else map.set(r.source,r);if(map===liveSelected)renderVisual();else renderImages();syncBulk()}
@@ -81,7 +81,7 @@ function buildRelease(data, groups, index) {
     for(const x of items){liveSelected.delete(x.source);trashSelected.delete(x.source)}
     applySnapshot(v);updateTargetOptions();$("actions").hidden=false;syncBulk();syncUndo();status("已"+({delete:"删除",move:"移动",restore:"恢复"}[operation])+" "+items.length+" 张 · 已保存 "+head.slice(0,8)+(operation==="delete"?" · 可撤销或在回收站恢复":""));
   }
-  function requestBatch(operation){if(busy||dirty||!data)return;const items=[...selectedMap().values()],target=operation==="delete"?null:$("bulk-target").value||null;if(!items.length)return;if(operation==="move"&&!target)return;if(operation==="restore"&&!target&&items.some(x=>!data.cards.some(c=>c.id===x.card))){status("部分照片原动作卡不存在，请选择新的目标动作卡");$("bulk-target").focus();return}if(operation==="delete"&&!confirm("删除选中的 "+items.length+" 张照片？原图保留在回收站。"))return;run(()=>executeBatch(operation,items,target))}
+  function requestBatch(operation){if(busy||dirty||!data)return;const items=[...selectedMap().values()],target=operation==="delete"?null:$("bulk-target").value||null;if(!items.length)return;if(operation==="move"&&!target)return;if(operation==="restore"&&!target){status("请选择要恢复到的目标动作卡");$("bulk-target").focus();return}if(operation==="delete"&&!confirm("删除选中的 "+items.length+" 张照片？原图保留在回收站。"))return;run(()=>executeBatch(operation,items,target))}
 
   async function purgeSelected(items){
     status("正在彻底删除 "+items.length+" 张原图 · 一次保存…");
@@ -146,12 +146,12 @@ function buildRelease(data, groups, index) {
   }
 
   function renderImages(){
-    const q=$("search").value.trim().toLowerCase(), filter=$("filter").value;const list=rows().filter(r=>!r.purged_at&&(filter==="all"||(filter==="removed"?r.review_status==="excluded":filter==="ready"?r.review_status==="excluded"&&r.path&&r.git_blob:filter==="missing"?r.review_status==="excluded"&&!(r.path&&r.git_blob):r.review_status===filter))&&(!q||[r.source_key,r.source_group,r.visual_description,r.match_reason,r.assigned_card_id,data.cards.find(c=>c.id===r.assigned_card_id)?.title].join(" ").toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
+    const q=$("search").value.trim().toLowerCase();const list=rows().filter(r=>!r.purged_at&&r.review_status==="excluded"&&!r.assigned_card_id&&(!q||r.source_key.toLowerCase().includes(q))).sort((a,b)=>a.source_key.localeCompare(b.source_key,undefined,{numeric:true}));
     const missing=rows().filter(r=>!r.purged_at&&r.review_status==="excluded"&&/^[WR]\d+$/.test(r.source_key)&&!(r.path&&r.git_blob)).length;$("trash-import-panel").hidden=!missing;$("trash-import-count").textContent="原图待补录 "+missing+" 张";$("trash-import").disabled=busy||dirty;const limit=20;page=Math.max(0,Math.min(page,Math.ceil(list.length/limit)-1));$("page").textContent=`${list.length} 条 · 第 ${page+1}/${Math.max(1,Math.ceil(list.length/limit))} 页`;$("prev").disabled=page===0;$("next").disabled=(page+1)*limit>=list.length;
-    trashVisible=list.filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));trashPage=list.slice(page*limit,(page+1)*limit).filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));const g=$("images");g.replaceChildren();
+    trashVisible=list.filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));trashPage=list.slice(page*limit,(page+1)*limit).filter(r=>r.review_status==="excluded"&&r.path&&r.git_blob).map(r=>selectionRecord(r,true));const g=$("images");g.replaceChildren();if(!list.length)g.append(node("p",q?"没有匹配的照片":"回收站为空"));
     for(const r of list.slice(page*limit,(page+1)*limit)){
       const a=node("article",undefined,"item");const url=imageUrl(r);if(url){const link=node("a");link.href=url;link.target="_blank";link.rel="noopener noreferrer";const im=node("img");im.src=url;im.loading="lazy";im.alt=r.source_key+" "+r.visual_description;link.append(im);a.append(link)}else a.append(node("div",r.review_status==="excluded"?"原图待补录":"未发布原图","noimage"));
-      const former=data.cards.find(c=>c.id===r.last_card_id);a.append(node("strong",r.source_key),node("small",former?"原位置："+former.title:r.last_card_id?"原动作卡已删除":"无原位置"));const details=node("details",undefined,"archive-meta");details.append(node("summary","审核记录"),node("p",r.visual_description),node("small",r.match_reason));a.append(details);if(r.review_status==="excluded"&&r.path&&r.git_blob)attachCheck(a,selectionRecord(r,true),trashSelected);
+      a.append(node("strong",r.source_key));if(r.path&&r.git_blob)attachCheck(a,selectionRecord(r,true),trashSelected);
       g.append(a);
     }
     syncBulk();
@@ -166,7 +166,7 @@ function buildRelease(data, groups, index) {
   $("email-link").onclick=()=>run(async()=>{const email=$("admin-email").value.trim();if(!email)throw Error("请输入管理员邮箱");const redirect=location.origin+location.pathname;await authCall("otp?redirect_to="+encodeURIComponent(redirect),{email,create_user:false});status("如账户有效，登录链接已发送，请查收邮件并返回后台。")});
   $("reload").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并重新读取 GitHub？"))return;lastRemoved=null;lastBatch=null;liveSelected.clear();trashSelected.clear();run(load)};
   $("logout").onclick=()=>{if(dirty&&!confirm("放弃未提交修改并退出？"))return;clearAccess();location.reload()};
-  $("search").oninput=()=>{page=0;renderImages()};$("filter").onchange=()=>{page=0;renderImages()};$("prev").onclick=()=>{page--;renderImages()};$("next").onclick=()=>{page++;renderImages()};
+  $("search").oninput=()=>{page=0;renderImages()};$("prev").onclick=()=>{page--;renderImages()};$("next").onclick=()=>{page++;renderImages()};
   for(const x of CATS)$("ccat").append(opt(x,x));for(const x of LEVELS)$("clevel").append(opt(x,x));
   $("card-select").onchange=()=>{selectedCard=$("card-select").value;renderCard()};
   function openCard(id){
