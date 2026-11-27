@@ -1170,8 +1170,8 @@ function trainingAdviceData(records,today){
 }
 function renderTrainingAdvice(){
  const a=trainingAdviceData(state.records,localDate());
- return '<section class="weight-board training-advice" aria-label="最近7天训练建议"><div class="weight-header"><h2>训练建议</h2><span>近7天 · 核心优先</span></div>'+
- '<div class="training-advice-four">'+a.map(x=>'<div class="training-advice-row'+(x.focus?' focus':'')+'"><strong>'+safe(x.label)+'</strong><p>'+safe(x.advice)+'</p></div>').join('')+'</div></section>';
+ return '<section class="weight-board training-advice" aria-label="训练建议"><div class="weight-header"><h2>训练建议</h2></div>'+
+ '<p class="training-advice-copy" style="margin-top:5px">'+a.map(x=>safe(x.advice)).join('')+'</p></section>';
 }
 function renderCalendar(){
  const today=localDate();
