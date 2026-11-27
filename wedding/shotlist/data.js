@@ -4256,14 +4256,9 @@ window.ENWAN_DATA = {
       "delivery_check": "动作发生前就位；不要求家人重复整理或刻意掉泪。",
       "is_core": true,
       "images": [
-        "assets/references/reviewed/W462.jpeg",
         "assets/references/reviewed/W471.jpeg"
       ],
       "image_notes": [
-        {
-          "source": "W462",
-          "reason": "A02：家人帮助中式妆造的动作明确，与W453礼服整理场景不同"
-        },
         {
           "source": "W471",
           "reason": "明确的长辈帮新人整理领带动作，与W453女方整理衣服的关系和机位不同；广告情境作为动作参考。"
@@ -6365,7 +6360,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 317,
+    "images": 316,
     "core_cards": 26,
     "additional_cards": 9
   },
