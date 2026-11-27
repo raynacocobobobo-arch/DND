@@ -3709,7 +3709,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/W481.jpeg",
         "assets/references/reviewed/U40c9a8da502b501ff1d2929e.jpeg",
         "assets/references/reviewed/U437cfd52ad4d8d24424b0dc9.jpeg",
-        "assets/references/reviewed/U7216217e0e35e49269fe0a87.jpeg"
+        "assets/references/reviewed/U7216217e0e35e49269fe0a87.jpeg",
+        "assets/references/reviewed/W462.jpeg"
       ],
       "image_notes": [
         {
@@ -3727,6 +3728,10 @@ window.ENWAN_DATA = {
         {
           "source": "U7216217e0e35e49269fe0a87",
           "reason": "采用（影视/广告调度类比）：晨间戴耳饰的侧后方机位和手部动作，补足现有发饰/西装画面。"
+        },
+        {
+          "source": "W462",
+          "reason": "用户批量恢复至 妆造与服饰细节"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4843,7 +4848,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 143,
+    "images": 144,
     "core_cards": 26,
     "additional_cards": 9
   },

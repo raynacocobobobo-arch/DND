@@ -682,6 +682,17 @@
     "git_blob": "67d5911308df60b9c1910c30a95e3cbe1643a842"
   },
   {
+    "source_key": "W462",
+    "sha256": "518d579a776575285ea8ec970b57d73511d33f4c2eb2fe60c896c79cc2a84af4",
+    "file_size": 102092,
+    "assigned_card_id": "A30",
+    "visual_description": "父亲俯身替中式新娘调整头饰，镜面映出新娘面部",
+    "match_reason": "用户批量恢复至 妆造与服饰细节",
+    "match_type": "reference",
+    "path": "assets/references/reviewed/W462.jpeg",
+    "git_blob": "ae3e7f6cc19931516ed289257278a4d41dc83e5d"
+  },
+  {
     "source_key": "W471",
     "sha256": "95ba6b8e57f20292550f617108ef2c1ea0c9bbfe3c71c8825ad14c5f1e2c350f",
     "file_size": 103518,
