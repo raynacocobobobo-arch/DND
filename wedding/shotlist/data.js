@@ -4300,7 +4300,8 @@ window.ENWAN_DATA = {
         "assets/references/reviewed/R245.jpeg",
         "assets/references/reviewed/R302.jpeg",
         "assets/references/reviewed/R311.jpeg",
-        "assets/references/reviewed/R322.jpeg"
+        "assets/references/reviewed/R322.jpeg",
+        "assets/references/reviewed/R052.jpeg"
       ],
       "image_notes": [
         {
@@ -4378,6 +4379,10 @@ window.ENWAN_DATA = {
         {
           "source": "R322",
           "reason": "采用：中心透视、对称构图及逆光人物尺度，适合酒店通廊或仪式空间补拍"
+        },
+        {
+          "source": "R052",
+          "reason": "采用：自然风吹发、回望微笑与浅景深，补充户外柔光新娘肖像"
         }
       ],
       "reference_note": "已逐图审核的动作参考；影视或广告画面仅作为调度示范。"
@@ -4778,7 +4783,7 @@ window.ENWAN_DATA = {
     }
   ],
   "reviewed_release": {
-    "images": 130,
+    "images": 131,
     "core_cards": 26,
     "additional_cards": 9
   },
