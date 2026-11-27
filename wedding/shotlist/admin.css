@@ -22,3 +22,64 @@
 #bulk-purge{background:#a33232;color:#fff;border-color:#a33232}#bulk-purge:disabled{opacity:.45}@media(max-width:600px){#bulk-purge{white-space:nowrap}}
 
 .import-panel{padding:12px;margin:12px 0;background:#edf2ee;border:1px solid #c9d6cc;border-radius:8px}.import-panel p{font-size:13px;margin:5px 0 10px}.import-panel button{min-height:44px}
+
+
+/* V6.12 compact photo-first workspace */
+header{padding:14px max(20px,calc((100% - 1440px)/2));gap:16px}
+header>div{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+header small{font-size:10px;letter-spacing:.08em;opacity:.75}
+header h1{font-size:22px;margin:0;line-height:1.4}
+header p{font-size:12px;opacity:.8}
+header a{font-size:13px;white-space:nowrap}
+main{max-width:1480px;padding:12px 20px 130px}
+.quick-status{padding:3px 0;gap:6px}
+.quick-status #status{min-height:0;padding:6px 10px;font-size:12px;line-height:1.4}
+#writebar{margin:5px 0 8px;padding:7px 10px;border-radius:8px;gap:6px}
+#writebar #counts{font-size:11px}
+#writebar #dirty{margin:0;font-size:11px}
+#writebar .row{gap:5px}
+.library-tabs{gap:6px;margin:8px 0}
+.library-tabs button{min-height:40px;padding:7px}
+#trash-panel{margin:8px 0;padding:14px;border-radius:10px;scroll-margin-top:42px}
+.trash-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.trash-heading h2{font-size:20px;margin:0;display:flex;align-items:baseline;gap:10px}
+.trash-total{font-size:13px;font-weight:500;color:#65766c;font-variant-numeric:tabular-nums}
+.trash-hint{font-size:12px;color:#65766c}
+.trash-toolbar,.trash-tools,.trash-pagination,.trash-footer{display:flex;align-items:center;gap:8px}
+.trash-toolbar{justify-content:space-between;flex-wrap:wrap;padding:0 0 10px;border-bottom:1px solid #e3e8e1}
+.trash-tools{flex-wrap:wrap}
+.trash-tools input{width:190px;min-width:0}
+.trash-toolbar button,.trash-toolbar input,.trash-footer button{font-size:13px;min-height:36px;padding:7px 10px}
+.trash-pagination,.trash-footer{white-space:nowrap;font-size:13px;font-variant-numeric:tabular-nums}
+.trash-footer{justify-content:center;margin:16px 0 2px}
+.archive .gallery{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px;margin-top:12px;align-items:start}
+.archive .item{padding:0;gap:0;border-radius:7px;background:#fff}
+.archive .item>a{display:block;line-height:0;background:#eef0ed}
+.archive .item img,.archive .item .noimage{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#eef0ed}
+.archive .item .noimage{display:grid}
+.archive .item strong{padding:6px 9px;font-size:12px;line-height:1.2;font-variant-numeric:tabular-nums}
+.archive .photo-select{width:36px;height:36px;top:5px;right:5px;border-radius:5px}
+.archive .photo-select input{width:21px;height:21px}
+.archive .selected-photo{outline-offset:-2px;outline-width:2px}
+.archive .selected-photo strong{background:#e6f0e7}
+.bulk-bar{padding-left:max(16px,calc((100% - 1440px)/2));padding-right:max(16px,calc((100% - 1440px)/2))}
+@media(max-width:800px){
+ header{padding:12px 14px}header>div{gap:4px 10px}header small{display:none}header h1{font-size:19px}header p{display:none}
+ main{padding:8px 10px 170px}
+ #trash-panel{padding:10px}.trash-heading{margin-bottom:8px}.trash-heading h2{font-size:18px}.trash-hint{font-size:11px}
+ .trash-tools{flex:1;gap:6px}.trash-tools input{flex:1;min-width:110px;width:auto}
+ .trash-toolbar{gap:8px}.trash-toolbar button,.trash-toolbar input,.trash-footer button{min-height:40px;font-size:12px;padding:6px 8px}
+ .archive .gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}
+ .archive .photo-select{width:44px;height:44px;top:3px;right:3px}.archive .item strong{padding:5px 7px}
+}
+@media(max-width:540px){
+ header{flex-direction:row;align-items:center;gap:8px}header a{font-size:12px}header h1{font-size:18px}
+ #writebar #counts{line-height:1.35}#writebar .row{margin-left:auto}
+ .trash-heading{align-items:flex-start;gap:4px}.trash-hint{width:100%}
+ .trash-tools{width:100%;flex-basis:100%}.trash-tools input{flex-basis:100%}
+ .trash-pagination{width:100%;justify-content:space-between}
+ .trash-pagination button,.trash-footer button{min-height:44px}
+ .archive .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .archive .item strong{font-size:11px}.archive .photo-select{background:#fffffff0}
+ .bulk-bar{padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
+}
