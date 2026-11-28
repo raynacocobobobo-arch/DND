@@ -1128,7 +1128,7 @@ function isGymTrainingRecord(r){
  }
  return false;
 }
-// Weekly totals: real sets where recorded; otherwise 15-rep equivalent sets.
+// Weekly totals: actual repetitions, static sets, minutes, distance and steps.
 // No training advice or rolling targets. Do not modify any saved records.
 function weeklyTrainingStats(records,stepDiary,end){
  const start=localDate(addDays(dateFromISO(end),-6));
@@ -1142,14 +1142,12 @@ function weeklyTrainingStats(records,stepDiary,end){
  const strength=(label,k,rx)=>{
   const rs=rows.filter(r=>r.type==='strength'&&match(k,rx,r));
   const count=sum(rs,r=>p(r.reps)||p(r.sets)*p(r.repsPerSet));
-  const estimated=rs.some(r=>!p(r.sets)&&p(r.reps)>0);
-  const sets=sum(rs,r=>p(r.sets)||p(r.reps)/15);
-  const unknown=rs.some(r=>!p(r.sets)&&!p(r.reps));
-  return {label,value:(estimated?'≈':'')+fmt(sets)+'组',detail:fmt(count)+'次',unknown};
+  const unknown=rs.some(r=>!p(r.reps)&&!(p(r.sets)&&p(r.repsPerSet)));
+  return {label,value:fmt(count)+'次',detail:'',unknown};
  };
  const hold=rows.filter(r=>r.type==='hold'&&match('wall-sit',/靠墙|静蹲|平板/,r));
  const cardio=(label,k,rx)=>{
-  const rs=rows.filter(r=>(r.type==='cardio'||r.type==='running')&&match(k,rx,r));
+  const rs=rows.filter(r=>(r.type==='cardio'||r.type==='running')&&(match(k,rx,r)||(k==='running'&&r.type==='running'&&!name(r))));
   const min=sum(rs,r=>p(r.duration_min));
   const km=sum(rs,r=>!p(r.duration_min)?p(r.distance_km)||p(r.distance_m)/1000:0);
   return {label,value:fmt(min)+'分钟',detail:km?'另有旧里程 '+fmt(km)+'km':'',unknown:rs.some(r=>!p(r.duration_min)&&!p(r.distance_km)&&!p(r.distance_m))};
@@ -1178,14 +1176,14 @@ function weeklyTrainingStats(records,stepDiary,end){
   cardio('自行车','bike',/自行车|骑行/),
   {label:'走路',value:fmt(steps)+'步',detail:''}
  ];
- return {start,end,items,estimated:items.some(x=>x.value.startsWith('≈')),partial:items.some(x=>x.unknown||x.detail.startsWith('另有'))};
+ return {start,end,items,partial:items.some(x=>x.unknown||x.detail.startsWith('另有'))};
 }
 function renderWeeklyTrainingStats(end){
  const w=weeklyTrainingStats(state.records,state.stepDiary,end);
  const short=d=>Number(d.slice(5,7))+'.'+Number(d.slice(8));
  return '<section class="weight-board week-training" aria-label="最近7天训练统计"><div class="weight-header"><h2>7天训练统计</h2><span>'+short(w.start)+'—'+short(w.end)+'</span></div>'+
- '<div class="week-training-grid">'+w.items.map(x=>'<div class="week-training-item" title="'+safe(x.label+' '+x.value+(x.detail?' · '+x.detail:'')+(x.unknown?' · 部分记录无数量':''))+'"><span>'+safe(x.label)+'</span><strong>'+safe(x.value)+'</strong>'+(x.detail&&!x.detail.startsWith('另有')?'<small>'+safe(x.detail)+'</small>':'')+'</div>').join('')+'</div>'+
- (w.estimated||w.partial?'<p class="week-training-note">'+(w.estimated?'≈ 按15次/组折算':'')+(w.partial?(w.estimated?' · ':'')+'部分旧记录缺少对应单位':'')+'</p>':'')+'</section>';
+ '<div class="week-training-grid">'+w.items.map(x=>'<div class="week-training-item" title="'+safe(x.label+' '+x.value+(x.detail?' · '+x.detail:'')+(x.unknown?' · 部分记录无数量':''))+'"><span>'+safe(x.label)+'</span><strong>'+safe(x.value)+(x.unknown||x.detail?'*':'')+'</strong></div>').join('')+'</div>'+
+ (w.partial?'<p class="week-training-note">* 部分旧记录缺少对应单位</p>':'')+'</section>';
 }
 function renderCalendar(){
  const today=localDate();
