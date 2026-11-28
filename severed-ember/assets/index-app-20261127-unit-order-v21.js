@@ -139,7 +139,7 @@ async function ensureRules(){
   const view=document.getElementById('view-rules');
   if(document.getElementById('rules-start'))return true;
   if(!rulesRequest){
-    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v21.html?v=20261127-centered-v2',{cache:'no-cache'})
+    rulesRequest=fetch('assets/rules-fragment-20261127-unit-order-v21.html?v=20261128-xi',{cache:'no-cache'})
       .then(response=>{
         if(!response.ok)throw new Error('HTTP '+response.status);
         return response.text();
