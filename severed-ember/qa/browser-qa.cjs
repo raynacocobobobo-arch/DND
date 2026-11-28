@@ -28,8 +28,8 @@ const cases=[
   if(resp.status()!==200)fail(v.name+':root','status '+resp.status());
   const firstLoad=await page.evaluate(()=>({
     rulesPreloaded:!!document.getElementById('rules-start'),
-    hasExternalCSS:!!document.querySelector('link[href*="index-base.css"]')&&!!document.querySelector('link[href*="index-overrides.css"]'),
-    hasExternalJS:!!document.querySelector('script[src*="index-app.js"]'),
+    hasExternalCSS:['index-base.css','index-overrides.css','index-editorial-20261128.css'].every(file=>[...document.querySelectorAll('link[rel="stylesheet"][href]')].some(link=>new URL(link.href).pathname.endsWith('/'+file)&&!!link.sheet&&performance.getEntriesByName(link.href).some(e=>e.entryType==='resource'))),
+    hasExternalJS:[...document.querySelectorAll('script[src]')].some(script=>/^index-app(?:-[a-z0-9-]+)?\.js$/i.test(new URL(script.src).pathname.split('/').pop())&&performance.getEntriesByName(script.src).some(e=>e.entryType==='resource')),
     htmlBytes:document.documentElement.outerHTML.length
   }));
   if(firstLoad.rulesPreloaded)fail(v.name+':lazy','rules should not be included in the homepage');
@@ -176,18 +176,16 @@ const cases=[
   });
   if(summary.failed.length)fail(v.name+':images','broken '+JSON.stringify(summary.failed));
   records.push({viewport:v.name,type:'content',...summary});
-  // Volume VII: this approved plate belongs immediately above the Grey Knights subsection.
+  // Verify the current approved artwork, not the superseded peripheral plate.
   await page.goto(HOST+'/index.html#codex-v07-h-4-9',{waitUntil:'domcontentloaded',timeout:30000});
   const v07Plate=await page.evaluate(()=>{
-    const title=document.getElementById('codex-v07-h-4-9');
-    const figure=title?.previousElementSibling;
-    return {isFigure:figure?.tagName==='FIGURE',
-      caption:figure?.querySelector('figcaption')?.textContent?.trim(),
-      src:figure?.querySelector('img')?.getAttribute('src')};
+    const dw=document.getElementById('codex-v07-h-4-8')?.nextElementSibling;
+    const gk=document.getElementById('codex-v07-h-4-9')?.nextElementSibling;
+    const src=el=>el?.tagName==='FIGURE'?el.querySelector('img')?.getAttribute('src'):null;
+    return {deathwatch:src(dw),greyKnights:src(gk),obsolete:!!document.querySelector('#codex-v07 img[src*="v07-unnamed-peripheral-record-20261116.webp"]')};
   });
-  if(!v07Plate.isFigure||v07Plate.caption!=='祸临之地 · 无署名外围记录'
-    ||!v07Plate.src?.includes('v07-unnamed-peripheral-record-20261116.webp'))
-    fail(v.name+':v07-placement','unnamed perimeter plate not above Grey Knights '+JSON.stringify(v07Plate));
+  if(!v07Plate.deathwatch?.includes('deathwatch-boarding.webp')||!v07Plate.greyKnights?.includes('v07-agris-rift-20261116.webp')||v07Plate.obsolete)
+    fail(v.name+':v07-placement','approved Deathwatch/Grey Knights artwork not aligned '+JSON.stringify(v07Plate));
   for(const ch of chapters){
     let response=await page.goto(HOST+'/chapters/'+ch+'.html',{waitUntil:'domcontentloaded',timeout:30000});
     await page.evaluate(async()=>{
@@ -207,15 +205,13 @@ const cases=[
       images:[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.getAttribute('src'))}));
     if(ch==='07-other-histories'){
       const plate=await page.evaluate(()=>{
-        const title=document.getElementById('h-4-9');
-        const figure=title?.previousElementSibling;
-        return {isFigure:figure?.tagName==='FIGURE',
-          caption:figure?.querySelector('figcaption')?.textContent?.trim(),
-          src:figure?.querySelector('img')?.getAttribute('src')};
+        const dw=document.getElementById('h-4-8')?.nextElementSibling;
+        const gk=document.getElementById('h-4-9')?.nextElementSibling;
+        const src=el=>el?.tagName==='FIGURE'?el.querySelector('img')?.getAttribute('src'):null;
+        return {deathwatch:src(dw),greyKnights:src(gk),obsolete:!!document.querySelector('img[src*="v07-unnamed-peripheral-record-20261116.webp"]')};
       });
-      if(!plate.isFigure||plate.caption!=='祸临之地 · 无署名外围记录'
-        ||!plate.src?.includes('v07-unnamed-peripheral-record-20261116.webp'))
-        fail(v.name+':chapter-v07-placement','plate not above Grey Knights '+JSON.stringify(plate));
+      if(!plate.deathwatch?.includes('deathwatch-boarding.webp')||!plate.greyKnights?.includes('v07-agris-rift-20261116.webp')||plate.obsolete)
+        fail(v.name+':chapter-v07-placement','approved Deathwatch/Grey Knights artwork not aligned '+JSON.stringify(plate));
     }
     if(response.status()!==200)fail(v.name+':chapter:'+ch,'HTTP '+response.status());
     if(vres.doc>vres.win+2)fail(v.name+':chapter:'+ch,'horizontal overflow '+vres.doc+' > '+vres.win);

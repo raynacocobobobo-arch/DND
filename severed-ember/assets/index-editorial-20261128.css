@@ -1,0 +1,95 @@
+/* 2026-11-28: exact homepage style blocks, preserved in original cascade order. */
+/* rules-centered-headings-v2 */
+#rules-start :is(h3,h4,h5,h6,.rules-unit-points,.rules-native-profile){text-align:center!important}
+
+/* v07-editorial-unification */
+
+/* Volume VII only: shared editorial rhythm for relations, enemies and lost worlds. */
+#codex-v07 .lore-prose h4,#codex-v07 .lore-prose h5,#codex-v07 .lore-prose h6{box-sizing:border-box;max-width:930px;text-align:center;scroll-margin-top:105px;font-family:'Songti SC','STSong','Noto Serif SC',serif;font-weight:650;line-height:1.5}
+#codex-v07 .lore-prose h4{font-size:22px;margin:42px auto 18px;padding:12px 0 0;border-left:0!important;border-top:1px solid #a58b5c59}
+#codex-v07 .lore-prose h5{font-size:19px;margin:32px auto 16px;color:#f0debd}
+#codex-v07 .lore-prose h6{font-size:17px;margin:28px auto 14px;color:#d0b78c}
+#codex-v07 .lore-prose figure.archive-plate,#codex-v07 .lore-prose .v07-enemy-artwork>figure{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:930px!important;margin:16px auto 24px!important;padding:0!important;background:transparent!important;border:0!important;overflow:visible!important}
+#codex-v07 .lore-prose figure.archive-plate>a{display:block;width:100%;line-height:0}
+#codex-v07 .lore-prose figure.archive-plate img,#codex-v07 .lore-prose .v07-enemy-artwork>figure>a>img{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;border:1px solid rgba(171,146,103,.58)!important}
+#codex-v07 .lore-prose figure.archive-plate figcaption,#codex-v07 .lore-prose .v07-enemy-artwork>figure>figcaption{display:block!important;box-sizing:border-box!important;width:100%!important;padding:8px 4px 0!important;margin:0!important;text-align:center!important;color:#c9b895!important;background:transparent!important;font:12px/1.6 'Songti SC','STSong','Noto Serif SC',serif!important}
+#codex-v07 .lore-prose figure.archive-plate figcaption strong{color:inherit!important;font:inherit!important}
+#codex-v07 .lore-prose p,#codex-v07 .lore-prose .v07-enemy-copy p{max-width:none!important;margin:13px 0 20px!important;line-height:1.85!important;text-align:left}
+#codex-v07 .lore-prose blockquote p{margin:4px 0!important}
+#codex-v07 .v07-enemy-records{display:block!important;max-width:none!important;margin:0!important}
+#codex-v07 .v07-enemy-records>.v07-enemy-record{display:block!important;box-sizing:border-box;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important}
+#codex-v07 .v07-enemy-records .v07-enemy-artwork,#codex-v07 .v07-enemy-records .v07-enemy-copy{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+#codex-v07 .v07-enemy-record+.v07-enemy-record,#codex-v07 .lost-worlds-chapter+.lost-worlds-chapter{margin-top:32px!important;padding-top:4px!important;border-top:1px solid #a58b5c38!important}
+#view-enemies .v07-rel-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important}
+#view-enemies .v07-rel-cluster{padding:13px!important}
+#view-enemies .v07-rel-cluster>strong{text-align:center;margin:0 0 9px}
+#view-enemies .v07-rel-links{justify-content:center}
+#view-enemies .v07-rel-cluster:nth-child(4),#view-enemies .v07-rel-cluster:nth-child(5){grid-column:1/-1}
+@media(max-width:800px){#codex-v07 .lore-prose h4{font-size:20px;margin-top:32px}#codex-v07 .lore-prose h5{font-size:18px;margin-top:25px}#codex-v07 .lore-prose h6{font-size:16px;margin-top:24px}#view-enemies .v07-rel-nav{grid-template-columns:minmax(0,1fr)}}
+
+
+/* volume-title-centered-20261128 */
+
+.lore-volume-title{display:grid;grid-template-columns:minmax(32px,1fr) minmax(0,auto) minmax(32px,1fr);align-items:baseline;column-gap:8px;text-align:center}
+.lore-volume-title>span{grid-column:2;grid-row:1;text-align:center;min-width:0;overflow-wrap:anywhere}
+.lore-volume-title>a{grid-column:3;grid-row:1;justify-self:end;white-space:nowrap}
+
+
+/* editorial-alignment-20261128 */
+
+/* Editorial headings, captions and display labels; reading text and data stay aligned for scanning. */
+.lore-paper .lore-prose :is(h1,h2,h3,h4,h5,h6){text-align:center!important}
+.lore-paper .lore-prose h4{padding-left:0!important;padding-right:0!important;border-left:0!important}
+.lore-paper .lore-prose .editorial-record-heading{text-align:center!important}
+main figure figcaption,#codex-v07 .lore-prose>figure.chapter-context-art figcaption,#view-rules .rules-document figure.rules-scenario-plate figcaption{text-align:center!important}
+#view-rules .rules-document :is(h1,h2,h3,h4,h5,h6),#view-rules .rules-unit-points,#view-rules .rules-native-profile{text-align:center!important}
+#view-rules .rules-atlas-head{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:8px}
+#view-rules .rules-hub>a{text-align:center;align-items:center}
+
+
+/* deduplicated-volume-headings-20261128 */
+.legacy-volume-anchor{display:block;height:0;scroll-margin-top:105px}
+
+/* minimal-editorial-frames-20261128 */
+
+/* One volume divider; no stacked frames around editorial content. */
+.lore-volume>.lore-volume-title{border:0!important;border-bottom:1px solid var(--line)!important;margin-bottom:14px}
+.codex-jumps,.enemy-war-links{border-top:0!important;border-bottom:0!important}
+.lore-volume>.lore-paper{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;padding-top:12px!important;padding-bottom:24px!important}
+.lore-volume>.lore-paper::before,.lore-volume>.lore-paper::after{content:none!important;display:none!important}
+.lore-volume .codex-body{border:0!important;outline:0!important;box-shadow:none!important}
+.lore-volume .lore-prose :is(h1,h2,h3,h4,h5,h6){border:0!important}
+.lore-volume .lore-prose>.legacy-volume-anchor+ :is(h4,h5,h6){margin-top:12px!important}
+.lore-volume .lore-prose>.legacy-volume-anchor+figure{margin-top:12px!important}
+.lore-volume .lore-prose figure:not(.true-name-card),.lore-volume .lore-prose figure:not(.true-name-card) img,.lore-volume .lore-prose figure:not(.true-name-card) figcaption,
+#codex-v07 .lore-prose figure.archive-plate img,#codex-v07 .lore-prose .v07-enemy-artwork>figure>a>img{border:0!important;outline:0!important;box-shadow:none!important}
+.lore-volume .lore-prose figure:not(.true-name-card) figcaption{background:transparent!important}
+#codex-v07 .lore-prose :is(h4,h5,h6){border:0!important}
+#codex-v07 .v07-enemy-record+.v07-enemy-record,#codex-v07 .lost-worlds-chapter+.lost-worlds-chapter{border-top:0!important}
+#view-rules .rules-document{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important}
+#view-rules .rules-document :is(h3,h4,h5,h6){border:0!important}
+#view-rules .rules-document figure.rules-scenario-plate,#view-rules .rules-document figure.rules-scenario-plate img,#view-rules .rules-document figure.rules-scenario-plate figcaption{border:0!important;box-shadow:none!important;outline:0!important;background:transparent!important}
+
+
+/* alignment-completion-20261128 */
+
+/* Complete alignment without changing typography or page geometry. */
+.lore-paper .lore-prose .additional-centered-heading{text-align:center!important}
+#view-home .menu-grid .category-title{text-align:center!important}
+main .codex-jumps:not(.v07-rel-nav):not(.v09-index-nav),main .enemy-war-links{justify-content:center}
+#view-people .v09-nav-section>strong{text-align:center}
+#view-people .v09-nav-section>div{justify-content:center}
+#view-rules .rules-atlas-info>strong{text-align:center}
+.right-rail .fact h3{text-align:center}
+.right-rail .fact-emblem{justify-content:center;text-align:center}
+
+
+/* Repeated original inline declarations; high specificity preserves their cascade. */
+[data-es="es0"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){color:#c3a16b;font-weight:600;padding:8px 0}
+[data-es="es1"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){margin-left:auto;white-space:nowrap;color:#c3a16b;font-size:.85em}
+[data-es="es2"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;aspect-ratio:2048/682;object-fit:contain}
+[data-es="es3"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;object-fit:contain}
+[data-es="es4"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain}
+[data-es="es5"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
+[data-es="es6"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;aspect-ratio:auto!important;object-fit:contain}
+[data-es="es7"]:not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel):not(#ember-inline-sentinel){display:block;width:100%;height:auto;aspect-ratio:3/1!important;object-fit:contain}
