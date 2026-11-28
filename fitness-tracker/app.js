@@ -1237,11 +1237,10 @@ function renderCalendar(){
  }).join('');
  return '<div class="cal30-shell">'+
  '<section class="cal30-board" aria-label="最近21天连续运动记录">'+
- '<header class="cal30-header"><div class="cal30-heading"><h2>'+(latest?'最近21天':'连续21天')+
- '</h2><span>'+formatDate(start)+' — '+formatDate(end)+'</span></div>'+
- '<div class="cal30-actions"><button type="button" data-cal-shift="-7" aria-label="向前七天">‹</button>'+
- '<button type="button" data-cal-shift="7" aria-label="向后七天" '+(latest?'disabled':'')+'>›</button></div></header>'+
+ '<div class="cal30-month-nav" aria-label="日历日期范围 '+safe(formatDate(start)+' — '+formatDate(end))+'">'+
+ '<button type="button" data-cal-shift="-7" aria-label="向前七天">‹</button>'+
  '<div class="cal30-months" aria-label="月份分隔">'+monthlyGuide+'</div>'+
+ '<button type="button" data-cal-shift="7" aria-label="向后七天" '+(latest?'disabled':'')+'>›</button></div>'+
  '<div class="cal30-grid" role="group" aria-label="连续21天每日运动消耗">'+cells+'</div>'+
  '<footer class="cal30-footer" style="grid-template-columns:repeat(5,minmax(0,1fr))">'+
  '<div class="cal30-stat"><span>总消耗</span><strong>'+energy.toLocaleString('zh-CN')+'</strong><small>kcal</small></div>'+
