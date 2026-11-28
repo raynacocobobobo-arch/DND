@@ -325,3 +325,47 @@ body[data-screen="history"] .history-compact .record-meta small{margin-top:2px!i
 body[data-screen="history"] .history-compact .record-metric{gap:2px!important;}
 body[data-screen="history"] .history-compact .history-slice{margin-bottom:7px!important;}
 body[data-screen="history"] .history-compact .history-slice-head{padding-bottom:4px!important;}
+
+/* V5.47.16: restore original 1600x700 calendar art proportions.
+   Allocate remaining height to the date grid, never to a blank footer area. */
+body[data-screen="calendar"] .topline:before {
+  background-size:cover!important;
+  background-position:center center!important;
+}
+@media(max-width:850px){
+  body[data-screen="calendar"] #content>.topline {
+    flex:0 0 auto!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16 / 7;
+    min-height:0!important;
+    max-height:23dvh!important;
+    margin-bottom:6px!important;
+  }
+  body[data-screen="calendar"] .cal30-shell{gap:6px!important;}
+  body[data-screen="calendar"] .cal30-board{
+    flex:1 1 0!important;
+    min-height:0!important;
+    padding:6px 8px!important;
+  }
+  body[data-screen="calendar"] .cal30-grid{
+    flex:1 1 0!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  }
+  body[data-screen="calendar"] .cal30-footer{
+    flex:0 0 auto!important;
+    margin-top:4px!important;
+    padding-top:4px!important;
+    padding-bottom:0!important;
+  }
+}
+@media(max-width:850px) and (max-height:700px){
+  body[data-screen="calendar"] #content>.topline{max-height:19dvh!important;}
+}
+@media(max-width:850px) and (max-height:540px){
+  body[data-screen="calendar"] .cal30-board{flex:none!important;}
+  body[data-screen="calendar"] .cal30-grid{flex:none!important;height:117px!important;}
+}
