@@ -35,6 +35,16 @@
 .lore-volume-title>span{grid-column:2;grid-row:1;text-align:center;min-width:0;overflow-wrap:anywhere}
 .lore-volume-title>a{grid-column:3;grid-row:1;justify-self:end;white-space:nowrap}
 </style>
+<style id="editorial-alignment-20261128">
+/* Editorial headings, captions and display labels; reading text and data stay aligned for scanning. */
+.lore-paper .lore-prose :is(h1,h2,h3,h4,h5,h6){text-align:center!important}
+.lore-paper .lore-prose h4{padding-left:0!important;padding-right:0!important;border-left:0!important}
+.lore-paper .lore-prose .editorial-record-heading{text-align:center!important}
+main figure figcaption,#codex-v07 .lore-prose>figure.chapter-context-art figcaption,#view-rules .rules-document figure.rules-scenario-plate figcaption{text-align:center!important}
+#view-rules .rules-document :is(h1,h2,h3,h4,h5,h6),#view-rules .rules-unit-points,#view-rules .rules-native-profile{text-align:center!important}
+#view-rules .rules-atlas-head{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:8px}
+#view-rules .rules-hub>a{text-align:center;align-items:center}
+</style>
 </head><body>
 <header class="topbar"><a aria-label="总览" class="brand" href="#home"><span class="crest"><img src="assets/branding/cenobium-crest-transparent-20261117.webp" alt="" width="36" height="36" style="width:36px;height:36px;object-fit:contain" decoding="async"/></span><span><strong>破碎余烬隐修会</strong><small>CENOBIUM OF THE SEVERED EMBER</small></span></a><nav aria-label="专题导航" class="topnav"><a data-nav="home" href="#home">总览</a><a data-nav="organization" href="#organization">战团构成</a><a data-nav="chronicle" href="#chronicle">编年史</a><a data-nav="campaigns" href="#campaigns">战役档案</a><a data-nav="armory" href="#armory">武装与遗物</a><a href="chapters/tarot.html" title="希芙拉塔罗 · 六张残存图版">残存塔罗</a><a data-nav="rules" href="#rules">桌面规则</a></nav><div class="top-actions"><button id="searchbutton" title="搜索预览">⌕</button><button aria-expanded="false" aria-controls="drawer" aria-label="打开战团目录" class="mobile-menu" id="menubutton" title="打开目录">☰ <span class="mobile-menu-label">目录</span></button></div></header>
 <button type="button" class="nav-quick" id="nav-quick" aria-controls="drawer" aria-expanded="false" aria-label="打开战团目录" hidden>☰ <span>目录</span></button>
@@ -365,12 +375,12 @@
 <li><strong>战团规模：</strong>  原初编制约1000人。567.M34大裂变中逾三百人阵亡，此后规模再未恢复。至M41末，维持约200-300人。深渊之井一役后进一步减少。</li>
 <li><strong>主要敌人：</strong>  混沌战帮、异形</li>
 <li><strong>与帝国关系：</strong> 567.M34后失联，数百年后被标记为“全员推定阵亡”。隐修会从未纠正。</li>
-</ul><p><strong>〔维洛斯哨站·归档附页／622.M41〕</strong></p>
+</ul><p class="editorial-record-heading"><strong>〔维洛斯哨站·归档附页／622.M41〕</strong></p>
 <blockquote>
 <p>守军已登船。最后一段引擎坡道由不明番号的阿斯塔特守住。哨站长官申请保留他们的战旗图像；图像在传输中损毁。</p>
 </blockquote>
 
-<p><strong>〔巨石收令室·残存抄本／021.M31〕</strong></p>
+<p class="editorial-record-heading"><strong>〔巨石收令室·残存抄本／021.M31〕</strong></p>
 <blockquote>
 <p>发令者：莱恩·艾尔庄森。<br>
 收令时刻：二次建军窗口期。<br>
@@ -382,11 +392,11 @@
 对外任务：边缘巡逻。<br>
 任务终止条件：——</p>
 </blockquote>
-<p><strong>〔初代院长奥兰多·舰载录音，末段〕</strong></p>
+<p class="editorial-record-heading"><strong>〔初代院长奥兰多·舰载录音，末段〕</strong></p>
 <p>“第一次询问，没有回音。第二次也没有。第三次，它只把我们的密钥送了回来。你们可以把这叫作答复。不要让我这样叫。”</p>
-<p><strong>〔薪传议会·M42残页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔薪传议会·M42残页〕</strong></p>
 <p>那道旧信号的末端，与井底脉动在同一段频率上重叠。卷宗没有署名；页边只留一行后添的墨迹：<strong>我们是因那道命令，才在此处成为了我们。</strong></p>
-<p><strong>〔令状背面·无日期〕</strong></p>
+<p class="editorial-record-heading"><strong>〔令状背面·无日期〕</strong></p>
 <p>任务终止栏留下一个未写完的字。奥兰多之后，再无人动笔。</p>
 </div></article></section>
 </section>
@@ -400,7 +410,7 @@
 <p><strong>地点：</strong> 远东星域，希芙拉上空</p>
 <p>一艘机械教探测舰在希芙拉外围被亚空间风暴击伤，迫降在废星地表。舰上载有某种装置，能放大卡利班毁灭时散落在亚空间的灵能碎片信号。当任院长依据初代院长奥兰多·灰烬之眼留下的警戒训令判断：若此装置被回收，可能有人顺着信号找到希芙拉。</p>
 <p>突击队在残骸中找到装置时，它已经激活了。舰上机械教成员全部阵亡，残骸周边已被吸引来的亚空间掠食实体盘踞。突击队强行突入，熔毁装置。通讯阵列截获了突击小队最后数秒的频道记录。突击小队的武器开火声依次停止后，频道未归于静默。一个来源不明的信号以深渊脉动的频率折返了突击小队的呼号，持续十一秒后中断。</p>
-<p><strong>〔沉默远征·禁用呼号簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔沉默远征·禁用呼号簿〕</strong></p>
 <p>试验记录里，阵亡者的呼号被回应过三次。第四次试验的日期栏空白。</p>
 <h4 id="codex-v05-h-4-3">2. 第一次三伪星之战（约892.M35）</h4>
 <figure class="archive-plate campaign-original-plate" data-editorial-art="02"><a href="assets/campaigns/revised-20261116/v05-02.webp" target="_blank" rel="noopener noreferrer" aria-label="查看《第一次三伪星之战》新版横幅原画"><img src="assets/campaigns/revised-20261116/v05-02.webp" width="2048" height="682" alt="《第一次三伪星之战》新版3:1战役横幅插画" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:2048/682;object-fit:contain" srcset="assets/campaigns/revised-20261116/v05-02-mobile.webp 960w, assets/campaigns/revised-20261116/v05-02.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>第一次三伪星之战</strong></figcaption></figure>
@@ -453,7 +463,7 @@
 <p>钢铁勇士战争铁匠卡拉恩在铁喉建立信号放大器。伊瑟林率灰烬失乡骑士突入巢穴，六小时后抵达主厅。混沌终结者与钢铁圆环自动机守住放大器基座，卡里布迪斯突击爪扼守外侧通道。钢铁之手的戈尔贡终结者从外侧接应，黑剑沿打开的通道突入。巢穴在交火中开始坍塌。</p>
 <p>一名失乡骑士被塌缩力场压碎半身，仍有生命迹象。队伍原本只剩一具可用的运输担架。另一名战士卸下重武器，把枪架拆成第二副担架。敌方战术记录显示，卡拉恩趁混乱脱离了主厅。</p>
 <p>伤者被送入希芙拉第八环区的静滞舱Σ-7。数代军械官都在维护预算上保留他的名字。一次短暂唤醒后，他只要求撤掉舱旁的阵亡花环。</p>
-<p><strong>〔铁喉缴获的工程纸页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔铁喉缴获的工程纸页〕</strong></p>
 <blockquote>
 <p>放大器尚未完成。试验栏有两种笔迹，后一种字迹无人认领。</p>
 </blockquote>
@@ -474,7 +484,7 @@
 <p>侧翼牢笼中关着七名战斗修女，只有一人活着离开。她的声带已经损毁。遗迹铁匠在牢笼名册上找到五名死者的名字，另一栏空着。突击队撤离时，黑暗机械教的引力装置在走廊尽头坍缩。雷金纳德·负井者以战甲和盾挡住断裂的支架，推过最后两名伤员；左半身陷入翻卷的力场。等闸门关闭，他那一侧的护甲时隐时现，再也无法正常拆卸。</p>
 
 <p>薪传议会授予幸存者“碎律修女”的称号。她收下刻有称号的金属片，却拒绝换上隐修会准备的衣袍，也没有宣誓加入隐修会。她在医疗区住了数周，每天把那张空白名册折好放进衣袋。离开前，她要求取回损坏的战甲内衬。看守将它交给她，没有问她将去哪里。后来石廊里的凡人领诵者沿用了“碎律修女”之名；她们的名字记在属民册，而非战斗兄弟名册。</p>
-<p><strong>〔熵火神殿·回收清单〕</strong></p>
+<p class="editorial-record-heading"><strong>〔熵火神殿·回收清单〕</strong></p>
 <blockquote>
 <p>七张床架。六具遗骸。一个活人。</p>
 </blockquote>
@@ -486,7 +496,7 @@
 <p>邪教徒以尸体填满第一环区的走廊。余火守卫守了近三个钟头，直到地狱兽熔穿最后一道掩体。塞维林·断索带人切开卡死的吊索，把失控升降架压成一座临时伤员桥；等最后一副担架过去，他错过了第二环区的反击集结。风暴骑士在那里传送切入，克拉能带领神选与终结者直取井口。死亡之翼伴卫随后抵达第三环区，与隐修会守军共同阻截井口的攻势。</p>
 
 <p>伊瑟林第一次将他击倒时，敌人的血肉在裂隙中重塑。阿历克斯截断了克拉能向井口的传送，伊瑟林再次出剑。此后再无可信的敌方生命信号。</p>
-<p><strong>〔井口当值簿·75.M42〕</strong></p>
+<p class="editorial-record-heading"><strong>〔井口当值簿·75.M42〕</strong></p>
 <blockquote>
 <p>第七次读数：停。</p>
 <p>井口守卫：仍在。</p>
@@ -494,9 +504,9 @@
 </blockquote>
 <p>一名幸存者称克拉能在最后一次攻击前问过井底是什么。其他录音中没有这句话。</p>
 <p>守军阵亡七十七人，伤者近百。第一环区被毁，伪星穹顶约三分之一碎裂。数条旧渠堵塞，净水阀停用。原本给矿民运菌种的窄轨车改运伤员，守渠人拆下渔船上的滤材，送往临时净水站。外出远征此后数年近乎停顿。</p>
-<p><strong>〔第二环区·旗官补录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第二环区·旗官补录〕</strong></p>
 <p>在第一环区失守之后，余火守卫把最后的战旗交给风暴骑士。三日后，旗仍挂在第二闸门上方，旗面有七处新烧痕。守军的伤亡名册写完了，闸门仍由活着的人看守。</p>
-<p><strong>〔石廊补录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔石廊补录〕</strong></p>
 <blockquote>
 <p>祸临之地旧档中有关克拉能的记录，仍与本次目击报告并列保存。身份比对未结。</p>
 </blockquote>
@@ -537,7 +547,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 <p>伊瑟林在《黑铁条约》中亲自领队，75.M42又守住希芙拉井口。两次战役之间，他曾拒绝一项看似轻易的命令：一支边境护航队请求隐修会借出两艘战舰清剿海盗，议会以暴露航线为由否决。他在命令上签字，三个月后才得知那条航路的货船全部遇袭。</p>
 <p>井口战后，他又签发了一次护航令。此次舰队成功护送谷物抵港。下层船员庆功时，伊瑟林没有出席；第二天，他命人将那艘货船的名字补进航志。</p>
-<p><strong>〔石廊封存页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔石廊封存页〕</strong></p>
 <blockquote>
 <p>两份草拟令仍在：寻访狮王；封锁井口。都未发出。</p>
 </blockquote>
@@ -546,7 +556,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 <p>阿历克斯能够在井口附近工作，不需佩戴通常的抑制器。深渊之井战役中，他曾截断克拉能的传送。战后，议会要求他重新校准第一环区的仪器；他交回三份读数完全一致的表格，连误差栏也相同。</p>
 <p>一名年轻测绘员私下问他，是否应当把其中两份销毁。阿历克斯说不必，随后让测绘员去食堂领晚餐。第二天，测绘员发现自己的岗位被调到地表。他一直不知道这是奖赏还是惩罚。</p>
-<p><strong>〔阿历克斯的观测簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔阿历克斯的观测簿〕</strong></p>
 <blockquote>
 <p>第三次校准后，仪器的指针仍在原位。换过仪器，结果相同。</p>
 </blockquote>
@@ -566,7 +576,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <h4 id="codex-v03-h-4-2">薪传议会 (The Council of the Ember)</h4>
 <p>薪传议会驻于希芙拉。它继承了第一军团旧骑士团的承誓席位，却早已没有足够的战士按旧制排满整间厅堂。继任院长须走过空席，在三份异文令状前答复前任留下的问题。议会室里还保存着一张被划去两个人名的处决令。</p>
 <figure class="archive-plate org-panoramic-plate" data-approved-art="20261115-v52-organization-001"><a href="assets/organization/approved-20261115/organization-001-council-20261115.webp" target="_blank" rel="noopener noreferrer" aria-label="查看战团构成图版｜薪传议会 · 战略议事"><img src="assets/organization/approved-20261115/organization-001-council-20261115.webp" alt="隐修会五名动力甲战士围绕战术台在哥特圣堂中商议行动" width="2048" height="682" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain" srcset="assets/organization/approved-20261115/organization-001-council-20261115-mobile.webp 960w, assets/organization/approved-20261115/organization-001-council-20261115.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>薪传议会 · 战略议事</strong></figcaption></figure>
-<p><strong>〔旧誓约厅·一份未完成的继任录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔旧誓约厅·一份未完成的继任录〕</strong></p>
 <blockquote>
 <p>“你领受什么？”</p>
 <p>“命令。”</p>
@@ -597,17 +607,17 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 <h4 id="codex-v03-h-4-3">余火守卫 The Ember Guardian</h4>
 <figure class="archive-plate org-panoramic-plate" data-approved-art="20261115-v52-organization-003"><a href="assets/organization/approved-20261115/organization-003-guard-20261115.webp" target="_blank" rel="noopener noreferrer" aria-label="查看战团构成图版｜余火守卫 The Ember Guardian"><img src="assets/organization/approved-20261115/organization-003-guard-20261115.webp" alt="暗绿动力甲战士携红色爆弹枪在燃烧的城市阵地中抵御敌人" width="2048" height="682" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain" srcset="assets/organization/approved-20261115/organization-003-guard-20261115-mobile.webp 960w, assets/organization/approved-20261115/organization-003-guard-20261115.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>余火守卫 The Ember Guardian</strong></figcaption></figure>
-<p><strong>〔第一环区，余火守卫阵亡表〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第一环区，余火守卫阵亡表〕</strong></p>
 <p>他们巡矿道、守闸门、抬伤员，也在远征中承担最漫长的阵地推进。最后一页只有四个字：<em>弹药已尽。</em></p>
 <p>567.M34后，旧连队番号仍在，人数却不再齐整。常规战线由余火守卫维系；风暴骑士、失乡骑士、暗夜骑兵与黑剑按每次出征重新编组。军械库悬着几面修补过的旧旗，旗面缝过的胜利纹记尚可辨认。缺了人手的中队仍在出征礼上依原来的次序列队，空位不由别人代站。</p>
 
-<p><strong>〔药剂师封存簿·两页相隔数百年〕</strong></p>
+<p class="editorial-record-heading"><strong>〔药剂师封存簿·两页相隔数百年〕</strong></p>
 <figure class="archive-plate org-panoramic-plate" data-approved-art="20261115-ember-guard-ten-positioned"><a href="assets/organization/approved-20261115/ember-guard-ten-20261115.webp" target="_blank" rel="noopener noreferrer" aria-label="查看战团构成图版｜余火守卫 · 战线交火"><img src="assets/organization/approved-20261115/ember-guard-ten-20261115.webp" alt="十名身穿余烬绿动力甲的余火守卫持红色爆弹枪在哥特废墟战线上列阵守卫" width="2048" height="682" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain" srcset="assets/organization/approved-20261115/ember-guard-ten-20261115-mobile.webp 960w, assets/organization/approved-20261115/ember-guard-ten-20261115.webp 1700w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>余火守卫 · 战线交火</strong></figcaption></figure>
 <p>第一份写着：<em>遗体已回，基因种子不可用。</em> 第二份只剩一句：<em>可植入者不足以补齐本次损失。</em> 战团从失散的舰队中收回过甲胄，也在废墟里找回过阵亡者；失去的药剂师、受损的基因种子和无法再造的植入器械，却不随着归航一同回来。矿道少年经过漫长筛选，有人死于改造，有人被送回家，再也没有第二次机会。修复完毕的空甲架，一排排留在军械库里。</p>
-<p><strong>〔原铸样本·药剂师与观星者争执记录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔原铸样本·药剂师与观星者争执记录〕</strong></p>
 <p>一次回收行动带回阵亡原铸星际战士的植入组织。药剂师要求继续检验；观星者截取的监听片段里，测试舱曾复现井口附近的旧呼号。仪器随后被停用，另一份重复实验没有得到相同读数。议会下令封存样本，未批准为此改造任何现役兄弟。药剂师在命令下方写：<em>我们又失去了一种可能的补充途径。</em></p>
 
-<p><strong>〔075.M42，第一环区最后命令〕</strong></p>
+<p class="editorial-record-heading"><strong>〔075.M42，第一环区最后命令〕</strong></p>
 <blockquote>
 <p>第三次信标熄灭后，撤往第二闸门。</p>
 </blockquote>
@@ -698,7 +708,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 
 <h4 id="codex-v03-h-4-7">封禁令</h4>
-<p><strong>〔代行者名册〕</strong></p>
+<p class="editorial-record-heading"><strong>〔代行者名册〕</strong></p>
 <p>阿斯塔特战团总数栏没有他们的名字。无名扈从的册页上，几处空格曾被反复擦写。</p>
 <p>熵火幸存者的声带已毁。她离开后，石廊中的继任唱誓者以手势、敲击与短句领诵；她们继承称号，不继承那名修女的战甲、身份或遗嘱。</p>
 </div></article></section>
@@ -744,38 +754,38 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>洞穴不见边缘。穹顶闪烁着无数暗淡的伪星，冷蓝色的光落在断桥上。最古老的观测簿把它们记作卡利班毁灭时散落的灵能碎片；后来的测绘员仍照着这份簿册誊写。</p>
 <p>修道院的承重柱与旧堡垒地基压在深渊之井上方。最早的守望者把这座建筑称作井盖，后来才有了金穹与石廊。从升降井末端通往军事环区的是坡道与桥；旧渠人取水的河岸则在桥基之下。井沿的旧钢梁曾被拉成极细的弧线。值夜者在钢梁上系过十三根短绳；黎明时只剩十二根。</p>
 <p>567.M34，加勒隆将扩张的裂口暂时压回旧刻度。此后守望者每年仍要更换变形的撑梁。修道院逐渐沉降，最深的石柱却始终未卸下负荷。</p>
-<p><strong>〔无铭阶墙〕</strong></p>
+<p class="editorial-record-heading"><strong>〔无铭阶墙〕</strong></p>
 <p>下层的石阶比上层更少磨损。第一次拆柱后，三根测针同时折断。此后，施工记录在这一页中断。</p>
-<p><strong>〔旧渠封井名簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔旧渠封井名簿〕</strong></p>
 <p>一口看似洁净的取水井被旧渠人封住了。名簿上只记取水者、修封者和几户迁走的姓氏。有人在空白处添写：<em>会把人身上的颜色借走。</em></p>
 <p>567.M34后，入口在帝国航图上消失。数十年后，一艘返航舰在远东星域的废星上重新找到了矿井。舷窗外的星座没有一颗对得上。</p>
-<p><strong>〔第一环区沉降簿·075.M42之后〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第一环区沉降簿·075.M42之后〕</strong></p>
 <p>战后第一个测期，废墟的沉降已较战前快了近四成。记录员写下增幅，又把同一条测线标在下一页；新刻度还未填满，石壁已裂出第二条缝。守夜轮次未减。</p>
 <p>黑河穿过断柱与桥基。大多数河段仍沿石槽流淌，旧渠人循着水声修桥、下网、安置取水口。从废星浅层下来的升降井穿过不可测绘的界面，抵达希芙拉的断桥和黑河。矿道住户把木料、菌房残料与少量粮秣运下井道；旧渠船只则在希芙拉的河道往来。唯有靠近井口的几段支流偶尔逆坡；投入上游的金属标记曾从另一条支渠漂回，表面多出一道无人刻下的划痕。</p>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261127-old-canal-life"><a href="assets/approved-art-20261127/old-canal-life.webp" target="_blank" rel="noopener noreferrer" aria-label="查看希芙拉 · 封闭菌床与北渠枯阀完整横幅"><img src="assets/approved-art-20261127/old-canal-life.webp" alt="地下黑河、石桥、矿民聚落、渔船与旧渠水闸" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/old-canal-life-mobile.webp 960w, assets/approved-art-20261127/old-canal-life.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>希芙拉 · 封闭菌床与北渠枯阀</strong></figcaption></figure>
-<p><strong>〔北渠采水簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔北渠采水簿〕</strong></p>
 <p>“暖缝上的石衣又红了。三日后见虾，七日后见细鱼。桥墩下若有背鱼，就不许孩子下水。”</p>
 <p>含盐的暖水从岩缝渗出，石面蒙上一层锈色薄膜。断桥下的灰毯攀着排水带来的废木、菌房残料生长；支流干了，菌毯也随之枯下去。高处滴水的岩檐住着檐翼兽，熄灯以后掠过桥洞捕虫；旧渠孩子第二天常在菌架上捡到细碎的虫翅。</p>
 <h4 id="codex-v02-h-4-3">环区、属民与地底的生活</h4>
 
-<p><strong>〔灾后环区图〕</strong></p>
+<p class="editorial-record-heading"><strong>〔灾后环区图〕</strong></p>
 <p>第一环区：破损。第二、第三环区：仍有守军。第八环区：静滞地库。</p>
 <p>旧地图上的第六环区，已无人能够指认。</p>
 <p>金穹与石廊隔着一道旧伤员坡道。金穹上方的闸门仍能落下；坡道下方有两条被封死的输水支渠。</p>
 <p>旧渠人的族谱不记领主，记水闸与修堤的人。河床退去时露出的器皿，年代有时比桥还早。家谱旁常夹着网场、菌房和弃用水口的清单；一座桥断了，两岸的亲戚可能数十年见不上面。</p>
-<p><strong>〔旧渠摇篮歌，残存三句〕</strong></p>
+<p class="editorial-record-heading"><strong>〔旧渠摇篮歌，残存三句〕</strong></p>
 <blockquote>
 <p>颜色是借来的。<br>
 灰要还给活着的人。<br>
 那一种颜色，不要叫它进门。</p>
 </blockquote>
-<p><strong>〔失色季·两份相互矛盾的口述〕</strong></p>
+<p class="editorial-record-heading"><strong>〔失色季·两份相互矛盾的口述〕</strong></p>
 <p>“光是从天上落下的。”</p>
 <p>“不是。那天我看见井水自己亮了。”</p>
 <p>菌床曾异常丰茂，随后连根粉化。下游先是捞不到石须虾，接着细鱼也不见了。守渠人封了取水网；封井的人没有留下姓名。</p>
-<p><strong>〔桥头旧禁令〕</strong></p>
+<p class="editorial-record-heading"><strong>〔桥头旧禁令〕</strong></p>
 <p>色异而丰，封床。无源发亮，封井。失色之人，先带回家。</p>
-<p><strong>〔旧渠争议·两份记录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔旧渠争议·两份记录〕</strong></p>
 <p>军方写下：<em>隔离迟延。</em></p>
 <p>旧渠家族在同页背面写：<em>他们终于学会不碰那口井。</em></p>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261116-siofra-star-dome"><a href="assets/overview/siofra-starry-dome-no-flags-20261128.webp" target="_blank" rel="noopener noreferrer" aria-label="查看希芙拉星穹与地下环区全景"><img src="assets/overview/siofra-starry-dome-no-flags-20261128.webp" alt="希芙拉地下伪星穹顶、黑河与层叠环区，四名观星者立于石廊高台，远处金穹隐约可见" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/overview/siofra-starry-dome-no-flags-20261128-mobile.webp 960w, assets/overview/siofra-starry-dome-no-flags-20261128.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>希芙拉星穹 · 地下环区全景</strong></figcaption></figure>
@@ -788,11 +798,11 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <h4 id="codex-v02-h-4-4">金穹与石廊</h4>
 <figure class="archive-plate chapter-context-art" data-editorial-art="v37-01-golden-vault"><a href="assets/editorial-20261116/v02-golden-vault-3x1-user-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看金穹与石廊 · 修道院内部候选原画"><img src="assets/editorial-20261116/v02-golden-vault-3x1-user-20261116.webp" alt="金色穹顶、石廊、阵亡者墓碑、两位余烬绿阿斯塔特与修道院祭坛" width="2048" height="682" loading="lazy" decoding="async" srcset="assets/editorial-20261116/v02-golden-vault-3x1-user-20261116-mobile.webp 960w, assets/editorial-20261116/v02-golden-vault-3x1-user-20261116.webp 1700w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>金穹与石廊 · 修道院内部</strong></figcaption></figure>
 
-<p><strong>〔金穹壁面铭文〕</strong></p>
+<p class="editorial-record-heading"><strong>〔金穹壁面铭文〕</strong></p>
 <p>“凡归来者，先报未归者之名。”</p>
 <p>帝皇的像立于入口，狮王的剑徽在五重拱穹下方。矿民把骨白色的骑士叫作“守灰者”；骑士从不在礼拜时回应这个称呼。</p>
 <p>五段旧军用拱穹覆着暗金、深蓝与烟绿的马赛克。一段拱面从567.M34裂开，金线止于断口。最古老的嵌件里夹着烧蚀的甲片。</p>
-<p><strong>〔五穹残图〕</strong></p>
+<p class="editorial-record-heading"><strong>〔五穹残图〕</strong></p>
 <ul>
 <li><strong>《承令》</strong>：出征门旁，密钥、军旗、舰影。中央无面孔。</li>
 <li><strong>《裂变》</strong>：金线断在旧裂缝处。</li>
@@ -805,7 +815,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>灰白石碑沿旧伤员坡道排开。多数碑上只有编号；几处空龛放着断甲、录音芯片与没有送出的家书。碑面不刻真名。</p>
 <p>石廊的湿壁画从伤员坡道延伸到矿道撤离的场景。侧龛里，一位母亲坐在征募桌前，伸出的手停在半空。</p>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261114-22-sealed-bridge-approach"><a href="assets/organization/panoramas-20261114/22-sealed-bridge-approach.webp" target="_blank" rel="noopener noreferrer" aria-label="查看封印长桥与地下圣堂环境插画"><img src="assets/organization/panoramas-20261114/22-sealed-bridge-approach.webp" alt="地下哥特圣堂中，一位全盔守望者立于高架长桥，桥的尽头是巨大的封闭石门与壁龛，深处充满雾气" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/organization/panoramas-20261114/22-sealed-bridge-approach-mobile.webp 960w, assets/organization/panoramas-20261114/22-sealed-bridge-approach.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>封印长桥 · 地下圣堂</strong></figcaption></figure>
-<p><strong>〔第一环区侧龛题记〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第一环区侧龛题记〕</strong></p>
 <blockquote>
 <p>第三次信标熄灭后，守军仍停留四分钟。</p>
 </blockquote>
@@ -831,7 +841,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <h5 id="codex-v02-h-5-8"><strong>悔泣者号</strong>：</h5>
 <p>舰桥控制台上刻着一句被故意中断的话“那支舰队”。</p>
 <h4 id="codex-v02-h-4-9">残舰航志</h4>
-<p><strong>〔余烬号·航海日志〕</strong></p>
+<p class="editorial-record-heading"><strong>〔余烬号·航海日志〕</strong></p>
 <p>“出港航线三份。归航时销毁两份。第三份由死者带回。”</p>
 <p>此句旁有三道不同笔迹的删除线。</p>
 <p>军械库里，一套动力甲肩部的编号比其余甲片更古老。</p>
@@ -862,16 +872,16 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>大裂变后，下层河床露出一段无铭阶墙。旧渠人封了三条水道，守军在图上把它们涂黑。</p>
 <p>同年，帝国航图出现厄声裂隙。发往该方向的呼号从未收到回讯。</p>
 <p><a href="#codex-v07-h-4-13">参见第七卷 · 遗落的世界</a>。</p>
-<p><strong>〔井口监听簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔井口监听簿〕</strong></p>
 <p>骑士阵亡时，深渊之数偶有跳动。向前一次。向后一次。第三次的刻度被刮掉。</p>
 <h4 id="codex-v06-h-4-5">银河大裂隙与失联航路（999.M41）</h4>
 <figure class="archive-plate chronicle-plate" data-approved-art="20261127-great-rift-fleet"><a href="assets/approved-art-20261127/great-rift-fleet.webp" target="_blank" rel="noopener noreferrer" aria-label="查看银河大裂隙 · 失联航路（999.M41）完整横幅"><img src="assets/approved-art-20261127/great-rift-fleet.webp" alt="余烬号舰队在低饱和紫色银河大裂隙前航行" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/great-rift-fleet-mobile.webp 960w, assets/approved-art-20261127/great-rift-fleet.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>银河大裂隙 · 失联航路（999.M41）</strong></figcaption></figure>
 
-<p><strong>〔余烬号·不屈纪元初年的归航表〕</strong></p>
+<p class="editorial-record-heading"><strong>〔余烬号·不屈纪元初年的归航表〕</strong></p>
 <p>999.M41，银河大裂隙撕开帝国航路。盲星号的返航钟比计划晚了四个月；一艘载着药剂与更替零件的货船始终没有抵达。舰长把旧图上的航道划去，又将能够避开巡检站的暗线圈出。薪传议会一度收到重新归入帝国指挥链的提议，没有签收。</p>
 <p>那场遍及银河的灾变，在舰志中称为<strong>银河大裂隙</strong>。567.M34发生在希芙拉井口的<strong>大裂变</strong>，仍记在另一册。两份卷宗分放在不同的柜中。</p>
 <h4 id="codex-v06-h-4-6">第四刻：隐匿的基石（M42）</h4>
-<p><strong>〔伊瑟林私人笔记，未签名〕</strong></p>
+<p class="editorial-record-heading"><strong>〔伊瑟林私人笔记，未签名〕</strong></p>
 <blockquote>
 <p>我们守了这么久。<br/>
 他们说那是为了等他回来。<br/>
@@ -881,7 +891,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <figure class="archive-plate org-panoramic-plate chronicle-plate" data-approved-art="20261127-cypher"><a href="assets/approved-art-20261127/cypher.webp" target="_blank" rel="noopener noreferrer" aria-label="查看第五刻 · 塞佛领主（M42）完整横幅"><img src="assets/approved-art-20261127/cypher.webp" alt="身份未明的披风行者独自穿过月下废墟，背负未出鞘的巨剑" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/cypher-mobile.webp 960w, assets/approved-art-20261127/cypher.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>第五刻 · 塞佛领主（M42）</strong></figcaption></figure>
 
 
-<p><strong>〔塞佛领主·无署名边注〕</strong></p>
+<p class="editorial-record-heading"><strong>〔塞佛领主·无署名边注〕</strong></p>
 <p>一名背负重物的行者曾在外部战报中出现。相位比对页被封死。</p>
 <blockquote>
 <p>若他来到井口，谁会先认出谁？</p>
@@ -896,17 +906,17 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <h4 id="codex-v07-h-4-2">灰炉防线：克里格人的撤退令（约850.M41）</h4>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261128-ash-furnace-line-user-selected"><a href="assets/editorial-20261116/v07-ash-furnace-retreat-20261116.webp?v=20261128" target="_blank" rel="noopener noreferrer" aria-label="查看灰炉防线 · 克里格人的撤退令通过版原画"><img src="assets/editorial-20261116/v07-ash-furnace-retreat-20261116.webp?v=20261128" alt="克里格士兵在灰炉工业防线内侧依托沙袋和钢铁掩体坚守，死亡骑兵位于后方通道，远处荒原笼罩在烟尘中" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/editorial-20261116/v07-ash-furnace-retreat-20261116-mobile.webp?v=20261128 960w, assets/editorial-20261116/v07-ash-furnace-retreat-20261116.webp?v=20261128 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>灰炉防线 · 克里格人的撤退令</strong></figcaption></figure>
 
-<p><strong>〔灰炉北侧阵地·联军通信残片〕</strong></p>
+<p class="editorial-record-heading"><strong>〔灰炉北侧阵地·联军通信残片〕</strong></p>
 <p>第一夜，克里格人在矿渣里挖了三道战壕。第二道战壕的沙袋被炮风吹散，他们改用碎矿石。费尔萨姆-9送来的图纸没有标出塌陷的地层；一名工兵带着测距仪从废弃排水管道爬出来，另一人没有回来。</p>
-<p><strong>〔东侧裂口·出击前〕</strong></p>
+<p class="editorial-record-heading"><strong>〔东侧裂口·出击前〕</strong></p>
 <p>灰烬遗忘骑士抵达时，死亡骑兵正在给坐骑戴防护面具。隐修会军官询问东侧能守多久。克里格军官递给他炮兵射击表，上面有弹药、风向和射界，没有预计坚守时间。</p>
 <p>第一次冲锋未到达裂口。第二次有七骑穿过烟尘。第三次之后，东侧枪声停止了片刻，隐修会得以进入控制井。</p>
 <p>稳定器反转后，主通道塌陷。克里格工兵打开排水支路，灰烬遗忘骑士带着两名受伤的凡人士兵最后通过。</p>
 <h4 id="codex-v07-h-4-3">机械教：费尔萨姆-9与两份报告</h4>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261127-felsam-9"><a href="assets/approved-art-20261127/felsam-9.webp" target="_blank" rel="noopener noreferrer" aria-label="查看机械教 · 费尔萨姆-9与两份报告完整横幅"><img src="assets/approved-art-20261127/felsam-9.webp" alt="费尔萨姆-9在铸造世界审查大厅呈交损毁控制板" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/felsam-9-mobile.webp 960w, assets/approved-art-20261127/felsam-9.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>机械教 · 费尔萨姆-9与两份报告</strong></figcaption></figure>
-<p><strong>〔机械教封存报告·850.M41〕</strong></p>
+<p class="editorial-record-heading"><strong>〔机械教封存报告·850.M41〕</strong></p>
 <p>灰炉稳定器：损失。回收数据：不完整。护教军人员：待复核。非登记阿斯塔特基因信号：发现。后续检索权限：拒绝。</p>
-<p><strong>〔费尔萨姆-9私人附页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔费尔萨姆-9私人附页〕</strong></p>
 <p>费尔萨姆保留了一块已经不能运行的控制板。数年后，他在另一座铸造世界被问及灰炉技术为何没有上缴。他把损毁的控制板放在桌上，回答说：原件留在灰炉。</p>
 <p>那名询问者想知道谁下令摧毁原件。费尔萨姆没有给出名字。</p>
 <p>隐修会此后曾收到一批无署名的替换轴承。轴承规格恰好适用于余烬号一台老旧的辅机，但货单写的是民用采矿设备。遗迹铁匠没有把这笔货物登记为机械教援助。</p>
@@ -917,7 +927,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>十七分钟里，没有人移动俘虏。两名战士各自打开了武器保险。最后，主团使者将移交令放在桌上，带队离开。</p>
 <p>签收处至今空白。</p>
 <p>745.M41，暗黑天使抵达格伦霍姆时，静滞舱已经空了。他们在邻近星域搜查了六个月。隐修会在那六个月里停止了外围伤员转运。</p>
-<p><strong>〔祸临之地·无署名外围记录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔祸临之地·无署名外围记录〕</strong></p>
 <p>三名暗夜骑兵与五名余火守卫焚毁外围中继站，未参与巴尔萨萨率领的第五连主战场行动。一名守卫失联。没有来自第五连的确认回讯。</p>
 <p>狮王归来、宽恕部分昔日流散者的战报抵达金穹。伊瑟林让人取出《无影之手》的封印卷。卷宗摆在桌上九天，未被开启。</p>
 <p>第十天，奥瑞克送来一张旧金属片：<em>那名俘虏还有证词未录完。</em> 伊瑟林把它压在卷宗上。追迹者已在星海另一端搜寻流散者，隐修会却还握着一份拒绝交出的供词。递交原体复核的文书写好了，航路栏空白。</p>
@@ -935,14 +945,14 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 <h4 id="codex-v07-h-4-7">审判庭：空缺的调查人</h4>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261127-inquisitor"><a href="assets/approved-art-20261127/inquisitor.webp" target="_blank" rel="noopener noreferrer" aria-label="查看审判庭 · 空缺的调查人完整横幅"><img src="assets/approved-art-20261127/inquisitor.webp" alt="未署名审判官身处舰载哥特式圣堂，档案与审讯记录封存于侧" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/inquisitor-mobile.webp 960w, assets/approved-art-20261127/inquisitor.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>审判庭 · 空缺的调查人</strong></figcaption></figure>
-<p><strong>〔边境审讯摘录·无署名〕</strong></p>
+<p class="editorial-record-heading"><strong>〔边境审讯摘录·无署名〕</strong></p>
 <p>被问者声称曾见一艘没有帝国登记的阿斯塔特舰只在战区外围回收伤员。审讯者问舰徽。被问者说舰体烧得太黑，看不见。</p>
 <p>审讯者继续问，为什么陌生战士没有带走伤员的证词。被问者说，他们把证词交给了伤员本人。</p>
 <p>卷宗最后一页是未填的转呈表。没有审判官的签押。</p>
 <p>另一份记录中，某审判庭联络官曾要求机械教交出灰炉事故报告。费尔萨姆-9提交了已封存的公开页。此后是否有正式调查，隐修会没有得到消息。余烬号另存一份未署名的舰内航路记录，标有巡逻间隙与档案终端，未记载公开交战。</p>
 <h4 id="codex-v07-h-4-8">死亡守望：兽人堡垒内的另一支小队</h4>
 <figure class="archive-plate chapter-context-art" data-approved-art="20261127-deathwatch-boarding"><a href="assets/approved-art-20261127/deathwatch-boarding.webp" target="_blank" rel="noopener noreferrer" aria-label="查看死亡守望与黑剑 · 维洛斯接舷战（622.M41）完整横幅"><img src="assets/approved-art-20261127/deathwatch-boarding.webp" alt="死亡守望与隐修会黑剑小队在兽人改造的废船堡垒内交战" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/deathwatch-boarding-mobile.webp 960w, assets/approved-art-20261127/deathwatch-boarding.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>死亡守望与黑剑 · 维洛斯接舷战（622.M41）</strong></figcaption></figure>
-<p><strong>〔维洛斯·死亡守望战后报告／622.M41〕</strong></p>
+<p class="editorial-record-heading"><strong>〔维洛斯·死亡守望战后报告／622.M41〕</strong></p>
 <blockquote>
 <p>斩首任务完成。协同单位身份不明。其撤离方向与我方不同。</p>
 </blockquote>
@@ -953,7 +963,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>灰骑士撤离后，隐修会将参与阿格里斯裂谷行动的人分批隔离。名单没有在两支部队之间交换。奥瑞克为其中一名失乡骑士送回断剑；他没有留下谈话记录。</p>
 <p>一名矿道女孩等了很久，才见到随军运送净水和药品、从裂谷归来的父亲。那名凡人运输员记得女儿的名字，却已经不记得她的生日。</p>
 
-<p><strong>〔巡礼骑士军械簿〕</strong></p>
+<p class="editorial-record-heading"><strong>〔巡礼骑士军械簿〕</strong></p>
 <p>阿格里斯裂谷所留长戟一柄；未授予使用权。封存栏与归还栏的印记不同。</p>
 <h4 id="codex-v07-h-4-10">战斗修女：第六个空名</h4>
 <figure class="archive-plate chapter-context-art" data-editorial-art="v37-06-sixth-name"><a href="assets/editorial-20261116/v07-sixth-empty-name-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看战斗修女 · 第六个空名候选原画"><img src="assets/editorial-20261116/v07-sixth-empty-name-20261116.webp" alt="受伤幸存战斗修女面对六份人员记录，其中一份空白，远处遗迹铁匠检查损坏的盔甲" width="2048" height="682" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain" srcset="assets/editorial-20261116/v07-sixth-empty-name-20261116-mobile.webp 960w, assets/editorial-20261116/v07-sixth-empty-name-20261116.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>战斗修女 · 第六个空名</strong></figcaption></figure>
@@ -987,7 +997,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <p>约941.M41，死亡守望监视站特拉提翁在希芙拉外围截获一份未归档接触报告。一个未被帝国记录的单位，拒绝回应任何通讯。录得的相位特征与深渊之数完全一致。</p>
 <p>M37井底监听到的丑角回波、盲星频率中的第三方信息、沉默远征截获的厄声裂隙——深渊观星者交叉比对后确认，这五个信号是共享同一个实体。</p>
 <p>阿历克斯·镜影在M42备忘录批注：“对方的相位特征与隐修会存在结构性同源。这是还没成为我们的我们。”</p>
-<p><strong>〔未定性接触·两次残缺记录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔未定性接触·两次残缺记录〕</strong></p>
 <p>567.M34，一支身份未明的信号在希芙拉外围短暂停留。该页混在灾后失踪者的通讯残本里，呼号栏为空。</p>
 <p>941.M41，特拉提翁监视站记录另一支拒绝回答通讯的陌生单位。卷宗没有名称。阿历克斯后来把两张纸放在同一处封存架上，没将它们订在一起。</p></div></section>
 </div>
@@ -1122,7 +1132,7 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 
 <h4 id="codex-v08-h-4-4">旧渠的候选人</h4>
 <figure class="archive-plate chapter-inline-art recruitment-rite-plate"><a href="assets/rites/08-recruitment-rite-20261115.webp" target="_blank" rel="noopener noreferrer" aria-label="查看受甲仪礼完整原画"><img src="assets/rites/08-recruitment-rite-20261115.webp" alt="希芙拉修道院内，两名战团骑士在古老圣殿中进行圣剑与誓言的交接仪礼" width="2048" height="682" loading="lazy" decoding="async" srcset="assets/rites/08-recruitment-rite-20261115-mobile.webp 960w, assets/rites/08-recruitment-rite-20261115.webp 1800w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>旧誓传承 · 受甲仪礼</strong></figcaption></figure>
-<p><strong>〔征募地·旧渠外缘〕</strong></p>
+<p class="editorial-record-heading"><strong>〔征募地·旧渠外缘〕</strong></p>
 <p>孩子们从辐射矿道走来，鞋底沾着白灰。名单中有人在测试前就被划去。入选者要独处静默舱七日，饮烬礼的杯沿有一道旧裂痕。无名侍从多年不得佩甲；第一次远征归来的人，也未必能获准受甲。</p>
 <p>井口守夜十三小时。问卷上只印一句：<em>你听见了什么？</em></p>
 <p>一名候选人通过了静默试炼，却没能承受后续植入。药剂师将他送回矿道，手术痕迹从锁骨一直延到肋下。家门前那袋盐还在，母亲却已不知道该用他入选前的名字，还是登记簿上被划去的编号叫他。</p>
@@ -1153,50 +1163,50 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <section class="lore-volume" id="codex-v10" data-integrated-volume="10"><div class="lore-volume-title"><span>X卷 · 禁阅卷宗</span><a href="#reader">目录</a></div><article class="lore-paper"><div class="codex-body lore-prose"><h3 id="codex-v10-h-3-1">十、禁阅卷宗</h3>
 <figure class="archive-plate chapter-inline-art" data-approved-art="20261114-11-restricted-archive-clear"><a href="assets/editorial-20261114/11-restricted-archive-clear.webp" target="_blank" rel="noopener noreferrer" aria-label="查看卷内图版｜禁阅档案库完整横幅"><img src="assets/editorial-20261114/11-restricted-archive-clear.webp" alt="地下哥特式军事档案库中，精密封存柜、成列档案匣与机械维修轨道清晰可辨，远处两位人类工作人员核查数据，右侧暗绿全封闭头盔阿斯塔特守卫把守隔离闸门" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/editorial-20261114/11-restricted-archive-clear-mobile.webp 960w, assets/editorial-20261114/11-restricted-archive-clear.webp 1600w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>禁阅档案库</strong></figcaption></figure>
 <h4 id="codex-v10-h-4-2">井底抄本</h4>
-<p><strong>〔无署名羊皮卷·断页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔无署名羊皮卷·断页〕</strong></p>
 <blockquote>
 <p>卡利班碎裂后，有一块石头没有落下。<br>
 我们把井建在它上面。</p>
 </blockquote>
 <p>最后一句的“我们”被另一种墨水涂掉。</p>
 
-<p><strong>〔Σ-9，静滞前录音〕</strong></p>
+<p class="editorial-record-heading"><strong>〔Σ-9，静滞前录音〕</strong></p>
 <blockquote>
 <p>下面有一道门。<br>
 门上的剑徽，朝着里面。<br>
 我够不到把手。</p>
 </blockquote>
-<p><strong>〔旧渠人关于失色季的争执〕</strong></p>
+<p class="editorial-record-heading"><strong>〔旧渠人关于失色季的争执〕</strong></p>
 <p>“是从上面来的。”</p>
 <p>“井水先亮。你那年还没有出生。”</p>
-<p><strong>〔阿历克斯私人数据板·M42〕</strong></p>
+<p class="editorial-record-heading"><strong>〔阿历克斯私人数据板·M42〕</strong></p>
 <blockquote>
 <p>井底／轨道／第三舰队<br>
 起点：＿＿＿＿<br>
 终点：＿＿＿＿</p>
 </blockquote>
 <p>数据板在此处留下了一道纵向裂痕。</p>
-<p><strong>〔厄声裂隙，失联呼号〕</strong></p>
+<p class="editorial-record-heading"><strong>〔厄声裂隙，失联呼号〕</strong></p>
 <blockquote>
 <p>这里是——<br>
 我们已经——<br>
 不要回答第二次。</p>
 </blockquote>
-<p><strong>〔金穹未完成的草图〕</strong></p>
+<p class="editorial-record-heading"><strong>〔金穹未完成的草图〕</strong></p>
 <p>穹心没有人物。绘图底线通向一个不在石廊地图上的方位。</p>
 <figure class="archive-plate chapter-inline-art" data-approved-art="20261116-v10-listening-fragments-transfer"><a href="assets/chapter-art/10-listening-fragments-guarded-transfer-20261116.webp" target="_blank" rel="noopener noreferrer" aria-label="查看监听残页前的封存记录交接原图"><img src="assets/chapter-art/10-listening-fragments-guarded-transfer-20261116.webp" alt="哥特式石厅内四名身穿暗色动力甲的战士，两人在中央交接封存金属档案，一人核对桌上铭牌，另一人持爆弹枪守卫闸门" width="1536" height="529" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/chapter-art/10-listening-fragments-guarded-transfer-20261116-mobile.webp 960w, assets/chapter-art/10-listening-fragments-guarded-transfer-20261116.webp 1536w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>禁阅卷宗 · 封存档案交接</strong></figcaption></figure>
 <h4 id="codex-v10-h-4-3">深渊之数：监听残页</h4>
 <h5 id="codex-v10-h-5-4">条目一：始鸣</h5>
 <p>567.M34。加勒隆失踪。井底开始计数。</p>
 <h5 id="codex-v10-h-5-5">条目二：第一周期特征</h5>
-<p><strong>〔第七任之后的观星者梦记〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第七任之后的观星者梦记〕</strong></p>
 <blockquote>
 <p>零。</p>
 </blockquote>
 <h5 id="codex-v10-h-5-6">条目三：无名血泊遗物</h5>
 <p>745.M41，格伦霍姆静滞舱内壁：<em>井口。等待。回声。</em></p>
 <h5 id="codex-v10-h-5-7">条目四：加弗里尔抄本</h5>
-<p><strong>〔加弗里尔抄本末页〕</strong></p>
+<p class="editorial-record-heading"><strong>〔加弗里尔抄本末页〕</strong></p>
 <blockquote>
 <p>时候到了。</p>
 </blockquote>
@@ -1206,17 +1216,17 @@ M42的监听簿里，十三秒的引力脉冲仍在。</p>
 <h5 id="codex-v10-h-5-9">条目六：重启</h5>
 <p>数周后，计数重新开始。新观星者调取了所有阵亡骑士的名册。它仍在递减，只是两次计数间的沉默比第一周期短。旧钟未坏，守夜人先前已经换过三次。</p>
 <h5 id="codex-v10-h-5-10">条目七：第二周期推测</h5>
-<p><strong>〔第二周期·计算纸〕</strong></p>
+<p class="editorial-record-heading"><strong>〔第二周期·计算纸〕</strong></p>
 <p>数列的最后三项未写完。纸边压着一张第一环区的新沉降刻度图，墨迹尚新；两份纸上没有相同的署名。</p>
 <h5 id="codex-v10-h-5-11">条目八：奥瑞克监听</h5>
-<p><strong>〔奥瑞克监听片〕</strong></p>
+<p class="editorial-record-heading"><strong>〔奥瑞克监听片〕</strong></p>
 <p>以他破损的声带发出的声音：<em>我快到了。</em></p>
 <h5 id="codex-v10-h-5-12">条目九：Σ-7与Σ-9静滞舱</h5>
 <figure class="archive-plate chapter-inline-art org-panoramic-plate" data-approved-art="20261127-sigma-stasis"><a href="assets/approved-art-20261127/sigma-stasis.webp" target="_blank" rel="noopener noreferrer" aria-label="查看禁阅卷宗 · Σ-7与Σ-9静滞舱完整横幅"><img src="assets/approved-art-20261127/sigma-stasis.webp" alt="隐修会第八环区无人静滞地库，两具密封静滞舱静立于石廊" width="2172" height="724" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;object-fit:contain" srcset="assets/approved-art-20261127/sigma-stasis-mobile.webp 960w, assets/approved-art-20261127/sigma-stasis.webp 2172w" sizes="(max-width:800px) 70vw, (max-width:1200px) 76vw, 60vw"></a><figcaption><strong>禁阅卷宗 · Σ-7与Σ-9静滞舱</strong></figcaption></figure>
 
 <p>Σ-7：“盖子要从另一边开了。”</p>
 <p>Σ-9：“门把手在那一侧。”</p>
-<p><strong>〔静滞地库·夜班记录〕</strong></p>
+<p class="editorial-record-heading"><strong>〔静滞地库·夜班记录〕</strong></p>
 <p>Σ-7的观察窗里有一行水汽写成的字。看守人第二次进入时，字已消失。</p>
 </div></article></section>
 </section>
