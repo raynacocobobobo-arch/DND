@@ -1128,84 +1128,64 @@ function isGymTrainingRecord(r){
  }
  return false;
 }
-// Fixed reference agreed on 2026-11-27. History affects scheduling, never the reference quantities.
-// These are familiar bookkeeping targets, not a minimum dose or a prescription.
-const TRAINING_BASELINE=Object.freeze({situps:60,back:180,hold:8,dumbbell:120,lat:120,row:120,fly:120,cardioMinutes:60,cardioBlock:20,swimLaps:20});
-function trainingAdviceData(records,today){
- const B=TRAINING_BASELINE;
- const days=Array.from({length:8},(_,i)=>localDate(addDays(dateFromISO(today),i-7)));
- const rows=records.filter(r=>days.includes(r.date));
+// Weekly totals: real sets where recorded; otherwise 15-rep equivalent sets.
+// No training advice or rolling targets. Do not modify any saved records.
+function weeklyTrainingStats(records,stepDiary,end){
+ const start=localDate(addDays(dateFromISO(end),-6));
+ const rows=records.filter(r=>r.date>=start&&r.date<=end);
+ const p=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
  const name=r=>String(r.exercise||r.stroke||'');
  const key=r=>String(r.presetKey||'');
- const sit=r=>r.type==='strength'&&(key(r)==='situps'||/仰卧起坐|卷腹/.test(name(r)));
- const hold=r=>r.type==='hold'&&(key(r)==='wall-sit'||/靠墙|静蹲|平板/.test(name(r)));
- const back=r=>r.type==='strength'&&(key(r)==='back'||/臀桥|背部运动/.test(name(r)));
- const lat=r=>r.type==='strength'&&!/哑铃|杠铃/.test(name(r))&&(key(r)==='lat'||/拉背|高位下拉/.test(name(r)));
- const row=r=>r.type==='strength'&&!/哑铃|杠铃/.test(name(r))&&(key(r)==='row'||/划船/.test(name(r)));
- const fly=r=>r.type==='strength'&&!/哑铃|杠铃/.test(name(r))&&(key(r)==='fly'||/飞鸟|引体/.test(name(r)));
- const upper=r=>lat(r)||row(r)||fly(r)||(r.type==='strength'&&!/哑铃|杠铃/.test(name(r))&&/推胸|夹胸|蝴蝶机/.test(name(r)));
- const swim=r=>r.type==='swimming';
- const run=r=>r.type==='running'||(r.type==='cardio'&&/跑步/.test(name(r)));
- const ell=r=>r.type==='cardio'&&(key(r)==='elliptical'||/椭圆机/.test(name(r)));
- const todayRows=rows.filter(r=>r.date===today);
- const past=rows.filter(r=>r.date!==today);
- const gap=rs=>rs.length?7-Math.max(...rs.map(r=>days.indexOf(r.date))):8;
- const count=rs=>new Set(rs.map(r=>r.date)).size;
- const has=pred=>todayRows.some(pred);
- const positive=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
- const reps=r=>positive(r.reps)||positive(r.sets)*positive(r.repsPerSet);
- const total=(rs,pred,fn)=>rs.filter(pred).reduce((n,r)=>n+fn(r),0);
- const minutes=(rs,pred)=>total(rs,pred,r=>positive(r.duration_min));
- const gym=past.filter(upper),pool=past.filter(swim);
- const lastGymDate=gym.map(r=>r.date).sort().at(-1);
- const lastGymVolume=total(gym,r=>r.date===lastGymDate,reps);
- const gymReady=gap(gym)>=(count(gym)>=4||lastGymVolume>=360?2:1);
- const swimDue=gap(pool)>=3&&count(pool)<2;
- const todayRun=minutes(todayRows,run),todayEll=minutes(todayRows,ell);
- const cardioStarted=has(run)||has(ell);
- const yesterday=past.filter(r=>r.date===days[6]);
- const kneeBusy=minutes(yesterday,run)+minutes(yesterday,ell)>=B.cardioMinutes||[days[5],days[6]].every(d=>past.some(r=>r.date===d&&run(r)));
- const daily=[];
- const add=(list,label,target,done,unit)=>{
-  const left=Math.max(0,target-done);
-  if(left>0)list.push(label+Math.ceil(left)+unit);
+ const sum=(rs,f)=>rs.reduce((n,r)=>n+f(r),0);
+ const fmt=n=>Number(n.toFixed(1)).toLocaleString('zh-CN');
+ const match=(k,rx,r)=>key(r)===k||rx.test(name(r));
+ const strength=(label,k,rx)=>{
+  const rs=rows.filter(r=>r.type==='strength'&&match(k,rx,r));
+  const count=sum(rs,r=>p(r.reps)||p(r.sets)*p(r.repsPerSet));
+  const estimated=rs.some(r=>!p(r.sets)&&p(r.reps)>0);
+  const sets=sum(rs,r=>p(r.sets)||p(r.reps)/15);
+  const unknown=rs.some(r=>!p(r.sets)&&!p(r.reps));
+  return {label,value:(estimated?'≈':'')+fmt(sets)+'组',detail:fmt(count)+'次',unknown};
  };
- add(daily,'仰卧起坐',B.situps,total(todayRows,sit,reps),'次');
- add(daily,'臀桥及背部',B.back,total(todayRows,back,reps),'次');
- add(daily,'靠墙及平板',B.hold,total(todayRows,hold,r=>positive(r.sets)),'组');
- const advice=[];
- if(daily.length)advice.push('日常可做'+daily.join('、')+'，膝不适只做平板。');
- if(has(swim)){
-  advice.push('今日已游泳，不安排跑步机和椭圆机。');
- }else if(swimDue&&!cardioStarted){
-  advice.push('可安排蛙泳'+B.swimLaps+'圈，膝部不适则取消；不安排跑步机和椭圆机。');
- }else if(cardioStarted||gymReady||has(upper)){
-  const recentRun=minutes(past,run),recentEll=minutes(past,ell);
-  const targetRun=!kneeBusy&&recentRun*2<recentEll?2*B.cardioBlock:B.cardioBlock;
-  const targetEll=B.cardioMinutes-targetRun;
-  const blocks=Math.floor(Math.max(0,B.cardioMinutes-todayRun-todayEll)/B.cardioBlock);
-  const runBlocks=Math.min(blocks,Math.max(0,Math.floor((targetRun-todayRun)/B.cardioBlock)));
-  const ellBlocks=Math.min(blocks-runBlocks,Math.max(0,Math.floor((targetEll-todayEll)/B.cardioBlock)));
-  const addRun=runBlocks*B.cardioBlock,addEll=(blocks-runBlocks)*B.cardioBlock;
-  const options=[addRun?'跑步机'+addRun+'分钟':'',addEll?'椭圆机'+addEll+'分钟':''].filter(Boolean);
-  if(blocks)advice.push((cardioStarted?'如仍需有氧，可补':'可安排')+options.join('、')+'。');
-  if(gymReady){
-   const strength=[];
-   add(strength,'拉背',B.lat,total(todayRows,lat,reps),'次');
-   add(strength,'划船',B.row,total(todayRows,row,reps),'次');
-   add(strength,'飞鸟及引体',B.fly,total(todayRows,fly,reps),'次');
-   if(strength.length)advice.push('体感良好可做'+strength.join('、')+'。');
-  }
-  if(!advice.length)advice.push('今日参考训练量已完成，不必加练。');
- }else{
-  advice.push('今天不安排器械上肢，可轻松散步或休息。');
+ const hold=rows.filter(r=>r.type==='hold'&&match('wall-sit',/靠墙|静蹲|平板/,r));
+ const cardio=(label,k,rx)=>{
+  const rs=rows.filter(r=>(r.type==='cardio'||r.type==='running')&&match(k,rx,r));
+  const min=sum(rs,r=>p(r.duration_min));
+  const km=sum(rs,r=>!p(r.duration_min)?p(r.distance_km)||p(r.distance_m)/1000:0);
+  return {label,value:fmt(min)+'分钟',detail:km?'另有旧里程 '+fmt(km)+'km':'',unknown:rs.some(r=>!p(r.duration_min)&&!p(r.distance_km)&&!p(r.distance_m))};
+ };
+ const swim=rows.filter(r=>r.type==='swimming');
+ const meters=sum(swim,r=>p(r.distance_m)||p(r.laps)*50);
+ const oldSwimMinutes=sum(swim,r=>!p(r.distance_m)&&!p(r.laps)?p(r.duration_min):0);
+ let steps=0;
+ for(let i=0;i<7;i++){
+  const date=localDate(addDays(dateFromISO(start),i));
+  const latest=rows.filter(r=>r.date===date&&r.type==='walking').sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
+  const saved=stepDiary?.[date]?.total;
+  steps+=Number.isFinite(Number(saved))&&saved!==null&&saved!==undefined&&Number(saved)>=0?Number(saved):p(latest?.steps);
  }
- return advice;
+ const items=[
+  strength('拉背','lat',/拉背|高位下拉/),
+  strength('划船','row',/划船/),
+  strength('飞鸟及引体','fly',/飞鸟|引体/),
+  strength('仰卧起坐','situps',/仰卧起坐|卷腹/),
+  strength('臀桥及背部','back',/臀桥|背部运动/),
+  strength('哑铃','dumbbell',/哑铃/),
+  {label:'靠墙及平板',value:fmt(sum(hold,r=>p(r.sets)))+'组',detail:'',unknown:hold.some(r=>!p(r.sets))},
+  cardio('跑步机','running',/跑步/),
+  cardio('椭圆机','elliptical',/椭圆机/),
+  {label:'游泳',value:fmt(meters)+'米',detail:oldSwimMinutes?'另有旧时长 '+fmt(oldSwimMinutes)+'分钟':'',unknown:swim.some(r=>!p(r.distance_m)&&!p(r.laps)&&!p(r.duration_min))},
+  cardio('自行车','bike',/自行车|骑行/),
+  {label:'走路',value:fmt(steps)+'步',detail:''}
+ ];
+ return {start,end,items,estimated:items.some(x=>x.value.startsWith('≈')),partial:items.some(x=>x.unknown||x.detail.startsWith('另有'))};
 }
-function renderTrainingAdvice(){
- const a=trainingAdviceData(state.records,localDate());
- return '<section class="weight-board training-advice" aria-label="训练建议"><div class="weight-header"><h2>训练建议</h2></div>'+
- '<p class="training-advice-copy" style="margin-top:5px">'+a.map(x=>safe(x).replace(/仰卧起坐|靠墙及平板|臀桥及背部|平板|拉背|划船|飞鸟及引体|蛙泳|跑步机|椭圆机|\d+(?:次|组|圈|分钟)/g,m=>'<b>'+m+'</b>')).join('')+'</p></section>';
+function renderWeeklyTrainingStats(end){
+ const w=weeklyTrainingStats(state.records,state.stepDiary,end);
+ const short=d=>Number(d.slice(5,7))+'.'+Number(d.slice(8));
+ return '<section class="weight-board week-training" aria-label="最近7天训练统计"><div class="weight-header"><h2>7天训练统计</h2><span>'+short(w.start)+'—'+short(w.end)+'</span></div>'+
+ '<div class="week-training-grid">'+w.items.map(x=>'<div class="week-training-item" title="'+safe(x.label+' '+x.value+(x.detail?' · '+x.detail:'')+(x.unknown?' · 部分记录无数量':''))+'"><span>'+safe(x.label)+'</span><strong>'+safe(x.value)+'</strong>'+(x.detail&&!x.detail.startsWith('另有')?'<small>'+safe(x.detail)+'</small>':'')+'</div>').join('')+'</div>'+
+ (w.estimated||w.partial?'<p class="week-training-note">'+(w.estimated?'≈ 按15次/组折算':'')+(w.partial?(w.estimated?' · ':'')+'部分旧记录缺少对应单位':'')+'</p>':'')+'</section>';
 }
 function renderCalendar(){
  const today=localDate();
@@ -1274,7 +1254,7 @@ function renderCalendar(){
  '</footer>'+
  (!latest?'<button type="button" class="cal30-back" data-cal-today>回到最近21天</button>':'')+
  (latest&&dayKind(today)!=='workout'?'<div class="cal30-rest">'+renderRestButton()+'</div>':'')+
- '</section>'+renderWeightTracker()+renderTrainingAdvice()+'</div>';
+ '</section>'+renderWeightTracker()+renderWeeklyTrainingStats(end)+'</div>';
 }
 
 
