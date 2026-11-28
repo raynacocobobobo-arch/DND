@@ -91,10 +91,10 @@ function buildRelease(data, groups, index) {
     for(const item of items){const r=ledger.get(item.source);if(!r?.purged_at||r.path||r.git_blob||pub.has(item.source))throw Error("原图删除结果未确认："+item.source)}
     for(const x of items){liveSelected.delete(x.source);trashSelected.delete(x.source);const url=localPreviews.get(x.source);if(url)URL.revokeObjectURL(url);localPreviews.delete(x.source)}
     if(lastBatch){lastBatch=lastBatch.filter(x=>!ids.has(x.source));if(!lastBatch.length)lastBatch=null}if(lastRemoved&&ids.has(lastRemoved.source))lastRemoved=null;
-    applySnapshot(v);updateTargetOptions();$("actions").hidden=false;syncBulk();syncUndo();status("已彻底删除 "+items.length+" 张原图 · 已保存 "+head.slice(0,8)+" · 无法从后台恢复");
-    try{if("caches" in window){const paths=new Set(items.map(x=>new URL(x.path,location.href).pathname));for(const name of await caches.keys()){if(!name.startsWith("enwan-shotlist-"))continue;const c=await caches.open(name);for(const req of await c.keys())if(paths.has(new URL(req.url).pathname))await c.delete(req)}}}catch{}
+    applySnapshot(v);updateTargetOptions();$("actions").hidden=false;syncBulk();syncUndo();status("已彻底删除 "+items.length+" 张照片"+(Array.isArray(v.removed_paths)?" · 清理 "+v.removed_paths.length+" 个原图及副本文件":"")+" · 已保存 "+head.slice(0,8)+" · 无法恢复");
+    try{if("caches" in window){const paths=new Set([...items.map(x=>x.path),...(Array.isArray(v.removed_paths)?v.removed_paths.filter(p=>typeof p==="string"&&p.startsWith("assets/references/")):[])].map(p=>new URL(p,location.href).pathname));for(const name of await caches.keys()){if(!name.startsWith("enwan-shotlist-"))continue;const c=await caches.open(name);for(const req of await c.keys())if(paths.has(new URL(req.url).pathname))await c.delete(req)}}}catch{}
   }
-  function requestPurge(){if(libraryMode!=="trash"||busy||dirty||!data||!token)return;const items=[...trashSelected.values()];if(!items.length)return;if(!confirm("彻底删除选中的 "+items.length+" 张照片？\n将从 GitHub 正式分支删除原图文件，无法在后台撤销或恢复。\nGit 历史版本不在此次删除范围内。"))return;run(()=>purgeSelected(items))}
+  function requestPurge(){if(libraryMode!=="trash"||busy||dirty||!data||!token)return;const items=[...trashSelected.values()];if(!items.length)return;if(!confirm("彻底删除选中的 "+items.length+" 张照片？\n将删除正式分支内的原图及可确认的重复素材、对应缩略图，不另建备份；无法在后台撤销或恢复。\n不涉及其他分支、Git 历史和外部原始文档。"))return;run(()=>purgeSelected(items))}
 
 
   async function readZipMedia(file,visit){
