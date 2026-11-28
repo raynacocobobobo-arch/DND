@@ -32,5 +32,8 @@
 - HTML、CSS、JS 使用 gzip/zstd 传输，减少带宽。缓存响应头和压缩是否生效必须在实际服务器检查。
 
 ## 更新
-在服务器继续使用原来的 git pull 与 rsync。
+优先使用固定目标版本、按文件 SHA 校验的站点定向增量部署，先 dry-run 再发布；不要默认执行整仓 git pull 或 rsync --delete。旧版全量同步脚本仅作为历史方案保留。
+
+最新部署基线与验收状态见 [腾讯云部署履历](TENCENT-DEPLOYMENT-LOG.md)。
+
 只有部署静态资源后，应用正确的 Caddy/Nginx 配置才能获得服务端缓存。
