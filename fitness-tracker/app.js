@@ -1136,7 +1136,7 @@ function weeklyCardioStats(records,end){
  const run=r=>r.type==='running'||(r.type==='cardio'&&(r.presetKey==='running'||/跑步/.test(name(r))));
  const ell=r=>r.type==='cardio'&&(r.presetKey==='elliptical'||/椭圆机/.test(name(r)));
  const swim=r=>r.type==='swimming';
- const defs=[{label:'跑步机',unit:'轮',match:run,quantity:r=>p(r.duration_min)/20},{label:'椭圆机',unit:'轮',match:ell,quantity:r=>p(r.duration_min)/20},{label:'游泳',unit:'圈',match:swim,quantity:r=>p(r.laps)||p(r.distance_m)/50}];
+ const defs=[{label:'跑步机',unit:'轮',match:run,quantity:r=>p(r.duration_min)/20},{label:'椭圆机',unit:'轮',match:ell,quantity:r=>p(r.duration_min)/20},{label:'游泳',unit:'轮',match:swim,quantity:r=>(p(r.laps)||p(r.distance_m)/50)/20}];
  const rows=defs.map(d=>{
   const cells=dates.map(date=>{
    const rs=records.filter(r=>r.date===date&&d.match(r));
@@ -1154,7 +1154,7 @@ function renderWeeklyTrainingStats(end){
  const body=w.rows.map((r,i)=>'<tr class="cardio-kind-'+i+'"><th scope="row">'+r.label+'</th>'+r.cells.map(c=>'<td class="'+(c.value?'has-value':'')+(c.partial?' is-partial':'')+'" title="'+safe((c.value?fmt(c.value)+r.unit:'无可统计数量')+(c.partial?' · 部分旧记录缺少数量':''))+'">'+(c.value?fmt(c.value):c.partial?'?':'—')+(c.value&&c.partial?'*':'')+'</td>').join('')+'<td class="cardio-total">'+fmt(r.total)+r.unit+(r.partial?'*':'')+'</td></tr>').join('');
  return '<section class="weight-board week-training" aria-label="七天有氧分布"><div class="weight-header"><h2>7天有氧分布</h2><span>'+short(w.dates[0])+'—'+short(end)+'</span></div>'+
  '<table class="week-cardio-table"><thead><tr><th scope="col">项目</th>'+head+'<th scope="col">合计</th></tr></thead><tbody>'+body+'</tbody></table>'+
- '<p class="week-training-note">跑步机、椭圆机20分钟/轮 · 游泳50米/圈'+(w.rows.some(r=>r.partial)?' · *旧记录不全':'')+'</p></section>';
+ '<p class="week-training-note">跑步机、椭圆机20分钟/轮 · 游泳20圈/轮'+(w.rows.some(r=>r.partial)?' · *旧记录不全':'')+'</p></section>';
 }
 function renderCalendar(){
  const today=localDate();
