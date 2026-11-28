@@ -1128,62 +1128,33 @@ function isGymTrainingRecord(r){
  }
  return false;
 }
-// Weekly totals: actual repetitions, static sets, minutes, distance and steps.
-// No training advice or rolling targets. Do not modify any saved records.
-function weeklyTrainingStats(records,stepDiary,end){
- const start=localDate(addDays(dateFromISO(end),-6));
- const rows=records.filter(r=>r.date>=start&&r.date<=end);
+// Seven-day cardio distribution. Read only; never modify historical records.
+function weeklyCardioStats(records,end){
+ const dates=Array.from({length:7},(_,i)=>localDate(addDays(dateFromISO(end),i-6)));
  const p=v=>Number.isFinite(Number(v))&&Number(v)>0?Number(v):0;
  const name=r=>String(r.exercise||r.stroke||'');
- const key=r=>String(r.presetKey||'');
- const sum=(rs,f)=>rs.reduce((n,r)=>n+f(r),0);
- const fmt=n=>Number(n.toFixed(1)).toLocaleString('zh-CN');
- const match=(k,rx,r)=>key(r)===k||rx.test(name(r));
- const strength=(label,k,rx)=>{
-  const rs=rows.filter(r=>r.type==='strength'&&match(k,rx,r));
-  const count=sum(rs,r=>p(r.reps)||p(r.sets)*p(r.repsPerSet));
-  const unknown=rs.some(r=>!p(r.reps)&&!(p(r.sets)&&p(r.repsPerSet)));
-  return {label,value:fmt(count)+'次',detail:'',unknown};
- };
- const hold=rows.filter(r=>r.type==='hold'&&match('wall-sit',/靠墙|静蹲|平板/,r));
- const cardio=(label,k,rx)=>{
-  const rs=rows.filter(r=>(r.type==='cardio'||r.type==='running')&&(match(k,rx,r)||(k==='running'&&r.type==='running'&&!name(r))));
-  const min=sum(rs,r=>p(r.duration_min));
-  const km=sum(rs,r=>!p(r.duration_min)?p(r.distance_km)||p(r.distance_m)/1000:0);
-  return {label,value:fmt(min)+'分钟',detail:km?'另有旧里程 '+fmt(km)+'km':'',unknown:rs.some(r=>!p(r.duration_min)&&!p(r.distance_km)&&!p(r.distance_m))};
- };
- const swim=rows.filter(r=>r.type==='swimming');
- const meters=sum(swim,r=>p(r.distance_m)||p(r.laps)*50);
- const oldSwimMinutes=sum(swim,r=>!p(r.distance_m)&&!p(r.laps)?p(r.duration_min):0);
- let steps=0;
- for(let i=0;i<7;i++){
-  const date=localDate(addDays(dateFromISO(start),i));
-  const latest=rows.filter(r=>r.date===date&&r.type==='walking').sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')))[0];
-  const saved=stepDiary?.[date]?.total;
-  steps+=Number.isFinite(Number(saved))&&saved!==null&&saved!==undefined&&Number(saved)>=0?Number(saved):p(latest?.steps);
- }
- const items=[
-  strength('拉背','lat',/拉背|高位下拉/),
-  strength('划船','row',/划船/),
-  strength('飞鸟及引体','fly',/飞鸟|引体/),
-  strength('仰卧起坐','situps',/仰卧起坐|卷腹/),
-  strength('臀桥及背部','back',/臀桥|背部运动/),
-  strength('哑铃','dumbbell',/哑铃/),
-  {label:'靠墙及平板',value:fmt(sum(hold,r=>p(r.sets)))+'组',detail:'',unknown:hold.some(r=>!p(r.sets))},
-  cardio('跑步机','running',/跑步/),
-  cardio('椭圆机','elliptical',/椭圆机/),
-  {label:'游泳',value:fmt(meters)+'米',detail:oldSwimMinutes?'另有旧时长 '+fmt(oldSwimMinutes)+'分钟':'',unknown:swim.some(r=>!p(r.distance_m)&&!p(r.laps)&&!p(r.duration_min))},
-  cardio('自行车','bike',/自行车|骑行/),
-  {label:'走路',value:fmt(steps)+'步',detail:''}
- ];
- return {start,end,items,partial:items.some(x=>x.unknown||x.detail.startsWith('另有'))};
+ const run=r=>r.type==='running'||(r.type==='cardio'&&(r.presetKey==='running'||/跑步/.test(name(r))));
+ const ell=r=>r.type==='cardio'&&(r.presetKey==='elliptical'||/椭圆机/.test(name(r)));
+ const swim=r=>r.type==='swimming';
+ const defs=[{label:'跑步机',unit:'轮',match:run,quantity:r=>p(r.duration_min)/20},{label:'椭圆机',unit:'轮',match:ell,quantity:r=>p(r.duration_min)/20},{label:'游泳',unit:'圈',match:swim,quantity:r=>p(r.laps)||p(r.distance_m)/50}];
+ const rows=defs.map(d=>{
+  const cells=dates.map(date=>{
+   const rs=records.filter(r=>r.date===date&&d.match(r));
+   return {value:rs.reduce((n,r)=>n+d.quantity(r),0),partial:rs.some(r=>!d.quantity(r))};
+  });
+  return {label:d.label,unit:d.unit,cells,total:cells.reduce((n,c)=>n+c.value,0),partial:cells.some(c=>c.partial)};
+ });
+ return {dates,rows};
 }
 function renderWeeklyTrainingStats(end){
- const w=weeklyTrainingStats(state.records,state.stepDiary,end);
+ const w=weeklyCardioStats(state.records,end),today=localDate();
+ const fmt=n=>Number(n.toFixed(2)).toLocaleString('zh-CN',{maximumFractionDigits:2});
  const short=d=>Number(d.slice(5,7))+'.'+Number(d.slice(8));
- return '<section class="weight-board week-training" aria-label="最近7天训练统计"><div class="weight-header"><h2>7天训练统计</h2><span>'+short(w.start)+'—'+short(w.end)+'</span></div>'+
- '<div class="week-training-grid">'+w.items.map(x=>'<div class="week-training-item" title="'+safe(x.label+' '+x.value+(x.detail?' · '+x.detail:'')+(x.unknown?' · 部分记录无数量':''))+'"><span>'+safe(x.label)+'</span><strong>'+safe(x.value)+(x.unknown||x.detail?'*':'')+'</strong></div>').join('')+'</div>'+
- (w.partial?'<p class="week-training-note">* 部分旧记录缺少对应单位</p>':'')+'</section>';
+ const head=w.dates.map(d=>'<th scope="col" class="'+(d===today?'is-today':'')+'" title="'+safe(d)+'">'+(d.slice(8)==='01'?short(d):Number(d.slice(8)))+'</th>').join('');
+ const body=w.rows.map((r,i)=>'<tr class="cardio-kind-'+i+'"><th scope="row">'+r.label+'</th>'+r.cells.map(c=>'<td class="'+(c.value?'has-value':'')+(c.partial?' is-partial':'')+'" title="'+safe((c.value?fmt(c.value)+r.unit:'无可统计数量')+(c.partial?' · 部分旧记录缺少数量':''))+'">'+(c.value?fmt(c.value):c.partial?'?':'—')+(c.value&&c.partial?'*':'')+'</td>').join('')+'<td class="cardio-total">'+fmt(r.total)+r.unit+(r.partial?'*':'')+'</td></tr>').join('');
+ return '<section class="weight-board week-training" aria-label="七天有氧分布"><div class="weight-header"><h2>7天有氧分布</h2><span>'+short(w.dates[0])+'—'+short(end)+'</span></div>'+
+ '<table class="week-cardio-table"><thead><tr><th scope="col">项目</th>'+head+'<th scope="col">合计</th></tr></thead><tbody>'+body+'</tbody></table>'+
+ '<p class="week-training-note">跑步机、椭圆机20分钟/轮 · 游泳50米/圈'+(w.rows.some(r=>r.partial)?' · *旧记录不全':'')+'</p></section>';
 }
 function renderCalendar(){
  const today=localDate();
